@@ -144,6 +144,7 @@ class NettyHttpClient implements HttpClient {
         }
 
         Response<BinaryData> response;
+        Channel channelToRelease = null;
         if (info.isChannelConsumptionComplete()) {
             // The network response is already complete, handle creating our Response based on the request method and
             // response headers.
@@ -154,7 +155,7 @@ class NettyHttpClient implements HttpClient {
                 // there was body content.
                 body = BinaryData.fromBytes(eagerContent.toByteArray());
             }
-
+            channelToRelease = info.getResponseChannel();
             response = new Response<>(request, info.getStatusCode(), info.getHeaders(), body);
         } else {
             // Otherwise we aren't finished, handle the remaining content according to the documentation in
@@ -169,6 +170,7 @@ class NettyHttpClient implements HttpClient {
                 }, info.isHttp2()));
                 channel.config().setAutoRead(true);
                 awaitLatch(drainLatch);
+                channelToRelease = channel;
             } else if (bodyHandling == ResponseBodyHandling.STREAM) {
                 // Body streaming uses a special BinaryData that tracks the firstContent read and the Channel it came
                 // from so it can be consumed when the BinaryData is being used.
@@ -197,11 +199,19 @@ class NettyHttpClient implements HttpClient {
                 }, info.isHttp2()));
                 channel.config().setAutoRead(true);
                 awaitLatch(drainLatch);
-
+                channelToRelease = channel;
                 body = BinaryData.fromBytes(info.getEagerContent().toByteArray());
             }
 
             response = new Response<>(request, info.getStatusCode(), info.getHeaders(), body);
+        }
+
+        if (channelToRelease != null) {
+            Netty4PipelineCleanupHandler cleanupHandler
+                = channelToRelease.pipeline().get(Netty4PipelineCleanupHandler.class);
+            if (cleanupHandler != null) {
+                cleanupHandler.cleanup(channelToRelease.pipeline().context(cleanupHandler));
+            }
         }
 
         if (response.getValue() != BinaryData.empty()

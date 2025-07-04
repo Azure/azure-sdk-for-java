@@ -91,7 +91,7 @@ public final class Netty4ChannelBinaryData extends BinaryData {
     @Override
     public InputStream toStream() {
         if (bytes == null) {
-            return new Netty4ChannelInputStream(eagerContent, channel, isHttp2, this::drainStream);
+            return new Netty4ChannelInputStream(eagerContent, channel, isHttp2, this::close);
         } else {
             return new ByteArrayInputStream(bytes);
         }
@@ -184,6 +184,10 @@ public final class Netty4ChannelBinaryData extends BinaryData {
     @Override
     public void close() {
         drainStream();
+        Netty4PipelineCleanupHandler cleanupHandler = channel.pipeline().get(Netty4PipelineCleanupHandler.class);
+        if (cleanupHandler != null) {
+            cleanupHandler.cleanup(channel.pipeline().context(cleanupHandler));
+        }
     }
 
     private void drainStream() {
