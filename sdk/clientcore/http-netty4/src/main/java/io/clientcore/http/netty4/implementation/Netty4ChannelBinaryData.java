@@ -66,8 +66,7 @@ public final class Netty4ChannelBinaryData extends BinaryData {
         }
 
         if (bytes == null) {
-            drainStream();
-            bytes = eagerContent.toByteArray();
+            drainStreamSync();
             eagerContent = null;
         }
         return bytes;
@@ -121,6 +120,13 @@ public final class Netty4ChannelBinaryData extends BinaryData {
                     return;
                 }
 
+                if (!streamDrained.compareAndSet(false, true)) {
+                    // Another drain operation (e.g., toBytes, toStream().close(), etc.)
+                    // has already started. This call is either redundant or a race condition.
+                    // We'll assume the first operation will handle cleanup.
+                    return;
+                }
+
                 CountDownLatch latch = new CountDownLatch(1);
                 Netty4EagerConsumeChannelHandler handler = new Netty4EagerConsumeChannelHandler(latch,
                     buf -> buf.readBytes(outputStream, buf.readableBytes()), isHttp2);
@@ -131,6 +137,13 @@ public final class Netty4ChannelBinaryData extends BinaryData {
                 streamDrained.set(true);
 
                 Throwable exception = handler.channelException();
+
+                if (channel.eventLoop().inEventLoop()) {
+                    cleanup();
+                } else {
+                    channel.eventLoop().execute(this::cleanup);
+                }
+
                 if (exception != null) {
                     if (exception instanceof Error) {
                         throw (Error) exception;
@@ -178,53 +191,86 @@ public final class Netty4ChannelBinaryData extends BinaryData {
      */
     @Override
     public void close() {
-        drainStream();
-
-        Runnable cleanupTask = () -> {
-            Netty4PipelineCleanupHandler cleanupHandler = channel.pipeline().get(Netty4PipelineCleanupHandler.class);
-            if (cleanupHandler != null) {
-                cleanupHandler.cleanup(channel.pipeline().context(cleanupHandler), false);
+        if (streamDrained.compareAndSet(false, true)) {
+            if (channel.eventLoop().inEventLoop()) {
+                drainAndCleanupAsync();
+            } else {
+                channel.eventLoop().execute(this::drainAndCleanupAsync);
             }
-        };
-
-        if (channel.eventLoop().inEventLoop()) {
-            cleanupTask.run();
-        } else {
-            channel.eventLoop().execute(cleanupTask);
         }
     }
 
-    private void drainStream() {
+    private void drainAndCleanupAsync() {
+        if (!channel.isActive()) {
+            cleanup();
+            return;
+        }
+
+        Netty4EagerConsumeChannelHandler handler = new Netty4EagerConsumeChannelHandler(this::cleanup, isHttp2);
+        channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, handler);
+        channel.config().setAutoRead(true);
+    }
+
+    private void cleanup() {
+        Netty4PipelineCleanupHandler cleanupHandler = channel.pipeline().get(Netty4PipelineCleanupHandler.class);
+        if (cleanupHandler != null) {
+            cleanupHandler.cleanup(channel.pipeline().context(cleanupHandler), false);
+        }
+    }
+
+//    private void drainAndCleanup() {
+//        drainStreamBlocking();
+//
+//        Netty4PipelineCleanupHandler cleanupHandler = channel.pipeline().get(Netty4PipelineCleanupHandler.class);
+//        if (cleanupHandler != null) {
+//            cleanupHandler.cleanup(channel.pipeline().context(cleanupHandler), false);
+//        }
+//    }
+
+    private void drainStreamSync() {
         if (streamDrained.compareAndSet(false, true)) {
             if (channel.pipeline().get(Netty4EagerConsumeChannelHandler.class) != null) {
                 return;
             }
-            if (length != null && eagerContent.size() >= length) {
+            if (length != null && eagerContent != null && eagerContent.size() >= length) {
+                bytes = eagerContent.toByteArray();
+                if (channel.eventLoop().inEventLoop()) {
+                    cleanup();
+                } else {
+                    channel.eventLoop().execute(this::cleanup);
+                }
                 return;
             }
 
             if (!channel.isActive()) {
+                this.bytes = (eagerContent == null) ? new byte[0] : eagerContent.toByteArray();
                 return;
             }
 
             CountDownLatch latch = new CountDownLatch(1);
             Netty4EagerConsumeChannelHandler handler = new Netty4EagerConsumeChannelHandler(latch,
                 buf -> buf.readBytes(eagerContent, buf.readableBytes()), isHttp2);
-            Runnable setupAndRead = () -> {
-                channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, handler);
-                channel.config().setAutoRead(true);
-            };
+            channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, handler);
+            channel.config().setAutoRead(true);
 
-            channel.eventLoop().execute(setupAndRead);
             awaitLatch(latch);
 
             Throwable exception = handler.channelException();
+
+            if (channel.eventLoop().inEventLoop()) {
+                cleanup();
+            } else {
+                channel.eventLoop().execute(this::cleanup);
+            }
+
             if (exception != null) {
                 if (exception instanceof Error) {
                     throw (Error) exception;
                 } else {
                     throw CoreException.from(exception);
                 }
+            } else {
+                bytes = eagerContent.toByteArray();
             }
         }
     }
