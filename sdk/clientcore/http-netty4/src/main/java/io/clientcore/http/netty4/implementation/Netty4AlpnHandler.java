@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static io.clientcore.http.netty4.implementation.Netty4Utility.configureHttpsPipeline;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.sendHttp11Request;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.sendHttp2Request;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppressError;
 
 /**
@@ -75,18 +76,18 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
         configureHttpsPipeline(ctx.pipeline(), request, protocolVersion, responseReference, errorReference, latch);
 
         if (protocolVersion == HttpProtocolVersion.HTTP_2) {
-            Netty4Utility.sendHttp2Request(request, ctx.channel(), errorReference, latch);
+            sendHttp2Request(request, ctx.channel(), errorReference, latch);
         } else {
             sendHttp11Request(request, ctx.channel(), errorReference)
                 .addListener((ChannelFutureListener) sendListener -> {
-                if (!sendListener.isSuccess()) {
-                    setOrSuppressError(errorReference, sendListener.cause());
-                    sendListener.channel().pipeline().fireExceptionCaught(sendListener.cause());
-                    latch.countDown();
-                } else {
-                    sendListener.channel().read();
-                }
-            });
+                    if (!sendListener.isSuccess()) {
+                        setOrSuppressError(errorReference, sendListener.cause());
+                        sendListener.channel().pipeline().fireExceptionCaught(sendListener.cause());
+                        latch.countDown();
+                    } else {
+                        sendListener.channel().read();
+                    }
+                });
         }
     }
 

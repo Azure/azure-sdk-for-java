@@ -388,6 +388,7 @@ public final class Netty4ConnectionPool implements Closeable {
             Promise<Channel> promise = newConnectionBootstrap.config().group().next().newPromise();
             newConnectionBootstrap.connect(route).addListener(future -> {
                 if (!future.isSuccess()) {
+                    LOGGER.atError().setThrowable(future.cause()).log("Failed connection.");
                     // Connect failed, release the slot and try to satisfy a waiter.
                     activeConnections.decrementAndGet();
                     satisfyWaiterWithNewConnection();

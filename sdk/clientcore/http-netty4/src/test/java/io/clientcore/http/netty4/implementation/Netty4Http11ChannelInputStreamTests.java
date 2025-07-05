@@ -41,8 +41,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class Netty4Http11ChannelInputStreamTests {
     @Test
     public void nullEagerContentResultsInEmptyInitialCurrentBuffer() throws IOException {
-        try (Netty4ChannelInputStream channelInputStream = new Netty4ChannelInputStream(null,
-            createCloseableChannel(), false, new AtomicBoolean(), null)) {
+        try (Netty4ChannelInputStream channelInputStream =
+            new Netty4ChannelInputStream(null, createCloseableChannel(), false, new AtomicBoolean(), null)) {
             assertEquals(0, channelInputStream.getCurrentBuffer().length);
         }
     }
@@ -188,7 +188,8 @@ public class Netty4Http11ChannelInputStreamTests {
     @MethodSource("errorSupplier")
     public void streamPropagatesErrorFiredInChannel(Throwable expected) {
         InputStream inputStream
-            = new Netty4ChannelInputStream(null, createPartialReadThenErrorChannel(expected), false, new AtomicBoolean(), null);
+            = new Netty4ChannelInputStream(null, createPartialReadThenErrorChannel(expected), false,
+            new AtomicBoolean(), null);
 
         Throwable actual = assertThrows(Throwable.class, () -> inputStream.read(new byte[8192]));
 

@@ -24,8 +24,10 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpRequest;
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpChunkedInput;
 import io.netty.handler.codec.http.HttpClientCodec;
+import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpDecoderConfig;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeadersFactory;
@@ -455,7 +457,7 @@ public final class Netty4Utility {
      * <p>
      * This method adds the appropriate {@link Netty4HandlerNames#HTTP_CODEC} and
      * {@link Netty4HandlerNames#HTTP_RESPONSE} handlers to the pipeline, positioned correctly
-     * relative to the {@link Netty4HandlerNames#PROGRESS_AND_TIMEOUT} or {@link Netty4HandlerNames#SSL} handlers.
+     * relatively to the {@link Netty4HandlerNames#PROGRESS_AND_TIMEOUT} or {@link Netty4HandlerNames#SSL} handlers.
      *
      * @param pipeline The channel pipeline to configure.
      * @param request The HTTP request.
@@ -491,8 +493,8 @@ public final class Netty4Utility {
             httpCodec = createCodec();
         }
 
-        Netty4ResponseHandler responseHandler
-            = new Netty4ResponseHandler(request, responseReference, errorReference, latch, protocol == HttpProtocolVersion.HTTP_2);
+        Netty4ResponseHandler responseHandler = new Netty4ResponseHandler(request, responseReference, errorReference,
+            latch, protocol == HttpProtocolVersion.HTTP_2);
 
         if (pipeline.get(Netty4HandlerNames.PROGRESS_AND_TIMEOUT) != null) {
             pipeline.addAfter(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.HTTP_RESPONSE,
@@ -504,22 +506,31 @@ public final class Netty4Utility {
         }
     }
 
-    public static void sendHttp2Request(HttpRequest request, Channel channel,
-                                        AtomicReference<Throwable> errorReference, CountDownLatch latch) {
+    public static void sendHttp2Request(HttpRequest request, Channel channel, AtomicReference<Throwable> errorReference,
+        CountDownLatch latch) {
         io.netty.handler.codec.http.HttpRequest nettyRequest = toNettyHttpRequest(request);
 
-        channel.writeAndFlush(nettyRequest).addListener(future -> {
+        final ChannelFuture writeFuture;
+
+        if (nettyRequest instanceof FullHttpRequest) {
+            writeFuture = channel.writeAndFlush(nettyRequest);
+        } else {
+            channel.write(nettyRequest);
+
+            BinaryData requestBody = request.getBody();
+            ChunkedInput<HttpContent> chunkedInput = new HttpChunkedInput(new ChunkedStream(requestBody.toStream()));
+
+            writeFuture = channel.writeAndFlush(chunkedInput);
+        }
+
+        writeFuture.addListener(future -> {
             if (future.isSuccess()) {
                 channel.read();
             } else {
                 setOrSuppressError(errorReference, future.cause());
-                if (latch.getCount() > 0) {
-                    latch.countDown();
-                }
+                latch.countDown();
             }
         });
-
-        channel.read();
     }
 
     private static io.netty.handler.codec.http.HttpRequest toNettyHttpRequest(HttpRequest request) {
@@ -529,12 +540,17 @@ public final class Netty4Utility {
         nettyHeaders.getCoreHeaders().set(HttpHeaderName.HOST, request.getUri().getHost());
 
         BinaryData body = request.getBody();
-        if (body == null || body.getLength() == 0) {
-            return new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, Unpooled.EMPTY_BUFFER,
-                nettyHeaders, trailersFactory().newHeaders());
+        if (body == null || body.getLength() == 0 || body.isReplayable()) {
+            ByteBuf bodyBytes = (body == null || body.getLength() == 0)
+                ? Unpooled.EMPTY_BUFFER
+                : Unpooled.wrappedBuffer(body.toBytes());
+
+            nettyHeaders.getCoreHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(bodyBytes.readableBytes()));
+            return new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, bodyBytes, nettyHeaders,
+                trailersFactory().newHeaders());
         } else {
-            return new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri,
-                Unpooled.wrappedBuffer(body.toBytes()), nettyHeaders, trailersFactory().newHeaders());
+            nettyHeaders.getCoreHeaders().set(HttpHeaderName.TRANSFER_ENCODING, "chunked");
+            return new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, nettyHeaders);
         }
     }
 
