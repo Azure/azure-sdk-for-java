@@ -2,32 +2,16 @@ package com.azure.cosmos.spark
 
 import com.azure.core.util.Context
 import com.azure.cosmos.{CosmosDiagnosticsContext, CosmosDiagnosticsHandler}
-import com.azure.cosmos.implementation.CosmosDaemonThreadFactory
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
-import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.{AtomicInteger, AtomicLong}
 
 class CosmosSamplingDiagnosticsLogger(val maxLogCount: Int, val samplingIntervalInSeconds: Int)  extends CosmosDiagnosticsHandler with BasicLoggingTrait {
-  require(maxLogCount > 0, "Argument 'maxLogCount must be a positive integer.")
+  require(maxLogCount > 0, "Argument 'maxLogCount' must be a positive integer.")
 
   private val logCountInSamplingInterval: AtomicInteger = new AtomicInteger(0)
-  logInfo(s"MaxLogCount: $maxLogCount, samplingIntervalInSeconds: $samplingIntervalInSeconds")
-
-  private val executor: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
-    new CosmosDaemonThreadFactory("CosmosSamplingDiagnosticsLogger"))
-
-  executor.scheduleAtFixedRate(
-    () => {
-      val snapshot = this.logCountInSamplingInterval.getAndSet(0)
-      if (snapshot != 0) {
-        logDebug(s"Resetting number of logs ($snapshot->0)...")
-      }
-    },
-    samplingIntervalInSeconds,
-    samplingIntervalInSeconds,
-    TimeUnit.SECONDS
-  )
+  private val nextReset: AtomicLong = new AtomicLong(System.currentTimeMillis() + samplingIntervalInSeconds * 1000)
+  logInfo(s"Initialized - MaxLogCount: $maxLogCount, samplingIntervalInSeconds: $samplingIntervalInSeconds")
 
   /**
    * Decides whether to log diagnostics for an operation and emits the logs when needed
@@ -39,12 +23,7 @@ class CosmosSamplingDiagnosticsLogger(val maxLogCount: Int, val samplingInterval
     require(Option.apply(diagnosticsContext).isDefined, "Argument 'diagnosticsContext' must not be null.")
 
     if (shouldLog(diagnosticsContext)) {
-      val previousLogCount = this.logCountInSamplingInterval.getAndIncrement
-      if (previousLogCount <= this.maxLogCount) {
-        logInfo(s"Account: ${diagnosticsContext.getAccountName} -> DB: ${diagnosticsContext.getDatabaseName}, Col:${diagnosticsContext.getContainerName}, StatusCode: ${diagnosticsContext.getStatusCode}${diagnosticsContext.getSubStatusCode} Diagnostics: ${diagnosticsContext.toJson}")
-      } else if (previousLogCount == this.maxLogCount + 1) {
-        logInfo(s"Already logged $maxLogCount diagnostics - stopping until sampling interval is reset.")
-      }
+      log(diagnosticsContext)
     }
   }
 
@@ -55,7 +34,10 @@ class CosmosSamplingDiagnosticsLogger(val maxLogCount: Int, val samplingInterval
    * @return a flag indicating whether to log the operation or not
    */
   protected def shouldLog(diagnosticsContext: CosmosDiagnosticsContext): Boolean = {
-    if (!diagnosticsContext.isCompleted) return false
+    if (!diagnosticsContext.isCompleted) {
+      return false
+    }
+
     diagnosticsContext.isFailure || diagnosticsContext.isThresholdViolated || isDebugLogEnabled || isTraceLogEnabled
   }
 
@@ -67,12 +49,33 @@ class CosmosSamplingDiagnosticsLogger(val maxLogCount: Int, val samplingInterval
   protected def log(ctx: CosmosDiagnosticsContext): Unit = {
     if (ctx.isFailure) {
       logError(s"Account: ${ctx.getAccountName} -> DB: ${ctx.getDatabaseName}, Col:${ctx.getContainerName}, StatusCode: ${ctx.getStatusCode}:${ctx.getSubStatusCode} Diagnostics: ${ctx.toJson}")
-    } else if (ctx.isThresholdViolated) {
-      logInfo(s"Account: ${ctx.getAccountName} -> DB: ${ctx.getDatabaseName}, Col:${ctx.getContainerName}, StatusCode: ${ctx.getStatusCode}:${ctx.getSubStatusCode} Diagnostics: ${ctx.toJson}")
-    } else if (isTraceLogEnabled) {
-      logTrace(s"Account: ${ctx.getAccountName} -> DB: ${ctx.getDatabaseName}, Col:${ctx.getContainerName}, StatusCode: ${ctx.getStatusCode}:${ctx.getSubStatusCode} Diagnostics: ${ctx.toJson}")
-    } else if (isDebugLogEnabled) {
-      logDebug(s"Account: ${ctx.getAccountName} -> DB: ${ctx.getDatabaseName}, Col:${ctx.getContainerName}, StatusCode: ${ctx.getStatusCode}:${ctx.getSubStatusCode}, Latency: ${ctx.getDuration}, Request charge: ${ctx.getTotalRequestCharge}")
+    } else {
+      var shouldLog = false
+      if (ctx.isThresholdViolated) {
+        val previousLogCount = logCountInSamplingInterval.getAndIncrement
+        if (previousLogCount <= maxLogCount) {
+          shouldLog = true
+        } else {
+          val nowSnapshot = System.currentTimeMillis()
+          val nextResetSnapshot = nextReset.get()
+          if (nowSnapshot > nextResetSnapshot) {
+            if (nextReset.compareAndSet(nextResetSnapshot, nowSnapshot + samplingIntervalInSeconds * 1000)) {
+              logCountInSamplingInterval.set(0)
+            }
+            shouldLog = true
+          } else if (previousLogCount == maxLogCount + 1) {
+            logInfo(s"Already logged $maxLogCount diagnostics - stopping until sampling interval is reset.")
+          }
+        }
+      }
+
+      if (shouldLog) {
+        logInfo(s"Account: ${ctx.getAccountName} -> DB: ${ctx.getDatabaseName}, Col:${ctx.getContainerName}, StatusCode: ${ctx.getStatusCode}:${ctx.getSubStatusCode} Diagnostics: ${ctx.toJson}")
+      } else if (isTraceLogEnabled) {
+        logTrace(s"Account: ${ctx.getAccountName} -> DB: ${ctx.getDatabaseName}, Col:${ctx.getContainerName}, StatusCode: ${ctx.getStatusCode}:${ctx.getSubStatusCode} Diagnostics: ${ctx.toJson}")
+      } else if (isDebugLogEnabled) {
+        logDebug(s"Account: ${ctx.getAccountName} -> DB: ${ctx.getDatabaseName}, Col:${ctx.getContainerName}, StatusCode: ${ctx.getStatusCode}:${ctx.getSubStatusCode}, Latency: ${ctx.getDuration}, Request charge: ${ctx.getTotalRequestCharge}")
+      }
     }
   }
 }

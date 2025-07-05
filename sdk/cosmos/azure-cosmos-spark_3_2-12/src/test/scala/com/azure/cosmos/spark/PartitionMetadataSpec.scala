@@ -39,7 +39,19 @@ class PartitionMetadataSpec extends UnitSpec {
     samplingRateIntervalInSeconds = None,
     thresholdsPointOperationLatencyInMs = None,
     thresholdsNonPointOperationLatencyInMs = None,
-    thresholdsRequestCharge = None
+    thresholdsRequestCharge = None,
+    azureMonitorOpenTelemetryEnabled = None,
+    azureMonitorConnectionString = None,
+    azureMonitorAuthEnabled = None,
+    azureMonitorAuthConfig = None,
+    azureMonitorLiveMetricsEnabled = None,
+    azureMonitorSamplingRate = None,
+    azureMonitorSamplingRateMaxCount = None,
+    azureMonitorSamplingRateIntervalInSeconds = None,
+    azureMonitorMetricCollectionIntervalInSeconds = None,
+    azureMonitorLogLevel = None,
+    azureMonitorLogSamplingMaxCount = None,
+    azureMonitorLogSamplingIntervalInSeconds = None
   )
 
   private[this] val contCfg = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -88,7 +100,19 @@ class PartitionMetadataSpec extends UnitSpec {
       samplingRateIntervalInSeconds = None,
       thresholdsPointOperationLatencyInMs = None,
       thresholdsNonPointOperationLatencyInMs = None,
-      thresholdsRequestCharge = None
+      thresholdsRequestCharge = None,
+      azureMonitorOpenTelemetryEnabled = None,
+      azureMonitorConnectionString = None,
+      azureMonitorAuthEnabled = None,
+      azureMonitorAuthConfig = None,
+      azureMonitorLiveMetricsEnabled = None,
+      azureMonitorSamplingRate = None,
+      azureMonitorSamplingRateMaxCount = None,
+      azureMonitorSamplingRateIntervalInSeconds = None,
+      azureMonitorMetricCollectionIntervalInSeconds = None,
+      azureMonitorLogLevel = None,
+      azureMonitorLogSamplingMaxCount = None,
+      azureMonitorLogSamplingIntervalInSeconds = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -176,7 +200,19 @@ class PartitionMetadataSpec extends UnitSpec {
       samplingRateIntervalInSeconds = None,
       thresholdsPointOperationLatencyInMs = None,
       thresholdsNonPointOperationLatencyInMs = None,
-      thresholdsRequestCharge = None
+      thresholdsRequestCharge = None,
+      azureMonitorOpenTelemetryEnabled = None,
+      azureMonitorConnectionString = None,
+      azureMonitorAuthEnabled = None,
+      azureMonitorAuthConfig = None,
+      azureMonitorLiveMetricsEnabled = None,
+      azureMonitorSamplingRate = None,
+      azureMonitorSamplingRateMaxCount = None,
+      azureMonitorSamplingRateIntervalInSeconds = None,
+      azureMonitorMetricCollectionIntervalInSeconds = None,
+      azureMonitorLogLevel = None,
+      azureMonitorLogSamplingMaxCount = None,
+      azureMonitorLogSamplingIntervalInSeconds = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -264,7 +300,19 @@ class PartitionMetadataSpec extends UnitSpec {
       samplingRateIntervalInSeconds = None,
       thresholdsPointOperationLatencyInMs = None,
       thresholdsNonPointOperationLatencyInMs = None,
-      thresholdsRequestCharge = None
+      thresholdsRequestCharge = None,
+      azureMonitorOpenTelemetryEnabled = None,
+      azureMonitorConnectionString = None,
+      azureMonitorAuthEnabled = None,
+      azureMonitorAuthConfig = None,
+      azureMonitorLiveMetricsEnabled = None,
+      azureMonitorSamplingRate = None,
+      azureMonitorSamplingRateMaxCount = None,
+      azureMonitorSamplingRateIntervalInSeconds = None,
+      azureMonitorMetricCollectionIntervalInSeconds = None,
+      azureMonitorLogLevel = None,
+      azureMonitorLogSamplingMaxCount = None,
+      azureMonitorLogSamplingIntervalInSeconds = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -334,7 +382,19 @@ class PartitionMetadataSpec extends UnitSpec {
       samplingRateIntervalInSeconds = None,
       thresholdsPointOperationLatencyInMs = None,
       thresholdsNonPointOperationLatencyInMs = None,
-      thresholdsRequestCharge = None
+      thresholdsRequestCharge = None,
+      azureMonitorOpenTelemetryEnabled = None,
+      azureMonitorConnectionString = None,
+      azureMonitorAuthEnabled = None,
+      azureMonitorAuthConfig = None,
+      azureMonitorLiveMetricsEnabled = None,
+      azureMonitorSamplingRate = None,
+      azureMonitorSamplingRateMaxCount = None,
+      azureMonitorSamplingRateIntervalInSeconds = None,
+      azureMonitorMetricCollectionIntervalInSeconds = None,
+      azureMonitorLogLevel = None,
+      azureMonitorLogSamplingMaxCount = None,
+      azureMonitorLogSamplingIntervalInSeconds = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -399,7 +459,19 @@ class PartitionMetadataSpec extends UnitSpec {
       samplingRateIntervalInSeconds = None,
       thresholdsPointOperationLatencyInMs = None,
       thresholdsNonPointOperationLatencyInMs = None,
-      thresholdsRequestCharge = None
+      thresholdsRequestCharge = None,
+      azureMonitorOpenTelemetryEnabled = None,
+      azureMonitorConnectionString = None,
+      azureMonitorAuthEnabled = None,
+      azureMonitorAuthConfig = None,
+      azureMonitorLiveMetricsEnabled = None,
+      azureMonitorSamplingRate = None,
+      azureMonitorSamplingRateMaxCount = None,
+      azureMonitorSamplingRateIntervalInSeconds = None,
+      azureMonitorMetricCollectionIntervalInSeconds = None,
+      azureMonitorLogLevel = None,
+      azureMonitorLogSamplingMaxCount = None,
+      azureMonitorLogSamplingIntervalInSeconds = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -458,7 +530,19 @@ class PartitionMetadataSpec extends UnitSpec {
       samplingRateIntervalInSeconds = None,
       thresholdsPointOperationLatencyInMs = None,
       thresholdsNonPointOperationLatencyInMs = None,
-      thresholdsRequestCharge = None
+      thresholdsRequestCharge = None,
+      azureMonitorOpenTelemetryEnabled = None,
+      azureMonitorConnectionString = None,
+      azureMonitorAuthEnabled = None,
+      azureMonitorAuthConfig = None,
+      azureMonitorLiveMetricsEnabled = None,
+      azureMonitorSamplingRate = None,
+      azureMonitorSamplingRateMaxCount = None,
+      azureMonitorSamplingRateIntervalInSeconds = None,
+      azureMonitorMetricCollectionIntervalInSeconds = None,
+      azureMonitorLogLevel = None,
+      azureMonitorLogSamplingMaxCount = None,
+      azureMonitorLogSamplingIntervalInSeconds = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -517,7 +601,19 @@ class PartitionMetadataSpec extends UnitSpec {
       samplingRateIntervalInSeconds = None,
       thresholdsPointOperationLatencyInMs = None,
       thresholdsNonPointOperationLatencyInMs = None,
-      thresholdsRequestCharge = None
+      thresholdsRequestCharge = None,
+      azureMonitorOpenTelemetryEnabled = None,
+      azureMonitorConnectionString = None,
+      azureMonitorAuthEnabled = None,
+      azureMonitorAuthConfig = None,
+      azureMonitorLiveMetricsEnabled = None,
+      azureMonitorSamplingRate = None,
+      azureMonitorSamplingRateMaxCount = None,
+      azureMonitorSamplingRateIntervalInSeconds = None,
+      azureMonitorMetricCollectionIntervalInSeconds = None,
+      azureMonitorLogLevel = None,
+      azureMonitorLogSamplingMaxCount = None,
+      azureMonitorLogSamplingIntervalInSeconds = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -576,7 +672,19 @@ class PartitionMetadataSpec extends UnitSpec {
       samplingRateIntervalInSeconds = None,
       thresholdsPointOperationLatencyInMs = None,
       thresholdsNonPointOperationLatencyInMs = None,
-      thresholdsRequestCharge = None
+      thresholdsRequestCharge = None,
+      azureMonitorOpenTelemetryEnabled = None,
+      azureMonitorConnectionString = None,
+      azureMonitorAuthEnabled = None,
+      azureMonitorAuthConfig = None,
+      azureMonitorLiveMetricsEnabled = None,
+      azureMonitorSamplingRate = None,
+      azureMonitorSamplingRateMaxCount = None,
+      azureMonitorSamplingRateIntervalInSeconds = None,
+      azureMonitorMetricCollectionIntervalInSeconds = None,
+      azureMonitorLogLevel = None,
+      azureMonitorLogSamplingMaxCount = None,
+      azureMonitorLogSamplingIntervalInSeconds = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -635,7 +743,19 @@ class PartitionMetadataSpec extends UnitSpec {
       samplingRateIntervalInSeconds = None,
       thresholdsPointOperationLatencyInMs = None,
       thresholdsNonPointOperationLatencyInMs = None,
-      thresholdsRequestCharge = None
+      thresholdsRequestCharge = None,
+      azureMonitorOpenTelemetryEnabled = None,
+      azureMonitorConnectionString = None,
+      azureMonitorAuthEnabled = None,
+      azureMonitorAuthConfig = None,
+      azureMonitorLiveMetricsEnabled = None,
+      azureMonitorSamplingRate = None,
+      azureMonitorSamplingRateMaxCount = None,
+      azureMonitorSamplingRateIntervalInSeconds = None,
+      azureMonitorMetricCollectionIntervalInSeconds = None,
+      azureMonitorLogLevel = None,
+      azureMonitorLogSamplingMaxCount = None,
+      azureMonitorLogSamplingIntervalInSeconds = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -694,7 +814,19 @@ class PartitionMetadataSpec extends UnitSpec {
       samplingRateIntervalInSeconds = None,
       thresholdsPointOperationLatencyInMs = None,
       thresholdsNonPointOperationLatencyInMs = None,
-      thresholdsRequestCharge = None
+      thresholdsRequestCharge = None,
+      azureMonitorOpenTelemetryEnabled = None,
+      azureMonitorConnectionString = None,
+      azureMonitorAuthEnabled = None,
+      azureMonitorAuthConfig = None,
+      azureMonitorLiveMetricsEnabled = None,
+      azureMonitorSamplingRate = None,
+      azureMonitorSamplingRateMaxCount = None,
+      azureMonitorSamplingRateIntervalInSeconds = None,
+      azureMonitorMetricCollectionIntervalInSeconds = None,
+      azureMonitorLogLevel = None,
+      azureMonitorLogSamplingMaxCount = None,
+      azureMonitorLogSamplingIntervalInSeconds = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -770,7 +902,19 @@ class PartitionMetadataSpec extends UnitSpec {
       samplingRateIntervalInSeconds = None,
       thresholdsPointOperationLatencyInMs = None,
       thresholdsNonPointOperationLatencyInMs = None,
-      thresholdsRequestCharge = None
+      thresholdsRequestCharge = None,
+      azureMonitorOpenTelemetryEnabled = None,
+      azureMonitorConnectionString = None,
+      azureMonitorAuthEnabled = None,
+      azureMonitorAuthConfig = None,
+      azureMonitorLiveMetricsEnabled = None,
+      azureMonitorSamplingRate = None,
+      azureMonitorSamplingRateMaxCount = None,
+      azureMonitorSamplingRateIntervalInSeconds = None,
+      azureMonitorMetricCollectionIntervalInSeconds = None,
+      azureMonitorLogLevel = None,
+      azureMonitorLogSamplingMaxCount = None,
+      azureMonitorLogSamplingIntervalInSeconds = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)

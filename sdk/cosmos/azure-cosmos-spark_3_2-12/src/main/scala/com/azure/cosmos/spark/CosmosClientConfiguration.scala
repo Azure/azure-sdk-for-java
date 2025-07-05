@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, ReadConsistencyStrategy}
+import org.apache.logging.log4j.Level
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
@@ -33,7 +34,20 @@ private[spark] case class CosmosClientConfiguration (
                                                       samplingRateIntervalInSeconds: Option[Int],
                                                       thresholdsPointOperationLatencyInMs: Option[Int],
                                                       thresholdsNonPointOperationLatencyInMs: Option[Int],
-                                                      thresholdsRequestCharge: Option[Int])
+                                                      thresholdsRequestCharge: Option[Int],
+                                                      azureMonitorOpenTelemetryEnabled: Option[Boolean],
+                                                      azureMonitorConnectionString: Option[String],
+                                                      azureMonitorAuthEnabled: Option[Boolean],
+                                                      azureMonitorAuthConfig: Option[CosmosAuthConfig],
+                                                      azureMonitorLiveMetricsEnabled: Option[Boolean],
+                                                      azureMonitorSamplingRate: Option[Float],
+                                                      azureMonitorSamplingRateMaxCount: Option[Int],
+                                                      azureMonitorSamplingRateIntervalInSeconds: Option[Int],
+                                                      azureMonitorMetricCollectionIntervalInSeconds: Option[Int],
+                                                      azureMonitorLogLevel: Option[Level],
+                                                      azureMonitorLogSamplingMaxCount: Option[Int],
+                                                      azureMonitorLogSamplingIntervalInSeconds: Option[Int]
+                                                    )
 
 private[spark] object CosmosClientConfiguration {
   def apply(
@@ -94,7 +108,19 @@ private[spark] object CosmosClientConfiguration {
       diagnosticsConfig.samplingRateIntervalInSeconds,
       diagnosticsConfig.thresholdsPointOperationLatencyInMs,
       diagnosticsConfig.thresholdsNonPointOperationLatencyInMs,
-      diagnosticsConfig.thresholdsRequestCharge)
+      diagnosticsConfig.thresholdsRequestCharge,
+      diagnosticsConfig.azureMonitorEnabled,
+      diagnosticsConfig.azureMonitorConnectionString,
+      diagnosticsConfig.azureMonitorAuthEnabled,
+      diagnosticsConfig.azureMonitorAuthConfig,
+      diagnosticsConfig.azureMonitorLiveMetricsEnabled,
+      diagnosticsConfig.azureMonitorSamplingRate,
+      diagnosticsConfig.azureMonitorSamplingRateMaxCount,
+      diagnosticsConfig.azureMonitorSamplingRateIntervalInSeconds,
+      diagnosticsConfig.azureMonitorMetricCollectionIntervalInSeconds,
+      diagnosticsConfig.azureMonitorLogLevel,
+      diagnosticsConfig.azureMonitorLogSamplingMaxCount,
+      diagnosticsConfig.azureMonitorLogSamplingIntervalInSeconds)
   }
 
   private[spark] def getSparkEnvironmentInfo(sessionOption: Option[SparkSession]): String = {

@@ -25,7 +25,7 @@ class CosmosMetricsApplicationInsightsPlugin extends SparkPlugin with BasicLoggi
   override def executorPlugin(): ExecutorPlugin = new CosmosMetricsApplicationInsightsExecutorPlugin()
 
   private[this] def createAndAddRegistry(connectionString: String, metricsCollectionIntervalInSeconds: Long): MeterRegistry = {
-    val config = new DefaultAzureMonitorConfig(metricsCollectionIntervalInSeconds)
+    val config = new DefaultAzureMonitorConfig(metricsCollectionIntervalInSeconds, connectionString)
 
     val telemetryConfig = TelemetryConfiguration
       .createDefault()
@@ -148,7 +148,8 @@ class CosmosMetricsApplicationInsightsPlugin extends SparkPlugin with BasicLoggi
 
   private class DefaultAzureMonitorConfig
   (
-    val intervalInSeconds: Long
+    val intervalInSeconds: Long,
+    val effectiveConnectionString: String
   ) extends AzureMonitorConfig {
 
     override def get(s: String): String = {
@@ -158,6 +159,8 @@ class CosmosMetricsApplicationInsightsPlugin extends SparkPlugin with BasicLoggi
     override def step(): Duration = {
       Duration.ofSeconds(intervalInSeconds)
     }
+
+    override def connectionString(): String = effectiveConnectionString
 
     override def instrumentationKey(): String = {
       null

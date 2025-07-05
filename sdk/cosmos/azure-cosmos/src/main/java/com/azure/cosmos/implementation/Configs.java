@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.clienttelemetry.AttributeNamingScheme;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import io.netty.handler.ssl.ApplicationProtocolConfig;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import javax.net.ssl.SSLException;
 import java.net.URI;
 import java.time.Duration;
+import java.util.EnumSet;
 import java.util.Locale;
 
 import static com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull;
@@ -70,6 +72,11 @@ public class Configs {
     public static final String ITEM_SERIALIZATION_INCLUSION_MODE_VARIABLE = "COSMOS_ITEM_SERIALIZATION_INCLUSION_MODE";
 
     public static final String DEFAULT_ITEM_SERIALIZATION_INCLUSION_MODE = "Always";
+
+    public static final String OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME = "COSMOS.OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME";
+    public static final String OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME_VARIABLE = "COSMOS_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME";
+
+    public static final String DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME = "All";
 
     public static final boolean DEFAULT_E2E_FOR_NON_POINT_DISABLED_DEFAULT = false;
     public static final String DEFAULT_E2E_FOR_NON_POINT_DISABLED = "COSMOS.E2E_FOR_NON_POINT_DISABLED";
@@ -354,6 +361,10 @@ public class Configs {
     private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
 
+    public static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "applicationinsights.connection.string";
+    public static final String APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE = "!!!!CHANGEBACKAFTERTESTING!!!!APPLICATIONINSIGHTS_CONNECTION_STRING";
+
+
     public static int getCPUCnt() {
         return CPU_CNT;
     }
@@ -590,6 +601,20 @@ public class Configs {
         }
 
         return DEFAULT_ITEM_SERIALIZATION_INCLUSION_MODE;
+    }
+
+    public static EnumSet<AttributeNamingScheme> getDefaultOtelSpanAttributeNamingScheme() {
+        String valueFromSystemProperty = System.getProperty(OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return AttributeNamingScheme.parse(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return AttributeNamingScheme.parse(valueFromEnvVariable);
+        }
+
+        return AttributeNamingScheme.parse(DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME);
     }
 
     public static boolean isDefaultE2ETimeoutDisabledForNonPointOperations() {
@@ -1194,5 +1219,12 @@ public class Configs {
                 String.valueOf(DEFAULT_WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF)));
 
         return Integer.parseInt(warnLevelLoggingThresholdForPpaf);
+    }
+
+    public static String getAzureMonitorConnectionString() {
+        return System.getProperty(
+            APPLICATIONINSIGHTS_CONNECTION_STRING,
+            System.getenv(APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE)
+        );
     }
 }
