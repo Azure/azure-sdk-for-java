@@ -298,7 +298,7 @@ class NettyHttpClient implements HttpClient {
                 // Manually configure the pipeline based on the stored protocol.
                 boolean isHttp2 = protocolVersion == HttpProtocolVersion.HTTP_2;
                 pipeline.addLast(HTTP_RESPONSE,
-                    new Netty4ResponseHandler(request, responseReference, errorReference, latch, isHttp2));
+                    new Netty4ResponseHandler(request, responseReference, errorReference, latch));
 
                 if (!isHttp2 && pipeline.get(HTTP_CODEC) == null) {
                     pipeline.addBefore(HTTP_RESPONSE, HTTP_CODEC, createCodec());
@@ -318,7 +318,7 @@ class NettyHttpClient implements HttpClient {
             // If there isn't an SslHandler, we can send the request immediately.
             // Add the HTTP/1.1 codec, as we only support HTTP/2 when using SSL ALPN.
             pipeline.addLast(HTTP_RESPONSE,
-                new Netty4ResponseHandler(request, responseReference, errorReference, latch, false));
+                new Netty4ResponseHandler(request, responseReference, errorReference, latch));
             String addBefore = addProgressAndTimeoutHandler ? PROGRESS_AND_TIMEOUT : HTTP_RESPONSE;
             pipeline.addBefore(addBefore, HTTP_CODEC, createCodec());
             send(request, channel, errorReference, latch);

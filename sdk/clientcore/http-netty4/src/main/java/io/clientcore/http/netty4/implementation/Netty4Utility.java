@@ -493,8 +493,8 @@ public final class Netty4Utility {
             httpCodec = createCodec();
         }
 
-        Netty4ResponseHandler responseHandler = new Netty4ResponseHandler(request, responseReference, errorReference,
-            latch, protocol == HttpProtocolVersion.HTTP_2);
+        Netty4ResponseHandler responseHandler
+            = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
 
         if (pipeline.get(Netty4HandlerNames.PROGRESS_AND_TIMEOUT) != null) {
             pipeline.addAfter(Netty4HandlerNames.PROGRESS_AND_TIMEOUT, Netty4HandlerNames.HTTP_RESPONSE,

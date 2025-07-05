@@ -45,13 +45,14 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        if (!(msg instanceof ByteBufHolder) && !(msg instanceof ByteBuf)) {
-            ctx.fireChannelRead(msg);
-            return;
-        }
+        ByteBuf buf = null;
 
         try {
-            ByteBuf buf = (msg instanceof ByteBufHolder) ? ((ByteBufHolder) msg).content() : (ByteBuf) msg;
+            if (msg instanceof ByteBufHolder) {
+                buf = ((ByteBufHolder) msg).content();
+            } else if (msg instanceof ByteBuf) {
+                buf = (ByteBuf) msg;
+            }
 
             if (buf != null && buf.isReadable()) {
                 byteBufConsumer.accept(buf);

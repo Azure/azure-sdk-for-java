@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -62,7 +63,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
      * @throws NullPointerException If {@code request}, {@code responseReference}, or {@code latch} is null.
      */
     public Netty4ResponseHandler(HttpRequest request, AtomicReference<ResponseStateInfo> responseReference,
-        AtomicReference<Throwable> errorReference, CountDownLatch latch, boolean isHttp2) {
+        AtomicReference<Throwable> errorReference, CountDownLatch latch) {
         this.request = Objects.requireNonNull(request,
             "Cannot create an instance of CoreResponseHandler with a null 'request'.");
         this.responseReference = Objects.requireNonNull(responseReference,
@@ -71,6 +72,12 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
             "Cannot create an instance of CoreResponseHandler with a null 'errorReference'.");
         this.latch
             = Objects.requireNonNull(latch, "Cannot create an instance of CoreResponseHandler with a null 'latch'.");
+    }
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) {
+        HttpProtocolVersion protocolVersion = ctx.channel().attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).get();
+        this.isHttp2 = protocolVersion == HttpProtocolVersion.HTTP_2;
     }
 
     @Override

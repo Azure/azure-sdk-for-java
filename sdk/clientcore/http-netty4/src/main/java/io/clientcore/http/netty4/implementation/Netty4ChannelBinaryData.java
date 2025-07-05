@@ -181,8 +181,7 @@ public final class Netty4ChannelBinaryData extends BinaryData {
         drainStream();
 
         Runnable cleanupTask = () -> {
-            Netty4PipelineCleanupHandler cleanupHandler
-                = channel.pipeline().get(Netty4PipelineCleanupHandler.class);
+            Netty4PipelineCleanupHandler cleanupHandler = channel.pipeline().get(Netty4PipelineCleanupHandler.class);
             if (cleanupHandler != null) {
                 cleanupHandler.cleanup(channel.pipeline().context(cleanupHandler), false);
             }
