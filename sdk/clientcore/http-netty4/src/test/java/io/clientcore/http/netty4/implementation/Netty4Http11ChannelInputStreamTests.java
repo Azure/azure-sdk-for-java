@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static io.clientcore.http.netty4.TestUtils.assertArraysEqual;
@@ -31,7 +30,9 @@ import static io.clientcore.http.netty4.TestUtils.createChannelWithReadHandling;
 import static io.netty.buffer.Unpooled.wrappedBuffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link Netty4ChannelInputStream}.
@@ -39,17 +40,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Timeout(value = 3, unit = TimeUnit.MINUTES)
 public class Netty4Http11ChannelInputStreamTests {
     @Test
-    public void nullEagerContentResultsInEmptyInitialCurrentBuffer() {
+    public void nullEagerContentResultsInEmptyInitialCurrentBuffer() throws IOException {
         try (Netty4ChannelInputStream channelInputStream
-            = new Netty4ChannelInputStream(null, createCloseableChannel(), false)) {
+            = new Netty4ChannelInputStream(null, createCloseableChannel(), false, new AtomicBoolean(), null)) {
             assertEquals(0, channelInputStream.getCurrentBuffer().length);
         }
     }
 
     @Test
-    public void emptyEagerContentResultsInEmptyInitialCurrentBuffer() {
-        try (Netty4ChannelInputStream channelInputStream
-            = new Netty4ChannelInputStream(new ByteArrayOutputStream(), createCloseableChannel(), false)) {
+    public void emptyEagerContentResultsInEmptyInitialCurrentBuffer() throws IOException {
+        try (Netty4ChannelInputStream channelInputStream = new Netty4ChannelInputStream(new ByteArrayOutputStream(),
+            createCloseableChannel(), false, new AtomicBoolean(), null)) {
             assertEquals(0, channelInputStream.getCurrentBuffer().length);
         }
     }
@@ -64,7 +65,7 @@ public class Netty4Http11ChannelInputStreamTests {
 
         // MockChannels aren't active by default, so once the eagerContent is consumed the stream will be done.
         Netty4ChannelInputStream channelInputStream
-            = new Netty4ChannelInputStream(eagerContent, new MockChannel(), false);
+            = new Netty4ChannelInputStream(eagerContent, new MockChannel(), false, new AtomicBoolean(), null);
 
         // Make sure the Netty4ChannelInputStream copied the eager content correctly.
         assertArraysEqual(expected, channelInputStream.getCurrentBuffer());
@@ -96,7 +97,7 @@ public class Netty4Http11ChannelInputStreamTests {
                 handler.channelRead(ctx, wrappedBuffer(expected, 16, 16));
                 handler.channelRead(ctx, LastHttpContent.EMPTY_LAST_CONTENT);
                 handler.channelReadComplete(ctx);
-            }), false);
+            }), false, new AtomicBoolean(), null);
 
         int index = 0;
         byte[] actual = new byte[32];
@@ -118,7 +119,7 @@ public class Netty4Http11ChannelInputStreamTests {
 
         // MockChannels aren't active by default, so once the eagerContent is consumed the stream will be done.
         try (Netty4ChannelInputStream channelInputStream
-            = new Netty4ChannelInputStream(eagerContent, createCloseableChannel(), false)) {
+            = new Netty4ChannelInputStream(eagerContent, createCloseableChannel(), false, new AtomicBoolean(), null)) {
             long skipped = channelInputStream.skip(16);
             assertEquals(16, skipped);
 
@@ -140,8 +141,8 @@ public class Netty4Http11ChannelInputStreamTests {
         byte[] expected = new byte[8192];
         ThreadLocalRandom.current().nextBytes(expected);
 
-        try (Netty4ChannelInputStream channelInputStream
-            = new Netty4ChannelInputStream(null, createChannelThatReads8Kb(expected), false)) {
+        try (Netty4ChannelInputStream channelInputStream = new Netty4ChannelInputStream(null,
+            createChannelThatReads8Kb(expected), false, new AtomicBoolean(), null)) {
             byte[] actual = new byte[8192];
             int read = channelInputStream.read(actual);
 
@@ -161,8 +162,8 @@ public class Netty4Http11ChannelInputStreamTests {
         byte[] expected = new byte[8192];
         ThreadLocalRandom.current().nextBytes(expected);
 
-        try (Netty4ChannelInputStream channelInputStream
-            = new Netty4ChannelInputStream(null, createChannelThatReads8Kb(expected), false)) {
+        try (Netty4ChannelInputStream channelInputStream = new Netty4ChannelInputStream(null,
+            createChannelThatReads8Kb(expected), false, new AtomicBoolean(), null)) {
             long skipped = channelInputStream.skip(8192);
             assertEquals(8192, skipped);
 
@@ -172,21 +173,22 @@ public class Netty4Http11ChannelInputStreamTests {
     }
 
     @Test
-    public void closingStreamClosesChannel() {
-        AtomicInteger closeCount = new AtomicInteger();
-        AtomicInteger disconnectCount = new AtomicInteger();
+    public void closingStreamTriggersOnCloseCallback() throws IOException {
+        AtomicBoolean onCloseCalled = new AtomicBoolean(false);
 
-        new Netty4ChannelInputStream(null,
-            createCloseableChannel(closeCount::incrementAndGet, disconnectCount::incrementAndGet), false).close();
+        try (Netty4ChannelInputStream channelInputStream = new Netty4ChannelInputStream(null, createCloseableChannel(),
+            false, new AtomicBoolean(), () -> onCloseCalled.set(true))) {
+            assertNotNull(channelInputStream);
+        }
 
-        assertEquals(1, closeCount.get());
+        assertTrue(onCloseCalled.get());
     }
 
     @ParameterizedTest
     @MethodSource("errorSupplier")
     public void streamPropagatesErrorFiredInChannel(Throwable expected) {
-        InputStream inputStream
-            = new Netty4ChannelInputStream(null, createPartialReadThenErrorChannel(expected), false);
+        InputStream inputStream = new Netty4ChannelInputStream(null, createPartialReadThenErrorChannel(expected), false,
+            new AtomicBoolean(), null);
 
         Throwable actual = assertThrows(Throwable.class, () -> inputStream.read(new byte[8192]));
 

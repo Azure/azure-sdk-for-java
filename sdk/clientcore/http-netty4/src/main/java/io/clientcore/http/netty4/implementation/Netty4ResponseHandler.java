@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -17,6 +18,7 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.LastHttpContent;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
@@ -47,6 +49,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
     // and initial response body content.
     private final ByteArrayOutputStream eagerContent = new ByteArrayOutputStream();
     private boolean complete;
+    private boolean isHttp2;
 
     /**
      * Creates an instance of {@link Netty4ResponseHandler}.
@@ -69,6 +72,12 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
             "Cannot create an instance of CoreResponseHandler with a null 'errorReference'.");
         this.latch
             = Objects.requireNonNull(latch, "Cannot create an instance of CoreResponseHandler with a null 'latch'.");
+    }
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) {
+        HttpProtocolVersion protocolVersion = ctx.channel().attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).get();
+        this.isHttp2 = protocolVersion == HttpProtocolVersion.HTTP_2;
     }
 
     @Override
@@ -165,15 +174,21 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
             return;
         }
 
-        ctx.pipeline().remove(this);
+        if (!isHttp2) {
+            ctx.pipeline().remove(this);
+        }
         ctx.fireChannelReadComplete();
 
-        if (complete) {
-            ctx.close();
-        }
-
         responseReference.set(new ResponseStateInfo(ctx.channel(), complete, statusCode, headers, eagerContent,
-            ResponseBodyHandling.getBodyHandling(request, headers), false));
+            ResponseBodyHandling.getBodyHandling(request, headers), isHttp2));
+        latch.countDown();
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        setOrSuppressError(errorReference,
+            new IOException("The channel became inactive before a response was received."));
+        ctx.fireChannelInactive();
         latch.countDown();
     }
 }

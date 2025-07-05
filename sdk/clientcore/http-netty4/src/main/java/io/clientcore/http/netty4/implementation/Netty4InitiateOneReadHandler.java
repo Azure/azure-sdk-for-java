@@ -13,6 +13,7 @@ import io.netty.handler.codec.http2.Http2DataFrame;
 import io.netty.util.ReferenceCountUtil;
 
 import java.io.IOException;
+import java.nio.channels.ClosedChannelException;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -78,7 +79,7 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
                 byteBufConsumer.accept(buf);
             } catch (IOException | RuntimeException ex) {
                 ReferenceCountUtil.release(buf);
-                ctx.close();
+                exceptionCaught(ctx, ex);
                 return;
             }
         }
@@ -94,10 +95,7 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         latch.countDown();
-        if (lastRead) {
-            ctx.pipeline().remove(this);
-            ctx.close();
-        }
+        ctx.fireChannelReadComplete();
     }
 
     boolean isChannelConsumed() {
@@ -107,8 +105,9 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         this.exception = cause;
+        performCleanup(ctx);
         latch.countDown();
-        ctx.close();
+        ctx.fireExceptionCaught(cause);
     }
 
     Throwable channelException() {
@@ -118,15 +117,36 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
     // TODO (alzimmer): Are the latch countdowns needed for unregistering and inactivity?
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
+        performCleanup(ctx);
         latch.countDown();
         ctx.fireChannelUnregistered();
-        ctx.pipeline().remove(this);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
+        performCleanup(ctx);
         latch.countDown();
         ctx.fireChannelInactive();
-        ctx.pipeline().remove(this);
+    }
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) {
+        if (!ctx.channel().isActive()) {
+            // In case the read handler is added to a closed channel, we fail loudly by firing
+            // an exception. Simply counting down the latch would cause the caller to receive
+            // an empty/incomplete data stream without any sign of the underlying network error.
+            ctx.fireExceptionCaught(new ClosedChannelException());
+        }
+    }
+
+    private void performCleanup(ChannelHandlerContext ctx) {
+        if (latch.getCount() == 0) {
+            return;
+        }
+
+        Netty4PipelineCleanupHandler cleanupHandler = ctx.pipeline().get(Netty4PipelineCleanupHandler.class);
+        if (cleanupHandler != null) {
+            cleanupHandler.cleanup(ctx, true);
+        }
     }
 }
