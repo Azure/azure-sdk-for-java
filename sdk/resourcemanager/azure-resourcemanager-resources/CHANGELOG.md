@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported `invoke` and `invoke(ctx)` in `TaskGroup`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

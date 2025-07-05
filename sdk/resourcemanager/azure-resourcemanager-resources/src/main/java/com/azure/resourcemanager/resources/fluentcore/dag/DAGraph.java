@@ -26,8 +26,8 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
      */
     private final NodeT rootNode;
     /**
-     * the immediate parent graphs of this graph. A parent graph is the one with it's root
-     * depends on this graph's root.
+     * the immediate parent graphs of this graph. A parent graph is the one with its root
+     * depending on this graph's root.
      */
     protected List<DAGraph<DataT, NodeT>> parentDAGs;
     /**
