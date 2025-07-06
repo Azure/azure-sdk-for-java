@@ -39,6 +39,8 @@ public final class Netty4ChannelBinaryData extends BinaryData {
     private final boolean isHttp2;
     private final AtomicBoolean streamDrained = new AtomicBoolean(false);
     private final CountDownLatch drainLatch = new CountDownLatch(1);
+    // Manages the "closed" state, ensuring cleanup happens only once.
+    private final AtomicBoolean closed = new AtomicBoolean(false);
 
     // Non-final to allow nulling out after use.
     private ByteArrayOutputStream eagerContent;
@@ -67,7 +69,7 @@ public final class Netty4ChannelBinaryData extends BinaryData {
         }
 
         if (bytes == null) {
-            drainStreamSync();
+            drainStream();
         }
         return bytes;
     }
@@ -147,16 +149,19 @@ public final class Netty4ChannelBinaryData extends BinaryData {
      */
     @Override
     public void close() {
-        if (streamDrained.compareAndSet(false, true)) {
-            try {
+        if (closed.compareAndSet(false, true)) {
+            if (!streamDrained.get()) {
                 drainAndCleanupAsync();
-            } finally {
-                drainLatch.countDown();
+            } else {
+                cleanup(false);
             }
         }
     }
 
     private void drainAndCleanupAsync() {
+        streamDrained.set(true);
+        drainLatch.countDown();
+
         if (!channel.isActive()) {
             cleanup(true);
             return;
@@ -175,16 +180,7 @@ public final class Netty4ChannelBinaryData extends BinaryData {
         }
     }
 
-//    private void drainAndCleanup() {
-//        drainStreamBlocking();
-//
-//        Netty4PipelineCleanupHandler cleanupHandler = channel.pipeline().get(Netty4PipelineCleanupHandler.class);
-//        if (cleanupHandler != null) {
-//            cleanupHandler.cleanup(channel.pipeline().context(cleanupHandler), false);
-//        }
-//    }
-
-    private void drainStreamSync() {
+    private void drainStream() {
         // First, check if another thread has already started the draining process.
         if (!streamDrained.compareAndSet(false, true)) {
             // If so, this thread becomes a "waiter". It blocks until the other thread is done.
@@ -195,13 +191,11 @@ public final class Netty4ChannelBinaryData extends BinaryData {
         try {
             if (length != null && eagerContent != null && eagerContent.size() >= length) {
                 bytes = eagerContent.toByteArray();
-                cleanup(false);
                 return;
             }
 
             if (!channel.isActive()) {
                 this.bytes = (eagerContent == null) ? new byte[0] : eagerContent.toByteArray();
-                cleanup(true);
                 return;
             }
 
@@ -214,7 +208,6 @@ public final class Netty4ChannelBinaryData extends BinaryData {
             awaitLatch(ioLatch);
 
             Throwable exception = handler.channelException();
-            cleanup(exception != null);
 
             if (exception != null) {
                 if (exception instanceof Error) {

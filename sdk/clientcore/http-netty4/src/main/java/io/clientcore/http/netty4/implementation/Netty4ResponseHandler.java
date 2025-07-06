@@ -89,6 +89,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         setOrSuppressError(errorReference, cause);
         latch.countDown();
+        ctx.fireExceptionCaught(cause);
     }
 
     @Override

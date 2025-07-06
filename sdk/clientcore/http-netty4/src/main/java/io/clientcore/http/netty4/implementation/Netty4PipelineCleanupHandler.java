@@ -11,7 +11,9 @@ import io.netty.channel.ChannelPipeline;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.ALPN;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.CHUNKED_WRITER;
@@ -20,6 +22,7 @@ import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_C
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_RESPONSE;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROGRESS_AND_TIMEOUT;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.READ_ONE;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppressError;
 
 /**
  * A handler that cleans up the pipeline after a request-response cycle and releases
@@ -28,6 +31,8 @@ import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.READ_O
 public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
 
     private final Netty4ConnectionPool connectionPool;
+    private final AtomicReference<Throwable> errorReference;
+    private final CountDownLatch latch;
     private final AtomicBoolean cleanedUp = new AtomicBoolean(false);
 
     private static final List<String> HANDLERS_TO_REMOVE;
@@ -44,12 +49,19 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
         HANDLERS_TO_REMOVE = Collections.unmodifiableList(handlers);
     }
 
-    public Netty4PipelineCleanupHandler(Netty4ConnectionPool connectionPool) {
+    public Netty4PipelineCleanupHandler(Netty4ConnectionPool connectionPool, AtomicReference<Throwable> errorReference,
+        CountDownLatch latch) {
         this.connectionPool = connectionPool;
+        this.errorReference = errorReference;
+        this.latch = latch;
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        if (errorReference != null && latch != null) {
+            setOrSuppressError(errorReference, cause);
+            latch.countDown();
+        }
         cleanup(ctx, true);
     }
 

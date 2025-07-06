@@ -277,7 +277,7 @@ class NettyHttpClient implements HttpClient {
         // The first handler added is the cleanup handler. It will be the last to execute
         // in the outbound direction and the first in the inbound direction, but its main
         // purpose is to clean up all other request-specific handlers and release the channel.
-        pipeline.addLast(PIPELINE_CLEANUP, new Netty4PipelineCleanupHandler(connectionPool));
+        pipeline.addLast(PIPELINE_CLEANUP, new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch));
 
         // Only add CoreProgressAndTimeoutHandler if it will do anything, ex it is reporting progress or is
         // applying timeouts.
