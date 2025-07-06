@@ -240,7 +240,7 @@ public final class Netty4ConnectionPool implements Closeable {
             while (true) {
                 PooledConnection connection = idleConnections.poll();
                 if (connection == null) {
-                    break; // No idle connections available.
+                    break;
                 }
 
                 if (isHealthy(connection)) {

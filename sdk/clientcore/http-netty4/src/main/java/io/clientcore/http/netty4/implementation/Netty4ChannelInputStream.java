@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Implementation of {@link InputStream} that reads contents from a Netty {@link Channel}.
@@ -19,7 +18,6 @@ public final class Netty4ChannelInputStream extends InputStream {
     private final Channel channel;
     private final boolean isHttp2;
     private final Runnable onClose;
-    private final AtomicBoolean parentStreamDrained;
 
     // Indicator for the Channel being fully read.
     // This will become true before 'streamDone' becomes true, but both may become true in the same operation.
@@ -52,8 +50,7 @@ public final class Netty4ChannelInputStream extends InputStream {
      * @param isHttp2 Flag indicating whether the Channel is used for HTTP/2 or not.
      * @param onClose A runnable to execute when the stream is closed.
      */
-    Netty4ChannelInputStream(ByteArrayOutputStream eagerContent, Channel channel, boolean isHttp2,
-        AtomicBoolean parentStreamDrained, Runnable onClose) {
+    Netty4ChannelInputStream(ByteArrayOutputStream eagerContent, Channel channel, boolean isHttp2, Runnable onClose) {
         if (eagerContent != null && eagerContent.size() > 0) {
             this.currentBuffer = eagerContent.toByteArray();
             eagerContent.reset();
@@ -68,7 +65,6 @@ public final class Netty4ChannelInputStream extends InputStream {
         }
         this.isHttp2 = isHttp2;
         this.onClose = onClose;
-        this.parentStreamDrained = parentStreamDrained;
     }
 
     byte[] getCurrentBuffer() {
@@ -204,7 +200,6 @@ public final class Netty4ChannelInputStream extends InputStream {
             return true;
         } else {
             streamDone = true;
-            parentStreamDrained.set(true);
             return false;
         }
     }

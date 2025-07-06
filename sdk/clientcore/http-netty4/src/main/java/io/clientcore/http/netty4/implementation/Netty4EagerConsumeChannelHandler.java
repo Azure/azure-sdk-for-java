@@ -142,8 +142,17 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
     }
 
     private void signalComplete(ChannelHandlerContext ctx, boolean forceClose) {
+        boolean isSyncDrain = (latch != null);
+
         if (ctx.pipeline().get(Netty4EagerConsumeChannelHandler.class) != null) {
             ctx.pipeline().remove(this);
+        }
+
+        if (isSyncDrain) {
+            Netty4PipelineCleanupHandler mainCleanupHandler = ctx.pipeline().get(Netty4PipelineCleanupHandler.class);
+            if (mainCleanupHandler != null) {
+                mainCleanupHandler.cleanup(ctx, forceClose);
+            }
         }
 
         if (latch != null) {
@@ -153,7 +162,7 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
             onComplete.run();
         }
 
-        if (forceClose) {
+        if (!isSyncDrain && forceClose) {
             cleanup(ctx);
         }
     }

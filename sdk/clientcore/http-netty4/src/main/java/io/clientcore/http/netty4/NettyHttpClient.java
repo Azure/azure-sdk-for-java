@@ -165,6 +165,7 @@ class NettyHttpClient implements HttpClient {
             ResponseBodyHandling bodyHandling = info.getResponseBodyHandling();
             Channel channel = info.getResponseChannel();
             if (bodyHandling == ResponseBodyHandling.IGNORE) {
+                // TODO: Don't block here?
                 // We're ignoring the response content.
                 CountDownLatch drainLatch = new CountDownLatch(1);
                 channel.pipeline().addLast(new Netty4EagerConsumeChannelHandler(drainLatch, ignored -> {
