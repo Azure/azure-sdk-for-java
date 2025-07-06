@@ -236,6 +236,7 @@ class NettyHttpClient implements HttpClient {
 
                     // If an error occurred or we want to reconnect
                     if (!Thread.currentThread().isInterrupted() && attemptRetry(serverSentResult, request)) {
+                        response.close();
                         return this.send(request);
                     }
 
