@@ -12,9 +12,10 @@ This MCP server provides the following tools:
 4. **clean_java_source** - Clean and remove generated Java source files from SDK directory
 5. **build_java_sdk** - Compile and build the Java SDK with Maven for Azure services
 6. **get_java_sdk_changelog** - Generate and retrieve changelog information for the Java SDK
-7. **instruction_migrate_typespec** - Provide step-by-step instructions for migrating from Swagger to TypeSpec
-8. **update_client_name** - Guide through updating client class and property names in TypeSpec and Java SDK
-9. **prepare_java_sdk_environment** - Provide environment setup instructions and dependency requirements
+7. **update_java_sdk_changelog** - Update the CHANGELOG.md file for a Java SDK module
+8. **instruction_migrate_typespec** - Provide step-by-step instructions for migrating from Swagger to TypeSpec
+9. **update_client_name** - Guide through updating client class and property names in TypeSpec and Java SDK
+10. **prepare_java_sdk_environment** - Provide environment setup instructions and dependency requirements
 
 ## Prerequisites
 
@@ -39,41 +40,18 @@ npm run build
 
 ## Configure MCP Server in VSCode
 
-To use this MCP server with GitHub Copilot in VSCode, you need to add it to your MCP configuration file.
 
-### Step 0: Open Working Directory
-
-Open your working directory in VSCode. This can be either:
-
-**Option 1: Service Module Directory**
-- Open the specific service directory that contains `tsp-location.yaml` 
-- Example: `azure-sdk-for-java/sdk/batch/azure-compute-batch`
-- Make sure the directory contains the `tsp-location.yaml` file
-
-**Option 2: SDK Root Directory**
-- Open the Azure SDK for Java root directory
-- Example: `azure-sdk-for-java`
-- The tools will automatically locate the appropriate service modules
-
-Create `.vscode/` folder in the opened directory.
-
-### Step 1: Add Server Configuration
+### Step 1: Install and Build the MCP Server
 
 Add the following configuration to your `.vscode/mcp.json` file:
 
-```json
-{
-    "servers": {
-        "java-sdk-mcp": {
-            "type": "stdio",
-            "command": "node",
-            "args": ["path/to/your/mcp/dist/index.js"]
-        }
-    }
-}
+```
+$ cd eng/tools/mcp/azure-sdk-java-mcp
+$ npm install
+$ npm run build
 ```
 
-Replace `path/to/your/mcp/dist/index.js` with the actual absolute path to your compiled MCP server. (Refer to [Installation](https://github.com/haolingdong-msft/java-sdk-tools/blob/main/mcp/README.md#installation) section to install and build the MCP server.)
+You can find the build files in `./eng/tools/mcp/azure-sdk-java-mcp/dist`. 
 
 ### Step 2: Restart VSCode
 
@@ -88,33 +66,6 @@ You can verify that the MCP server is working by:
 1. Opening GitHub Copilot Chat in VSCode
 2. Asking Copilot to list available tools
 3. You should see the Java SDK tools listed
-
-### Example Configuration
-
-Here's a complete example of what your `mcp.json` might look like:
-
-```json
-{
-    "servers": {
-        "java-sdk-mcp": {
-            "type": "stdio",
-            "command": "node",
-            "args": [
-                "C:\\workspace\\java-sdk-tools\\mcp\\dist\\index.js"
-            ]
-        }
-    }
-}
-```
-
-### Troubleshooting
-
-If the MCP server isn't working:
-1. Ensure the path to `index.js` is correct and absolute
-2. Make sure you've built the project with `npm run build`
-3. Check that Node.js is installed and available in your PATH
-4. Restart VSCode completely after configuration changes
-5. Check the VSCode developer console for any error messages
 
 
 ## Sample Prompts
@@ -135,6 +86,7 @@ Here are some example prompts you can use with GitHub Copilot to interact with t
 ### Build and Changelog
 - `build the java sdk for com.azure.batch`
 - `get changelog for the java sdk`
+- `update changelog for the java sdk`
 
 ### Generate SDK after Migrating from Swagger to TypeSpec 
 - `generate sdk after migrating to typespec for "azure-mgmt-dnsresolver`
@@ -159,16 +111,17 @@ npm run test:run      # Run tests once
 Initialize the tsp-location.yaml configuration file for Java SDK generation.
 
 **Parameters:**
-- `cwd` (required): The absolute path to the working directory (can be either the service module directory containing tsp-location.yaml or the SDK root directory)
-- `tspConfigUrl` (required): The URL to the tspconfig.yaml file (e.g., GitHub raw URL)
+- `localTspConfigPath` (optional): The local path to the tspconfig.yaml file
+- `tspConfigUrl` (optional): The URL to the tspconfig.yaml file (e.g., GitHub raw URL with commit ID)
+
+**Note:** Provide either `localTspConfigPath` OR `tspConfigUrl`, not both.
 
 **Example:**
 ```json
 {
   "name": "init_java_sdk",
   "arguments": {
-    "cwd": "/path/to/workspace",
-    "tspConfigUrl": "https://github.com/Azure/azure-rest-api-specs/blob/main/specification/service/tspconfig.yaml"
+    "tspConfigUrl": "https://github.com/Azure/azure-rest-api-specs/blob/dee71463cbde1d416c47cf544e34f7966a94ddcb/specification/contosowidgetmanager/Contoso.WidgetManager/tspconfig.yaml"
   }
 }
 ```
@@ -177,14 +130,17 @@ Initialize the tsp-location.yaml configuration file for Java SDK generation.
 Synchronize and download the TypeSpec source files for Java SDK from the configuration in tsp-location.yaml.
 
 **Parameters:**
-- `cwd` (required): The absolute path to the working directory (can be either the service module directory containing tsp-location.yaml or the SDK root directory)
+- `localTspConfigPath` (optional): The local path to the tspconfig.yaml file (e.g., `C:\workspace\azure-rest-api-specs\specification\communication\Communication.Messages\tspconfig.yaml`)
+- `remoteTspConfigUrl` (optional): The remote URL to the tspconfig.yaml file (URL should contain commit ID instead of branch name)
+
+**Note:** Provide either `localTspConfigPath` OR `remoteTspConfigUrl`, not both.
 
 **Example:**
 ```json
 {
   "name": "sync_java_sdk",
   "arguments": {
-    "cwd": "/path/to/typespec/project"
+    "localTspConfigPath": "C:\\workspace\\azure-rest-api-specs\\specification\\communication\\Communication.Messages\\tspconfig.yaml"
   }
 }
 ```
@@ -193,14 +149,14 @@ Synchronize and download the TypeSpec source files for Java SDK from the configu
 Generate or update Java SDK from TypeSpec definitions. Requires existing tsp-location.yaml and TempTypeSpecFiles directory.
 
 **Parameters:**
-- `cwd` (required): The absolute path to the working directory (can be either the service module directory containing tsp-location.yaml or the SDK root directory)
+- `cwd` (required): The absolute path to the current working directory which contains the 'TempTypeSpecFiles' directory with TypeSpec source files (e.g., `C:\workspace\azure-sdk-for-java\sdk\communication\communication-messages`)
 
 **Example:**
 ```json
 {
   "name": "generate_java_sdk",
   "arguments": {
-    "cwd": "/path/to/typespec/project"
+    "cwd": "C:\\workspace\\azure-sdk-for-java\\sdk\\communication\\communication-messages"
   }
 }
 ```
@@ -209,14 +165,14 @@ Generate or update Java SDK from TypeSpec definitions. Requires existing tsp-loc
 Clean Java source files in the specified SDK directory.
 
 **Parameters:**
-- `moduleDirectory` (required): The absolute path to the Java SDK directory
+- `cwd` (required): The absolute path to the directory where tsp-location.yaml is located
 
 **Example:**
 ```json
 {
   "name": "clean_java_source",
   "arguments": {
-    "moduleDirectory": "/path/to/java/sdk/module"
+    "cwd": "/path/to/java/sdk/module"
   }
 }
 ```
@@ -225,8 +181,8 @@ Clean Java source files in the specified SDK directory.
 Build the Java SDK for Azure services (groupId starting with `com.azure`).
 
 **Parameters:**
-- `cwd` (required): The absolute path to the working directory (can be either the service module directory or the SDK root directory)
-- `moduleDirectory` (required): The absolute path to the Java SDK directory
+- `moduleDirectory` (required): The absolute path to the service sub module directory containing tsp-location.yaml
+- `rootDirectory` (required): The absolute path to the azure-sdk-for-java directory, where the moduleDirectory is a submodule of it
 - `groupId` (required): The group ID for the Java SDK
 - `artifactId` (required): The artifact ID for the Java SDK
 
@@ -235,8 +191,8 @@ Build the Java SDK for Azure services (groupId starting with `com.azure`).
 {
   "name": "build_java_sdk",
   "arguments": {
-    "cwd": "/path/to/workspace",
     "moduleDirectory": "/path/to/java/sdk/module",
+    "rootDirectory": "/path/to/azure-sdk-for-java",
     "groupId": "com.azure.myservice",
     "artifactId": "azure-myservice"
   }
@@ -247,7 +203,6 @@ Build the Java SDK for Azure services (groupId starting with `com.azure`).
 Get the changelog for the Java SDK for Azure services.
 
 **Parameters:**
-- `cwd` (required): The absolute path to the working directory (can be either the service module directory or the SDK root directory)
 - `jarPath` (required): The absolute path to the JAR file (should be under the `target` directory)
 - `groupId` (required): The group ID for the Java SDK
 - `artifactId` (required): The artifact ID for the Java SDK
@@ -257,7 +212,6 @@ Get the changelog for the Java SDK for Azure services.
 {
   "name": "get_java_sdk_changelog",
   "arguments": {
-    "cwd": "/path/to/workspace",
     "jarPath": "/path/to/target/azure-myservice-1.0.0.jar",
     "groupId": "com.azure.myservice",
     "artifactId": "azure-myservice"
@@ -265,7 +219,27 @@ Get the changelog for the Java SDK for Azure services.
 }
 ```
 
-### 7. instruction_migrate_typespec
+### 7. update_java_sdk_changelog
+Update the CHANGELOG.md file for a service sub module whose groupId starts with `com.azure`.
+
+**Parameters:**
+- `jarPath` (required): The absolute path to the JAR file of the Java SDK (should be under the `target` directory of the Java SDK module)
+- `groupId` (required): The group ID for the Java SDK
+- `artifactId` (required): The artifact ID for the Java SDK
+
+**Example:**
+```json
+{
+  "name": "update_java_sdk_changelog",
+  "arguments": {
+    "jarPath": "/path/to/target/azure-myservice-1.0.0.jar",
+    "groupId": "com.azure.myservice",
+    "artifactId": "azure-myservice"
+  }
+}
+```
+
+### 8. instruction_migrate_typespec
 Get instructions for generating Java SDK after migrating from Swagger to TypeSpec.
 
 **Parameters:**
@@ -279,7 +253,7 @@ Get instructions for generating Java SDK after migrating from Swagger to TypeSpe
 }
 ```
 
-### 8. update_client_name
+### 9. update_client_name
 Update client names for both TypeSpec files and the generated Java SDK. Provides instructions for renaming.
 
 **Parameters:**
@@ -293,11 +267,11 @@ Update client names for both TypeSpec files and the generated Java SDK. Provides
 }
 ```
 
-### 9. prepare_java_sdk_environment
+### 10. prepare_java_sdk_environment
 Get step-by-step instructions to prepare the environment for Java SDK generation.
 
 **Parameters:**
-- `cwd` (required): The absolute path to the working directory where the environment should be prepared (can be either the service module directory or the SDK root directory)
+- `cwd` (required): The absolute path to the working directory where the environment should be prepared
 
 **Example:**
 ```json
@@ -331,6 +305,7 @@ This flexibility allows you to work at the level that best suits your workflow.
 5. **Clean**: Use `clean_java_source` if needed to clean generated files
 6. **Build**: Use `build_java_sdk` to compile the SDK
 7. **Changelog**: Use `get_java_sdk_changelog` to get version information
+8. **Update Changelog**: Use `update_java_sdk_changelog` to update the CHANGELOG.md file
 
 ## Project Structure
 
@@ -345,6 +320,7 @@ mcp/
 │   ├── client-name-update.ts  # Client name update instructions
 │   ├── brownfield-migrate.ts  # Migration instructions
 │   ├── java-sdk-changelog.ts  # Changelog generation
+│   ├── update-changelog-md.ts # CHANGELOG.md file updates
 │   ├── prepare-environment.ts # Environment setup instructions
 │   ├── resources/             # Resource files and templates
 │   └── utils/
