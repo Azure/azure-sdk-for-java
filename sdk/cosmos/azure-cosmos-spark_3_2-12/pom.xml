@@ -155,12 +155,12 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core-tracing-opentelemetry</artifactId> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
+      <artifactId>azure-core-tracing-opentelemetry</artifactId> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
       <version>1.0.0-beta.58</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-monitor-opentelemetry-autoconfigure</artifactId> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-autoconfigure;current} -->
+      <artifactId>azure-monitor-opentelemetry-autoconfigure</artifactId> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-autoconfigure;dependency} -->
       <version>1.2.0</version>
     </dependency>
 

@@ -1227,7 +1227,7 @@ private[spark] object DiagnosticsConfig {
 
   private val diagnosticsSamplingMaxCount = CosmosConfigEntry[Int](key = CosmosConfigNames.DiagnosticsSamplingMaxCount,
     mandatory = false,
-    defaultValue = Some(10),
+    defaultValue = Some(100),
     parseFromStringFunction = text => text.toInt,
     helpMessage = "Max. number of diagnostics logged per interval. This can be used to reduce the noise level.")
 
@@ -1284,7 +1284,7 @@ private[spark] object DiagnosticsConfig {
 
   private val diagnosticsAzureMonitorSamplingMaxCount = CosmosConfigEntry[Int](key = CosmosConfigNames.DiagnosticsAzureMonitorSamplingMaxCount,
     mandatory = false,
-    defaultValue = Some(100000),
+    defaultValue = Some(10000),
     parseFromStringFunction = text => text.toInt,
     helpMessage = s"Max. number of traces sampled-in (based on '"
       + s"${CosmosConfigNames.DiagnosticsAzureMonitorSamplingRate}' per interval. This can be "
