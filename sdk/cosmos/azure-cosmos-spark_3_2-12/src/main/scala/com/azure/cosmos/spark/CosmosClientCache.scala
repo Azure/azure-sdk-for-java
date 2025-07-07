@@ -271,7 +271,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         .count() > 0
     }
   }
-
   private[this] def configureDiagnostics
   (
     cosmosClientConfiguration: CosmosClientConfiguration,
@@ -289,6 +288,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         isAzureMonitorOpenTelemetryEnabled,
         isSampledDiagnosticsLoggerEnabled
       )
+    } else {
+      logInfo("No diagnostics enabled")
     }
   }
 
@@ -453,7 +454,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
   private[this] def configureAzureMonitorDiagnostics
   (
-    cosmosClientConfiguration: CosmosClientConfiguration
+    cosmosClientConfiguration: CosmosClientConfiguration,
+    isSampledDiagnosticsLoggerEnabled: Boolean,
+    telemetryConfig: CosmosClientTelemetryConfig
   ): TracingOptions = {
     val azMonConfig = cosmosClientConfiguration.azureMonitorConfig.get
     val openTelemetry = configureOpenTelemetrySdk(cosmosClientConfiguration, azMonConfig)
@@ -473,24 +476,97 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       s"TracingOptions - enabled: ${tracingOptions.setEnabled(true)}, "
         + s"tracerProvider: $tracerProviderName")
 
-    val legacyTelemetryConfig = TelemetryConfiguration
-      .createDefault()
-    legacyTelemetryConfig.setConnectionString(azMonConfig.connectionString)
+    if (azMonConfig.metricCollectionIntervalInSeconds > 0) {
+      val legacyTelemetryConfig = TelemetryConfiguration
+        .createDefault()
+      legacyTelemetryConfig.setConnectionString(azMonConfig.connectionString)
 
-    val azureMonitorLegacyMeterConfig = new CosmosAzureMonitorLegacyConfig(
-      60,
-      azMonConfig.connectionString
-    )
+      val azureMonitorLegacyMeterConfig = new CosmosAzureMonitorLegacyConfig(
+        60,
+        azMonConfig.connectionString
+      )
 
-    val azureMonitorRegistry = AzureMonitorMeterRegistry
-      .builder(azureMonitorLegacyMeterConfig)
-      .telemetryConfiguration(legacyTelemetryConfig)
-      .clock(Clock.SYSTEM)
-      .build()
+      val azureMonitorRegistry = AzureMonitorMeterRegistry
+        .builder(azureMonitorLegacyMeterConfig)
+        .telemetryConfiguration(legacyTelemetryConfig)
+        .clock(Clock.SYSTEM)
+        .build()
 
-    CosmosClientMetrics.addMeterRegistry(azureMonitorRegistry)
+      CosmosClientMetrics.addMeterRegistry(azureMonitorRegistry)
+      val metricsOptions = new CosmosMicrometerMetricsOptions()
+        .meterRegistry(azureMonitorRegistry)
+        .configureDefaultTagNames(
+          CosmosMetricTagName.CONTAINER,
+          CosmosMetricTagName.CLIENT_CORRELATION_ID,
+          CosmosMetricTagName.OPERATION,
+          CosmosMetricTagName.OPERATION_STATUS_CODE,
+          CosmosMetricTagName.PARTITION_KEY_RANGE_ID,
+          CosmosMetricTagName.SERVICE_ADDRESS,
+          CosmosMetricTagName.ADDRESS_RESOLUTION_COLLECTION_MAP_REFRESH,
+          CosmosMetricTagName.ADDRESS_RESOLUTION_FORCED_REFRESH,
+          CosmosMetricTagName.REQUEST_STATUS_CODE,
+          CosmosMetricTagName.REQUEST_OPERATION_TYPE
+        )
+        .setMetricCategories(
+          CosmosMetricCategory.SYSTEM,
+          CosmosMetricCategory.OPERATION_SUMMARY,
+          CosmosMetricCategory.REQUEST_SUMMARY,
+          CosmosMetricCategory.DIRECT_ADDRESS_RESOLUTIONS,
+          CosmosMetricCategory.DIRECT_REQUESTS,
+          CosmosMetricCategory.DIRECT_CHANNELS
+        )
+        .applyDiagnosticThresholdsForTransportLevelMeters(isSampledDiagnosticsLoggerEnabled)
+
+      logInfo("Azure Monitor metrics configured.")
+      telemetryConfig.metricsOptions(metricsOptions)
+    } else {
+      logInfo("Azure Monitor metrics disabled.")
+    }
+
+    logInfo(s"Azure Monitor OpenTelemetry configured")
 
     tracingOptions
+  }
+
+  private[this] def configureSampledDiagnosticsLogger
+  (
+    cosmosClientConfiguration: CosmosClientConfiguration,
+    telemetryConfig: CosmosClientTelemetryConfig
+  ): CosmosClientTelemetryConfig = {
+
+    val sampledDiagnosticsLoggerConfig = cosmosClientConfiguration.sampledDiagnosticsLoggerConfig.get
+    val diagnosticsLogger = new CosmosSamplingDiagnosticsLogger(
+      sampledDiagnosticsLoggerConfig.samplingRateMaxCount,
+      sampledDiagnosticsLoggerConfig.samplingRateIntervalInSeconds
+    )
+
+    val thresholds = new CosmosDiagnosticsThresholds()
+      .setRequestChargeThreshold(sampledDiagnosticsLoggerConfig.thresholdsRequestCharge.toFloat)
+      .setPointOperationLatencyThreshold(
+        Duration.ofMillis(sampledDiagnosticsLoggerConfig.thresholdsPointOperationLatencyInMs)
+      )
+      .setNonPointOperationLatencyThreshold(
+        Duration.ofMillis(sampledDiagnosticsLoggerConfig.thresholdsNonPointOperationLatencyInMs)
+      )
+
+    val failureHandler: BiPredicate[Integer, Integer] = (statusCode, subStatusCode) => {
+      if (statusCode < 400) {
+        false
+      } else if (
+        (statusCode == 404 && subStatusCode == 0)
+          || statusCode == 409
+          || statusCode == 412
+      ) {
+        false
+      } else {
+        statusCode != 429 || (subStatusCode > 0 && subStatusCode != 3200)
+      }
+    }
+
+    thresholds.setFailureHandler(failureHandler)
+    telemetryConfig
+      .diagnosticsThresholds(thresholds)
+      .diagnosticsHandler(diagnosticsLogger)
   }
 
   private[this] def configureDiagnosticsCore
@@ -524,85 +600,23 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         "V1"
       )
 
-    logInfo(s"isAzureMonitorOpenTelemetryEnabled: $isAzureMonitorOpenTelemetryEnabled")
-
     if (isAzureMonitorOpenTelemetryEnabled) {
-      val tracingOptions = configureAzureMonitorDiagnostics(cosmosClientConfiguration)
+      val tracingOptions = configureAzureMonitorDiagnostics(
+        cosmosClientConfiguration,
+        isSampledDiagnosticsLoggerEnabled,
+        telemetryConfig
+      )
 
       telemetryConfig = telemetryConfig
         .tracingOptions(tracingOptions)
         .enableTransportLevelTracing()
-    }
-
-    val hasAnyRealMeterRegistry = if (CosmosClientMetrics.meterRegistry.isDefined) {
-      hasAnyMeterRegistry(CosmosClientMetrics.meterRegistry.get)
     } else {
-      false
+      logInfo("Azure Monitor traces/logs disabled.")
     }
 
-    if (hasAnyRealMeterRegistry) {
-      val metricsOptions = new CosmosMicrometerMetricsOptions()
-        .meterRegistry(CosmosClientMetrics.meterRegistry.get)
-        .configureDefaultTagNames(
-          CosmosMetricTagName.CONTAINER,
-          CosmosMetricTagName.CLIENT_CORRELATION_ID,
-          CosmosMetricTagName.OPERATION,
-          CosmosMetricTagName.OPERATION_STATUS_CODE,
-          CosmosMetricTagName.PARTITION_KEY_RANGE_ID,
-          CosmosMetricTagName.SERVICE_ADDRESS,
-          CosmosMetricTagName.ADDRESS_RESOLUTION_COLLECTION_MAP_REFRESH,
-          CosmosMetricTagName.ADDRESS_RESOLUTION_FORCED_REFRESH,
-          CosmosMetricTagName.REQUEST_STATUS_CODE,
-          CosmosMetricTagName.REQUEST_OPERATION_TYPE
-        )
-        .setMetricCategories(
-          CosmosMetricCategory.SYSTEM,
-          CosmosMetricCategory.OPERATION_SUMMARY,
-          CosmosMetricCategory.REQUEST_SUMMARY,
-          CosmosMetricCategory.DIRECT_ADDRESS_RESOLUTIONS,
-          CosmosMetricCategory.DIRECT_REQUESTS,
-          CosmosMetricCategory.DIRECT_CHANNELS
-        )
-        .applyDiagnosticThresholdsForTransportLevelMeters(isSampledDiagnosticsLoggerEnabled)
-
-      telemetryConfig = telemetryConfig.metricsOptions(metricsOptions)
-    }
 
     if (isSampledDiagnosticsLoggerEnabled) {
-      val sampledDiagnosticsLoggerConfig = cosmosClientConfiguration.sampledDiagnosticsLoggerConfig.get
-      val diagnosticsLogger = new CosmosSamplingDiagnosticsLogger(
-        sampledDiagnosticsLoggerConfig.samplingRateMaxCount,
-        sampledDiagnosticsLoggerConfig.samplingRateIntervalInSeconds
-      )
-
-      var thresholds = new CosmosDiagnosticsThresholds()
-        .setRequestChargeThreshold(sampledDiagnosticsLoggerConfig.thresholdsRequestCharge.toFloat)
-        .setPointOperationLatencyThreshold(
-          Duration.ofMillis(sampledDiagnosticsLoggerConfig.thresholdsPointOperationLatencyInMs)
-        )
-        .setNonPointOperationLatencyThreshold(
-          Duration.ofMillis(sampledDiagnosticsLoggerConfig.thresholdsNonPointOperationLatencyInMs)
-        )
-
-      val failureHandler: BiPredicate[Integer, Integer] = (statusCode, subStatusCode) => {
-        if (statusCode < 400) {
-          false
-        } else if (
-          (statusCode == 404 && subStatusCode == 0)
-            || statusCode == 409
-            || statusCode == 412
-        ) {
-          false
-        } else {
-          statusCode != 429 || (subStatusCode > 0 && subStatusCode != 3200)
-        }
-      }
-
-      thresholds.setFailureHandler(failureHandler)
-      telemetryConfig = telemetryConfig.diagnosticsThresholds(thresholds)
-
-
-      telemetryConfig = telemetryConfig.diagnosticsHandler(diagnosticsLogger)
+      telemetryConfig = configureSampledDiagnosticsLogger(cosmosClientConfiguration, telemetryConfig)
     }
 
     builder.clientTelemetryConfig(telemetryConfig)
@@ -742,10 +756,13 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   // scalastyle:on method.length
   // scalastyle:on cyclomatic.complexity
 
-  private[this] def createCosmosManagementClient(
-                                                    subscriptionId: String,
-                                                    azureEnvironment: AzureEnvironment,
-                                                    authConfig: CosmosServicePrincipalAuthConfig): CosmosManager = {
+  private[this] def createCosmosManagementClient
+  (
+    subscriptionId: String,
+    azureEnvironment: AzureEnvironment,
+    authConfig: CosmosServicePrincipalAuthConfig
+  ): CosmosManager = {
+
       val azureProfile = new AzureProfile(authConfig.tenantId, subscriptionId, azureEnvironment)
       val tokenCredential = if (authConfig.clientCertPemBase64.isDefined) {
         val certInputStream = new ByteArrayInputStream(Base64.getDecoder.decode(authConfig.clientCertPemBase64.get))
