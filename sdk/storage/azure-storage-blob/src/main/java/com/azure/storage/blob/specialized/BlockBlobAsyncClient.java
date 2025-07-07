@@ -41,6 +41,7 @@ import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.UploadUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -431,14 +432,20 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobImmutabilityPolicy immutabilityPolicy
             = options.getImmutabilityPolicy() == null ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
+        UploadUtils.ContentValidationInfo contentValidationInfo = options.getContentValidationInfo() == null
+            ? new UploadUtils.ContentValidationInfo()
+            : options.getContentValidationInfo();
+
         return dataMono.flatMap(data -> this.azureBlobStorage.getBlockBlobs()
-            .uploadWithResponseAsync(containerName, blobName, options.getLength(), data, null, options.getContentMd5(),
-                options.getMetadata(), requestConditions.getLeaseId(), options.getTier(),
-                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+            .uploadWithResponseAsync(containerName, blobName, options.getLength(), data, null,
+                contentValidationInfo.getMD5checksum(), options.getMetadata(), requestConditions.getLeaseId(),
+                options.getTier(), requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                 requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
                 requestConditions.getTagsConditions(), null, ModelHelper.tagsToString(options.getTags()),
-                immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.isLegalHold(), null,
-                null, null, options.getHeaders(), getCustomerProvidedKey(), encryptionScope, finalContext)
+                immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.isLegalHold(),
+                contentValidationInfo.getCRC64checksum(), contentValidationInfo.getStructuredBodyType(),
+                contentValidationInfo.getOriginalContentLength(), options.getHeaders(), getCustomerProvidedKey(),
+                encryptionScope, finalContext)
             .map(rb -> {
                 BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

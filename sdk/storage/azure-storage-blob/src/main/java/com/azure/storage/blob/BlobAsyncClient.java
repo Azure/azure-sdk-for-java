@@ -41,6 +41,7 @@ import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
+import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -54,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.BiFunction;
@@ -695,16 +697,20 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 ? new BlobImmutabilityPolicy()
                 : options.getImmutabilityPolicy();
             final Boolean legalHold = options.isLegalHold();
+            final StorageChecksumAlgorithm storageChecksumAlgorithm = options.getStorageChecksumAlgorithm() == null
+                ? StorageChecksumAlgorithm.NONE
+                : options.getStorageChecksumAlgorithm();
 
             BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
 
             Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunksFunction
                 = (stream) -> uploadInChunks(blockBlobAsyncClient, stream, parallelTransferOptions, headers, metadata,
-                    tags, tier, requestConditions, computeMd5, immutabilityPolicy, legalHold);
+                    tags, tier, requestConditions, computeMd5, immutabilityPolicy, legalHold, storageChecksumAlgorithm);
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobFunction
                 = (stream, length) -> uploadFullBlob(blockBlobAsyncClient, stream, length, parallelTransferOptions,
-                    headers, metadata, tags, tier, requestConditions, computeMd5, immutabilityPolicy, legalHold);
+                    headers, metadata, tags, tier, requestConditions, computeMd5, immutabilityPolicy, legalHold,
+                    storageChecksumAlgorithm);
 
             Flux<ByteBuffer> data = options.getDataFlux();
             data = UploadUtils.extractByteBuffer(data, options.getOptionalLength(),
@@ -721,22 +727,23 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         Flux<ByteBuffer> data, long length, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
         BlobRequestConditions requestConditions, boolean computeMd5, BlobImmutabilityPolicy immutabilityPolicy,
-        Boolean legalHold) {
+        Boolean legalHold, StorageChecksumAlgorithm storageChecksumAlgorithm) {
 
         /*
          * Note that there is no need to buffer here as the flux returned by the size gate in this case is created
          * from an iterable and is therefore replayable.
          */
-        return UploadUtils.computeMd5(data, computeMd5, LOGGER)
+        return UploadUtils.computeChecksum(data, computeMd5, storageChecksumAlgorithm, length, LOGGER)
             .map(
-                fluxMd5Wrapper -> new BlockBlobSimpleUploadOptions(fluxMd5Wrapper.getData(), length).setHeaders(headers)
-                    .setMetadata(metadata)
-                    .setTags(tags)
-                    .setTier(tier)
-                    .setRequestConditions(requestConditions)
-                    .setContentMd5(fluxMd5Wrapper.getMd5())
-                    .setImmutabilityPolicy(immutabilityPolicy)
-                    .setLegalHold(legalHold))
+                fluxContentValidationWrapper -> new BlockBlobSimpleUploadOptions(fluxContentValidationWrapper.getData(),
+                    length).setHeaders(headers)
+                        .setMetadata(metadata)
+                        .setTags(tags)
+                        .setTier(tier)
+                        .setRequestConditions(requestConditions)
+                        .setContentValidationInfo(fluxContentValidationWrapper.getContentValidationInfo())
+                        .setImmutabilityPolicy(immutabilityPolicy)
+                        .setLegalHold(legalHold))
             .flatMap(options -> {
                 Mono<Response<BlockBlobItem>> responseMono = blockBlobAsyncClient.uploadWithResponse(options);
                 if (parallelTransferOptions.getProgressListener() != null) {
@@ -753,7 +760,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
         BlobRequestConditions requestConditions, boolean computeMd5, BlobImmutabilityPolicy immutabilityPolicy,
-        Boolean legalHold) {
+        Boolean legalHold, StorageChecksumAlgorithm storageChecksumAlgorithm) {
         // TODO: Sample/api reference
 
         ProgressListener progressListener = parallelTransferOptions.getProgressListener();
@@ -780,9 +787,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
                 String blockId = Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString().getBytes(UTF_8));
                 return UploadUtils.computeMd5(chunkData, computeMd5, LOGGER).flatMap(fluxMd5Wrapper -> {
-                    Mono<Response<Void>> responseMono
-                        = blockBlobAsyncClient.stageBlockWithResponse(blockId, fluxMd5Wrapper.getData(),
-                            bufferAggregator.length(), fluxMd5Wrapper.getMd5(), requestConditions.getLeaseId());
+                    Mono<Response<Void>> responseMono = blockBlobAsyncClient.stageBlockWithResponse(blockId,
+                        fluxMd5Wrapper.getData(), bufferAggregator.length(),
+                        fluxMd5Wrapper.getContentValidationInfo().getMD5checksum(), requestConditions.getLeaseId());
                     if (progressReporter != null) {
                         responseMono = responseMono.contextWrite(FluxUtil.toReactorContext(Contexts.empty()
                             .setHttpRequestProgressReporter(progressReporter.createChild())

@@ -9,6 +9,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
+import com.azure.storage.common.implementation.structuredmessage.StructuredMessageEncoder;
+import com.azure.storage.common.implementation.structuredmessage.StructuredMessageFlags;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -26,6 +29,9 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STATIC_MAXIMUM_ENCODED_DATA_LENGTH;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STRUCTURED_BODY_TYPE;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_DEFAULT_SEGMENT_CONTENT_LENGTH;
 
 /**
  * This class provides helper methods for buffered upload.
@@ -148,15 +154,63 @@ public class UploadUtils {
         }
     }
 
-    /**
-     * Computes the md5 of the data and wraps it with the data.
-     *
-     * @param data The data.
-     * @param computeMd5 Whether to compute the md5.
-     * @param logger Logger to log errors.
-     * @return The data wrapped with its md5.
-     */
-    public static Mono<FluxMd5Wrapper> computeMd5(Flux<ByteBuffer> data, boolean computeMd5, ClientLogger logger) {
+    public static Mono<FluxContentValidationWrapper> computeChecksum(Flux<ByteBuffer> data, boolean computeMd5,
+        StorageChecksumAlgorithm storageChecksumAlgorithm, long length, ClientLogger logger) {
+        if (computeMd5) {
+            return computeMd5(data, true, logger);
+        }
+        if (storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
+            if (length <= STATIC_MAXIMUM_ENCODED_DATA_LENGTH) {
+                return computeCRC64(data, logger);
+            } else {
+                return applyStructuredMessage(data, length, logger);
+            }
+        }
+        return Mono.just(new FluxContentValidationWrapper(data, new ContentValidationInfo()));
+    }
+
+    public static Mono<FluxContentValidationWrapper> applyStructuredMessage(Flux<ByteBuffer> data, long length,
+        ClientLogger logger) {
+        StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder((int) length,
+            V1_DEFAULT_SEGMENT_CONTENT_LENGTH, StructuredMessageFlags.STORAGE_CRC64);
+
+        // Create BufferStagingArea with 4MB chunks
+        BufferStagingArea stagingArea
+            = new BufferStagingArea(STATIC_MAXIMUM_ENCODED_DATA_LENGTH, STATIC_MAXIMUM_ENCODED_DATA_LENGTH);
+
+        Flux<ByteBuffer> encodedBody = data.flatMapSequential(stagingArea::write, 1, 1)
+            .concatWith(Flux.defer(stagingArea::flush))
+            .flatMap(bufferAggregator -> bufferAggregator.asFlux().map(structuredMessageEncoder::encode));
+
+        return Mono.just(new FluxContentValidationWrapper(encodedBody,
+            new ContentValidationInfo().setStructuredBodyType(STRUCTURED_BODY_TYPE).setOriginalContentLength(length)));
+    }
+
+    public static Mono<FluxContentValidationWrapper> computeCRC64(Flux<ByteBuffer> data, ClientLogger logger) {
+        try {
+            return data.reduce(0L, (crc, buffer) -> {
+                // Use ByteBuffer.duplicate to create a read-only view that won't mutate the original buffer
+                ByteBuffer copyData = buffer.duplicate().asReadOnlyBuffer();
+                // Convert ByteBuffer to byte array for CRC calculation
+                byte[] bufferArray = new byte[copyData.remaining()];
+                copyData.get(bufferArray);
+                // Update the cumulative CRC with this buffer's data
+                return StorageCrc64Calculator.compute(bufferArray, crc);
+            }).map(finalCrc -> {
+                // Convert the final CRC64 value to byte array (little-endian)
+                byte[] crc64Bytes = new byte[8];
+                for (int i = 0; i < 8; i++) {
+                    crc64Bytes[i] = (byte) (finalCrc >>> (i * 8));
+                }
+                return new FluxContentValidationWrapper(data, new ContentValidationInfo().setCRC64checksum(crc64Bytes));
+            });
+        } catch (Exception e) {
+            return monoError(logger, new RuntimeException(e));
+        }
+    }
+
+    public static Mono<FluxContentValidationWrapper> computeMd5(Flux<ByteBuffer> data, boolean computeMd5,
+        ClientLogger logger) {
         if (computeMd5) {
             try {
                 return data.reduce(MessageDigest.getInstance("MD5"), (digest, buffer) -> {
@@ -165,30 +219,80 @@ public class UploadUtils {
                     // be mutated.
                     digest.update(buffer.duplicate().asReadOnlyBuffer());
                     return digest;
-                }).map(messageDigest -> new FluxMd5Wrapper(data, messageDigest.digest()));
+                })
+                    .map(messageDigest -> new FluxContentValidationWrapper(data,
+                        new ContentValidationInfo().setMD5checksum(messageDigest.digest())));
             } catch (NoSuchAlgorithmException e) {
                 return monoError(logger, new RuntimeException(e));
             }
         } else {
-            return Mono.just(new FluxMd5Wrapper(data, null));
+            return Mono.just(new FluxContentValidationWrapper(data, new ContentValidationInfo()));
         }
     }
 
-    public static class FluxMd5Wrapper {
-        private final Flux<ByteBuffer> data;
-        private final byte[] md5;
+    public static class ContentValidationInfo {
+        private byte[] MD5checksum;
+        private byte[] CRC64checksum;
+        private Long originalContentLength;
+        private String structuredBodyType;
 
-        FluxMd5Wrapper(Flux<ByteBuffer> data, byte[] md5) {
-            this.data = data;
-            this.md5 = CoreUtils.clone(md5);
+        public ContentValidationInfo() {
+            this.MD5checksum = null;
+            this.originalContentLength = null;
         }
 
-        public Flux<ByteBuffer> getData() {
+        public ContentValidationInfo setOriginalContentLength(Long originalContentLength) {
+            this.originalContentLength = originalContentLength;
+            return this;
+        }
+
+        public Long getOriginalContentLength() {
+            return originalContentLength;
+        }
+
+        public byte[] getMD5checksum() {
+            return MD5checksum;
+        }
+
+        public ContentValidationInfo setMD5checksum(byte[] MD5checksum) {
+            this.MD5checksum = CoreUtils.clone(MD5checksum);
+            return this;
+        }
+
+        public byte[] getCRC64checksum() {
+            return CRC64checksum;
+        }
+
+        public ContentValidationInfo setCRC64checksum(byte[] CRC64checksum) {
+            this.CRC64checksum = CoreUtils.clone(CRC64checksum);
+            return this;
+        }
+
+        public String getStructuredBodyType() {
+            return structuredBodyType;
+        }
+
+        public ContentValidationInfo setStructuredBodyType(String structuredBodyType) {
+            this.structuredBodyType = structuredBodyType;
+            return this;
+        }
+    }
+
+    public static class FluxContentValidationWrapper {
+        private final Flux<ByteBuffer> data;
+        private final ContentValidationInfo contentValidationInfo;
+
+        public FluxContentValidationWrapper(Flux<ByteBuffer> data, ContentValidationInfo contentValidationInfo) {
+            this.data = data;
+            this.contentValidationInfo = contentValidationInfo;
+        }
+
+        public final Flux<ByteBuffer> getData() {
             return data;
         }
 
-        public byte[] getMd5() {
-            return CoreUtils.clone(md5);
+        public final ContentValidationInfo getContentValidationInfo() {
+            return contentValidationInfo;
         }
     }
 

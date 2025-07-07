@@ -47,7 +47,7 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
     public void uploadBinaryDataFullStructMess() {
         BlobParallelUploadOptions options
             = new BlobParallelUploadOptions(BinaryData.fromBytes(getRandomByteArray(Constants.MB * 5)))
-            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
+                .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
 
         Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
         assertEquals(STRUCTURED_BODY_TYPE,
@@ -58,9 +58,9 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
     public void uploadBinaryDataChunkedStructMess() {
         BlobParallelUploadOptions options
             = new BlobParallelUploadOptions(BinaryData.fromBytes(getRandomByteArray(Constants.MB * 8)))
-            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
-            .setParallelTransferOptions(
-                new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
+                .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
+                .setParallelTransferOptions(
+                    new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
 
         assertDoesNotThrow(() -> bc.uploadWithResponse(options, null, Context.NONE));
 
@@ -96,8 +96,8 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
         ByteArrayInputStream input = new ByteArrayInputStream(randomData);
         BlobParallelUploadOptions options
             = new BlobParallelUploadOptions(input).setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
-            .setParallelTransferOptions(
-                new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
+                .setParallelTransferOptions(
+                    new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
 
         assertDoesNotThrow(() -> bc.uploadWithResponse(options, null, Context.NONE));
         //        Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);

@@ -27,7 +27,6 @@ public final class StructuredMessageConstants {
      */
     public static final int CRC64_LENGTH = 8;
 
-
     /**
      * The default length of segments for version 1.
      */
