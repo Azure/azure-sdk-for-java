@@ -1441,7 +1441,7 @@ public final class DiagnosticsProvider {
                 spanOptions = new StartSpanOptions(SpanKind.INTERNAL);
             } else {
 
-                // mutual exclusive attributes - PRE_V!_RELEASE used when both are enabled
+                // mutual exclusive attributes - PRE_V1_RELEASE used when both are enabled
                 if (namingSchemes.contains(AttributeNamingScheme.PRE_V1_RELEASE)) {
                     spanOptions = new StartSpanOptions(SpanKind.INTERNAL)
                         .setAttribute(AttributeNamesCommon.DB_SYSTEM.toString(), "cosmosdb");
