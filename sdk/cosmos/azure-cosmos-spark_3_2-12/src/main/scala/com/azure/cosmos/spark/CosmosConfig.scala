@@ -1197,23 +1197,8 @@ private[cosmos] case class CosmosContainerConfig(database: String, container: St
 private[spark] case class DiagnosticsConfig
 (
   mode: Option[String],
-  samplingRateMaxCount: Option[Int] = None,
-  samplingRateIntervalInSeconds: Option[Int] = None,
-  thresholdsPointOperationLatencyInMs: Option[Int] = None,
-  thresholdsNonPointOperationLatencyInMs: Option[Int] = None,
-  thresholdsRequestCharge: Option[Int] = None,
-  azureMonitorEnabled: Option[Boolean] = None,
-  azureMonitorConnectionString: Option[String] = None,
-  azureMonitorAuthEnabled: Option[Boolean] = None,
-  azureMonitorAuthConfig: Option[CosmosAuthConfig] = None,
-  azureMonitorLiveMetricsEnabled: Option[Boolean] = None,
-  azureMonitorSamplingRate: Option[Float] = None,
-  azureMonitorSamplingRateMaxCount: Option[Int] = None,
-  azureMonitorSamplingRateIntervalInSeconds: Option[Int] = None,
-  azureMonitorMetricCollectionIntervalInSeconds: Option[Int] = None,
-  azureMonitorLogLevel: Option[Level] = None,
-  azureMonitorLogSamplingMaxCount: Option[Int] = None,
-  azureMonitorLogSamplingIntervalInSeconds: Option[Int] = None
+  sampledDiagnosticsLoggerConfig: Option[SampledDiagnosticsLoggerConfig] = None,
+  azureMonitorConfig: Option[AzureMonitorConfig] = None
 )
 
 private[spark] object DiagnosticsConfig {
@@ -1419,30 +1404,50 @@ private[spark] object DiagnosticsConfig {
         None
       }
 
-    if (withSampledLogs || withAzMon) {
-      DiagnosticsConfig(
-        diagnosticsModeOpt,
-        if (withSampledLogs) CosmosConfigEntry.parse(cfg, diagnosticsSamplingMaxCount) else None,
-        if (withSampledLogs) CosmosConfigEntry.parse(cfg, diagnosticsSamplingIntervalInSeconds) else None,
-        if (withSampledLogs) CosmosConfigEntry.parse(cfg, diagnosticsThresholdsPointOperationLatencyInMs) else None,
-        if (withSampledLogs) CosmosConfigEntry.parse(cfg, diagnosticsThresholdsNonPointOperationLatencyInMs) else None,
-        if (withSampledLogs) CosmosConfigEntry.parse(cfg, diagnosticsThresholdsRequestCharge) else None,
-        if (withAzMon) azureMonitorEnabledOpt else None,
-        effectiveAzMonConnectionStringOpt,
-        azureMonitorAuthEnabledOpt,
-        azureMonitorAuthConfigOpt,
-        if (withAzMon) CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorLiveMetricsEnabled) else None,
-        if (withAzMon) CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorSamplingRate) else None,
-        if (withAzMon) CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorSamplingMaxCount) else None,
-        if (withAzMon) CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorSamplingIntervalInSeconds) else None,
-        if (withAzMon) CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorMetricCollectionIntervalInSeconds) else None,
-        if (withAzMon) CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorLogLevel) else None,
-        if (withAzMon) CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorLogSamplingMaxCount) else None,
-        if (withAzMon) CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorLogSamplingIntervalInSeconds) else None
+    val sampledDiagnosticsLoggerConfig = if (withSampledLogs) {
+      Some(
+        SampledDiagnosticsLoggerConfig(
+          CosmosConfigEntry.parse(cfg, diagnosticsSamplingMaxCount).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsSamplingIntervalInSeconds).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsThresholdsPointOperationLatencyInMs).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsThresholdsNonPointOperationLatencyInMs).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsThresholdsRequestCharge).get
+        )
       )
+
     } else {
-      DiagnosticsConfig(diagnosticsModeOpt)
+      None
     }
+
+    val azMonConfig = if (withAzMon) {
+      val azMonConfigCandidate =
+        AzureMonitorConfig(
+          azureMonitorEnabledOpt.get,
+          effectiveAzMonConnectionStringOpt.get,
+          azureMonitorAuthEnabledOpt.getOrElse(false),
+          azureMonitorAuthConfigOpt,
+          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorLiveMetricsEnabled).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorSamplingRate).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorSamplingMaxCount).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorSamplingIntervalInSeconds).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorMetricCollectionIntervalInSeconds).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorLogLevel).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorLogSamplingMaxCount).get,
+          CosmosConfigEntry.parse(cfg, diagnosticsAzureMonitorLogSamplingIntervalInSeconds).get
+        )
+
+      AzureMonitorConfig.validateConfigUniqueness(azMonConfigCandidate)
+
+      Some(azMonConfigCandidate)
+    } else {
+      None
+    }
+
+    DiagnosticsConfig(
+      diagnosticsModeOpt,
+      sampledDiagnosticsLoggerConfig,
+      azMonConfig
+    )
   }
 }
 

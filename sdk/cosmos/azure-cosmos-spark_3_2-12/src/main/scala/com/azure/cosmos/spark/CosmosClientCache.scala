@@ -17,7 +17,7 @@ import com.azure.identity.{ClientCertificateCredentialBuilder, ClientSecretCrede
 import com.azure.monitor.opentelemetry.autoconfigure.{AzureMonitorAutoConfigure, AzureMonitorAutoConfigureOptions}
 import com.azure.resourcemanager.cosmos.CosmosManager
 import com.microsoft.applicationinsights.TelemetryConfiguration
-import io.micrometer.azuremonitor.{AzureMonitorConfig, AzureMonitorMeterRegistry}
+import io.micrometer.azuremonitor.AzureMonitorMeterRegistry
 import io.micrometer.core.instrument.{Clock, MeterRegistry}
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry
 import io.opentelemetry.api.common.AttributeKey
@@ -298,9 +298,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case _ => builder.credential(toTokenCredential(cosmosClientConfiguration, authConfig))
       }
 
-      val isAzureMonitorOpenTelemetryEnabled = cosmosClientConfiguration
-        .azureMonitorOpenTelemetryEnabled.getOrElse(false)
-      val isSampledDiagnosticsLoggerEnabled = cosmosClientConfiguration.samplingRateMaxCount.isDefined
+      val isAzureMonitorOpenTelemetryEnabled = cosmosClientConfiguration.azureMonitorConfig.isDefined &&
+          cosmosClientConfiguration.azureMonitorConfig.get.enabled
+
+      val isSampledDiagnosticsLoggerEnabled = cosmosClientConfiguration.sampledDiagnosticsLoggerConfig.isDefined
 
       if (isSampledDiagnosticsLoggerEnabled || isAzureMonitorOpenTelemetryEnabled) {
 
@@ -330,9 +331,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           logInfo(s"isAzureMonitorOpenTelemetryEnabled: $isAzureMonitorOpenTelemetryEnabled")
 
           if (isAzureMonitorOpenTelemetryEnabled) {
+            val azMonConfig = cosmosClientConfiguration.azureMonitorConfig.get
             System.setProperty("otel.java.global-autoconfigure.enabled", "true")
 
-            val effectiveConnectionString = cosmosClientConfiguration.azureMonitorConnectionString.get
+            val effectiveConnectionString = azMonConfig.connectionString
             val sdkBuilder = AutoConfiguredOpenTelemetrySdk
               .builder
               .addPropertiesCustomizer(_ => {
@@ -352,19 +354,20 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                   "otel.logs.exporter", "azure_monitor")
                 additionalSystemPropertyOverrides.put(
                   "applicationinsights.live.metrics.enabled",
-                  cosmosClientConfiguration.azureMonitorLiveMetricsEnabled.getOrElse(true).toString)
+                  azMonConfig.liveMetricsEnabled.toString)
+
                 additionalSystemPropertyOverrides
               })
 
             val azMonitorOptions: AzureMonitorAutoConfigureOptions =
-              if (cosmosClientConfiguration.azureMonitorAuthEnabled.getOrElse(false)) {
+              if (azMonConfig.authEnabled) {
                 new AzureMonitorAutoConfigureOptions()
                   .connectionString(effectiveConnectionString)
                   //.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                   .credential(
                     toTokenCredential(
                       cosmosClientConfiguration,
-                      cosmosClientConfiguration.azureMonitorAuthConfig.get))
+                      azMonConfig.authConfig.get))
               } else {
                 new AzureMonitorAutoConfigureOptions()
                   .connectionString(effectiveConnectionString)
@@ -407,9 +410,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                 Sampler
                   .parentBased(
                     new CosmosMaxCountPerIntervalSpanHeadSampler(
-                      cosmosClientConfiguration.azureMonitorSamplingRateMaxCount.get,
-                      cosmosClientConfiguration.azureMonitorSamplingRateIntervalInSeconds.get,
-                      cosmosClientConfiguration.azureMonitorSamplingRate.get
+                      azMonConfig.samplingRateMaxCount,
+                      azMonConfig.samplingRateIntervalInSeconds,
+                      azMonConfig.samplingRate
                     )
                   )
               })
@@ -420,8 +423,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
               .addLogRecordExporterCustomizer((exporter, _) => new CosmosMaxCountPerIntervalLogExporter(
                 exporter,
                 Severity.WARN,
-                cosmosClientConfiguration.azureMonitorLogSamplingMaxCount.get,
-                cosmosClientConfiguration.azureMonitorLogSamplingIntervalInSeconds.get
+                azMonConfig.logSamplingMaxCount,
+                azMonConfig.logSamplingIntervalInSeconds
               ))
               .build
               .getOpenTelemetrySdk
@@ -440,40 +443,42 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
               .setMeterProvider(noopSdkMeterProvider)
               .build()
 
-            // 1. Get the context and config
-            val ctx = LogManager.getContext(false).asInstanceOf[LoggerContext]
-            val config = ctx.getConfiguration
+            if (azMonConfig.logLevel != Level.OFF) {
+              // 1. Get the context and config
+              val ctx = LogManager.getContext(false).asInstanceOf[LoggerContext]
+              val config = ctx.getConfiguration
 
-            // 2. Create the appender and filter
-            val filter: Filter = ThresholdFilter.createFilter(
-              cosmosClientConfiguration.azureMonitorLogLevel.get, // Minimum log level to emit (e.g., WARN or ERROR)
-              Result.ACCEPT, // If above threshold
-              Result.DENY // If below threshold
-            )
+              // 2. Create the appender and filter
+              val filter: Filter = ThresholdFilter.createFilter(
+                azMonConfig.logLevel, // Minimum log level to emit (e.g., WARN or ERROR)
+                Result.ACCEPT, // If above threshold
+                Result.DENY // If below threshold
+              )
 
-            val otelAppenderBuilder: OpenTelemetryAppender.Builder[OpenTelemetryAppender.Builder[_]] =
-              OpenTelemetryAppender.builder()
+              val otelAppenderBuilder: OpenTelemetryAppender.Builder[OpenTelemetryAppender.Builder[_]] =
+                OpenTelemetryAppender.builder()
 
-            otelAppenderBuilder.setName("otel-appender")
-            otelAppenderBuilder.setFilter(filter)
-            otelAppenderBuilder.setOpenTelemetry(openTelemetry)
-            val otelAppender = otelAppenderBuilder.build()
+              otelAppenderBuilder.setName("otel-appender")
+              otelAppenderBuilder.setFilter(filter)
+              otelAppenderBuilder.setOpenTelemetry(openTelemetry)
+              val otelAppender = otelAppenderBuilder.build()
 
-            otelAppender.start
+              otelAppender.start
 
-            // 3. Add to config
-            config.addAppender(otelAppender)
+              // 3. Add to config
+              config.addAppender(otelAppender)
 
-            // 4. Attach to **all** existing logger configs
-            config.getLoggers.values().forEach { loggerConfig =>
-              loggerConfig.addAppender(otelAppender, cosmosClientConfiguration.azureMonitorLogLevel.get, filter)
+              // 4. Attach to **all** existing logger configs
+              config.getLoggers.values().forEach { loggerConfig =>
+                loggerConfig.addAppender(otelAppender, azMonConfig.logLevel, filter)
+              }
+
+              // 5. Also attach to root logger
+              val rootLoggerConfig = config.getLoggerConfig(LogManager.ROOT_LOGGER_NAME)
+              rootLoggerConfig.addAppender(otelAppender, azMonConfig.logLevel, filter)
+
+              ctx.updateLoggers // Apply changes
             }
-
-            // 5. Also attach to root logger
-            val rootLoggerConfig = config.getLoggerConfig(LogManager.ROOT_LOGGER_NAME)
-            rootLoggerConfig.addAppender(otelAppender, cosmosClientConfiguration.azureMonitorLogLevel.get, filter)
-
-            ctx.updateLoggers // Apply changes
 
             // Pass OpenTelemetry container to TracingOptions.
             val tracingOptions = new OpenTelemetryTracingOptions()
@@ -511,6 +516,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
             telemetryConfig = telemetryConfig
               .tracingOptions(tracingOptions)
+              .enableTransportLevelTracing()
           }
 
           val hasAnyRealMeterRegistry = if (CosmosClientMetrics.meterRegistry.isDefined) {
@@ -548,59 +554,40 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           }
 
           if (isSampledDiagnosticsLoggerEnabled) {
+            val sampledDiagnosticsLoggerConfig = cosmosClientConfiguration.sampledDiagnosticsLoggerConfig.get
             val diagnosticsLogger = new CosmosSamplingDiagnosticsLogger(
-              cosmosClientConfiguration.samplingRateMaxCount.get,
-              cosmosClientConfiguration.samplingRateIntervalInSeconds.getOrElse(60)
+              sampledDiagnosticsLoggerConfig.samplingRateMaxCount,
+              sampledDiagnosticsLoggerConfig.samplingRateIntervalInSeconds
             )
 
-            if (cosmosClientConfiguration.thresholdsRequestCharge.isDefined
-              || cosmosClientConfiguration.thresholdsPointOperationLatencyInMs.isDefined
-              || cosmosClientConfiguration.thresholdsNonPointOperationLatencyInMs.isDefined) {
+            var thresholds = new CosmosDiagnosticsThresholds()
+                .setRequestChargeThreshold(sampledDiagnosticsLoggerConfig.thresholdsRequestCharge.toFloat)
+                .setPointOperationLatencyThreshold(
+                    Duration.ofMillis(sampledDiagnosticsLoggerConfig.thresholdsPointOperationLatencyInMs)
+                )
+                .setNonPointOperationLatencyThreshold(
+                    Duration.ofMillis(sampledDiagnosticsLoggerConfig.thresholdsNonPointOperationLatencyInMs)
+                )
 
-              var thresholds = new CosmosDiagnosticsThresholds()
-
-              if (cosmosClientConfiguration.thresholdsRequestCharge.isDefined) {
-                thresholds = thresholds
-                  .setRequestChargeThreshold(cosmosClientConfiguration.thresholdsRequestCharge.get.toFloat)
+            val failureHandler: BiPredicate[Integer, Integer] = (statusCode, subStatusCode) => {
+              if (statusCode < 400) {
+                false
+              } else if (
+                (statusCode == 404 && subStatusCode == 0)
+                || statusCode == 409
+                || statusCode == 412
+              ) {
+                false
+              } else {
+                statusCode != 429 || (subStatusCode > 0 && subStatusCode != 3200)
               }
-
-              if (cosmosClientConfiguration.thresholdsPointOperationLatencyInMs.isDefined) {
-                thresholds = thresholds
-                  .setPointOperationLatencyThreshold(
-                    Duration.ofMillis(cosmosClientConfiguration.thresholdsPointOperationLatencyInMs.get)
-                  )
-              }
-
-              if (cosmosClientConfiguration.thresholdsNonPointOperationLatencyInMs.isDefined) {
-                thresholds = thresholds
-                  .setNonPointOperationLatencyThreshold(
-                    Duration.ofMillis(cosmosClientConfiguration.thresholdsNonPointOperationLatencyInMs.get)
-                  )
-              }
-
-              val failureHandler: BiPredicate[Integer, Integer] = (statusCode, subStatusCode) => {
-                if (statusCode < 400) {
-                  false
-                } else if (
-                  (statusCode == 404 && subStatusCode == 0)
-                  || statusCode == 409
-                  || statusCode == 412
-                ) {
-                  false
-                } else {
-                  statusCode != 429 || (subStatusCode > 0 && subStatusCode != 3200)
-                }
-              }
-
-              thresholds.setFailureHandler(failureHandler)
-              telemetryConfig = telemetryConfig
-                .diagnosticsThresholds(thresholds)
-
             }
 
-            telemetryConfig = telemetryConfig
-              .diagnosticsHandler(diagnosticsLogger)
-              .enableTransportLevelTracing()
+            thresholds.setFailureHandler(failureHandler)
+            telemetryConfig = telemetryConfig.diagnosticsThresholds(thresholds)
+
+
+            telemetryConfig = telemetryConfig.diagnosticsHandler(diagnosticsLogger)
           }
 
           builder.clientTelemetryConfig(telemetryConfig)
@@ -878,20 +865,24 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
-  private[spark] case class ClientConfigurationWrapper (
-                                                        endpoint: String,
-                                                        authConfig: CosmosAuthConfig,
-                                                        applicationName: String,
-                                                        useGatewayMode: Boolean,
-                                                        // Intentionally not looking at proactive connection
-                                                        // initialization to distinguish cache key
-                                                        // You would never want separate clients just for this
-                                                        // difference
-                                                        httpConnectionPoolSize: Int,
-                                                        readConsistencyStrategy: ReadConsistencyStrategy,
-                                                        preferredRegionsList: String,
-                                                        clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
-                                                        clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]])
+  private[spark] case class ClientConfigurationWrapper
+  (
+    endpoint: String,
+    authConfig: CosmosAuthConfig,
+    applicationName: String,
+    useGatewayMode: Boolean,
+    // Intentionally not looking at proactive connection
+    // initialization to distinguish cache key
+    // You would never want separate clients just for this
+    // difference
+    httpConnectionPoolSize: Int,
+    readConsistencyStrategy: ReadConsistencyStrategy,
+    preferredRegionsList: String,
+    clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
+    clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
+    sampledDiagnosticsLoggerConfig: Option[SampledDiagnosticsLoggerConfig],
+    azureMonitorConfig: Option[AzureMonitorConfig]
+  )
 
   private[this] object ClientConfigurationWrapper {
     def apply(clientConfig: CosmosClientConfiguration): ClientConfigurationWrapper = {
@@ -907,7 +898,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case None => ""
         },
         clientConfig.clientBuilderInterceptors,
-        clientConfig.clientInterceptors
+        clientConfig.clientInterceptors,
+        clientConfig.sampledDiagnosticsLoggerConfig,
+        clientConfig.azureMonitorConfig
       )
     }
   }
@@ -980,7 +973,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   (
     val intervalInSeconds: Int,
     val effectiveConnectionString: String
-  ) extends AzureMonitorConfig {
+  ) extends io.micrometer.azuremonitor.AzureMonitorConfig {
 
     override def get(s: String): String = {
       null

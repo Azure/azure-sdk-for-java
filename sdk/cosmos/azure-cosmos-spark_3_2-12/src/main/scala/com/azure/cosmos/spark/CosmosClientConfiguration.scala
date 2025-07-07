@@ -30,23 +30,8 @@ private[spark] case class CosmosClientConfiguration (
                                                       sparkEnvironmentInfo: String,
                                                       clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
                                                       clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
-                                                      samplingRateMaxCount: Option[Int],
-                                                      samplingRateIntervalInSeconds: Option[Int],
-                                                      thresholdsPointOperationLatencyInMs: Option[Int],
-                                                      thresholdsNonPointOperationLatencyInMs: Option[Int],
-                                                      thresholdsRequestCharge: Option[Int],
-                                                      azureMonitorOpenTelemetryEnabled: Option[Boolean],
-                                                      azureMonitorConnectionString: Option[String],
-                                                      azureMonitorAuthEnabled: Option[Boolean],
-                                                      azureMonitorAuthConfig: Option[CosmosAuthConfig],
-                                                      azureMonitorLiveMetricsEnabled: Option[Boolean],
-                                                      azureMonitorSamplingRate: Option[Float],
-                                                      azureMonitorSamplingRateMaxCount: Option[Int],
-                                                      azureMonitorSamplingRateIntervalInSeconds: Option[Int],
-                                                      azureMonitorMetricCollectionIntervalInSeconds: Option[Int],
-                                                      azureMonitorLogLevel: Option[Level],
-                                                      azureMonitorLogSamplingMaxCount: Option[Int],
-                                                      azureMonitorLogSamplingIntervalInSeconds: Option[Int]
+                                                      sampledDiagnosticsLoggerConfig: Option[SampledDiagnosticsLoggerConfig],
+                                                      azureMonitorConfig: Option[AzureMonitorConfig]
                                                     )
 
 private[spark] object CosmosClientConfiguration {
@@ -104,23 +89,9 @@ private[spark] object CosmosClientConfiguration {
       sparkEnvironmentInfo,
       cosmosAccountConfig.clientBuilderInterceptors,
       cosmosAccountConfig.clientInterceptors,
-      diagnosticsConfig.samplingRateMaxCount,
-      diagnosticsConfig.samplingRateIntervalInSeconds,
-      diagnosticsConfig.thresholdsPointOperationLatencyInMs,
-      diagnosticsConfig.thresholdsNonPointOperationLatencyInMs,
-      diagnosticsConfig.thresholdsRequestCharge,
-      diagnosticsConfig.azureMonitorEnabled,
-      diagnosticsConfig.azureMonitorConnectionString,
-      diagnosticsConfig.azureMonitorAuthEnabled,
-      diagnosticsConfig.azureMonitorAuthConfig,
-      diagnosticsConfig.azureMonitorLiveMetricsEnabled,
-      diagnosticsConfig.azureMonitorSamplingRate,
-      diagnosticsConfig.azureMonitorSamplingRateMaxCount,
-      diagnosticsConfig.azureMonitorSamplingRateIntervalInSeconds,
-      diagnosticsConfig.azureMonitorMetricCollectionIntervalInSeconds,
-      diagnosticsConfig.azureMonitorLogLevel,
-      diagnosticsConfig.azureMonitorLogSamplingMaxCount,
-      diagnosticsConfig.azureMonitorLogSamplingIntervalInSeconds)
+      diagnosticsConfig.sampledDiagnosticsLoggerConfig,
+      diagnosticsConfig.azureMonitorConfig
+    )
   }
 
   private[spark] def getSparkEnvironmentInfo(sessionOption: Option[SparkSession]): String = {

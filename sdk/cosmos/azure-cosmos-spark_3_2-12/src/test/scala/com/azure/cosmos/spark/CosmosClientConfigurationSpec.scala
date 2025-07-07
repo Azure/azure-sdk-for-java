@@ -147,15 +147,18 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
     configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp"
-    configuration.samplingRateMaxCount shouldEqual Some(9)
-    configuration.samplingRateIntervalInSeconds shouldEqual Some(4)
-    configuration.thresholdsRequestCharge shouldEqual Some(978)
-    configuration.thresholdsPointOperationLatencyInMs shouldEqual Some(300)
-    configuration.thresholdsNonPointOperationLatencyInMs shouldEqual Some(400)
+    configuration.sampledDiagnosticsLoggerConfig.isDefined shouldEqual true
+    var sampledDiagnosticsLoggerCfg = configuration.sampledDiagnosticsLoggerConfig.get
+    sampledDiagnosticsLoggerCfg.samplingRateMaxCount shouldEqual 9
+    sampledDiagnosticsLoggerCfg.samplingRateIntervalInSeconds shouldEqual 4
+    sampledDiagnosticsLoggerCfg.thresholdsRequestCharge shouldEqual 978
+    sampledDiagnosticsLoggerCfg.thresholdsPointOperationLatencyInMs shouldEqual 300
+    sampledDiagnosticsLoggerCfg.thresholdsNonPointOperationLatencyInMs shouldEqual 400
   }
 
   it should "apply azureMonitor settings" in {
     val myApp = "myApp"
+    AzureMonitorConfig.resetForUsageInTest()
     val userConfig_Invalid = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
       "spark.cosmos.accountKey" -> "xyz",
@@ -194,6 +197,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
       }
     }
 
+    AzureMonitorConfig.resetForUsageInTest()
     val userConfig_Minimal = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
       "spark.cosmos.accountKey" -> "xyz",
@@ -208,15 +212,18 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig_Minimal("spark.cosmos.accountKey")
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
     configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp"
-    configuration.azureMonitorOpenTelemetryEnabled shouldEqual Some(true)
-    configuration.azureMonitorConnectionString shouldEqual Some("MyAzMonitorTestConnectionString")
-    configuration.azureMonitorAuthEnabled shouldEqual Some(false)
-    configuration.azureMonitorAuthConfig shouldEqual None
-    configuration.azureMonitorLiveMetricsEnabled shouldEqual Some(true)
-    configuration.azureMonitorSamplingRate shouldEqual Some(0.05f)
-    configuration.azureMonitorSamplingRateMaxCount shouldEqual Some(100000)
-    configuration.azureMonitorSamplingRateIntervalInSeconds shouldEqual Some(60)
+    configuration.azureMonitorConfig.isDefined shouldEqual true
+    var azMonCfg = configuration.azureMonitorConfig.get
+    azMonCfg.enabled shouldEqual true
+    azMonCfg.connectionString shouldEqual "MyAzMonitorTestConnectionString"
+    azMonCfg.authEnabled shouldEqual false
+    azMonCfg.authConfig shouldEqual None
+    azMonCfg.liveMetricsEnabled shouldEqual true
+    azMonCfg.samplingRate shouldEqual 0.05f
+    azMonCfg.samplingRateMaxCount shouldEqual 100000
+    azMonCfg.samplingRateIntervalInSeconds shouldEqual 60
 
+    AzureMonitorConfig.resetForUsageInTest()
     val userConfig_WithAuth_Invalid = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
       "spark.cosmos.accountKey" -> "xyz",
@@ -233,6 +240,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
       case e: AssertionError => e.getMessage shouldEqual "assertion failed: Parameter 'spark.cosmos.account.tenantId' is missing."
     }
 
+    AzureMonitorConfig.resetForUsageInTest()
     val userConfig_WithAuth_ManagedIdentity = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
       "spark.cosmos.accountKey" -> "xyz",
@@ -250,17 +258,20 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig_WithAuth_ManagedIdentity("spark.cosmos.accountKey")
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
     configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp"
-    configuration.azureMonitorOpenTelemetryEnabled shouldEqual Some(true)
-    configuration.azureMonitorConnectionString shouldEqual Some("MyAzMonitorTestConnectionString")
-    configuration.azureMonitorAuthEnabled shouldEqual Some(true)
-    configuration.azureMonitorLiveMetricsEnabled shouldEqual Some(true)
-    configuration.azureMonitorSamplingRate shouldEqual Some(0.05f)
-    configuration.azureMonitorSamplingRateMaxCount shouldEqual Some(100000)
-    configuration.azureMonitorSamplingRateIntervalInSeconds shouldEqual Some(60)
-    configuration.azureMonitorAuthConfig.isDefined shouldEqual true
-    val miAuthCfg = configuration.azureMonitorAuthConfig.get.asInstanceOf[CosmosManagedIdentityAuthConfig]
+    configuration.azureMonitorConfig.isDefined shouldEqual true
+    azMonCfg = configuration.azureMonitorConfig.get
+    azMonCfg.enabled shouldEqual true
+    azMonCfg.connectionString shouldEqual "MyAzMonitorTestConnectionString"
+    azMonCfg.authEnabled shouldEqual true
+    azMonCfg.liveMetricsEnabled shouldEqual true
+    azMonCfg.samplingRate shouldEqual 0.05f
+    azMonCfg.samplingRateMaxCount shouldEqual 100000
+    azMonCfg.samplingRateIntervalInSeconds shouldEqual 60
+    azMonCfg.authConfig.isDefined shouldEqual true
+    val miAuthCfg = azMonCfg.authConfig.get.asInstanceOf[CosmosManagedIdentityAuthConfig]
     miAuthCfg.tenantId shouldEqual "SomeTenantId"
 
+    AzureMonitorConfig.resetForUsageInTest()
     val userConfig_All = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
       "spark.cosmos.accountKey" -> "xyz",
@@ -287,27 +298,28 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig_All("spark.cosmos.accountKey")
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
     configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp"
-    configuration.azureMonitorOpenTelemetryEnabled shouldEqual Some(true)
-    configuration.azureMonitorConnectionString shouldEqual Some("MyAzMonitorTestConnectionString")
-    configuration.azureMonitorLiveMetricsEnabled shouldEqual Some(false)
-    configuration.azureMonitorSamplingRate shouldEqual Some(0.5f)
-    configuration.azureMonitorSamplingRateMaxCount shouldEqual Some(10)
-    configuration.azureMonitorSamplingRateIntervalInSeconds shouldEqual Some(1)
-    configuration.azureMonitorAuthConfig.isDefined shouldEqual true
-    configuration.azureMonitorAuthEnabled shouldEqual Some(true)
-    configuration.azureMonitorAuthConfig.isDefined shouldEqual true
-    val spnAuthCfg = configuration.azureMonitorAuthConfig.get.asInstanceOf[CosmosServicePrincipalAuthConfig]
+    azMonCfg = configuration.azureMonitorConfig.get
+    azMonCfg.enabled shouldEqual true
+    azMonCfg.connectionString shouldEqual "MyAzMonitorTestConnectionString"
+    azMonCfg.liveMetricsEnabled shouldEqual false
+    azMonCfg.samplingRate shouldEqual 0.5f
+    azMonCfg.samplingRateMaxCount shouldEqual 10
+    azMonCfg.samplingRateIntervalInSeconds shouldEqual 1
+    azMonCfg.authConfig.isDefined shouldEqual true
+    azMonCfg.authEnabled shouldEqual true
+    val spnAuthCfg = azMonCfg.authConfig.get.asInstanceOf[CosmosServicePrincipalAuthConfig]
     spnAuthCfg.tenantId shouldEqual "SomeTenantId"
     spnAuthCfg.clientId shouldEqual "SomeClientId"
     spnAuthCfg.clientSecret shouldEqual Some("SomeClientSecret")
-    configuration.azureMonitorMetricCollectionIntervalInSeconds shouldEqual Some(7)
-    configuration.azureMonitorLogLevel shouldEqual Some(Level.DEBUG)
-    configuration.azureMonitorLogSamplingMaxCount shouldEqual Some(33)
-    configuration.azureMonitorLogSamplingIntervalInSeconds shouldEqual Some(3)
+    azMonCfg.metricCollectionIntervalInSeconds shouldEqual 7
+    azMonCfg.logLevel shouldEqual Level.DEBUG
+    azMonCfg.logSamplingMaxCount shouldEqual 33
+    azMonCfg.logSamplingIntervalInSeconds shouldEqual 3
   }
 
   it should "ignore sampling and diagnostics thresholds unless diagnostics mode is sampled" in {
     val myApp = "myApp"
+    AzureMonitorConfig.resetForUsageInTest()
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
       "spark.cosmos.accountKey" -> "xyz",
@@ -328,15 +340,12 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
     configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp"
-    configuration.samplingRateMaxCount shouldEqual None
-    configuration.samplingRateIntervalInSeconds shouldEqual None
-    configuration.thresholdsRequestCharge shouldEqual None
-    configuration.thresholdsPointOperationLatencyInMs shouldEqual None
-    configuration.thresholdsNonPointOperationLatencyInMs shouldEqual None
+    configuration.sampledDiagnosticsLoggerConfig shouldEqual None
   }
 
   it should "ignore azure monitor settings unless enabled" in {
     val myApp = "myApp"
+    AzureMonitorConfig.resetForUsageInTest()
     val readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL
     val sparkEnvironmentInfo = s"sparkenv-${UUID.randomUUID()}"
 
@@ -363,13 +372,6 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig("spark.cosmos.accountKey")
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
     configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix}|$sparkEnvironmentInfo|${ManagementFactory.getRuntimeMXBean.getName}|$myApp"
-    configuration.azureMonitorOpenTelemetryEnabled shouldEqual None
-    configuration.azureMonitorConnectionString shouldEqual None
-    configuration.azureMonitorAuthEnabled shouldEqual None
-    configuration.azureMonitorAuthConfig shouldEqual None
-    configuration.azureMonitorLiveMetricsEnabled shouldEqual None
-    configuration.azureMonitorSamplingRate shouldEqual None
-    configuration.azureMonitorSamplingRateMaxCount shouldEqual None
-    configuration.azureMonitorSamplingRateIntervalInSeconds shouldEqual None
+    configuration.azureMonitorConfig shouldEqual None
   }
 }

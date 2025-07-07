@@ -13,7 +13,7 @@ More information about the metrics being emitted by the Azure Cosmos DB SDK are 
 When using the Azure Cosmos DB Spark connector for Spark 3.* you can enable these client-side metrics and emit them to the Spark metric system (ganglia plus optionally in Log4j log files) as well as to Azure Monitor / ApplicationInsights simply via configuration.
 
 ### How to enable in Azure Databricks?
-
+REWRITE!!!
 The Spark API that would allow to provide custom metrics is the Spark plugin API - see ` https://issues.apache.org/jira/browse/SPARK-24918`,  `https://github.com/apache/spark/pull/26170` and `http://blog.madhukaraphatak.com/spark-plugin-part-4/`
 
 The Azure Cosmos DB Spark connector contains two such plugins to emit metrics:
