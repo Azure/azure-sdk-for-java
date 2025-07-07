@@ -208,7 +208,6 @@ FaceSessionClient sessionClient = new FaceSessionClientBuilder()
 String deviceCorrelationId = UUID.randomUUID().toString();
 CreateLivenessSessionContent parameters = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE)
         .setDeviceCorrelationId(deviceCorrelationId);
-// .setSendResultsToClient(false);
 
 LivenessSession createLivenessSessionResult = sessionClient.createLivenessSession(parameters);
 String sessionId = createLivenessSessionResult.getSessionId();
@@ -241,7 +240,6 @@ BinaryData verifyImage = BinaryData.fromFile(path);
 VerifyImageFileDetails verifyImageFileDetails = new VerifyImageFileDetails(verifyImage);
 CreateLivenessWithVerifySessionContent parameters = new CreateLivenessWithVerifySessionContent(LivenessOperationMode.PASSIVE, verifyImageFileDetails)
         .setDeviceCorrelationId(deviceCorrelationId);
-        // .setSendResultsToClient(false);
 
 LivenessWithVerifySession livenessWithVerifySessionResults = sessionClient.createLivenessWithVerifySession(parameters);
 String sessionId = livenessWithVerifySessionResults.getSessionId();
@@ -249,14 +247,13 @@ System.out.println("Result: " + sessionId);
 
 System.out.println("Get the liveness detection result.");
 LivenessWithVerifySession session = sessionClient.getLivenessWithVerifySessionResult(sessionId);
-if (session.getResults() != null && session.getResults().getAttempts() != null 
+if (session.getResults() != null && session.getResults().getAttempts() != null
     && !session.getResults().getAttempts().isEmpty()) {
-    // LivenessWithVerifySessionAttempt attempt = session.getResults().getAttempts().get(0);
     LivenessWithVerifySessionAttempt attempt = session.getResults().getAttempts().get(0);
     if (attempt.getResult() != null) {
         FaceLivenessDecision livenessDecision = attempt.getResult().getLivenessDecision();
         LivenessWithVerifyOutputs verifyOutputs = attempt.getResult().getVerifyResult();
-        System.out.println("Result: " + livenessDecision + ", Verify result:" 
+        System.out.println("Result: " + livenessDecision + ", Verify result:"
             + (verifyOutputs != null ? verifyOutputs.toString() : "null"));
     }
 }
