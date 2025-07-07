@@ -348,6 +348,7 @@ public class ModelHelper {
             ShareStorageException s = (ShareStorageException) t;
             return s.getStatusCode() == 404
                 && (s.getErrorCode() == ShareErrorCode.RESOURCE_NOT_FOUND
+                    || s.getErrorCode() == ShareErrorCode.PARENT_NOT_FOUND
                     || s.getErrorCode() == ShareErrorCode.SHARE_NOT_FOUND);
             /* HttpResponseException - file get properties is a head request so a body is not returned. Error
              conversion logic does not properly handle errors that don't return XML. */
@@ -356,6 +357,7 @@ public class ModelHelper {
             String errorCode = h.getResponse().getHeaderValue(X_MS_ERROR_CODE);
             return h.getResponse().getStatusCode() == 404
                 && (ShareErrorCode.RESOURCE_NOT_FOUND.toString().equals(errorCode)
+                    || ShareErrorCode.PARENT_NOT_FOUND.toString().equals(errorCode)
                     || ShareErrorCode.SHARE_NOT_FOUND.toString().equals(errorCode));
         } else {
             return false;
