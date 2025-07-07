@@ -99,6 +99,8 @@ import static com.azure.core.http.HttpHeaderName.LAST_MODIFIED;
 
 public class ModelHelper {
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
+    private static final Set<ShareErrorCode> gracefulDoesNotExistErrorCodes = Set.of(
+        ShareErrorCode.RESOURCE_NOT_FOUND, ShareErrorCode.PARENT_NOT_FOUND, ShareErrorCode.SHARE_NOT_FOUND);
 
     private static final long MAX_FILE_PUT_RANGE_BYTES = 4 * Constants.MB;
     private static final int FILE_DEFAULT_NUMBER_OF_BUFFERS = 8;
@@ -347,18 +349,16 @@ public class ModelHelper {
         if (t instanceof ShareStorageException) {
             ShareStorageException s = (ShareStorageException) t;
             return s.getStatusCode() == 404
-                && (s.getErrorCode() == ShareErrorCode.RESOURCE_NOT_FOUND
-                    || s.getErrorCode() == ShareErrorCode.PARENT_NOT_FOUND
-                    || s.getErrorCode() == ShareErrorCode.SHARE_NOT_FOUND);
+                && gracefulDoesNotExistErrorCodes.contains(s.getErrorCode());
             /* HttpResponseException - file get properties is a head request so a body is not returned. Error
              conversion logic does not properly handle errors that don't return XML. */
         } else if (t instanceof HttpResponseException) {
             HttpResponseException h = (HttpResponseException) t;
             String errorCode = h.getResponse().getHeaderValue(X_MS_ERROR_CODE);
             return h.getResponse().getStatusCode() == 404
-                && (ShareErrorCode.RESOURCE_NOT_FOUND.toString().equals(errorCode)
-                    || ShareErrorCode.PARENT_NOT_FOUND.toString().equals(errorCode)
-                    || ShareErrorCode.SHARE_NOT_FOUND.toString().equals(errorCode));
+                && gracefulDoesNotExistErrorCodes.stream()
+                    .map(ShareErrorCode::toString)
+                    .anyMatch(errorCode::equals);
         } else {
             return false;
         }
