@@ -4,10 +4,8 @@
 
 ### Features Added
 - Added support for bearer token challenges.
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added `ShareErrorCode.ShareSnapshotNotFound`.
+- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
 
 ### Other Changes
 
