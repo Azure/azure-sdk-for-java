@@ -15422,6 +15422,32 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for removing the node.
+     * @param options Optional parameters for Remove Nodes operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the removal of nodes.
+     * The poller provides {@link BatchPool} instances during polling and returns the last
+     * known {@link BatchPool} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<BatchPool, BatchPool> beginRemoveNodes(String poolId, BatchNodeRemoveParameters parameters,
+        BatchNodesRemoveOptions options, RequestConditions requestConditions) {
+        PollerFlux<BatchPool, BatchPool> asyncPoller
+            = asyncClient.beginRemoveNodes(poolId, parameters, options, requestConditions);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Removes Compute Nodes from the specified Pool.
+     *
+     * This operation can only run when the allocation state of the Pool is steady.
+     * When this operation runs, the allocation state changes from steady to resizing.
+     * Each request may remove up to 100 nodes.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for removing the node.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -15432,6 +15458,28 @@ public final class BatchClient {
         // Generated convenience method for removeNodesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         removeNodesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
+    }
+
+    /**
+     * Removes Compute Nodes from the specified Pool.
+     *
+     * This operation can only run when the allocation state of the Pool is steady.
+     * When this operation runs, the allocation state changes from steady to resizing.
+     * Each request may remove up to 100 nodes.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for removing the node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the removal of nodes.
+     * The poller provides {@link BatchPool} instances during polling and returns the last
+     * known {@link BatchPool} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchPool, BatchPool> beginRemoveNodes(String poolId, BatchNodeRemoveParameters parameters) {
+        PollerFlux<BatchPool, BatchPool> asyncPoller = asyncClient.beginRemoveNodes(poolId, parameters);
+        return asyncPoller.getSyncPoller();
     }
 
     /**

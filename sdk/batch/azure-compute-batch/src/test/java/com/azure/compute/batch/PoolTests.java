@@ -631,12 +631,28 @@ public class PoolTests extends BatchClientTestBase {
 
             // Shrink pool by one node
             BatchNodeRemoveParameters removeParams = new BatchNodeRemoveParameters(Collections.singletonList(nodeIdB))
-                .setNodeDeallocationOption(BatchNodeDeallocationOption.TASK_COMPLETION); // any valid option
+                .setNodeDeallocationOption(BatchNodeDeallocationOption.TASK_COMPLETION);
 
-            SyncAsyncExtension.execute(() -> {
-                batchClient.removeNodes(poolId, removeParams);
-                return null;
-            }, () -> batchAsyncClient.removeNodes(poolId, removeParams));
+            SyncPoller<BatchPool, BatchPool> removePoller = setPlaybackSyncPollerPollInterval(
+                SyncAsyncExtension.execute(() -> batchClient.beginRemoveNodes(poolId, removeParams), () -> Mono
+                    .fromCallable(() -> batchAsyncClient.beginRemoveNodes(poolId, removeParams).getSyncPoller())));
+
+            // First poll – pool should have entered RESIZING (value may be null on the first activation in playback mode)
+            PollResponse<BatchPool> removeFirst = removePoller.poll();
+            if (removeFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS && removeFirst.getValue() != null) {
+                Assertions.assertEquals(AllocationState.RESIZING, removeFirst.getValue().getAllocationState(),
+                    "Pool should be in RESIZING immediately after removeNodes starts.");
+            }
+
+            // Wait for the LRO to finish and grab the final pool object
+            removePoller.waitForCompletion();
+            BatchPool poolAfterRemove = removePoller.getFinalResult();
+
+            Assertions.assertNotNull(poolAfterRemove, "Final result of beginRemoveNodes should be the updated pool.");
+            Assertions.assertEquals(AllocationState.STEADY, poolAfterRemove.getAllocationState(),
+                "Pool must return to STEADY after node removal.");
+            Assertions.assertEquals(Integer.valueOf(1), poolAfterRemove.getTargetDedicatedNodes(),
+                "Pool should have shrunk to one dedicated node after beginRemoveNodes.");
 
             // Wait again for STEADY after auto-resize
             pool = SyncAsyncExtension.execute(() -> waitForPoolState(poolId, AllocationState.STEADY, 15 * 60 * 1000),
