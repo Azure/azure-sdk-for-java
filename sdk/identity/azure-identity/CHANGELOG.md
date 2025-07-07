@@ -2,7 +2,10 @@
 
 ## 1.17.0-beta.1 (Unreleased)
 
+
 ### Features Added
+
+- **Visual Studio Code Credential** has been re-enabled and now supports **broker authentication** using the Azure account signed in via Visual Studio Code. [#45715](https://github.com/Azure/azure-sdk-for-java/pull/45715)
 
 ### Breaking Changes
 
