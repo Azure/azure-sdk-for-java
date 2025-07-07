@@ -4,12 +4,20 @@
 
 ### Features Added
 - Added support for bearer token challenges.
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added `ShareErrorCode.ShareSnapshotNotFound`.
+- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
 
 ### Other Changes
+
+## 12.26.1 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-storage-common` from `12.29.0` to version `12.30.0-beta.2`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
 
 ## 12.27.0-beta.1 (2025-05-06)
 

@@ -62,7 +62,7 @@ public final class StorageTaskAssignmentsInstancesReportsClientImpl
      * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageManagementCli")
+    @ServiceInterface(name = "StorageManagementClientStorageTaskAssignmentsInstancesReports")
     public interface StorageTaskAssignmentsInstancesReportsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/reports")

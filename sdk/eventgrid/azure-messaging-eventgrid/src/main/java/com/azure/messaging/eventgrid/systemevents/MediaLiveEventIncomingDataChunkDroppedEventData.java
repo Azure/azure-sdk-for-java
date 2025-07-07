@@ -14,8 +14,12 @@ import java.io.IOException;
 /**
  * Ingest fragment dropped event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventIncomingDataChunkDropped event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Immutable
+@Deprecated
 public final class MediaLiveEventIncomingDataChunkDroppedEventData
     implements JsonSerializable<MediaLiveEventIncomingDataChunkDroppedEventData> {
 

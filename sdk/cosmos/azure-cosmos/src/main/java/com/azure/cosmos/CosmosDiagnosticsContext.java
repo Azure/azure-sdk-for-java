@@ -59,7 +59,7 @@ public final class CosmosDiagnosticsContext {
     private final OperationType operationType;
     private final String operationTypeString;
     private final ConsistencyLevel consistencyLevel;
-    private final ReadConsistencyStrategy readConsistencyStrategy;
+    private ReadConsistencyStrategy readConsistencyStrategy;
     private final ConcurrentLinkedDeque<CosmosDiagnostics> diagnostics;
     private final Integer maxItemCount;
     private final CosmosDiagnosticsThresholds thresholds;
@@ -91,7 +91,7 @@ public final class CosmosDiagnosticsContext {
 
     private final Integer sequenceNumber;
 
-    private String queryStatement;
+    private final String queryStatement;
 
     private Long opCountPerEvaluation;
     private Long opRetriedCountPerEvaluation;
@@ -257,10 +257,6 @@ public final class CosmosDiagnosticsContext {
      */
     @Beta(value = Beta.SinceVersion.V4_71_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ReadConsistencyStrategy getEffectiveReadConsistencyStrategy() {
-        if (this.requestOptions != null && this.requestOptions.getReadConsistencyStrategy() != null) {
-            return this.requestOptions.getReadConsistencyStrategy();
-        }
-
         return this.readConsistencyStrategy;
     }
 
@@ -981,8 +977,12 @@ public final class CosmosDiagnosticsContext {
         return this.requestOptions;
     }
 
-    void setRequestOptions(OverridableRequestOptions requestOptions) {
+    void setRequestOptions(
+        OverridableRequestOptions requestOptions,
+        ReadConsistencyStrategy newEffectiveReadConsistencyStrategy) {
+
         this.requestOptions = requestOptions;
+        this.readConsistencyStrategy = newEffectiveReadConsistencyStrategy;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1039,9 +1039,12 @@ public final class CosmosDiagnosticsContext {
                     }
 
                     @Override
-                    public void setRequestOptions(CosmosDiagnosticsContext ctx, OverridableRequestOptions requestOptions) {
+                    public void setRequestOptions(
+                        CosmosDiagnosticsContext ctx,
+                        OverridableRequestOptions requestOptions,
+                        ReadConsistencyStrategy newEffectiveReadConsistencyStrategy) {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
-                        ctx.setRequestOptions(requestOptions);
+                        ctx.setRequestOptions(requestOptions, newEffectiveReadConsistencyStrategy);
                     }
 
                     @Override
