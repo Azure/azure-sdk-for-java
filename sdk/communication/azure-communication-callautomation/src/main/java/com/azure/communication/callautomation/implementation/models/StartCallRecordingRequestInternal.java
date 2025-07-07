@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,57 +21,68 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     /*
      * The call locator.
      */
+    @Generated
     private CallLocatorInternal callLocator;
 
     /*
      * The uri to send notifications to.
      */
+    @Generated
     private String recordingStateCallbackUri;
 
     /*
      * The content type of call recording.
      */
+    @Generated
     private RecordingContentInternal recordingContentType;
 
     /*
      * The channel type of call recording.
      */
+    @Generated
     private RecordingChannelInternal recordingChannelType;
 
     /*
      * The format type of call recording.
      */
+    @Generated
     private RecordingFormatInternal recordingFormatType;
 
     /*
      * The sequential order in which audio channels are assigned to participants in the unmixed recording.
      * When 'recordingChannelType' is set to 'unmixed' and `audioChannelParticipantOrdering is not specified,
      * the audio channel to participant mapping will be automatically assigned based on the order in which participant
-     * first audio was detected.  Channel to participant mapping details can be found in the metadata of the recording.
+     * first audio was detected. Channel to participant mapping details can be found in the metadata of the recording.
      */
+    @Generated
     private List<CommunicationIdentifierModel> audioChannelParticipantOrdering;
 
     /*
      * The channel affinity of call recording
-     * When 'recordingChannelType' is set to 'unmixed', if channelAffinity is not specified, 'channel' will be automatically assigned.
+     * When 'recordingChannelType' is set to 'unmixed', if channelAffinity is not specified, 'channel' will be
+     * automatically assigned.
      * Channel-Participant mapping details can be found in the metadata of the recording.
      * ///
      */
+    @Generated
     private List<ChannelAffinityInternal> channelAffinity;
 
     /*
      * When set to true will start recording in Pause mode, which can be resumed.
      */
+    @Generated
     private Boolean pauseOnStart;
 
     /*
      * Optional property to specify location where recording will be stored
      */
+    @Generated
     private RecordingStorageInternal externalStorage;
 
     /**
      * Creates an instance of StartCallRecordingRequestInternal class.
      */
+    @Generated
     public StartCallRecordingRequestInternal() {
     }
 
@@ -79,6 +91,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * 
      * @return the callLocator value.
      */
+    @Generated
     public CallLocatorInternal getCallLocator() {
         return this.callLocator;
     }
@@ -89,6 +102,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * @param callLocator the callLocator value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
+    @Generated
     public StartCallRecordingRequestInternal setCallLocator(CallLocatorInternal callLocator) {
         this.callLocator = callLocator;
         return this;
@@ -99,6 +113,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * 
      * @return the recordingStateCallbackUri value.
      */
+    @Generated
     public String getRecordingStateCallbackUri() {
         return this.recordingStateCallbackUri;
     }
@@ -109,6 +124,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * @param recordingStateCallbackUri the recordingStateCallbackUri value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
+    @Generated
     public StartCallRecordingRequestInternal setRecordingStateCallbackUri(String recordingStateCallbackUri) {
         this.recordingStateCallbackUri = recordingStateCallbackUri;
         return this;
@@ -119,6 +135,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * 
      * @return the recordingContentType value.
      */
+    @Generated
     public RecordingContentInternal getRecordingContentType() {
         return this.recordingContentType;
     }
@@ -129,6 +146,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * @param recordingContentType the recordingContentType value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
+    @Generated
     public StartCallRecordingRequestInternal setRecordingContentType(RecordingContentInternal recordingContentType) {
         this.recordingContentType = recordingContentType;
         return this;
@@ -139,6 +157,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * 
      * @return the recordingChannelType value.
      */
+    @Generated
     public RecordingChannelInternal getRecordingChannelType() {
         return this.recordingChannelType;
     }
@@ -149,6 +168,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * @param recordingChannelType the recordingChannelType value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
+    @Generated
     public StartCallRecordingRequestInternal setRecordingChannelType(RecordingChannelInternal recordingChannelType) {
         this.recordingChannelType = recordingChannelType;
         return this;
@@ -159,6 +179,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * 
      * @return the recordingFormatType value.
      */
+    @Generated
     public RecordingFormatInternal getRecordingFormatType() {
         return this.recordingFormatType;
     }
@@ -169,6 +190,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * @param recordingFormatType the recordingFormatType value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
+    @Generated
     public StartCallRecordingRequestInternal setRecordingFormatType(RecordingFormatInternal recordingFormatType) {
         this.recordingFormatType = recordingFormatType;
         return this;
@@ -183,6 +205,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * 
      * @return the audioChannelParticipantOrdering value.
      */
+    @Generated
     public List<CommunicationIdentifierModel> getAudioChannelParticipantOrdering() {
         return this.audioChannelParticipantOrdering;
     }
@@ -197,6 +220,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * @param audioChannelParticipantOrdering the audioChannelParticipantOrdering value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
+    @Generated
     public StartCallRecordingRequestInternal
         setAudioChannelParticipantOrdering(List<CommunicationIdentifierModel> audioChannelParticipantOrdering) {
         this.audioChannelParticipantOrdering = audioChannelParticipantOrdering;
@@ -212,6 +236,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * 
      * @return the channelAffinity value.
      */
+    @Generated
     public List<ChannelAffinityInternal> getChannelAffinity() {
         return this.channelAffinity;
     }
@@ -226,6 +251,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * @param channelAffinity the channelAffinity value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
+    @Generated
     public StartCallRecordingRequestInternal setChannelAffinity(List<ChannelAffinityInternal> channelAffinity) {
         this.channelAffinity = channelAffinity;
         return this;
@@ -236,6 +262,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * 
      * @return the pauseOnStart value.
      */
+    @Generated
     public Boolean isPauseOnStart() {
         return this.pauseOnStart;
     }
@@ -246,6 +273,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * @param pauseOnStart the pauseOnStart value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
+    @Generated
     public StartCallRecordingRequestInternal setPauseOnStart(Boolean pauseOnStart) {
         this.pauseOnStart = pauseOnStart;
         return this;
@@ -256,6 +284,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * 
      * @return the externalStorage value.
      */
+    @Generated
     public RecordingStorageInternal getExternalStorage() {
         return this.externalStorage;
     }
@@ -266,6 +295,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * @param externalStorage the externalStorage value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
+    @Generated
     public StartCallRecordingRequestInternal setExternalStorage(RecordingStorageInternal externalStorage) {
         this.externalStorage = externalStorage;
         return this;
@@ -274,6 +304,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -303,6 +334,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StartCallRecordingRequestInternal.
      */
+    @Generated
     public static StartCallRecordingRequestInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StartCallRecordingRequestInternal deserializedStartCallRecordingRequestInternal
