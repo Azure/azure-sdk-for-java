@@ -14,6 +14,7 @@ import com.azure.compute.batch.implementation.lro.JobTerminatePollerAsync;
 import com.azure.compute.batch.implementation.lro.NodeDeallocatePollerAsync;
 import com.azure.compute.batch.implementation.lro.NodeRebootPollerAsync;
 import com.azure.compute.batch.implementation.lro.NodeReimagePollerAsync;
+import com.azure.compute.batch.implementation.lro.NodeRemovePollerAsync;
 import com.azure.compute.batch.implementation.lro.NodeStartPollerAsync;
 import com.azure.compute.batch.implementation.lro.PoolDeletePollerAsync;
 import com.azure.compute.batch.implementation.lro.PoolResizePollerAsync;
@@ -16152,6 +16153,56 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for removing the node.
+     * @param options Optional parameters for Remove Nodes operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PollerFlux} that polls until the pool’s {@code allocationState}
+     * becomes {@code steady}. Provides {@link BatchPool} snapshots while
+     * in progress and the final {@link BatchPool} on completion
+     * (or {@code null} if the pool has been deleted).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchPool, BatchPool> beginRemoveNodes(String poolId, BatchNodeRemoveParameters parameters,
+        BatchNodesRemoveOptions options, RequestConditions requestConditions) {
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        NodeRemovePollerAsync poller = new NodeRemovePollerAsync(this, poolId, parameters, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
+    }
+
+    /**
+     * Removes Compute Nodes from the specified Pool.
+     *
+     * This operation can only run when the allocation state of the Pool is steady.
+     * When this operation runs, the allocation state changes from steady to resizing.
+     * Each request may remove up to 100 nodes.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for removing the node.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -16164,6 +16215,31 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return removeNodesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
             .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Removes Compute Nodes from the specified Pool.
+     *
+     * This operation can only run when the allocation state of the Pool is steady.
+     * When this operation runs, the allocation state changes from steady to resizing.
+     * Each request may remove up to 100 nodes.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for removing the node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PollerFlux} that polls until the pool’s {@code allocationState}
+     * becomes {@code steady}. Provides {@link BatchPool} snapshots while
+     * in progress and the final {@link BatchPool} on completion
+     * (or {@code null} if the pool has been deleted).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchPool, BatchPool> beginRemoveNodes(String poolId, BatchNodeRemoveParameters parameters) {
+        RequestOptions requestOptions = new RequestOptions();
+        NodeRemovePollerAsync poller = new NodeRemovePollerAsync(this, poolId, parameters, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
     }
 
     /**
