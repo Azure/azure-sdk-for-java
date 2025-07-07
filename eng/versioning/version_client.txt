@@ -479,7 +479,7 @@ com.azure.resourcemanager:azure-resourcemanager-impactreporting;1.0.0-beta.1;1.0
 com.azure.resourcemanager:azure-resourcemanager-migration-assessment;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-databasewatcher;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-durabletask;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-arizeaiobservabilityeval;1.0.0-beta.1;1.0.0
+com.azure.resourcemanager:azure-resourcemanager-arizeaiobservabilityeval;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-weightsandbiases;1.0.0-beta.1;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-carbonoptimization;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-dependencymap;1.0.0-beta.1;1.0.0-beta.2
@@ -491,7 +491,7 @@ com.azure.resourcemanager:azure-resourcemanager-programmableconnectivity;1.0.0-b
 com.azure.resourcemanager:azure-resourcemanager-dell-storage;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-sitemanager;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-mongodbatlas;1.0.0-beta.1;1.0.0
-com.azure.resourcemanager:azure-resourcemanager-purestorageblock;1.0.0-beta.1;1.0.0
+com.azure.resourcemanager:azure-resourcemanager-purestorageblock;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-planetarycomputer;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-fluxconfigurations;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensions;1.0.0-beta.1;1.0.0-beta.2
@@ -499,6 +499,7 @@ com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensio
 com.azure.resourcemanager:azure-resourcemanager-cloudhealth;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resources-deploymentstacks;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-privatelinkscopes;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-resources-bicep;1.0.0-beta.1;1.0.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 com.azure.v2:azure-client-sdk-parent;2.0.0-beta.1;2.0.0-beta.1

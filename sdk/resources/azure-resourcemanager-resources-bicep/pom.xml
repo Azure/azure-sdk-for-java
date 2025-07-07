@@ -13,12 +13,12 @@
   </parent>
 
   <groupId>com.azure.resourcemanager</groupId>
-  <artifactId>azure-resourcemanager-arizeaiobservabilityeval</artifactId>
-  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-arizeaiobservabilityeval;current} -->
+  <artifactId>azure-resourcemanager-resources-bicep</artifactId>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources-bicep;current} -->
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for Arize AI Observability Eval Management</name>
-  <description>This package contains Microsoft Azure SDK for Arize AI Observability Eval Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.  Package api-version 2024-10-01.</description>
+  <name>Microsoft Azure SDK for Bicep Provider Management</name>
+  <description>This package contains Microsoft Azure SDK for Bicep Provider Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Bicep Client. Package api-version 2023-11-01.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -45,6 +45,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
+    <revapi.skip>true</revapi.skip>
   </properties>
   <dependencies>
     <dependency>
@@ -67,12 +68,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure.resourcemanager</groupId>
-      <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.52.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
