@@ -10,7 +10,7 @@ package com.azure.resourcemanager.msi.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2023-01-31/examples/MsiOperationsList.json
+     * specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2024-11-30/examples/MsiOperationsList.json
      */
     /**
      * Sample code: MsiOperationsList.
