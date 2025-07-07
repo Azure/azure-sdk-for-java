@@ -149,10 +149,10 @@ public final class PageBlobClient {
         String requestId, String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, BlobHttpHeaders blobHttpHeaders,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
-        this.serviceClient.create(containerName, blob, contentLength, blobContentLength, timeout, tier, metadata,
-            leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, blobSequenceNumber, requestId,
+        createWithResponse(containerName, blob, contentLength, blobContentLength, timeout, tier, metadata, leaseId,
+            ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, blobSequenceNumber, requestId,
             blobTagsString, immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo,
-            encryptionScopeParam);
+            encryptionScopeParam, RequestContext.none());
     }
 
     /**
@@ -258,10 +258,11 @@ public final class PageBlobClient {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam) {
-        this.serviceClient.uploadPages(containerName, blob, contentLength, body, transactionalContentMD5,
+        uploadPagesWithResponse(containerName, blob, contentLength, body, transactionalContentMD5,
             transactionalContentCrc64, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo,
             ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
-            ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam);
+            ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam,
+            RequestContext.none());
     }
 
     /**
@@ -348,9 +349,10 @@ public final class PageBlobClient {
         String leaseId, Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan,
         Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
-        this.serviceClient.clearPages(containerName, blob, contentLength, timeout, range, leaseId,
+        clearPagesWithResponse(containerName, blob, contentLength, timeout, range, leaseId,
             ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince,
-            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, cpkInfo, encryptionScopeParam);
+            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, cpkInfo, encryptionScopeParam,
+            RequestContext.none());
     }
 
     /**
@@ -475,11 +477,11 @@ public final class PageBlobClient {
         String ifNoneMatch, String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
-        this.serviceClient.uploadPagesFromURL(containerName, blob, sourceUrl, sourceRange, contentLength, range,
+        uploadPagesFromURLWithResponse(containerName, blob, sourceUrl, sourceRange, contentLength, range,
             sourceContentMD5, sourceContentcrc64, timeout, leaseId, ifSequenceNumberLessThanOrEqualTo,
             ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
             ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId,
-            copySourceAuthorization, cpkInfo, encryptionScopeParam);
+            copySourceAuthorization, cpkInfo, encryptionScopeParam, RequestContext.none());
     }
 
     /**
@@ -577,8 +579,9 @@ public final class PageBlobClient {
     public PageList getPageRanges(String containerName, String blob, String snapshot, Integer timeout, String range,
         String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, String marker, Integer maxresults) {
-        return this.serviceClient.getPageRanges(containerName, blob, snapshot, timeout, range, leaseId, ifModifiedSince,
-            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, marker, maxresults);
+        return getPageRangesWithResponse(containerName, blob, snapshot, timeout, range, leaseId, ifModifiedSince,
+            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, marker, maxresults, RequestContext.none())
+                .getValue();
     }
 
     /**
@@ -693,9 +696,9 @@ public final class PageBlobClient {
         String prevsnapshot, String prevSnapshotUrl, String range, String leaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         String marker, Integer maxresults) {
-        return this.serviceClient.getPageRangesDiff(containerName, blob, snapshot, timeout, prevsnapshot,
-            prevSnapshotUrl, range, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags,
-            requestId, marker, maxresults);
+        return getPageRangesDiffWithResponse(containerName, blob, snapshot, timeout, prevsnapshot, prevSnapshotUrl,
+            range, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, marker,
+            maxresults, RequestContext.none()).getValue();
     }
 
     /**
@@ -768,8 +771,8 @@ public final class PageBlobClient {
     public void resize(String containerName, String blob, long blobContentLength, Integer timeout, String leaseId,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
-        this.serviceClient.resize(containerName, blob, blobContentLength, timeout, leaseId, ifModifiedSince,
-            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, cpkInfo, encryptionScopeParam);
+        resizeWithResponse(containerName, blob, blobContentLength, timeout, leaseId, ifModifiedSince, ifUnmodifiedSince,
+            ifMatch, ifNoneMatch, ifTags, requestId, cpkInfo, encryptionScopeParam, RequestContext.none());
     }
 
     /**
@@ -844,8 +847,8 @@ public final class PageBlobClient {
     public void updateSequenceNumber(String containerName, String blob, SequenceNumberActionType sequenceNumberAction,
         Integer timeout, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String ifMatch, String ifNoneMatch, String ifTags, Long blobSequenceNumber, String requestId) {
-        this.serviceClient.updateSequenceNumber(containerName, blob, sequenceNumberAction, timeout, leaseId,
-            ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, blobSequenceNumber, requestId);
+        updateSequenceNumberWithResponse(containerName, blob, sequenceNumberAction, timeout, leaseId, ifModifiedSince,
+            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, blobSequenceNumber, requestId, RequestContext.none());
     }
 
     /**
@@ -918,7 +921,7 @@ public final class PageBlobClient {
     public void copyIncremental(String containerName, String blob, String copySource, Integer timeout,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId) {
-        this.serviceClient.copyIncremental(containerName, blob, copySource, timeout, ifModifiedSince, ifUnmodifiedSince,
-            ifMatch, ifNoneMatch, ifTags, requestId);
+        copyIncrementalWithResponse(containerName, blob, copySource, timeout, ifModifiedSince, ifUnmodifiedSince,
+            ifMatch, ifNoneMatch, ifTags, requestId, RequestContext.none());
     }
 }
