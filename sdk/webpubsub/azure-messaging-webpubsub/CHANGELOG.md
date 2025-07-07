@@ -1,15 +1,9 @@
 # Release History
 
-## 1.5.0 (Unreleased)
+## 1.5.0 (2025-07-07)
 
 ### Features Added
 - Add "listConnectionsInGroup" API.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.4.2 (2025-06-19)
 
