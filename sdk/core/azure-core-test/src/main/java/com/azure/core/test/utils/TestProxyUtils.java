@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
+import static com.azure.core.test.implementation.TestingHelpers.jsonWriteHelper;
 import static com.azure.core.test.models.TestProxySanitizerType.BODY_KEY;
 import static com.azure.core.test.models.TestProxySanitizerType.BODY_REGEX;
 import static com.azure.core.test.models.TestProxySanitizerType.HEADER;
@@ -307,11 +308,14 @@ public class TestProxyUtils {
     }
 
     private static String createCustomMatcherRequestBody(CustomMatcher customMatcher) {
-        return String.format(
-            "{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"%s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\",\"ignoreQueryOrdering\":%s}",
-            getCommaSeperatedString(customMatcher.getHeadersKeyOnlyMatch()),
-            getCommaSeperatedString(customMatcher.getExcludedHeaders()), customMatcher.isComparingBodies(),
-            getCommaSeperatedString(customMatcher.getIgnoredQueryParameters()), customMatcher.isQueryOrderingIgnored());
+        return jsonWriteHelper(jsonWriter -> jsonWriter.writeStartObject()
+            .writeStringField("ignoredHeaders", getCommaSeperatedString(customMatcher.getHeadersKeyOnlyMatch()))
+            .writeStringField("excludedHeaders", getCommaSeperatedString(customMatcher.getExcludedHeaders()))
+            .writeBooleanField("compareBodies", customMatcher.isComparingBodies())
+            .writeStringField("ignoredQueryParameters",
+                getCommaSeperatedString(customMatcher.getIgnoredQueryParameters()))
+            .writeBooleanField("ignoreQueryOrdering", customMatcher.isQueryOrderingIgnored())
+            .writeEndObject());
     }
 
     private static String getCommaSeperatedString(List<String> stringList) {
@@ -322,35 +326,21 @@ public class TestProxyUtils {
     }
 
     private static String createBodyJsonKeyRequestBody(String jsonKey, String regex, String redactedValue) {
-        if (regex == null) {
-            return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\"}", redactedValue, jsonKey);
-        } else {
-            return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\",\"regex\":\"%s\"}", redactedValue, jsonKey,
-                regex);
-        }
+        return jsonWriteHelper(jsonWriter -> jsonWriter.writeStartObject()
+            .writeStringField("value", redactedValue)
+            .writeStringField("jsonPath", jsonKey)
+            // writeStringField skips fields with null values, no need to null check anymore
+            .writeStringField("regex", regex)
+            .writeEndObject());
     }
 
     private static String createRegexRequestBody(String key, String regex, String value, String groupForReplace) {
-        if (key == null) {
-            if (groupForReplace == null) {
-                // regex pattern and redaction value
-                return String.format("{\"value\":\"%s\",\"regex\":\"%s\"}", value, regex);
-            } else {
-                // regex pattern and redaction value with group replace
-                return String.format("{\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", value, regex,
-                    groupForReplace);
-            }
-        } else if (regex == null) {
-            // header key value
-            return String.format("{\"key\":\"%s\",\"value\":\"%s\"}", key, value);
-        }
-        if (groupForReplace == null) {
-            // header key with regex
-            return String.format("{\"key\":\"%s\",\"value\":\"%s\",\"regex\":\"%s\"}", key, value, regex);
-        } else {
-            return String.format("{\"key\":\"%s\",\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", key,
-                value, regex, groupForReplace);
-        }
+        return jsonWriteHelper(jsonWriter -> jsonWriter.writeStartObject()
+            .writeStringField("key", key)
+            .writeStringField("regex", regex)
+            .writeStringField("value", value)
+            .writeStringField("groupForReplace", groupForReplace)
+            .writeEndObject());
     }
 
     /**
@@ -416,48 +406,53 @@ public class TestProxyUtils {
      * @throws RuntimeException if {@link TestProxySanitizerType} is not supported.
      */
     public static HttpRequest createAddSanitizersRequest(List<TestProxySanitizer> sanitizers, URL proxyUrl) {
-        List<String> sanitizersJsonPayloads = new ArrayList<>(sanitizers.size());
-
-        for (TestProxySanitizer sanitizer : sanitizers) {
-            String requestBody;
-            String sanitizerType;
+        String requestBody = jsonWriteHelper(jsonWriter -> jsonWriter.writeArray(sanitizers, (writer, sanitizer) -> {
             switch (sanitizer.getType()) {
                 case URL:
-                    sanitizerType = TestProxySanitizerType.URL.getName();
-                    requestBody = createRegexRequestBody(null, sanitizer.getRegex(), sanitizer.getRedactedValue(),
-                        sanitizer.getGroupForReplace());
+                    writer.writeStartObject()
+                        .writeStringField("Name", TestProxySanitizerType.URL.getName())
+                        .writeRawField("Body",
+                            createRegexRequestBody(null, sanitizer.getRegex(), sanitizer.getRedactedValue(),
+                                sanitizer.getGroupForReplace()))
+                        .writeEndObject();
                     break;
 
                 case BODY_REGEX:
-                    sanitizerType = BODY_REGEX.getName();
-                    requestBody = createRegexRequestBody(null, sanitizer.getRegex(), sanitizer.getRedactedValue(),
-                        sanitizer.getGroupForReplace());
+                    writer.writeStartObject()
+                        .writeStringField("Name", BODY_REGEX.getName())
+                        .writeRawField("Body",
+                            createRegexRequestBody(null, sanitizer.getRegex(), sanitizer.getRedactedValue(),
+                                sanitizer.getGroupForReplace()))
+                        .writeEndObject();
                     break;
 
                 case BODY_KEY:
-                    sanitizerType = BODY_KEY.getName();
-                    requestBody = createBodyJsonKeyRequestBody(sanitizer.getKey(), sanitizer.getRegex(),
-                        sanitizer.getRedactedValue());
+                    writer.writeStartObject()
+                        .writeStringField("Name", BODY_KEY.getName())
+                        .writeRawField("Body",
+                            createBodyJsonKeyRequestBody(sanitizer.getKey(), sanitizer.getRegex(),
+                                sanitizer.getRedactedValue()))
+                        .writeEndObject();
                     break;
 
                 case HEADER:
-                    sanitizerType = HEADER.getName();
                     if (sanitizer.getKey() == null && sanitizer.getRegex() == null) {
                         throw new RuntimeException(
-                            "Missing regexKey and/or headerKey for sanitizer type {" + sanitizerType + "}");
+                            "Missing regexKey and/or headerKey for sanitizer type {" + HEADER + "}");
                     }
-                    requestBody = createRegexRequestBody(sanitizer.getKey(), sanitizer.getRegex(),
-                        sanitizer.getRedactedValue(), sanitizer.getGroupForReplace());
+
+                    writer.writeStartObject()
+                        .writeStringField("Name", HEADER.getName())
+                        .writeRawField("Body",
+                            createRegexRequestBody(sanitizer.getKey(), sanitizer.getRegex(),
+                                sanitizer.getRedactedValue(), sanitizer.getGroupForReplace()))
+                        .writeEndObject();
                     break;
 
                 default:
                     throw new RuntimeException("Sanitizer type {" + sanitizer.getType() + "} not supported");
             }
-
-            sanitizersJsonPayloads.add("{\"Name\":\"" + sanitizerType + "\",\"Body\":" + requestBody + "}");
-        }
-
-        String requestBody = "[" + CoreUtils.stringJoin(",", sanitizersJsonPayloads) + "]";
+        }));
         return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/AddSanitizers").setBody(requestBody);
     }
 

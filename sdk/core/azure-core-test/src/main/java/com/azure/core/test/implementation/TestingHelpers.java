@@ -7,13 +7,18 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.json.ReadValueCallback;
 import com.azure.json.WriteValueCallback;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringWriter;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.Objects;
@@ -154,5 +159,22 @@ public final class TestingHelpers {
 
             fieldConsumer.write(fieldName, jsonReader);
         }
+    }
+
+    /**
+     * Helper method for writing JSON content.
+     *
+     * @param writeJson The callback method accepting a {@link JsonWriter} to write JSON content.
+     * @return The JSON content string.
+     */
+    public static String jsonWriteHelper(ReadValueCallback<JsonWriter, JsonWriter> writeJson) {
+        StringWriter writer = new StringWriter();
+        try (JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
+            writeJson.read(jsonWriter);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+
+        return writer.toString();
     }
 }
