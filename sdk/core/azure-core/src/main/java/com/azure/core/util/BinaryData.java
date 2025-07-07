@@ -172,17 +172,26 @@ public final class BinaryData {
     }
 
     static {
-        BinaryDataHelper.setAccessor(new BinaryDataHelper.BinaryDataAccessor() {
-            @Override
-            public BinaryData createBinaryData(BinaryDataContent content) {
-                return new BinaryData(content);
-            }
 
-            @Override
-            public BinaryDataContent getContent(BinaryData binaryData) {
-                return binaryData.content;
-            }
-        });
+        ClientLogger logger = new ClientLogger(BinaryData.class);
+
+        try {
+            BinaryDataHelper.setAccessor(new BinaryDataHelper.BinaryDataAccessor() {
+
+                @Override
+                public BinaryData createBinaryData(BinaryDataContent content) {
+                    return new BinaryData(content);
+                }
+
+                @Override
+                public BinaryDataContent getContent(BinaryData binaryData) {
+                    return binaryData.content;
+                }
+            });
+        } catch (Throwable t) {
+            logger.error("BinaryData's static initializer failed with message : {}", t.getMessage(), t);
+            throw t;
+        }
     }
 
     /**

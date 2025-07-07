@@ -4,6 +4,7 @@
 package com.azure.core.implementation.util;
 
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Helper class to access private values of {@link BinaryData} across package boundaries.
@@ -50,8 +51,15 @@ public final class BinaryDataHelper {
      * @throws NullPointerException If {@code content} is null.
      */
     public static BinaryData createBinaryData(BinaryDataContent content) {
-        ensureAccessorSet();
-        return accessor.createBinaryData(content);
+        ClientLogger logger = new ClientLogger(BinaryDataHelper.class);
+
+        try {
+            ensureAccessorSet();
+            return accessor.createBinaryData(content);
+        } catch (Throwable t) {
+            logger.error("createBinary failed with message : {}", t.getMessage(), t);
+            throw t;
+        }
     }
 
     /**
@@ -71,8 +79,15 @@ public final class BinaryDataHelper {
      * which in turns populates the accessor.
      */
     private static void ensureAccessorSet() {
-        if (accessor == null) {
-            BinaryData.fromString("");
+        ClientLogger logger = new ClientLogger(BinaryDataHelper.class);
+
+        try {
+            if (accessor == null) {
+                BinaryData.fromString("");
+            }
+        } catch (Exception e) {
+            logger.error("ensureAccessorSet failed with message : {}", e.getMessage(), e);
+            throw e;
         }
     }
 }

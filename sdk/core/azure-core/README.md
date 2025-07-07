@@ -65,7 +65,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core</artifactId>
-    <version>1.46.0</version>
+    <version>1.47.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -16,7 +16,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
+- Upgraded `azure-core` from `1.45.1` to `1.47.0-beta.1`.
 - Upgraded `reactor-netty-http` from `1.0.39` to `1.0.40`.
 
 ## 1.13.10 (2023-11-03)

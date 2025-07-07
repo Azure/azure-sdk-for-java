@@ -10,7 +10,7 @@
 
 ### Other Changes
 
-## 1.46.0 (2024-02-02)
+## 1.47.0-beta.1 (2024-02-02)
 
 ### Features Added
 
