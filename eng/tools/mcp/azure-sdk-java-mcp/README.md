@@ -73,8 +73,8 @@ You can verify that the MCP server is working by:
 Here are some example prompts you can use with GitHub Copilot to interact with the Java SDK tools:
 
 ### Basic SDK Operations
-- `generate java sdk for "azure-communication-messages" from local TypeSpec source: C:\workspace\azure-rest-api-specs\specification\communication\Communication.Messages\tspconfig.yaml`
-- `update java sdk for "azure-communication-messages" from local TypeSpec source: C:\workspace\azure-rest-api-specs\specification\communication\Communication.Messages\tspconfig.yaml`
+- `generate java sdk for "azure-compute-batch" from local TypeSpec source: C:\workspace\azure-rest-api-specs\specification\batch\Azure.Batch\tspconfig.yaml`
+- `update java sdk for "azure-compute-batch" from local TypeSpec source: C:\workspace\azure-rest-api-specs\specification\batch\Azure.Batch\tspconfig.yaml`
 
 ### Prepare Environments
 - `prepare java sdk environment`
