@@ -88,19 +88,12 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import static com.azure.core.http.HttpHeaderName.LAST_MODIFIED;
 
 public class ModelHelper {
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
-    private static final Set<ShareErrorCode> GRACEFUL_DOES_NOT_EXISTS_ERROR_CODES = Set.of(
-        ShareErrorCode.RESOURCE_NOT_FOUND, ShareErrorCode.PARENT_NOT_FOUND, ShareErrorCode.SHARE_NOT_FOUND);
 
     private static final long MAX_FILE_PUT_RANGE_BYTES = 4 * Constants.MB;
     private static final int FILE_DEFAULT_NUMBER_OF_BUFFERS = 8;
@@ -108,6 +101,16 @@ public class ModelHelper {
     public static final long FILE_MAX_PUT_RANGE_SIZE = 4 * Constants.MB;
 
     private static final HttpHeaderName X_MS_ERROR_CODE = HttpHeaderName.fromString("x-ms-error-code");
+
+    private static final Set<ShareErrorCode> GRACEFUL_DOES_NOT_EXISTS_ERROR_CODES;
+
+    static {
+        Set<ShareErrorCode> shareErrorCodes = new HashSet<>();
+        shareErrorCodes.add(ShareErrorCode.RESOURCE_NOT_FOUND);
+        shareErrorCodes.add(ShareErrorCode.PARENT_NOT_FOUND);
+        shareErrorCodes.add(ShareErrorCode.SHARE_NOT_FOUND);
+        GRACEFUL_DOES_NOT_EXISTS_ERROR_CODES = Collections.unmodifiableSet(shareErrorCodes);
+    }
 
     /**
      * Fills in default values for a ParallelTransferOptions where no value has been set. This will construct a new
