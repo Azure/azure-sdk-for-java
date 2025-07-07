@@ -358,8 +358,7 @@ public class ModelHelper {
     public static boolean checkDoesNotExistStatusCode(Throwable t) {
         if (t instanceof ShareStorageException) {
             ShareStorageException s = (ShareStorageException) t;
-            return s.getStatusCode() == 404
-                && GRACEFUL_DOES_NOT_EXISTS_ERROR_CODES.contains(s.getErrorCode());
+            return s.getStatusCode() == 404 && GRACEFUL_DOES_NOT_EXISTS_ERROR_CODES.contains(s.getErrorCode());
             /* HttpResponseException - file get properties is a head request so a body is not returned. Error
              conversion logic does not properly handle errors that don't return XML. */
         } else if (t instanceof HttpResponseException) {
