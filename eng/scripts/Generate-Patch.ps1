@@ -176,13 +176,13 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
   parsePomFileDependencies -PomFilePath $PomFilePath -DependencyToVersion $oldDependenciesToVersion
 
   ## Create the patch release
-  $cmdOutput = python $SetVersionFilePath --bt client --new-version $PatchVersion --ar $ArtifactName --gi $GroupId
+  $cmdOutput = python $SetVersionFilePath --new-version $PatchVersion --artifact-id $ArtifactName --group-id $GroupId
   if($LASTEXITCODE -ne 0) {
     LogError "Could not set the patch version."
     exit 1
   }
 
-  $cmdOutput = python $UpdateVersionFilePath --ut all --bt client --sr
+  $cmdOutput = python $UpdateVersionFilePath --skip-readme
     if($LASTEXITCODE -ne 0) {
     LogError "Could not update the versions in the pom files.. Exiting..."
     exit 1
