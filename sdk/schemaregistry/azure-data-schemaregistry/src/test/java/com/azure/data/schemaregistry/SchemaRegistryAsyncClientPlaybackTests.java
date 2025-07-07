@@ -3,28 +3,18 @@
 
 package com.azure.data.schemaregistry;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.core.test.models.NetworkCallRecord;
-import com.azure.core.test.models.RecordedData;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.data.schemaregistry.models.SchemaFormat;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.time.OffsetDateTime;
+import java.nio.charset.StandardCharsets;
 
 import static com.azure.data.schemaregistry.Constants.PLAYBACK_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,32 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * reproduced with the latest client.
  */
 public class SchemaRegistryAsyncClientPlaybackTests {
-    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
-    private TokenCredential tokenCredential;
-    private String endpoint;
-    private RecordedData recordedData;
-
-    @BeforeEach
-    public void setupTest(TestInfo testInfo) {
-        if (!testInfo.getTestMethod().isPresent()) {
-            throw new IllegalStateException(
-                "Expected testInfo.getTestMethod() not be empty since we need a method for TestContextManager.");
-        }
-
-        this.tokenCredential = tokenRequestContext -> Mono
-            .fromCallable(() -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
-        this.endpoint = PLAYBACK_ENDPOINT;
-
-        final String resourceName = "/compat/" + testInfo.getTestMethod().get().getName() + ".json";
-
-        try (InputStream stream = SchemaRegistryAsyncClientPlaybackTests.class.getResourceAsStream(resourceName)) {
-            this.recordedData = SERIALIZER.deserialize(stream, RecordedData.class, SerializerEncoding.JSON);
-        } catch (IOException e) {
-            throw new UncheckedIOException("Unable to get resource input stream for: " + resourceName, e);
-        }
-
-        assertNotNull(recordedData, "RecordedData should not be null. Resource: " + resourceName);
-    }
+    private final TokenCredential tokenCredential = new MockTokenCredential();
+    private final String endpoint = PLAYBACK_ENDPOINT;
 
     /**
      * This is run in playback mode because the GUID is unique for each schema. This is a schema that was previously
@@ -68,15 +34,17 @@ public class SchemaRegistryAsyncClientPlaybackTests {
      */
     @Test
     public void getSchemaByIdFromPortal() {
-
         // Arrange
-        final HttpClient httpClientMock = setupHttpClient(recordedData);
+        final String schemaId = "f45b841fcb88401e961ca45477906be9";
+        final HttpClient httpClientMock = setupHttpClient("test", schemaId,
+            "{\"namespace\":\"SampleSchemaNameSpace\",\"type\":\"record\",\"name\":\"Person\","
+                + "\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favourite_number\","
+                + "\"type\":[\"int\",\"null\"]},{\"name\":\"favourite_colour\",\"type\":[\"string\",\"null\"]}]}");
         final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder().fullyQualifiedNamespace(endpoint)
             .credential(tokenCredential)
             .httpClient(httpClientMock)
             .serviceVersion(SchemaRegistryVersion.V2021_10)
             .buildAsyncClient();
-        final String schemaId = "f45b841fcb88401e961ca45477906be9";
 
         // Act & Assert
         StepVerifier.create(client.getSchema(schemaId)).assertNext(schema -> {
@@ -93,14 +61,17 @@ public class SchemaRegistryAsyncClientPlaybackTests {
     @Test
     public void getSchemaBackCompatibility() {
         // Arrange
-        final HttpClient httpClientMock = setupHttpClient(recordedData);
+        final String schemaId = "e5691f79e3964309ac712ec52abcccca";
+        final HttpClient httpClientMock = setupHttpClient("sch17568204e", schemaId,
+            "\"{\\\"type\\\" : \\\"record\\\",\\\"namespace\\\" : \\\"TestSchema\\\",\\\"name\\\" : \\\"Employee\\\","
+                + "\\\"fields\\\" : [{ \\\"name\\\" : \\\"Name\\\" , \\\"type\\\" : \\\"string\\\" },"
+                + "{ \\\"name\\\" : \\\"Age\\\", \\\"type\\\" : \\\"int\\\" }]}\"");
 
         final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder().fullyQualifiedNamespace(endpoint)
             .credential(tokenCredential)
             .httpClient(httpClientMock)
             .serviceVersion(SchemaRegistryVersion.V2021_10)
             .buildAsyncClient();
-        final String schemaId = "e5691f79e3964309ac712ec52abcccca";
 
         // Act & Assert
         StepVerifier.create(client.getSchema(schemaId)).assertNext(schema -> {
@@ -110,19 +81,30 @@ public class SchemaRegistryAsyncClientPlaybackTests {
         }).verifyComplete();
     }
 
-    private static HttpClient setupHttpClient(RecordedData recordedData) {
-        final NetworkCallRecord networkRecord = recordedData.findFirstAndRemoveNetworkCall(e -> true);
+    @SuppressWarnings("deprecation")
+    private static HttpClient setupHttpClient(String schemaName, String schemaId, String body) {
         return request -> {
-            final String body = networkRecord.getResponse().remove("Body");
-            final String statusCodeMessage = networkRecord.getResponse().remove("StatusCode");
-            final int statusCode = Integer.parseInt(statusCodeMessage);
+            HttpHeaders headers = new HttpHeaders().add(HttpHeaderName.TRANSFER_ENCODING, "chunked")
+                .add(HttpHeaderName.SERVER, "Microsoft-HTTPAPI/2.0")
+                .add(HttpHeaderName.DATE, "Thu, 11 Nov 2021 02:50:18 GMT")
+                .add(HttpHeaderName.STRICT_TRANSPORT_SECURITY, "max-age=31536000")
+                .add(HttpHeaderName.CONTENT_TYPE, "application/json;serialization=Avro")
+                .add("Schema-Version", "1")
+                .add("Schema-Name", schemaName)
+                .add("Schema-Id", schemaId)
+                .add("Schema-Id-Location",
+                    String.format(
+                        "https://registry.servicebus.windows.net:443/$schemagroups/$schemas/%s?api-version=2021-10",
+                        schemaId))
+                .add("Schema-Group-Name", "mygroup")
+                .add("Schema-Versions-Location", String.format(
+                    "https://registry.servicebus.windows.net:443/$schemagroups/mygroup/schemas/%s/versions/1?api-version=2021-10",
+                    schemaName))
+                .add(HttpHeaderName.LOCATION, String.format(
+                    "https://registry.servicebus.windows.net:443/$schemagroups/mygroup/schemas/%s/versions/1?api-version=2021-10",
+                    schemaName));
 
-            assertNotNull(body, "Body cannot be null");
-
-            final HttpHeaders headers = new HttpHeaders(networkRecord.getResponse());
-
-            final HttpResponse response = new MockHttpResponse(request, statusCode, headers, body);
-            return Mono.just(response);
+            return Mono.just(new MockHttpResponse(request, 200, headers, body.getBytes(StandardCharsets.UTF_8)));
         };
     }
 }

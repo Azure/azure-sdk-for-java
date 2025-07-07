@@ -147,7 +147,10 @@ public class TestProxyPlaybackClient implements HttpClient {
                     throw e;
                 }
                 sleep();
-                LOGGER.warning("Retrying request to test proxy. Retry attempt: " + retries);
+                LOGGER.atWarning()
+                    .addKeyValue("attempt", retries)
+                    .addKeyValue("session-id", request.getHeaders().getValue(X_RECORDING_ID))
+                    .log(() -> "Retrying request to Test Proxy.", e);
             }
         }
     }

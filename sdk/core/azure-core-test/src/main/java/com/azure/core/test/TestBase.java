@@ -10,6 +10,7 @@ import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
@@ -261,7 +262,10 @@ public abstract class TestBase {
                 HttpClientProvider httpClientProvider = iterator.next();
                 if (includeHttpClientOrHttpClientProvider(
                     httpClientProvider.getClass().getSimpleName().toLowerCase(Locale.ROOT))) {
-                    httpClientsToTest.add(httpClientProvider.createInstance());
+                    HttpClientOptions httpClientOptions = new HttpClientOptions()
+                        .setConnectionIdleTimeout(Duration.ofSeconds(10))
+                        .setMaximumConnectionPoolSize(10);
+                    httpClientsToTest.add(httpClientProvider.createInstance(httpClientOptions));
                 }
             } catch (ServiceConfigurationError | LinkageError error) {
                 LOGGER.atWarning().log(() -> "Skipping HttpClientProvider due to LinkageError.", error);
