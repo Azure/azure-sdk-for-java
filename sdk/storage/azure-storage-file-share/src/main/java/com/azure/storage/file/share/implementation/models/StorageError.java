@@ -27,16 +27,19 @@ public final class StorageError implements XmlSerializable<StorageError> {
     /*
      * The CopySourceStatusCode property.
      */
+    @Generated
     private Long copySourceStatusCode;
 
     /*
      * The CopySourceErrorCode property.
      */
+    @Generated
     private String copySourceErrorCode;
 
     /*
      * The CopySourceErrorMessage property.
      */
+    @Generated
     private String copySourceErrorMessage;
 
     /*
@@ -79,6 +82,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * 
      * @return the copySourceStatusCode value.
      */
+    @Generated
     public Long getCopySourceStatusCode() {
         return this.copySourceStatusCode;
     }
@@ -89,6 +93,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * @param copySourceStatusCode the copySourceStatusCode value to set.
      * @return the StorageError object itself.
      */
+    @Generated
     public StorageError setCopySourceStatusCode(Long copySourceStatusCode) {
         this.copySourceStatusCode = copySourceStatusCode;
         return this;
@@ -99,6 +104,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * 
      * @return the copySourceErrorCode value.
      */
+    @Generated
     public String getCopySourceErrorCode() {
         return this.copySourceErrorCode;
     }
@@ -109,6 +115,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * @param copySourceErrorCode the copySourceErrorCode value to set.
      * @return the StorageError object itself.
      */
+    @Generated
     public StorageError setCopySourceErrorCode(String copySourceErrorCode) {
         this.copySourceErrorCode = copySourceErrorCode;
         return this;
@@ -119,6 +126,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * 
      * @return the copySourceErrorMessage value.
      */
+    @Generated
     public String getCopySourceErrorMessage() {
         return this.copySourceErrorMessage;
     }
@@ -129,6 +137,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
      * @param copySourceErrorMessage the copySourceErrorMessage value to set.
      * @return the StorageError object itself.
      */
+    @Generated
     public StorageError setCopySourceErrorMessage(String copySourceErrorMessage) {
         this.copySourceErrorMessage = copySourceErrorMessage;
         return this;

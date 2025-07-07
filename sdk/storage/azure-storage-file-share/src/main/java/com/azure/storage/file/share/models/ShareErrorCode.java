@@ -437,6 +437,7 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
     /**
      * Static value ShareSnapshotNotFound for ShareErrorCode.
      */
+    @Generated
     public static final ShareErrorCode SHARE_SNAPSHOT_NOT_FOUND = fromString("ShareSnapshotNotFound");
 
     /**
