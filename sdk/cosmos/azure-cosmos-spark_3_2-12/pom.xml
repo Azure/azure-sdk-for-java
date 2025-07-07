@@ -334,7 +334,7 @@
                 <include>io.opentelemetry:opentelemetry-api:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-exporter-logging:[1.49.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
                 <include>org.apache.logging.log4j:log4j-core:[2.17.2]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
-                <include>io.opentelemetry.instrumentation:opentelemetry-log4j-appender-2.17:[1.49.0]</include> <!-- {x-include-update;cosmos_io.opentelemetry.instrumentation:opentelemetry-log4j-appender-2.17;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-log4j-appender-2.17:[2.15.0-alpha]</include> <!-- {x-include-update;cosmos_io.opentelemetry.instrumentation:opentelemetry-log4j-appender-2.17;external_dependency} -->
                 <include>org.apache.logging.log4j:log4j-slf4j-impl:[2.17.2]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
               </includes>
             </bannedDependencies>

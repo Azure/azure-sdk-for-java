@@ -6,6 +6,7 @@ import com.azure.core.credential.{AccessToken, TokenCredential, TokenRequestCont
 import com.azure.core.management.AzureEnvironment
 import com.azure.core.management.profile.AzureProfile
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions
+import com.azure.core.util.TracingOptions
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry
 import com.azure.cosmos.implementation.{Configs, CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMetricCategory, CosmosMetricTagName, CosmosMicrometerMetricsOptions}
@@ -271,6 +272,342 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
+  private[this] def configureDiagnostics
+  (
+    cosmosClientConfiguration: CosmosClientConfiguration,
+    builder: CosmosClientBuilder
+  ): Unit = {
+    val isAzureMonitorOpenTelemetryEnabled = cosmosClientConfiguration.azureMonitorConfig.isDefined &&
+      cosmosClientConfiguration.azureMonitorConfig.get.enabled
+
+    val isSampledDiagnosticsLoggerEnabled = cosmosClientConfiguration.sampledDiagnosticsLoggerConfig.isDefined
+
+    if (isSampledDiagnosticsLoggerEnabled || isAzureMonitorOpenTelemetryEnabled) {
+      configureDiagnosticsCore (
+        cosmosClientConfiguration,
+        builder,
+        isAzureMonitorOpenTelemetryEnabled,
+        isSampledDiagnosticsLoggerEnabled
+      )
+    }
+  }
+
+  private[this] def configureOpenTelemetrySdk
+  (
+    cosmosClientConfiguration: CosmosClientConfiguration,
+    azMonConfig: AzureMonitorConfig
+  ) : OpenTelemetrySdk = {
+
+    System.setProperty("otel.java.global-autoconfigure.enabled", "true")
+
+    val sdkBuilder = AutoConfiguredOpenTelemetrySdk
+      .builder
+      .addPropertiesCustomizer(_ => {
+        val additionalSystemPropertyOverrides = new util.HashMap[String, String](2)
+        additionalSystemPropertyOverrides.put(
+          Configs.APPLICATIONINSIGHTS_CONNECTION_STRING,
+          azMonConfig.connectionString)
+        additionalSystemPropertyOverrides.put(
+          "otel.java.global-autoconfigure.enabled",
+          "true")
+        additionalSystemPropertyOverrides.put(
+          "otel.metrics.exporter",
+          "none")
+        additionalSystemPropertyOverrides.put(
+          "otel.traces.exporter", "azure_monitor")
+        additionalSystemPropertyOverrides.put(
+          "otel.logs.exporter", "azure_monitor")
+        additionalSystemPropertyOverrides.put(
+          "applicationinsights.live.metrics.enabled",
+          azMonConfig.liveMetricsEnabled.toString)
+
+        additionalSystemPropertyOverrides
+      })
+
+    val azMonitorOptions: AzureMonitorAutoConfigureOptions =
+      if (azMonConfig.authEnabled) {
+        new AzureMonitorAutoConfigureOptions()
+          .connectionString(azMonConfig.connectionString)
+          //.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+          .credential(
+            toTokenCredential(
+              cosmosClientConfiguration,
+              azMonConfig.authConfig.get))
+      } else {
+        new AzureMonitorAutoConfigureOptions()
+          .connectionString(azMonConfig.connectionString)
+      }
+
+    AzureMonitorAutoConfigure.customize(sdkBuilder, azMonitorOptions)
+
+    val openTelemetryWithMeterProvider: OpenTelemetrySdk = sdkBuilder
+      .addResourceCustomizer((resource, configProperties) => {
+        val resourceBuilder = resource
+          .toBuilder
+
+        if (resource.getAttributes.get(AttributeKey.stringKey("service.name")).startsWith("unknown_service")) {
+          logInfo("Initializing Resource Customizer with Service attributes")
+          resourceBuilder
+            .put("service.namespace", "azure-cosmos-spark")
+            .put("service.name", CosmosConstants.currentName)
+            .put("service.version", CosmosConstants.currentVersion)
+            .put("service.instance.id", CosmosConstants.currentVersion)
+        } else {
+          logInfo("Initializing Resource Customizer without Service attributes")
+        }
+
+        resourceBuilder
+          .put("azure.cosmosdb.env.spark", cosmosClientConfiguration.sparkEnvironmentInfo)
+          .put("azure.cosmosdb.env.machine.id", ClientTelemetry.getMachineId(null))
+          .build()
+      })
+      .addSamplerCustomizer((oldSampler, _) => {
+        // OpenTelemetry only allows head-sampling - meaning you have to make a choice
+        // whether to sample-in the span when the Span is started
+        // this allows controlling predictable amount of spans being processed
+        // It has a few drawbacks as well - you can't change the sampling decision based
+        // on the outcome of the span (when the span ends) - so, you can't evert the decision
+        // to sample-in a previously sampled-out span when an error happens
+        // This is why i would strongly encourage any customer to also enable sampled
+        // diagnostics - those will at least make sure diagnostic logs are maintained for
+        // errors - including the Cosmos diagnostics.
+
+        Sampler
+          .parentBased(
+            new CosmosMaxCountPerIntervalSpanHeadSampler(
+              azMonConfig.samplingRateMaxCount,
+              azMonConfig.samplingRateIntervalInSeconds,
+              azMonConfig.samplingRate
+            )
+          )
+      })
+      .addLogRecordProcessorCustomizer((processor, _) => {
+        logInfo(s"$processor")
+        processor
+      })
+      .addLogRecordExporterCustomizer((exporter, _) => new CosmosMaxCountPerIntervalLogExporter(
+        exporter,
+        Severity.WARN,
+        azMonConfig.logSamplingMaxCount,
+        azMonConfig.logSamplingIntervalInSeconds
+      ))
+      .build
+      .getOpenTelemetrySdk
+
+    // Only way to disable metrics is the hack to clone OpenTelemetrySdk and override MeterProvider
+    // with effective noop implementation
+    // SdkMeterProvider is effectively a no-op as long as no reader registrations exist
+    val noopSdkMeterProvider = SdkMeterProvider.builder()
+      .build()
+
+    OpenTelemetrySdk
+      .builder()
+      .setPropagators(openTelemetryWithMeterProvider.getPropagators)
+      .setLoggerProvider(openTelemetryWithMeterProvider.getSdkLoggerProvider)
+      .setTracerProvider(openTelemetryWithMeterProvider.getSdkTracerProvider)
+      .setMeterProvider(noopSdkMeterProvider)
+      .build()
+  }
+
+  private[this] def configureLoggingForAzureMonitor
+  (
+    cosmosClientConfiguration: CosmosClientConfiguration,
+    azMonConfig: AzureMonitorConfig,
+    openTelemetry: OpenTelemetrySdk
+  ): Unit = {
+    // 1. Get the context and config
+    val ctx = LogManager.getContext(false).asInstanceOf[LoggerContext]
+    val config = ctx.getConfiguration
+
+    // 2. Create the appender and filter
+    val filter: Filter = ThresholdFilter.createFilter(
+      azMonConfig.logLevel, // Minimum log level to emit (e.g., WARN or ERROR)
+      Result.ACCEPT, // If above threshold
+      Result.DENY // If below threshold
+    )
+
+    val otelAppenderBuilder: OpenTelemetryAppender.Builder[OpenTelemetryAppender.Builder[_]] =
+      OpenTelemetryAppender.builder()
+
+    otelAppenderBuilder.setName("otel-appender")
+    otelAppenderBuilder.setFilter(filter)
+    otelAppenderBuilder.setOpenTelemetry(openTelemetry)
+    val otelAppender = otelAppenderBuilder.build()
+
+    otelAppender.start
+
+    // 3. Add to config
+    config.addAppender(otelAppender)
+
+    // 4. Attach to **all** existing logger configs
+    config.getLoggers.values().forEach { loggerConfig =>
+      loggerConfig.addAppender(otelAppender, azMonConfig.logLevel, filter)
+    }
+
+    // 5. Also attach to root logger
+    val rootLoggerConfig = config.getLoggerConfig(LogManager.ROOT_LOGGER_NAME)
+    rootLoggerConfig.addAppender(otelAppender, azMonConfig.logLevel, filter)
+
+    ctx.updateLoggers // Apply changes
+  }
+
+  private[this] def configureAzureMonitorDiagnostics
+  (
+    cosmosClientConfiguration: CosmosClientConfiguration
+  ): TracingOptions = {
+    val azMonConfig = cosmosClientConfiguration.azureMonitorConfig.get
+    val openTelemetry = configureOpenTelemetrySdk(cosmosClientConfiguration, azMonConfig)
+
+    if (azMonConfig.logLevel != Level.OFF) {
+      configureLoggingForAzureMonitor(cosmosClientConfiguration, azMonConfig, openTelemetry)
+    }
+
+    // Pass OpenTelemetry container to TracingOptions.
+    val tracingOptions = new OpenTelemetryTracingOptions()
+      .setOpenTelemetry(openTelemetry)
+      .setEnabled(true)
+    val tracerProviderName = Option(tracingOptions.getTracerProvider)
+      .map(p => p.getCanonicalName)
+      .getOrElse("NO_TRACER_PROVIDER")
+    logInfo(
+      s"TracingOptions - enabled: ${tracingOptions.setEnabled(true)}, "
+        + s"tracerProvider: $tracerProviderName")
+
+    val legacyTelemetryConfig = TelemetryConfiguration
+      .createDefault()
+    legacyTelemetryConfig.setConnectionString(azMonConfig.connectionString)
+
+    val azureMonitorLegacyMeterConfig = new CosmosAzureMonitorLegacyConfig(
+      60,
+      azMonConfig.connectionString
+    )
+
+    val azureMonitorRegistry = AzureMonitorMeterRegistry
+      .builder(azureMonitorLegacyMeterConfig)
+      .telemetryConfiguration(legacyTelemetryConfig)
+      .clock(Clock.SYSTEM)
+      .build()
+
+    CosmosClientMetrics.addMeterRegistry(azureMonitorRegistry)
+
+    tracingOptions
+  }
+
+  private[this] def configureDiagnosticsCore
+  (
+    cosmosClientConfiguration: CosmosClientConfiguration,
+    builder: CosmosClientBuilder,
+    isAzureMonitorOpenTelemetryEnabled: Boolean,
+    isSampledDiagnosticsLoggerEnabled: Boolean
+  ) : Unit =  {
+
+    val customApplicationNameSuffix = cosmosClientConfiguration.customApplicationNameSuffix
+      .getOrElse("")
+
+    val clientCorrelationId = SparkSession.getActiveSession match {
+      case Some(session) =>
+        val ctx = session.sparkContext
+
+        if (Strings.isNullOrWhiteSpace(customApplicationNameSuffix)) {
+          s"${CosmosClientMetrics.executorId}-${ctx.appName}"
+        } else {
+          s"$customApplicationNameSuffix-${CosmosClientMetrics.executorId}-${ctx.appName}"
+        }
+      case None => customApplicationNameSuffix
+    }
+
+    var telemetryConfig = ImplementationBridgeHelpers
+      .CosmosClientTelemetryConfigHelper
+      .getCosmosClientTelemetryConfigAccessor
+      .setOtelSpanAttributeNamingSchema(
+        new CosmosClientTelemetryConfig().clientCorrelationId(clientCorrelationId),
+        "V1"
+      )
+
+    logInfo(s"isAzureMonitorOpenTelemetryEnabled: $isAzureMonitorOpenTelemetryEnabled")
+
+    if (isAzureMonitorOpenTelemetryEnabled) {
+      val tracingOptions = configureAzureMonitorDiagnostics(cosmosClientConfiguration)
+
+      telemetryConfig = telemetryConfig
+        .tracingOptions(tracingOptions)
+        .enableTransportLevelTracing()
+    }
+
+    val hasAnyRealMeterRegistry = if (CosmosClientMetrics.meterRegistry.isDefined) {
+      hasAnyMeterRegistry(CosmosClientMetrics.meterRegistry.get)
+    } else {
+      false
+    }
+
+    if (hasAnyRealMeterRegistry) {
+      val metricsOptions = new CosmosMicrometerMetricsOptions()
+        .meterRegistry(CosmosClientMetrics.meterRegistry.get)
+        .configureDefaultTagNames(
+          CosmosMetricTagName.CONTAINER,
+          CosmosMetricTagName.CLIENT_CORRELATION_ID,
+          CosmosMetricTagName.OPERATION,
+          CosmosMetricTagName.OPERATION_STATUS_CODE,
+          CosmosMetricTagName.PARTITION_KEY_RANGE_ID,
+          CosmosMetricTagName.SERVICE_ADDRESS,
+          CosmosMetricTagName.ADDRESS_RESOLUTION_COLLECTION_MAP_REFRESH,
+          CosmosMetricTagName.ADDRESS_RESOLUTION_FORCED_REFRESH,
+          CosmosMetricTagName.REQUEST_STATUS_CODE,
+          CosmosMetricTagName.REQUEST_OPERATION_TYPE
+        )
+        .setMetricCategories(
+          CosmosMetricCategory.SYSTEM,
+          CosmosMetricCategory.OPERATION_SUMMARY,
+          CosmosMetricCategory.REQUEST_SUMMARY,
+          CosmosMetricCategory.DIRECT_ADDRESS_RESOLUTIONS,
+          CosmosMetricCategory.DIRECT_REQUESTS,
+          CosmosMetricCategory.DIRECT_CHANNELS
+        )
+        .applyDiagnosticThresholdsForTransportLevelMeters(isSampledDiagnosticsLoggerEnabled)
+
+      telemetryConfig = telemetryConfig.metricsOptions(metricsOptions)
+    }
+
+    if (isSampledDiagnosticsLoggerEnabled) {
+      val sampledDiagnosticsLoggerConfig = cosmosClientConfiguration.sampledDiagnosticsLoggerConfig.get
+      val diagnosticsLogger = new CosmosSamplingDiagnosticsLogger(
+        sampledDiagnosticsLoggerConfig.samplingRateMaxCount,
+        sampledDiagnosticsLoggerConfig.samplingRateIntervalInSeconds
+      )
+
+      var thresholds = new CosmosDiagnosticsThresholds()
+        .setRequestChargeThreshold(sampledDiagnosticsLoggerConfig.thresholdsRequestCharge.toFloat)
+        .setPointOperationLatencyThreshold(
+          Duration.ofMillis(sampledDiagnosticsLoggerConfig.thresholdsPointOperationLatencyInMs)
+        )
+        .setNonPointOperationLatencyThreshold(
+          Duration.ofMillis(sampledDiagnosticsLoggerConfig.thresholdsNonPointOperationLatencyInMs)
+        )
+
+      val failureHandler: BiPredicate[Integer, Integer] = (statusCode, subStatusCode) => {
+        if (statusCode < 400) {
+          false
+        } else if (
+          (statusCode == 404 && subStatusCode == 0)
+            || statusCode == 409
+            || statusCode == 412
+        ) {
+          false
+        } else {
+          statusCode != 429 || (subStatusCode > 0 && subStatusCode != 3200)
+        }
+      }
+
+      thresholds.setFailureHandler(failureHandler)
+      telemetryConfig = telemetryConfig.diagnosticsThresholds(thresholds)
+
+
+      telemetryConfig = telemetryConfig.diagnosticsHandler(diagnosticsLogger)
+    }
+
+    builder.clientTelemetryConfig(telemetryConfig)
+  }
+
   // scalastyle:off method.length
   // scalastyle:off cyclomatic.complexity
   private[this] def createCosmosAsyncClient(cosmosClientConfiguration: CosmosClientConfiguration,
@@ -298,300 +635,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case _ => builder.credential(toTokenCredential(cosmosClientConfiguration, authConfig))
       }
 
-      val isAzureMonitorOpenTelemetryEnabled = cosmosClientConfiguration.azureMonitorConfig.isDefined &&
-          cosmosClientConfiguration.azureMonitorConfig.get.enabled
-
-      val isSampledDiagnosticsLoggerEnabled = cosmosClientConfiguration.sampledDiagnosticsLoggerConfig.isDefined
-
-      if (isSampledDiagnosticsLoggerEnabled || isAzureMonitorOpenTelemetryEnabled) {
-
-          val customApplicationNameSuffix = cosmosClientConfiguration.customApplicationNameSuffix
-              .getOrElse("")
-
-          val clientCorrelationId = SparkSession.getActiveSession match {
-              case Some(session) =>
-                  val ctx = session.sparkContext
-
-                  if (Strings.isNullOrWhiteSpace(customApplicationNameSuffix)) {
-                      s"${CosmosClientMetrics.executorId}-${ctx.appName}"
-                  } else {
-                      s"$customApplicationNameSuffix-${CosmosClientMetrics.executorId}-${ctx.appName}"
-                  }
-              case None => customApplicationNameSuffix
-          }
-
-          var telemetryConfig = ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor
-            .setOtelSpanAttributeNamingSchema(
-              new CosmosClientTelemetryConfig().clientCorrelationId(clientCorrelationId),
-              "V1"
-            )
-
-          logInfo(s"isAzureMonitorOpenTelemetryEnabled: $isAzureMonitorOpenTelemetryEnabled")
-
-          if (isAzureMonitorOpenTelemetryEnabled) {
-            val azMonConfig = cosmosClientConfiguration.azureMonitorConfig.get
-            System.setProperty("otel.java.global-autoconfigure.enabled", "true")
-
-            val effectiveConnectionString = azMonConfig.connectionString
-            val sdkBuilder = AutoConfiguredOpenTelemetrySdk
-              .builder
-              .addPropertiesCustomizer(_ => {
-                val additionalSystemPropertyOverrides = new util.HashMap[String, String](2)
-                additionalSystemPropertyOverrides.put(
-                  Configs.APPLICATIONINSIGHTS_CONNECTION_STRING,
-                  effectiveConnectionString)
-                additionalSystemPropertyOverrides.put(
-                  "otel.java.global-autoconfigure.enabled",
-                  "true")
-                additionalSystemPropertyOverrides.put(
-                  "otel.metrics.exporter",
-                  "none")
-                additionalSystemPropertyOverrides.put(
-                  "otel.traces.exporter", "azure_monitor")
-                additionalSystemPropertyOverrides.put(
-                  "otel.logs.exporter", "azure_monitor")
-                additionalSystemPropertyOverrides.put(
-                  "applicationinsights.live.metrics.enabled",
-                  azMonConfig.liveMetricsEnabled.toString)
-
-                additionalSystemPropertyOverrides
-              })
-
-            val azMonitorOptions: AzureMonitorAutoConfigureOptions =
-              if (azMonConfig.authEnabled) {
-                new AzureMonitorAutoConfigureOptions()
-                  .connectionString(effectiveConnectionString)
-                  //.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                  .credential(
-                    toTokenCredential(
-                      cosmosClientConfiguration,
-                      azMonConfig.authConfig.get))
-              } else {
-                new AzureMonitorAutoConfigureOptions()
-                  .connectionString(effectiveConnectionString)
-              }
-
-            AzureMonitorAutoConfigure.customize(sdkBuilder, azMonitorOptions)
-
-            val openTelemetryWithMeterProvider : OpenTelemetrySdk = sdkBuilder
-              .addResourceCustomizer((resource, configProperties) => {
-                val resourceBuilder = resource
-                  .toBuilder
-
-                if (resource.getAttributes.get(AttributeKey.stringKey("service.name")).startsWith("unknown_service")) {
-                  logInfo("Initializing Resource Customizer with Service attributes")
-                  resourceBuilder
-                    .put("service.namespace", "azure-cosmos-spark")
-                    .put("service.name", CosmosConstants.currentName)
-                    .put("service.version", CosmosConstants.currentVersion)
-                    .put("service.instance.id", CosmosConstants.currentVersion)
-                } else {
-                  logInfo("Initializing Resource Customizer without Service attributes")
-                }
-
-                resourceBuilder
-                  .put ("azure.cosmosdb.env.spark", cosmosClientConfiguration.sparkEnvironmentInfo)
-                  .put ("azure.cosmosdb.env.machine.id", ClientTelemetry.getMachineId(null))
-                  .build()
-              })
-              .addSamplerCustomizer((oldSampler, _) => {
-                // OpenTelemetry only allows head-sampling - meaning you have to make a choice
-                // whether to sample-in the span when the Span is started
-                // this allows controlling predictable amount of spans being processed
-                // It has a few drawbacks as well - you can't change the sampling decision based
-                // on the outcome of the span (when the span ends) - so, you can't evert the decision
-                // to sample-in a previously sampled-out span when an error happens
-                // This is why i would strongly encourage any customer to also enable sampled
-                // diagnostics - those will at least make sure diagnostic logs are maintained for
-                // errors - including the Cosmos diagnostics.
-
-                Sampler
-                  .parentBased(
-                    new CosmosMaxCountPerIntervalSpanHeadSampler(
-                      azMonConfig.samplingRateMaxCount,
-                      azMonConfig.samplingRateIntervalInSeconds,
-                      azMonConfig.samplingRate
-                    )
-                  )
-              })
-              .addLogRecordProcessorCustomizer((processor, _) => {
-                logInfo(s"$processor")
-                processor
-              })
-              .addLogRecordExporterCustomizer((exporter, _) => new CosmosMaxCountPerIntervalLogExporter(
-                exporter,
-                Severity.WARN,
-                azMonConfig.logSamplingMaxCount,
-                azMonConfig.logSamplingIntervalInSeconds
-              ))
-              .build
-              .getOpenTelemetrySdk
-
-            // Only way to disable metrics is the hack to clone OpenTelemetrySdk and override MeterProvider
-            // with effective noop implementation
-            // SdkMeterProvider is effectively a no-op as long as no reader registrations exist
-            val noopSdkMeterProvider = SdkMeterProvider.builder()
-              .build()
-
-            val openTelemetry = OpenTelemetrySdk
-              .builder()
-              .setPropagators(openTelemetryWithMeterProvider.getPropagators)
-              .setLoggerProvider(openTelemetryWithMeterProvider.getSdkLoggerProvider)
-              .setTracerProvider(openTelemetryWithMeterProvider.getSdkTracerProvider)
-              .setMeterProvider(noopSdkMeterProvider)
-              .build()
-
-            if (azMonConfig.logLevel != Level.OFF) {
-              // 1. Get the context and config
-              val ctx = LogManager.getContext(false).asInstanceOf[LoggerContext]
-              val config = ctx.getConfiguration
-
-              // 2. Create the appender and filter
-              val filter: Filter = ThresholdFilter.createFilter(
-                azMonConfig.logLevel, // Minimum log level to emit (e.g., WARN or ERROR)
-                Result.ACCEPT, // If above threshold
-                Result.DENY // If below threshold
-              )
-
-              val otelAppenderBuilder: OpenTelemetryAppender.Builder[OpenTelemetryAppender.Builder[_]] =
-                OpenTelemetryAppender.builder()
-
-              otelAppenderBuilder.setName("otel-appender")
-              otelAppenderBuilder.setFilter(filter)
-              otelAppenderBuilder.setOpenTelemetry(openTelemetry)
-              val otelAppender = otelAppenderBuilder.build()
-
-              otelAppender.start
-
-              // 3. Add to config
-              config.addAppender(otelAppender)
-
-              // 4. Attach to **all** existing logger configs
-              config.getLoggers.values().forEach { loggerConfig =>
-                loggerConfig.addAppender(otelAppender, azMonConfig.logLevel, filter)
-              }
-
-              // 5. Also attach to root logger
-              val rootLoggerConfig = config.getLoggerConfig(LogManager.ROOT_LOGGER_NAME)
-              rootLoggerConfig.addAppender(otelAppender, azMonConfig.logLevel, filter)
-
-              ctx.updateLoggers // Apply changes
-            }
-
-            // Pass OpenTelemetry container to TracingOptions.
-            val tracingOptions = new OpenTelemetryTracingOptions()
-              .setOpenTelemetry(openTelemetry)
-              .setEnabled(true)
-            val tracerProviderName = Option(tracingOptions.getTracerProvider)
-              .map(p => p.getCanonicalName)
-              .getOrElse("NO_TRACER_PROVIDER")
-            logInfo(
-              s"TracingOptions - enabled: ${tracingOptions.setEnabled(true)}, "
-                + s"tracerProvider: $tracerProviderName")
-
-            for (i <- 1 to 10) {
-              logError(s"Test $i")
-              val log4jlogger = LogManager.getLogger(LogManager.ROOT_LOGGER_NAME)
-              log4jlogger.error("HelloWorld " + i)
-            }
-
-            val legacyTelemetryConfig = TelemetryConfiguration
-              .createDefault()
-            legacyTelemetryConfig.setConnectionString(effectiveConnectionString)
-
-            val azureMonitorLegacyMeterConfig = new CosmosAzureMonitorLegacyConfig(
-              60,
-              effectiveConnectionString
-            )
-
-            val azureMonitorRegistry = AzureMonitorMeterRegistry
-              .builder(azureMonitorLegacyMeterConfig)
-              .telemetryConfiguration(legacyTelemetryConfig)
-              .clock(Clock.SYSTEM)
-              .build()
-
-            CosmosClientMetrics.addMeterRegistry(azureMonitorRegistry)
-
-            telemetryConfig = telemetryConfig
-              .tracingOptions(tracingOptions)
-              .enableTransportLevelTracing()
-          }
-
-          val hasAnyRealMeterRegistry = if (CosmosClientMetrics.meterRegistry.isDefined) {
-            hasAnyMeterRegistry(CosmosClientMetrics.meterRegistry.get)
-          } else {
-            false
-          }
-
-          if (hasAnyRealMeterRegistry) {
-            val metricsOptions = new CosmosMicrometerMetricsOptions()
-              .meterRegistry(CosmosClientMetrics.meterRegistry.get)
-              .configureDefaultTagNames(
-                CosmosMetricTagName.CONTAINER,
-                CosmosMetricTagName.CLIENT_CORRELATION_ID,
-                CosmosMetricTagName.OPERATION,
-                CosmosMetricTagName.OPERATION_STATUS_CODE,
-                CosmosMetricTagName.PARTITION_KEY_RANGE_ID,
-                CosmosMetricTagName.SERVICE_ADDRESS,
-                CosmosMetricTagName.ADDRESS_RESOLUTION_COLLECTION_MAP_REFRESH,
-                CosmosMetricTagName.ADDRESS_RESOLUTION_FORCED_REFRESH,
-                CosmosMetricTagName.REQUEST_STATUS_CODE,
-                CosmosMetricTagName.REQUEST_OPERATION_TYPE
-              )
-              .setMetricCategories(
-                CosmosMetricCategory.SYSTEM,
-                CosmosMetricCategory.OPERATION_SUMMARY,
-                CosmosMetricCategory.REQUEST_SUMMARY,
-                CosmosMetricCategory.DIRECT_ADDRESS_RESOLUTIONS,
-                CosmosMetricCategory.DIRECT_REQUESTS,
-                CosmosMetricCategory.DIRECT_CHANNELS
-              )
-              .applyDiagnosticThresholdsForTransportLevelMeters(isSampledDiagnosticsLoggerEnabled)
-
-            telemetryConfig = telemetryConfig.metricsOptions(metricsOptions)
-          }
-
-          if (isSampledDiagnosticsLoggerEnabled) {
-            val sampledDiagnosticsLoggerConfig = cosmosClientConfiguration.sampledDiagnosticsLoggerConfig.get
-            val diagnosticsLogger = new CosmosSamplingDiagnosticsLogger(
-              sampledDiagnosticsLoggerConfig.samplingRateMaxCount,
-              sampledDiagnosticsLoggerConfig.samplingRateIntervalInSeconds
-            )
-
-            var thresholds = new CosmosDiagnosticsThresholds()
-                .setRequestChargeThreshold(sampledDiagnosticsLoggerConfig.thresholdsRequestCharge.toFloat)
-                .setPointOperationLatencyThreshold(
-                    Duration.ofMillis(sampledDiagnosticsLoggerConfig.thresholdsPointOperationLatencyInMs)
-                )
-                .setNonPointOperationLatencyThreshold(
-                    Duration.ofMillis(sampledDiagnosticsLoggerConfig.thresholdsNonPointOperationLatencyInMs)
-                )
-
-            val failureHandler: BiPredicate[Integer, Integer] = (statusCode, subStatusCode) => {
-              if (statusCode < 400) {
-                false
-              } else if (
-                (statusCode == 404 && subStatusCode == 0)
-                || statusCode == 409
-                || statusCode == 412
-              ) {
-                false
-              } else {
-                statusCode != 429 || (subStatusCode > 0 && subStatusCode != 3200)
-              }
-            }
-
-            thresholds.setFailureHandler(failureHandler)
-            telemetryConfig = telemetryConfig.diagnosticsThresholds(thresholds)
-
-
-            telemetryConfig = telemetryConfig.diagnosticsHandler(diagnosticsLogger)
-          }
-
-          builder.clientTelemetryConfig(telemetryConfig)
-      }
+      configureDiagnostics(cosmosClientConfiguration, builder)
 
       if (cosmosClientConfiguration.disableTcpConnectionEndpointRediscovery) {
           builder.endpointDiscoveryEnabled(false)

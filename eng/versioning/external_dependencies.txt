@@ -271,8 +271,7 @@ cosmos_commons-io:commons-io;2.4
 cosmos_com.microsoft.azure:applicationinsights-core;2.6.4
 cosmos_io.micrometer:micrometer-core;1.15.1
 cosmos_io.micrometer:micrometer-registry-azure-monitor;1.15.1
-cosmos_io.opentelemetry.instrumentation:opentelemetry-log4j-appender-2.17;1.49.0
-
+cosmos_io.opentelemetry.instrumentation:opentelemetry-log4j-appender-2.17;2.15.0-alpha
 
 # Cosmos Spark connector tests only
 cosmos_org.scalatest:scalatest_2.12;3.2.2

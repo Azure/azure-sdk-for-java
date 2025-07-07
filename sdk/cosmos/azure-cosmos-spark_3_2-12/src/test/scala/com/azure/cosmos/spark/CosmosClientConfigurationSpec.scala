@@ -271,7 +271,6 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     val miAuthCfg = azMonCfg.authConfig.get.asInstanceOf[CosmosManagedIdentityAuthConfig]
     miAuthCfg.tenantId shouldEqual "SomeTenantId"
 
-    AzureMonitorConfig.resetForUsageInTest()
     val userConfig_All = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
       "spark.cosmos.accountKey" -> "xyz",
@@ -292,8 +291,16 @@ class CosmosClientConfigurationSpec extends UnitSpec {
       "spark.cosmos.diagnostics.azureMonitor.log.sampling.maxCount" -> "33",
       "spark.cosmos.diagnostics.azureMonitor.log.sampling.intervalInSeconds" -> "3"
     )
-    configuration = CosmosClientConfiguration(userConfig_All, readConsistencyStrategy, sparkEnvironmentInfo)
+    try {
+      configuration = CosmosClientConfiguration(userConfig_All, readConsistencyStrategy, sparkEnvironmentInfo)
+      fail("Should have thrown an exception")
+    } catch {
+      case e: IllegalStateException => e.getMessage.contains("spark.cosmos.diagnostics.azureMonitor.*") shouldEqual true
+    }
 
+    AzureMonitorConfig.resetForUsageInTest()
+
+    configuration = CosmosClientConfiguration(userConfig_All, readConsistencyStrategy, sparkEnvironmentInfo)
     configuration.endpoint shouldEqual userConfig_All("spark.cosmos.accountEndpoint")
     configuration.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual userConfig_All("spark.cosmos.accountKey")
     configuration.readConsistencyStrategy shouldEqual readConsistencyStrategy
