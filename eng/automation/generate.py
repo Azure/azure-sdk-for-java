@@ -153,7 +153,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
 
     for readme in config["relatedReadmeMdFiles"]:
         match = re.search(
-            "specification/([^/]+)/resource-manager(/.*)*/readme.md",
+            r"specification/([^/]+)/resource-manager((?:/[^/]+)*)/readme.md",
             readme,
             re.IGNORECASE,
         )
@@ -453,7 +453,7 @@ def main():
 
         readme = args["readme"]
         match = re.match(
-            r"specification/([^/]+)/resource-manager(/.*)*/readme.md",
+            r"specification/([^/]+)/resource-manager((?:/[^/]+)*)/readme.md",
             readme,
             re.IGNORECASE,
         )
