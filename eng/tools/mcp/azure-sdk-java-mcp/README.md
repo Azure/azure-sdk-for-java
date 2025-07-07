@@ -43,8 +43,6 @@ npm run build
 
 ### Step 1: Install and Build the MCP Server
 
-Add the following configuration to your `.vscode/mcp.json` file:
-
 ```
 $ cd eng/tools/mcp/azure-sdk-java-mcp
 $ npm install
