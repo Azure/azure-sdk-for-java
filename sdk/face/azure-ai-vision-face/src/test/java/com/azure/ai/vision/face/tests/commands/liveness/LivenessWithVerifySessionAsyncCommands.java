@@ -18,7 +18,6 @@ class LivenessWithVerifySessionAsyncCommands implements ILivenessWithVerifySessi
 
     public Mono<LivenessWithVerifySession>
         createLivenessWithVerifySession(CreateLivenessWithVerifySessionContent content) {
-        // TODO: Fix the verifyimage parameter to add it to the createlivenesswith verify session content
         return mAsyncClient.createLivenessWithVerifySession(content);
     }
 
