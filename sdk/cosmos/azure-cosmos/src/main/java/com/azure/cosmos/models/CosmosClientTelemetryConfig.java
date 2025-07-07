@@ -99,7 +99,7 @@ public final class CosmosClientTelemetryConfig {
     /**
      * Enables or disables sending Cosmos DB client telemetry to the Azure Cosmos DB Service
      *
-     * @deprecated is is not possible to send the telemetry to the service. But client-side telemetry can be 
+     * @deprecated is is not possible to send the telemetry to the service. But client-side telemetry can be
      * enabled via {@link CosmosClientTelemetryConfig#diagnosticsHandler(CosmosDiagnosticsHandler)},
      * {@link CosmosClientTelemetryConfig#metricsOptions(MetricsOptions)} and
      * {@link CosmosClientTelemetryConfig#tracingOptions(TracingOptions)}.
@@ -108,7 +108,7 @@ public final class CosmosClientTelemetryConfig {
      * enabled or not
      * @return current CosmosClientTelemetryConfig
      */
-    @Deprecated()    
+    @Deprecated()
     public CosmosClientTelemetryConfig sendClientTelemetryToService(boolean enabled) {
         return this;
     }
@@ -380,10 +380,10 @@ public final class CosmosClientTelemetryConfig {
         this.isTransportLevelTracingEnabled = true;
         return this;
     }
-    
+
     /**
      * Enables printing query in db.statement attribute and diagnostic logs. By default, query is not printed.
-     * Users have the option to enable printing parameterized or all queries, 
+     * Users have the option to enable printing parameterized or all queries,
      * but has to beware that customer data may be shown when the later option is chosen
      * It's the user's responsibility to sanitize the queries if necessary.
      * @param showQueryMode the mode for printing none, parameterized or all of the query statements
@@ -677,7 +677,7 @@ public final class CosmosClientTelemetryConfig {
                 public ShowQueryMode showQueryMode(CosmosClientTelemetryConfig config) {
                     return config.showQueryMode;
                 }
-       
+
                 @Override
                 public double[] getDefaultPercentiles(CosmosClientTelemetryConfig config) {
                     return config.micrometerMetricsOptions.getDefaultPercentiles();

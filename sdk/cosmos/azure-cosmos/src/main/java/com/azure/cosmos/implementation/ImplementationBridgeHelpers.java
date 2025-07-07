@@ -1640,7 +1640,10 @@ public class ImplementationBridgeHelpers {
             Collection<CosmosDiagnosticsHandler> getDiagnosticHandlers(CosmosClientTelemetryConfig config);
             void setAccountName(CosmosClientTelemetryConfig config, String accountName);
             String getAccountName(CosmosClientTelemetryConfig config);
-            CosmosClientTelemetryConfig setOtelSpanAttributeNamingSchema(CosmosClientTelemetryConfig config, String attributeNamingScheme);
+            CosmosClientTelemetryConfig setOtelSpanAttributeNamingSchema(
+                CosmosClientTelemetryConfig config,
+                String attributeNamingScheme
+            );
             EnumSet<AttributeNamingScheme> getOtelSpanAttributeNamingSchema(CosmosClientTelemetryConfig config);
             void setClientCorrelationTag(CosmosClientTelemetryConfig config, Tag clientCorrelationTag);
             Tag getClientCorrelationTag(CosmosClientTelemetryConfig config);

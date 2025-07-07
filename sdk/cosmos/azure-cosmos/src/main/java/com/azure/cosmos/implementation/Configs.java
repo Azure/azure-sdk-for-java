@@ -73,11 +73,6 @@ public class Configs {
 
     public static final String DEFAULT_ITEM_SERIALIZATION_INCLUSION_MODE = "Always";
 
-    public static final String OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME = "COSMOS.OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME";
-    public static final String OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME_VARIABLE = "COSMOS_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME";
-
-    public static final String DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME = "All";
-
     public static final boolean DEFAULT_E2E_FOR_NON_POINT_DISABLED_DEFAULT = false;
     public static final String DEFAULT_E2E_FOR_NON_POINT_DISABLED = "COSMOS.E2E_FOR_NON_POINT_DISABLED";
     public static final String DEFAULT_E2E_FOR_NON_POINT_DISABLED_VARIABLE = "COSMOS_E2E_FOR_NON_POINT_DISABLED";
@@ -364,6 +359,12 @@ public class Configs {
     public static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "applicationinsights.connection.string";
     public static final String APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE = "!!!!CHANGEBACKAFTERTESTING!!!!APPLICATIONINSIGHTS_CONNECTION_STRING";
 
+    // Config to indicate whether to emit Open Telemetry traces with attribute names following the
+    // original implementation (`PRE_V1_RELEASE`) or the official semantic convention (`V1`) or both (`ALL`)
+    public static final String OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME = "COSMOS.OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME";
+    public static final String OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME_VARIABLE = "COSMOS_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME";
+
+    public static final String DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME = "All";
 
     public static int getCPUCnt() {
         return CPU_CNT;
@@ -601,20 +602,6 @@ public class Configs {
         }
 
         return DEFAULT_ITEM_SERIALIZATION_INCLUSION_MODE;
-    }
-
-    public static EnumSet<AttributeNamingScheme> getDefaultOtelSpanAttributeNamingScheme() {
-        String valueFromSystemProperty = System.getProperty(OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME);
-        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return AttributeNamingScheme.parse(valueFromSystemProperty);
-        }
-
-        String valueFromEnvVariable = System.getenv(OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME_VARIABLE);
-        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return AttributeNamingScheme.parse(valueFromEnvVariable);
-        }
-
-        return AttributeNamingScheme.parse(DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME);
     }
 
     public static boolean isDefaultE2ETimeoutDisabledForNonPointOperations() {
@@ -1226,5 +1213,19 @@ public class Configs {
             APPLICATIONINSIGHTS_CONNECTION_STRING,
             System.getenv(APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE)
         );
+    }
+    
+    public static EnumSet<AttributeNamingScheme> getDefaultOtelSpanAttributeNamingScheme() {
+        String valueFromSystemProperty = System.getProperty(OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return AttributeNamingScheme.parse(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return AttributeNamingScheme.parse(valueFromEnvVariable);
+        }
+
+        return AttributeNamingScheme.parse(DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME);
     }
 }
