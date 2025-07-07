@@ -22,11 +22,9 @@ import io.clientcore.http.netty4.implementation.Netty4AlpnHandler;
 import io.clientcore.http.netty4.implementation.Netty4ChannelBinaryData;
 import io.clientcore.http.netty4.implementation.Netty4ConnectionPool;
 import io.clientcore.http.netty4.implementation.Netty4ConnectionPoolKey;
-import io.clientcore.http.netty4.implementation.Netty4EagerConsumeChannelHandler;
 import io.clientcore.http.netty4.implementation.Netty4PipelineCleanupHandler;
 import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
 import io.clientcore.http.netty4.implementation.Netty4ResponseHandler;
-import io.clientcore.http.netty4.implementation.ResponseBodyHandling;
 import io.clientcore.http.netty4.implementation.ResponseStateInfo;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -143,74 +141,18 @@ class NettyHttpClient implements HttpClient {
             throw LOGGER.throwableAtError().log(errorReference.get(), CoreException::from);
         }
 
-        Response<BinaryData> response;
-        Channel channelToRelease;
-
+        //Response<BinaryData> response;
+        //Channel channelToRelease;
+        BinaryData body;
         if (info.isChannelConsumptionComplete()) {
-            // The network response is already complete, handle creating our Response based on the request method and
-            // response headers.
-            BinaryData body = BinaryData.empty();
             ByteArrayOutputStream eagerContent = info.getEagerContent();
-            if (info.getResponseBodyHandling() != ResponseBodyHandling.IGNORE && eagerContent.size() > 0) {
-                // Set the response body as the first HttpContent received if the request wasn't a HEAD request and
-                // there was body content.
-                body = BinaryData.fromBytes(eagerContent.toByteArray());
-            }
-            channelToRelease = info.getResponseChannel();
-            response = new Response<>(request, info.getStatusCode(), info.getHeaders(), body);
-        } else {
-            // Otherwise we aren't finished, handle the remaining content according to the documentation in
-            // 'channelRead()'.
-            BinaryData body = BinaryData.empty();
-            ResponseBodyHandling bodyHandling = info.getResponseBodyHandling();
-            Channel channel = info.getResponseChannel();
-            if (bodyHandling == ResponseBodyHandling.IGNORE) {
-                // TODO: Don't block here?
-                // We're ignoring the response content.
-                CountDownLatch drainLatch = new CountDownLatch(1);
-                channel.pipeline().addLast(new Netty4EagerConsumeChannelHandler(drainLatch, ignored -> {
-                }, info.isHttp2()));
-                channel.config().setAutoRead(true);
-                awaitLatch(drainLatch);
-                channelToRelease = channel;
-            } else if (bodyHandling == ResponseBodyHandling.STREAM) {
-                channelToRelease = null;
-                // Body streaming uses a special BinaryData that tracks the firstContent read and the Channel it came
-                // from so it can be consumed when the BinaryData is being used.
-                // autoRead should have been disabled already but lets make sure that it is.
-                channel.config().setAutoRead(false);
-                String contentLength = info.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
-                Long length = null;
-                if (!CoreUtils.isNullOrEmpty(contentLength)) {
-                    try {
-                        length = Long.parseLong(contentLength);
-                    } catch (NumberFormatException ignored) {
-                        // Ignore, we'll just read until the channel is closed.
-                    }
-                }
 
-                body = new Netty4ChannelBinaryData(info.getEagerContent(), channel, length, info.isHttp2());
-            } else {
-                // All cases otherwise assume BUFFER.
-                CountDownLatch drainLatch = new CountDownLatch(1);
-                channel.pipeline().addLast(new Netty4EagerConsumeChannelHandler(drainLatch, buf -> {
-                    try {
-                        buf.readBytes(info.getEagerContent(), buf.readableBytes());
-                    } catch (IOException ex) {
-                        throw LOGGER.throwableAtError().log(ex, CoreException::from);
-                    }
-                }, info.isHttp2()));
-                channel.config().setAutoRead(true);
-                awaitLatch(drainLatch);
-                channelToRelease = channel;
+            body = (eagerContent == null || eagerContent.size() == 0)
+                ? BinaryData.empty()
+                : BinaryData.fromBytes(eagerContent.toByteArray());
 
-                body = BinaryData.fromBytes(info.getEagerContent().toByteArray());
-            }
-
-            response = new Response<>(request, info.getStatusCode(), info.getHeaders(), body);
-        }
-
-        if (channelToRelease != null) {
+            // Since the response is complete, we are responsible for cleaning up the channel.
+            Channel channelToRelease = info.getResponseChannel();
             channelToRelease.eventLoop().execute(() -> {
                 Netty4PipelineCleanupHandler cleanupHandler
                     = channelToRelease.pipeline().get(Netty4PipelineCleanupHandler.class);
@@ -218,7 +160,23 @@ class NettyHttpClient implements HttpClient {
                     cleanupHandler.cleanup(channelToRelease.pipeline().context(cleanupHandler), false);
                 }
             });
+        } else {
+            // For all other cases, create a streaming response body.
+            // This delegates all body consumption and cleanup logic to Netty4ChannelBinaryData.
+            String contentLength = info.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
+            Long length = null;
+            if (!CoreUtils.isNullOrEmpty(contentLength)) {
+                try {
+                    length = Long.parseLong(contentLength);
+                } catch (NumberFormatException ignored) {
+                    // Ignore, we'll just read until the channel is closed.
+                }
+            }
+            body = new Netty4ChannelBinaryData(info.getEagerContent(), info.getResponseChannel(), length,
+                info.isHttp2());
         }
+
+        Response<BinaryData> response = new Response<>(request, info.getStatusCode(), info.getHeaders(), body);
 
         if (response.getValue() != BinaryData.empty()
             && ServerSentEventUtils
@@ -247,10 +205,10 @@ class NettyHttpClient implements HttpClient {
                     throw LOGGER.throwableAtError().log(ex, CoreException::from);
                 }
             } else {
+                response.close();
                 throw LOGGER.throwableAtError().log(NO_LISTENER_ERROR_MESSAGE, IllegalStateException::new);
             }
         }
-
         return response;
     }
 

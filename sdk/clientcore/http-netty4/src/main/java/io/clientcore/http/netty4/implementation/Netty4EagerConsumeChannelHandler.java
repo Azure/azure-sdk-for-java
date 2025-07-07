@@ -75,43 +75,32 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
                     byteBufConsumer.accept(buf);
                 }
             }
+
+            if (isHttp2) {
+                lastRead = msg instanceof Http2DataFrame && ((Http2DataFrame) msg).isEndStream();
+            } else {
+                lastRead = msg instanceof LastHttpContent;
+            }
         } catch (IOException | RuntimeException ex) {
-            ReferenceCountUtil.release(msg);
-            ctx.fireExceptionCaught(ex);
-            if (latch != null) {
-                latch.countDown();
-            }
-            return;
+            exceptionCaught(ctx, ex);
         } finally {
-            if (latch == null) {
-                ReferenceCountUtil.release(msg);
-            }
-        }
-
-        if (isHttp2) {
-            lastRead = msg instanceof Http2DataFrame && ((Http2DataFrame) msg).isEndStream();
-        } else {
-            lastRead = msg instanceof LastHttpContent;
-        }
-
-        if (latch != null) {
-            ctx.fireChannelRead(msg);
+            ReferenceCountUtil.release(msg);
         }
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
+        ctx.fireChannelReadComplete();
         if (lastRead) {
             signalComplete(ctx, false);
         }
-        ctx.fireChannelReadComplete();
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         this.exception = cause;
-        signalComplete(ctx, true);
         ctx.fireExceptionCaught(cause);
+        signalComplete(ctx, true);
     }
 
     Throwable channelException() {
@@ -168,10 +157,6 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
     }
 
     private void cleanup(ChannelHandlerContext ctx) {
-        if (latch != null && latch.getCount() == 0) {
-            return;
-        }
-
         Netty4PipelineCleanupHandler cleanupHandler = ctx.pipeline().get(Netty4PipelineCleanupHandler.class);
         if (cleanupHandler != null) {
             cleanupHandler.cleanup(ctx, true);

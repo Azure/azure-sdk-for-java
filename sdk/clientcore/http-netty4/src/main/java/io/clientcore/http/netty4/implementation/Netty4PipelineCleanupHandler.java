@@ -68,7 +68,7 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
         ctx.fireChannelInactive();
-        cleanup(ctx, true);
+        ctx.channel().eventLoop().execute(() -> cleanup(ctx, true));
     }
 
     public void cleanup(ChannelHandlerContext ctx, boolean closeChannel) {

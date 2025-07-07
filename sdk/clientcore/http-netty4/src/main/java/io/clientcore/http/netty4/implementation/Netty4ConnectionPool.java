@@ -10,6 +10,8 @@ import io.clientcore.core.utils.AuthenticateChallenge;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
@@ -356,7 +358,7 @@ public final class Netty4ConnectionPool implements Closeable {
 
         private Future<Channel> createNewConnection() {
             Bootstrap newConnectionBootstrap = bootstrap.clone();
-
+            Promise<Channel> promise = newConnectionBootstrap.config().group().next().newPromise();
             newConnectionBootstrap.handler(new ChannelInitializer<Channel>() {
                 @Override
                 public void initChannel(Channel channel) throws SSLException {
@@ -370,6 +372,14 @@ public final class Netty4ConnectionPool implements Closeable {
                     if (hasProxy) {
                         ProxyHandler proxyHandler = channelInitializationProxyHandler.createProxy(proxyChallenges);
                         pipeline.addFirst(PROXY, proxyHandler);
+
+                        pipeline.addLast("proxy-exception-handler", new ChannelInboundHandlerAdapter() {
+                            @Override
+                            public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+                                promise.tryFailure(cause);
+                                ctx.close();
+                            }
+                        });
                     }
 
                     // Add SSL handling if the request is HTTPS.
@@ -385,7 +395,6 @@ public final class Netty4ConnectionPool implements Closeable {
                 }
             });
 
-            Promise<Channel> promise = newConnectionBootstrap.config().group().next().newPromise();
             newConnectionBootstrap.connect(route).addListener(future -> {
                 if (!future.isSuccess()) {
                     LOGGER.atError().setThrowable(future.cause()).log("Failed connection.");
@@ -408,6 +417,10 @@ public final class Netty4ConnectionPool implements Closeable {
                                 activeConnections.decrementAndGet();
                                 satisfyWaiterWithNewConnection();
                                 return;
+                            }
+                            ChannelPipeline pipeline = newChannel.pipeline();
+                            if (pipeline.get("proxy-exception-handler") != null) {
+                                pipeline.remove("proxy-exception-handler");
                             }
                             promise.setSuccess(newChannel);
                         } else {

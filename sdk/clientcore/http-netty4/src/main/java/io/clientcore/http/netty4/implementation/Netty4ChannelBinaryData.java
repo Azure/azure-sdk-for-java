@@ -8,7 +8,6 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.netty.channel.Channel;
-import io.netty.util.concurrent.Future;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -180,19 +179,15 @@ public final class Netty4ChannelBinaryData extends BinaryData {
     }
 
     private void cleanup(boolean closeChannel) {
-        //TODO: use userTriggeredEvent
         if (channel.eventLoop().inEventLoop()) {
-            // We are already on the correct thread, so we can execute directly.
             doCleanup(closeChannel);
         } else {
-            Future<?> cleanupFuture = channel.eventLoop().submit(() -> doCleanup(closeChannel));
-
             try {
-                cleanupFuture.get();
+                channel.eventLoop().submit(() -> doCleanup(closeChannel)).get();
             } catch (InterruptedException | java.util.concurrent.ExecutionException e) {
                 LOGGER.atWarning()
                     .setThrowable(e)
-                    .log("Failed to wait for channel cleanup. Closing channel forcefully.");
+                    .log("Exception during synchronous channel cleanup. Forcing channel close.");
                 channel.close();
                 if (e instanceof InterruptedException) {
                     Thread.currentThread().interrupt();
@@ -202,6 +197,7 @@ public final class Netty4ChannelBinaryData extends BinaryData {
     }
 
     private void doCleanup(boolean closeChannel) {
+        // TODO: userTriggeredEvent
         Netty4PipelineCleanupHandler cleanupHandler = channel.pipeline().get(Netty4PipelineCleanupHandler.class);
         if (cleanupHandler != null) {
             cleanupHandler.cleanup(channel.pipeline().context(cleanupHandler), closeChannel);

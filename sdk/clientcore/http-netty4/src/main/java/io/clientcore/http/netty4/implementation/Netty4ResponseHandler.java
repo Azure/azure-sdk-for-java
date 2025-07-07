@@ -171,6 +171,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         // Reading hasn't started yet.
         if (!started) {
+            ctx.read();
             ctx.fireChannelReadComplete();
             return;
         }
