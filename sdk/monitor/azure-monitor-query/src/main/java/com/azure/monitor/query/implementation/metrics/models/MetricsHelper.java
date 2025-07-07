@@ -357,19 +357,12 @@ public final class MetricsHelper {
 
     /**
      * Formats an OffsetDateTime for Azure Monitor Metrics API.
-     * Uses ISO format but omits seconds when they are zero.
      *
      * @param dateTime The datetime to format.
      * @return Formatted string.
      */
     private static String formatForMetrics(OffsetDateTime dateTime) {
-        if (dateTime.getSecond() == 0 && dateTime.getNano() == 0) {
-            // Format without seconds when they are zero: 2025-01-01T00:00Z
-            return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mmXXX"));
-        } else {
-            // Format with full precision when seconds are non-zero
-            return dateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        }
+        return dateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     }
 
 }

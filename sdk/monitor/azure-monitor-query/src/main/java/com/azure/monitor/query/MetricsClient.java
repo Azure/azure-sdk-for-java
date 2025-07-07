@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.monitor.query.implementation.metrics.models.MetricsHelper.getSubscriptionFromResourceId;
 import static com.azure.monitor.query.implementation.metrics.models.MetricsHelper.mapToMetricsQueryResult;
+import static com.azure.monitor.query.implementation.metrics.models.MetricsHelper.toMetricsTimespan;
 
 /**
  * This class provides an asynchronous client that contains all the query operations that use batch requests to retrieve
@@ -107,15 +108,14 @@ public final class MetricsClient {
             }
 
             if (options.getTimeInterval() != null) {
-                if (options.getTimeInterval().getDuration() != null) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "Duration is not a supported time interval for batch query. Use startTime and endTime instead."));
-                }
-                if (options.getTimeInterval().getStartTime() != null) {
-                    startTime = options.getTimeInterval().getStartTime().toString();
-                }
-                if (options.getTimeInterval().getEndTime() != null) {
-                    endTime = options.getTimeInterval().getEndTime().toString();
+                // Use the same logic as MetricsQueryClient to convert timespan to start/end times
+                String timespan = toMetricsTimespan(options.getTimeInterval());
+                if (timespan != null) {
+                    String[] parts = timespan.split("/");
+                    if (parts.length == 2) {
+                        startTime = parts[0];
+                        endTime = parts[1];
+                    }
                 }
             }
 

@@ -40,7 +40,7 @@ public class MetricsTimespanTest {
         QueryTimeInterval interval = new QueryTimeInterval(start, end);
 
         String result = MetricsHelper.toMetricsTimespan(interval);
-        assertEquals("2025-01-01T00:00Z/2025-01-01T01:00Z", result);
+        assertEquals("2025-01-01T00:00:00Z/2025-01-01T01:00:00Z", result);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class MetricsTimespanTest {
         QueryTimeInterval interval = new QueryTimeInterval(start, duration);
 
         String result = MetricsHelper.toMetricsTimespan(interval);
-        assertEquals("2025-01-01T00:00Z/2025-01-01T01:00Z", result);
+        assertEquals("2025-01-01T00:00:00Z/2025-01-01T01:00:00Z", result);
     }
 
     @Test
