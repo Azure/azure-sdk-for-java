@@ -35,7 +35,7 @@ server.registerTool(
       localTspConfigPath: z
         .string()
         .optional()
-        .describe("The local path to the tspconfig.yaml file"),
+        .describe("The local absolute path to the tspconfig.yaml file"),
       tspConfigUrl: z
         .string()
         .optional()
@@ -205,7 +205,7 @@ server.registerTool(
       localTspConfigPath: z
         .string()
         .optional()
-        .describe("The local path to the tspconfig.yaml file. e.g. C:\\workspace\\azure-rest-api-specs\\specification\\communication\\Communication.Messages\\tspconfig.yaml"),
+        .describe("The local absolute path to the tspconfig.yaml file. e.g. C:\\workspace\\azure-rest-api-specs\\specification\\communication\\Communication.Messages\\tspconfig.yaml"),
       remoteTspConfigUrl: z
         .string()
         .optional()

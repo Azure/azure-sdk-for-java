@@ -296,45 +296,6 @@ The MCP tools support running from two different working directory locations:
 
 This flexibility allows you to work at the level that best suits your workflow.
 
-### Typical Workflow
-
-1. **Initialize**: Use `init_java_sdk` to set up tsp-location.yaml
-2. **Prepare Environment**: Use `prepare_java_sdk_environment` for setup instructions
-3. **Sync**: Use `sync_java_sdk` to download TypeSpec sources
-4. **Generate**: Use `generate_java_sdk` to create the Java SDK
-5. **Clean**: Use `clean_java_source` if needed to clean generated files
-6. **Build**: Use `build_java_sdk` to compile the SDK
-7. **Changelog**: Use `get_java_sdk_changelog` to get version information
-8. **Update Changelog**: Use `update_java_sdk_changelog` to update the CHANGELOG.md file
-
-## Project Structure
-
-```
-mcp/
-├── src/
-│   ├── index.ts               # Main MCP server implementation
-│   ├── generate-java-sdk.ts   # Java SDK generation logic
-│   ├── init-java-sdk.ts       # SDK initialization utilities
-│   ├── build-java-sdk.ts      # SDK building functionality
-│   ├── clean-java-source.ts   # Source cleaning utilities
-│   ├── client-name-update.ts  # Client name update instructions
-│   ├── brownfield-migrate.ts  # Migration instructions
-│   ├── java-sdk-changelog.ts  # Changelog generation
-│   ├── update-changelog-md.ts # CHANGELOG.md file updates
-│   ├── prepare-environment.ts # Environment setup instructions
-│   ├── resources/             # Resource files and templates
-│   └── utils/
-│       ├── index.ts          # Utility functions for process execution
-│       ├── process.ts        # Process spawning and execution utilities
-│       └── process.spec.ts   # Tests for process utilities
-├── dist/                     # Compiled JavaScript output
-├── package.json              # Project dependencies and scripts
-├── tsconfig.json             # TypeScript configuration
-├── vitest.config.ts          # Test configuration
-├── eslint.config.js          # ESLint configuration
-└── README.md                 # This file
-```
-
 ## Contributing
 
 1. Make changes to the TypeScript source files in `src/`
