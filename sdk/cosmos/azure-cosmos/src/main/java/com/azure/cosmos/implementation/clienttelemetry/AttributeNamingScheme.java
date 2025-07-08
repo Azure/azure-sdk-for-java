@@ -2,6 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.clienttelemetry;
 
+import com.azure.cosmos.implementation.Configs;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -10,14 +14,7 @@ public enum AttributeNamingScheme {
     PRE_V1_RELEASE,
     V1;
 
-    private static AttributeNamingScheme fromStringCore(String name) {
-        for (AttributeNamingScheme scheme : values()) {
-            if (scheme.name().equalsIgnoreCase(name)) {
-                return scheme;
-            }
-        }
-        throw new IllegalArgumentException("Invalid AttributeNamingScheme: " + name);
-    }
+    private static final Logger logger = LoggerFactory.getLogger(Configs.class);
 
     public static EnumSet<AttributeNamingScheme> parse(String name) {
         if (name == null || name.isEmpty() || "All".equalsIgnoreCase(name) || "Default".equalsIgnoreCase(name)) {
@@ -37,7 +34,10 @@ public enum AttributeNamingScheme {
             }
 
             if (!foundTextValue) {
-                throw new IllegalArgumentException("Invalid AttributeNamingScheme: " + textValue + " in '" + name + "'");
+                logger.error("Invalid AttributeNamingScheme: " + textValue + " in '" + name +
+                    "' - proceeding with default value 'ALL'");
+
+                return EnumSet.allOf(AttributeNamingScheme.class);
             }
         }
 
