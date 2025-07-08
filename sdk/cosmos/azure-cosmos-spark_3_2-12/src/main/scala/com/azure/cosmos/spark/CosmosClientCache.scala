@@ -350,9 +350,11 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           logInfo("Initializing Resource Customizer with Service attributes")
           resourceBuilder
             .put("service.namespace", "azure-cosmos-spark")
-            .put("service.name", CosmosConstants.currentName)
+            .put("service.name", s"${CosmosConstants.currentName}:${CosmosConstants.currentVersion}")
             .put("service.version", CosmosConstants.currentVersion)
-            .put("service.instance.id", CosmosConstants.currentVersion)
+            .put("service.instance.id", s"${cosmosClientConfiguration.sparkEnvironmentInfo}:"
+              + s"${ClientTelemetry.getMachineId(null)}")
+
         } else {
           logInfo("Initializing Resource Customizer without Service attributes")
         }
