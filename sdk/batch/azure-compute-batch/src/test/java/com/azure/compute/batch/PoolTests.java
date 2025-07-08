@@ -664,10 +664,18 @@ public class PoolTests extends BatchClientTestBase {
             // Start a resize, then stop pool resize
             BatchPoolResizeParameters grow = new BatchPoolResizeParameters().setTargetDedicatedNodes(2);
 
-            SyncAsyncExtension.execute(() -> {
-                batchClient.resizePool(poolId, grow);
-                return null;
-            }, () -> batchAsyncClient.resizePool(poolId, grow));
+            // Start the resize as an LRO
+            SyncPoller<BatchPool, BatchPool> growPoller = setPlaybackSyncPollerPollInterval(
+                SyncAsyncExtension.execute(
+                    () -> batchClient.beginResizePool(poolId, grow),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginResizePool(poolId, grow).getSyncPoller())));
+
+            // Validate the very first poll – pool should be RESIZING
+            PollResponse<BatchPool> growFirst = growPoller.poll();
+            if (growFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS && growFirst.getValue() != null) {
+                Assertions.assertEquals(AllocationState.RESIZING, growFirst.getValue().getAllocationState(),
+                    "Pool should enter RESIZING when beginResizePool starts.");
+            }
 
             // Immediately stop it
             SyncPoller<BatchPool, BatchPool> stopPoller = setPlaybackSyncPollerPollInterval(
