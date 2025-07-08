@@ -120,8 +120,9 @@ public final class ServerSentEventUtils {
         try {
             StringBuilder collectedData = new StringBuilder();
 
-            // Use a byte array to accumulate UTF-8 bytes and convert to string line by line
-            List<Byte> lineBytes = new ArrayList<>();
+            // Use a more efficient byte buffer approach
+            byte[] lineBuffer = new byte[1024]; // Initial buffer size
+            int lineBufferPos = 0;
 
             int b;
             while ((b = inputStream.read()) != -1) {
@@ -129,9 +130,9 @@ public final class ServerSentEventUtils {
 
                 if (currentByte == '\n') {
                     // End of line found, convert accumulated bytes to string
-                    String line = convertBytesToString(lineBytes);
+                    String line = new String(lineBuffer, 0, lineBufferPos, StandardCharsets.UTF_8);
                     collectedData.append(line).append("\n");
-                    lineBytes.clear();
+                    lineBufferPos = 0; // Reset buffer position
 
                     if (isEndOfBlock(collectedData)) {
                         String temp = collectedData.toString();
@@ -149,9 +150,9 @@ public final class ServerSentEventUtils {
                     int next = inputStream.read();
                     if (next == -1) {
                         // End of stream, treat \r as line ending
-                        String line = convertBytesToString(lineBytes);
+                        String line = new String(lineBuffer, 0, lineBufferPos, StandardCharsets.UTF_8);
                         collectedData.append(line).append("\n");
-                        lineBytes.clear();
+                        lineBufferPos = 0; // Reset buffer position
 
                         if (isEndOfBlock(collectedData)) {
                             String temp = collectedData.toString();
@@ -167,9 +168,9 @@ public final class ServerSentEventUtils {
                         break;
                     } else if (next == '\n') {
                         // \r\n found, end of line
-                        String line = convertBytesToString(lineBytes);
+                        String line = new String(lineBuffer, 0, lineBufferPos, StandardCharsets.UTF_8);
                         collectedData.append(line).append("\n");
-                        lineBytes.clear();
+                        lineBufferPos = 0; // Reset buffer position
 
                         if (isEndOfBlock(collectedData)) {
                             String temp = collectedData.toString();
@@ -183,11 +184,16 @@ public final class ServerSentEventUtils {
                             collectedData = new StringBuilder(); // clear the collected data
                         }
                     } else {
-                        // Standalone \r, treat as line ending and add the next byte to line bytes
-                        String line = convertBytesToString(lineBytes);
+                        // Standalone \r, treat as line ending and add the next byte to buffer
+                        String line = new String(lineBuffer, 0, lineBufferPos, StandardCharsets.UTF_8);
                         collectedData.append(line).append("\n");
-                        lineBytes.clear();
-                        lineBytes.add((byte) next);
+                        lineBufferPos = 0; // Reset buffer position
+
+                        // Add the next byte to buffer
+                        if (lineBufferPos >= lineBuffer.length) {
+                            lineBuffer = expandBuffer(lineBuffer);
+                        }
+                        lineBuffer[lineBufferPos++] = (byte) next;
 
                         if (isEndOfBlock(collectedData)) {
                             String temp = collectedData.toString();
@@ -202,14 +208,17 @@ public final class ServerSentEventUtils {
                         }
                     }
                 } else {
-                    // Regular byte, add to current line
-                    lineBytes.add(currentByte);
+                    // Regular byte, add to buffer
+                    if (lineBufferPos >= lineBuffer.length) {
+                        lineBuffer = expandBuffer(lineBuffer);
+                    }
+                    lineBuffer[lineBufferPos++] = currentByte;
                 }
             }
 
             // Handle any remaining data that didn't end with a newline
-            if (!lineBytes.isEmpty()) {
-                String line = convertBytesToString(lineBytes);
+            if (lineBufferPos > 0) {
+                String line = new String(lineBuffer, 0, lineBufferPos, StandardCharsets.UTF_8);
                 collectedData.append(line).append("\n");
 
                 if (isEndOfBlock(collectedData)) {
@@ -234,19 +243,12 @@ public final class ServerSentEventUtils {
     }
 
     /**
-     * Converts a list of bytes to a UTF-8 string.
+     * Expands the byte buffer when it becomes full.
      */
-    private static String convertBytesToString(List<Byte> bytes) {
-        if (bytes.isEmpty()) {
-            return "";
-        }
-
-        byte[] byteArray = new byte[bytes.size()];
-        for (int i = 0; i < bytes.size(); i++) {
-            byteArray[i] = bytes.get(i);
-        }
-
-        return new String(byteArray, StandardCharsets.UTF_8);
+    private static byte[] expandBuffer(byte[] buffer) {
+        byte[] newBuffer = new byte[buffer.length * 2];
+        System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
+        return newBuffer;
     }
 
     private static ServerSentEvent processLines(String[] lines) {
