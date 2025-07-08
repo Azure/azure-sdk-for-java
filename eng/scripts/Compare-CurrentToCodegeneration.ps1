@@ -64,7 +64,6 @@ function Find-GenerationInformation {
   )
 
   $path = "$PSScriptRoot/../../sdk/$ServiceDirectory"
-  Write-Host "Searching for code generation scripts in $path"
   if ($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') {
     # Search for 'Update-Codegeneration.ps1' script in the specified service directory.
     Get-ChildItem -Path $path -Filter "Update-Codegeneration.ps1" -Recurse | ForEach-Object {
