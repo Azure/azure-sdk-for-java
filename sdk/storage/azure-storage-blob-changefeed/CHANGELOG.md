@@ -5,10 +5,6 @@
 ### Features Added
 - Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 ## 12.0.0-beta.30 (2025-05-06)
