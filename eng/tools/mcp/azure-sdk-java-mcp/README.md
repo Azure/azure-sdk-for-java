@@ -1,21 +1,20 @@
-# MCP Server for Java SDK Tools
+# Azure Java SDK Tools - MCP Server
 
-A Model Context Protocol (MCP) server that provides comprehensive tools for generating, building, and managing Java SDKs from TypeSpec definitions using the `tsp-client` tool.
+A Model Context Protocol (MCP) server that provides comprehensive tools for generating, building, and managing Java SDKs from TypeSpec definitions for Azure services. This server integrates with GitHub Copilot and other MCP-compatible clients to streamline the Azure SDK development workflow.
 
 ## Features
 
 This MCP server provides the following tools:
 
-1. **init_java_sdk** - Initialize tsp-location.yaml configuration for Java SDK from a TypeSpec configuration URL
-2. **sync_java_sdk** - Download and synchronize TypeSpec source files for Java SDK generation
-3. **generate_java_sdk** - Generate or update Java SDK code from TypeSpec definitions
-4. **clean_java_source** - Clean and remove generated Java source files from SDK directory
-5. **build_java_sdk** - Compile and build the Java SDK with Maven for Azure services
-6. **get_java_sdk_changelog** - Generate and retrieve changelog information for the Java SDK
-7. **update_java_sdk_changelog** - Update the CHANGELOG.md file for a Java SDK module
-8. **instruction_migrate_typespec** - Provide step-by-step instructions for migrating from Swagger to TypeSpec
-9. **update_client_name** - Guide through updating client class and property names in TypeSpec and Java SDK
-10. **prepare_java_sdk_environment** - Provide environment setup instructions and dependency requirements
+1. **sync_java_sdk** - Synchronize/Download TypeSpec source files for Java SDK generation from local or remote sources
+2. **generate_java_sdk** - Generate or update Java SDK code from TypeSpec definitions 
+3. **clean_java_source** - Clean and remove generated Java source files from SDK directory
+4. **build_java_sdk** - Compile and build the Java SDK with Maven for Azure services
+5. **get_java_sdk_changelog** - Generate and retrieve changelog information for the Java SDK
+6. **update_java_sdk_changelog** - Update the CHANGELOG.md file for a Java SDK module
+7. **instruction_migrate_typespec** - Provide step-by-step instructions for migrating from Swagger to TypeSpec
+8. **update_client_name** - Guide through updating client class and property names in TypeSpec and Java SDK
+9. **prepare_java_sdk_environment** - Provide environment setup instructions and dependency requirements
 
 ## Prerequisites
 
@@ -71,23 +70,29 @@ You can verify that the MCP server is working by:
 Here are some example prompts you can use with GitHub Copilot to interact with the Java SDK tools:
 
 ### Basic SDK Operations
-- `generate java sdk for "azure-compute-batch" from local TypeSpec source: C:\workspace\azure-rest-api-specs\specification\batch\Azure.Batch\tspconfig.yaml`
+- `generate java sdk for azure-analytics-purview-datamap` -> this will read configuration from tsp-location.yaml
+- `generate java sdk for azure-analytics-purview-datamap from local TypeSpec: C:\workspace\azure-rest-api-specs\specification\purview\Azure.Analytics.Purview.DataMap\tspconfig.yaml`
 - `update java sdk for "azure-compute-batch" from local TypeSpec source: C:\workspace\azure-rest-api-specs\specification\batch\Azure.Batch\tspconfig.yaml`
+- `sync TypeSpec source for azure-developer-devcenter from remote: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/devcenter/DevCenter/tspconfig.yaml`
 
-### Prepare Environments
+
+
+### Generate SDK after Migrating from Swagger to TypeSpec 
+- `generate sdk after migrating to typespec for "azure-mgmt-dnsresolver"`
+- `get instructions for migrating from swagger to typespec`
+
+### Environment and Tooling
 - `prepare java sdk environment`
+- `clean java source files for azure-ai-openai`
 
 ### Client Name Updates
 - `update client name: EnableBatchJobOptions to BatchJobEnableOptions`
 - `update client name: MediaMessageContent.mediaUri to MediaMessageContent.mediaUrl`
 
 ### Build and Changelog
-- `build the java sdk for com.azure.batch`
+- `build the java sdk for com.azure:azure-compute-batch`
 - `get changelog for the java sdk`
 - `update changelog for the java sdk`
-
-### Generate SDK after Migrating from Swagger to TypeSpec 
-- `generate sdk after migrating to typespec for "azure-mgmt-dnsresolver`
 
 
 ## Development
@@ -105,31 +110,12 @@ npm run test:run      # Run tests once
 
 ## Tools Documentation
 
-### 1. init_java_sdk
-Initialize the tsp-location.yaml configuration file for Java SDK generation.
+### 1. sync_java_sdk
+Synchronize/Download the TypeSpec source for a target service to generate Java SDK from. Always ask user to provide local tspconfig.yaml path or remote tspconfig.yaml url. The tool takes local tspconfig.yaml path or remote tspconfig.yaml url as input parameter.
 
 **Parameters:**
-- `localTspConfigPath` (optional): The local path to the tspconfig.yaml file
-- `tspConfigUrl` (optional): The URL to the tspconfig.yaml file (e.g., GitHub raw URL with commit ID)
-
-**Note:** Provide either `localTspConfigPath` OR `tspConfigUrl`, not both.
-
-**Example:**
-```json
-{
-  "name": "init_java_sdk",
-  "arguments": {
-    "tspConfigUrl": "https://github.com/Azure/azure-rest-api-specs/blob/dee71463cbde1d416c47cf544e34f7966a94ddcb/specification/contosowidgetmanager/Contoso.WidgetManager/tspconfig.yaml"
-  }
-}
-```
-
-### 2. sync_java_sdk
-Synchronize and download the TypeSpec source files for Java SDK from the configuration in tsp-location.yaml.
-
-**Parameters:**
-- `localTspConfigPath` (optional): The local path to the tspconfig.yaml file (e.g., `C:\workspace\azure-rest-api-specs\specification\communication\Communication.Messages\tspconfig.yaml`)
-- `remoteTspConfigUrl` (optional): The remote URL to the tspconfig.yaml file (URL should contain commit ID instead of branch name)
+- `localTspConfigPath` (optional): The local absolute path to the tspconfig.yaml file (e.g., `C:\workspace\azure-rest-api-specs\specification\communication\Communication.Messages\tspconfig.yaml`)
+- `remoteTspConfigUrl` (optional): The remote URL to the tspconfig.yaml file (URL should contain commit ID instead of branch name. e.g., `https://github.com/Azure/azure-rest-api-specs/blob/dee71463cbde1d416c47cf544e34f7966a94ddcb/specification/contosowidgetmanager/Contoso.WidgetManager/tspconfig.yaml`)
 
 **Note:** Provide either `localTspConfigPath` OR `remoteTspConfigUrl`, not both.
 
@@ -143,8 +129,8 @@ Synchronize and download the TypeSpec source files for Java SDK from the configu
 }
 ```
 
-### 3. generate_java_sdk
-Generate or update Java SDK from TypeSpec definitions. Requires existing tsp-location.yaml and TempTypeSpecFiles directory.
+### 2. generate_java_sdk
+Generate SDK from TypeSpec source from 'TempTypeSpecFiles' for a target service module. If there is a directory named 'TempTypeSpecFiles' in the current working directory, call this tool directly. If the directory is not present, ask user whether to generate from local TypeSpec source or remote TypeSpec source, then call the sync_java_sdk tool first.
 
 **Parameters:**
 - `cwd` (required): The absolute path to the current working directory which contains the 'TempTypeSpecFiles' directory with TypeSpec source files (e.g., `C:\workspace\azure-sdk-for-java\sdk\communication\communication-messages`)
@@ -159,8 +145,8 @@ Generate or update Java SDK from TypeSpec definitions. Requires existing tsp-loc
 }
 ```
 
-### 4. clean_java_source
-Clean Java source files in the specified SDK directory.
+### 3. clean_java_source
+Clean the Java source code for a module, removing all generated source files and directories.
 
 **Parameters:**
 - `cwd` (required): The absolute path to the directory where tsp-location.yaml is located
@@ -175,8 +161,8 @@ Clean Java source files in the specified SDK directory.
 }
 ```
 
-### 5. build_java_sdk
-Build the Java SDK for Azure services (groupId starting with `com.azure`).
+### 4. build_java_sdk
+Build the Java SDK for a service sub module whose groupId starts with `com.azure`. The tool takes the module directory, root directory, groupId and artifactId as input parameters.
 
 **Parameters:**
 - `moduleDirectory` (required): The absolute path to the service sub module directory containing tsp-location.yaml
@@ -197,11 +183,11 @@ Build the Java SDK for Azure services (groupId starting with `com.azure`).
 }
 ```
 
-### 6. get_java_sdk_changelog
-Get the changelog for the Java SDK for Azure services.
+### 5. get_java_sdk_changelog
+Get the changelog for a service sub module whose groupId starts with `com.azure`. The tool takes the jarPath, groupId and artifactId as input parameters.
 
 **Parameters:**
-- `jarPath` (required): The absolute path to the JAR file (should be under the `target` directory)
+- `jarPath` (required): The absolute path to the JAR file of the Java SDK (should be under the `target` directory of the Java SDK module)
 - `groupId` (required): The group ID for the Java SDK
 - `artifactId` (required): The artifact ID for the Java SDK
 
@@ -217,8 +203,8 @@ Get the changelog for the Java SDK for Azure services.
 }
 ```
 
-### 7. update_java_sdk_changelog
-Update the CHANGELOG.md file for a service sub module whose groupId starts with `com.azure`.
+### 6. update_java_sdk_changelog
+Update the CHANGELOG.md file for a service sub module whose groupId starts with `com.azure`. The tool takes the absolute path to the JAR file, groupId and artifactId as input parameters.
 
 **Parameters:**
 - `jarPath` (required): The absolute path to the JAR file of the Java SDK (should be under the `target` directory of the Java SDK module)
@@ -237,7 +223,7 @@ Update the CHANGELOG.md file for a service sub module whose groupId starts with 
 }
 ```
 
-### 8. instruction_migrate_typespec
+### 7. instruction_migrate_typespec
 Get instructions for generating Java SDK after migrating from Swagger to TypeSpec.
 
 **Parameters:**
@@ -251,8 +237,8 @@ Get instructions for generating Java SDK after migrating from Swagger to TypeSpe
 }
 ```
 
-### 9. update_client_name
-Update client names for both TypeSpec files and the generated Java SDK. Provides instructions for renaming.
+### 8. update_client_name
+Update client name for both client.tsp and the generated java sdk. Follow the returned instruction to update old client name to new client name, be sure to ask for old client name and new client name. e.g. MediaMessageContent.mediaUri to MediaMessageContent.mediaUrl
 
 **Parameters:**
 - None (the tool returns instructions that guide you through the update process)
@@ -265,8 +251,8 @@ Update client names for both TypeSpec files and the generated Java SDK. Provides
 }
 ```
 
-### 10. prepare_java_sdk_environment
-Get step-by-step instructions to prepare the environment for Java SDK generation.
+### 9. prepare_java_sdk_environment
+Prepare the development environment for Java SDK generation, including 3 main areas: Node.js/npm, Java environment, and TypeSpec tools.
 
 **Parameters:**
 - `cwd` (required): The absolute path to the working directory where the environment should be prepared

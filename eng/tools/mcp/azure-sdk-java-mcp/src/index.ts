@@ -25,37 +25,6 @@ const logToolCall = (toolName: string) => {
   process.stderr.write(logMsg);
 };
 
-// Register init_java_sdk tool
-server.registerTool(
-  "init_java_sdk",
-  {
-    description:
-      "Initialize the tsp-location.yaml for generating Java SDK, from local path or remote URL to tspconfig.yaml. Always ask for the local path or remote URL. Make sure you ask for the remote URL containing commit id, not branch name.",
-    inputSchema: {
-      localTspConfigPath: z
-        .string()
-        .optional()
-        .describe("The local absolute path to the tspconfig.yaml file"),
-      tspConfigUrl: z
-        .string()
-        .optional()
-        .describe(
-          "The URL to the tspconfig.yaml file. Make sure you ask for the correct URL containing commit id, not branch name. e.g. https://github.com/Azure/azure-rest-api-specs/blob/dee71463cbde1d416c47cf544e34f7966a94ddcb/specification/contosowidgetmanager/Contoso.WidgetManager/tspconfig.yaml",
-        ),
-    },
-    annotations: {
-      title: "Initialize Java SDK",
-    },
-  },
-  async (args) => {
-    logToolCall("init_java_sdk");
-    const result = await initJavaSdk(
-      args.localTspConfigPath,
-      args.tspConfigUrl,
-    );
-    return result;
-  },
-);
 
 // Register clean_java_source tool
 server.registerTool(
@@ -200,7 +169,7 @@ server.registerTool(
   "sync_java_sdk",
   {
     description:
-      "Synchronize/Download the TypeSpec source for a target service to generate Java SDK from. Always ask user to provide local tspconfig.yaml path or remote tspconfig.yaml url. The tool takes local tspconfig.yaml path or remote tspconfig.yaml url as input parameter.",
+      "Don't call prepare environment tool and build SDK tool before calling this tool. Synchronize/Download the TypeSpec source for a target service to generate Java SDK from. Always ask user to provide local tspconfig.yaml path or remote tspconfig.yaml url. The tool takes local tspconfig.yaml path or remote tspconfig.yaml url as input parameter.",
     inputSchema: {
       localTspConfigPath: z
         .string()
@@ -230,7 +199,7 @@ server.registerTool(
   "generate_java_sdk",
   {
     description:
-      "Generate SDK from TypeSpec source from 'TempTypeSpecFiles' for a target service module. If there is a directory named 'TempTypeSpecFiles' in the current working directory, call this tool directly. If the directory is not present, ask user whether to generate from local TypeSpec source or remote TypeSpec source. If the user wants to generate from local TypeSpec source, ask for local path to tspconfig.yaml. If the user wants to generate from remote TypeSpec source, ask for remote tspconfig.yaml url. Then call the tool to sync sdk with proper input parameters before calling this tool to generate sdk.",
+      "Don't call prepare environment tool and build SDK tool before calling this tool. Generate SDK from TypeSpec source from 'TempTypeSpecFiles' for a target service module. If there is a directory named 'TempTypeSpecFiles' in the current working directory, call this tool directly. If the directory is not present, ask user whether to generate from local TypeSpec source or remote TypeSpec source. If the user wants to generate from local TypeSpec source, ask for local path to tspconfig.yaml. If the user wants to generate from remote TypeSpec source, ask for remote tspconfig.yaml url. Then call the tool to sync sdk with proper input parameters before calling this tool to generate sdk.",
     inputSchema: {
       cwd: z
         .string()
