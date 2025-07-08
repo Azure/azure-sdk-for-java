@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
+import static com.azure.identity.implementation.util.IdentityUtil.isVsCodeBrokerAuthAvailable;
+
 /**
  * <p>Fluent credential builder for instantiating {@link DefaultAzureCredential}.</p>
  *
@@ -59,6 +61,8 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     private String managedIdentityResourceId;
     private List<String> additionallyAllowedTenants
         = IdentityUtil.getAdditionalTenantsFromEnvironment(Configuration.getGlobalConfiguration().clone());
+    private static final String BROKER_BUILDER_CLASS
+        = "com.azure.identity.broker.InteractiveBrowserBrokerCredentialBuilder";
 
     /**
      * Creates an instance of a DefaultAzureCredentialBuilder.
@@ -307,9 +311,36 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
             if (IdentityUtil.isVsCodeBrokerAuthAvailable()) {
                 output.add(new VisualStudioCodeCredential(tenantId, identityClientOptions.clone()));
             }
+            if (IdentityUtil.isBrokerAvailable()) {
+                output.add(getOSBrokerCredential());
+            }
         }
 
         return output;
+    }
+
+    TokenCredential getOSBrokerCredential() {
+        if (!isVsCodeBrokerAuthAvailable()) {
+            return null;
+        }
+        try {
+            Class<?> builderClass = Class.forName(BROKER_BUILDER_CLASS);
+            Object builder = builderClass.getConstructor().newInstance();
+            builderClass.getMethod("setWindowHandle", long.class).invoke(builder, 0);
+            builderClass.getMethod("useDefaultBrokerAccount").invoke(builder);
+            InteractiveBrowserCredentialBuilder browserCredentialBuilder
+                = (InteractiveBrowserCredentialBuilder) builder;
+            if (!CoreUtils.isNullOrEmpty(tenantId)) {
+                builderClass.getMethod("tenantId", String.class).invoke(builder, tenantId);
+            }
+            return browserCredentialBuilder.build();
+        } catch (ClassNotFoundException e) {
+            // Broker not on classpath
+            return null;
+        } catch (Exception e) {
+            throw LOGGER.logExceptionAsError(
+                new CredentialUnavailableException("Failed to create InteractiveBrowserBrokerCredential dynamically", e));
+        }
     }
 
     private WorkloadIdentityCredential getWorkloadIdentityCredential() {
