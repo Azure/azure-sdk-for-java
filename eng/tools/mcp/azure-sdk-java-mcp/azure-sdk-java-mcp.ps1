@@ -78,8 +78,16 @@ try {
         Write-Host "`nSkipping npm install..." -ForegroundColor Yellow
     }
     
-    # Step 2: npm run build (unless skipped or in dev mode)
+    # Step 2: npm run clean and build (unless skipped or in dev mode)
     if (-not $SkipBuild -and -not $Dev) {
+        Write-Host "`nRunning npm run clean..." -ForegroundColor Yellow
+        npm run clean
+        if ($LASTEXITCODE -ne 0) {
+            Write-Error "npm run clean failed with exit code $LASTEXITCODE"
+            exit $LASTEXITCODE
+        }
+        Write-Host "npm run clean completed successfully" -ForegroundColor Green
+        
         Write-Host "`nRunning npm run build..." -ForegroundColor Yellow
         npm run build
         if ($LASTEXITCODE -ne 0) {
@@ -88,9 +96,9 @@ try {
         }
         Write-Host "npm run build completed successfully" -ForegroundColor Green
     } elseif ($Dev) {
-        Write-Host "`nSkipping build for development mode..." -ForegroundColor Yellow
+        Write-Host "`nSkipping clean and build for development mode..." -ForegroundColor Yellow
     } else {
-        Write-Host "`nSkipping npm run build..." -ForegroundColor Yellow
+        Write-Host "`nSkipping npm run clean and build..." -ForegroundColor Yellow
     }
     
     # Step 3: Start the server
