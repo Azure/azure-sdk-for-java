@@ -14,7 +14,7 @@ public enum AttributeNamingScheme {
     PRE_V1_RELEASE,
     V1;
 
-    private static final Logger logger = LoggerFactory.getLogger(Configs.class);
+    private static final Logger logger = LoggerFactory.getLogger(AttributeNamingScheme.class);
 
     public static EnumSet<AttributeNamingScheme> parse(String name) {
         if (name == null || name.isEmpty() || "All".equalsIgnoreCase(name) || "Default".equalsIgnoreCase(name)) {
