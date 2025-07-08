@@ -181,7 +181,7 @@ def sdk_automation(config: dict) -> List[dict]:
     readme_file_paths = []
     for file_path in config["relatedReadmeMdFiles"]:
         match = re.search(
-            r"specification/([^/]+)/data-plane(/.*)*/readme.md",
+            r"specification/([^/]+)/data-plane((?:/[^/]+)*)/readme.md",
             file_path,
             re.IGNORECASE,
         )

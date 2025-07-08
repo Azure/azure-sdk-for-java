@@ -3,10 +3,8 @@
 ## 12.26.0-beta.2 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
+- Added `QueueProperties.ApproximateMessagesCountLong` to replace `QueueProperties.ApproximateMessagesCount`.  This property will correctly handle approximate message counts greater than max int.
 
 ### Other Changes
 

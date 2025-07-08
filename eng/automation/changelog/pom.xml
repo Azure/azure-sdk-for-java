@@ -90,7 +90,7 @@
           <systemProperties>
             <systemProperty>
               <key>PACKAGE_IGNORE</key>
-              <value>com\.azure\.resourcemanager(\.[^.]+)+\.fluent(\.[^.]+)*;com\.azure\.resourcemanager(\.[^.]+)+\.implementation</value>
+              <value>com\.azure\.resourcemanager(\.[^.]+)+\.fluent(\.[^.]+)*;com\.azure\.resourcemanager(\.[^.]+)+\.implementation(\.[^.]+)*</value>
             </systemProperty>
             <systemProperty>
               <key>OLD_JAR</key>
