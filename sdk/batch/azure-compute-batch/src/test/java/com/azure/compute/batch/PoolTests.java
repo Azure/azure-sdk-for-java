@@ -670,10 +670,25 @@ public class PoolTests extends BatchClientTestBase {
             }, () -> batchAsyncClient.resizePool(poolId, grow));
 
             // Immediately stop it
-            SyncAsyncExtension.execute(() -> {
-                batchClient.stopPoolResize(poolId);
-                return null;
-            }, () -> batchAsyncClient.stopPoolResize(poolId));
+            SyncPoller<BatchPool, BatchPool> stopPoller = setPlaybackSyncPollerPollInterval(
+                SyncAsyncExtension.execute(() -> batchClient.beginStopPoolResize(poolId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginStopPoolResize(poolId).getSyncPoller())));
+
+            // First poll – allocation state should be STOPPING or still RESIZING
+            PollResponse<BatchPool> stopFirst = stopPoller.poll();
+            if (stopFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS && stopFirst.getValue() != null) {
+                AllocationState interim = stopFirst.getValue().getAllocationState();
+                Assertions.assertTrue(interim == AllocationState.STOPPING || interim == AllocationState.RESIZING,
+                    "Unexpected interim allocation state: " + interim);
+            }
+
+            // Wait for completion
+            stopPoller.waitForCompletion();
+            BatchPool stoppedPool = stopPoller.getFinalResult();
+
+            Assertions.assertNotNull(stoppedPool, "Final result of beginStopPoolResize should be the updated pool.");
+            Assertions.assertEquals(AllocationState.STEADY, stoppedPool.getAllocationState(),
+                "Pool should return to STEADY after stop-resize.");
 
             pool = SyncAsyncExtension.execute(() -> waitForPoolState(poolId, AllocationState.STEADY, 15 * 60 * 1000),
                 () -> Mono.fromCallable(() -> waitForPoolStateAsync(poolId, AllocationState.STEADY, 15 * 60 * 1000)));

@@ -18,6 +18,7 @@ import com.azure.compute.batch.implementation.lro.NodeRemovePollerAsync;
 import com.azure.compute.batch.implementation.lro.NodeStartPollerAsync;
 import com.azure.compute.batch.implementation.lro.PoolDeletePollerAsync;
 import com.azure.compute.batch.implementation.lro.PoolResizePollerAsync;
+import com.azure.compute.batch.implementation.lro.PoolStopResizePollerAsync;
 import com.azure.compute.batch.implementation.task.AsyncTaskSubmitter;
 import com.azure.compute.batch.implementation.task.TaskManager;
 import com.azure.compute.batch.implementation.task.TaskSubmitter;
@@ -11216,6 +11217,32 @@ public final class BatchAsyncClient {
     }
 
     /**
+     * Stops an ongoing resize operation on the Pool.
+     *
+     * This does not restore the Pool to its previous state before the resize
+     * operation: it only stops any further changes being made, and the Pool maintains
+     * its current state. After stopping, the Pool stabilizes at the number of Compute
+     * Nodes it was at when the stop operation was done. During the stop operation,
+     * the Pool allocation state changes first to stopping and then to steady. A
+     * resize operation need not be an explicit resize Pool request; this API can also
+     * be used to halt the initial sizing of the Pool when it is created.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PollerFlux} providing {@link BatchPool} snapshots while polling
+     * and the final {@link BatchPool} (or {@code null}) when complete.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchPool, BatchPool> beginStopPoolResize(String poolId) {
+        RequestOptions requestOptions = new RequestOptions();
+        PoolStopResizePollerAsync poller = new PoolStopResizePollerAsync(this, poolId, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
+    }
+
+    /**
      * Lists all Virtual Machine Images supported by the Azure Batch service.
      *
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -13226,6 +13253,57 @@ public final class BatchAsyncClient {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         return stopPoolResizeWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Stops an ongoing resize operation on the Pool.
+     *
+     * This does not restore the Pool to its previous state before the resize
+     * operation: it only stops any further changes being made, and the Pool maintains
+     * its current state. After stopping, the Pool stabilizes at the number of Compute
+     * Nodes it was at when the stop operation was done. During the stop operation,
+     * the Pool allocation state changes first to stopping and then to steady. A
+     * resize operation need not be an explicit resize Pool request; this API can also
+     * be used to halt the initial sizing of the Pool when it is created.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param options Optional parameters for Stop Pool Resize operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PollerFlux} providing {@link BatchPool} snapshots while polling
+     * and the final {@link BatchPool} (or {@code null}) when complete.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BatchPool, BatchPool> beginStopPoolResize(String poolId, BatchPoolResizeStopOptions options,
+        RequestConditions requestConditions) {
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeOutInSeconds != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        PoolStopResizePollerAsync poller = new PoolStopResizePollerAsync(this, poolId, requestOptions);
+        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
+            poller.getCancelOperation(), poller.getFetchResultOperation());
     }
 
     /**

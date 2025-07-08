@@ -11144,6 +11144,30 @@ public final class BatchClient {
     }
 
     /**
+     * Stops an ongoing resize operation on the Pool.
+     *
+     * This does not restore the Pool to its previous state before the resize
+     * operation: it only stops any further changes being made, and the Pool maintains
+     * its current state. After stopping, the Pool stabilizes at the number of Compute
+     * Nodes it was at when the stop operation was done. During the stop operation,
+     * the Pool allocation state changes first to stopping and then to steady. A
+     * resize operation need not be an explicit resize Pool request; this API can also
+     * be used to halt the initial sizing of the Pool when it is created.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the stop-resize operation, providing
+     * {@link BatchPool} instances during polling and the final snapshot on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchPool, BatchPool> beginStopPoolResize(String poolId) {
+        PollerFlux<BatchPool, BatchPool> asyncPoller = asyncClient.beginStopPoolResize(poolId);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
      * Lists all Virtual Machine Images supported by the Azure Batch service.
      *
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -12895,6 +12919,34 @@ public final class BatchClient {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
         stopPoolResizeWithResponse(poolId, requestOptions).getValue();
+    }
+
+    /**
+     * Stops an ongoing resize operation on the Pool.
+     *
+     * This does not restore the Pool to its previous state before the resize
+     * operation: it only stops any further changes being made, and the Pool maintains
+     * its current state. After stopping, the Pool stabilizes at the number of Compute
+     * Nodes it was at when the stop operation was done. During the stop operation,
+     * the Pool allocation state changes first to stopping and then to steady. A
+     * resize operation need not be an explicit resize Pool request; this API can also
+     * be used to halt the initial sizing of the Pool when it is created.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param options Optional parameters for Stop Pool Resize operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the stop-resize operation, providing
+     * {@link BatchPool} instances during polling and the final snapshot on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchPool, BatchPool> beginStopPoolResize(String poolId, BatchPoolResizeStopOptions options,
+        RequestConditions requestConditions) {
+        PollerFlux<BatchPool, BatchPool> asyncPoller
+            = asyncClient.beginStopPoolResize(poolId, options, requestConditions);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
