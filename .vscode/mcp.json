@@ -2,9 +2,9 @@
     "servers": {
         "azure-sdk-java-mcp": {
             "type": "stdio",
-            "command": "node",
+            "command": "pwsh",      
             "args": [
-                "${workspaceFolder}/eng/tools/mcp/azure-sdk-java-mcp/dist/index.js"
+                "${workspaceFolder}/eng/tools/mcp/azure-sdk-java-mcp/azure-sdk-java-mcp.ps1"
             ]
         }
     }
