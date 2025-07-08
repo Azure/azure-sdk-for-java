@@ -512,16 +512,26 @@ public class PoolTests extends BatchClientTestBase {
 
             // First poll
             PollResponse<BatchNode> startFirst = startPoller.poll();
+            BatchNode firstVal = startFirst.getValue();
+
             if (startFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-                BatchNodeState startState = startFirst.getValue().getState();
-                Assertions.assertTrue(startState == BatchNodeState.CREATING || startState == BatchNodeState.STARTING,
-                    "Unexpected interim state: " + startState);
+                // Only possible while the node is STARTING
+                Assertions.assertNotNull(firstVal, "Expected node payload during polling");
+                Assertions.assertEquals(BatchNodeState.STARTING, firstVal.getState(),
+                    "When IN_PROGRESS the node must be in STARTING state");
+            } else {
+                // Operation completed in a single poll
+                Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, startFirst.getStatus());
+                Assertions.assertNotNull(firstVal);
+                Assertions.assertNotEquals(BatchNodeState.STARTING, firstVal.getState(),
+                    "Node should have left STARTING when operation already completed");
             }
 
             startPoller.waitForCompletion();
             BatchNode startedNode = startPoller.getFinalResult();
-            Assertions.assertNotNull(startedNode);
-            Assertions.assertEquals(BatchNodeState.IDLE, startedNode.getState(), "Node should reach IDLE after start");
+            Assertions.assertNotNull(startedNode, "Final result of beginStartNode should not be null");
+            Assertions.assertEquals(BatchNodeState.IDLE, startedNode.getState(),
+                "Node should reach IDLE once it has started");
 
         } finally {
             // DELETE
