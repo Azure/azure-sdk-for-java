@@ -264,6 +264,7 @@ com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core;5.22.0;5.23.0-
 com.azure.spring:spring-cloud-azure-stream-binder-servicebus;5.22.0;5.23.0-beta.1
 com.azure.spring:spring-cloud-azure-testcontainers;5.22.0;5.23.0-beta.1
 com.azure:azure-spring-data-cosmos;5.22.0;5.23.0-beta.1
+com.azure:azure-contoso-widgetmanager;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager;2.52.0;2.53.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appplatform;2.50.2;2.51.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appservice;2.52.0;2.53.0-beta.1
