@@ -192,6 +192,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     @Override
     public StoreResponse unwrapToStoreResponse(
+        String endpoint,
         RxDocumentServiceRequest request,
         int statusCode,
         HttpHeaders headers,
@@ -207,13 +208,17 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
         int size;
         if ((size = content.readableBytes()) > 0) {
-            return new StoreResponse(statusCode,
+            return new StoreResponse(
+                endpoint,
+                statusCode,
                 HttpUtils.unescape(headers.toMap()),
                 new ByteBufInputStream(content, true),
                 size);
         }
 
-        return new StoreResponse(statusCode,
+        return new StoreResponse(
+            endpoint,
+            statusCode,
             HttpUtils.unescape(headers.toMap()),
             null,
             0);
@@ -392,7 +397,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                     StoreResponse rsp = request
                         .getEffectiveHttpTransportSerializer(this)
-                        .unwrapToStoreResponse(request, httpResponseStatus, httpResponseHeaders, content);
+                        .unwrapToStoreResponse(httpRequest.uri().toString(), request, httpResponseStatus, httpResponseHeaders, content);
 
                     if (reactorNettyRequestRecord != null) {
                         rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
