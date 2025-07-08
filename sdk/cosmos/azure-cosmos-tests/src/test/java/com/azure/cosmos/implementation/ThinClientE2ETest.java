@@ -42,7 +42,7 @@ import static org.assertj.core.api.Fail.fail;
 
 // End to end sanity tests for basic thin client functionality.
 public class ThinClientE2ETest {
-    private static final Logger logger = LoggerFactory.getLogger(ThinClientE2ETest.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(ThinClientE2ETest.class);
     private static final String thinClientEndpointIndicator = ":10250/";
 
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
@@ -50,8 +50,8 @@ public class ThinClientE2ETest {
         CosmosAsyncClient client = null;
         try {
             // If running locally, uncomment these lines
-            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-            System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+            // System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             client = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -98,8 +98,8 @@ public class ThinClientE2ETest {
         CosmosAsyncClient client = null;
         try {
             // If running locally, uncomment these lines
-            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-            System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+            // System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             client = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -139,8 +139,8 @@ public class ThinClientE2ETest {
         CosmosAsyncClient client = null;
         try {
             // If running locally, uncomment these lines
-            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-            System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+            // System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             client = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -213,8 +213,8 @@ public class ThinClientE2ETest {
         CosmosAsyncClient client = null;
         try {
             // if running locally, uncomment these lines
-            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-            System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+            // System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             client  = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
