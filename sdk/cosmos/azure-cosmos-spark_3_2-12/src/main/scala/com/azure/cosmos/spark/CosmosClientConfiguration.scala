@@ -32,7 +32,11 @@ private[spark] case class CosmosClientConfiguration (
                                                       clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
                                                       sampledDiagnosticsLoggerConfig: Option[SampledDiagnosticsLoggerConfig],
                                                       azureMonitorConfig: Option[AzureMonitorConfig]
-                                                    )
+                                                    ) {
+  private[spark] def getRoleInstanceName(machineId: Option[String]): String = {
+    CosmosClientConfiguration.getRoleInstanceName(sparkEnvironmentInfo, machineId)
+  }
+}
 
 private[spark] object CosmosClientConfiguration {
   def apply(
@@ -92,6 +96,21 @@ private[spark] object CosmosClientConfiguration {
       diagnosticsConfig.sampledDiagnosticsLoggerConfig,
       diagnosticsConfig.azureMonitorConfig
     )
+  }
+
+  private[spark] def getRoleInstanceName(sparkEnvironmentInfo: String, machineId: Option[String]): String = {
+    var roleInstanceName = sparkEnvironmentInfo
+
+    val runtimeInfo = runtimeInformation()
+    if (runtimeInfo.isDefined) {
+      roleInstanceName = s"$roleInstanceName|${runtimeInfo.get}"
+    }
+
+    if (!machineId.getOrElse("").isEmpty) {
+      roleInstanceName = s"$roleInstanceName|${machineId.get}"
+    }
+
+    roleInstanceName
   }
 
   private[spark] def getSparkEnvironmentInfo(sessionOption: Option[SparkSession]): String = {

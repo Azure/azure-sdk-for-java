@@ -346,22 +346,25 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         val resourceBuilder = resource
           .toBuilder
 
+        val machineId = Option(ClientTelemetry.blockingGetOrLoadMachineId(null))
         if (resource.getAttributes.get(AttributeKey.stringKey("service.name")).startsWith("unknown_service")) {
-          logInfo("Initializing Resource Customizer with Service attributes")
+          val svcName = s"${CosmosConstants.currentName}:${CosmosConstants.currentVersion}"
+          val instanceName = cosmosClientConfiguration.getRoleInstanceName(machineId)
+
+          logInfo("Initializing Resource Customizer with Service attributes - "
+            + s"service.name: $svcName, service.instance.id: $instanceName")
+
           resourceBuilder
             .put("service.namespace", "azure-cosmos-spark")
-            .put("service.name", s"${CosmosConstants.currentName}:${CosmosConstants.currentVersion}")
+            .put("service.name", svcName)
             .put("service.version", CosmosConstants.currentVersion)
-            .put("service.instance.id", s"${cosmosClientConfiguration.sparkEnvironmentInfo}:"
-              + s"${ClientTelemetry.getMachineId(null)}")
+            .put("service.instance.id", instanceName)
 
         } else {
           logInfo("Initializing Resource Customizer without Service attributes")
         }
 
         resourceBuilder
-          .put("azure.cosmosdb.env.spark", cosmosClientConfiguration.sparkEnvironmentInfo)
-          .put("azure.cosmosdb.env.machine.id", ClientTelemetry.getMachineId(null))
           .build()
       })
       .addSamplerCustomizer((oldSampler, _) => {
