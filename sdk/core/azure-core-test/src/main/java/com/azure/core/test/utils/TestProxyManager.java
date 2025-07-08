@@ -14,6 +14,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.ServerSocket;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,12 +22,16 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Map;
 
+import static com.azure.core.test.implementation.TestingHelpers.drainHttpResponse;
+import static com.azure.core.test.utils.TestProxyUtils.createProxyRequestUrl;
+
 /**
  * Manages running the test recording proxy server
  */
 public final class TestProxyManager {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyManager.class);
     private static Process proxy;
+    static int proxyPort = 5000;
     private static final Path WORKING_DIRECTORY = Paths.get(System.getProperty("user.dir"));
 
     static {
@@ -63,6 +68,11 @@ public final class TestProxyManager {
                     Files.createDirectory(repoRootTarget);
                 }
 
+                try (ServerSocket serverSocket = new ServerSocket(0)) {
+                    proxyPort = serverSocket.getLocalPort();
+                    System.out.println("Test Proxy port: " + proxyPort);
+                }
+
                 ProcessBuilder builder = new ProcessBuilder(commandLine, "--storage-location", repoRoot.toString())
                     .redirectOutput(repoRootTarget.resolve("test-proxy.log").toFile())
                     .redirectError(repoRootTarget.resolve("test-proxy-error.log").toFile());
@@ -70,6 +80,7 @@ public final class TestProxyManager {
                 environment.put("LOGGING__LOGLEVEL", "Debug");
                 environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Debug");
                 environment.put("LOGGING__LOGLEVEL__DEFAULT", "Debug");
+                environment.put("ASPNETCORE_URLS", "http://localhost:" + proxyPort + "/");
                 proxy = builder.start();
             }
             // in either case the proxy should now be started, so let's wait to make sure.
@@ -80,14 +91,17 @@ public final class TestProxyManager {
             // If the Test Proxy process doesn't start within the timeout period read the error stream of the Process
             // for any additional details that could help determine why the Test Proxy process didn't start.
             // Include this additional information in the exception message.
-            ByteArrayOutputStream errorLog = new ByteArrayOutputStream();
+            ByteArrayOutputStream outputLog = new ByteArrayOutputStream();
             byte[] buffer = new byte[4096];
             int read;
+            while ((read = proxy.getInputStream().read(buffer)) != -1) {
+                outputLog.write(buffer, 0, read);
+            }
             while ((read = proxy.getErrorStream().read(buffer)) != -1) {
-                errorLog.write(buffer, 0, read);
+                outputLog.write(buffer, 0, read);
             }
 
-            String errorLogString = new String(errorLog.toByteArray(), StandardCharsets.UTF_8);
+            String errorLogString = new String(outputLog.toByteArray(), StandardCharsets.UTF_8);
             if (CoreUtils.isNullOrEmpty(errorLogString)) {
                 throw new RuntimeException("Test proxy did not initialize.");
             } else {
@@ -102,7 +116,7 @@ public final class TestProxyManager {
 
     private static boolean checkAlive(int loops, Duration waitTime, Process proxy) throws InterruptedException {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, TestProxyUtils.getProxyUrl() + "/admin/isalive");
+        HttpRequest request = new HttpRequest(HttpMethod.GET, createProxyRequestUrl("/admin/isalive"));
         for (int i = 0; i < loops; i++) {
             // If the proxy isn't alive and the exit value isn't 0, then the proxy process has exited with an error
             // and stop waiting.
@@ -110,12 +124,18 @@ public final class TestProxyManager {
                 return false;
             }
 
-            try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+            HttpResponse response = null;
+            try {
+                response = client.sendSync(request, Context.NONE);
                 if (response != null && response.getStatusCode() == 200) {
                     return true;
                 }
                 TestProxyUtils.checkForTestProxyErrors(response);
             } catch (Exception ignored) {
+            } finally {
+                if (response != null) {
+                    drainHttpResponse(response);
+                }
             }
 
             Thread.sleep(waitTime.toMillis());

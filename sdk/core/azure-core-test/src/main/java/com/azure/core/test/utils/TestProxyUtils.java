@@ -113,22 +113,20 @@ public class TestProxyUtils {
             .collect(Collectors.toList());
     }
 
-    private static volatile URL proxyUrl;
-
     /**
      * Adds headers required for communication with the test proxy.
      *
      * @param request The request to add headers to.
-     * @param proxyUrl The {@link URL} the proxy lives at.
      * @param xRecordingId The x-recording-id value for the current session.
      * @param mode The current test proxy mode.
      * @param skipRecordingRequestBody Flag indicating to skip recording request bodies when tests run in Record mode.
      * @throws RuntimeException Construction of one of the URLs failed.
      */
-    public static void changeHeaders(HttpRequest request, URL proxyUrl, String xRecordingId, String mode,
+    public static void changeHeaders(HttpRequest request, String xRecordingId, String mode,
         boolean skipRecordingRequestBody) {
         HttpHeader upstreamUri = request.getHeaders().get(X_RECORDING_UPSTREAM_BASE_URI);
 
+        URL proxyUrl = createProxyRequestUrl("");
         UrlBuilder proxyUrlBuilder = UrlBuilder.parse(request.getUrl());
         proxyUrlBuilder.setScheme(proxyUrl.getProtocol());
         proxyUrlBuilder.setHost(proxyUrl.getHost());
@@ -273,21 +271,19 @@ public class TestProxyUtils {
     }
 
     /**
-     * Gets the current URL for the test proxy.
-     * @return The {@link URL} location of the test proxy.
+     * Creates the URL for a request being sent to Test Proxy.
+     *
+     * @param path The path to send the request.
+     * @return The {@link URL} for a request being sent to the Test Proxy.
      * @throws RuntimeException The URL could not be constructed.
      */
-    public static URL getProxyUrl() {
-        if (proxyUrl != null) {
-            return proxyUrl;
-        }
-        UrlBuilder builder = new UrlBuilder();
-        builder.setHost("localhost");
-        builder.setScheme("http");
-        builder.setPort(5000);
+    public static URL createProxyRequestUrl(String path) {
         try {
-            proxyUrl = builder.toUrl();
-            return proxyUrl;
+            return new UrlBuilder().setScheme("http")
+                .setHost("localhost")
+                .setPort(TestProxyManager.proxyPort)
+                .setPath(path)
+                .toUrl();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -350,7 +346,7 @@ public class TestProxyUtils {
      * @param proxyUrl The proxyUrl to use when constructing requests.
      * @return the list of sanitizer {@link HttpRequest requests} to be sent.
      * @throws RuntimeException if {@link TestProxySanitizerType} is not supported.
-     * @deprecated Use {@link #createAddSanitizersRequest(List, URL)} instead as this will create a bulk HttpRequest
+     * @deprecated Use {@link #createAddSanitizersRequest(List)} instead as this will create a bulk HttpRequest
      * for setting the sanitizers for a test proxy session instead of a request per sanitizer.
      */
     @Deprecated
@@ -401,11 +397,10 @@ public class TestProxyUtils {
      * wiki.
      *
      * @param sanitizers The list of sanitizers to be added.
-     * @param proxyUrl The proxyUrl to use when constructing requests.
      * @return The {@link HttpRequest request} to be sent.
      * @throws RuntimeException if {@link TestProxySanitizerType} is not supported.
      */
-    public static HttpRequest createAddSanitizersRequest(List<TestProxySanitizer> sanitizers, URL proxyUrl) {
+    public static HttpRequest createAddSanitizersRequest(List<TestProxySanitizer> sanitizers) {
         String requestBody = jsonWriteHelper(jsonWriter -> jsonWriter.writeArray(sanitizers, (writer, sanitizer) -> {
             switch (sanitizer.getType()) {
                 case URL:
@@ -453,7 +448,7 @@ public class TestProxyUtils {
                     throw new RuntimeException("Sanitizer type {" + sanitizer.getType() + "} not supported");
             }
         }));
-        return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/AddSanitizers").setBody(requestBody);
+        return new HttpRequest(HttpMethod.POST, createProxyRequestUrl("/Admin/AddSanitizers")).setBody(requestBody);
     }
 
     /**
@@ -461,8 +456,7 @@ public class TestProxyUtils {
      * @return The {@link HttpRequest request} to be sent.
      */
     public static HttpRequest getRemoveSanitizerRequest() {
-
-        return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/RemoveSanitizers")
+        return new HttpRequest(HttpMethod.POST, createProxyRequestUrl("/Admin/RemoveSanitizers"))
             .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
     }
 
@@ -474,30 +468,27 @@ public class TestProxyUtils {
     /**
      * Creates a {@link List} of {@link HttpRequest} to be sent to the test proxy to register matchers.
      * @param matchers The {@link TestProxyRequestMatcher}s to encode into requests.
-     * @param proxyUrl The proxyUrl to use when constructing requests.
      * @return The {@link HttpRequest}s to send to the proxy.
      * @throws RuntimeException The {@link TestProxyRequestMatcher.TestProxyRequestMatcherType} is unsupported.
      */
-    public static List<HttpRequest> getMatcherRequests(List<TestProxyRequestMatcher> matchers, URL proxyUrl) {
+    public static List<HttpRequest> getMatcherRequests(List<TestProxyRequestMatcher> matchers) {
         return matchers.stream().map(testProxyMatcher -> {
-            HttpRequest request;
+            HttpRequest request = new HttpRequest(HttpMethod.POST, createProxyRequestUrl("/Admin/setmatcher"));
             String matcherType;
             switch (testProxyMatcher.getType()) {
                 case HEADERLESS:
                     matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.HEADERLESS.getName();
-                    request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/setmatcher");
                     break;
 
                 case BODILESS:
                     matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS.getName();
-                    request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/setmatcher");
                     break;
 
                 case CUSTOM:
                     CustomMatcher customMatcher = (CustomMatcher) testProxyMatcher;
                     String requestBody = createCustomMatcherRequestBody(customMatcher);
                     matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.CUSTOM.getName();
-                    request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/setmatcher").setBody(requestBody);
+                    request.setBody(requestBody);
                     break;
 
                 default:
@@ -515,7 +506,8 @@ public class TestProxyUtils {
      */
     public static HttpRequest setCompareBodiesMatcher() {
         String requestBody = createCustomMatcherRequestBody(new CustomMatcher().setComparingBodies(false));
-        HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/setmatcher").setBody(requestBody);
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, createProxyRequestUrl("/Admin/setmatcher")).setBody(requestBody);
 
         request.setHeader(X_ABSTRACTION_IDENTIFIER,
             TestProxyRequestMatcher.TestProxyRequestMatcherType.CUSTOM.getName());

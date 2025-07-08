@@ -4,6 +4,7 @@
 package com.azure.core.test.implementation;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -176,5 +177,14 @@ public final class TestingHelpers {
         }
 
         return writer.toString();
+    }
+
+    /**
+     * Drains the body of an {@link HttpResponse} to ensure that all data is consumed and no resources are leaked.
+     *
+     * @param response The {@link HttpResponse} to drain.
+     */
+    public static void drainHttpResponse(HttpResponse response) {
+        response.getBody().ignoreElements().block();
     }
 }

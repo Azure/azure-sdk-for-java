@@ -10,7 +10,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
-import com.azure.core.http.netty.implementation.NettyUtility;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
@@ -335,15 +334,13 @@ class NettyAsyncHttpClient implements HttpClient {
              */
             if (eagerlyReadResponse || ignoreResponseBody) {
                 // Set up the body flux and dispose the connection once it has been received.
-                return Mono.using(() -> reactorNettyConnection,
-                    connection -> connection.inbound()
-                        .receive()
-                        .aggregate()
-                        .asByteArray()
-                        .switchIfEmpty(Mono.just(EMPTY_BYTES))
-                        .map(bytes -> Tuples.of(new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest,
-                            bytes, headersEagerlyConverted), reactorNettyResponse.responseHeaders())),
-                    NettyUtility::closeConnection);
+                return reactorNettyConnection.inbound()
+                    .receive()
+                    .aggregate()
+                    .asByteArray()
+                    .switchIfEmpty(Mono.just(EMPTY_BYTES))
+                    .map(bytes -> Tuples.of(new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes,
+                        headersEagerlyConverted), reactorNettyResponse.responseHeaders()));
             } else {
                 return Mono.just(Tuples.of(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection,
                     restRequest, disableBufferCopy, headersEagerlyConverted), reactorNettyResponse.responseHeaders()));
