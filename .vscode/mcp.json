@@ -4,7 +4,7 @@
             "type": "stdio",
             "command": "node",
             "args": [
-                "./eng/tools/mcp/azure-sdk-java-mcp/dist/index.js"
+                "${workspaceFolder}/eng/tools/mcp/azure-sdk-java-mcp/dist/index.js"
             ]
         }
     }
