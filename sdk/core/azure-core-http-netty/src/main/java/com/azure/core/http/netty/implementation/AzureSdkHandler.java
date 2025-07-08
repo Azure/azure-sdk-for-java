@@ -31,7 +31,6 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
      * Name of the handler when it's added into a ChannelPipeline.
      */
     public static final String HANDLER_NAME = "azureSdkHandler";
-
     private final long writeTimeoutMillis;
     private final ProgressReporter progressReporter;
     private long lastWriteMillis;
@@ -82,10 +81,12 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
     }
 
     @Override
-    public void handlerRemoved(ChannelHandlerContext ctx) {
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         disposeWriteTimeoutWatcher();
         disposeResponseTimeoutWatcher();
         disposeReadTimeoutWatcher();
+        ctx.fireChannelInactive();
+        ctx.pipeline().remove(this);
     }
 
     /**

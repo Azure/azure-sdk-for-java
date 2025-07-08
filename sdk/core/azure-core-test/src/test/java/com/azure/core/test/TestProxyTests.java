@@ -19,7 +19,6 @@ import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.util.Context;
 import com.azure.json.JsonProviders;
@@ -88,7 +87,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Record")
     public void testBasicRecord() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpClient client = getHttpClients().findFirst().orElse(null);
         HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
 
@@ -137,7 +136,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Tag("Record")
     @RecordWithoutRequestBody
     public void testRecordWithPath() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpClient client = getHttpClients().findFirst().orElse(null);
         HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
 
@@ -156,7 +155,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Record")
     public void testRecordWithHeaders() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpClient client = getHttpClients().findFirst().orElse(null);
         HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
 
@@ -328,7 +327,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Record")
     public void testResetTestProxyData() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpClient client = getHttpClients().findFirst().orElse(null);
 
         final HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
@@ -347,7 +346,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Record")
     public void testRecordWithRedirect() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpClient client = getHttpClients().findFirst().orElse(null);
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client)
             .policies(new RedirectPolicy(), interceptorManager.getRecordPolicy())
