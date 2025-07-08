@@ -1,12 +1,8 @@
 # Release History
 
-## 12.0.0-beta.31 (2025-07-09)
+## 12.0.0-beta.31 (unreleased)
 
 ### Features Added
-- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
-- Added support for service version 2025-11-05.
-
-### Other Changes
 
 ## 12.0.0-beta.30 (2025-05-06)
 
