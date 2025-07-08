@@ -25,37 +25,12 @@ Before using this MCP server, ensure you have:
    - The SDK root directory (e.g., `/azure-sdk-for-java`)
 2. **Nodejs** installed.
 
-## Installation
-
-1. Install dependencies:
-```bash
-npm install
-```
-
-2. Build the project:
-```bash
-npm run build
-```
-
 ## Configure MCP Server in VSCode
 
 **Suggest to use 'Claude Sonnet 4' model**
 
-### Step 1: Install and Build the MCP Server
 
-```
-$ cd eng/tools/mcp/azure-sdk-java-mcp
-$ npm install
-$ npm run build
-```
-
-You can find the build files in `./eng/tools/mcp/azure-sdk-java-mcp/dist`. 
-
-### Step 2: Restart VSCode
-
-After adding the configuration, restart VSCode for the changes to take effect.
-
-### Step 3: Start the MCP Server
+### Step 1: Start the MCP Server
 
 Click the 'Start' button in mcp.json.
 ![alt text](assets/image.png)
@@ -75,8 +50,6 @@ Here are some example prompts you can use with GitHub Copilot to interact with t
 - `generate java sdk for azure-analytics-purview-datamap from local TypeSpec: C:\workspace\azure-rest-api-specs\specification\purview\Azure.Analytics.Purview.DataMap\tspconfig.yaml`
 - `update java sdk for "azure-compute-batch" from local TypeSpec source: C:\workspace\azure-rest-api-specs\specification\batch\Azure.Batch\tspconfig.yaml`
 - `sync TypeSpec source for azure-developer-devcenter from remote: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/devcenter/DevCenter/tspconfig.yaml`
-
-
 
 ### Generate SDK after Migrating from Swagger to TypeSpec 
 - `generate sdk after migrating to typespec for "azure-mgmt-dnsresolver"`
