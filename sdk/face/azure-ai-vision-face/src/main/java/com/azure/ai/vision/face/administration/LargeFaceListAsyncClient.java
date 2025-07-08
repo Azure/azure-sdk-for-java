@@ -59,7 +59,7 @@ public final class LargeFaceListAsyncClient {
      * Please refer to https://learn.microsoft.com/rest/api/face/face-list-operations/create-large-face-list for more
      * details.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -115,7 +115,7 @@ public final class LargeFaceListAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -145,7 +145,7 @@ public final class LargeFaceListAsyncClient {
      * Please refer to https://learn.microsoft.com/rest/api/face/face-list-operations/update-large-face-list for more
      * details.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -187,7 +187,7 @@ public final class LargeFaceListAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * [
@@ -219,7 +219,7 @@ public final class LargeFaceListAsyncClient {
      * https://learn.microsoft.com/rest/api/face/face-list-operations/get-large-face-list-training-status for more
      * details.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -284,7 +284,7 @@ public final class LargeFaceListAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -292,9 +292,9 @@ public final class LargeFaceListAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -338,15 +338,15 @@ public final class LargeFaceListAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -391,7 +391,7 @@ public final class LargeFaceListAsyncClient {
      * Please refer to https://learn.microsoft.com/rest/api/face/face-list-operations/get-large-face-list-face for more
      * details.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -419,7 +419,7 @@ public final class LargeFaceListAsyncClient {
      * Please refer to https://learn.microsoft.com/rest/api/face/face-list-operations/update-large-face-list-face for
      * more details.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -460,7 +460,7 @@ public final class LargeFaceListAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * [
@@ -885,6 +885,98 @@ public final class LargeFaceListAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return addFaceImplWithResponse(imageContent, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AddFaceResult.class));
+    }
+
+    /**
+     * Add a face to a specified Large Face List, up to 1,000,000 faces.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-list-operations/add-large-face-list-face-from-url
+     * for more details.
+     *
+     * @param url URL of input image.
+     * @param targetFace A face rectangle to specify the target face to be added to a person, in the format of
+     * 'targetFace=left,top,width,height'.
+     * @param detectionModel The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
+     * values include 'detection_01', 'detection_02' and 'detection_03'. The default value is 'detection_01'.
+     * @param userData User-provided data attached to the face. The size limit is 1K.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for adding face on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AddFaceResult> addFace(String url, List<Integer> targetFace, FaceDetectionModel detectionModel,
+        String userData) {
+        return addFaceFromUrlImpl(url, targetFace, detectionModel, userData);
+    }
+
+    /**
+     * Add a face to a specified Large Face List, up to 1,000,000 faces.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-list-operations/add-large-face-list-face-from-url
+     * for more details.
+     *
+     * @param url URL of input image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for adding face on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AddFaceResult> addFace(String url) {
+        return addFaceFromUrlImpl(url);
+    }
+
+    /**
+     * Add a face to a specified Large Face List, up to 1,000,000 faces.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-list-operations/add-large-face-list-face for more
+     * details.
+     *
+     * @param imageContent The image to be analyzed.
+     * @param targetFace A face rectangle to specify the target face to be added to a person, in the format of
+     * 'targetFace=left,top,width,height'.
+     * @param detectionModel The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
+     * values include 'detection_01', 'detection_02' and 'detection_03'. The default value is 'detection_01'.
+     * @param userData User-provided data attached to the face. The size limit is 1K.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for adding face on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AddFaceResult> addFace(BinaryData imageContent, List<Integer> targetFace,
+        FaceDetectionModel detectionModel, String userData) {
+        return addFaceImpl(imageContent, targetFace, detectionModel, userData);
+    }
+
+    /**
+     * Add a face to a specified Large Face List, up to 1,000,000 faces.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-list-operations/add-large-face-list-face for more
+     * details.
+     *
+     * @param imageContent The image to be analyzed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for adding face on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AddFaceResult> addFace(BinaryData imageContent) {
+        return addFaceImpl(imageContent);
     }
 
     /**

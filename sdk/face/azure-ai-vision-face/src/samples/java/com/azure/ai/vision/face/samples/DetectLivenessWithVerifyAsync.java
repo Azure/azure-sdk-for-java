@@ -42,6 +42,10 @@ public class DetectLivenessWithVerifyAsync {
 
         BinaryData data = Utils.loadFromFile(Resources.TEST_IMAGE_PATH_DETECTLIVENESS_VERIFYIMAGE);
         VerifyImageFileDetails verifyImageFileDetails = new VerifyImageFileDetails(data);
+        if (data != null) {
+            verifyImageFileDetails.setFilename("verify.jpg");
+        }
+
         CreateLivenessWithVerifySessionContent parameters = new CreateLivenessWithVerifySessionContent(LivenessOperationMode.PASSIVE, verifyImageFileDetails)
                 .setDeviceCorrelationId(UUID.randomUUID().toString());
 
