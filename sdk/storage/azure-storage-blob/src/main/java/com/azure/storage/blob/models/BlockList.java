@@ -11,6 +11,7 @@ import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -47,7 +48,7 @@ public final class BlockList implements XmlSerializable<BlockList> {
     @Generated
     public List<Block> getCommittedBlocks() {
         if (this.committedBlocks == null) {
-            this.committedBlocks = new ArrayList<>();
+            return Collections.emptyList();
         }
         return this.committedBlocks;
     }
@@ -72,7 +73,7 @@ public final class BlockList implements XmlSerializable<BlockList> {
     @Generated
     public List<Block> getUncommittedBlocks() {
         if (this.uncommittedBlocks == null) {
-            this.uncommittedBlocks = new ArrayList<>();
+            return Collections.emptyList();
         }
         return this.uncommittedBlocks;
     }
