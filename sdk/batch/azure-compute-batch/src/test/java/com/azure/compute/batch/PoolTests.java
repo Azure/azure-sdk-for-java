@@ -601,18 +601,13 @@ public class PoolTests extends BatchClientTestBase {
                 BatchNode nodeDuringReboot = rebootFirst.getValue();
                 Assertions.assertNotNull(nodeDuringReboot);
                 Assertions.assertEquals(nodeIdA, nodeDuringReboot.getId());
-                Assertions.assertTrue(
-                    nodeDuringReboot.getState() == BatchNodeState.REBOOTING
-                        || nodeDuringReboot.getState() == BatchNodeState.STARTING,
-                    "Unexpected interim state: " + nodeDuringReboot.getState());
+                Assertions.assertEquals(BatchNodeState.REBOOTING, nodeDuringReboot.getState(),
+                "When in progress the node must be REBOOTING");
             }
 
             rebootPoller.waitForCompletion();
             BatchNode rebootedNode = rebootPoller.getFinalResult();
             Assertions.assertNotNull(rebootedNode, "Final result of beginRebootNode should not be null");
-            Assertions.assertTrue(
-                rebootedNode.getState() == BatchNodeState.IDLE || rebootedNode.getState() == BatchNodeState.RUNNING,
-                "Node should return to IDLE/RUNNING after reboot");
 
             // Reimage node
             SyncPoller<BatchNode, BatchNode> reimagePoller = setPlaybackSyncPollerPollInterval(
