@@ -39,6 +39,7 @@ npm run build
 
 ## Configure MCP Server in VSCode
 
+**Suggest to use 'Claude Sonnet 4' model**
 
 ### Step 1: Install and Build the MCP Server
 
