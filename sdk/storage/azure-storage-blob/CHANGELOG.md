@@ -1,10 +1,11 @@
 # Release History
 
-## 12.31.0-beta.2 (Unreleased)
+## 12.31.0-beta.2 (2025-07-09)
 
 ### Features Added
 - AppendBlobClient.AppendBlobFromUri(), .AppendBlockFromUriAsync(), BlobBaseClient.StartCopyFromUri(), .StartCopyFromUriAsync(), SyncCopyFromUri(), .SyncCopyFromUriAsync(), BlockBlobClient.StageBlockFromUri(), .StageBlockFromUriAsync(), PageBlobClient.UploadPagesFromUri(), and .UploadPagesFromUri() will now return CopySourceStatusCode, CopySourceErrorCode, and CopySourceErrorMessage as part of error responses.
 - Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
+- Added support for service version 2025-11-05.
 
 ### Other Changes
 

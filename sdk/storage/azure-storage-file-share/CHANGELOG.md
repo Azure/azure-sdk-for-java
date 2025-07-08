@@ -1,11 +1,12 @@
 # Release History
 
-## 12.27.0-beta.2 (Unreleased)
+## 12.27.0-beta.2 (2025-07-09)
 
 ### Features Added
 - Added support for bearer token challenges.
 - Added `ShareErrorCode.ShareSnapshotNotFound`.
 - Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
+- Added support for service version 2025-11-05.
 
 ### Other Changes
 
