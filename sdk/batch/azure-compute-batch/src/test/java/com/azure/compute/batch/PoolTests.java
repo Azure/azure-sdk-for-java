@@ -609,25 +609,30 @@ public class PoolTests extends BatchClientTestBase {
                 SyncAsyncExtension.execute(() -> batchClient.beginReimageNode(poolId, nodeIdB),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginReimageNode(poolId, nodeIdB).getSyncPoller())));
 
-            // First poll – should be re-imaging / boot-strapping
+            // First poll – should still be re-imaging OR may already have finished
             PollResponse<BatchNode> reimageFirst = reimagePoller.poll();
+            BatchNode nodeDuringReimage = reimageFirst.getValue();
+
             if (reimageFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-                BatchNode nodeDuringReimage = reimageFirst.getValue();
+                // Only possible when state is REIMAGING
                 Assertions.assertNotNull(nodeDuringReimage);
-                Assertions.assertEquals(nodeIdB, nodeDuringReimage.getId());
-                BatchNodeState st = nodeDuringReimage.getState();
-                Assertions.assertTrue(
-                    st == BatchNodeState.REIMAGING || st == BatchNodeState.STARTING || st == BatchNodeState.CREATING,
-                    "Unexpected interim state: " + st);
+                Assertions.assertEquals(BatchNodeState.REIMAGING, nodeDuringReimage.getState(),
+                    "When IN_PROGRESS the node must be REIMAGING");
+            } else {
+                // Operation finished in a single poll
+                Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, reimageFirst.getStatus());
+                Assertions.assertNotNull(nodeDuringReimage);
+                Assertions.assertNotEquals(BatchNodeState.REIMAGING, nodeDuringReimage.getState(),
+                    "Node should have left REIMAGING when operation already completed");
             }
 
             // Wait until the OS has been re-applied and the node is usable
             reimagePoller.waitForCompletion();
             BatchNode reimagedNode = reimagePoller.getFinalResult();
             Assertions.assertNotNull(reimagedNode, "Final result of beginReimageNode should not be null");
-            Assertions.assertTrue(
-                reimagedNode.getState() == BatchNodeState.IDLE || reimagedNode.getState() == BatchNodeState.RUNNING,
-                "Node should return to IDLE/RUNNING after re-image");
+
+            Assertions.assertNotEquals(BatchNodeState.REIMAGING, reimagedNode.getState(),
+                "Node should have left the REIMAGING state once the operation completes");
 
             // Shrink pool by one node
             BatchNodeRemoveParameters removeParams = new BatchNodeRemoveParameters(Collections.singletonList(nodeIdB))
@@ -666,8 +671,7 @@ public class PoolTests extends BatchClientTestBase {
 
             // Start the resize as an LRO
             SyncPoller<BatchPool, BatchPool> growPoller = setPlaybackSyncPollerPollInterval(
-                SyncAsyncExtension.execute(
-                    () -> batchClient.beginResizePool(poolId, grow),
+                SyncAsyncExtension.execute(() -> batchClient.beginResizePool(poolId, grow),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginResizePool(poolId, grow).getSyncPoller())));
 
             // Validate the very first poll – pool should be RESIZING
