@@ -64,14 +64,9 @@ public final class NodeRebootPollerAsync {
                 BatchNode node = resp.getValue().toObject(BatchNode.class);
                 BatchNodeState state = node.getState();
 
-                LongRunningOperationStatus status;
-                if (state == BatchNodeState.REBOOTING || state == BatchNodeState.STARTING) {
-                    status = LongRunningOperationStatus.IN_PROGRESS;
-                } else if (state == BatchNodeState.IDLE || state == BatchNodeState.RUNNING) {
-                    status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                } else {
-                    status = LongRunningOperationStatus.FAILED;
-                }
+                LongRunningOperationStatus status = (state == BatchNodeState.REBOOTING)
+                    ? LongRunningOperationStatus.IN_PROGRESS
+                    : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 
                 return Mono.just(new PollResponse<>(status, node));
             })
