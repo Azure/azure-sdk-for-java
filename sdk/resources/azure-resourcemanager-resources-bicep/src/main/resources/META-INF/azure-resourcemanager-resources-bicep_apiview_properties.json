@@ -1,0 +1,13 @@
+{
+  "flavor": "azure", 
+  "CrossLanguageDefinitionId": {
+    "com.azure.resourcemanager.resources.bicep.fluent.BicepProviderManagementClient": "BicepClient",
+    "com.azure.resourcemanager.resources.bicep.fluent.DecompileOperationGroupsClient": "BicepClient.DecompileOperationGroup",
+    "com.azure.resourcemanager.resources.bicep.fluent.DecompileOperationGroupsClient.bicep": "BicepClient.DecompileOperationGroup.bicep",
+    "com.azure.resourcemanager.resources.bicep.fluent.DecompileOperationGroupsClient.bicepWithResponse": "BicepClient.DecompileOperationGroup.bicep",
+    "com.azure.resourcemanager.resources.bicep.fluent.models.DecompileOperationSuccessResponseInner": "BicepClient.DecompileOperationSuccessResponse",
+    "com.azure.resourcemanager.resources.bicep.implementation.BicepProviderManagementClientBuilder": "BicepClient",
+    "com.azure.resourcemanager.resources.bicep.models.DecompileOperationRequest": "BicepClient.DecompileOperationRequest",
+    "com.azure.resourcemanager.resources.bicep.models.FileDefinition": "BicepClient.FileDefinition"
+  }
+}

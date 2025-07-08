@@ -3,10 +3,7 @@
 ## 12.27.0-beta.2 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
 
 ### Other Changes
 

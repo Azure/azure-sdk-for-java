@@ -4,10 +4,6 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 ## 12.23.1 (2025-06-19)
