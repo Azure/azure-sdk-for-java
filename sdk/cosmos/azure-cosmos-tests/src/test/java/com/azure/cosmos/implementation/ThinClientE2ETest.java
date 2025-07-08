@@ -42,7 +42,7 @@ import static org.assertj.core.api.Fail.fail;
 
 // End to end sanity tests for basic thin client functionality.
 public class ThinClientE2ETest {
-    private static final Logger logger = LoggerFactory.getLogger(ThinClientE2ETest.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(ThinClientE2ETest.class);
     private static final String thinClientEndpointIndicator = ":10250/";
 
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
