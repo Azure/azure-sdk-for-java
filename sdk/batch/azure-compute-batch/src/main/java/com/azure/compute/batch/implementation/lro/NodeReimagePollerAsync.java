@@ -71,19 +71,9 @@ public final class NodeReimagePollerAsync {
                 BatchNode node = resp.getValue().toObject(BatchNode.class);
                 BatchNodeState state = node.getState();
 
-                LongRunningOperationStatus status;
-                if (state == BatchNodeState.REIMAGING
-                    || state == BatchNodeState.CREATING
-                    || state == BatchNodeState.STARTING
-                    || state == BatchNodeState.WAITING_FOR_START_TASK
-                    || state == BatchNodeState.REBOOTING
-                    || state == BatchNodeState.UPGRADING_OS) {
-                    status = LongRunningOperationStatus.IN_PROGRESS;
-                } else if (state == BatchNodeState.IDLE || state == BatchNodeState.RUNNING) {
-                    status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                } else {
-                    status = LongRunningOperationStatus.FAILED;
-                }
+                LongRunningOperationStatus status = (state == BatchNodeState.REIMAGING)
+                    ? LongRunningOperationStatus.IN_PROGRESS
+                    : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 
                 return Mono.just(new PollResponse<>(status, node));
             })
