@@ -173,8 +173,6 @@ public final class BinaryData {
 
     static {
 
-        ClientLogger logger = new ClientLogger(BinaryData.class);
-
         try {
             BinaryDataHelper.setAccessor(new BinaryDataHelper.BinaryDataAccessor() {
 
@@ -189,7 +187,8 @@ public final class BinaryData {
                 }
             });
         } catch (Throwable t) {
-            logger.error("BinaryData's static initializer failed with message : {}", t.getMessage(), t);
+            System.err.println("ensureAccessorSet failed with message : " + t.getMessage());
+            t.printStackTrace(System.err);
             throw t;
         }
     }

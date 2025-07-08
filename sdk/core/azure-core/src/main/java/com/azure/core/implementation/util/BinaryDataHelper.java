@@ -51,13 +51,12 @@ public final class BinaryDataHelper {
      * @throws NullPointerException If {@code content} is null.
      */
     public static BinaryData createBinaryData(BinaryDataContent content) {
-        ClientLogger logger = new ClientLogger(BinaryDataHelper.class);
-
         try {
             ensureAccessorSet();
             return accessor.createBinaryData(content);
         } catch (Throwable t) {
-            logger.error("createBinary failed with message : {}", t.getMessage(), t);
+            System.err.println("createBinary failed with message : " + t.getMessage());
+            t.printStackTrace(System.err);
             throw t;
         }
     }
@@ -79,15 +78,14 @@ public final class BinaryDataHelper {
      * which in turns populates the accessor.
      */
     private static void ensureAccessorSet() {
-        ClientLogger logger = new ClientLogger(BinaryDataHelper.class);
-
         try {
             if (accessor == null) {
                 BinaryData.fromString("");
             }
-        } catch (Exception e) {
-            logger.error("ensureAccessorSet failed with message : {}", e.getMessage(), e);
-            throw e;
+        } catch (Throwable t) {
+            System.err.println("ensureAccessorSet failed with message : " + t.getMessage());
+            t.printStackTrace(System.err);
+            throw t;
         }
     }
 }
