@@ -92,9 +92,15 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
     }
 
     @Override
-    public StoreResponse unwrapToStoreResponse(RxDocumentServiceRequest request, int statusCode, HttpHeaders headers, ByteBuf content) {
+    public StoreResponse unwrapToStoreResponse(
+        String endpoint,
+        RxDocumentServiceRequest request,
+        int statusCode,
+        HttpHeaders headers,
+        ByteBuf content) {
+
         if (content == null || content.readableBytes() == 0) {
-            return super.unwrapToStoreResponse(request, statusCode, headers, Unpooled.EMPTY_BUFFER);
+            return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
         }
         if (RntbdFramer.canDecodeHead(content)) {
 
@@ -102,6 +108,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
             if (response != null) {
                 return super.unwrapToStoreResponse(
+                    endpoint,
                     request,
                     response.getStatus().code(),
                     new HttpHeaders(response.getHeaders().asMap(request.getActivityId())),
@@ -109,7 +116,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                 );
             }
 
-            return super.unwrapToStoreResponse(request, statusCode, headers, null);
+            return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, null);
         }
 
         throw new IllegalStateException("Invalid rntbd response");

@@ -237,9 +237,12 @@ public class ClientSideRequestStatistics {
 
             this.recordRetryContextEndTime();
 
+            String endpoint = null;
             if (regionalRoutingContext != null) {
-
                 URI locationEndpoint = regionalRoutingContext.getGatewayRegionalEndpoint();
+                if (locationEndpoint != null) {
+                    endpoint = locationEndpoint.toString();
+                }
                 String regionName = globalEndpointManager.getRegionName(locationEndpoint, rxDocumentServiceRequest.getOperationType(), rxDocumentServiceRequest.isPerPartitionAutomaticFailoverEnabledAndWriteRequest);
 
                 this.regionsContacted.add(regionName);
@@ -271,6 +274,7 @@ public class ClientSideRequestStatistics {
             gatewayStatistics.responsePayloadSizeInBytes = storeResponseDiagnostics.getResponsePayloadLength();
             gatewayStatistics.faultInjectionRuleId = storeResponseDiagnostics.getFaultInjectionRuleId();
             gatewayStatistics.faultInjectionEvaluationResults = storeResponseDiagnostics.getFaultInjectionEvaluationResults();
+            gatewayStatistics.endpoint = storeResponseDiagnostics.getEndpoint();
 
             this.activityId = storeResponseDiagnostics.getActivityId() != null ? storeResponseDiagnostics.getActivityId() :
                 rxDocumentServiceRequest.getActivityId().toString();
@@ -910,6 +914,7 @@ public class ClientSideRequestStatistics {
         private Set<String> sessionTokenEvaluationResults;
         private PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
         private PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
+        private String endpoint;
 
         public String getSessionToken() {
             return sessionToken;
@@ -975,6 +980,10 @@ public class ClientSideRequestStatistics {
             return perPartitionFailoverInfoHolder;
         }
 
+        public String getEndpoint() {
+            return this.endpoint;
+        }
+
         public static class GatewayStatisticsSerializer extends StdSerializer<GatewayStatistics> {
             private static final long serialVersionUID = 1L;
 
@@ -999,6 +1008,7 @@ public class ClientSideRequestStatistics {
                 this.writeNonNullStringField(jsonGenerator, "exceptionMessage", gatewayStatistics.getExceptionMessage());
                 this.writeNonNullStringField(jsonGenerator, "exceptionResponseHeaders", gatewayStatistics.getExceptionResponseHeaders());
                 this.writeNonNullStringField(jsonGenerator, "faultInjectionRuleId", gatewayStatistics.getFaultInjectionRuleId());
+                this.writeNonNullStringField(jsonGenerator, "endpoint", gatewayStatistics.getEndpoint());
 
                 if (StringUtils.isEmpty(gatewayStatistics.getFaultInjectionRuleId())) {
                     this.writeNonEmptyStringArrayField(
