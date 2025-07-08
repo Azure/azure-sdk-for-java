@@ -63,7 +63,8 @@ function Find-GenerationInformation {
     [string]$RegenerationType
   )
 
-  $path = "sdk/$ServiceDirectory"
+  $path = "$PSScriptRoot/../../sdk/$ServiceDirectory"
+  Write-Host "Searching for code generation scripts in $path"
   if ($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') {
     # Search for 'Update-Codegeneration.ps1' script in the specified service directory.
     Get-ChildItem -Path $path -Filter "Update-Codegeneration.ps1" -Recurse | ForEach-Object {
@@ -103,7 +104,7 @@ foreach ($serviceDirectory in $ServiceDirectories.Split(',')) {
   } else {
     # The service directory is a top-level service, e.g., "storage"
     # Search for all libraries under the service directory.
-    foreach ($libraryFolder in Get-ChildItem -Path "sdk/$serviceDirectory" -Directory) {
+    foreach ($libraryFolder in Get-ChildItem -Path "$PSScriptRoot/../../sdk/$serviceDirectory" -Directory) {
       Find-GenerationInformation $generationInformations "$serviceDirectory/$($libraryFolder.Name)" $RegenerationType
     }
   }
@@ -240,6 +241,9 @@ $job | Wait-Job -Timeout $timeout | Out-Null
 $job | Receive-Job 2>$null | Out-Null
 
 # Clean up generated code, so that next step will not be affected.
+Get-ChildItem -Path "$PSScriptRoot/../../" -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
+  Remove-Item -Path $_.FullName -Recurse -Force | Out-Null
+}
 git reset --hard | Out-Null
 git clean -fd . | Out-Null
 
