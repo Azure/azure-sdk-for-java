@@ -288,7 +288,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         }
 
         private Pair<Mono<ShouldRetryResult>, Boolean> handlePartitionIsMigratingException(PartitionIsMigratingException exception) {
-            logger.debug("Received PartitionIsMigratingException, will retry, {}", exception.toString());
+            logger.info("Received PartitionIsMigratingException, will retry, {}", exception.toString());
             this.request.forceCollectionRoutingMapRefresh = true;
             return Pair.of(null, true);
         }
