@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.0-beta.32(Unreleased)
+## 12.0.0-beta.32 (Unreleased)
 
 ### Features Added
 
