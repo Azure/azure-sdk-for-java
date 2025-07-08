@@ -169,7 +169,7 @@ server.registerTool(
   "sync_java_sdk",
   {
     description:
-      "Don't call prepare environment tool and build SDK tool before calling this tool. Synchronize/Download the TypeSpec source for a target service to generate Java SDK from. Always ask user to provide local tspconfig.yaml path or remote tspconfig.yaml url. The tool takes local tspconfig.yaml path or remote tspconfig.yaml url as input parameter.",
+      "Don't prepare environment before calling this tool. Synchronize/Download the TypeSpec source for a target service to generate Java SDK from. Always ask user to provide local tspconfig.yaml path or remote tspconfig.yaml url. The tool takes local tspconfig.yaml path or remote tspconfig.yaml url as input parameter.",
     inputSchema: {
       localTspConfigPath: z
         .string()
@@ -199,7 +199,7 @@ server.registerTool(
   "generate_java_sdk",
   {
     description:
-      "Don't call prepare environment tool and build SDK tool before calling this tool. Generate SDK from TypeSpec source from 'TempTypeSpecFiles' for a target service module. If there is a directory named 'TempTypeSpecFiles' in the current working directory, call this tool directly. If the directory is not present, ask user whether to generate from local TypeSpec source or remote TypeSpec source. If the user wants to generate from local TypeSpec source, ask for local path to tspconfig.yaml. If the user wants to generate from remote TypeSpec source, ask for remote tspconfig.yaml url. Then call the tool to sync sdk with proper input parameters before calling this tool to generate sdk.",
+      "Don't prepare environment before generating sdk. Generate SDK from TypeSpec source from 'TempTypeSpecFiles' for a target service module. If there is directory named 'TempTypeSpecFiles' in the current working directory, call this tool directly. If the directory is not present, ask user whether to generate from local TypeSpec source or remote TypeSpec source. If the user wants to generate from local TypeSpec source, ask for local path to tspconfig.yaml. If the user wants to generate from remote TypeSpec source, ask for remote tspconfig.yaml url. Then call the tool to sync sdk with proper input parameters before calling this tool to generate sdk. Ask to update changelog.md after generating SDK.",
     inputSchema: {
       cwd: z
         .string()

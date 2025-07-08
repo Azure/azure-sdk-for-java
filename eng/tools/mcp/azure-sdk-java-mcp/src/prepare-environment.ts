@@ -33,6 +33,7 @@ Install and update TypeSpec tools to latest versions, tools include:
 
 output the versions of installed tools to ensure everything is set up correctly
 
+**Note:** If you need to check if the required tools are installed, please check them together insteand of checking them one by one.
 **Troubleshooting:** If any tool shows "Not found", revisit the relevant section above and follow the installation instructions.
   `;
 
