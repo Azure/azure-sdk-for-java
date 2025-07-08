@@ -56,7 +56,7 @@ public final class FaceSessionClient {
      * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/create-liveness-session for
      * more details.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -69,9 +69,9 @@ public final class FaceSessionClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -149,7 +149,7 @@ public final class FaceSessionClient {
      * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-session-result
      * for more details.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -210,7 +210,7 @@ public final class FaceSessionClient {
      * https://learn.microsoft.com/rest/api/face/liveness-session-operations/create-liveness-with-verify-session-with-verify-image
      * for more details.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -304,7 +304,7 @@ public final class FaceSessionClient {
      * https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-with-verify-session-result for
      * more details.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -404,7 +404,7 @@ public final class FaceSessionClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -412,9 +412,9 @@ public final class FaceSessionClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * [
@@ -536,7 +536,7 @@ public final class FaceSessionClient {
      * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-session-image for more
      * details.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -574,10 +574,10 @@ public final class FaceSessionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LivenessSession createLivenessSession(CreateLivenessSessionContent body) {
+    public LivenessSession createLivenessSession(CreateLivenessSessionContent options) {
         // Generated convenience method for createLivenessSessionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createLivenessSessionWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
+        return createLivenessSessionWithResponse(BinaryData.fromObject(options), requestOptions).getValue()
             .toObject(LivenessSession.class);
     }
 
@@ -642,37 +642,37 @@ public final class FaceSessionClient {
      * @return session result of detect liveness with verify.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LivenessWithVerifySession createLivenessWithVerifySession(CreateLivenessWithVerifySessionContent body) {
+    public LivenessWithVerifySession createLivenessWithVerifySession(CreateLivenessWithVerifySessionContent options) {
         // Generated convenience method for createLivenessWithVerifySessionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         MultipartFormDataHelper form = new MultipartFormDataHelper(requestOptions)
-            .serializeTextField("livenessOperationMode", Objects.toString(body.getLivenessOperationMode()));
-        if (body.isDeviceCorrelationIdSetInClient() != null) {
+            .serializeTextField("livenessOperationMode", Objects.toString(options.getLivenessOperationMode()));
+        if (options.isDeviceCorrelationIdSetInClient() != null) {
             form.serializeTextField("deviceCorrelationIdSetInClient",
-                Objects.toString(body.isDeviceCorrelationIdSetInClient()));
+                Objects.toString(options.isDeviceCorrelationIdSetInClient()));
         }
-        if (body.isEnableSessionImage() != null) {
-            form.serializeTextField("enableSessionImage", Objects.toString(body.isEnableSessionImage()));
+        if (options.isEnableSessionImage() != null) {
+            form.serializeTextField("enableSessionImage", Objects.toString(options.isEnableSessionImage()));
         }
-        if (body.getLivenessModelVersion() != null) {
-            form.serializeTextField("livenessModelVersion", Objects.toString(body.getLivenessModelVersion()));
+        if (options.getLivenessModelVersion() != null) {
+            form.serializeTextField("livenessModelVersion", Objects.toString(options.getLivenessModelVersion()));
         }
-        if (body.isReturnVerifyImageHash() != null) {
-            form.serializeTextField("returnVerifyImageHash", Objects.toString(body.isReturnVerifyImageHash()));
+        if (options.isReturnVerifyImageHash() != null) {
+            form.serializeTextField("returnVerifyImageHash", Objects.toString(options.isReturnVerifyImageHash()));
         }
-        if (body.getVerifyConfidenceThreshold() != null) {
-            form.serializeTextField("verifyConfidenceThreshold", Objects.toString(body.getVerifyConfidenceThreshold()));
+        if (options.getVerifyConfidenceThreshold() != null) {
+            form.serializeTextField("verifyConfidenceThreshold", Objects.toString(options.getVerifyConfidenceThreshold()));
         }
-        if (body.getVerifyImage() != null && body.getVerifyImage().getContent() != null) {
-            form.serializeFileField("verifyImage", body.getVerifyImage().getContent(),
-                body.getVerifyImage().getContentType(), body.getVerifyImage().getFilename());
+        if (options.getVerifyImage() != null && options.getVerifyImage().getContent() != null) {
+            form.serializeFileField("verifyImage", options.getVerifyImage().getContent(),
+                options.getVerifyImage().getContentType(), options.getVerifyImage().getFilename());
         }
-        if (body.getDeviceCorrelationId() != null) {
-            form.serializeTextField("deviceCorrelationId", body.getDeviceCorrelationId());
+        if (options.getDeviceCorrelationId() != null) {
+            form.serializeTextField("deviceCorrelationId", options.getDeviceCorrelationId());
         }
-        if (body.getAuthTokenTimeToLiveInSeconds() != null) {
+        if (options.getAuthTokenTimeToLiveInSeconds() != null) {
             form.serializeTextField("authTokenTimeToLiveInSeconds",
-                Objects.toString(body.getAuthTokenTimeToLiveInSeconds()));
+                Objects.toString(options.getAuthTokenTimeToLiveInSeconds()));
         }
         return createLivenessWithVerifySessionWithResponse(form.end().getRequestBody(), requestOptions).getValue()
             .toObject(LivenessWithVerifySession.class);
