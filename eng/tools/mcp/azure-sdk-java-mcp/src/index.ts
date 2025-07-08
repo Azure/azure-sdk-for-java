@@ -169,7 +169,7 @@ server.registerTool(
   "sync_java_sdk",
   {
     description:
-      "Don't prepare environment before calling this tool. Synchronize/Download the TypeSpec source for a target service to generate Java SDK from. Always ask user to provide local tspconfig.yaml path or remote tspconfig.yaml url. The tool takes local tspconfig.yaml path or remote tspconfig.yaml url as input parameter.",
+      "Don't prepare environment before synchronize TypeSpec source. Synchronize/Download the TypeSpec source for a target service to generate Java SDK from. Always ask user to provide local tspconfig.yaml path or remote tspconfig.yaml url. The tool takes local tspconfig.yaml path or remote tspconfig.yaml url as input parameter.",
     inputSchema: {
       localTspConfigPath: z
         .string()
