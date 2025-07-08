@@ -63,7 +63,7 @@ public final class LargePersonGroupAsyncClient {
      * Please refer to https://learn.microsoft.com/rest/api/face/person-group-operations/create-large-person-group for
      * more details.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -117,7 +117,7 @@ public final class LargePersonGroupAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -147,7 +147,7 @@ public final class LargePersonGroupAsyncClient {
      * Please refer to https://learn.microsoft.com/rest/api/face/person-group-operations/update-large-person-group for
      * more details.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -189,7 +189,7 @@ public final class LargePersonGroupAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * [
@@ -224,7 +224,7 @@ public final class LargePersonGroupAsyncClient {
      * https://learn.microsoft.com/rest/api/face/person-group-operations/get-large-person-group-training-status for more
      * details.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -278,7 +278,7 @@ public final class LargePersonGroupAsyncClient {
      * https://learn.microsoft.com/rest/api/face/person-group-operations/create-large-person-group-person for more
      * details.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -287,9 +287,9 @@ public final class LargePersonGroupAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -336,7 +336,7 @@ public final class LargePersonGroupAsyncClient {
      * Please refer to https://learn.microsoft.com/rest/api/face/person-group-operations/get-large-person-group-person
      * for more details.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -370,7 +370,7 @@ public final class LargePersonGroupAsyncClient {
      * https://learn.microsoft.com/rest/api/face/person-group-operations/update-large-person-group-person for more
      * details.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -413,7 +413,7 @@ public final class LargePersonGroupAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * [
@@ -463,7 +463,7 @@ public final class LargePersonGroupAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -471,9 +471,9 @@ public final class LargePersonGroupAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -519,15 +519,15 @@ public final class LargePersonGroupAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -581,7 +581,7 @@ public final class LargePersonGroupAsyncClient {
      * https://learn.microsoft.com/rest/api/face/person-group-operations/get-large-person-group-person-face for more
      * details.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -613,7 +613,7 @@ public final class LargePersonGroupAsyncClient {
      * https://learn.microsoft.com/rest/api/face/person-group-operations/update-large-person-group-person-face for more
      * details.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

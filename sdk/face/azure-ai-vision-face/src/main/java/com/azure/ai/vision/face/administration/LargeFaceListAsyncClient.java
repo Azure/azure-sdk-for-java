@@ -59,7 +59,7 @@ public final class LargeFaceListAsyncClient {
      * Please refer to https://learn.microsoft.com/rest/api/face/face-list-operations/create-large-face-list for more
      * details.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -115,7 +115,7 @@ public final class LargeFaceListAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -145,7 +145,7 @@ public final class LargeFaceListAsyncClient {
      * Please refer to https://learn.microsoft.com/rest/api/face/face-list-operations/update-large-face-list for more
      * details.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -187,7 +187,7 @@ public final class LargeFaceListAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * [
@@ -219,7 +219,7 @@ public final class LargeFaceListAsyncClient {
      * https://learn.microsoft.com/rest/api/face/face-list-operations/get-large-face-list-training-status for more
      * details.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -284,7 +284,7 @@ public final class LargeFaceListAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -292,9 +292,9 @@ public final class LargeFaceListAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -338,15 +338,15 @@ public final class LargeFaceListAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -391,7 +391,7 @@ public final class LargeFaceListAsyncClient {
      * Please refer to https://learn.microsoft.com/rest/api/face/face-list-operations/get-large-face-list-face for more
      * details.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -419,7 +419,7 @@ public final class LargeFaceListAsyncClient {
      * Please refer to https://learn.microsoft.com/rest/api/face/face-list-operations/update-large-face-list-face for
      * more details.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -460,7 +460,7 @@ public final class LargeFaceListAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * [

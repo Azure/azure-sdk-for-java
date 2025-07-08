@@ -56,7 +56,7 @@ public final class FaceSessionClient {
      * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/create-liveness-session for
      * more details.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -69,9 +69,9 @@ public final class FaceSessionClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -149,7 +149,7 @@ public final class FaceSessionClient {
      * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-session-result
      * for more details.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -210,7 +210,7 @@ public final class FaceSessionClient {
      * https://learn.microsoft.com/rest/api/face/liveness-session-operations/create-liveness-with-verify-session-with-verify-image
      * for more details.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -304,7 +304,7 @@ public final class FaceSessionClient {
      * https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-with-verify-session-result for
      * more details.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -404,7 +404,7 @@ public final class FaceSessionClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -412,9 +412,9 @@ public final class FaceSessionClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * [
@@ -536,7 +536,7 @@ public final class FaceSessionClient {
      * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-session-image for more
      * details.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -574,10 +574,10 @@ public final class FaceSessionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LivenessSession createLivenessSession(CreateLivenessSessionContent options) {
+    public LivenessSession createLivenessSession(CreateLivenessSessionContent body) {
         // Generated convenience method for createLivenessSessionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createLivenessSessionWithResponse(BinaryData.fromObject(options), requestOptions).getValue()
+        return createLivenessSessionWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(LivenessSession.class);
     }
 
@@ -632,7 +632,7 @@ public final class FaceSessionClient {
      * https://learn.microsoft.com/rest/api/face/liveness-session-operations/create-liveness-with-verify-session-with-verify-image
      * for more details.
      *
-     * @param body Request content of liveness with verify session creation.
+     * @param options Request content of liveness with verify session creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -661,7 +661,8 @@ public final class FaceSessionClient {
             form.serializeTextField("returnVerifyImageHash", Objects.toString(options.isReturnVerifyImageHash()));
         }
         if (options.getVerifyConfidenceThreshold() != null) {
-            form.serializeTextField("verifyConfidenceThreshold", Objects.toString(options.getVerifyConfidenceThreshold()));
+            form.serializeTextField("verifyConfidenceThreshold",
+                Objects.toString(options.getVerifyConfidenceThreshold()));
         }
         if (options.getVerifyImage() != null && options.getVerifyImage().getContent() != null) {
             form.serializeFileField("verifyImage", options.getVerifyImage().getContent(),
