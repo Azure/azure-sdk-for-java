@@ -33,7 +33,6 @@ import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
@@ -237,12 +236,8 @@ public class ClientSideRequestStatistics {
 
             this.recordRetryContextEndTime();
 
-            String endpoint = null;
             if (regionalRoutingContext != null) {
                 URI locationEndpoint = regionalRoutingContext.getGatewayRegionalEndpoint();
-                if (locationEndpoint != null) {
-                    endpoint = locationEndpoint.toString();
-                }
                 String regionName = globalEndpointManager.getRegionName(locationEndpoint, rxDocumentServiceRequest.getOperationType(), rxDocumentServiceRequest.isPerPartitionAutomaticFailoverEnabledAndWriteRequest);
 
                 this.regionsContacted.add(regionName);
