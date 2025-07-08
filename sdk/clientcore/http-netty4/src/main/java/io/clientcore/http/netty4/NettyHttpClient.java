@@ -14,6 +14,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.ServerSentResult;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.utils.AuthenticateChallenge;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.ProgressReporter;
 import io.clientcore.core.utils.ServerSentEventUtils;
@@ -25,22 +26,34 @@ import io.clientcore.http.netty4.implementation.Netty4ConnectionPoolKey;
 import io.clientcore.http.netty4.implementation.Netty4PipelineCleanupHandler;
 import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
 import io.clientcore.http.netty4.implementation.Netty4ResponseHandler;
+import io.clientcore.http.netty4.implementation.Netty4SslInitializationHandler;
+import io.clientcore.http.netty4.implementation.ResponseBodyHandling;
 import io.clientcore.http.netty4.implementation.ResponseStateInfo;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
+import io.netty.handler.proxy.ProxyHandler;
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.SslHandler;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
+import javax.net.ssl.SSLException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.URI;
 import java.nio.channels.ClosedChannelException;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import static io.clientcore.core.utils.ServerSentEventUtils.attemptRetry;
 import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStream;
@@ -49,8 +62,11 @@ import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_C
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_RESPONSE;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PIPELINE_CLEANUP;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROGRESS_AND_TIMEOUT;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROXY;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL_INITIALIZER;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.awaitLatch;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.buildSslContext;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.sendHttp11Request;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.sendHttp2Request;
@@ -76,24 +92,36 @@ class NettyHttpClient implements HttpClient {
     private final long responseTimeoutMillis;
     private final long writeTimeoutMillis;
 
-    NettyHttpClient(EventLoopGroup eventLoopGroup, Netty4ConnectionPool connectionPool, ProxyOptions proxyOptions,
-        ChannelInitializationProxyHandler channelInitializationProxyHandler, long readTimeoutMillis,
+    private final Bootstrap bootstrap;
+    private final Consumer<SslContextBuilder> sslContextModifier;
+    private final HttpProtocolVersion maximumHttpVersion;
+
+    NettyHttpClient(Bootstrap bootstrap, EventLoopGroup eventLoopGroup, Netty4ConnectionPool connectionPool,
+        ProxyOptions proxyOptions, ChannelInitializationProxyHandler channelInitializationProxyHandler,
+        Consumer<SslContextBuilder> sslContextModifier, HttpProtocolVersion maximumHttpVersion, long readTimeoutMillis,
         long responseTimeoutMillis, long writeTimeoutMillis) {
+        this.bootstrap = bootstrap;
         this.eventLoopGroup = eventLoopGroup;
         this.connectionPool = connectionPool;
         this.proxyOptions = proxyOptions;
         this.channelInitializationProxyHandler = channelInitializationProxyHandler;
+        this.sslContextModifier = sslContextModifier;
+        this.maximumHttpVersion = maximumHttpVersion;
         this.readTimeoutMillis = readTimeoutMillis;
         this.responseTimeoutMillis = responseTimeoutMillis;
         this.writeTimeoutMillis = writeTimeoutMillis;
     }
 
     Bootstrap getBootstrap() {
-        return connectionPool.getBootstrap();
+        return connectionPool != null ? connectionPool.getBootstrap() : bootstrap;
     }
 
     @Override
     public Response<BinaryData> send(HttpRequest request) {
+        return connectionPool != null ? sendWithConnectionPool(request) : sendWithoutConnectionPool(request);
+    }
+
+    private Response<BinaryData> sendWithConnectionPool(HttpRequest request) {
         final URI uri = request.getUri();
         final boolean isHttps = "https".equalsIgnoreCase(uri.getScheme());
         final int port = uri.getPort() == -1 ? (isHttps ? 443 : 80) : uri.getPort();
@@ -117,7 +145,7 @@ class NettyHttpClient implements HttpClient {
 
             Channel channel = future.getNow();
             try {
-                configureRequestPipeline(channel, request, responseReference, errorReference, latch, isHttps);
+                configurePooledRequestPipeline(channel, request, responseReference, errorReference, latch, isHttps);
             } catch (Exception e) {
                 // An exception occurred during the pipeline setup.
                 // We fire the exception through the pipeline to trigger the cleanup handler,
@@ -141,78 +169,145 @@ class NettyHttpClient implements HttpClient {
             throw LOGGER.throwableAtError().log(errorReference.get(), CoreException::from);
         }
 
-        //Response<BinaryData> response;
-        //Channel channelToRelease;
-        BinaryData body;
-        if (info.isChannelConsumptionComplete()) {
-            ByteArrayOutputStream eagerContent = info.getEagerContent();
-
-            body = (eagerContent == null || eagerContent.size() == 0)
-                ? BinaryData.empty()
-                : BinaryData.fromBytes(eagerContent.toByteArray());
-
-            // Since the response is complete, we are responsible for cleaning up the channel.
-            Channel channelToRelease = info.getResponseChannel();
-            channelToRelease.eventLoop().execute(() -> {
-                Netty4PipelineCleanupHandler cleanupHandler
-                    = channelToRelease.pipeline().get(Netty4PipelineCleanupHandler.class);
-                if (cleanupHandler != null) {
-                    cleanupHandler.cleanup(channelToRelease.pipeline().context(cleanupHandler), false);
-                }
-            });
-        } else {
-            // For all other cases, create a streaming response body.
-            // This delegates all body consumption and cleanup logic to Netty4ChannelBinaryData.
-            String contentLength = info.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
-            Long length = null;
-            if (!CoreUtils.isNullOrEmpty(contentLength)) {
-                try {
-                    length = Long.parseLong(contentLength);
-                } catch (NumberFormatException ignored) {
-                    // Ignore, we'll just read until the channel is closed.
-                }
-            }
-            body = new Netty4ChannelBinaryData(info.getEagerContent(), info.getResponseChannel(), length,
-                info.isHttp2());
-        }
-
-        Response<BinaryData> response = new Response<>(request, info.getStatusCode(), info.getHeaders(), body);
-
-        if (response.getValue() != BinaryData.empty()
-            && ServerSentEventUtils
-                .isTextEventStreamContentType(response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-            ServerSentEventListener listener = request.getServerSentEventListener();
-
-            if (listener != null) {
-                try {
-                    ServerSentResult serverSentResult
-                        = processTextEventStream(response.getValue().toStream(), listener);
-
-                    if (serverSentResult.getException() != null) {
-                        // If an exception occurred while processing the text event stream, emit listener onError.
-                        listener.onError(serverSentResult.getException());
-                    }
-
-                    // If an error occurred or we want to reconnect
-                    if (!Thread.currentThread().isInterrupted() && attemptRetry(serverSentResult, request)) {
-                        response.close();
-                        return this.send(request);
-                    }
-
-                    response = new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                        createBodyFromServerSentResult(serverSentResult));
-                } catch (IOException ex) {
-                    throw LOGGER.throwableAtError().log(ex, CoreException::from);
-                }
-            } else {
-                response.close();
-                throw LOGGER.throwableAtError().log(NO_LISTENER_ERROR_MESSAGE, IllegalStateException::new);
-            }
-        }
-        return response;
+        return createResponse(request, info);
     }
 
-    private void configureRequestPipeline(Channel channel, HttpRequest request,
+    private Response<BinaryData> sendWithoutConnectionPool(HttpRequest request) {
+        URI uri = request.getUri();
+        String host = uri.getHost();
+        int port = uri.getPort() == -1 ? ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80) : uri.getPort();
+        boolean isHttps = "https".equalsIgnoreCase(uri.getScheme());
+        ProgressReporter progressReporter = (request.getContext() == null)
+            ? null
+            : (ProgressReporter) request.getContext().getMetadata("progressReporter");
+        boolean addProgressAndTimeoutHandler
+            = progressReporter != null || writeTimeoutMillis > 0 || responseTimeoutMillis > 0 || readTimeoutMillis > 0;
+
+        AtomicReference<ResponseStateInfo> responseReference = new AtomicReference<>();
+        AtomicReference<Throwable> errorReference = new AtomicReference<>();
+        AtomicReference<List<AuthenticateChallenge>> proxyChallenges = new AtomicReference<>();
+        CountDownLatch latch = new CountDownLatch(1);
+
+        // Configure an immutable ChannelInitializer in the builder with everything that can be added on a non-per
+        // request basis.
+        bootstrap.handler(new ChannelInitializer<Channel>() {
+            @Override
+            protected void initChannel(Channel channel) throws SSLException {
+                // Test whether proxying should be applied to this Channel. If so, add it.
+                boolean hasProxy = channelInitializationProxyHandler.test(channel.remoteAddress());
+                if (hasProxy) {
+                    ProxyHandler proxyHandler = channelInitializationProxyHandler.createProxy(proxyChallenges);
+                    proxyHandler.connectFuture().addListener(future -> {
+                        if (!future.isSuccess()) {
+                            setOrSuppressError(errorReference, future.cause());
+                        }
+                    });
+
+                    channel.pipeline().addFirst(PROXY, proxyHandler);
+                }
+
+                // Add SSL handling if the request is HTTPS.
+                if (isHttps) {
+                    SslContext ssl = buildSslContext(maximumHttpVersion, sslContextModifier);
+                    // SSL handling is added last here. This is done as proxying could require SSL handling too.
+                    channel.pipeline().addLast(SSL, ssl.newHandler(channel.alloc(), host, port));
+                    channel.pipeline().addLast(SSL_INITIALIZER, new Netty4SslInitializationHandler());
+
+                    channel.pipeline()
+                        .addLast(ALPN, new Netty4AlpnHandler(request, responseReference, errorReference, latch));
+                }
+            }
+        });
+
+        bootstrap.connect(host, port).addListener((ChannelFutureListener) connectListener -> {
+            if (!connectListener.isSuccess()) {
+                LOGGER.atError().setThrowable(connectListener.cause()).log("Failed connection.");
+                errorReference.set(connectListener.cause());
+                connectListener.channel().close();
+                latch.countDown();
+                return;
+            }
+
+            Channel channel = connectListener.channel();
+            channel.closeFuture().addListener(closeListener -> {
+                if (!closeListener.isSuccess()) {
+                    LOGGER.atError().setThrowable(closeListener.cause()).log("Channel closed with error");
+                    setOrSuppressError(errorReference, closeListener.cause());
+                }
+            });
+
+            // Only add CoreProgressAndTimeoutHandler if it will do anything, ex it is reporting progress or is
+            // applying timeouts.
+            // This is done to keep the ChannelPipeline shorter, therefore more performant, if this would
+            // effectively be a no-op.
+            if (addProgressAndTimeoutHandler) {
+                channel.pipeline()
+                    .addLast(PROGRESS_AND_TIMEOUT, new Netty4ProgressAndTimeoutHandler(progressReporter,
+                        writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
+            }
+
+            Throwable earlyError = errorReference.get();
+            if (earlyError != null) {
+                // If an error occurred between the connect and the request being sent, don't proceed with sending
+                // the request.
+                latch.countDown();
+                return;
+            }
+
+            // What I basically want here is the following logic in Netty:
+            // 1. If a proxy exists, it should be added first. When the connection is activated, we should connect
+            //    to the proxy (with or without SSL). If there is no proxy, skip this step.
+            // 2. Once step 1 is complete, we should wait until the SSL handshake is complete (if applicable).
+            //    If SSL isn't being used, skip this step.
+            // 3. Once step 2 is complete, we should send the request.
+            //
+            // None of the steps should block the event loop, so we need to use listeners to ensure that the next
+            // step is only executed once the previous step is complete.
+            SslHandler sslHandler = channel.pipeline().get(SslHandler.class);
+            if (sslHandler != null) {
+                // If the SslHandler is present, trigger the SSL handshake to complete before sending the request.
+                sslHandler.handshakeFuture().addListener(handshakeListener -> {
+                    if (!handshakeListener.isSuccess()) {
+                        LOGGER.atError().setThrowable(handshakeListener.cause()).log("Failed SSL handshake.");
+                        errorReference.set(handshakeListener.cause());
+                        latch.countDown();
+                    }
+                });
+                channel.write(Unpooled.EMPTY_BUFFER);
+            } else {
+                // If there isn't an SslHandler, we can send the request immediately.
+                // Add the HTTP/1.1 codec, as we only support HTTP/2 when using SSL ALPN.
+                Netty4ResponseHandler responseHandler
+                    = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
+                channel.pipeline().addLast(HTTP_RESPONSE, responseHandler);
+
+                String addBefore = addProgressAndTimeoutHandler ? PROGRESS_AND_TIMEOUT : HTTP_RESPONSE;
+                channel.pipeline().addBefore(addBefore, HTTP_CODEC, createCodec());
+
+                sendHttp11Request(request, channel, errorReference)
+                    .addListener((ChannelFutureListener) sendListener -> {
+                        if (!sendListener.isSuccess()) {
+                            setOrSuppressError(errorReference, sendListener.cause());
+                            sendListener.channel().close();
+                            latch.countDown();
+                        } else {
+                            sendListener.channel().read();
+                        }
+                    });
+            }
+        });
+
+        awaitLatch(latch);
+
+        ResponseStateInfo info = responseReference.get();
+        if (info == null) {
+            throw LOGGER.throwableAtError().log(errorReference.get(), CoreException::from);
+        }
+
+        return createResponse(request, info);
+    }
+
+    private void configurePooledRequestPipeline(Channel channel, HttpRequest request,
         AtomicReference<ResponseStateInfo> responseReference, AtomicReference<Throwable> errorReference,
         CountDownLatch latch, boolean isHttps) {
 
@@ -232,11 +327,6 @@ class NettyHttpClient implements HttpClient {
             = progressReporter != null || writeTimeoutMillis > 0 || responseTimeoutMillis > 0 || readTimeoutMillis > 0;
 
         ChannelPipeline pipeline = channel.pipeline();
-
-        // The first handler added is the cleanup handler. It will be the last to execute
-        // in the outbound direction and the first in the inbound direction, but its main
-        // purpose is to clean up all other request-specific handlers and release the channel.
-        pipeline.addLast(PIPELINE_CLEANUP, new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch));
 
         // Only add CoreProgressAndTimeoutHandler if it will do anything, ex it is reporting progress or is
         // applying timeouts.
@@ -283,6 +373,8 @@ class NettyHttpClient implements HttpClient {
             pipeline.addBefore(addBefore, HTTP_CODEC, createCodec());
             send(request, channel, errorReference, latch);
         }
+
+        pipeline.addLast(PIPELINE_CLEANUP, new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch));
     }
 
     private void send(HttpRequest request, Channel channel, AtomicReference<Throwable> errorReference,
@@ -296,6 +388,79 @@ class NettyHttpClient implements HttpClient {
                 latch.countDown();
             }
         });
+    }
+
+    private Response<BinaryData> createResponse(HttpRequest request, ResponseStateInfo info) {
+        BinaryData body;
+        Response<BinaryData> response;
+
+        if (info.isChannelConsumptionComplete()) {
+            ByteArrayOutputStream eagerContent = info.getEagerContent();
+
+            body = (info.getResponseBodyHandling() != ResponseBodyHandling.IGNORE
+                && eagerContent != null
+                && eagerContent.size() > 0) ? BinaryData.fromBytes(eagerContent.toByteArray()) : BinaryData.empty();
+
+            Channel channelToCleanup = info.getResponseChannel();
+            channelToCleanup.eventLoop().execute(() -> {
+                Netty4PipelineCleanupHandler cleanupHandler
+                    = channelToCleanup.pipeline().get(Netty4PipelineCleanupHandler.class);
+                if (cleanupHandler != null) {
+                    cleanupHandler.cleanup(channelToCleanup.pipeline().context(cleanupHandler), false);
+                } else {
+                    channelToCleanup.close();
+                }
+            });
+        } else {
+            // For all other cases, create a streaming response body.
+            // This delegates all body consumption and cleanup logic to Netty4ChannelBinaryData.
+            String contentLength = info.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
+            Long length = null;
+            if (!CoreUtils.isNullOrEmpty(contentLength)) {
+                try {
+                    length = Long.parseLong(contentLength);
+                } catch (NumberFormatException ignored) {
+                    // Ignore, we'll just read until the channel is closed.
+                }
+            }
+            body = new Netty4ChannelBinaryData(info.getEagerContent(), info.getResponseChannel(), length,
+                info.isHttp2());
+        }
+
+        response = new Response<>(request, info.getStatusCode(), info.getHeaders(), body);
+
+        if (response.getValue() != BinaryData.empty()
+            && ServerSentEventUtils
+                .isTextEventStreamContentType(response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+            ServerSentEventListener listener = request.getServerSentEventListener();
+
+            if (listener != null) {
+                try {
+                    ServerSentResult serverSentResult
+                        = processTextEventStream(response.getValue().toStream(), listener);
+
+                    if (serverSentResult.getException() != null) {
+                        // If an exception occurred while processing the text event stream, emit listener onError.
+                        listener.onError(serverSentResult.getException());
+                    }
+
+                    // If an error occurred or we want to reconnect
+                    if (!Thread.currentThread().isInterrupted() && attemptRetry(serverSentResult, request)) {
+                        response.close();
+                        return this.send(request);
+                    }
+
+                    response = new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                        createBodyFromServerSentResult(serverSentResult));
+                } catch (IOException ex) {
+                    throw LOGGER.throwableAtError().log(ex, CoreException::from);
+                }
+            } else {
+                response.close();
+                throw LOGGER.throwableAtError().log(NO_LISTENER_ERROR_MESSAGE, IllegalStateException::new);
+            }
+        }
+        return response;
     }
 
     public void close() {

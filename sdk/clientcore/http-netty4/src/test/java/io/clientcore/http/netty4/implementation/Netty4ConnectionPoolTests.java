@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.time.Duration;
@@ -25,11 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -73,6 +76,42 @@ public class Netty4ConnectionPoolTests {
     }
 
     @Test
+    public void releaseNullChannelDoesNotThrow() throws IOException {
+        try (Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofSeconds(10), 1)) {
+            assertDoesNotThrow(() -> pool.release(null));
+        }
+    }
+
+    @Test
+    public void releaseUnknownChannelClosesChannel() throws IOException {
+        Channel unknownChannel = new NioSocketChannel();
+        eventLoopGroup.register(unknownChannel);
+
+        try (Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofSeconds(10), 1)) {
+            pool.release(unknownChannel);
+            // The pool doesn't know this channel, so it should close it.
+            unknownChannel.closeFuture().awaitUninterruptibly();
+            assertFalse(unknownChannel.isOpen());
+        }
+    }
+
+    @Test
+    public void releaseToClosedPoolClosesChannel() throws IOException {
+        Bootstrap realBootstrap = bootstrap.clone().remoteAddress(connectionPoolKey.getConnectionTarget());
+        Netty4ConnectionPool pool = new Netty4ConnectionPool(realBootstrap, new ChannelInitializationProxyHandler(null),
+            null, 1, null, null, null, 1, null);
+
+        Channel channel = pool.acquire(connectionPoolKey, false).awaitUninterruptibly().getNow();
+        assertTrue(channel.isActive());
+
+        pool.close();
+        pool.release(channel);
+
+        channel.closeFuture().awaitUninterruptibly();
+        assertFalse(channel.isOpen());
+    }
+
+    @Test
     public void testAcquireAndRelease() throws IOException {
         try (Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofSeconds(10), 1)) {
             Future<Channel> future = pool.acquire(connectionPoolKey, false);
@@ -80,6 +119,62 @@ public class Netty4ConnectionPoolTests {
             assertNotNull(channel);
             assertTrue(channel.isActive());
             pool.release(channel);
+        }
+    }
+
+    @Test
+    public void closeIsIdempotent() throws IOException {
+        Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofSeconds(10), 1);
+        pool.close();
+        assertDoesNotThrow(pool::close);
+    }
+
+    @Test
+    public void poolWithNoIdleTimeoutHasNoCleanupTask()
+        throws IOException, NoSuchFieldException, IllegalAccessException {
+        try (Netty4ConnectionPool pool = createPool(1, null, null, Duration.ofSeconds(10), 1)) {
+            Field cleanupTaskField = Netty4ConnectionPool.class.getDeclaredField("cleanupTask");
+            cleanupTaskField.setAccessible(true);
+            assertNull(cleanupTaskField.get(pool));
+        }
+    }
+
+    @Test
+    public void pendingAcquireQueueIsFull() throws IOException {
+        try (Netty4ConnectionPool pool = createPool(1, null, null, Duration.ofSeconds(10), 1)) {
+            Channel channel = pool.acquire(connectionPoolKey, false).awaitUninterruptibly().getNow();
+            assertNotNull(channel);
+
+            Future<Channel> pendingFuture = pool.acquire(connectionPoolKey, false);
+            assertFalse(pendingFuture.isDone());
+
+            Future<Channel> failedFuture = pool.acquire(connectionPoolKey, false);
+            assertTrue(failedFuture.isDone());
+            assertFalse(failedFuture.isSuccess());
+            assertInstanceOf(CoreException.class, failedFuture.cause());
+
+            pool.release(channel);
+            pendingFuture.awaitUninterruptibly();
+            pool.release(pendingFuture.getNow());
+        }
+    }
+
+    @Test
+    public void cancelledPendingAcquireIsRemovedFromQueue() throws IOException, InterruptedException {
+        try (Netty4ConnectionPool pool = createPool(1, null, Duration.ofSeconds(5), Duration.ofSeconds(10), 1)) {
+            Channel channel1 = pool.acquire(connectionPoolKey, false).awaitUninterruptibly().getNow();
+
+            Future<Channel> pendingFuture = pool.acquire(connectionPoolKey, false);
+            pendingFuture.cancel(true);
+
+            Thread.sleep(100);
+
+            pool.release(channel1);
+
+            Channel channel2 = pool.acquire(connectionPoolKey, false).awaitUninterruptibly().getNow();
+            assertSame(channel1, channel2);
+
+            pool.release(channel2);
         }
     }
 

@@ -293,15 +293,14 @@ public class NettyHttpClientBuilder {
      * Sets the maximum number of connections allowed per remote address in the connection pool.
      * <p>
      * If not set, a default value of 500 is used.
+     * <p>
+     * <strong>A value of {@code 0} or less will disable connection pooling, and hence each request will
+     * get a newly created connection.</strong>
      *
-     * @param connectionPoolSize The maximum number of connections. Must be greater than or equal to 0.
+     * @param connectionPoolSize The maximum number of connections.
      * @return The updated builder.
      */
     public NettyHttpClientBuilder connectionPoolSize(int connectionPoolSize) {
-        if (connectionPoolSize < 0) {
-            throw LOGGER.throwableAtError()
-                .log("connectionPoolSize must be greater than or equal to 0", IllegalArgumentException::new);
-        }
         this.connectionPoolSize = connectionPoolSize;
         return this;
     }
@@ -404,14 +403,17 @@ public class NettyHttpClientBuilder {
         ProxyOptions buildProxyOptions
             = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
-        Netty4ConnectionPool connectionPool
-            = new Netty4ConnectionPool(bootstrap, new ChannelInitializationProxyHandler(buildProxyOptions),
-                sslContextModifier, connectionPoolSize, connectionIdleTimeout, maxConnectionLifetime,
-                pendingAcquireTimeout, maxPendingAcquires, maximumHttpVersion);
+        Netty4ConnectionPool connectionPool = null;
+        if (connectionPoolSize > 0) {
+            connectionPool
+                = new Netty4ConnectionPool(bootstrap, new ChannelInitializationProxyHandler(buildProxyOptions),
+                    sslContextModifier, connectionPoolSize, connectionIdleTimeout, maxConnectionLifetime,
+                    pendingAcquireTimeout, maxPendingAcquires, maximumHttpVersion);
+        }
 
-        return new NettyHttpClient(group, connectionPool, buildProxyOptions,
-            new ChannelInitializationProxyHandler(buildProxyOptions), getTimeoutMillis(readTimeout),
-            getTimeoutMillis(responseTimeout), getTimeoutMillis(writeTimeout));
+        return new NettyHttpClient(bootstrap, group, connectionPool, buildProxyOptions,
+            new ChannelInitializationProxyHandler(buildProxyOptions), sslContextModifier, maximumHttpVersion,
+            getTimeoutMillis(readTimeout), getTimeoutMillis(responseTimeout), getTimeoutMillis(writeTimeout));
     }
 
     static long getTimeoutMillis(Duration duration) {

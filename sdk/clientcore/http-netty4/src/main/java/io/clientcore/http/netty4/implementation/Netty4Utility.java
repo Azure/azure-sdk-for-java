@@ -37,15 +37,23 @@ import io.netty.handler.codec.http2.DefaultHttp2Connection;
 import io.netty.handler.codec.http2.DelegatingDecompressorFrameListener;
 import io.netty.handler.codec.http2.Http2Connection;
 import io.netty.handler.codec.http2.Http2FrameListener;
+import io.netty.handler.codec.http2.Http2SecurityUtil;
 import io.netty.handler.codec.http2.Http2Settings;
 import io.netty.handler.codec.http2.HttpToHttp2ConnectionHandlerBuilder;
 import io.netty.handler.codec.http2.InboundHttp2ToHttpAdapterBuilder;
+import io.netty.handler.ssl.ApplicationProtocolConfig;
+import io.netty.handler.ssl.ApplicationProtocolNames;
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.SslProvider;
+import io.netty.handler.ssl.SupportedCipherSuiteFilter;
 import io.netty.handler.stream.ChunkedInput;
 import io.netty.handler.stream.ChunkedNioFile;
 import io.netty.handler.stream.ChunkedStream;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.util.Version;
 
+import javax.net.ssl.SSLException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
@@ -58,6 +66,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import static io.netty.handler.codec.http.DefaultHttpHeadersFactory.trailersFactory;
 
@@ -552,6 +561,37 @@ public final class Netty4Utility {
             nettyHeaders.getCoreHeaders().set(HttpHeaderName.TRANSFER_ENCODING, "chunked");
             return new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, nettyHeaders);
         }
+    }
+
+    public static SslContext buildSslContext(HttpProtocolVersion maximumHttpVersion,
+        Consumer<SslContextBuilder> sslContextModifier) throws SSLException {
+        SslContextBuilder sslContextBuilder = SslContextBuilder.forClient().endpointIdentificationAlgorithm("HTTPS");
+        if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
+            // If HTTP/2 is the maximum version, we need to ensure that ALPN is enabled.
+            SslProvider sslProvider = SslContext.defaultClientProvider();
+            ApplicationProtocolConfig.SelectorFailureBehavior selectorBehavior;
+            ApplicationProtocolConfig.SelectedListenerFailureBehavior selectedBehavior;
+            if (sslProvider == SslProvider.JDK) {
+                selectorBehavior = ApplicationProtocolConfig.SelectorFailureBehavior.FATAL_ALERT;
+                selectedBehavior = ApplicationProtocolConfig.SelectedListenerFailureBehavior.FATAL_ALERT;
+            } else {
+                // Netty OpenSslContext doesn't support FATAL_ALERT, use NO_ADVERTISE and ACCEPT
+                // instead.
+                selectorBehavior = ApplicationProtocolConfig.SelectorFailureBehavior.NO_ADVERTISE;
+                selectedBehavior = ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT;
+            }
+
+            sslContextBuilder.ciphers(Http2SecurityUtil.CIPHERS, SupportedCipherSuiteFilter.INSTANCE)
+                .applicationProtocolConfig(
+                    new ApplicationProtocolConfig(ApplicationProtocolConfig.Protocol.ALPN, selectorBehavior,
+                        selectedBehavior, ApplicationProtocolNames.HTTP_2, ApplicationProtocolNames.HTTP_1_1));
+        }
+        if (sslContextModifier != null) {
+            // Allow the caller to modify the SslContextBuilder before it is built.
+            sslContextModifier.accept(sslContextBuilder);
+        }
+
+        return sslContextBuilder.build();
     }
 
     private Netty4Utility() {

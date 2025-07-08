@@ -15,14 +15,9 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
-import io.netty.handler.codec.http2.Http2SecurityUtil;
 import io.netty.handler.proxy.ProxyHandler;
-import io.netty.handler.ssl.ApplicationProtocolConfig;
-import io.netty.handler.ssl.ApplicationProtocolNames;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.SslProvider;
-import io.netty.handler.ssl.SupportedCipherSuiteFilter;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.Promise;
@@ -48,14 +43,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.CONNECTION_SETUP_ERROR;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROXY;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL_INITIALIZER;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.buildSslContext;
 
 /**
  * A pool of Netty channels that can be reused for requests to the same remote address.
  */
-public final class Netty4ConnectionPool implements Closeable {
+public class Netty4ConnectionPool implements Closeable {
 
     private static final AttributeKey<PooledConnection> POOLED_CONNECTION_KEY
         = AttributeKey.valueOf("pooled-connection-key");
@@ -373,7 +370,9 @@ public final class Netty4ConnectionPool implements Closeable {
                         ProxyHandler proxyHandler = channelInitializationProxyHandler.createProxy(proxyChallenges);
                         pipeline.addFirst(PROXY, proxyHandler);
 
-                        pipeline.addLast("proxy-exception-handler", new ChannelInboundHandlerAdapter() {
+                        // This handler's only job is to catch any exception during the
+                        // connection setup (proxying, SSL handshake) and fail the promise.
+                        pipeline.addLast(CONNECTION_SETUP_ERROR, new ChannelInboundHandlerAdapter() {
                             @Override
                             public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
                                 promise.tryFailure(cause);
@@ -385,7 +384,7 @@ public final class Netty4ConnectionPool implements Closeable {
                     // Add SSL handling if the request is HTTPS.
                     if (isHttps) {
                         InetSocketAddress inetSocketAddress = (InetSocketAddress) key.getFinalDestination();
-                        SslContext ssl = buildSslContext();
+                        SslContext ssl = buildSslContext(maximumHttpVersion, sslContextModifier);
                         // SSL handling is added last here. This is done as proxying could require SSL handling too.
                         channel.pipeline()
                             .addLast(SSL, ssl.newHandler(channel.alloc(), inetSocketAddress.getHostString(),
@@ -419,11 +418,15 @@ public final class Netty4ConnectionPool implements Closeable {
                                 return;
                             }
                             ChannelPipeline pipeline = newChannel.pipeline();
-                            if (pipeline.get("proxy-exception-handler") != null) {
-                                pipeline.remove("proxy-exception-handler");
+                            if (pipeline.get(CONNECTION_SETUP_ERROR) != null) {
+                                pipeline.remove(CONNECTION_SETUP_ERROR);
                             }
                             promise.setSuccess(newChannel);
                         } else {
+                            ChannelPipeline pipeline = newChannel.pipeline();
+                            if (pipeline.get(CONNECTION_SETUP_ERROR) != null) {
+                                pipeline.remove(CONNECTION_SETUP_ERROR);
+                            }
                             promise.setFailure(proxyFuture.cause());
                             newChannel.close();
                             activeConnections.decrementAndGet();
@@ -435,37 +438,6 @@ public final class Netty4ConnectionPool implements Closeable {
                 }
             });
             return promise;
-        }
-
-        private SslContext buildSslContext() throws SSLException {
-            SslContextBuilder sslContextBuilder
-                = SslContextBuilder.forClient().endpointIdentificationAlgorithm("HTTPS");
-            if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
-                // If HTTP/2 is the maximum version, we need to ensure that ALPN is enabled.
-                SslProvider sslProvider = SslContext.defaultClientProvider();
-                ApplicationProtocolConfig.SelectorFailureBehavior selectorBehavior;
-                ApplicationProtocolConfig.SelectedListenerFailureBehavior selectedBehavior;
-                if (sslProvider == SslProvider.JDK) {
-                    selectorBehavior = ApplicationProtocolConfig.SelectorFailureBehavior.FATAL_ALERT;
-                    selectedBehavior = ApplicationProtocolConfig.SelectedListenerFailureBehavior.FATAL_ALERT;
-                } else {
-                    // Netty OpenSslContext doesn't support FATAL_ALERT, use NO_ADVERTISE and ACCEPT
-                    // instead.
-                    selectorBehavior = ApplicationProtocolConfig.SelectorFailureBehavior.NO_ADVERTISE;
-                    selectedBehavior = ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT;
-                }
-
-                sslContextBuilder.ciphers(Http2SecurityUtil.CIPHERS, SupportedCipherSuiteFilter.INSTANCE)
-                    .applicationProtocolConfig(
-                        new ApplicationProtocolConfig(ApplicationProtocolConfig.Protocol.ALPN, selectorBehavior,
-                            selectedBehavior, ApplicationProtocolNames.HTTP_2, ApplicationProtocolNames.HTTP_1_1));
-            }
-            if (sslContextModifier != null) {
-                // Allow the caller to modify the SslContextBuilder before it is built.
-                sslContextModifier.accept(sslContextBuilder);
-            }
-
-            return sslContextBuilder.build();
         }
 
         private boolean isHealthy(PooledConnection connection) {

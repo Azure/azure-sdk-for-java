@@ -99,7 +99,7 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
             pipeline.remove(this);
         }
 
-        if (closeChannel || !ctx.channel().isActive()) {
+        if (closeChannel || !ctx.channel().isActive() || connectionPool == null) {
             ctx.channel().close();
         } else {
             connectionPool.release(ctx.channel());

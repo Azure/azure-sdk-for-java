@@ -154,6 +154,10 @@ public final class Netty4ChannelBinaryData extends BinaryData {
             // We need to drain it to ensure the connection can be safely reused.
             if (!streamDrained.get()) {
                 drainAndCleanupAsync();
+            } else {
+                eagerContent = null;
+                channel.disconnect();
+                channel.close();
             }
         }
     }
@@ -241,7 +245,6 @@ public final class Netty4ChannelBinaryData extends BinaryData {
                     bytes = eagerContent.toByteArray();
                 }
             } finally {
-                closed.set(true);
                 drainLatch.countDown();
                 eagerContent = null;
             }

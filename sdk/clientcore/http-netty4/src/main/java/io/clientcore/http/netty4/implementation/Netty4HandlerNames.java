@@ -74,6 +74,8 @@ public final class Netty4HandlerNames {
      */
     public static final String PIPELINE_CLEANUP = "clientcore.pipelinecleanup";
 
+    public static final String CONNECTION_SETUP_ERROR = "clientcore.connectionsetuperror";
+
     private Netty4HandlerNames() {
     }
 }
