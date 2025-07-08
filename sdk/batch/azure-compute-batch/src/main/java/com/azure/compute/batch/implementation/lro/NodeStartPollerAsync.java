@@ -68,14 +68,9 @@ public final class NodeStartPollerAsync {
                 BatchNode node = resp.getValue().toObject(BatchNode.class);
                 BatchNodeState state = node.getState();
 
-                LongRunningOperationStatus status;
-                if (BatchNodeState.CREATING.equals(state) || BatchNodeState.STARTING.equals(state)) {
-                    status = LongRunningOperationStatus.IN_PROGRESS;
-                } else if (BatchNodeState.IDLE.equals(state)) {
-                    status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                } else {
-                    status = LongRunningOperationStatus.FAILED;
-                }
+                LongRunningOperationStatus status = (state == BatchNodeState.STARTING)
+                    ? LongRunningOperationStatus.IN_PROGRESS
+                    : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 
                 return Mono.just(new PollResponse<>(status, node));
             })
