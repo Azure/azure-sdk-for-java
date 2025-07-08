@@ -145,6 +145,6 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }
