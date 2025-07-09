@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdFramer;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequest;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -18,8 +17,6 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,8 +24,6 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -92,9 +87,15 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
     }
 
     @Override
-    public StoreResponse unwrapToStoreResponse(RxDocumentServiceRequest request, int statusCode, HttpHeaders headers, ByteBuf content) {
+    public StoreResponse unwrapToStoreResponse(
+        String endpoint,
+        RxDocumentServiceRequest request,
+        int statusCode,
+        HttpHeaders headers,
+        ByteBuf content) {
+
         if (content == null || content.readableBytes() == 0) {
-            return super.unwrapToStoreResponse(request, statusCode, headers, Unpooled.EMPTY_BUFFER);
+            return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
         }
         if (RntbdFramer.canDecodeHead(content)) {
 
@@ -102,6 +103,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
             if (response != null) {
                 return super.unwrapToStoreResponse(
+                    endpoint,
                     request,
                     response.getStatus().code(),
                     new HttpHeaders(response.getHeaders().asMap(request.getActivityId())),
@@ -109,12 +111,18 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                 );
             }
 
-            return super.unwrapToStoreResponse(request, statusCode, headers, null);
+            return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, null);
         }
 
         throw new IllegalStateException("Invalid rntbd response");
     }
 
+    @Override
+    protected boolean partitionKeyRangeResolutionNeeded(RxDocumentServiceRequest request) {
+        return request.getPartitionKeyInternal() == null
+            && request.requestContext.resolvedPartitionKeyRange == null
+            && request.getPartitionKeyRangeIdentity() != null;
+    }
     @Override
     public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
         if (this.globalDatabaseAccountName == null) {
