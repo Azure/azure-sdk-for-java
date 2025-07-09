@@ -61,8 +61,7 @@ class GenerationInformation {
 function Find-GenerationInformation {
   param (
     [System.Collections.ArrayList]$GenerationInformations,
-    [string]$LibraryFolder,
-    [string]$RegenerationType
+    [string]$LibraryFolder
   )
 
   $path = Join-Path -Path $sdkFolder $LibraryFolder
@@ -112,14 +111,12 @@ foreach ($serviceDirectory in $ServiceDirectories.Split(',')) {
   if ($serviceDirectory -match '\w+/\w+') {
     # The service directory is a specific library, e.g., "communication/azure-communication-chat"
     # Search the directory directly for an "Update-Codegeneration.ps1" script.
-    Find-GenerationInformation $generationInformations $serviceDirectory $RegenerationType
+    Find-GenerationInformation $generationInformations $serviceDirectory
   } else {
     # The service directory is a top-level service, e.g., "storage"
     # Search for all libraries under the service directory.
     $searchPath = Join-Path -Path $sdkFolder $serviceDirectory
-    foreach ($libraryFolder in Get-ChildItem -Path $searchPath -Directory) {
-      Find-GenerationInformation $generationInformations "$serviceDirectory/$($libraryFolder.Name)" $RegenerationType
-    }
+    Get-ChildItem -Path $searchPath -Directory | Find-GenerationInformation $generationInformations "$serviceDirectory/$($_.Name)"
   }
 }
 
@@ -133,8 +130,7 @@ if ($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') {
   # Ensure Autorest is installed.
   $output = (& npm install -g autorest 2>&1)
   if ($LASTEXITCODE -ne 0) {
-    Write-Error "Failed to install Autorest for Swagger regeneration."
-    Write-Error $output
+    Write-Error "Failed to install Autorest for Swagger regeneration.`n$output"
     exit 1
   }
 }
@@ -142,8 +138,7 @@ if ($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') {
 if ($RegenerationType -eq 'TypeSpec' -or $RegenerationType -eq 'All') {
   $output = (& npm install -g @azure-tools/typespec-client-generator-cli 2>&1)
   if ($LASTEXITCODE -ne 0) {
-    Write-Error "Error installing @azure-tools/typespec-client-generator-cli"
-    Write-Error "$output"
+    Write-Error "Error installing @azure-tools/typespec-client-generator-cli`n$output"
     exit 1
   }
 }
@@ -174,10 +169,14 @@ $generateScript = {
   } elseif ($_.Type -eq 'TypeSpec') {
     Push-Location $directory
     try {
-      $generateOutput = (& tsp-client update 2>&1)
-      if ($LastExitCode -ne 0) {
-        Write-WithMessageBars "Error running TypeSpec regeneration in directory $directory`n$([String]::Join("`n", $generateOutput))"
-        throw
+      try {
+        $generateOutput = (& tsp-client update 2>&1)
+        if ($LastExitCode -ne 0) {
+          Write-WithMessageBars "Error running TypeSpec regeneration in directory $directory`n$([String]::Join("`n", $generateOutput))"
+          throw
+        }
+      } finally {
+        Get-ChildItem -Path $directory -Filter TempTypeSpecFiles -Recurse -Directory | Remove-Item -Path $_.FullName -Recurse -Force | Out-Null
       }
 
       # Update code snippets before comparing the diff
@@ -213,9 +212,6 @@ $timeout = 60 * $generationInformations.Count
 $job = $generationInformations | ForEach-Object -Parallel $generateScript -ThrottleLimit $Parallelization -AsJob
 
 # Out-Null to suppress output information from the job and 2>$null to suppress any error messages from Receive-Job.
-Get-ChildItem -Path $sdkFolder -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
-  Remove-Item -Path $_.FullName -Recurse -Force | Out-Null
-}
 $job | Wait-Job -Timeout $timeout | Out-Null
 $job | Receive-Job 2>$null | Out-Null
 
