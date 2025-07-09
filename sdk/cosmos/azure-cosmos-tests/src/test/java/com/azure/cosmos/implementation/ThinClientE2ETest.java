@@ -105,7 +105,7 @@ public class ThinClientE2ETest {
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .gatewayMode()
-                .consistencyLevel(ConsistencyLevel.SESSION)
+                .consistencyLevel(ConsistencyLevel.EVENTUAL)
                 .buildAsyncClient();
 
             CosmosAsyncContainer container = client.getDatabase("db1").getContainer("c2");
@@ -124,6 +124,7 @@ public class ThinClientE2ETest {
             List<CosmosBulkOperationResponse<Object>> responses = responsesFlux.collectList().block();
 
             assertThat(responses.size()).isEqualTo(1);
+            assertThat(responses.get(0).getException()).isNull();
             CosmosBulkItemResponse bulkResponse = responses.get(0).getResponse();
             assertThat(bulkResponse.isSuccessStatusCode()).isEqualTo(true);
             assertThinClientEndpointUsed(bulkResponse.getCosmosDiagnostics());
