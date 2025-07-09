@@ -36,6 +36,8 @@ param(
   [int]$Parallelization = [Environment]::ProcessorCount
 )
 
+$sdkFolder = Join-Path -Path $PSScriptRoot ".." ".." "sdk"
+
 class GenerationInformation {
   # The directory where the library is located. Used for logging and validation.
   [string]$LibraryFolder
@@ -59,11 +61,11 @@ class GenerationInformation {
 function Find-GenerationInformation {
   param (
     [System.Collections.ArrayList]$GenerationInformations,
-    [string]$ServiceDirectory,
+    [string]$LibraryFolder,
     [string]$RegenerationType
   )
 
-  $path = "$PSScriptRoot/../../sdk/$ServiceDirectory"
+  $path = Join-Path -Path $sdkFolder $LibraryFolder
   if ($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') {
     # Search for 'Update-Codegeneration.ps1' script in the specified service directory.
     Get-ChildItem -Path $path -Filter "Update-Codegeneration.ps1" -Recurse | ForEach-Object {
@@ -77,6 +79,17 @@ function Find-GenerationInformation {
       $GenerationInformations.Add([GenerationInformation]::new($path, $_, 'TypeSpec')) | Out-Null
     }
   }
+}
+
+function Write-WithMessageBars {
+  param (
+    [string]$message
+  )
+  Write-Host @"
+======================================
+$message
+======================================
+"@
 }
 
 # No ServiceDirectories specified, no validation will be performed.
@@ -103,7 +116,8 @@ foreach ($serviceDirectory in $ServiceDirectories.Split(',')) {
   } else {
     # The service directory is a top-level service, e.g., "storage"
     # Search for all libraries under the service directory.
-    foreach ($libraryFolder in Get-ChildItem -Path "$PSScriptRoot/../../sdk/$serviceDirectory" -Directory) {
+    $searchPath = Join-Path -Path $sdkFolder $serviceDirectory
+    foreach ($libraryFolder in Get-ChildItem -Path $searchPath -Directory) {
       Find-GenerationInformation $generationInformations "$serviceDirectory/$($libraryFolder.Name)" $RegenerationType
     }
   }
@@ -111,11 +125,7 @@ foreach ($serviceDirectory in $ServiceDirectories.Split(',')) {
 
 if ($generationInformations.Count -eq 0) {
   $kind = $RegenerationType -eq 'All' ? 'Swagger or TypeSpec' : $RegenerationType
-  Write-Host @"
-======================================
-No $kind generation files to regenerate in directories: $ServiceDirectories.
-======================================
-"@
+  Write-WithMessageBars "No $kind generation files to regenerate in directories: $ServiceDirectories."
   exit 0
 }
 
@@ -147,12 +157,7 @@ $generateScript = {
     $generateOutput = (& $updateCodegenScript 6>&1)
 
     if ($LastExitCode -ne 0) {
-      Write-Host @"
-======================================
-Error running Swagger regeneration $updateCodegenScript
-======================================
-$([String]::Join("`n", $generateOutput))
-"@
+      Write-WithMessageBars "Error running Swagger regeneration $updateCodegenScript`n$([String]::Join("`n", $generateOutput))"
       throw
     } else {
       # prevent warning related to EOL differences which triggers an exception for some reason
@@ -160,44 +165,25 @@ $([String]::Join("`n", $generateOutput))
 
       if ($LastExitCode -ne 0) {
         $status = (git status -s "$directory" | Out-String)
-        Write-Host @"
-======================================
-The following Swagger generated files in directoy $directory are out of date:
-======================================
-$status
-"@
+        Write-WithMessageBars "The following Swagger generated files in directoy $directory are out of date`n$status"
         throw
       } else {
-        Write-Host @"
-======================================
-Successfully ran Swagger regneration with no diff $updateCodegenScript
-======================================
-"@
+        Write-WithMessageBars "Successfully ran Swagger regneration with no diff $updateCodegenScript"
       }
     }
   } elseif ($_.Type -eq 'TypeSpec') {
-    Push-Location $Directory
+    Push-Location $directory
     try {
       $generateOutput = (& tsp-client update 2>&1)
       if ($LastExitCode -ne 0) {
-        Write-Host @"
-======================================
-Error running TypeSpec regeneration in directory $Directory
-======================================
-$([String]::Join("`n", $generateOutput))
-"@
+        Write-WithMessageBars "Error running TypeSpec regeneration in directory $directory`n$([String]::Join("`n", $generateOutput))"
         throw
       }
 
       # Update code snippets before comparing the diff
       $mvnOutput = (& mvn --no-transfer-progress codesnippet:update-codesnippet 2>&1)
       if ($LastExitCode -ne 0) {
-        Write-Host @"
-======================================
-Error updating TypeSpec codesnippets in directory $Directory
-======================================
-$([String]::Join("`n", $mvnOutput))
-"@
+        Write-WithMessageBars "Error updating TypeSpec codesnippets in directory $directory`n$([String]::Join("`n", $mvnOutput))"
         throw
       }
     } finally {
@@ -205,27 +191,18 @@ $([String]::Join("`n", $mvnOutput))
     }
     
     # prevent warning related to EOL differences which triggers an exception for some reason
-    (& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$Directory/*.java" ":(exclude)**/src/test/**" ":
+    (& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$directory/*.java" ":(exclude)**/src/test/**" ":
   (exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**" ":(exclude)**/src/main/**/resourcemanager/**/*Manager.java") | Out-Null
 
     if ($LastExitCode -ne 0) {
-      $status = (git status -s "$Directory" | Out-String)
-      Write-Host @"
-======================================
-The following TypeSpec files in directoy $Directory are out of date:
-======================================
-$status
-"@
+      $status = (git status -s "$directory" | Out-String)
+      Write-WithMessageBars "The following TypeSpec files in directoy $directory are out of date`n$status"
       throw
     } else {
-      Write-Host @"
-======================================
-Successfully ran TypeSpec update in directory with no diff $Directory
-======================================
-"@
+      Write-WithMessageBars "Successfully ran TypeSpec update in directory with no diff $directory"
     }
   } else {
-    Write-Error "Unknown generation type: $($_.Type), directory: $directory"
+    Write-WithMessageBars "Unknown generation type: $($_.Type), directory: $directory"
     throw
   }
 }
@@ -236,13 +213,13 @@ $timeout = 60 * $generationInformations.Count
 $job = $generationInformations | ForEach-Object -Parallel $generateScript -ThrottleLimit $Parallelization -AsJob
 
 # Out-Null to suppress output information from the job and 2>$null to suppress any error messages from Receive-Job.
+Get-ChildItem -Path $sdkFolder -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
+  Remove-Item -Path $_.FullName -Recurse -Force | Out-Null
+}
 $job | Wait-Job -Timeout $timeout | Out-Null
 $job | Receive-Job 2>$null | Out-Null
 
 # Clean up generated code, so that next step will not be affected.
-Get-ChildItem -Path "$PSScriptRoot/../../" -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
-  Remove-Item -Path $_.FullName -Recurse -Force | Out-Null
-}
 git reset --hard | Out-Null
 git clean -fd . | Out-Null
 
