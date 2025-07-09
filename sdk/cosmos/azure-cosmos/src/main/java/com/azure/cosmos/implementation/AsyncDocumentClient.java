@@ -933,6 +933,7 @@ public interface AsyncDocumentClient {
      * @param serverBatchRequest           the batch request with the content and flags.
      * @param options                      the request options.
      * @param disableAutomaticIdGeneration the flag for disabling automatic id generation.
+     * @param disableStaledResourceExceptionHandling the flag for disabling staled resource exception handling. For bulk executor, the exception should bubbled up so to be retried correctly.
      * @return a {@link Mono} containing the transactionalBatchResponse response which results of all operations.
      */
     Mono<CosmosBatchResponse> executeBatchRequest(String collectionLink,

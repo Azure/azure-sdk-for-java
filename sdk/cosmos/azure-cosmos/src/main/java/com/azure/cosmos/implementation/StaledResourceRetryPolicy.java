@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
@@ -31,6 +32,7 @@ public class StaledResourceRetryPolicy extends DocumentClientRetryPolicy {
     private final ISessionContainer sessionContainer;
     private RxDocumentServiceRequest request;
     private final DiagnosticsClientContext diagnosticsClientContext;
+    private final AtomicReference<CosmosDiagnostics> cosmosDiagnosticsHolder;
 
     private volatile boolean retried = false;
 
@@ -51,7 +53,9 @@ public class StaledResourceRetryPolicy extends DocumentClientRetryPolicy {
         this.requestOptionProperties = requestOptionProperties;
         this.shouldSuppressRetry = new AtomicBoolean(this.shouldSuppressRetry(requestCustomHeaders));
         this.sessionContainer = sessionContainer;
+
         this.diagnosticsClientContext = diagnosticsClientContext;
+        this.cosmosDiagnosticsHolder = new AtomicReference<>(null); // will only create one if no request is bound to the retry policy
     }
 
     @Override
@@ -149,8 +153,11 @@ public class StaledResourceRetryPolicy extends DocumentClientRetryPolicy {
             return BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics);
         }
 
-        return this.diagnosticsClientContext != null
-            ? BridgeInternal.getMetaDataDiagnosticContext(diagnosticsClientContext.createDiagnostics()) : null;
+        if (this.cosmosDiagnosticsHolder.get() == null) {
+            this.cosmosDiagnosticsHolder.set(this.diagnosticsClientContext.createDiagnostics());
+        }
+
+        return BridgeInternal.getMetaDataDiagnosticContext(this.cosmosDiagnosticsHolder.get());
     }
 
     private boolean isServerNameCacheStaledException(CosmosException cosmosException) {

@@ -364,11 +364,12 @@ public class ChangeFeedTest extends TestSuiteBase {
             .block();
 
         List<FeedResponse<Document>> changeFeedResultList =
-            client.queryDocumentChangeFeed(
+            client
+                .queryDocumentChangeFeed(
                     createdCollection,
                     changeFeedOption,
                     Document.class,
-                null)
+                    null)
                 .collectList()
                 .block();
 

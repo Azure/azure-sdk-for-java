@@ -3867,6 +3867,121 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             (ctx) -> diagnosticsFactory.merge(ctx)
         );
 
+        StaledResourceRetryPolicy staledResourceRetryPolicy = new StaledResourceRetryPolicy(
+            this.collectionCache,
+            null,
+            collectionLink,
+            qryOptAccessor.getProperties(state.getQueryOptions()),
+            qryOptAccessor.getHeaders(state.getQueryOptions()),
+            this.sessionContainer,
+            diagnosticsFactory);
+
+        return ObservableHelper
+            .inlineIfPossibleAsObs(
+                () -> readMany(itemIdentityList, collectionLink, state, diagnosticsFactory, klass),
+                staledResourceRetryPolicy
+            )
+            .map(feedList -> {
+                // aggregating the result to construct a FeedResponse and aggregate RUs.
+                List<T> finalList = new ArrayList<>();
+                HashMap<String, String> headers = new HashMap<>();
+                ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
+                Collection<ClientSideRequestStatistics> aggregateRequestStatistics = new DistinctClientSideRequestStatisticsCollection();
+                double requestCharge = 0;
+                for (FeedResponse<T> page : feedList) {
+                    ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
+                        ModelBridgeInternal.queryMetrics(page);
+                    if (pageQueryMetrics != null) {
+                        pageQueryMetrics.forEach(
+                            aggregatedQueryMetrics::putIfAbsent);
+                    }
+
+                    requestCharge += page.getRequestCharge();
+                    finalList.addAll(page.getResults());
+                    aggregateRequestStatistics.addAll(diagnosticsAccessor.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
+                }
+
+                // NOTE: This CosmosDiagnostics instance intentionally isn't captured in the
+                // ScopedDiagnosticsFactory - and a such won't be included in the diagnostics of the
+                // CosmosDiagnosticsContext - which is fine, because the CosmosDiagnosticsContext
+                // contains the "real" CosmosDiagnostics instances (which will also be used
+                // for diagnostics purposes - like metrics, logging etc.
+                // this artificial CosmosDiagnostics with the aggregated RU/s etc. is simply
+                // to maintain the API contract that a FeedResponse returns one CosmosDiagnostics
+                CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
+                diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                    aggregatedDiagnostics, aggregateRequestStatistics);
+
+                state.mergeDiagnosticsContext();
+                CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
+                if (ctx != null) {
+                    ctxAccessor.recordOperation(
+                        ctx,
+                        200,
+                        0,
+                        finalList.size(),
+                        requestCharge,
+                        aggregatedDiagnostics,
+                        null
+                    );
+                    diagnosticsAccessor
+                        .setDiagnosticsContext(
+                            aggregatedDiagnostics,
+                            ctx);
+                }
+
+                headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
+                    .toString(requestCharge));
+                FeedResponse<T> frp = BridgeInternal
+                    .createFeedResponseWithQueryMetrics(
+                        finalList,
+                        headers,
+                        aggregatedQueryMetrics,
+                        null,
+                        false,
+                        false,
+                        aggregatedDiagnostics);
+                return frp;
+            })
+            .onErrorMap(throwable -> {
+                if (throwable instanceof CosmosException) {
+                    CosmosException cosmosException = (CosmosException)throwable;
+                    CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
+                    if (diagnostics != null) {
+                        state.mergeDiagnosticsContext();
+                        CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
+                        if (ctx != null) {
+                            ctxAccessor.recordOperation(
+                                ctx,
+                                cosmosException.getStatusCode(),
+                                cosmosException.getSubStatusCode(),
+                                0,
+                                cosmosException.getRequestCharge(),
+                                diagnostics,
+                                throwable
+                            );
+                            diagnosticsAccessor
+                                .setDiagnosticsContext(
+                                    diagnostics,
+                                    state.getDiagnosticsContextSnapshot());
+                        }
+                    }
+
+                    return cosmosException;
+                }
+
+                return throwable;
+            });
+    }
+
+
+    private <T> Mono<List<FeedResponse<T>>> readMany(
+        List<CosmosItemIdentity> itemIdentityList,
+        String collectionLink,
+        QueryFeedOperationState state,
+        ScopedDiagnosticsFactory diagnosticsFactory,
+        Class<T> klass) {
+
         String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(diagnosticsFactory,
             OperationType.Query,
@@ -3957,99 +4072,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 Collections.unmodifiableMap(rangeQueryMap));
 
                             // merge results from point reads and queries
-                            return Flux.merge(pointReads, queries)
-                                       .collectList()
-                                       // aggregating the result to construct a FeedResponse and aggregate RUs.
-                                       .map(feedList -> {
-                                           List<T> finalList = new ArrayList<>();
-                                           HashMap<String, String> headers = new HashMap<>();
-                                           ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
-                                           Collection<ClientSideRequestStatistics> aggregateRequestStatistics = new DistinctClientSideRequestStatisticsCollection();
-                                           double requestCharge = 0;
-                                           for (FeedResponse<T> page : feedList) {
-                                               ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
-                                                   ModelBridgeInternal.queryMetrics(page);
-                                               if (pageQueryMetrics != null) {
-                                                   pageQueryMetrics.forEach(
-                                                       aggregatedQueryMetrics::putIfAbsent);
-                                               }
-
-                                               requestCharge += page.getRequestCharge();
-                                               finalList.addAll(page.getResults());
-                                               aggregateRequestStatistics.addAll(diagnosticsAccessor.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
-                                           }
-
-                                           // NOTE: This CosmosDiagnostics instance intentionally isn't captured in the
-                                           // ScopedDiagnosticsFactory - and a ssuch won't be included in the diagnostics of the
-                                           // CosmosDiagnosticsContext - which is fine, because the CosmosDiagnosticsContext
-                                           // contains the "real" CosmosDiagnostics instances (which will also be used
-                                           // for diagnostics purposes - like metrics, logging etc.
-                                           // this artificial CosmosDiagnostics with the aggregated RU/s etc. si simply
-                                           // to maintain the API contract that a FeedResponse returns one CosmosDiagnostics
-                                           CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
-                                           diagnosticsAccessor.addClientSideDiagnosticsToFeed(
-                                               aggregatedDiagnostics, aggregateRequestStatistics);
-
-                                           state.mergeDiagnosticsContext();
-                                           CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
-                                           if (ctx != null) {
-                                               ctxAccessor.recordOperation(
-                                                   ctx,
-                                                   200,
-                                                   0,
-                                                   finalList.size(),
-                                                   requestCharge,
-                                                   aggregatedDiagnostics,
-                                                   null
-                                               );
-                                               diagnosticsAccessor
-                                                   .setDiagnosticsContext(
-                                                       aggregatedDiagnostics,
-                                                       ctx);
-                                           }
-
-                                           headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
-                                               .toString(requestCharge));
-                                           FeedResponse<T> frp = BridgeInternal
-                                               .createFeedResponseWithQueryMetrics(
-                                                   finalList,
-                                                   headers,
-                                                   aggregatedQueryMetrics,
-                                                   null,
-                                                   false,
-                                                   false,
-                                                   aggregatedDiagnostics);
-                                           return frp;
-                                       });
-                        })
-                        .onErrorMap(throwable -> {
-                            if (throwable instanceof CosmosException) {
-                                CosmosException cosmosException = (CosmosException)throwable;
-                                CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
-                                if (diagnostics != null) {
-                                    state.mergeDiagnosticsContext();
-                                    CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
-                                    if (ctx != null) {
-                                        ctxAccessor.recordOperation(
-                                            ctx,
-                                            cosmosException.getStatusCode(),
-                                            cosmosException.getSubStatusCode(),
-                                            0,
-                                            cosmosException.getRequestCharge(),
-                                            diagnostics,
-                                            throwable
-                                        );
-                                        diagnosticsAccessor
-                                            .setDiagnosticsContext(
-                                                diagnostics,
-                                                state.getDiagnosticsContextSnapshot());
-                                    }
-                                }
-
-                                return cosmosException;
-                            }
-
-                            return throwable;
+                            return Flux.merge(pointReads, queries).collectList();
                         });
                 }
             );
@@ -4541,14 +4564,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             diagnosticsFactory::reset,
             diagnosticsFactory::merge);
 
-        // Trying to put this logic as low as the query pipeline
-        // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
-        // For default document context, it already wired up InvalidPartitionExceptionRetry, but there is no harm to wire it again here
         StaledResourceRetryPolicy staledResourceRetryPolicy = new StaledResourceRetryPolicy(
             this.collectionCache,
             null,
             collectionLink,
-            changeFeedOptionsAccessor.getProperties(state.getChangeFeedOptions()), // TODO: figure out whether to use the cloned options
+            changeFeedOptionsAccessor.getProperties(state.getChangeFeedOptions()),
             changeFeedOptionsAccessor.getHeaders(state.getChangeFeedOptions()),
             this.sessionContainer,
             diagnosticsFactory);
@@ -4568,7 +4588,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .doOnCancel(() -> diagnosticsFactory.merge(state.getDiagnosticsContextSnapshot()));
     }
 
-    public <T> Flux<FeedResponse<T>> queryDocumentChangeFeedFromPagedFluxInternal(
+    private <T> Flux<FeedResponse<T>> queryDocumentChangeFeedFromPagedFluxInternal(
         String collectionLink,
         ChangeFeedOperationState state,
         Class<T> classOfT,
