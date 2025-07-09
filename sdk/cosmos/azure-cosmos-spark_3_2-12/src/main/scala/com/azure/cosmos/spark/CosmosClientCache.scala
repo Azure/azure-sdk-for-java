@@ -21,6 +21,7 @@ import com.microsoft.applicationinsights.TelemetryConfiguration
 import io.micrometer.azuremonitor.AzureMonitorMeterRegistry
 import io.micrometer.core.instrument.{Clock, MeterRegistry}
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry
+import io.netty.util.ResourceLeakDetector
 import io.opentelemetry.api.common.AttributeKey
 import io.opentelemetry.api.logs.Severity
 import io.opentelemetry.instrumentation.log4j.appender.v2_17.OpenTelemetryAppender
@@ -640,6 +641,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         )
       }
 
+      logInfo(s"Creating a CosmosClient for endpoint ${cosmosClientConfiguration.endpoint} "
+      + s"(${cosmosClientConfiguration.applicationName}), Netty Leak detection enabled: "
+      + s"${ResourceLeakDetector.isEnabled} at level: ${ResourceLeakDetector.getLevel}.")
       var builder = new CosmosClientBuilder()
           .endpoint(cosmosClientConfiguration.endpoint)
           .userAgentSuffix(cosmosClientConfiguration.applicationName)
