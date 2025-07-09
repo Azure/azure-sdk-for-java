@@ -648,6 +648,12 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                   .setMaxRetryAttemptsOnThrottledRequests(Int.MaxValue)
                   .setMaxRetryWaitTime(Duration.ofSeconds((Integer.MAX_VALUE / 1000) - 1)))
 
+      val globalMetricsExporter = System.getProperty("otel.metrics.exporter")
+      if (Option.apply(globalMetricsExporter).getOrElse("").isEmpty) {
+        System.setProperty("otel.metrics.exporter", "none")
+      } else {
+        logInfo(s"Global Metrics Exporter $globalMetricsExporter")
+      }
       val authConfig = cosmosClientConfiguration.authConfig
       authConfig match {
           case masterKeyAuthConfig: CosmosMasterKeyAuthConfig => builder.key(masterKeyAuthConfig.accountKey)
