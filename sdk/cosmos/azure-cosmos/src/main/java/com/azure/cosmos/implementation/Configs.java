@@ -357,7 +357,7 @@ public class Configs {
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
 
     public static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "applicationinsights.connection.string";
-    public static final String APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE = "!!!!CHANGEBACKAFTERTESTING!!!!APPLICATIONINSIGHTS_CONNECTION_STRING";
+    public static final String APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE = "APPLICATIONINSIGHTS_CONNECTION_STRING";
 
     // Config to indicate whether to emit Open Telemetry traces with attribute names following the
     // original implementation (`PRE_V1_RELEASE`) or the official semantic convention (`V1`) or both (`ALL`)
