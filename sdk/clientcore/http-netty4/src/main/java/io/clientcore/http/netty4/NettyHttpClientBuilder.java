@@ -137,7 +137,7 @@ public class NettyHttpClientBuilder {
     private HttpProtocolVersion maximumHttpVersion = HttpProtocolVersion.HTTP_2;
 
     // --- Connection Pool Configuration ---
-    private int connectionPoolSize = 500;
+    private int connectionPoolSize = 1000;
     private Duration connectionIdleTimeout = Duration.ofSeconds(60);
     private Duration maxConnectionLifetime;
     private Duration pendingAcquireTimeout = Duration.ofSeconds(60); // Default wait time for a connection
@@ -292,7 +292,7 @@ public class NettyHttpClientBuilder {
     /**
      * Sets the maximum number of connections allowed per remote address in the connection pool.
      * <p>
-     * If not set, a default value of 500 is used.
+     * If not set, a default value of 1000 is used.
      * <p>
      * <strong>A value of {@code 0} or less will disable connection pooling, and hence each request will
      * get a newly created connection.</strong>

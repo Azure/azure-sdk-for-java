@@ -18,6 +18,8 @@ import io.netty.channel.ChannelPromise;
 import io.netty.channel.DefaultChannelConfig;
 import io.netty.channel.DefaultEventLoop;
 import io.netty.channel.EventLoop;
+import io.netty.channel.embedded.EmbeddedChannel;
+import io.netty.handler.codec.http.DefaultHttpContent;
 import io.netty.handler.codec.http.LastHttpContent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -30,11 +32,13 @@ import java.lang.reflect.Type;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static io.clientcore.http.netty4.TestUtils.assertArraysEqual;
 import static io.clientcore.http.netty4.TestUtils.createChannelWithReadHandling;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -211,19 +215,26 @@ public class Netty4Http11ChannelBinaryDataTests {
         ByteArrayOutputStream eagerContent = new ByteArrayOutputStream();
         eagerContent.write(HELLO_BYTES);
 
-        Channel channel = createChannelWithReadHandling((ignored, ch) -> {
-            ByteBuf content = Unpooled.wrappedBuffer(WORLD_BYTES);
-            ch.pipeline().fireChannelRead(content);
-            ch.pipeline().fireChannelRead(LastHttpContent.EMPTY_LAST_CONTENT);
-            ch.pipeline().fireChannelReadComplete();
-        });
+        EmbeddedChannel channel = new EmbeddedChannel();
 
         Netty4ChannelBinaryData binaryData
-            = new Netty4ChannelBinaryData(eagerContent, channel, (long) HELLO_WORLD_BYTES.length, false);
+            = new Netty4ChannelBinaryData(eagerContent, channel, (long) HELLO_WORLD_BYTES.length, false, null);
+
+        Thread serverThread = new Thread(() -> {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            channel.writeInbound(new DefaultHttpContent(Unpooled.wrappedBuffer(WORLD_BYTES)));
+            channel.writeInbound(LastHttpContent.EMPTY_LAST_CONTENT);
+        });
+
+        serverThread.start();
 
         byte[] result = binaryData.toBytes();
 
-        assertArraysEqual(HELLO_WORLD_BYTES, result);
+        assertArrayEquals(HELLO_WORLD_BYTES, result);
         assertTrue(channel.config().isAutoRead());
     }
 
@@ -244,8 +255,13 @@ public class Netty4Http11ChannelBinaryDataTests {
         TestMockChannel realChannel = new TestMockChannel();
         new DefaultEventLoop().register(realChannel);
         Channel spiedChannel = spy(realChannel);
+        Runnable cleanupTask = () -> {
+            spiedChannel.disconnect();
+            spiedChannel.close();
+        };
+
         Netty4ChannelBinaryData binaryData
-            = new Netty4ChannelBinaryData(new ByteArrayOutputStream(), spiedChannel, 0L, false);
+            = new Netty4ChannelBinaryData(new ByteArrayOutputStream(), spiedChannel, 0L, false, cleanupTask);
 
         binaryData.toBytes();
         binaryData.close();
@@ -281,6 +297,63 @@ public class Netty4Http11ChannelBinaryDataTests {
         binaryData.toBytes();
 
         verify(spiedChannel, never()).close();
+    }
+
+    @Test
+    public void toBytesOnInactiveChannelReturnsEagerContent() throws IOException {
+        byte[] eagerBytes = "eager".getBytes(StandardCharsets.UTF_8);
+        ByteArrayOutputStream eagerContent = new ByteArrayOutputStream();
+        eagerContent.write(eagerBytes);
+
+        TestMockChannel channel = new TestMockChannel();
+        new DefaultEventLoop().register(channel);
+
+        Netty4ChannelBinaryData binaryData
+            = new Netty4ChannelBinaryData(eagerContent, channel, (long) eagerBytes.length, false);
+
+        channel.close().awaitUninterruptibly();
+        byte[] result = binaryData.toBytes();
+
+        assertArraysEqual(eagerBytes, result);
+    }
+
+    @Test
+    public void toBytesUsesEagerContentWhenSufficient() throws IOException {
+        byte[] fullBody = "Full body".getBytes(StandardCharsets.UTF_8);
+        ByteArrayOutputStream eagerContent = new ByteArrayOutputStream();
+        eagerContent.write(fullBody);
+
+        TestMockChannel realChannel = new TestMockChannel();
+        new DefaultEventLoop().register(realChannel);
+        Channel spiedChannel = spy(realChannel);
+
+        Netty4ChannelBinaryData binaryData
+            = new Netty4ChannelBinaryData(eagerContent, spiedChannel, (long) fullBody.length, false);
+
+        byte[] result = binaryData.toBytes();
+
+        assertArraysEqual(fullBody, result);
+        verify(spiedChannel, never()).read();
+        verify(spiedChannel, never()).config();
+    }
+
+    @Test
+    public void closeBeforeDrainingEventuallyCleansUp() throws InterruptedException {
+        EmbeddedChannel channel = new EmbeddedChannel();
+        assertTrue(channel.isActive());
+
+        CountDownLatch cleanupLatch = new CountDownLatch(1);
+        Runnable cleanupTask = cleanupLatch::countDown;
+
+        Netty4ChannelBinaryData binaryData
+            = new Netty4ChannelBinaryData(new ByteArrayOutputStream(), channel, 1L, false, cleanupTask);
+
+        binaryData.close();
+
+        channel.close().awaitUninterruptibly();
+
+        assertTrue(cleanupLatch.await(10, TimeUnit.SECONDS),
+            "Cleanup task was not called after the channel became inactive.");
     }
 
     private static class TestMockChannel extends AbstractChannel {

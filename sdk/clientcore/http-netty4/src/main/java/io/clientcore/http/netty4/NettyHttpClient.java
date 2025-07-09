@@ -354,6 +354,8 @@ class NettyHttpClient implements HttpClient {
                     pipeline.addBefore(HTTP_RESPONSE, HTTP_CODEC, createCodec());
                 }
 
+                pipeline.addLast(PIPELINE_CLEANUP,
+                    new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch));
                 if (isHttp2) {
                     sendHttp2Request(request, channel, errorReference, latch);
                 } else {
@@ -362,7 +364,8 @@ class NettyHttpClient implements HttpClient {
             } else {
                 // This is a new connection, let ALPN do the work.
                 // For HTTPS, we delegate the addition of the response handler and codec to the ALPN handler.
-                pipeline.addAfter(SSL, ALPN, new Netty4AlpnHandler(request, responseReference, errorReference, latch));
+                pipeline.addAfter(SSL, ALPN,
+                    new Netty4AlpnHandler(request, responseReference, errorReference, latch, connectionPool));
             }
         } else {
             // If there isn't an SslHandler, we can send the request immediately.
@@ -371,10 +374,9 @@ class NettyHttpClient implements HttpClient {
                 new Netty4ResponseHandler(request, responseReference, errorReference, latch));
             String addBefore = addProgressAndTimeoutHandler ? PROGRESS_AND_TIMEOUT : HTTP_RESPONSE;
             pipeline.addBefore(addBefore, HTTP_CODEC, createCodec());
+            pipeline.addLast(PIPELINE_CLEANUP, new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch));
             send(request, channel, errorReference, latch);
         }
-
-        pipeline.addLast(PIPELINE_CLEANUP, new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch));
     }
 
     private void send(HttpRequest request, Channel channel, AtomicReference<Throwable> errorReference,
@@ -393,6 +395,19 @@ class NettyHttpClient implements HttpClient {
     private Response<BinaryData> createResponse(HttpRequest request, ResponseStateInfo info) {
         BinaryData body;
         Response<BinaryData> response;
+        Channel channelToCleanup = info.getResponseChannel();
+
+        final Runnable cleanupTask = () -> {
+            if (connectionPool != null) {
+                Netty4PipelineCleanupHandler cleanupHandler
+                    = channelToCleanup.pipeline().get(Netty4PipelineCleanupHandler.class);
+                if (cleanupHandler != null) {
+                    cleanupHandler.cleanup(channelToCleanup.pipeline().context(cleanupHandler), false);
+                }
+            } else {
+                channelToCleanup.close();
+            }
+        };
 
         if (info.isChannelConsumptionComplete()) {
             ByteArrayOutputStream eagerContent = info.getEagerContent();
@@ -401,16 +416,7 @@ class NettyHttpClient implements HttpClient {
                 && eagerContent != null
                 && eagerContent.size() > 0) ? BinaryData.fromBytes(eagerContent.toByteArray()) : BinaryData.empty();
 
-            Channel channelToCleanup = info.getResponseChannel();
-            channelToCleanup.eventLoop().execute(() -> {
-                Netty4PipelineCleanupHandler cleanupHandler
-                    = channelToCleanup.pipeline().get(Netty4PipelineCleanupHandler.class);
-                if (cleanupHandler != null) {
-                    cleanupHandler.cleanup(channelToCleanup.pipeline().context(cleanupHandler), false);
-                } else {
-                    channelToCleanup.close();
-                }
-            });
+            channelToCleanup.eventLoop().execute(cleanupTask);
         } else {
             // For all other cases, create a streaming response body.
             // This delegates all body consumption and cleanup logic to Netty4ChannelBinaryData.
@@ -424,7 +430,7 @@ class NettyHttpClient implements HttpClient {
                 }
             }
             body = new Netty4ChannelBinaryData(info.getEagerContent(), info.getResponseChannel(), length,
-                info.isHttp2());
+                info.isHttp2(), cleanupTask);
         }
 
         response = new Response<>(request, info.getStatusCode(), info.getHeaders(), body);

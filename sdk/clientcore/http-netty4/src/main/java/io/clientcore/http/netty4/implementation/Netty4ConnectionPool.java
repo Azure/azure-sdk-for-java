@@ -10,8 +10,6 @@ import io.clientcore.core.utils.AuthenticateChallenge;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
@@ -43,7 +41,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.CONNECTION_SETUP_ERROR;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROXY;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL_INITIALIZER;
@@ -369,16 +366,6 @@ public class Netty4ConnectionPool implements Closeable {
                     if (hasProxy) {
                         ProxyHandler proxyHandler = channelInitializationProxyHandler.createProxy(proxyChallenges);
                         pipeline.addFirst(PROXY, proxyHandler);
-
-                        // This handler's only job is to catch any exception during the
-                        // connection setup (proxying, SSL handshake) and fail the promise.
-                        pipeline.addLast(CONNECTION_SETUP_ERROR, new ChannelInboundHandlerAdapter() {
-                            @Override
-                            public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-                                promise.tryFailure(cause);
-                                ctx.close();
-                            }
-                        });
                     }
 
                     // Add SSL handling if the request is HTTPS.
@@ -417,16 +404,8 @@ public class Netty4ConnectionPool implements Closeable {
                                 satisfyWaiterWithNewConnection();
                                 return;
                             }
-                            ChannelPipeline pipeline = newChannel.pipeline();
-                            if (pipeline.get(CONNECTION_SETUP_ERROR) != null) {
-                                pipeline.remove(CONNECTION_SETUP_ERROR);
-                            }
                             promise.setSuccess(newChannel);
                         } else {
-                            ChannelPipeline pipeline = newChannel.pipeline();
-                            if (pipeline.get(CONNECTION_SETUP_ERROR) != null) {
-                                pipeline.remove(CONNECTION_SETUP_ERROR);
-                            }
                             promise.setFailure(proxyFuture.cause());
                             newChannel.close();
                             activeConnections.decrementAndGet();

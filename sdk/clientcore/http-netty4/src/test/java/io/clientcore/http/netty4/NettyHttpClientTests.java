@@ -477,6 +477,17 @@ public class NettyHttpClientTests {
         }
     }
 
+    @Test
+    public void nonPooledClientSendsRequestSuccessfully() {
+        HttpClient client = new NettyHttpClientBuilder().connectionPoolSize(0).build();
+
+        try (Response<BinaryData> response
+            = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(SHORT_BODY_PATH)))) {
+            assertEquals(200, response.getStatusCode());
+            assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
+        }
+    }
+
     private static Stream<Arguments> requestHeaderSupplier() {
         return Stream.of(Arguments.of(null, NULL_REPLACEMENT), Arguments.of("", ""), Arguments.of("aValue", "aValue"));
     }

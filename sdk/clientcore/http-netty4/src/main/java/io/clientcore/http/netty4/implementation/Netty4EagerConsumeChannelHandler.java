@@ -131,35 +131,18 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
     }
 
     private void signalComplete(ChannelHandlerContext ctx, boolean forceClose) {
-        boolean isSyncDrain = (latch != null);
-
         if (ctx.pipeline().get(Netty4EagerConsumeChannelHandler.class) != null) {
             ctx.pipeline().remove(this);
         }
 
-        if (isSyncDrain) {
-            Netty4PipelineCleanupHandler mainCleanupHandler = ctx.pipeline().get(Netty4PipelineCleanupHandler.class);
-            if (mainCleanupHandler != null) {
-                mainCleanupHandler.cleanup(ctx, forceClose);
-            }
-        }
-
+        // If in sync mode (for toBytes()), just signal completion.
         if (latch != null) {
             latch.countDown();
         }
+
+        // If in async mode (for close()), run the cleanup callback.
         if (onComplete != null) {
             onComplete.run();
-        }
-
-        if (!isSyncDrain && forceClose) {
-            cleanup(ctx);
-        }
-    }
-
-    private void cleanup(ChannelHandlerContext ctx) {
-        Netty4PipelineCleanupHandler cleanupHandler = ctx.pipeline().get(Netty4PipelineCleanupHandler.class);
-        if (cleanupHandler != null) {
-            cleanupHandler.cleanup(ctx, true);
         }
     }
 }
