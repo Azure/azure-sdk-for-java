@@ -111,6 +111,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         if (leakDetectionDebuggingEnabled) {
             content.touch(this);
         }
+
         if (RntbdFramer.canDecodeHead(content)) {
 
             final RntbdResponse response = RntbdResponse.decode(content);
@@ -134,6 +135,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             }
 
             content.release();
+            
             return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, null);
         }
 
