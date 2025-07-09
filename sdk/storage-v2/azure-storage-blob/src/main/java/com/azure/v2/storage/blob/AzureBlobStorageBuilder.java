@@ -238,8 +238,17 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
         String localVersion = (version != null) ? version : "2025-01-05";
         AzureBlobStorageServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : AzureBlobStorageServiceVersion.getLatest();
-        AzureBlobStorageImpl client
-            = new AzureBlobStorageImpl(createHttpPipeline(), this.url, localVersion, localServiceVersion);
+        HttpInstrumentationOptions localHttpInstrumentationOptions = this.httpInstrumentationOptions == null
+            ? new HttpInstrumentationOptions()
+            : this.httpInstrumentationOptions;
+        SdkInstrumentationOptions sdkInstrumentationOptions
+            = new SdkInstrumentationOptions(PROPERTIES.getOrDefault(SDK_NAME, "UnknownName"))
+                .setSdkVersion(PROPERTIES.get(SDK_VERSION))
+                .setEndpoint(null);
+        Instrumentation instrumentation
+            = Instrumentation.create(localHttpInstrumentationOptions, sdkInstrumentationOptions);
+        AzureBlobStorageImpl client = new AzureBlobStorageImpl(createHttpPipeline(), instrumentation, this.url,
+            localVersion, localServiceVersion);
         return client;
     }
 
@@ -277,16 +286,8 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public StorageServiceClient buildServiceClient() {
-        HttpInstrumentationOptions localHttpInstrumentationOptions = this.httpInstrumentationOptions == null
-            ? new HttpInstrumentationOptions()
-            : this.httpInstrumentationOptions;
-        SdkInstrumentationOptions sdkInstrumentationOptions
-            = new SdkInstrumentationOptions(PROPERTIES.getOrDefault(SDK_NAME, "UnknownName"))
-                .setSdkVersion(PROPERTIES.get(SDK_VERSION))
-                .setEndpoint(null);
-        Instrumentation instrumentation
-            = Instrumentation.create(localHttpInstrumentationOptions, sdkInstrumentationOptions);
-        return new StorageServiceClient(buildInnerClient().getServices(), instrumentation);
+        AzureBlobStorageImpl innerClient = buildInnerClient();
+        return new StorageServiceClient(innerClient.getServices(), innerClient.getInstrumentation());
     }
 
     /**
@@ -296,16 +297,8 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public ContainerClient buildContainerClient() {
-        HttpInstrumentationOptions localHttpInstrumentationOptions = this.httpInstrumentationOptions == null
-            ? new HttpInstrumentationOptions()
-            : this.httpInstrumentationOptions;
-        SdkInstrumentationOptions sdkInstrumentationOptions
-            = new SdkInstrumentationOptions(PROPERTIES.getOrDefault(SDK_NAME, "UnknownName"))
-                .setSdkVersion(PROPERTIES.get(SDK_VERSION))
-                .setEndpoint(null);
-        Instrumentation instrumentation
-            = Instrumentation.create(localHttpInstrumentationOptions, sdkInstrumentationOptions);
-        return new ContainerClient(buildInnerClient().getContainers(), instrumentation);
+        AzureBlobStorageImpl innerClient = buildInnerClient();
+        return new ContainerClient(innerClient.getContainers(), innerClient.getInstrumentation());
     }
 
     /**
@@ -315,16 +308,8 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public BlobClient buildBlobClient() {
-        HttpInstrumentationOptions localHttpInstrumentationOptions = this.httpInstrumentationOptions == null
-            ? new HttpInstrumentationOptions()
-            : this.httpInstrumentationOptions;
-        SdkInstrumentationOptions sdkInstrumentationOptions
-            = new SdkInstrumentationOptions(PROPERTIES.getOrDefault(SDK_NAME, "UnknownName"))
-                .setSdkVersion(PROPERTIES.get(SDK_VERSION))
-                .setEndpoint(null);
-        Instrumentation instrumentation
-            = Instrumentation.create(localHttpInstrumentationOptions, sdkInstrumentationOptions);
-        return new BlobClient(buildInnerClient().getBlobs(), instrumentation);
+        AzureBlobStorageImpl innerClient = buildInnerClient();
+        return new BlobClient(innerClient.getBlobs(), innerClient.getInstrumentation());
     }
 
     /**
@@ -334,16 +319,8 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public PageBlobClient buildPageBlobClient() {
-        HttpInstrumentationOptions localHttpInstrumentationOptions = this.httpInstrumentationOptions == null
-            ? new HttpInstrumentationOptions()
-            : this.httpInstrumentationOptions;
-        SdkInstrumentationOptions sdkInstrumentationOptions
-            = new SdkInstrumentationOptions(PROPERTIES.getOrDefault(SDK_NAME, "UnknownName"))
-                .setSdkVersion(PROPERTIES.get(SDK_VERSION))
-                .setEndpoint(null);
-        Instrumentation instrumentation
-            = Instrumentation.create(localHttpInstrumentationOptions, sdkInstrumentationOptions);
-        return new PageBlobClient(buildInnerClient().getPageBlobs(), instrumentation);
+        AzureBlobStorageImpl innerClient = buildInnerClient();
+        return new PageBlobClient(innerClient.getPageBlobs(), innerClient.getInstrumentation());
     }
 
     /**
@@ -353,16 +330,8 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public AppendBlobClient buildAppendBlobClient() {
-        HttpInstrumentationOptions localHttpInstrumentationOptions = this.httpInstrumentationOptions == null
-            ? new HttpInstrumentationOptions()
-            : this.httpInstrumentationOptions;
-        SdkInstrumentationOptions sdkInstrumentationOptions
-            = new SdkInstrumentationOptions(PROPERTIES.getOrDefault(SDK_NAME, "UnknownName"))
-                .setSdkVersion(PROPERTIES.get(SDK_VERSION))
-                .setEndpoint(null);
-        Instrumentation instrumentation
-            = Instrumentation.create(localHttpInstrumentationOptions, sdkInstrumentationOptions);
-        return new AppendBlobClient(buildInnerClient().getAppendBlobs(), instrumentation);
+        AzureBlobStorageImpl innerClient = buildInnerClient();
+        return new AppendBlobClient(innerClient.getAppendBlobs(), innerClient.getInstrumentation());
     }
 
     /**
@@ -372,15 +341,7 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public BlockBlobClient buildBlockBlobClient() {
-        HttpInstrumentationOptions localHttpInstrumentationOptions = this.httpInstrumentationOptions == null
-            ? new HttpInstrumentationOptions()
-            : this.httpInstrumentationOptions;
-        SdkInstrumentationOptions sdkInstrumentationOptions
-            = new SdkInstrumentationOptions(PROPERTIES.getOrDefault(SDK_NAME, "UnknownName"))
-                .setSdkVersion(PROPERTIES.get(SDK_VERSION))
-                .setEndpoint(null);
-        Instrumentation instrumentation
-            = Instrumentation.create(localHttpInstrumentationOptions, sdkInstrumentationOptions);
-        return new BlockBlobClient(buildInnerClient().getBlockBlobs(), instrumentation);
+        AzureBlobStorageImpl innerClient = buildInnerClient();
+        return new BlockBlobClient(innerClient.getBlockBlobs(), innerClient.getInstrumentation());
     }
 }

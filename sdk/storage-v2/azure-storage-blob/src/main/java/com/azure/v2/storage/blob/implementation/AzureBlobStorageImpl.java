@@ -6,6 +6,7 @@ package com.azure.v2.storage.blob.implementation;
 
 import com.azure.v2.storage.blob.AzureBlobStorageServiceVersion;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.Instrumentation;
 
 /**
  * Initializes a new instance of the AzureBlobStorage type.
@@ -65,6 +66,20 @@ public final class AzureBlobStorageImpl {
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
+    }
+
+    /**
+     * The instance of instrumentation to report telemetry.
+     */
+    private final Instrumentation instrumentation;
+
+    /**
+     * Gets The instance of instrumentation to report telemetry.
+     * 
+     * @return the instrumentation value.
+     */
+    public Instrumentation getInstrumentation() {
+        return this.instrumentation;
     }
 
     /**
@@ -155,13 +170,15 @@ public final class AzureBlobStorageImpl {
      * Initializes an instance of AzureBlobStorage client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param instrumentation The instance of instrumentation to report telemetry.
      * @param url The URL of the service account, container, or blob that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
      * @param serviceVersion Service version.
      */
-    public AzureBlobStorageImpl(HttpPipeline httpPipeline, String url, String version,
+    public AzureBlobStorageImpl(HttpPipeline httpPipeline, Instrumentation instrumentation, String url, String version,
         AzureBlobStorageServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
+        this.instrumentation = instrumentation;
         this.url = url;
         this.version = version;
         this.serviceVersion = serviceVersion;
