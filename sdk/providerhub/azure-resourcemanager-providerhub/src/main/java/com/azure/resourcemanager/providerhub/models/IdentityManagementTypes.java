@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for IdentityManagementTypes.
+ * The type.
  */
 public final class IdentityManagementTypes extends ExpandableStringEnum<IdentityManagementTypes> {
     /**

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.providerhub.generated;
  */
 public final class ResourceTypeRegistrationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/
+     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/
      * ResourceTypeRegistrations_Delete.json
      */
     /**
@@ -20,7 +20,6 @@ public final class ResourceTypeRegistrationsDeleteSamples {
     public static void
         resourceTypeRegistrationsDelete(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
         manager.resourceTypeRegistrations()
-            .deleteByResourceGroupWithResponse("Microsoft.Contoso", "testResourceType",
-                com.azure.core.util.Context.NONE);
+            .delete("Microsoft.Contoso", "testResourceType", com.azure.core.util.Context.NONE);
     }
 }
