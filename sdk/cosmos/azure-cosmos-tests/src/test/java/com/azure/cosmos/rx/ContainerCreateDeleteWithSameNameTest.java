@@ -157,7 +157,8 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                                 List<CosmosDiagnostics> diagnosticsWithCollectionRefresh =
                                     feedResponseDiagnostics
                                         .stream()
-                                        .filter(diagnostics -> containsCollectionRefresh(diagnostics, container)).toList();
+                                        .filter(diagnostics -> containsCollectionRefresh(diagnostics, container))
+                                        .collect(Collectors.toList());
 
                                 assertThat(feedResponseDiagnostics.size()).isEqualTo(1);
                             }
@@ -733,11 +734,12 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                                 .getDiagnosticsContext()
                                 .getDiagnostics()
                                 .stream()
-                                .toList();
+                                .collect(Collectors.toList());
                         List<CosmosDiagnostics> diagnosticsWithCollectionRefresh =
                             cosmosDiagnostics
                                 .stream()
-                                .filter(diagnostics -> containsCollectionRefresh(diagnostics, container)).toList();
+                                .filter(diagnostics -> containsCollectionRefresh(diagnostics, container))
+                                .collect(Collectors.toList());
                         assertThat(diagnosticsWithCollectionRefresh.size()).isEqualTo(1);
                     }
                 }
@@ -792,14 +794,20 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                     List<CosmosDiagnostics> diagnosticsWithCollectionRefresh =
                         feedResponseDiagnostics
                             .stream()
-                            .filter(diagnostics -> containsCollectionRefresh(diagnostics, container)).toList();
+                            .filter(diagnostics -> containsCollectionRefresh(diagnostics, container))
+                            .collect(Collectors.toList());
 
                     assertThat(diagnosticsWithCollectionRefresh.isEmpty()).isFalse();
                 }
 
-                List<String> readManyItemIds = readManyResponse.getResults().stream().map(TestObject::getId).collect(Collectors.toList());
+                List<String> readManyItemIds =
+                    readManyResponse
+                        .getResults()
+                        .stream()
+                        .map(TestObject::getId)
+                        .collect(Collectors.toList());
                 assertThat(readManyItemIds.size()).isEqualTo(itemsToRead.size());
-                assertThat(readManyItemIds.containsAll(itemsToRead.stream().map(TestObject::getId).toList())).isTrue();
+                assertThat(readManyItemIds.containsAll(itemsToRead.stream().map(TestObject::getId).collect(Collectors.toList()))).isTrue();
 
                 this.assertCollectionCache(container);
         };
@@ -959,7 +967,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
 
                     return false;
                 })
-                .toList()
+                .collect(Collectors.toList())
                 .isEmpty();
         }
 
