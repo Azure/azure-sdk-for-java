@@ -70,7 +70,6 @@ public final class TestProxyManager {
 
                 try (ServerSocket serverSocket = new ServerSocket(0)) {
                     proxyPort = serverSocket.getLocalPort();
-                    System.out.println("Test Proxy port: " + proxyPort);
                 }
 
                 ProcessBuilder builder = new ProcessBuilder(commandLine, "--storage-location", repoRoot.toString())

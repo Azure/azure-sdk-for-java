@@ -56,11 +56,10 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
         CallAutomationClientBuilder builder = new CallAutomationClientBuilder().connectionString(CONNECTION_STRING)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
-
         if (getTestMode() == TestMode.RECORD) {
             // Redactors aren't used in Test Proxy tests
-//            List<Function<String, String>> redactors = new ArrayList<>();
-//            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
+            //            List<Function<String, String>> redactors = new ArrayList<>();
+            //            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         return builder;
@@ -77,8 +76,8 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
 
         if (getTestMode() == TestMode.RECORD) {
             // Redactors aren't used in Test Proxy tests
-//            List<Function<String, String>> redactors = new ArrayList<>();
-//            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
+            //            List<Function<String, String>> redactors = new ArrayList<>();
+            //            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         return builder;
@@ -95,8 +94,8 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
 
         if (getTestMode() == TestMode.RECORD) {
             // Redactors aren't used in Test Proxy tests
-//            List<Function<String, String>> redactors = new ArrayList<>();
-//            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
+            //            List<Function<String, String>> redactors = new ArrayList<>();
+            //            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         return builder;
