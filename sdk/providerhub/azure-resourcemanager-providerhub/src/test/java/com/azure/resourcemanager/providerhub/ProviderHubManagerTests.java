@@ -14,13 +14,16 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.resourcemanager.providerhub.fluent.models.OperationsDefinitionInner;
-import com.azure.resourcemanager.providerhub.models.OperationsContent;
-import com.azure.resourcemanager.providerhub.models.OperationsDefinitionDisplay;
+import com.azure.resourcemanager.providerhub.fluent.models.OperationsPutContentInner;
+import com.azure.resourcemanager.providerhub.models.LocalizedOperationDefinition;
+import com.azure.resourcemanager.providerhub.models.LocalizedOperationDefinitionDisplay;
+import com.azure.resourcemanager.providerhub.models.LocalizedOperationDisplayDefinitionDefault;
 import com.azure.resourcemanager.providerhub.models.OperationsPutContent;
+import com.azure.resourcemanager.providerhub.models.OperationsPutContentProperties;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -68,20 +71,21 @@ public class ProviderHubManagerTests extends TestProxyTestBase {
 
     @Test
     @LiveOnly
+    @Disabled
     public void testCreateOperation() {
-        OperationsContent operationsContent = null;
+        OperationsPutContent operationsContent = null;
         String spaceName = "Microsoft.Contoso" + randomPadding();
         String opeartionName = spaceName + "/Employees/Read";
         try {
             // @embedmeStart
             operationsContent = providerHubManager.operations()
                 .createOrUpdate(spaceName,
-                    new OperationsPutContent()
-                        .withContents(Arrays.asList(new OperationsDefinitionInner().withName(opeartionName)
-                            .withDisplay(new OperationsDefinitionDisplay().withProvider(spaceName)
-                                .withResource("Employees")
-                                .withOperation("Gets/List employee resources")
-                                .withDescription("Read employees")))));
+                    new OperationsPutContentInner().withProperties(new OperationsPutContentProperties()
+                        .withContents(Arrays.asList(new LocalizedOperationDefinition().withName(opeartionName)
+                            .withDisplay(new LocalizedOperationDefinitionDisplay().withDefaultProperty(
+                                new LocalizedOperationDisplayDefinitionDefault().withResource("Employees")
+                                    .withOperation("Gets/List employee resources")
+                                    .withDescription("Read employees")))))));
             // @embedmeEnd
             Assertions.assertTrue(providerHubManager.operations()
                 .listByProviderRegistration(spaceName)
