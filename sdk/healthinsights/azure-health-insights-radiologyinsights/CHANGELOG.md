@@ -4,11 +4,36 @@
 
 ### Features Added
 
-### Breaking Changes
+* `models.RadiologyInsightsCustomInferenceResponse` was added
 
-### Bugs Fixed
+* `implementation.models.InferFromCustomModelIdRequest` was added
 
-### Other Changes
+* `models.RadiologyInsightsCustomJob` was added
+
+#### `RadiologyInsightsClient` was modified
+
+* `beginInferFromCustomModelId(models.RadiologyInsightsData,java.util.List)` was added
+* `beginInferFromCustomModelId(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `beginInferFromCustomModelId(models.RadiologyInsightsData)` was added
+
+#### `implementation.RadiologyInsightsClientImpl$RadiologyInsightsClientService` was modified
+
+* `inferFromCustomModelIdSync(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions,com.azure.core.util.Context)` was added
+* `inferFromCustomModelId(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions,com.azure.core.util.Context)` was added
+
+#### `implementation.RadiologyInsightsClientImpl` was modified
+
+* `beginInferFromCustomModelId(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `beginInferFromCustomModelIdWithModel(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `beginInferFromCustomModelIdAsync(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `beginInferFromCustomModelIdWithModelAsync(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+
+#### `RadiologyInsightsAsyncClient` was modified
+
+* `beginInferFromCustomModelId(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `beginInferFromCustomModelId(models.RadiologyInsightsData)` was added
+* `beginInferFromCustomModelId(models.RadiologyInsightsData,java.util.List)` was added
+
 
 ## 1.1.1 (2025-06-19)
 
