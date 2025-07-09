@@ -80,17 +80,6 @@ function Find-GenerationInformation {
   }
 }
 
-function Write-WithMessageBars {
-  param (
-    [string]$message
-  )
-  Write-Host @"
-======================================
-$message
-======================================
-"@
-}
-
 # No ServiceDirectories specified, no validation will be performed.
 if (-not $ServiceDirectories) {
   Write-Host "No ServiceDirectories specified, no validation will be performed."
@@ -122,7 +111,7 @@ foreach ($serviceDirectory in $ServiceDirectories.Split(',')) {
 
 if ($generationInformations.Count -eq 0) {
   $kind = $RegenerationType -eq 'All' ? 'Swagger or TypeSpec' : $RegenerationType
-  Write-WithMessageBars "No $kind generation files to regenerate in directories: $ServiceDirectories."
+  Write-Host "No $kind generation files to regenerate in directories: $ServiceDirectories."
   exit 0
 }
 
@@ -144,6 +133,7 @@ if ($RegenerationType -eq 'TypeSpec' -or $RegenerationType -eq 'All') {
 }
 
 $generateScript = {
+  $separatorBar = "======================================"
   $directory = $_.LibraryFolder
   $updateCodegenScript = $_.ScriptPath
 
@@ -152,7 +142,7 @@ $generateScript = {
     $generateOutput = (& $updateCodegenScript 6>&1)
 
     if ($LastExitCode -ne 0) {
-      Write-WithMessageBars "Error running Swagger regeneration $updateCodegenScript`n$([String]::Join("`n", $generateOutput))"
+      Write-Host "$separatorBar`nError running Swagger regeneration $updateCodegenScript`n$([String]::Join("`n", $generateOutput))`n$separatorBar"
       throw
     } else {
       # prevent warning related to EOL differences which triggers an exception for some reason
@@ -160,10 +150,10 @@ $generateScript = {
 
       if ($LastExitCode -ne 0) {
         $status = (git status -s "$directory" | Out-String)
-        Write-WithMessageBars "The following Swagger generated files in directoy $directory are out of date`n$status"
+        Write-Host "$separatorBar`nThe following Swagger generated files in directoy $directory are out of date`n$status`n$separatorBar"
         throw
       } else {
-        Write-WithMessageBars "Successfully ran Swagger regneration with no diff $updateCodegenScript"
+        Write-Host "$separatorBar`nSuccessfully ran Swagger regneration with no diff $updateCodegenScript`n$separatorBar"
       }
     }
   } elseif ($_.Type -eq 'TypeSpec') {
@@ -172,7 +162,7 @@ $generateScript = {
       try {
         $generateOutput = (& tsp-client update 2>&1)
         if ($LastExitCode -ne 0) {
-          Write-WithMessageBars "Error running TypeSpec regeneration in directory $directory`n$([String]::Join("`n", $generateOutput))"
+          Write-Host "$separatorBar`nError running TypeSpec regeneration in directory $directory`n$([String]::Join("`n", $generateOutput))`n$separatorBar"
           throw
         }
       } finally {
@@ -182,7 +172,7 @@ $generateScript = {
       # Update code snippets before comparing the diff
       $mvnOutput = (& mvn --no-transfer-progress codesnippet:update-codesnippet 2>&1)
       if ($LastExitCode -ne 0) {
-        Write-WithMessageBars "Error updating TypeSpec codesnippets in directory $directory`n$([String]::Join("`n", $mvnOutput))"
+        Write-Host "$separatorBar`nError updating TypeSpec codesnippets in directory $directory`n$([String]::Join("`n", $mvnOutput))`n$separatorBar"
         throw
       }
     } finally {
@@ -195,13 +185,13 @@ $generateScript = {
 
     if ($LastExitCode -ne 0) {
       $status = (git status -s "$directory" | Out-String)
-      Write-WithMessageBars "The following TypeSpec files in directoy $directory are out of date`n$status"
+      Write-Host "$separatorBar`nThe following TypeSpec files in directoy $directory are out of date`n$status`n$separatorBar"
       throw
     } else {
-      Write-WithMessageBars "Successfully ran TypeSpec update in directory with no diff $directory"
+      Write-Host "$separatorBar`nSuccessfully ran TypeSpec update in directory with no diff $directory`n$separatorBar"
     }
   } else {
-    Write-WithMessageBars "Unknown generation type: $($_.Type), directory: $directory"
+    Write-Host "$separatorBar`nUnknown generation type: $($_.Type), directory: $directory`n$separatorBar"
     throw
   }
 }
