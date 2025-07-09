@@ -1,8 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.compute.batch.implementation.lro;
+package com.azure.compute.batch;
 
-import com.azure.compute.batch.BatchAsyncClient;
 import com.azure.compute.batch.models.BatchJobSchedule;
 import com.azure.compute.batch.models.BatchJobScheduleState;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -17,10 +16,10 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * Async poller class used by {@code beginDeleteJobSchedule} to implement polling logic for deleting a {@link BatchJobSchedule}.
- * Returns {@link BatchJobSchedule} values during polling and {@code null} upon successful deletion.
+ * Async poller class used by {@code beginTerminateJobSchedule} to implement polling logic for terminating a {@link BatchJobSchedule}.
+ * Returns {@link BatchJobSchedule} values during polling and as the final result.
  */
-public final class JobScheduleDeletePollerAsync {
+public final class JobScheduleTerminatePollerAsync {
 
     private final BatchAsyncClient batchAsyncClient;
     private final String jobScheduleId;
@@ -28,13 +27,13 @@ public final class JobScheduleDeletePollerAsync {
     private final Context requestContext;
 
     /**
-     * Creates a new {@link JobScheduleDeletePollerAsync}.
+     * Creates a new {@link JobScheduleTerminatePollerAsync}.
      *
      * @param batchAsyncClient The {@link BatchAsyncClient} used to interact with the Batch service.
-     * @param jobScheduleId The ID of the Job Schedule being deleted.
+     * @param jobScheduleId The ID of the Job Schedule being terminated.
      * @param options Optional request options for service calls.
      */
-    public JobScheduleDeletePollerAsync(BatchAsyncClient batchAsyncClient, String jobScheduleId,
+    public JobScheduleTerminatePollerAsync(BatchAsyncClient batchAsyncClient, String jobScheduleId,
         RequestOptions options) {
         this.batchAsyncClient = batchAsyncClient;
         this.jobScheduleId = jobScheduleId;
@@ -43,31 +42,37 @@ public final class JobScheduleDeletePollerAsync {
     }
 
     /**
-     * Activation operation to start the delete.
+     * Activation operation to start the termination.
      *
-     * @return A function that initiates the delete request and returns a PollResponse with IN_PROGRESS status.
+     * @return A function that initiates the terminate request and returns a PollResponse with IN_PROGRESS status.
      */
     public Function<PollingContext<BatchJobSchedule>, Mono<PollResponse<BatchJobSchedule>>> getActivationOperation() {
-        return context -> batchAsyncClient.deleteJobScheduleWithResponse(jobScheduleId, options)
+        return context -> batchAsyncClient.terminateJobScheduleWithResponse(jobScheduleId, options)
             .thenReturn(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null));
     }
 
     /**
-     * Poll operation to check if the job schedule is still being deleted or is gone.
+     * Poll operation to check the job schedule's termination state.
      *
      * @return A function that polls the job schedule and returns a PollResponse with the current operation status.
      */
     public Function<PollingContext<BatchJobSchedule>, Mono<PollResponse<BatchJobSchedule>>> getPollOperation() {
         return context -> {
             RequestOptions pollOptions = new RequestOptions().setContext(this.requestContext);
-            return batchAsyncClient.getJobScheduleWithResponse(jobScheduleId, pollOptions).map(response -> {
+            return batchAsyncClient.getJobScheduleWithResponse(jobScheduleId, pollOptions).flatMap(response -> {
                 BatchJobSchedule jobSchedule = response.getValue().toObject(BatchJobSchedule.class);
+                BatchJobScheduleState state = jobSchedule.getState();
 
-                LongRunningOperationStatus status = BatchJobScheduleState.DELETING.equals(jobSchedule.getState())
-                    ? LongRunningOperationStatus.IN_PROGRESS
-                    : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                LongRunningOperationStatus status;
+                if (BatchJobScheduleState.TERMINATING.equals(state)) {
+                    status = LongRunningOperationStatus.IN_PROGRESS;
+                } else if (BatchJobScheduleState.COMPLETED.equals(state)) {
+                    status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                } else {
+                    status = LongRunningOperationStatus.FAILED;
+                }
 
-                return new PollResponse<>(status, jobSchedule);
+                return Mono.just(new PollResponse<>(status, jobSchedule));
             })
                 .onErrorResume(ResourceNotFoundException.class,
                     ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)))
@@ -76,7 +81,7 @@ public final class JobScheduleDeletePollerAsync {
     }
 
     /**
-     * Cancel operation (not supported for delete).
+     * Cancel operation (not supported for terminate).
      *
      * @return A function that always returns an empty Mono, indicating cancellation is unsupported.
      */
@@ -86,11 +91,15 @@ public final class JobScheduleDeletePollerAsync {
     }
 
     /**
-     * Final result fetch operation (returns null; not required).
+     * Final result fetch operation.
      *
-     * @return A function that returns an empty Mono, indicating no final fetch is required.
+     * @return A function that fetches the final {@link BatchJobSchedule} after successful termination.
      */
-    public Function<PollingContext<BatchJobSchedule>, Mono<Void>> getFetchResultOperation() {
-        return context -> Mono.empty();
+    public Function<PollingContext<BatchJobSchedule>, Mono<BatchJobSchedule>> getFetchResultOperation() {
+        return context -> {
+            RequestOptions fetchOptions = new RequestOptions().setContext(this.requestContext);
+            return batchAsyncClient.getJobScheduleWithResponse(jobScheduleId, fetchOptions)
+                .map(response -> response.getValue().toObject(BatchJobSchedule.class));
+        };
     }
 }

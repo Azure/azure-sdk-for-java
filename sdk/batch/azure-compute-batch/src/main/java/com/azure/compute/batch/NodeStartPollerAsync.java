@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.compute.batch.implementation.lro;
+package com.azure.compute.batch;
 
-import com.azure.compute.batch.BatchAsyncClient;
 import com.azure.compute.batch.models.BatchNode;
 import com.azure.compute.batch.models.BatchNodeState;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -18,12 +17,10 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * Async poller class used by {@code beginDeallocateNode} to implement polling logic for deallocating a {@link BatchNode}.
+ * Async poller class used by {@code beginStartNode} to implement polling logic for starting a {@link BatchNode}.
  * Returns {@link BatchNode} values during polling and the final {@link BatchNode} upon successful completion.
- * <p>
- * If the node is no longer found (e.g., due to pool deletion), the operation is treated as successfully completed.
  */
-public final class NodeDeallocatePollerAsync {
+public final class NodeStartPollerAsync {
 
     private final BatchAsyncClient batchAsyncClient;
     private final String poolId;
@@ -32,14 +29,14 @@ public final class NodeDeallocatePollerAsync {
     private final Context requestContext;
 
     /**
-     * Creates a new {@link NodeDeallocatePollerAsync}.
+     * Creates a new {@link NodeStartPollerAsync}.
      *
      * @param batchAsyncClient The {@link BatchAsyncClient} used to interact with the Batch service.
      * @param poolId The ID of the pool that contains the node.
-     * @param nodeId The ID of the node to deallocate.
+     * @param nodeId The ID of the node to start.
      * @param options Optional request options for service calls.
      */
-    public NodeDeallocatePollerAsync(BatchAsyncClient batchAsyncClient, String poolId, String nodeId,
+    public NodeStartPollerAsync(BatchAsyncClient batchAsyncClient, String poolId, String nodeId,
         RequestOptions options) {
         this.batchAsyncClient = batchAsyncClient;
         this.poolId = poolId;
@@ -49,51 +46,46 @@ public final class NodeDeallocatePollerAsync {
     }
 
     /**
-     * Activation operation to start the deallocate process.
+     * Activation operation to start the node.
      *
-     * @return A function that initiates the deallocation and returns a PollResponse with IN_PROGRESS status.
+     * @return A function that initiates the start request and returns a PollResponse with IN_PROGRESS status.
      */
     public Function<PollingContext<BatchNode>, Mono<PollResponse<BatchNode>>> getActivationOperation() {
-        return context -> batchAsyncClient.deallocateNodeWithResponse(poolId, nodeId, options)
+        return ctx -> batchAsyncClient.startNodeWithResponse(poolId, nodeId, options)
             .thenReturn(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null));
     }
 
     /**
-     * Poll operation to check the node's state.
+     * Poll operation to check the node's start-up state.
      *
      * @return A function that polls the node and returns a PollResponse with the current operation status.
      */
     public Function<PollingContext<BatchNode>, Mono<PollResponse<BatchNode>>> getPollOperation() {
-        return context -> {
+        return ctx -> {
             RequestOptions pollOptions = new RequestOptions().setContext(this.requestContext);
-            return batchAsyncClient.getNodeWithResponse(poolId, nodeId, pollOptions).flatMap(response -> {
-                BatchNode node = response.getValue().toObject(BatchNode.class);
+            return batchAsyncClient.getNodeWithResponse(poolId, nodeId, pollOptions).flatMap(resp -> {
+                BatchNode node = resp.getValue().toObject(BatchNode.class);
                 BatchNodeState state = node.getState();
 
-                LongRunningOperationStatus status;
-                if (BatchNodeState.DEALLOCATING.equals(state)) {
-                    status = LongRunningOperationStatus.IN_PROGRESS;
-                } else if (BatchNodeState.DEALLOCATED.equals(state)) {
-                    status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                } else {
-                    status = LongRunningOperationStatus.FAILED;
-                }
+                LongRunningOperationStatus status = (state == BatchNodeState.STARTING)
+                    ? LongRunningOperationStatus.IN_PROGRESS
+                    : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 
                 return Mono.just(new PollResponse<>(status, node));
             })
                 .onErrorResume(ResourceNotFoundException.class,
-                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)))
+                    ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)))
                 .onErrorResume(e -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)));
         };
     }
 
     /**
-     * Cancel operation (not supported for deallocate).
+     * Cancel operation (not supported for start).
      *
      * @return A function that always returns an empty Mono, indicating cancellation is unsupported.
      */
     public BiFunction<PollingContext<BatchNode>, PollResponse<BatchNode>, Mono<BatchNode>> getCancelOperation() {
-        return (context, pollResponse) -> Mono.empty();
+        return (ctx, resp) -> Mono.empty();
     }
 
     /**
@@ -102,6 +94,6 @@ public final class NodeDeallocatePollerAsync {
      * @return A function that returns the final {@link BatchNode} result from the latest poll response.
      */
     public Function<PollingContext<BatchNode>, Mono<BatchNode>> getFetchResultOperation() {
-        return context -> Mono.justOrEmpty(context.getLatestResponse().getValue());
+        return ctx -> Mono.justOrEmpty(ctx.getLatestResponse().getValue());
     }
 }
