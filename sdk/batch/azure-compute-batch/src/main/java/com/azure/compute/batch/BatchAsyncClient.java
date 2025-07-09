@@ -4,21 +4,6 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchClientImpl;
-import com.azure.compute.batch.implementation.lro.CertificateDeletePollerAsync;
-import com.azure.compute.batch.implementation.lro.JobDeletePollerAsync;
-import com.azure.compute.batch.implementation.lro.JobDisablePollerAsync;
-import com.azure.compute.batch.implementation.lro.JobEnablePollerAsync;
-import com.azure.compute.batch.implementation.lro.JobScheduleDeletePollerAsync;
-import com.azure.compute.batch.implementation.lro.JobScheduleTerminatePollerAsync;
-import com.azure.compute.batch.implementation.lro.JobTerminatePollerAsync;
-import com.azure.compute.batch.implementation.lro.NodeDeallocatePollerAsync;
-import com.azure.compute.batch.implementation.lro.NodeRebootPollerAsync;
-import com.azure.compute.batch.implementation.lro.NodeReimagePollerAsync;
-import com.azure.compute.batch.implementation.lro.NodeRemovePollerAsync;
-import com.azure.compute.batch.implementation.lro.NodeStartPollerAsync;
-import com.azure.compute.batch.implementation.lro.PoolDeletePollerAsync;
-import com.azure.compute.batch.implementation.lro.PoolResizePollerAsync;
-import com.azure.compute.batch.implementation.lro.PoolStopResizePollerAsync;
 import com.azure.compute.batch.implementation.task.AsyncTaskSubmitter;
 import com.azure.compute.batch.implementation.task.TaskManager;
 import com.azure.compute.batch.implementation.task.TaskSubmitter;
@@ -1118,7 +1103,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deletePoolWithResponse(String poolId, RequestOptions requestOptions) {
+    Mono<Response<Void>> deletePoolWithResponse(String poolId, RequestOptions requestOptions) {
         return this.serviceClient.deletePoolWithResponseAsync(poolId, requestOptions);
     }
 
@@ -2108,8 +2093,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resizePoolWithResponse(String poolId, BinaryData parameters,
-        RequestOptions requestOptions) {
+    Mono<Response<Void>> resizePoolWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
         return this.serviceClient.resizePoolWithResponseAsync(poolId, parameters, requestOptions);
     }
 
@@ -2162,7 +2146,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopPoolResizeWithResponse(String poolId, RequestOptions requestOptions) {
+    Mono<Response<Void>> stopPoolResizeWithResponse(String poolId, RequestOptions requestOptions) {
         return this.serviceClient.stopPoolResizeWithResponseAsync(poolId, requestOptions);
     }
 
@@ -2334,8 +2318,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeNodesWithResponse(String poolId, BinaryData parameters,
-        RequestOptions requestOptions) {
+    Mono<Response<Void>> removeNodesWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
         return this.serviceClient.removeNodesWithResponseAsync(poolId, parameters, requestOptions);
     }
 
@@ -2503,7 +2486,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
+    Mono<Response<Void>> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.deleteJobWithResponseAsync(jobId, requestOptions);
     }
 
@@ -3878,8 +3861,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableJobWithResponse(String jobId, BinaryData parameters,
-        RequestOptions requestOptions) {
+    Mono<Response<Void>> disableJobWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
         return this.serviceClient.disableJobWithResponseAsync(jobId, parameters, requestOptions);
     }
 
@@ -3931,7 +3913,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> enableJobWithResponse(String jobId, RequestOptions requestOptions) {
+    Mono<Response<Void>> enableJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.enableJobWithResponseAsync(jobId, requestOptions);
     }
 
@@ -3996,7 +3978,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> terminateJobWithResponse(String jobId, RequestOptions requestOptions) {
+    Mono<Response<Void>> terminateJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.terminateJobWithResponseAsync(jobId, requestOptions);
     }
 
@@ -5665,7 +5647,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteCertificateWithResponse(String thumbprintAlgorithm, String thumbprint,
+    Mono<Response<Void>> deleteCertificateWithResponse(String thumbprintAlgorithm, String thumbprint,
         RequestOptions requestOptions) {
         return this.serviceClient.deleteCertificateWithResponseAsync(thumbprintAlgorithm, thumbprint, requestOptions);
     }
@@ -5828,7 +5810,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+    Mono<Response<Void>> deleteJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.serviceClient.deleteJobScheduleWithResponseAsync(jobScheduleId, requestOptions);
     }
 
@@ -7388,7 +7370,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+    Mono<Response<Void>> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.serviceClient.terminateJobScheduleWithResponseAsync(jobScheduleId, requestOptions);
     }
 
@@ -10110,7 +10092,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rebootNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    Mono<Response<Void>> rebootNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.rebootNodeWithResponseAsync(poolId, nodeId, requestOptions);
     }
 
@@ -10136,7 +10118,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> startNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    Mono<Response<Void>> startNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.startNodeWithResponseAsync(poolId, nodeId, requestOptions);
     }
 
@@ -10181,7 +10163,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> reimageNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    Mono<Response<Void>> reimageNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.reimageNodeWithResponseAsync(poolId, nodeId, requestOptions);
     }
 
@@ -10224,8 +10206,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deallocateNodeWithResponse(String poolId, String nodeId,
-        RequestOptions requestOptions) {
+    Mono<Response<Void>> deallocateNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.deallocateNodeWithResponseAsync(poolId, nodeId, requestOptions);
     }
 
@@ -11060,7 +11041,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deletePool(String poolId) {
+    Mono<Void> deletePool(String poolId) {
         // Generated convenience method for deletePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deletePoolWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
@@ -11210,7 +11191,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopPoolResize(String poolId) {
+    Mono<Void> stopPoolResize(String poolId) {
         // Generated convenience method for stopPoolResizeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return stopPoolResizeWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
@@ -11320,7 +11301,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteJob(String jobId) {
+    Mono<Void> deleteJob(String jobId) {
         // Generated convenience method for deleteJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
@@ -11411,7 +11392,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> enableJob(String jobId) {
+    Mono<Void> enableJob(String jobId) {
         // Generated convenience method for enableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return enableJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
@@ -11461,7 +11442,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> terminateJob(String jobId) {
+    Mono<Void> terminateJob(String jobId) {
         // Generated convenience method for terminateJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return terminateJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
@@ -11708,7 +11689,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteCertificate(String thumbprintAlgorithm, String thumbprint) {
+    Mono<Void> deleteCertificate(String thumbprintAlgorithm, String thumbprint) {
         // Generated convenience method for deleteCertificateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).flatMap(FluxUtil::toMono);
@@ -11839,7 +11820,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteJobSchedule(String jobScheduleId) {
+    Mono<Void> deleteJobSchedule(String jobScheduleId) {
         // Generated convenience method for deleteJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteJobScheduleWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
@@ -11959,7 +11940,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> terminateJobSchedule(String jobScheduleId) {
+    Mono<Void> terminateJobSchedule(String jobScheduleId) {
         // Generated convenience method for terminateJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return terminateJobScheduleWithResponse(jobScheduleId, requestOptions).flatMap(FluxUtil::toMono);
@@ -12414,7 +12395,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rebootNode(String poolId, String nodeId) {
+    Mono<Void> rebootNode(String poolId, String nodeId) {
         // Generated convenience method for rebootNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return rebootNodeWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
@@ -12456,7 +12437,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> startNode(String poolId, String nodeId) {
+    Mono<Void> startNode(String poolId, String nodeId) {
         // Generated convenience method for startNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return startNodeWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
@@ -12499,7 +12480,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> reimageNode(String poolId, String nodeId) {
+    Mono<Void> reimageNode(String poolId, String nodeId) {
         // Generated convenience method for reimageNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return reimageNodeWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
@@ -12544,7 +12525,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deallocateNode(String poolId, String nodeId) {
+    Mono<Void> deallocateNode(String poolId, String nodeId) {
         // Generated convenience method for deallocateNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deallocateNodeWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
@@ -13063,7 +13044,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deletePool(String poolId, BatchPoolDeleteOptions options, RequestConditions requestConditions) {
+    Mono<Void> deletePool(String poolId, BatchPoolDeleteOptions options, RequestConditions requestConditions) {
         // Generated convenience method for deletePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -13226,8 +13207,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopPoolResize(String poolId, BatchPoolResizeStopOptions options,
-        RequestConditions requestConditions) {
+    Mono<Void> stopPoolResize(String poolId, BatchPoolResizeStopOptions options, RequestConditions requestConditions) {
         // Generated convenience method for stopPoolResizeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -13414,7 +13394,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteJob(String jobId, BatchJobDeleteOptions options, RequestConditions requestConditions) {
+    Mono<Void> deleteJob(String jobId, BatchJobDeleteOptions options, RequestConditions requestConditions) {
         // Generated convenience method for deleteJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -13627,7 +13607,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> enableJob(String jobId, BatchJobEnableOptions options, RequestConditions requestConditions) {
+    Mono<Void> enableJob(String jobId, BatchJobEnableOptions options, RequestConditions requestConditions) {
         // Generated convenience method for enableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -13726,8 +13706,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> terminateJob(String jobId, BatchJobTerminateOptions options,
-        RequestConditions requestConditions) {
+    Mono<Void> terminateJob(String jobId, BatchJobTerminateOptions options, RequestConditions requestConditions) {
         // Generated convenience method for terminateJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -14157,8 +14136,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteCertificate(String thumbprintAlgorithm, String thumbprint,
-        BatchCertificateDeleteOptions options) {
+    Mono<Void> deleteCertificate(String thumbprintAlgorithm, String thumbprint, BatchCertificateDeleteOptions options) {
         // Generated convenience method for deleteCertificateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -14256,7 +14234,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteJobSchedule(String jobScheduleId, BatchJobScheduleDeleteOptions options,
+    Mono<Void> deleteJobSchedule(String jobScheduleId, BatchJobScheduleDeleteOptions options,
         RequestConditions requestConditions) {
         // Generated convenience method for deleteJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -14550,7 +14528,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> terminateJobSchedule(String jobScheduleId, BatchJobScheduleTerminateOptions options,
+    Mono<Void> terminateJobSchedule(String jobScheduleId, BatchJobScheduleTerminateOptions options,
         RequestConditions requestConditions) {
         // Generated convenience method for terminateJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -15287,7 +15265,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rebootNode(String poolId, String nodeId, BatchNodeRebootOptions options) {
+    Mono<Void> rebootNode(String poolId, String nodeId, BatchNodeRebootOptions options) {
         // Generated convenience method for rebootNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -15348,7 +15326,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> startNode(String poolId, String nodeId, BatchNodeStartOptions options) {
+    Mono<Void> startNode(String poolId, String nodeId, BatchNodeStartOptions options) {
         // Generated convenience method for startNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -15402,7 +15380,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> reimageNode(String poolId, String nodeId, BatchNodeReimageOptions options) {
+    Mono<Void> reimageNode(String poolId, String nodeId, BatchNodeReimageOptions options) {
         // Generated convenience method for reimageNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -15466,7 +15444,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deallocateNode(String poolId, String nodeId, BatchNodeDeallocateOptions options) {
+    Mono<Void> deallocateNode(String poolId, String nodeId, BatchNodeDeallocateOptions options) {
         // Generated convenience method for deallocateNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -15986,7 +15964,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resizePool(String poolId, BatchPoolResizeParameters parameters, BatchPoolResizeOptions options,
+    Mono<Void> resizePool(String poolId, BatchPoolResizeParameters parameters, BatchPoolResizeOptions options,
         RequestConditions requestConditions) {
         // Generated convenience method for resizePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -16088,7 +16066,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resizePool(String poolId, BatchPoolResizeParameters parameters) {
+    Mono<Void> resizePool(String poolId, BatchPoolResizeParameters parameters) {
         // Generated convenience method for resizePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return resizePoolWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
@@ -16192,7 +16170,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeNodes(String poolId, BatchNodeRemoveParameters parameters, BatchNodesRemoveOptions options,
+    Mono<Void> removeNodes(String poolId, BatchNodeRemoveParameters parameters, BatchNodesRemoveOptions options,
         RequestConditions requestConditions) {
         // Generated convenience method for removeNodesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -16288,7 +16266,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeNodes(String poolId, BatchNodeRemoveParameters parameters) {
+    Mono<Void> removeNodes(String poolId, BatchNodeRemoveParameters parameters) {
         // Generated convenience method for removeNodesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return removeNodesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
@@ -16412,7 +16390,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableJob(String jobId, BatchJobDisableParameters parameters, BatchJobDisableOptions options,
+    Mono<Void> disableJob(String jobId, BatchJobDisableParameters parameters, BatchJobDisableOptions options,
         RequestConditions requestConditions) {
         // Generated convenience method for disableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -16517,7 +16495,7 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableJob(String jobId, BatchJobDisableParameters parameters) {
+    Mono<Void> disableJob(String jobId, BatchJobDisableParameters parameters) {
         // Generated convenience method for disableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return disableJobWithResponse(jobId, BinaryData.fromObject(parameters), requestOptions)

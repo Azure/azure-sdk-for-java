@@ -1,6 +1,5 @@
-package com.azure.compute.batch.implementation.lro;
+package com.azure.compute.batch;
 
-import com.azure.compute.batch.BatchAsyncClient;
 import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobState;
 import com.azure.core.exception.ResourceNotFoundException;

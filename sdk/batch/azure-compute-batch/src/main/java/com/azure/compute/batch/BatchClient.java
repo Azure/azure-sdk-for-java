@@ -1099,7 +1099,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deletePoolWithResponse(String poolId, RequestOptions requestOptions) {
+    Response<Void> deletePoolWithResponse(String poolId, RequestOptions requestOptions) {
         return this.serviceClient.deletePoolWithResponse(poolId, requestOptions);
     }
 
@@ -2087,7 +2087,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resizePoolWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
+    Response<Void> resizePoolWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
         return this.serviceClient.resizePoolWithResponse(poolId, parameters, requestOptions);
     }
 
@@ -2140,7 +2140,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopPoolResizeWithResponse(String poolId, RequestOptions requestOptions) {
+    Response<Void> stopPoolResizeWithResponse(String poolId, RequestOptions requestOptions) {
         return this.serviceClient.stopPoolResizeWithResponse(poolId, requestOptions);
     }
 
@@ -2312,7 +2312,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeNodesWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
+    Response<Void> removeNodesWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
         return this.serviceClient.removeNodesWithResponse(poolId, parameters, requestOptions);
     }
 
@@ -2482,7 +2482,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
+    Response<Void> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.deleteJobWithResponse(jobId, requestOptions);
     }
 
@@ -3857,7 +3857,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> disableJobWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
+    Response<Void> disableJobWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
         return this.serviceClient.disableJobWithResponse(jobId, parameters, requestOptions);
     }
 
@@ -3909,7 +3909,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> enableJobWithResponse(String jobId, RequestOptions requestOptions) {
+    Response<Void> enableJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.enableJobWithResponse(jobId, requestOptions);
     }
 
@@ -3974,7 +3974,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> terminateJobWithResponse(String jobId, RequestOptions requestOptions) {
+    Response<Void> terminateJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.terminateJobWithResponse(jobId, requestOptions);
     }
 
@@ -5643,7 +5643,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteCertificateWithResponse(String thumbprintAlgorithm, String thumbprint,
+    Response<Void> deleteCertificateWithResponse(String thumbprintAlgorithm, String thumbprint,
         RequestOptions requestOptions) {
         return this.serviceClient.deleteCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions);
     }
@@ -5805,7 +5805,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+    Response<Void> deleteJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.serviceClient.deleteJobScheduleWithResponse(jobScheduleId, requestOptions);
     }
 
@@ -7364,7 +7364,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+    Response<Void> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.serviceClient.terminateJobScheduleWithResponse(jobScheduleId, requestOptions);
     }
 
@@ -10082,7 +10082,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> rebootNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    Response<Void> rebootNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.rebootNodeWithResponse(poolId, nodeId, requestOptions);
     }
 
@@ -10108,7 +10108,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> startNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    Response<Void> startNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.startNodeWithResponse(poolId, nodeId, requestOptions);
     }
 
@@ -10153,7 +10153,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> reimageNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    Response<Void> reimageNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.reimageNodeWithResponse(poolId, nodeId, requestOptions);
     }
 
@@ -10196,7 +10196,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deallocateNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    Response<Void> deallocateNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.deallocateNodeWithResponse(poolId, nodeId, requestOptions);
     }
 
@@ -10993,7 +10993,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deletePool(String poolId) {
+    void deletePool(String poolId) {
         // Generated convenience method for deletePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
         deletePoolWithResponse(poolId, requestOptions).getValue();
@@ -11137,7 +11137,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopPoolResize(String poolId) {
+    void stopPoolResize(String poolId) {
         // Generated convenience method for stopPoolResizeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         stopPoolResizeWithResponse(poolId, requestOptions).getValue();
@@ -11222,7 +11222,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteJob(String jobId) {
+    void deleteJob(String jobId) {
         // Generated convenience method for deleteJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         deleteJobWithResponse(jobId, requestOptions).getValue();
@@ -11308,7 +11308,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enableJob(String jobId) {
+    void enableJob(String jobId) {
         // Generated convenience method for enableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         enableJobWithResponse(jobId, requestOptions).getValue();
@@ -11355,7 +11355,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void terminateJob(String jobId) {
+    void terminateJob(String jobId) {
         // Generated convenience method for terminateJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         terminateJobWithResponse(jobId, requestOptions).getValue();
@@ -11548,7 +11548,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteCertificate(String thumbprintAlgorithm, String thumbprint) {
+    void deleteCertificate(String thumbprintAlgorithm, String thumbprint) {
         // Generated convenience method for deleteCertificateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         deleteCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).getValue();
@@ -11676,7 +11676,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteJobSchedule(String jobScheduleId) {
+    void deleteJobSchedule(String jobScheduleId) {
         // Generated convenience method for deleteJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
         deleteJobScheduleWithResponse(jobScheduleId, requestOptions).getValue();
@@ -11788,7 +11788,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void terminateJobSchedule(String jobScheduleId) {
+    void terminateJobSchedule(String jobScheduleId) {
         // Generated convenience method for terminateJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
         terminateJobScheduleWithResponse(jobScheduleId, requestOptions).getValue();
@@ -12189,7 +12189,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void rebootNode(String poolId, String nodeId) {
+    void rebootNode(String poolId, String nodeId) {
         // Generated convenience method for rebootNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         rebootNodeWithResponse(poolId, nodeId, requestOptions).getValue();
@@ -12228,7 +12228,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startNode(String poolId, String nodeId) {
+    void startNode(String poolId, String nodeId) {
         // Generated convenience method for startNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         startNodeWithResponse(poolId, nodeId, requestOptions).getValue();
@@ -12269,7 +12269,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reimageNode(String poolId, String nodeId) {
+    void reimageNode(String poolId, String nodeId) {
         // Generated convenience method for reimageNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         reimageNodeWithResponse(poolId, nodeId, requestOptions).getValue();
@@ -12309,7 +12309,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deallocateNode(String poolId, String nodeId) {
+    void deallocateNode(String poolId, String nodeId) {
         // Generated convenience method for deallocateNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         deallocateNodeWithResponse(poolId, nodeId, requestOptions).getValue();
@@ -12756,7 +12756,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deletePool(String poolId, BatchPoolDeleteOptions options, RequestConditions requestConditions) {
+    void deletePool(String poolId, BatchPoolDeleteOptions options, RequestConditions requestConditions) {
         // Generated convenience method for deletePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -12893,7 +12893,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopPoolResize(String poolId, BatchPoolResizeStopOptions options, RequestConditions requestConditions) {
+    void stopPoolResize(String poolId, BatchPoolResizeStopOptions options, RequestConditions requestConditions) {
         // Generated convenience method for stopPoolResizeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -13034,7 +13034,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteJob(String jobId, BatchJobDeleteOptions options, RequestConditions requestConditions) {
+    void deleteJob(String jobId, BatchJobDeleteOptions options, RequestConditions requestConditions) {
         // Generated convenience method for deleteJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -13216,7 +13216,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enableJob(String jobId, BatchJobEnableOptions options, RequestConditions requestConditions) {
+    void enableJob(String jobId, BatchJobEnableOptions options, RequestConditions requestConditions) {
         // Generated convenience method for enableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -13290,7 +13290,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void terminateJob(String jobId, BatchJobTerminateOptions options, RequestConditions requestConditions) {
+    void terminateJob(String jobId, BatchJobTerminateOptions options, RequestConditions requestConditions) {
         // Generated convenience method for terminateJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -13640,8 +13640,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteCertificate(String thumbprintAlgorithm, String thumbprint,
-        BatchCertificateDeleteOptions options) {
+    void deleteCertificate(String thumbprintAlgorithm, String thumbprint, BatchCertificateDeleteOptions options) {
         // Generated convenience method for deleteCertificateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -13732,7 +13731,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteJobSchedule(String jobScheduleId, BatchJobScheduleDeleteOptions options,
+    void deleteJobSchedule(String jobScheduleId, BatchJobScheduleDeleteOptions options,
         RequestConditions requestConditions) {
         // Generated convenience method for deleteJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -13993,7 +13992,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void terminateJobSchedule(String jobScheduleId, BatchJobScheduleTerminateOptions options,
+    void terminateJobSchedule(String jobScheduleId, BatchJobScheduleTerminateOptions options,
         RequestConditions requestConditions) {
         // Generated convenience method for terminateJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -14646,7 +14645,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void rebootNode(String poolId, String nodeId, BatchNodeRebootOptions options) {
+    void rebootNode(String poolId, String nodeId, BatchNodeRebootOptions options) {
         // Generated convenience method for rebootNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -14696,7 +14695,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startNode(String poolId, String nodeId, BatchNodeStartOptions options) {
+    void startNode(String poolId, String nodeId, BatchNodeStartOptions options) {
         // Generated convenience method for startNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -14744,7 +14743,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reimageNode(String poolId, String nodeId, BatchNodeReimageOptions options) {
+    void reimageNode(String poolId, String nodeId, BatchNodeReimageOptions options) {
         // Generated convenience method for reimageNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -14795,7 +14794,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deallocateNode(String poolId, String nodeId, BatchNodeDeallocateOptions options) {
+    void deallocateNode(String poolId, String nodeId, BatchNodeDeallocateOptions options) {
         // Generated convenience method for deallocateNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
@@ -15261,7 +15260,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resizePool(String poolId, BatchPoolResizeParameters parameters, BatchPoolResizeOptions options,
+    void resizePool(String poolId, BatchPoolResizeParameters parameters, BatchPoolResizeOptions options,
         RequestConditions requestConditions) {
         // Generated convenience method for resizePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -15339,7 +15338,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resizePool(String poolId, BatchPoolResizeParameters parameters) {
+    void resizePool(String poolId, BatchPoolResizeParameters parameters) {
         // Generated convenience method for resizePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
         resizePoolWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
@@ -15436,7 +15435,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeNodes(String poolId, BatchNodeRemoveParameters parameters, BatchNodesRemoveOptions options,
+    void removeNodes(String poolId, BatchNodeRemoveParameters parameters, BatchNodesRemoveOptions options,
         RequestConditions requestConditions) {
         // Generated convenience method for removeNodesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -15506,7 +15505,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeNodes(String poolId, BatchNodeRemoveParameters parameters) {
+    void removeNodes(String poolId, BatchNodeRemoveParameters parameters) {
         // Generated convenience method for removeNodesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         removeNodesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
@@ -15623,7 +15622,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableJob(String jobId, BatchJobDisableParameters parameters, BatchJobDisableOptions options,
+    void disableJob(String jobId, BatchJobDisableParameters parameters, BatchJobDisableOptions options,
         RequestConditions requestConditions) {
         // Generated convenience method for disableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -15703,7 +15702,7 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableJob(String jobId, BatchJobDisableParameters parameters) {
+    void disableJob(String jobId, BatchJobDisableParameters parameters) {
         // Generated convenience method for disableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         disableJobWithResponse(jobId, BinaryData.fromObject(parameters), requestOptions).getValue();
