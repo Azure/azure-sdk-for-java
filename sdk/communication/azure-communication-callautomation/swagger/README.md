@@ -29,10 +29,10 @@ autorest README.md --java --v4
 ### Code generation settings
 
 ``` yaml
-tag: package-2024-09-01-preview
+tag: package-2025-05-15
 use: '@autorest/java@4.1.52'
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/1a08384511e96c42aaf18edd646baf01e5e5fc84/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/d87c0a3d1abbd1d1aa1b487d99e77769b6895ef4/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -158,11 +158,17 @@ directive:
     from: MediaStreamingOptions
     to: MediaStreamingOptionsInternal
 - rename-model:
+    from: WebSocketMediaStreamingOptions
+    to: WebSocketMediaStreamingOptionsInternal
+- rename-model:
     from: MediaStreamingSubscription
     to: MediaStreamingSubscriptionInternal
 - rename-model:
     from: TranscriptionSubscription
     to: TranscriptionSubscriptionInternal
+- rename-model:
+    from: WebSocketTranscriptionOptions
+    to: WebSocketTranscriptionOptionsInternal
 - rename-model:
     from: DtmfOptions
     to: DtmfOptionsInternal
@@ -220,12 +226,6 @@ directive:
 - rename-model:
     from: RecordingStorageKind
     to: RecordingStorageType
-- rename-model:
-    from: CallSessionEndReason
-    to: CallSessionEndReasonInternal
-- rename-model:
-    from: RecordingStorageInfo
-    to: RecordingStorageInfoInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -284,7 +284,6 @@ directive:
 - remove-model: PlayPaused
 - remove-model: PlayResumed
 - remove-model: IncomingCall
-- remove-model: CallSessionEndReason
 
 ```
 
@@ -418,24 +417,14 @@ directive:
     $.name = "MediaStreamingContentTypeInternal";
 ```
 
-### Rename MediaStreamingTransportType to MediaStreamingTransportTypeInternal
+### Rename StreamingTransportType to StreamingTransportTypeInternal
 
 ``` yaml
 directive:
 - from: swagger-document
-  where: $.definitions.MediaStreamingTransportType["x-ms-enum"]
+  where: $.definitions.StreamingTransportType["x-ms-enum"]
   transform: >
-    $.name = "MediaStreamingTransportTypeInternal";
-```
-
-### Rename TranscriptionTransportType to TranscriptionTransportTypeInternal
-
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.TranscriptionTransportType["x-ms-enum"]
-  transform: >
-    $.name = "TranscriptionTransportTypeInternal";
+    $.name = "StreamingTransportTypeInternal";
 ```
 
 ### Rename RecognitionType to RecognitionTypeInternal

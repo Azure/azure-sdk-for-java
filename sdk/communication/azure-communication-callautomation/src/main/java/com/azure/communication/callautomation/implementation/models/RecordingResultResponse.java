@@ -4,9 +4,7 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,49 +21,41 @@ public final class RecordingResultResponse implements JsonSerializable<Recording
     /*
      * The recordingId property.
      */
-    @Generated
     private String recordingId;
 
     /*
      * Container for chunks
      */
-    @Generated
-    private RecordingStorageInfoInternal recordingStorageInfo;
+    private RecordingStorageInfo recordingStorageInfo;
 
     /*
      * The errors property.
      */
-    @Generated
     private List<Error> errors;
 
     /*
      * The recordingStartTime property.
      */
-    @Generated
     private OffsetDateTime recordingStartTime;
 
     /*
      * The recordingDurationMs property.
      */
-    @Generated
     private Long recordingDurationMs;
 
     /*
      * The sessionEndReason property.
      */
-    @Generated
     private CallSessionEndReason sessionEndReason;
 
     /*
      * The recordingExpirationTime property.
      */
-    @Generated
     private OffsetDateTime recordingExpirationTime;
 
     /**
      * Creates an instance of RecordingResultResponse class.
      */
-    @Generated
     public RecordingResultResponse() {
     }
 
@@ -74,7 +64,6 @@ public final class RecordingResultResponse implements JsonSerializable<Recording
      * 
      * @return the recordingId value.
      */
-    @Generated
     public String getRecordingId() {
         return this.recordingId;
     }
@@ -84,8 +73,7 @@ public final class RecordingResultResponse implements JsonSerializable<Recording
      * 
      * @return the recordingStorageInfo value.
      */
-    @Generated
-    public RecordingStorageInfoInternal getRecordingStorageInfo() {
+    public RecordingStorageInfo getRecordingStorageInfo() {
         return this.recordingStorageInfo;
     }
 
@@ -94,7 +82,6 @@ public final class RecordingResultResponse implements JsonSerializable<Recording
      * 
      * @return the errors value.
      */
-    @Generated
     public List<Error> getErrors() {
         return this.errors;
     }
@@ -104,7 +91,6 @@ public final class RecordingResultResponse implements JsonSerializable<Recording
      * 
      * @return the recordingStartTime value.
      */
-    @Generated
     public OffsetDateTime getRecordingStartTime() {
         return this.recordingStartTime;
     }
@@ -114,7 +100,6 @@ public final class RecordingResultResponse implements JsonSerializable<Recording
      * 
      * @return the recordingDurationMs value.
      */
-    @Generated
     public Long getRecordingDurationMs() {
         return this.recordingDurationMs;
     }
@@ -124,7 +109,6 @@ public final class RecordingResultResponse implements JsonSerializable<Recording
      * 
      * @return the sessionEndReason value.
      */
-    @Generated
     public CallSessionEndReason getSessionEndReason() {
         return this.sessionEndReason;
     }
@@ -134,7 +118,6 @@ public final class RecordingResultResponse implements JsonSerializable<Recording
      * 
      * @return the recordingExpirationTime value.
      */
-    @Generated
     public OffsetDateTime getRecordingExpirationTime() {
         return this.recordingExpirationTime;
     }
@@ -142,7 +125,6 @@ public final class RecordingResultResponse implements JsonSerializable<Recording
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -157,7 +139,6 @@ public final class RecordingResultResponse implements JsonSerializable<Recording
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RecordingResultResponse.
      */
-    @Generated
     public static RecordingResultResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RecordingResultResponse deserializedRecordingResultResponse = new RecordingResultResponse();
@@ -168,22 +149,21 @@ public final class RecordingResultResponse implements JsonSerializable<Recording
                 if ("recordingId".equals(fieldName)) {
                     deserializedRecordingResultResponse.recordingId = reader.getString();
                 } else if ("recordingStorageInfo".equals(fieldName)) {
-                    deserializedRecordingResultResponse.recordingStorageInfo
-                        = RecordingStorageInfoInternal.fromJson(reader);
+                    deserializedRecordingResultResponse.recordingStorageInfo = RecordingStorageInfo.fromJson(reader);
                 } else if ("errors".equals(fieldName)) {
                     List<Error> errors = reader.readArray(reader1 -> Error.fromJson(reader1));
                     deserializedRecordingResultResponse.errors = errors;
                 } else if ("recordingStartTime".equals(fieldName)) {
-                    deserializedRecordingResultResponse.recordingStartTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedRecordingResultResponse.recordingStartTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("recordingDurationMs".equals(fieldName)) {
                     deserializedRecordingResultResponse.recordingDurationMs = reader.getNullable(JsonReader::getLong);
                 } else if ("sessionEndReason".equals(fieldName)) {
                     deserializedRecordingResultResponse.sessionEndReason
                         = CallSessionEndReason.fromString(reader.getString());
                 } else if ("recordingExpirationTime".equals(fieldName)) {
-                    deserializedRecordingResultResponse.recordingExpirationTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedRecordingResultResponse.recordingExpirationTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
