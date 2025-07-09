@@ -277,7 +277,6 @@ process.on("SIGINT", async () => {
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("Java SDK Tools MCP server running on stdio");
 }
 
 main().catch(console.error);
