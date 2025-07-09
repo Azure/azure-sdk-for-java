@@ -1,5 +1,7 @@
 import { CallToolResult } from "@modelcontextprotocol/sdk/types";
 import { findAzureSdkRoot, spawnAsync } from "./utils/index.js";
+import * as fs from "fs";
+import * as path from "path";
 
 export async function initJavaSdk(
   localTspConfigPath?: string,
@@ -8,6 +10,19 @@ export async function initJavaSdk(
   try {
     let rootDirectory: string = await findAzureSdkRoot(process.cwd());
     process.chdir(rootDirectory);
+
+    // Check if this is an existing project by looking for tsp-location.yaml in current directory
+    const currentTspLocation = path.join(process.cwd(), "tsp-location.yaml");
+    if (fs.existsSync(currentTspLocation)) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `⚠️  Warning: Found existing tsp-location.yaml in ${process.cwd()}.\n\nThis appears to be an existing project. Consider using 'update_java_sdk' instead of 'sync_java_sdk' to update an existing project.\n\nIf you want to initialize a new project, please run this command from a directory that doesn't contain tsp-location.yaml.`,
+          },
+        ],
+      };
+    }
 
     // Run the Java SDK generation command
     let generateResult;

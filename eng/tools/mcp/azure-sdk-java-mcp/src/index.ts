@@ -7,11 +7,13 @@ import { generateJavaSdk } from "./generate-java-sdk.js";
 import { clientNameUpdateCookbook } from "./client-name-update.js";
 import { brownfieldMigration } from "./brownfield-migrate.js";
 import { initJavaSdk } from "./init-java-sdk.js";
+import { updateJavaSdk } from "./update-java-sdk.js";
 import { prepareJavaSdkEnvironmentCookbook } from "./prepare-environment.js";
 import { buildJavaSdk } from "./build-java-sdk.js";
 import { getJavaSdkChangelog } from "./java-sdk-changelog.js";
 import { cleanJavaSource } from "./clean-java-source.js";
 import { updateChangelogMd } from "./update-changelog-md.js";
+import { detectProjectType } from "./detect-project-type.js";
 
 // Create the MCP server
 const server = new McpServer({
@@ -25,6 +27,29 @@ const logToolCall = (toolName: string) => {
   process.stderr.write(logMsg);
 };
 
+
+// Tool: detect_project_type
+server.registerTool(
+    "detect_project_type",
+    {
+        description:
+            "Analyze a project directory to determine if it's a new project, existing TypeSpec project, or existing Maven project, and provide recommendations on which tools to use.",
+        inputSchema: {
+            projectPath: z
+                .string()
+                .describe(
+                    "The absolute path to the project directory to analyze. Example: C:\\workspace\\azure-sdk-for-java\\sdk\\communication\\azure-communication-messages"
+                ),
+        },
+        annotations: {
+            title: "Detect Project Type",
+        },
+    },
+    async (args) => {
+        logToolCall("detect_project_type");
+        return await detectProjectType(args.projectPath);
+    },
+);
 
 // Tool: clean_java_source
 server.registerTool(
@@ -165,7 +190,7 @@ server.registerTool(
     "sync_java_sdk",
     {
         description:
-            "Synchronize or download the TypeSpec source for a target service to enable Java SDK generation. Accepts either a local absolute path to tspconfig.yaml or a remote URL (with commit id, not branch name).",
+            "Initialize a new Java SDK project by synchronizing or downloading TypeSpec source for a target service. Use this for NEW projects only. For existing projects with tsp-location.yaml, use 'update_java_sdk' instead. Accepts either a local absolute path to tspconfig.yaml or a remote URL (with commit id, not branch name).",
         inputSchema: {
             localTspConfigPath: z
                 .string()
@@ -236,6 +261,53 @@ server.registerTool(
         logToolCall("update_client_name");
     const result = await clientNameUpdateCookbook();
         return result;
+    },
+);
+
+// Tool: update_java_sdk
+server.registerTool(
+    "update_java_sdk",
+    {
+        description:
+            "Update an existing Java SDK project with local or remote TypeSpec changes. This command is used to update an existing client library that already has a tsp-location.yaml file.",
+        inputSchema: {
+            packagePath: z
+                .string()
+                .describe(
+                    "The absolute path to the directory containing tsp-location.yaml. Example: C:\\workspace\\azure-sdk-for-java\\sdk\\communication\\azure-communication-messages"
+                ),
+            commitHash: z
+                .string()
+                .optional()
+                .describe("Optional. The commit hash to update to."),
+            repo: z
+                .string()
+                .optional()
+                .describe("Optional. Repository where the project is defined."),
+            tspConfig: z
+                .string()
+                .optional()
+                .describe("Optional. Path to tspconfig.yaml."),
+            localSpec: z
+                .string()
+                .optional()
+                .describe(
+                    "Optional. Path to the local TypeSpec project directory (e.g., ../azure-rest-api-specs/specification/eventgrid/Azure.Messaging.EventGrid/)."
+                ),
+        },
+        annotations: {
+            title: "Update Java SDK",
+        },
+    },
+    async (args) => {
+        logToolCall("update_java_sdk");
+        return await updateJavaSdk(
+            args.packagePath,
+            args.commitHash,
+            args.repo,
+            args.tspConfig,
+            args.localSpec,
+        );
     },
 );
 
