@@ -74,12 +74,20 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
         ctx.channel().eventLoop().execute(() -> cleanup(ctx, true));
     }
 
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
+        if (evt instanceof Netty4PipelineCleanupEvent) {
+            cleanup(ctx, false);
+            return;
+        }
+        ctx.fireUserEventTriggered(evt);
+    }
+
     public void cleanup(ChannelHandlerContext ctx, boolean closeChannel) {
         if (!cleanedUp.compareAndSet(false, true)) {
             return;
         }
 
-        // TODO: use userTriggeredEvent
         // Always reset autoRead to false before returning a channel to the pool
         // to ensure predictable behavior for the next request.
         ctx.channel().config().setAutoRead(false);

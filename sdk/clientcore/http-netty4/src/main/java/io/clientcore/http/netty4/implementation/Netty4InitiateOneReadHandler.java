@@ -105,7 +105,6 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         this.exception = cause;
-        performCleanup(ctx);
         latch.countDown();
         ctx.fireExceptionCaught(cause);
     }
@@ -117,14 +116,12 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
     // TODO (alzimmer): Are the latch countdowns needed for unregistering and inactivity?
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
-        performCleanup(ctx);
         latch.countDown();
         ctx.fireChannelUnregistered();
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        performCleanup(ctx);
         latch.countDown();
         ctx.fireChannelInactive();
     }
@@ -139,14 +136,4 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
         }
     }
 
-    private void performCleanup(ChannelHandlerContext ctx) {
-        if (latch.getCount() == 0) {
-            return;
-        }
-
-        Netty4PipelineCleanupHandler cleanupHandler = ctx.pipeline().get(Netty4PipelineCleanupHandler.class);
-        if (cleanupHandler != null) {
-            cleanupHandler.cleanup(ctx, true);
-        }
-    }
 }

@@ -23,6 +23,7 @@ import io.clientcore.http.netty4.implementation.Netty4AlpnHandler;
 import io.clientcore.http.netty4.implementation.Netty4ChannelBinaryData;
 import io.clientcore.http.netty4.implementation.Netty4ConnectionPool;
 import io.clientcore.http.netty4.implementation.Netty4ConnectionPoolKey;
+import io.clientcore.http.netty4.implementation.Netty4PipelineCleanupEvent;
 import io.clientcore.http.netty4.implementation.Netty4PipelineCleanupHandler;
 import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
 import io.clientcore.http.netty4.implementation.Netty4ResponseHandler;
@@ -399,11 +400,7 @@ class NettyHttpClient implements HttpClient {
 
         final Runnable cleanupTask = () -> {
             if (connectionPool != null) {
-                Netty4PipelineCleanupHandler cleanupHandler
-                    = channelToCleanup.pipeline().get(Netty4PipelineCleanupHandler.class);
-                if (cleanupHandler != null) {
-                    cleanupHandler.cleanup(channelToCleanup.pipeline().context(cleanupHandler), false);
-                }
+                channelToCleanup.pipeline().fireUserEventTriggered(Netty4PipelineCleanupEvent.CLEANUP_PIPELINE);
             } else {
                 channelToCleanup.close();
             }
