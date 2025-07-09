@@ -10,6 +10,7 @@ public interface HttpTransportSerializer {
     HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception;
 
     StoreResponse unwrapToStoreResponse(
+        String endpoint,
         RxDocumentServiceRequest request,
         int statusCode,
         HttpHeaders headers,

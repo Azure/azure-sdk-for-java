@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,25 +19,21 @@ public final class DialogStateResponse implements JsonSerializable<DialogStateRe
     /*
      * The dialog ID.
      */
-    @Generated
     private String dialogId;
 
     /*
      * Defines dialog.
      */
-    @Generated
     private BaseDialog dialog;
 
     /*
      * The value to identify context of the operation.
      */
-    @Generated
     private String operationContext;
 
     /**
      * Creates an instance of DialogStateResponse class.
      */
-    @Generated
     public DialogStateResponse() {
     }
 
@@ -47,7 +42,6 @@ public final class DialogStateResponse implements JsonSerializable<DialogStateRe
      * 
      * @return the dialogId value.
      */
-    @Generated
     public String getDialogId() {
         return this.dialogId;
     }
@@ -58,7 +52,6 @@ public final class DialogStateResponse implements JsonSerializable<DialogStateRe
      * @param dialogId the dialogId value to set.
      * @return the DialogStateResponse object itself.
      */
-    @Generated
     public DialogStateResponse setDialogId(String dialogId) {
         this.dialogId = dialogId;
         return this;
@@ -69,7 +62,6 @@ public final class DialogStateResponse implements JsonSerializable<DialogStateRe
      * 
      * @return the dialog value.
      */
-    @Generated
     public BaseDialog getDialog() {
         return this.dialog;
     }
@@ -80,7 +72,6 @@ public final class DialogStateResponse implements JsonSerializable<DialogStateRe
      * @param dialog the dialog value to set.
      * @return the DialogStateResponse object itself.
      */
-    @Generated
     public DialogStateResponse setDialog(BaseDialog dialog) {
         this.dialog = dialog;
         return this;
@@ -91,7 +82,6 @@ public final class DialogStateResponse implements JsonSerializable<DialogStateRe
      * 
      * @return the operationContext value.
      */
-    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -102,7 +92,6 @@ public final class DialogStateResponse implements JsonSerializable<DialogStateRe
      * @param operationContext the operationContext value to set.
      * @return the DialogStateResponse object itself.
      */
-    @Generated
     public DialogStateResponse setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -111,7 +100,6 @@ public final class DialogStateResponse implements JsonSerializable<DialogStateRe
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -129,7 +117,6 @@ public final class DialogStateResponse implements JsonSerializable<DialogStateRe
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DialogStateResponse.
      */
-    @Generated
     public static DialogStateResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DialogStateResponse deserializedDialogStateResponse = new DialogStateResponse();

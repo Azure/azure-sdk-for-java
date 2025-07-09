@@ -19,8 +19,6 @@ import java.nio.file.Path;
 import java.security.InvalidParameterException;
 import java.util.Objects;
 
-import com.azure.communication.callautomation.models.RecordingResult;
-
 /**
  * CallRecording.
  */
@@ -163,33 +161,6 @@ public final class CallRecording {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecordingStateResult> getStateWithResponse(String recordingId, Context context) {
         return callRecordingAsync.getStateWithResponseInternal(recordingId, context).block();
-    }
-
-    /**
-    * Get the recording result by recording id.
-    *
-    * @param recordingId The recording id to stop.
-    * @throws HttpResponseException thrown if the request is rejected by server.
-    * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-    * @return Response for a successful get recording state request.
-    */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingResult getRecordingResult(String recordingId) {
-        return callRecordingAsync.getRecordingResult(recordingId).block();
-    }
-
-    /**
-     * Get the recording result by recording id.
-     *
-     * @param recordingId The recording id to stop.
-     * @param context A {@link Context} representing the request context.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful get recording state request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordingResult> getRecordingResult(String recordingId, Context context) {
-        return callRecordingAsync.getRecordingResultResponseInternal(recordingId, context).block();
     }
 
     /**
