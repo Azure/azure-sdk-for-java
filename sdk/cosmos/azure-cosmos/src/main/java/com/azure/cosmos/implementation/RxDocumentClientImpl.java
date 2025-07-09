@@ -846,7 +846,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             @Override
             public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
-                logger.info("Getting database account endpoint from {}", endpoint);
+                logger.info("Getting database account endpoint from {} - useThinClient: {}", endpoint, useThinClient());
                 return RxDocumentClientImpl.this.getDatabaseAccountFromEndpoint(endpoint);
             }
 
@@ -7803,10 +7803,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
-        return useThinClient()
-            && this.globalEndpointManager.hasThinClientReadLocations()
-            && ((request.getResourceType() == ResourceType.Document &&
-                (request.getOperationType().isPointOperation() || request.getOperationType() == OperationType.Query)));
+        if (!useThinClient()
+            || !this.globalEndpointManager.hasThinClientReadLocations()
+            || request.getResourceType() != ResourceType.Document) {
+            return false;
+        }
+
+        OperationType operationType = request.getOperationType();
+
+        return operationType.isPointOperation()
+                    || operationType == OperationType.Query
+                    || operationType == OperationType.Batch;
     }
 
     private DocumentClientRetryPolicy getRetryPolicyForPointOperation(
