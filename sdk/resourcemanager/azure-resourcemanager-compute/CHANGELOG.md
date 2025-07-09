@@ -2,6 +2,11 @@
 
 ## 2.53.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- `STANDARD_SSD_LRS` is now moved to `EdgeZoneStorageAccountType` from `StorageAccountType`.
+- Changed return type from `String` to `DiskControllerTypes` of `diskControllerType` method in `VirtualMachineScaleSetStorageProfile` class.
+
 ### Other Changes
 
 #### Dependency Updates
