@@ -201,11 +201,10 @@ public class WebSocketsProxyConnectionHandlerTest {
         final Proxy newProxy = new Proxy(Proxy.Type.HTTP, address);
         final ProxyOptions proxyOptions = new ProxyOptions(ProxyAuthenticationType.BASIC, newProxy, USERNAME, PASSWORD);
 
-        this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions, proxyOptions, peerDetails,
-            AmqpMetricsProvider.noop());
-
         // Act and Assert
         try (MockedConstruction<ProxyImpl> mockConstruction = mockConstruction(ProxyImpl.class)) {
+            this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions, proxyOptions,
+                peerDetails, AmqpMetricsProvider.noop());
             this.handler.addTransportLayers(mock(Event.class, Mockito.CALLS_REAL_METHODS),
                 mock(TransportImpl.class, Mockito.CALLS_REAL_METHODS));
 
@@ -236,11 +235,10 @@ public class WebSocketsProxyConnectionHandlerTest {
                 AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler,
                 CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION, customEndpointHostname, customEndpointPort, true);
 
-        this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptionsWithCustomEndpoint,
-            proxyOptions, peerDetails, AmqpMetricsProvider.noop());
-
         // Act and Assert
         try (MockedConstruction<ProxyImpl> mockConstruction = mockConstruction(ProxyImpl.class)) {
+            this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptionsWithCustomEndpoint,
+                proxyOptions, peerDetails, AmqpMetricsProvider.noop());
             this.handler.addTransportLayers(mock(Event.class, Mockito.CALLS_REAL_METHODS),
                 mock(TransportImpl.class, Mockito.CALLS_REAL_METHODS));
 

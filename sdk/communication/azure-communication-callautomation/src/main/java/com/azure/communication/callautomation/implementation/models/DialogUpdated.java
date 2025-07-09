@@ -5,7 +5,6 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,55 +19,46 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
     /*
      * Determines the type of the dialog.
      */
-    @Generated
     private DialogInputType dialogInputType;
 
     /*
      * Dialog ID
      */
-    @Generated
     private String dialogId;
 
     /*
      * IVR context
      */
-    @Generated
     private Object ivrContext;
 
     /*
      * Call connection ID.
      */
-    @Generated
     private String callConnectionId;
 
     /*
      * Server call ID.
      */
-    @Generated
     private String serverCallId;
 
     /*
      * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
      */
-    @Generated
     private String correlationId;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
-    @Generated
     private String operationContext;
 
     /*
      * Contains the resulting SIP code, sub-code and message.
      */
-    @Generated
     private ResultInformation resultInformation;
 
     /**
      * Creates an instance of DialogUpdated class.
      */
-    @Generated
     public DialogUpdated() {
     }
 
@@ -77,7 +67,6 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
      * 
      * @return the dialogInputType value.
      */
-    @Generated
     public DialogInputType getDialogInputType() {
         return this.dialogInputType;
     }
@@ -88,7 +77,6 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
      * @param dialogInputType the dialogInputType value to set.
      * @return the DialogUpdated object itself.
      */
-    @Generated
     public DialogUpdated setDialogInputType(DialogInputType dialogInputType) {
         this.dialogInputType = dialogInputType;
         return this;
@@ -99,7 +87,6 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
      * 
      * @return the dialogId value.
      */
-    @Generated
     public String getDialogId() {
         return this.dialogId;
     }
@@ -109,7 +96,6 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
      * 
      * @return the ivrContext value.
      */
-    @Generated
     public Object getIvrContext() {
         return this.ivrContext;
     }
@@ -119,7 +105,6 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
      * 
      * @return the callConnectionId value.
      */
-    @Generated
     public String getCallConnectionId() {
         return this.callConnectionId;
     }
@@ -130,7 +115,6 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
      * @param callConnectionId the callConnectionId value to set.
      * @return the DialogUpdated object itself.
      */
-    @Generated
     public DialogUpdated setCallConnectionId(String callConnectionId) {
         this.callConnectionId = callConnectionId;
         return this;
@@ -141,7 +125,6 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
      * 
      * @return the serverCallId value.
      */
-    @Generated
     public String getServerCallId() {
         return this.serverCallId;
     }
@@ -152,7 +135,6 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
      * @param serverCallId the serverCallId value to set.
      * @return the DialogUpdated object itself.
      */
-    @Generated
     public DialogUpdated setServerCallId(String serverCallId) {
         this.serverCallId = serverCallId;
         return this;
@@ -164,7 +146,6 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
      * 
      * @return the correlationId value.
      */
-    @Generated
     public String getCorrelationId() {
         return this.correlationId;
     }
@@ -176,7 +157,6 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
      * @param correlationId the correlationId value to set.
      * @return the DialogUpdated object itself.
      */
-    @Generated
     public DialogUpdated setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
@@ -188,7 +168,6 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
      * 
      * @return the operationContext value.
      */
-    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -200,7 +179,6 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
      * @param operationContext the operationContext value to set.
      * @return the DialogUpdated object itself.
      */
-    @Generated
     public DialogUpdated setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -211,7 +189,6 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
      * 
      * @return the resultInformation value.
      */
-    @Generated
     public ResultInformation getResultInformation() {
         return this.resultInformation;
     }
@@ -222,7 +199,6 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
      * @param resultInformation the resultInformation value to set.
      * @return the DialogUpdated object itself.
      */
-    @Generated
     public DialogUpdated setResultInformation(ResultInformation resultInformation) {
         this.resultInformation = resultInformation;
         return this;
@@ -231,7 +207,6 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -253,7 +228,6 @@ public final class DialogUpdated implements JsonSerializable<DialogUpdated> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DialogUpdated.
      */
-    @Generated
     public static DialogUpdated fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DialogUpdated deserializedDialogUpdated = new DialogUpdated();
