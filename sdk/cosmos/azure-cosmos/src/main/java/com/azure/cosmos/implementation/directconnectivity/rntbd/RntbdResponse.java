@@ -347,7 +347,7 @@ public final class RntbdResponse implements ReferenceCounted {
         return new RntbdResponse(in.readSlice(end - start), frame, headers, content);
     }
 
-    StoreResponse toStoreResponse(final String serverVersion) {
+    StoreResponse toStoreResponse(final String serverVersion, final String endpoint) {
 
         checkNotNull(serverVersion, "Argument 'serverVersion' must not be null.");
 
@@ -355,6 +355,7 @@ public final class RntbdResponse implements ReferenceCounted {
 
         if (length == 0) {
             return new StoreResponse(
+                endpoint,
                 this.getStatus().code(),
                 this.headers.asMap(serverVersion, this.getActivityId()),
                 null,
@@ -362,6 +363,7 @@ public final class RntbdResponse implements ReferenceCounted {
         }
 
         return new StoreResponse(
+            endpoint,
             this.getStatus().code(),
             this.headers.asMap(serverVersion, this.getActivityId()),
             new ByteBufInputStream(this.content.retain(), true),
