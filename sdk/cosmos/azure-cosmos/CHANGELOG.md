@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.72.0-beta.1 (Unreleased)
+### 4.73.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -10,11 +10,18 @@
 
 #### Other Changes
 
+### 4.72.0 (2025-06-24)
+
+#### Features Added
+* Added `azure.cosmosdb.operation.request_charge` and `azure.cosmosdb.response.sub_status_code` trace attributes. - [PR 45753](https://github.com/Azure/azure-sdk-for-java/pull/45753) and [PR 45826](https://github.com/Azure/azure-sdk-for-java/pull/45826)
+
+#### Bugs Fixed
+* Fixed an issue returning incorrect `ReadConsistencyStrategy` in `CosmosDiagnosticsContext.getEffectiveReadConsistencyStrategy()` for change feed operations in some cases - [PR 45645](https://github.com/Azure/azure-sdk-for-java/pull/45645)
+
 ### 4.71.0 (2025-06-04)
 
 #### Features Added
 * Added `GetEffectiveReadConsistencyLevel` method on the `CosmosDiagnosticsContext`. - [PR 45414](https://github.com/Azure/azure-sdk-for-java/pull/45414)
-* Added Weighted RRF for Hybrid and Full Text Search queries - [PR 45328](https://github.com/Azure/azure-sdk-for-java/pull/45328)
 
 #### Bugs Fixed
 * Fixed an issue ignoring client-level diagnostic thresholds for point read operations in some cases - [PR 45488](https://github.com/Azure/azure-sdk-for-java/pull/45488)
@@ -46,7 +53,7 @@
 ### 4.69.0 (2025-05-14)
 
 #### Features Added
-* Added Beta public API to enable http2. - See [PR 43123](https://github.com/Azure/azure-sdk-for-java/pull/43123)
+* Added Beta public API to enable http2. - See [PR 45294](https://github.com/Azure/azure-sdk-for-java/pull/45294)
 * Added API to allow customers to wrap/extend `CosmosAsyncContainer` - [PR 43724](https://github.com/Azure/azure-sdk-for-java/pull/43724) and [PR 45087](https://github.com/Azure/azure-sdk-for-java/pull/45087) 
 * Added Per-Partition Automatic Failover which enables failover for writes at per-partition level for Single-Write Multi-Region accounts. - [PR 44099](https://github.com/Azure/azure-sdk-for-java/pull/44099)
 * Added Beta public API to allow defining the consistency behavior for read / query / change feed operations independent of the chosen account-level consistency level. **NOTE: This API is still in preview mode and can only be used when using DIRECT connection mode.** - See [PR 45161](https://github.com/Azure/azure-sdk-for-java/pull/45161)

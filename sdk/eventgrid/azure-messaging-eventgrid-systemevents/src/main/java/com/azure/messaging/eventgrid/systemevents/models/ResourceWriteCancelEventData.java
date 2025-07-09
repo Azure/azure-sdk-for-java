@@ -47,7 +47,7 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
      * The URI of the resource in the operation.
      */
     @Generated
-    private String resourceUri;
+    private String resourceUrl;
 
     /*
      * The operation that was performed.
@@ -141,13 +141,13 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
     }
 
     /**
-     * Get the resourceUri property: The URI of the resource in the operation.
+     * Get the resourceUrl property: The URI of the resource in the operation.
      *
-     * @return the resourceUri value.
+     * @return the resourceUrl value.
      */
     @Generated
-    public String getResourceUri() {
-        return this.resourceUri;
+    public String getResourceUrl() {
+        return this.resourceUrl;
     }
 
     /**
@@ -224,7 +224,7 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
         jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
         jsonWriter.writeStringField("resourceGroup", this.resourceGroup);
         jsonWriter.writeStringField("resourceProvider", this.resourceProvider);
-        jsonWriter.writeStringField("resourceUri", this.resourceUri);
+        jsonWriter.writeStringField("resourceUri", this.resourceUrl);
         jsonWriter.writeStringField("operationName", this.operationName);
         jsonWriter.writeStringField("status", this.status);
         jsonWriter.writeStringField("correlationId", this.correlationId);
@@ -250,7 +250,7 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
             String subscriptionId = null;
             String resourceGroup = null;
             String resourceProvider = null;
-            String resourceUri = null;
+            String resourceUrl = null;
             String operationName = null;
             String status = null;
             String correlationId = null;
@@ -272,7 +272,7 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
                 } else if ("resourceProvider".equals(fieldName)) {
                     resourceProvider = reader.getString();
                 } else if ("resourceUri".equals(fieldName)) {
-                    resourceUri = reader.getString();
+                    resourceUrl = reader.getString();
                 } else if ("operationName".equals(fieldName)) {
                     operationName = reader.getString();
                 } else if ("status".equals(fieldName)) {
@@ -289,7 +289,7 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
             deserializedResourceWriteCancelEventData.subscriptionId = subscriptionId;
             deserializedResourceWriteCancelEventData.resourceGroup = resourceGroup;
             deserializedResourceWriteCancelEventData.resourceProvider = resourceProvider;
-            deserializedResourceWriteCancelEventData.resourceUri = resourceUri;
+            deserializedResourceWriteCancelEventData.resourceUrl = resourceUrl;
             deserializedResourceWriteCancelEventData.operationName = operationName;
             deserializedResourceWriteCancelEventData.status = status;
             deserializedResourceWriteCancelEventData.correlationId = correlationId;

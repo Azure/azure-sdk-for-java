@@ -217,6 +217,6 @@ public final class MachineExtensionImpl
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

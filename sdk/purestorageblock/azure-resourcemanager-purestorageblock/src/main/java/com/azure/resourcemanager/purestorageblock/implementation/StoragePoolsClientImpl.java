@@ -78,7 +78,7 @@ public final class StoragePoolsClientImpl implements StoragePoolsClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PureStorageBlockMgmt")
+    @ServiceInterface(name = "PureStorageBlockMgmtClientStoragePools")
     public interface StoragePoolsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}")

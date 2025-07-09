@@ -66,7 +66,7 @@ public final class QueuesImpl {
      * REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureQueueStorageQue")
+    @ServiceInterface(name = "AzureQueueStorageQueues")
     public interface QueuesService {
 
         @Put("/{queueName}")

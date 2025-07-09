@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class WebAuthenticationType extends ExpandableStringEnum<WebAuthent
     /**
      * Static value Basic for WebAuthenticationType.
      */
+    @Generated
     public static final WebAuthenticationType BASIC = fromString("Basic");
 
     /**
      * Static value Anonymous for WebAuthenticationType.
      */
+    @Generated
     public static final WebAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /**
      * Static value ClientCertificate for WebAuthenticationType.
      */
+    @Generated
     public static final WebAuthenticationType CLIENT_CERTIFICATE = fromString("ClientCertificate");
 
     /**
@@ -31,6 +35,7 @@ public final class WebAuthenticationType extends ExpandableStringEnum<WebAuthent
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public WebAuthenticationType() {
     }
@@ -41,6 +46,7 @@ public final class WebAuthenticationType extends ExpandableStringEnum<WebAuthent
      * @param name a name to look for.
      * @return the corresponding WebAuthenticationType.
      */
+    @Generated
     public static WebAuthenticationType fromString(String name) {
         return fromString(name, WebAuthenticationType.class);
     }
@@ -50,6 +56,7 @@ public final class WebAuthenticationType extends ExpandableStringEnum<WebAuthent
      * 
      * @return known WebAuthenticationType values.
      */
+    @Generated
     public static Collection<WebAuthenticationType> values() {
         return values(WebAuthenticationType.class);
     }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,33 +22,39 @@ public class ScriptActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "Script";
 
     /*
      * ScriptBlock execution timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
+    @Generated
     private Object scriptBlockExecutionTimeout;
 
     /*
      * Array of script blocks. Type: array.
      */
+    @Generated
     private List<ScriptActivityScriptBlock> scripts;
 
     /*
      * Log settings of script activity.
      */
+    @Generated
     private ScriptActivityTypePropertiesLogSettings logSettings;
 
     /*
      * Enable to retrieve result sets from multiple SQL statements and the number of rows affected by the DML statement.
      * Supported connector: SnowflakeV2. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object returnMultistatementResult;
 
     /**
      * Creates an instance of ScriptActivity class.
      */
+    @Generated
     public ScriptActivity() {
     }
 
@@ -56,6 +63,7 @@ public class ScriptActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -67,6 +75,7 @@ public class ScriptActivity extends ExecutionActivity {
      * 
      * @return the scriptBlockExecutionTimeout value.
      */
+    @Generated
     public Object getScriptBlockExecutionTimeout() {
         return this.scriptBlockExecutionTimeout;
     }
@@ -78,6 +87,7 @@ public class ScriptActivity extends ExecutionActivity {
      * @param scriptBlockExecutionTimeout the scriptBlockExecutionTimeout value to set.
      * @return the ScriptActivity object itself.
      */
+    @Generated
     public ScriptActivity setScriptBlockExecutionTimeout(Object scriptBlockExecutionTimeout) {
         this.scriptBlockExecutionTimeout = scriptBlockExecutionTimeout;
         return this;
@@ -88,6 +98,7 @@ public class ScriptActivity extends ExecutionActivity {
      * 
      * @return the scripts value.
      */
+    @Generated
     public List<ScriptActivityScriptBlock> getScripts() {
         return this.scripts;
     }
@@ -98,6 +109,7 @@ public class ScriptActivity extends ExecutionActivity {
      * @param scripts the scripts value to set.
      * @return the ScriptActivity object itself.
      */
+    @Generated
     public ScriptActivity setScripts(List<ScriptActivityScriptBlock> scripts) {
         this.scripts = scripts;
         return this;
@@ -108,6 +120,7 @@ public class ScriptActivity extends ExecutionActivity {
      * 
      * @return the logSettings value.
      */
+    @Generated
     public ScriptActivityTypePropertiesLogSettings getLogSettings() {
         return this.logSettings;
     }
@@ -118,6 +131,7 @@ public class ScriptActivity extends ExecutionActivity {
      * @param logSettings the logSettings value to set.
      * @return the ScriptActivity object itself.
      */
+    @Generated
     public ScriptActivity setLogSettings(ScriptActivityTypePropertiesLogSettings logSettings) {
         this.logSettings = logSettings;
         return this;
@@ -130,6 +144,7 @@ public class ScriptActivity extends ExecutionActivity {
      * 
      * @return the returnMultistatementResult value.
      */
+    @Generated
     public Object getReturnMultistatementResult() {
         return this.returnMultistatementResult;
     }
@@ -142,6 +157,7 @@ public class ScriptActivity extends ExecutionActivity {
      * @param returnMultistatementResult the returnMultistatementResult value to set.
      * @return the ScriptActivity object itself.
      */
+    @Generated
     public ScriptActivity setReturnMultistatementResult(Object returnMultistatementResult) {
         this.returnMultistatementResult = returnMultistatementResult;
         return this;
@@ -150,6 +166,7 @@ public class ScriptActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ScriptActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -159,6 +176,7 @@ public class ScriptActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ScriptActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -168,6 +186,7 @@ public class ScriptActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ScriptActivity setName(String name) {
         super.setName(name);
@@ -177,6 +196,7 @@ public class ScriptActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ScriptActivity setDescription(String description) {
         super.setDescription(description);
@@ -186,6 +206,7 @@ public class ScriptActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ScriptActivity setState(ActivityState state) {
         super.setState(state);
@@ -195,6 +216,7 @@ public class ScriptActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ScriptActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -204,6 +226,7 @@ public class ScriptActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ScriptActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -213,6 +236,7 @@ public class ScriptActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ScriptActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -222,6 +246,7 @@ public class ScriptActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -241,10 +266,14 @@ public class ScriptActivity extends ExecutionActivity {
             || logSettings != null
             || returnMultistatementResult != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("scriptBlockExecutionTimeout", this.scriptBlockExecutionTimeout);
+            if (this.scriptBlockExecutionTimeout != null) {
+                jsonWriter.writeUntypedField("scriptBlockExecutionTimeout", this.scriptBlockExecutionTimeout);
+            }
             jsonWriter.writeArrayField("scripts", this.scripts, (writer, element) -> writer.writeJson(element));
             jsonWriter.writeJsonField("logSettings", this.logSettings);
-            jsonWriter.writeUntypedField("returnMultistatementResult", this.returnMultistatementResult);
+            if (this.returnMultistatementResult != null) {
+                jsonWriter.writeUntypedField("returnMultistatementResult", this.returnMultistatementResult);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -264,6 +293,7 @@ public class ScriptActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ScriptActivity.
      */
+    @Generated
     public static ScriptActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ScriptActivity deserializedScriptActivity = new ScriptActivity();

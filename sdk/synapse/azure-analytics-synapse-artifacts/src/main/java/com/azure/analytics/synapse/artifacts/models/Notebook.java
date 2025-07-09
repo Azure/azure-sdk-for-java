@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,56 +23,67 @@ public final class Notebook implements JsonSerializable<Notebook> {
     /*
      * The description of the notebook.
      */
+    @Generated
     private String description;
 
     /*
      * Big data pool reference.
      */
+    @Generated
     private BigDataPoolReference bigDataPool;
 
     /*
      * The spark configuration of the spark job.
      */
+    @Generated
     private SparkConfigurationReference targetSparkConfiguration;
 
     /*
      * Session properties.
      */
+    @Generated
     private NotebookSessionProperties sessionProperties;
 
     /*
      * Notebook root-level metadata.
      */
+    @Generated
     private NotebookMetadata metadata;
 
     /*
      * Notebook format (major number). Incremented between backwards incompatible changes to the notebook format.
      */
+    @Generated
     private int nbformat;
 
     /*
      * Notebook format (minor number). Incremented for backward compatible changes to the notebook format.
      */
+    @Generated
     private int nbformatMinor;
 
     /*
      * Array of cells of the current notebook.
      */
+    @Generated
     private List<NotebookCell> cells;
 
     /*
      * The folder that this notebook is in. If not specified, this notebook will appear at the root level.
      */
+    @Generated
     private NotebookFolder folder;
 
     /*
      * Notebook.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of Notebook class.
      */
+    @Generated
     public Notebook() {
     }
 
@@ -80,6 +92,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -90,6 +103,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * @param description the description value to set.
      * @return the Notebook object itself.
      */
+    @Generated
     public Notebook setDescription(String description) {
         this.description = description;
         return this;
@@ -100,6 +114,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * 
      * @return the bigDataPool value.
      */
+    @Generated
     public BigDataPoolReference getBigDataPool() {
         return this.bigDataPool;
     }
@@ -110,6 +125,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * @param bigDataPool the bigDataPool value to set.
      * @return the Notebook object itself.
      */
+    @Generated
     public Notebook setBigDataPool(BigDataPoolReference bigDataPool) {
         this.bigDataPool = bigDataPool;
         return this;
@@ -120,6 +136,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * 
      * @return the targetSparkConfiguration value.
      */
+    @Generated
     public SparkConfigurationReference getTargetSparkConfiguration() {
         return this.targetSparkConfiguration;
     }
@@ -130,6 +147,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * @param targetSparkConfiguration the targetSparkConfiguration value to set.
      * @return the Notebook object itself.
      */
+    @Generated
     public Notebook setTargetSparkConfiguration(SparkConfigurationReference targetSparkConfiguration) {
         this.targetSparkConfiguration = targetSparkConfiguration;
         return this;
@@ -140,6 +158,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * 
      * @return the sessionProperties value.
      */
+    @Generated
     public NotebookSessionProperties getSessionProperties() {
         return this.sessionProperties;
     }
@@ -150,6 +169,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * @param sessionProperties the sessionProperties value to set.
      * @return the Notebook object itself.
      */
+    @Generated
     public Notebook setSessionProperties(NotebookSessionProperties sessionProperties) {
         this.sessionProperties = sessionProperties;
         return this;
@@ -160,6 +180,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * 
      * @return the metadata value.
      */
+    @Generated
     public NotebookMetadata getMetadata() {
         return this.metadata;
     }
@@ -170,6 +191,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * @param metadata the metadata value to set.
      * @return the Notebook object itself.
      */
+    @Generated
     public Notebook setMetadata(NotebookMetadata metadata) {
         this.metadata = metadata;
         return this;
@@ -181,6 +203,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * 
      * @return the nbformat value.
      */
+    @Generated
     public int getNbformat() {
         return this.nbformat;
     }
@@ -192,6 +215,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * @param nbformat the nbformat value to set.
      * @return the Notebook object itself.
      */
+    @Generated
     public Notebook setNbformat(int nbformat) {
         this.nbformat = nbformat;
         return this;
@@ -203,6 +227,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * 
      * @return the nbformatMinor value.
      */
+    @Generated
     public int getNbformatMinor() {
         return this.nbformatMinor;
     }
@@ -214,6 +239,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * @param nbformatMinor the nbformatMinor value to set.
      * @return the Notebook object itself.
      */
+    @Generated
     public Notebook setNbformatMinor(int nbformatMinor) {
         this.nbformatMinor = nbformatMinor;
         return this;
@@ -224,6 +250,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * 
      * @return the cells value.
      */
+    @Generated
     public List<NotebookCell> getCells() {
         return this.cells;
     }
@@ -234,6 +261,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * @param cells the cells value to set.
      * @return the Notebook object itself.
      */
+    @Generated
     public Notebook setCells(List<NotebookCell> cells) {
         this.cells = cells;
         return this;
@@ -245,6 +273,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * 
      * @return the folder value.
      */
+    @Generated
     public NotebookFolder getFolder() {
         return this.folder;
     }
@@ -256,6 +285,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * @param folder the folder value to set.
      * @return the Notebook object itself.
      */
+    @Generated
     public Notebook setFolder(NotebookFolder folder) {
         this.folder = folder;
         return this;
@@ -266,6 +296,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -276,6 +307,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the Notebook object itself.
      */
+    @Generated
     public Notebook setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -284,6 +316,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -313,6 +346,7 @@ public final class Notebook implements JsonSerializable<Notebook> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Notebook.
      */
+    @Generated
     public static Notebook fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Notebook deserializedNotebook = new Notebook();

@@ -8,7 +8,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityLogOptionsImpl;
-import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.IdentityUtil;
 
 import java.time.Duration;
@@ -292,7 +291,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
             useDeveloperCredentials = true;
         }
 
-        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(8);
+        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(7);
         if (useProductionCredentials) {
             output.add(new EnvironmentCredential(identityClientOptions.clone()));
             output.add(getWorkloadIdentityCredential());
@@ -301,12 +300,13 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         }
 
         if (useDeveloperCredentials) {
-            output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID, tenantId,
-                identityClientOptions.clone()));
             output.add(new IntelliJCredential(tenantId, identityClientOptions.clone()));
             output.add(new AzureCliCredential(tenantId, identityClientOptions.clone()));
             output.add(new AzurePowerShellCredential(tenantId, identityClientOptions.clone()));
             output.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
+            if (IdentityUtil.isVsCodeBrokerAuthAvailable()) {
+                output.add(new VisualStudioCodeCredential(tenantId, identityClientOptions.clone()));
+            }
         }
 
         return output;

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,33 +22,39 @@ public class AzureStorageLinkedServiceTypeProperties
      * The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * The Azure key vault secret reference of accountKey in connection string.
      */
+    @Generated
     private AzureKeyVaultSecretReference accountKey;
 
     /*
      * SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property. Type: string,
      * SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object sasUri;
 
     /*
      * The Azure key vault secret reference of sasToken in sas uri.
      */
+    @Generated
     private AzureKeyVaultSecretReference sasToken;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private String encryptedCredential;
 
     /**
      * Creates an instance of AzureStorageLinkedServiceTypeProperties class.
      */
+    @Generated
     public AzureStorageLinkedServiceTypeProperties() {
     }
 
@@ -57,6 +64,7 @@ public class AzureStorageLinkedServiceTypeProperties
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -68,6 +76,7 @@ public class AzureStorageLinkedServiceTypeProperties
      * @param connectionString the connectionString value to set.
      * @return the AzureStorageLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public AzureStorageLinkedServiceTypeProperties setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -78,6 +87,7 @@ public class AzureStorageLinkedServiceTypeProperties
      * 
      * @return the accountKey value.
      */
+    @Generated
     public AzureKeyVaultSecretReference getAccountKey() {
         return this.accountKey;
     }
@@ -88,6 +98,7 @@ public class AzureStorageLinkedServiceTypeProperties
      * @param accountKey the accountKey value to set.
      * @return the AzureStorageLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public AzureStorageLinkedServiceTypeProperties setAccountKey(AzureKeyVaultSecretReference accountKey) {
         this.accountKey = accountKey;
         return this;
@@ -99,6 +110,7 @@ public class AzureStorageLinkedServiceTypeProperties
      * 
      * @return the sasUri value.
      */
+    @Generated
     public Object getSasUri() {
         return this.sasUri;
     }
@@ -110,6 +122,7 @@ public class AzureStorageLinkedServiceTypeProperties
      * @param sasUri the sasUri value to set.
      * @return the AzureStorageLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public AzureStorageLinkedServiceTypeProperties setSasUri(Object sasUri) {
         this.sasUri = sasUri;
         return this;
@@ -120,6 +133,7 @@ public class AzureStorageLinkedServiceTypeProperties
      * 
      * @return the sasToken value.
      */
+    @Generated
     public AzureKeyVaultSecretReference getSasToken() {
         return this.sasToken;
     }
@@ -130,6 +144,7 @@ public class AzureStorageLinkedServiceTypeProperties
      * @param sasToken the sasToken value to set.
      * @return the AzureStorageLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public AzureStorageLinkedServiceTypeProperties setSasToken(AzureKeyVaultSecretReference sasToken) {
         this.sasToken = sasToken;
         return this;
@@ -141,6 +156,7 @@ public class AzureStorageLinkedServiceTypeProperties
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public String getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -152,6 +168,7 @@ public class AzureStorageLinkedServiceTypeProperties
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureStorageLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public AzureStorageLinkedServiceTypeProperties setEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -160,12 +177,17 @@ public class AzureStorageLinkedServiceTypeProperties
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        if (this.connectionString != null) {
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        }
         jsonWriter.writeJsonField("accountKey", this.accountKey);
-        jsonWriter.writeUntypedField("sasUri", this.sasUri);
+        if (this.sasUri != null) {
+            jsonWriter.writeUntypedField("sasUri", this.sasUri);
+        }
         jsonWriter.writeJsonField("sasToken", this.sasToken);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
@@ -179,6 +201,7 @@ public class AzureStorageLinkedServiceTypeProperties
      * it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureStorageLinkedServiceTypeProperties.
      */
+    @Generated
     public static AzureStorageLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureStorageLinkedServiceTypeProperties deserializedAzureStorageLinkedServiceTypeProperties

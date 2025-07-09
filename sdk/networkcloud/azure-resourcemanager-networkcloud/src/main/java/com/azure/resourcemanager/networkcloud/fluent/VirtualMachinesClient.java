@@ -135,6 +135,10 @@ public interface VirtualMachinesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -144,7 +148,8 @@ public interface VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(String resourceGroupName,
-        String virtualMachineName, VirtualMachineInner virtualMachineParameters, Context context);
+        String virtualMachineName, VirtualMachineInner virtualMachineParameters, String ifMatch, String ifNoneMatch,
+        Context context);
 
     /**
      * Create or update the virtual machine.
@@ -171,6 +176,10 @@ public interface VirtualMachinesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -179,7 +188,7 @@ public interface VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VirtualMachineInner createOrUpdate(String resourceGroupName, String virtualMachineName,
-        VirtualMachineInner virtualMachineParameters, Context context);
+        VirtualMachineInner virtualMachineParameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the virtual machine.
@@ -204,6 +213,10 @@ public interface VirtualMachinesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -212,7 +225,7 @@ public interface VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
-        String virtualMachineName, Context context);
+        String virtualMachineName, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the virtual machine.
@@ -236,6 +249,10 @@ public interface VirtualMachinesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -243,7 +260,8 @@ public interface VirtualMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner delete(String resourceGroupName, String virtualMachineName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String virtualMachineName, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Patch the virtual machine.
@@ -271,6 +289,10 @@ public interface VirtualMachinesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param virtualMachineUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,7 +303,8 @@ public interface VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(String resourceGroupName,
-        String virtualMachineName, VirtualMachinePatchParameters virtualMachineUpdateParameters, Context context);
+        String virtualMachineName, String ifMatch, String ifNoneMatch,
+        VirtualMachinePatchParameters virtualMachineUpdateParameters, Context context);
 
     /**
      * Patch the virtual machine.
@@ -307,6 +330,10 @@ public interface VirtualMachinesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param virtualMachineUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,7 +342,7 @@ public interface VirtualMachinesClient {
      * @return virtualMachine represents the on-premises Network Cloud virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineInner update(String resourceGroupName, String virtualMachineName,
+    VirtualMachineInner update(String resourceGroupName, String virtualMachineName, String ifMatch, String ifNoneMatch,
         VirtualMachinePatchParameters virtualMachineUpdateParameters, Context context);
 
     /**

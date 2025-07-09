@@ -71,7 +71,7 @@ public final class PrivateEndpointConnProxiesClientImpl implements PrivateEndpoi
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DataReplicationMgmtC")
+    @ServiceInterface(name = "DataReplicationMgmtClientPrivateEndpointConnProxies")
     public interface PrivateEndpointConnProxiesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyName}")

@@ -182,7 +182,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         Foo deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, Foo.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -211,7 +211,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         FooListResult deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, FooListResult.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -240,7 +240,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         FooListResult deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, FooListResult.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -273,7 +273,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         List<Foo> deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, Foo.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -302,7 +302,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         List<Foo> deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, Foo.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -434,7 +434,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -461,7 +461,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -488,7 +488,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -515,7 +515,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -546,7 +546,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -577,7 +577,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -608,7 +608,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -639,7 +639,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -670,7 +670,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -706,7 +706,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -742,7 +742,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -773,7 +773,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -804,7 +804,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -835,7 +835,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -871,7 +871,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -902,7 +902,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -938,7 +938,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -969,7 +969,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1000,7 +1000,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1067,7 +1067,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1097,7 +1097,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1127,7 +1127,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1158,7 +1158,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1188,7 +1188,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1217,7 +1217,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1246,7 +1246,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1294,7 +1294,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1365,7 +1365,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.http.models.Response.class, HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1395,7 +1395,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1562,7 +1562,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1593,7 +1593,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1624,7 +1624,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1656,7 +1656,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1689,7 +1689,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1721,7 +1721,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1754,7 +1754,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1785,7 +1785,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1849,7 +1849,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1878,7 +1878,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -1909,7 +1909,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {

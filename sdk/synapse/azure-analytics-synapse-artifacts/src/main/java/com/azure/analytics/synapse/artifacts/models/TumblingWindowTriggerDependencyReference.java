@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,22 +19,26 @@ public final class TumblingWindowTriggerDependencyReference extends TriggerDepen
     /*
      * The type of dependency reference.
      */
+    @Generated
     private String type = "TumblingWindowTriggerDependencyReference";
 
     /*
      * Timespan applied to the start time of a tumbling window when evaluating dependency.
      */
+    @Generated
     private String offset;
 
     /*
      * The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be
      * used.
      */
+    @Generated
     private String size;
 
     /**
      * Creates an instance of TumblingWindowTriggerDependencyReference class.
      */
+    @Generated
     public TumblingWindowTriggerDependencyReference() {
     }
 
@@ -42,6 +47,7 @@ public final class TumblingWindowTriggerDependencyReference extends TriggerDepen
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -52,6 +58,7 @@ public final class TumblingWindowTriggerDependencyReference extends TriggerDepen
      * 
      * @return the offset value.
      */
+    @Generated
     public String getOffset() {
         return this.offset;
     }
@@ -62,6 +69,7 @@ public final class TumblingWindowTriggerDependencyReference extends TriggerDepen
      * @param offset the offset value to set.
      * @return the TumblingWindowTriggerDependencyReference object itself.
      */
+    @Generated
     public TumblingWindowTriggerDependencyReference setOffset(String offset) {
         this.offset = offset;
         return this;
@@ -73,6 +81,7 @@ public final class TumblingWindowTriggerDependencyReference extends TriggerDepen
      * 
      * @return the size value.
      */
+    @Generated
     public String getSize() {
         return this.size;
     }
@@ -84,6 +93,7 @@ public final class TumblingWindowTriggerDependencyReference extends TriggerDepen
      * @param size the size value to set.
      * @return the TumblingWindowTriggerDependencyReference object itself.
      */
+    @Generated
     public TumblingWindowTriggerDependencyReference setSize(String size) {
         this.size = size;
         return this;
@@ -92,6 +102,7 @@ public final class TumblingWindowTriggerDependencyReference extends TriggerDepen
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TumblingWindowTriggerDependencyReference setReferenceTrigger(TriggerReference referenceTrigger) {
         super.setReferenceTrigger(referenceTrigger);
@@ -101,6 +112,7 @@ public final class TumblingWindowTriggerDependencyReference extends TriggerDepen
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -120,6 +132,7 @@ public final class TumblingWindowTriggerDependencyReference extends TriggerDepen
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TumblingWindowTriggerDependencyReference.
      */
+    @Generated
     public static TumblingWindowTriggerDependencyReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TumblingWindowTriggerDependencyReference deserializedTumblingWindowTriggerDependencyReference

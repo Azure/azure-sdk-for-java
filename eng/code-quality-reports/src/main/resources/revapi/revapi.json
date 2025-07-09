@@ -177,8 +177,8 @@
         {
           "regex": true,
           "code": "java\\.method\\.addedToInterface",
-          "new": "method .* com\\.azure\\.resourcemanager\\..*",
-          "justification": "resourcemanager interfaces are allowed to add methods."
+          "new": "method .* com\\.azure\\.resourcemanager\\.(?!appplatform|appservice|authorization|cdn|compute|containerinstance|containerregistry|containerservice|cosmos|dns|eventhubs|keyvault|monitor|msi|network|privatedns|redis|resources|search|servicebus|sql|storage|trafficmanager).*",
+          "justification": "resourcemanager interfaces are allowed to add methods, except for the 24 specific premium libraries."
         },
         {
           "regex": true,
@@ -858,6 +858,162 @@
           "code" : "java.class.removed",
           "old" : "class com.azure.resourcemanager.network.models.EvaluationState",
           "justification" :  "Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ActiveRevisionsMode",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Configuration",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Container",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ContainerAppCollection",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ContainerAppProvisioningState",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ContainerAppSecret",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ContainerResources",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.CustomScaleRule",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Dapr",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.DaprComponent",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.DaprMetadata",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.EnvironmentVar",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.HttpScaleRule",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Ingress",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.IngressTransportMethod",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.QueueScaleRule",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.RegistryCredentials",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.RevisionCollection",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.RevisionHealthState",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.RevisionProvisioningState",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Scale",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ScaleRule",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.ScaleRuleAuth",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Secret",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.Template",
+          "justification" : "Removed with the unused ContainerApp APIs."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.appservice.models.TrafficWeight",
+          "justification" : "Removed with the unused ContainerApp APIs."
         }
       ]
     }

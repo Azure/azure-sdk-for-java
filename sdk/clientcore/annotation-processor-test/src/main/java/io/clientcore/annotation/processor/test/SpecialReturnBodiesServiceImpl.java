@@ -175,7 +175,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         }
         List<BinaryData> deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, BinaryData.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -228,7 +228,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             boolean expectedResponse = responseCode == 204;
             if (!expectedResponse) {
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
@@ -254,7 +254,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
             boolean expectedResponse = responseCode == 204;
             if (!expectedResponse) {
                 // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null);
+                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
             }
             return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }

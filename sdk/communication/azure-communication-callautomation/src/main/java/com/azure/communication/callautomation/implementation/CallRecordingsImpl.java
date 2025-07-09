@@ -61,7 +61,7 @@ public final class CallRecordingsImpl {
      * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureCommunicationCa")
+    @ServiceInterface(name = "AzureCommunicationCallAutomationServiceCallRecordings")
     public interface CallRecordingsService {
         @Post("/calling/recordings")
         @ExpectedResponses({ 200, 202 })

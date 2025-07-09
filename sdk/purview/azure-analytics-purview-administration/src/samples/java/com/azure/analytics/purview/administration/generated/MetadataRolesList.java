@@ -17,9 +17,9 @@ public class MetadataRolesList {
             = new MetadataRolesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.administration.generated.metadataroleslist.metadataroleslist
+        // BEGIN:com.azure.analytics.purview.administration.generated.metadata-roles-list.metadata-roles-list
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = metadataRolesClient.list(requestOptions);
-        // END:com.azure.analytics.purview.administration.generated.metadataroleslist.metadataroleslist
+        // END:com.azure.analytics.purview.administration.generated.metadata-roles-list.metadata-roles-list
     }
 }

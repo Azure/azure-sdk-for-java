@@ -77,7 +77,7 @@ public final class OracleSubscriptionsClientImpl implements OracleSubscriptionsC
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "OracleDatabaseManage")
+    @ServiceInterface(name = "OracleDatabaseManagementClientOracleSubscriptions")
     public interface OracleSubscriptionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Oracle.Database/oracleSubscriptions")

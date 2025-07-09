@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,42 +22,50 @@ public class CosmosDbLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "CosmosDb";
 
     /*
      * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * The endpoint of the Azure CosmosDB account. Type: string (or Expression with resultType string)
      */
+    @Generated
     private Object accountEndpoint;
 
     /*
      * The name of the database. Type: string (or Expression with resultType string)
      */
+    @Generated
     private Object database;
 
     /*
      * The account key of the Azure CosmosDB account. Type: SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private SecretBase accountKey;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
 
     /**
      * Creates an instance of CosmosDbLinkedService class.
      */
+    @Generated
     public CosmosDbLinkedService() {
     }
 
@@ -65,6 +74,7 @@ public class CosmosDbLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -76,6 +86,7 @@ public class CosmosDbLinkedService extends LinkedService {
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -87,6 +98,7 @@ public class CosmosDbLinkedService extends LinkedService {
      * @param connectionString the connectionString value to set.
      * @return the CosmosDbLinkedService object itself.
      */
+    @Generated
     public CosmosDbLinkedService setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -98,6 +110,7 @@ public class CosmosDbLinkedService extends LinkedService {
      * 
      * @return the accountEndpoint value.
      */
+    @Generated
     public Object getAccountEndpoint() {
         return this.accountEndpoint;
     }
@@ -109,6 +122,7 @@ public class CosmosDbLinkedService extends LinkedService {
      * @param accountEndpoint the accountEndpoint value to set.
      * @return the CosmosDbLinkedService object itself.
      */
+    @Generated
     public CosmosDbLinkedService setAccountEndpoint(Object accountEndpoint) {
         this.accountEndpoint = accountEndpoint;
         return this;
@@ -119,6 +133,7 @@ public class CosmosDbLinkedService extends LinkedService {
      * 
      * @return the database value.
      */
+    @Generated
     public Object getDatabase() {
         return this.database;
     }
@@ -129,6 +144,7 @@ public class CosmosDbLinkedService extends LinkedService {
      * @param database the database value to set.
      * @return the CosmosDbLinkedService object itself.
      */
+    @Generated
     public CosmosDbLinkedService setDatabase(Object database) {
         this.database = database;
         return this;
@@ -140,6 +156,7 @@ public class CosmosDbLinkedService extends LinkedService {
      * 
      * @return the accountKey value.
      */
+    @Generated
     public SecretBase getAccountKey() {
         return this.accountKey;
     }
@@ -151,6 +168,7 @@ public class CosmosDbLinkedService extends LinkedService {
      * @param accountKey the accountKey value to set.
      * @return the CosmosDbLinkedService object itself.
      */
+    @Generated
     public CosmosDbLinkedService setAccountKey(SecretBase accountKey) {
         this.accountKey = accountKey;
         return this;
@@ -162,6 +180,7 @@ public class CosmosDbLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -173,6 +192,7 @@ public class CosmosDbLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the CosmosDbLinkedService object itself.
      */
+    @Generated
     public CosmosDbLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -183,6 +203,7 @@ public class CosmosDbLinkedService extends LinkedService {
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -193,6 +214,7 @@ public class CosmosDbLinkedService extends LinkedService {
      * @param credential the credential value to set.
      * @return the CosmosDbLinkedService object itself.
      */
+    @Generated
     public CosmosDbLinkedService setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
@@ -201,6 +223,7 @@ public class CosmosDbLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CosmosDbLinkedService setVersion(String version) {
         super.setVersion(version);
@@ -210,6 +233,7 @@ public class CosmosDbLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CosmosDbLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -219,6 +243,7 @@ public class CosmosDbLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CosmosDbLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -228,6 +253,7 @@ public class CosmosDbLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CosmosDbLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -237,6 +263,7 @@ public class CosmosDbLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CosmosDbLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -246,6 +273,7 @@ public class CosmosDbLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -262,11 +290,19 @@ public class CosmosDbLinkedService extends LinkedService {
             || encryptedCredential != null
             || credential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("connectionString", this.connectionString);
-            jsonWriter.writeUntypedField("accountEndpoint", this.accountEndpoint);
-            jsonWriter.writeUntypedField("database", this.database);
+            if (this.connectionString != null) {
+                jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            }
+            if (this.accountEndpoint != null) {
+                jsonWriter.writeUntypedField("accountEndpoint", this.accountEndpoint);
+            }
+            if (this.database != null) {
+                jsonWriter.writeUntypedField("database", this.database);
+            }
             jsonWriter.writeJsonField("accountKey", this.accountKey);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeJsonField("credential", this.credential);
             jsonWriter.writeEndObject();
         }
@@ -286,6 +322,7 @@ public class CosmosDbLinkedService extends LinkedService {
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CosmosDbLinkedService.
      */
+    @Generated
     public static CosmosDbLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CosmosDbLinkedService deserializedCosmosDbLinkedService = new CosmosDbLinkedService();

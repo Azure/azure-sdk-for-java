@@ -7,6 +7,7 @@ package com.azure.messaging.webpubsub.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Head;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
@@ -23,14 +24,22 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.WebPubSubServiceVersion;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
@@ -72,7 +81,7 @@ public final class WebPubSubsImpl {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureWebPubSubServic")
+    @ServiceInterface(name = "AzureWebPubSubServiceRestApiWebPubSubs")
     public interface WebPubSubsService {
         @Post("/api/hubs/{hub}/:addToGroups")
         @ExpectedResponses({ 200 })
@@ -321,6 +330,28 @@ public final class WebPubSubsImpl {
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/octet-stream") BinaryData message,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
+        @Get("/api/hubs/{hub}/groups/{group}/connections")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listConnectionsInGroup(@HostParam("endpoint") String endpoint,
+            @PathParam("hub") String hub, @PathParam("group") String group,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/api/hubs/{hub}/groups/{group}/connections")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listConnectionsInGroupSync(@HostParam("endpoint") String endpoint,
+            @PathParam("hub") String hub, @PathParam("group") String group,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
         @Delete("/api/hubs/{hub}/groups/{group}/connections/{connectionId}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -551,6 +582,26 @@ public final class WebPubSubsImpl {
             @PathParam("group") String group, @PathParam("userId") String userId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listConnectionsInGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listConnectionsInGroupNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -560,7 +611,9 @@ public final class WebPubSubsImpl {
      * <pre>
      * {@code
      * {
-     *     groups: Iterable<String> (Optional)
+     *     groups (Optional): [
+     *         String (Optional)
+     *     ]
      *     filter: String (Optional)
      * }
      * }
@@ -580,11 +633,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> addConnectionsToGroupsWithResponseAsync(String hub, BinaryData groupsToAdd,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (groupsToAdd == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupsToAdd is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter groupsToAdd is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.addConnectionsToGroups(this.client.getEndpoint(), hub,
@@ -598,7 +650,9 @@ public final class WebPubSubsImpl {
      * <pre>
      * {@code
      * {
-     *     groups: Iterable<String> (Optional)
+     *     groups (Optional): [
+     *         String (Optional)
+     *     ]
      *     filter: String (Optional)
      * }
      * }
@@ -635,7 +689,7 @@ public final class WebPubSubsImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the
+     * <tr><td>excluded</td><td>List&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the
      * connections in the hub. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
      * </table>
@@ -653,7 +707,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> closeAllConnectionsWithResponseAsync(String hub, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.closeAllConnections(this.client.getEndpoint(), hub,
@@ -666,7 +720,7 @@ public final class WebPubSubsImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the
+     * <tr><td>excluded</td><td>List&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the
      * connections in the hub. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
      * </table>
@@ -698,10 +752,10 @@ public final class WebPubSubsImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>userId</td><td>String</td><td>No</td><td>User Id.</td></tr>
-     * <tr><td>role</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Roles that the connection with the generated token
+     * <tr><td>role</td><td>List&lt;String&gt;</td><td>No</td><td>Roles that the connection with the generated token
      * will have. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>minutesToExpire</td><td>Integer</td><td>No</td><td>The expire time of the generated token.</td></tr>
-     * <tr><td>group</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Groups that the connection will join when it
+     * <tr><td>group</td><td>List&lt;String&gt;</td><td>No</td><td>Groups that the connection will join when it
      * connects. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>clientType</td><td>String</td><td>No</td><td>The type of client. Case-insensitive. If not set, it's
      * "Default". For Web PubSub for Socket.IO, only the default value is supported. For Web PubSub, the valid values
@@ -731,7 +785,7 @@ public final class WebPubSubsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> generateClientTokenWithResponseAsync(String hub, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         return FluxUtil.withContext(context -> service.generateClientToken(this.client.getEndpoint(), hub,
@@ -745,10 +799,10 @@ public final class WebPubSubsImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>userId</td><td>String</td><td>No</td><td>User Id.</td></tr>
-     * <tr><td>role</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Roles that the connection with the generated token
+     * <tr><td>role</td><td>List&lt;String&gt;</td><td>No</td><td>Roles that the connection with the generated token
      * will have. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>minutesToExpire</td><td>Integer</td><td>No</td><td>The expire time of the generated token.</td></tr>
-     * <tr><td>group</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Groups that the connection will join when it
+     * <tr><td>group</td><td>List&lt;String&gt;</td><td>No</td><td>Groups that the connection will join when it
      * connects. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>clientType</td><td>String</td><td>No</td><td>The type of client. Case-insensitive. If not set, it's
      * "Default". For Web PubSub for Socket.IO, only the default value is supported. For Web PubSub, the valid values
@@ -791,7 +845,9 @@ public final class WebPubSubsImpl {
      * <pre>
      * {@code
      * {
-     *     groups: Iterable<String> (Optional)
+     *     groups (Optional): [
+     *         String (Optional)
+     *     ]
      *     filter: String (Optional)
      * }
      * }
@@ -811,11 +867,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> removeConnectionsFromGroupsWithResponseAsync(String hub, BinaryData groupsToRemove,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (groupsToRemove == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupsToRemove is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter groupsToRemove is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeConnectionsFromGroups(this.client.getEndpoint(), hub,
@@ -829,7 +884,9 @@ public final class WebPubSubsImpl {
      * <pre>
      * {@code
      * {
-     *     groups: Iterable<String> (Optional)
+     *     groups (Optional): [
+     *         String (Optional)
+     *     ]
      *     filter: String (Optional)
      * }
      * }
@@ -866,7 +923,7 @@ public final class WebPubSubsImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Excluded connection Ids. Call
+     * <tr><td>excluded</td><td>List&lt;String&gt;</td><td>No</td><td>Excluded connection Ids. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>filter</td><td>String</td><td>No</td><td>Following OData filter syntax to filter out the subscribers
      * receiving the messages.</td></tr>
@@ -900,15 +957,13 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> sendToAllWithResponseAsync(String hub, String contentType, BinaryData message,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (contentType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
         if (message == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter message is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.sendToAll(this.client.getEndpoint(), hub,
@@ -921,7 +976,7 @@ public final class WebPubSubsImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Excluded connection Ids. Call
+     * <tr><td>excluded</td><td>List&lt;String&gt;</td><td>No</td><td>Excluded connection Ids. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>filter</td><td>String</td><td>No</td><td>Following OData filter syntax to filter out the subscribers
      * receiving the messages.</td></tr>
@@ -994,11 +1049,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> closeConnectionWithResponseAsync(String hub, String connectionId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.closeConnection(this.client.getEndpoint(), hub, connectionId,
@@ -1062,11 +1116,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Boolean>> connectionExistsWithResponseAsync(String hub, String connectionId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         return FluxUtil.withContext(context -> service.connectionExists(this.client.getEndpoint(), hub, connectionId,
             this.client.getServiceVersion().getVersion(), requestOptions, context));
@@ -1142,19 +1195,16 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> sendToConnectionWithResponseAsync(String hub, String connectionId, String contentType,
         BinaryData message, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         if (contentType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
         if (message == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter message is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.sendToConnection(this.client.getEndpoint(), hub, connectionId,
@@ -1234,11 +1284,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> removeConnectionFromAllGroupsWithResponseAsync(String hub, String connectionId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeConnectionFromAllGroups(this.client.getEndpoint(), hub,
@@ -1296,10 +1345,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Boolean>> groupExistsWithResponseAsync(String hub, String group,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter group is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         return FluxUtil.withContext(context -> service.groupExists(this.client.getEndpoint(), hub, group,
             this.client.getServiceVersion().getVersion(), requestOptions, context));
@@ -1342,7 +1391,7 @@ public final class WebPubSubsImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the
+     * <tr><td>excluded</td><td>List&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the
      * connections in the group. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
      * </table>
@@ -1362,10 +1411,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> closeGroupConnectionsWithResponseAsync(String hub, String group,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter group is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.closeGroupConnections(this.client.getEndpoint(), hub, group,
@@ -1378,7 +1427,7 @@ public final class WebPubSubsImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the
+     * <tr><td>excluded</td><td>List&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the
      * connections in the group. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
      * </table>
@@ -1413,7 +1462,7 @@ public final class WebPubSubsImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Excluded connection Ids. Call
+     * <tr><td>excluded</td><td>List&lt;String&gt;</td><td>No</td><td>Excluded connection Ids. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>filter</td><td>String</td><td>No</td><td>Following OData filter syntax to filter out the subscribers
      * receiving the messages.</td></tr>
@@ -1448,18 +1497,16 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> sendToGroupWithResponseAsync(String hub, String group, String contentType,
         BinaryData message, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter group is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         if (contentType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
         if (message == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter message is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.sendToGroup(this.client.getEndpoint(), hub, group,
@@ -1472,7 +1519,7 @@ public final class WebPubSubsImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Excluded connection Ids. Call
+     * <tr><td>excluded</td><td>List&lt;String&gt;</td><td>No</td><td>Excluded connection Ids. Call
      * {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>filter</td><td>String</td><td>No</td><td>Following OData filter syntax to filter out the subscribers
      * receiving the messages.</td></tr>
@@ -1526,6 +1573,250 @@ public final class WebPubSubsImpl {
     }
 
     /**
+     * List connections in a group.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of connections to include in a single
+     * response. It should be between 1 and 200.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of connections to return. If the value is not
+     * set, then all the connections in a group are returned.</td></tr>
+     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>A token that allows the client to retrieve the next
+     * page of results. This parameter is provided by the service in the response of a previous request when there are
+     * additional results to be fetched. Clients should include the continuationToken in the next request to receive the
+     * subsequent page of data. If this parameter is omitted, the server will return the first page of
+     * results.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     connectionId: String (Required)
+     *     userId: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     * characters or underscore.
+     * @param group Target group name, whose length should be greater than 0 and less than 1025.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a page of elements as a LIST REST API result along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listConnectionsInGroupSinglePageAsync(String hub, String group,
+        RequestOptions requestOptions) {
+        if (hub == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+        }
+        if (group == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter group is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listConnectionsInGroup(this.client.getEndpoint(), hub, group,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
+    }
+
+    /**
+     * List connections in a group.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of connections to include in a single
+     * response. It should be between 1 and 200.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of connections to return. If the value is not
+     * set, then all the connections in a group are returned.</td></tr>
+     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>A token that allows the client to retrieve the next
+     * page of results. This parameter is provided by the service in the response of a previous request when there are
+     * additional results to be fetched. Clients should include the continuationToken in the next request to receive the
+     * subsequent page of data. If this parameter is omitted, the server will return the first page of
+     * results.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     connectionId: String (Required)
+     *     userId: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     * characters or underscore.
+     * @param group Target group name, whose length should be greater than 0 and less than 1025.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a page of elements as a LIST REST API result as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listConnectionsInGroupAsync(String hub, String group, RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>((pageSize) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
+                });
+            }
+            return listConnectionsInGroupSinglePageAsync(hub, group, requestOptionsLocal);
+        }, (nextLink, pageSize) -> {
+            RequestOptions requestOptionsLocal = new RequestOptions();
+            requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
+                });
+            }
+            return listConnectionsInGroupNextSinglePageAsync(nextLink, requestOptionsLocal);
+        });
+    }
+
+    /**
+     * List connections in a group.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of connections to include in a single
+     * response. It should be between 1 and 200.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of connections to return. If the value is not
+     * set, then all the connections in a group are returned.</td></tr>
+     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>A token that allows the client to retrieve the next
+     * page of results. This parameter is provided by the service in the response of a previous request when there are
+     * additional results to be fetched. Clients should include the continuationToken in the next request to receive the
+     * subsequent page of data. If this parameter is omitted, the server will return the first page of
+     * results.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     connectionId: String (Required)
+     *     userId: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     * characters or underscore.
+     * @param group Target group name, whose length should be greater than 0 and less than 1025.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a page of elements as a LIST REST API result along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listConnectionsInGroupSinglePage(String hub, String group,
+        RequestOptions requestOptions) {
+        if (hub == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+        }
+        if (group == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter group is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listConnectionsInGroupSync(this.client.getEndpoint(), hub, group,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
+    }
+
+    /**
+     * List connections in a group.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of connections to include in a single
+     * response. It should be between 1 and 200.</td></tr>
+     * <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of connections to return. If the value is not
+     * set, then all the connections in a group are returned.</td></tr>
+     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>A token that allows the client to retrieve the next
+     * page of results. This parameter is provided by the service in the response of a previous request when there are
+     * additional results to be fetched. Clients should include the continuationToken in the next request to receive the
+     * subsequent page of data. If this parameter is omitted, the server will return the first page of
+     * results.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     connectionId: String (Required)
+     *     userId: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     * characters or underscore.
+     * @param group Target group name, whose length should be greater than 0 and less than 1025.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a page of elements as a LIST REST API result as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listConnectionsInGroup(String hub, String group, RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>((pageSize) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
+                });
+            }
+            return listConnectionsInGroupSinglePage(hub, group, requestOptionsLocal);
+        }, (nextLink, pageSize) -> {
+            RequestOptions requestOptionsLocal = new RequestOptions();
+            requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxpagesize", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
+                });
+            }
+            return listConnectionsInGroupNextSinglePage(nextLink, requestOptionsLocal);
+        });
+    }
+
+    /**
      * Remove a connection from the target group.
      * 
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
@@ -1543,14 +1834,13 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> removeConnectionFromGroupWithResponseAsync(String hub, String group,
         String connectionId, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter group is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeConnectionFromGroup(this.client.getEndpoint(), hub, group,
@@ -1607,14 +1897,13 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> addConnectionToGroupWithResponseAsync(String hub, String group, String connectionId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter group is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.addConnectionToGroup(this.client.getEndpoint(), hub, group,
@@ -1681,15 +1970,13 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> revokePermissionWithResponseAsync(String hub, String permission, String connectionId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (permission == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter permission is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter permission is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.revokePermission(this.client.getEndpoint(), hub, permission,
@@ -1773,15 +2060,13 @@ public final class WebPubSubsImpl {
     public Mono<Response<Boolean>> checkPermissionWithResponseAsync(String hub, String permission, String connectionId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (permission == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter permission is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter permission is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         return FluxUtil.withContext(context -> service.checkPermission(this.client.getEndpoint(), hub, permission,
             connectionId, this.client.getServiceVersion().getVersion(), requestOptions, context));
@@ -1863,15 +2148,13 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> grantPermissionWithResponseAsync(String hub, String permission, String connectionId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (permission == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter permission is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter permission is required and cannot be null."));
         }
         if (connectionId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter connectionId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.grantPermission(this.client.getEndpoint(), hub, permission,
@@ -1944,11 +2227,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Boolean>> userExistsWithResponseAsync(String hub, String userId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (userId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         return FluxUtil.withContext(context -> service.userExists(this.client.getEndpoint(), hub, userId,
             this.client.getServiceVersion().getVersion(), requestOptions, context));
@@ -1992,7 +2274,7 @@ public final class WebPubSubsImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the
+     * <tr><td>excluded</td><td>List&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the
      * connections for the user. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
      * </table>
@@ -2012,11 +2294,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> closeUserConnectionsWithResponseAsync(String hub, String userId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (userId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.closeUserConnections(this.client.getEndpoint(), hub, userId,
@@ -2029,7 +2310,7 @@ public final class WebPubSubsImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>excluded</td><td>Iterable&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the
+     * <tr><td>excluded</td><td>List&lt;String&gt;</td><td>No</td><td>Exclude these connectionIds when closing the
      * connections for the user. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
      * </table>
@@ -2098,19 +2379,16 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> sendToUserWithResponseAsync(String hub, String userId, String contentType,
         BinaryData message, RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (userId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         if (contentType == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
         }
         if (message == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter message is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter message is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.sendToUser(this.client.getEndpoint(), hub, userId,
@@ -2192,11 +2470,10 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> removeUserFromAllGroupsWithResponseAsync(String hub, String userId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (userId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeUserFromAllGroups(this.client.getEndpoint(), hub, userId,
@@ -2249,14 +2526,13 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> removeUserFromGroupWithResponseAsync(String hub, String group, String userId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter group is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         if (userId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeUserFromGroup(this.client.getEndpoint(), hub, group,
@@ -2313,14 +2589,13 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> addUserToGroupWithResponseAsync(String hub, String group, String userId,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
         }
         if (group == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter group is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter group is required and cannot be null."));
         }
         if (userId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.addUserToGroup(this.client.getEndpoint(), hub, group, userId,
@@ -2357,6 +2632,97 @@ public final class WebPubSubsImpl {
         final String accept = "application/json";
         return service.addUserToGroupSync(this.client.getEndpoint(), hub, group, userId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     connectionId: String (Required)
+     *     userId: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a page of elements as a LIST REST API result along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listConnectionsInGroupNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listConnectionsInGroupNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     connectionId: String (Required)
+     *     userId: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a page of elements as a LIST REST API result along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listConnectionsInGroupNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listConnectionsInGroupNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
+    }
+
+    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+        try {
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            List<?> values = (List<?>) obj.get(path);
+            return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
+
+    private String getNextLink(BinaryData binaryData, String path) {
+        try {
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            return (String) obj.get(path);
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WebPubSubsImpl.class);

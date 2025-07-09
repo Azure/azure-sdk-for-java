@@ -71,7 +71,7 @@ public final class VaultsClientImpl implements VaultsClient {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DataReplicationMgmtC")
+    @ServiceInterface(name = "DataReplicationMgmtClientVaults")
     public interface VaultsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}")
