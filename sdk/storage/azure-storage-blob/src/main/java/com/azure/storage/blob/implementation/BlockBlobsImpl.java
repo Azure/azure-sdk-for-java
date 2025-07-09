@@ -821,7 +821,7 @@ public final class BlockBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -887,7 +887,7 @@ public final class BlockBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -1017,7 +1017,7 @@ public final class BlockBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -1081,7 +1081,7 @@ public final class BlockBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -1146,7 +1146,7 @@ public final class BlockBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -1212,7 +1212,7 @@ public final class BlockBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -1342,7 +1342,7 @@ public final class BlockBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -1408,7 +1408,7 @@ public final class BlockBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -1538,7 +1538,7 @@ public final class BlockBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -1602,7 +1602,7 @@ public final class BlockBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -1667,7 +1667,7 @@ public final class BlockBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -1733,7 +1733,7 @@ public final class BlockBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -1863,7 +1863,7 @@ public final class BlockBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -1995,7 +1995,7 @@ public final class BlockBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -2056,7 +2056,7 @@ public final class BlockBlobsImpl {
      * @param contentLength The length of the request.
      * @param body Initial data.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -2190,7 +2190,7 @@ public final class BlockBlobsImpl {
      * length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI.
      * The source blob must either be public or must be authenticated via a shared access signature.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -2268,7 +2268,7 @@ public final class BlockBlobsImpl {
      * length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI.
      * The source blob must either be public or must be authenticated via a shared access signature.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -2412,7 +2412,7 @@ public final class BlockBlobsImpl {
      * length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI.
      * The source blob must either be public or must be authenticated via a shared access signature.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -2488,7 +2488,7 @@ public final class BlockBlobsImpl {
      * length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI.
      * The source blob must either be public or must be authenticated via a shared access signature.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -2565,7 +2565,7 @@ public final class BlockBlobsImpl {
      * length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI.
      * The source blob must either be public or must be authenticated via a shared access signature.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -2643,7 +2643,7 @@ public final class BlockBlobsImpl {
      * length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI.
      * The source blob must either be public or must be authenticated via a shared access signature.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -2787,7 +2787,7 @@ public final class BlockBlobsImpl {
      * length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI.
      * The source blob must either be public or must be authenticated via a shared access signature.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -2933,7 +2933,7 @@ public final class BlockBlobsImpl {
      * length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI.
      * The source blob must either be public or must be authenticated via a shared access signature.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -3006,7 +3006,7 @@ public final class BlockBlobsImpl {
      * length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI.
      * The source blob must either be public or must be authenticated via a shared access signature.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
@@ -3151,7 +3151,7 @@ public final class BlockBlobsImpl {
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
@@ -3192,7 +3192,7 @@ public final class BlockBlobsImpl {
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
@@ -3259,7 +3259,7 @@ public final class BlockBlobsImpl {
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
@@ -3300,7 +3300,7 @@ public final class BlockBlobsImpl {
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
@@ -3342,7 +3342,7 @@ public final class BlockBlobsImpl {
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
@@ -3383,7 +3383,7 @@ public final class BlockBlobsImpl {
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
@@ -3450,7 +3450,7 @@ public final class BlockBlobsImpl {
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
@@ -3491,7 +3491,7 @@ public final class BlockBlobsImpl {
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
@@ -3558,7 +3558,7 @@ public final class BlockBlobsImpl {
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
@@ -3599,7 +3599,7 @@ public final class BlockBlobsImpl {
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
@@ -3641,7 +3641,7 @@ public final class BlockBlobsImpl {
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
@@ -3682,7 +3682,7 @@ public final class BlockBlobsImpl {
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
@@ -3749,7 +3749,7 @@ public final class BlockBlobsImpl {
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
@@ -3818,7 +3818,7 @@ public final class BlockBlobsImpl {
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
@@ -3856,7 +3856,7 @@ public final class BlockBlobsImpl {
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
@@ -3928,7 +3928,7 @@ public final class BlockBlobsImpl {
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      * source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param sourceIfModifiedSince Specify this header value to operate only on a blob if it has been modified since
@@ -3980,7 +3980,7 @@ public final class BlockBlobsImpl {
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      * source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param sourceIfModifiedSince Specify this header value to operate only on a blob if it has been modified since
@@ -4063,7 +4063,7 @@ public final class BlockBlobsImpl {
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      * source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param sourceIfModifiedSince Specify this header value to operate only on a blob if it has been modified since
@@ -4113,7 +4113,7 @@ public final class BlockBlobsImpl {
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      * source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param sourceIfModifiedSince Specify this header value to operate only on a blob if it has been modified since
@@ -4166,7 +4166,7 @@ public final class BlockBlobsImpl {
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      * source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param sourceIfModifiedSince Specify this header value to operate only on a blob if it has been modified since
@@ -4218,7 +4218,7 @@ public final class BlockBlobsImpl {
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      * source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param sourceIfModifiedSince Specify this header value to operate only on a blob if it has been modified since
@@ -4300,7 +4300,7 @@ public final class BlockBlobsImpl {
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      * source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param sourceIfModifiedSince Specify this header value to operate only on a blob if it has been modified since
@@ -4384,7 +4384,7 @@ public final class BlockBlobsImpl {
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      * source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param sourceIfModifiedSince Specify this header value to operate only on a blob if it has been modified since
@@ -4432,7 +4432,7 @@ public final class BlockBlobsImpl {
      * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      * source.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param sourceIfModifiedSince Specify this header value to operate only on a blob if it has been modified since
@@ -4512,7 +4512,7 @@ public final class BlockBlobsImpl {
      * @param blob The blob name.
      * @param blocks Blob Blocks.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -4573,7 +4573,7 @@ public final class BlockBlobsImpl {
      * @param blob The blob name.
      * @param blocks Blob Blocks.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -4699,7 +4699,7 @@ public final class BlockBlobsImpl {
      * @param blob The blob name.
      * @param blocks Blob Blocks.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -4759,7 +4759,7 @@ public final class BlockBlobsImpl {
      * @param blob The blob name.
      * @param blocks Blob Blocks.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -4820,7 +4820,7 @@ public final class BlockBlobsImpl {
      * @param blob The blob name.
      * @param blocks Blob Blocks.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -4881,7 +4881,7 @@ public final class BlockBlobsImpl {
      * @param blob The blob name.
      * @param blocks Blob Blocks.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -5007,7 +5007,7 @@ public final class BlockBlobsImpl {
      * @param blob The blob name.
      * @param blocks Blob Blocks.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -5135,7 +5135,7 @@ public final class BlockBlobsImpl {
      * @param blob The blob name.
      * @param blocks Blob Blocks.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -5192,7 +5192,7 @@ public final class BlockBlobsImpl {
      * @param blob The blob name.
      * @param blocks Blob Blocks.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
@@ -5317,10 +5317,10 @@ public final class BlockBlobsImpl {
      * lists together.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
      * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
-     * a Snapshot of a Blob.&lt;/a&gt;.
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
@@ -5350,10 +5350,10 @@ public final class BlockBlobsImpl {
      * lists together.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
      * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
-     * a Snapshot of a Blob.&lt;/a&gt;.
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
@@ -5386,10 +5386,10 @@ public final class BlockBlobsImpl {
      * lists together.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
      * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
-     * a Snapshot of a Blob.&lt;/a&gt;.
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
@@ -5417,10 +5417,10 @@ public final class BlockBlobsImpl {
      * lists together.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
      * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
-     * a Snapshot of a Blob.&lt;/a&gt;.
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
@@ -5449,10 +5449,10 @@ public final class BlockBlobsImpl {
      * lists together.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
      * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
-     * a Snapshot of a Blob.&lt;/a&gt;.
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
@@ -5481,10 +5481,10 @@ public final class BlockBlobsImpl {
      * lists together.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
      * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
-     * a Snapshot of a Blob.&lt;/a&gt;.
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
@@ -5517,10 +5517,10 @@ public final class BlockBlobsImpl {
      * lists together.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
      * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
-     * a Snapshot of a Blob.&lt;/a&gt;.
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
@@ -5555,10 +5555,10 @@ public final class BlockBlobsImpl {
      * lists together.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
      * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
-     * a Snapshot of a Blob.&lt;/a&gt;.
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
@@ -5589,10 +5589,10 @@ public final class BlockBlobsImpl {
      * lists together.
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
      * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
-     * a Snapshot of a Blob.&lt;/a&gt;.
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.

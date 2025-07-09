@@ -42,10 +42,13 @@ public class Netty4HttpProxyHandlerTests {
     }
 
     private static Stream<Arguments> mismatchData() {
-        return Stream.of(Arguments.of("cnonce=1", "cnonce=2",
-            "Property received in the 'Proxy-Authentication-Info' header doesn't match the value sent in the 'Proxy-Authorization' header; {\"propertyName\":\"cnonce\",\"received\":\"1\",\"sent\":\"2\"}"),
+        return Stream.of(
+            Arguments.of("cnonce=1", "cnonce=2",
+                "Property received in the 'Proxy-Authentication-Info' header doesn't match the value sent in the "
+                    + "'Proxy-Authorization' header; {\"propertyName\":\"cnonce\",\"received\":\"1\",\"sent\":\"2\"}"),
             Arguments.of("nc=1", "nc=2",
-                "Property received in the 'Proxy-Authentication-Info' header doesn't match the value sent in the 'Proxy-Authorization' header; {\"propertyName\":\"nc\",\"received\":\"1\",\"sent\":\"2\"}"));
+                "Property received in the 'Proxy-Authentication-Info' header doesn't match the value sent in the "
+                    + "'Proxy-Authorization' header; {\"propertyName\":\"nc\",\"received\":\"1\",\"sent\":\"2\"}"));
     }
 
     @Test

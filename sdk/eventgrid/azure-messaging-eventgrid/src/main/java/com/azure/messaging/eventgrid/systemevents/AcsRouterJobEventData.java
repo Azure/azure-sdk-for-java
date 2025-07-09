@@ -13,8 +13,12 @@ import java.util.Map;
 
 /**
  * Schema of common properties of all Router Job events.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
+@Deprecated
 public class AcsRouterJobEventData extends AcsRouterEventData {
 
     /*

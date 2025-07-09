@@ -91,7 +91,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageManagementCli")
+    @ServiceInterface(name = "StorageManagementClientStorageAccounts")
     public interface StorageAccountsService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Storage/checkNameAvailability")

@@ -84,7 +84,7 @@ public final class StorageServiceClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setProperties(BlobServiceProperties blobServiceProperties, Integer timeout, String requestId) {
-        this.serviceClient.setProperties(blobServiceProperties, timeout, requestId);
+        setPropertiesWithResponse(blobServiceProperties, timeout, requestId, RequestContext.none());
     }
 
     /**
@@ -128,7 +128,7 @@ public final class StorageServiceClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobServiceProperties getProperties(Integer timeout, String requestId) {
-        return this.serviceClient.getProperties(timeout, requestId);
+        return getPropertiesWithResponse(timeout, requestId, RequestContext.none()).getValue();
     }
 
     /**
@@ -170,7 +170,7 @@ public final class StorageServiceClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobServiceStatistics getStatistics(Integer timeout, String requestId) {
-        return this.serviceClient.getStatistics(timeout, requestId);
+        return getStatisticsWithResponse(timeout, requestId, RequestContext.none()).getValue();
     }
 
     /**
@@ -203,8 +203,8 @@ public final class StorageServiceClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BlobContainerItem> listBlobContainersSegment(String prefix, String marker, Integer maxresults,
         List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout, String requestId) {
-        return this.serviceClient.listBlobContainersSegment(prefix, marker, maxresults, listBlobContainersIncludeType,
-            timeout, requestId);
+        return listBlobContainersSegment(prefix, marker, maxresults, listBlobContainersIncludeType, timeout, requestId,
+            RequestContext.none());
     }
 
     /**
@@ -284,7 +284,7 @@ public final class StorageServiceClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserDelegationKey getUserDelegationKey(KeyInfo keyInfo, Integer timeout, String requestId) {
-        return this.serviceClient.getUserDelegationKey(keyInfo, timeout, requestId);
+        return getUserDelegationKeyWithResponse(keyInfo, timeout, requestId, RequestContext.none()).getValue();
     }
 
     /**
@@ -322,7 +322,7 @@ public final class StorageServiceClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getAccountInfo(Integer timeout, String requestId) {
-        this.serviceClient.getAccountInfo(timeout, requestId);
+        getAccountInfoWithResponse(timeout, requestId, RequestContext.none());
     }
 
     /**
@@ -372,7 +372,8 @@ public final class StorageServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InputStream submitBatch(long contentLength, String multipartContentType, BinaryData body, Integer timeout,
         String requestId) {
-        return this.serviceClient.submitBatch(contentLength, multipartContentType, body, timeout, requestId);
+        return submitBatchWithResponse(contentLength, multipartContentType, body, timeout, requestId,
+            RequestContext.none()).getValue();
     }
 
     /**
@@ -442,6 +443,7 @@ public final class StorageServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FilterBlobSegment filterBlobs(Integer timeout, String requestId, String where, String marker,
         Integer maxresults, List<FilterBlobsIncludeItem> include) {
-        return this.serviceClient.filterBlobs(timeout, requestId, where, marker, maxresults, include);
+        return filterBlobsWithResponse(timeout, requestId, where, marker, maxresults, include, RequestContext.none())
+            .getValue();
     }
 }

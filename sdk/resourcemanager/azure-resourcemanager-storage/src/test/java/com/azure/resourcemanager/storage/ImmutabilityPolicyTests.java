@@ -37,6 +37,7 @@ public class ImmutabilityPolicyTests extends StorageManagementTest {
             .define(saName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
             .create();
 
         BlobContainer container = storageManager.blobContainers()

@@ -1,5 +1,16 @@
 ## Release History
 
+### 4.73.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+* Fixed OpenTelemetry traces/spans to include the attributes defined in semantic convention for Azure Cosmos DB - [PR 45929](https://github.com/Azure/azure-sdk-for-java/pull/45929)
+
+#### Other Changes
+
 ### 4.72.0 (2025-06-24)
 
 #### Features Added

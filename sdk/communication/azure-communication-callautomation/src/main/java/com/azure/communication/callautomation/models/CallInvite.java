@@ -4,14 +4,13 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.util.HashMap;
+
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
-
-import java.util.HashMap;
 
 /**
  *  Call invite details.
@@ -50,16 +49,6 @@ public final class CallInvite {
      * @param targetIdentity Target's MicrosoftTeamsUserIdentifier
      */
     public CallInvite(MicrosoftTeamsUserIdentifier targetIdentity) {
-        this.targetParticipant = targetIdentity;
-        this.sourceCallerIdNumber = null;
-        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
-    }
-
-    /**
-     * Create a CallInvite object with MicrosoftTeamsAppIdentifier
-     * @param targetIdentity Target's MicrosoftTeamsAppIdentifier
-     */
-    public CallInvite(MicrosoftTeamsAppIdentifier targetIdentity) {
         this.targetParticipant = targetIdentity;
         this.sourceCallerIdNumber = null;
         this.customCallingContext = new CustomCallingContext(null, new HashMap<>());

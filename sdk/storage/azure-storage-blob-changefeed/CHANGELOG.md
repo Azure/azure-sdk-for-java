@@ -3,10 +3,7 @@
 ## 12.0.0-beta.31 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
 
 ### Other Changes
 
