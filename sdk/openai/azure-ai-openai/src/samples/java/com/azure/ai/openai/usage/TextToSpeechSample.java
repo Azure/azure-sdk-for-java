@@ -37,6 +37,7 @@ public class TextToSpeechSample {
 
         SpeechGenerationOptions options = new SpeechGenerationOptions(
                 "Today is a wonderful day to build something people love!",
+                "You are a helpful assistant.",
                 SpeechVoice.ALLOY);
 
         BinaryData speech = client.generateSpeechFromText(deploymentOrModelId, options);
