@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+package com.azure.compute.batch;
 
-package com.azure.compute.batch.implementation.lro;
-
-import com.azure.compute.batch.BatchAsyncClient;
-import com.azure.compute.batch.models.BatchPool;
-import com.azure.compute.batch.models.BatchPoolState;
+import com.azure.compute.batch.models.BatchJobSchedule;
+import com.azure.compute.batch.models.BatchJobScheduleState;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Context;
@@ -18,26 +16,27 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * Async poller class used by {@code beginDeletePool} to implement polling logic for deleting a {@link BatchPool}.
- * Returns {@link BatchPool} values during polling and {@code null} upon successful deletion.
+ * Async poller class used by {@code beginDeleteJobSchedule} to implement polling logic for deleting a {@link BatchJobSchedule}.
+ * Returns {@link BatchJobSchedule} values during polling and {@code null} upon successful deletion.
  */
-public final class PoolDeletePollerAsync {
+public final class JobScheduleDeletePollerAsync {
 
     private final BatchAsyncClient batchAsyncClient;
-    private final String poolId;
+    private final String jobScheduleId;
     private final RequestOptions options;
     private final Context requestContext;
 
     /**
-     * Creates a new {@link PoolDeletePollerAsync}.
+     * Creates a new {@link JobScheduleDeletePollerAsync}.
      *
      * @param batchAsyncClient The {@link BatchAsyncClient} used to interact with the Batch service.
-     * @param poolId The ID of the Pool being deleted.
+     * @param jobScheduleId The ID of the Job Schedule being deleted.
      * @param options Optional request options for service calls.
      */
-    public PoolDeletePollerAsync(BatchAsyncClient batchAsyncClient, String poolId, RequestOptions options) {
+    public JobScheduleDeletePollerAsync(BatchAsyncClient batchAsyncClient, String jobScheduleId,
+        RequestOptions options) {
         this.batchAsyncClient = batchAsyncClient;
-        this.poolId = poolId;
+        this.jobScheduleId = jobScheduleId;
         this.options = options;
         this.requestContext = options == null ? Context.NONE : options.getContext();
     }
@@ -47,27 +46,27 @@ public final class PoolDeletePollerAsync {
      *
      * @return A function that initiates the delete request and returns a PollResponse with IN_PROGRESS status.
      */
-    public Function<PollingContext<BatchPool>, Mono<PollResponse<BatchPool>>> getActivationOperation() {
-        return context -> batchAsyncClient.deletePoolWithResponse(poolId, options)
+    public Function<PollingContext<BatchJobSchedule>, Mono<PollResponse<BatchJobSchedule>>> getActivationOperation() {
+        return context -> batchAsyncClient.deleteJobScheduleWithResponse(jobScheduleId, options)
             .thenReturn(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null));
     }
 
     /**
-     * Poll operation to check if the pool is still being deleted or is gone.
+     * Poll operation to check if the job schedule is still being deleted or is gone.
      *
-     * @return A function that polls the pool and returns a PollResponse with the current operation status.
+     * @return A function that polls the job schedule and returns a PollResponse with the current operation status.
      */
-    public Function<PollingContext<BatchPool>, Mono<PollResponse<BatchPool>>> getPollOperation() {
+    public Function<PollingContext<BatchJobSchedule>, Mono<PollResponse<BatchJobSchedule>>> getPollOperation() {
         return context -> {
             RequestOptions pollOptions = new RequestOptions().setContext(this.requestContext);
-            return batchAsyncClient.getPoolWithResponse(poolId, pollOptions).map(response -> {
-                BatchPool pool = response.getValue().toObject(BatchPool.class);
+            return batchAsyncClient.getJobScheduleWithResponse(jobScheduleId, pollOptions).map(response -> {
+                BatchJobSchedule jobSchedule = response.getValue().toObject(BatchJobSchedule.class);
 
-                LongRunningOperationStatus status = BatchPoolState.DELETING.equals(pool.getState())
+                LongRunningOperationStatus status = BatchJobScheduleState.DELETING.equals(jobSchedule.getState())
                     ? LongRunningOperationStatus.IN_PROGRESS
                     : LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 
-                return new PollResponse<>(status, pool);
+                return new PollResponse<>(status, jobSchedule);
             })
                 .onErrorResume(ResourceNotFoundException.class,
                     ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)))
@@ -80,7 +79,8 @@ public final class PoolDeletePollerAsync {
      *
      * @return A function that always returns an empty Mono, indicating cancellation is unsupported.
      */
-    public BiFunction<PollingContext<BatchPool>, PollResponse<BatchPool>, Mono<BatchPool>> getCancelOperation() {
+    public BiFunction<PollingContext<BatchJobSchedule>, PollResponse<BatchJobSchedule>, Mono<BatchJobSchedule>>
+        getCancelOperation() {
         return (context, pollResponse) -> Mono.empty();
     }
 
@@ -89,7 +89,7 @@ public final class PoolDeletePollerAsync {
      *
      * @return A function that returns an empty Mono, indicating no final fetch is required.
      */
-    public Function<PollingContext<BatchPool>, Mono<Void>> getFetchResultOperation() {
+    public Function<PollingContext<BatchJobSchedule>, Mono<Void>> getFetchResultOperation() {
         return context -> Mono.empty();
     }
 }
