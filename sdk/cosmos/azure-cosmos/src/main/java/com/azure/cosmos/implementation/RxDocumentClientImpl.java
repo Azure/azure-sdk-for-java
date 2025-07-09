@@ -269,6 +269,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final boolean sessionCapturingOverrideEnabled;
     private final boolean sessionCapturingDisabled;
     private final boolean isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig;
+    private final boolean useThinClient;
     private List<CosmosOperationPolicy> operationPolicies;
     private final AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
     private CosmosEndToEndOperationLatencyPolicyConfig ppafEnforcedE2ELatencyPolicyConfigForReads;
@@ -601,6 +602,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.queryPlanCache = new ConcurrentHashMap<>();
             this.apiType = apiType;
             this.clientTelemetryConfig = clientTelemetryConfig;
+            this.useThinClient = Configs.isThinClientEnabled()
+                && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY
+                && this.connectionPolicy.getHttp2ConnectionConfig() != null
+                && ImplementationBridgeHelpers
+                    .Http2ConnectionConfigHelper
+                    .getHttp2ConnectionConfigAccessor()
+                    .isEffectivelyEnabled(
+                        this.connectionPolicy.getHttp2ConnectionConfig()
+                    );
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -843,7 +853,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             @Override
             public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
-                logger.info("Getting database account endpoint from {} - useThinClient: {}", endpoint, useThinClient());
+                logger.info("Getting database account endpoint from {} - useThinClient: {}", endpoint, useThinClient);
                 return RxDocumentClientImpl.this.getDatabaseAccountFromEndpoint(endpoint);
             }
 
@@ -6116,7 +6126,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Read, ResourceType.DatabaseAccount, "", null, (Object) null);
             // if thin client enabled, populate thin client header so we can get thin client read and writeable locations
-            if (useThinClient()) {
+            if (useThinClient) {
                 request.getHeaders().put(HttpConstants.HttpHeaders.THINCLIENT_OPT_IN, "true");
             }
             return this.populateHeadersAsync(request, RequestVerb.GET)
@@ -7682,13 +7692,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     public boolean useThinClient() {
-        return Configs.isThinClientEnabled() && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY;
+        return useThinClient;
     }
 
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
-        if (!useThinClient()
+        if (!useThinClient
             || !this.globalEndpointManager.hasThinClientReadLocations()
             || request.getResourceType() != ResourceType.Document) {
+
             return false;
         }
 
