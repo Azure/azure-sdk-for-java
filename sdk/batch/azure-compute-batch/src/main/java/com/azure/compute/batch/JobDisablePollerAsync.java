@@ -1,8 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.compute.batch.implementation.lro;
+package com.azure.compute.batch;
 
-import com.azure.compute.batch.BatchAsyncClient;
 import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobDisableParameters;
 import com.azure.compute.batch.models.BatchJobState;

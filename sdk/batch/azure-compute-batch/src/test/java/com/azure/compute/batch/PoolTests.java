@@ -602,7 +602,7 @@ public class PoolTests extends BatchClientTestBase {
                 Assertions.assertNotNull(nodeDuringReboot);
                 Assertions.assertEquals(nodeIdA, nodeDuringReboot.getId());
                 Assertions.assertEquals(BatchNodeState.REBOOTING, nodeDuringReboot.getState(),
-                "When in progress the node must be REBOOTING");
+                    "When in progress the node must be REBOOTING");
             }
 
             rebootPoller.waitForCompletion();
