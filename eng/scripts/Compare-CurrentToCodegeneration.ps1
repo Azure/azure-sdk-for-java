@@ -166,7 +166,9 @@ $generateScript = {
           throw
         }
       } finally {
-        Get-ChildItem -Path $directory -Filter TempTypeSpecFiles -Recurse -Directory | Remove-Item -Path $_.FullName -Recurse -Force | Out-Null
+        Get-ChildItem -Path $directory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
+          Remove-Item -Path $_.FullName -Recurse -Force | Out-Null
+        }
       }
 
       # Update code snippets before comparing the diff
