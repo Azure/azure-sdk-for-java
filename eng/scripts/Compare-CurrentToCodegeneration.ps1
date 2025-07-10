@@ -105,7 +105,9 @@ foreach ($serviceDirectory in $ServiceDirectories.Split(',')) {
     # The service directory is a top-level service, e.g., "storage"
     # Search for all libraries under the service directory.
     $searchPath = Join-Path -Path $sdkFolder $serviceDirectory
-    Get-ChildItem -Path $searchPath -Directory | Find-GenerationInformation $generationInformations "$serviceDirectory/$($_.Name)"
+    Get-ChildItem -Path $searchPath -Directory | ForEach-Object {
+      Find-GenerationInformation $generationInformations "$serviceDirectory/$($_.Name)"
+    }
   }
 }
 
