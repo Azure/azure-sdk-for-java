@@ -26,7 +26,7 @@ The Azure SDK for Java repository contains client libraries for Azure services, 
 
 ACTION: Use azure-sdk-java-mcp sdk tools to generate the SDK.
 ACTION: Use azure-sdk-java-mcp sdk tools to build the SDK.
-ACTION: Don't prepare environment before synchronize TypeSpec source or generate SDK as if the synchronization or generation fail complaining missing environment, the tool will ask for preparing environment .
+ACTION: Don't prepare environment before synchronize TypeSpec source or generate SDK as if the synchronization or generation fail complaining missing environment, the tool will ask for preparing environment.
 
 ## Behavior
 
