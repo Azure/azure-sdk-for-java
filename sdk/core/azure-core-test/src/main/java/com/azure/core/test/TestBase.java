@@ -4,7 +4,6 @@ package com.azure.core.test;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
-import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.test.junitextensions.TestContextManagerParameterResolver;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
@@ -51,11 +50,6 @@ public abstract class TestBase {
      * Specifies to use all HttpClient implementations in testing.
      */
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
-
-    /**
-     * Specifies to use Netty HttpClient implementation in testing.
-     */
-    public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
 
     /**
      * Specifies to use all service versions in testing.
@@ -174,7 +168,7 @@ public abstract class TestBase {
                 interceptorManager.getRecordPolicy();
             }
         } else {
-            testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
+            throw new UnsupportedOperationException("Only Test Proxy-based tests are allowed.");
         }
         beforeTest();
     }
@@ -218,7 +212,7 @@ public abstract class TestBase {
      *
      * @return The name of the current test.
      * @deprecated This method is deprecated as JUnit 5 provides a simpler mechanism to get the test method name through
-     * {@link TestInfo}. Keeping this for backward compatability of other client libraries that still override this
+     * {@link TestInfo}. Keeping this for backward compatibility of other client libraries that still override this
      * method. This method can be deleted when all client libraries remove this method. See {@link
      * #setupTest(TestContextManager)}.
      */
@@ -251,7 +245,8 @@ public abstract class TestBase {
      */
     public static Stream<HttpClient> getHttpClients() {
         /*
-         * In PLAYBACK mode PlaybackClient is used, so there is no need to load HttpClient instances from the classpath.
+         * In PLAYBACK mode InterceptorManager.getPlaybackClient() is used, so there is no need to load HttpClient
+         * instances from the classpath.
          * In LIVE or RECORD mode load all HttpClient instances and let the test run determine which HttpClient
          * implementation it will use.
          */
@@ -285,7 +280,7 @@ public abstract class TestBase {
      * <li>Otherwise, the name of the HttpClient class should match env variable.</li>
      * </ul>
      *
-     * Environment values currently supported are: "ALL", "netty", "okhttp" which is case insensitive.
+     * Environment values currently supported are: "ALL", "netty", "okhttp" which is case-insensitive.
      * Use comma to separate http clients want to test.
      * e.g. {@code set AZURE_TEST_HTTP_CLIENTS = NettyAsyncHttpClient, OkHttpAsyncHttpClient}
      *
@@ -389,14 +384,12 @@ public abstract class TestBase {
     }
 
     /**
-     * Convenience method which either returned the passed {@link HttpClient} or returns a {@link PlaybackClient}
-     * depending on whether the test mode is playback.
-     * <p>
-     * When the test mode is playback the {@link PlaybackClient} corresponding to the test will be returned, otherwise
-     * the passed {@link HttpClient} will be returned.
+     * Convenience method which either returned the passed {@link HttpClient} or
+     * {@link InterceptorManager#getPlaybackClient()} depending on whether the test mode is playback.
      *
      * @param httpClient The initial {@link HttpClient} that will be used.
-     * @return Either the passed {@link HttpClient} or {@link PlaybackClient} based on the test mode.
+     * @return Either the passed {@link HttpClient} or {@link InterceptorManager#getPlaybackClient()} based on the test
+     * mode.
      */
     protected HttpClient getHttpClientOrUsePlayback(HttpClient httpClient) {
         return (testMode == TestMode.PLAYBACK) ? interceptorManager.getPlaybackClient() : httpClient;

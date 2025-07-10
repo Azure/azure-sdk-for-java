@@ -18,7 +18,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.resources.ResourceManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Field;
@@ -33,7 +32,7 @@ public class AzureConfigurableTests {
             .withRetryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
             .withHttpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD))
-            .withSubscription(Mockito.anyString());
+            .withSubscription("");
 
         HttpPipeline httpPipeline = resourceManager.genericResources().manager().httpPipeline();
         validateRetryPolicy(httpPipeline, FixedDelay.class);
@@ -42,7 +41,7 @@ public class AzureConfigurableTests {
         resourceManager = ResourceManager.configure()
             .withHttpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD))
-            .withSubscription(Mockito.anyString());
+            .withSubscription("");
 
         httpPipeline = resourceManager.genericResources().manager().httpPipeline();
         validateRetryPolicy(httpPipeline, ExponentialBackoff.class);
@@ -50,7 +49,7 @@ public class AzureConfigurableTests {
         resourceManager = ResourceManager.configure()
             .withHttpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD))
-            .withSubscription(Mockito.anyString());
+            .withSubscription("");
 
         httpPipeline = resourceManager.genericResources().manager().httpPipeline();
         validateRetryPolicy(httpPipeline, ExponentialBackoff.class);

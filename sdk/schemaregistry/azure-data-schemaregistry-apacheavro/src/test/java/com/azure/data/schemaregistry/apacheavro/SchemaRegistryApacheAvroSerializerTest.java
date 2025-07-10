@@ -3,18 +3,15 @@
 
 package com.azure.data.schemaregistry.apacheavro;
 
-import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.models.MessageContent;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.core.test.models.NetworkCallRecord;
-import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
@@ -35,7 +32,6 @@ import org.apache.avro.message.RawMessageEncoder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -46,10 +42,12 @@ import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.AVRO_MIME_TYPE;
@@ -67,7 +65,6 @@ import static org.mockito.Mockito.when;
  * Unit tests for {@link SchemaRegistryApacheAvroSerializer}.
  */
 public class SchemaRegistryApacheAvroSerializerTest {
-    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final int SCHEMA_ID_SIZE = 32;
 
     private static final String MOCK_GUID = new String(new char[SCHEMA_ID_SIZE]).replace("\0", "a");
@@ -77,19 +74,12 @@ public class SchemaRegistryApacheAvroSerializerTest {
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
 
     private AutoCloseable mocksCloseable;
-    private TestInfo testInfo;
 
     @Mock
     private SchemaRegistryAsyncClient client;
 
     @BeforeEach
-    public void beforeEach(TestInfo testInfo) {
-        if (!testInfo.getTestMethod().isPresent()) {
-            throw new IllegalStateException(
-                "Expected testInfo.getTestMethod() not be empty since we need a method for TestContextManager.");
-        }
-
-        this.testInfo = testInfo;
+    public void beforeEach() {
         this.mocksCloseable = MockitoAnnotations.openMocks(this);
     }
 
@@ -283,9 +273,29 @@ public class SchemaRegistryApacheAvroSerializerTest {
     /**
      * Tests that a schema registered in the portal can be deserialized here.
      */
+    @SuppressWarnings("deprecation")
     @Test
     public void serializeFromPortal() {
         // Arrange
+        LinkedList<Function<HttpRequest, HttpResponse>> responses = new LinkedList<>();
+        responses.add(request -> {
+            HttpHeaders headers = new HttpHeaders().add(HttpHeaderName.CONTENT_LENGTH, "0")
+                .add("Schema-Version", "1")
+                .add(HttpHeaderName.SERVER, "Microsoft-HTTPAPI/2.0")
+                .add("Schema-Name", "com.example.Person")
+                .add("Schema-Id-Location",
+                    "https://conniey.servicebus.windows.net:443/$schemagroups/$schemas/64fc737160ff41bdb8a0b8af028e6827?api-version=2021-10")
+                .add(HttpHeaderName.DATE, "Wed, 05 Jan 2022 18:06:06 GMT")
+                .add(HttpHeaderName.STRICT_TRANSPORT_SECURITY, "max-age=31536000")
+                .add("Schema-Id", "64fc737160ff41bdb8a0b8af028e6827")
+                .add("Schema-Group-Name", "azsdk_java_group")
+                .add(HttpHeaderName.LOCATION,
+                    "https://conniey.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/com.example.Person/versions/1?api-version=2021-10")
+                .add("Schema-Versions-Location",
+                    "https://conniey.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/com.example.Person/versions?api-version=2021-10");
+            return new MockHttpResponse(request, 204, headers, new byte[0]);
+        });
+
         final Schema schema = SchemaBuilder.record("Person")
             .namespace("com.example")
             .fields()
@@ -313,7 +323,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
             .set("favourite_colour", expectedColour)
             .build();
 
-        final SchemaRegistryAsyncClient client = getSchemaRegistryClient();
+        final SchemaRegistryAsyncClient client = getSchemaRegistryClient(responses);
         final SchemaRegistryApacheAvroSerializer serializer
             = new SchemaRegistryApacheAvroSerializerBuilder().schemaGroup(PLAYBACK_TEST_GROUP)
                 .schemaRegistryClient(client)
@@ -336,10 +346,53 @@ public class SchemaRegistryApacheAvroSerializerTest {
      * Verifies that we can deserialize and serialize when the writer schema is newer than the reader schema. Writer
      * schema is using a forward compatible schema.
      */
+    @SuppressWarnings("deprecation")
     @Test
     public void serializeForwardCompatibility() {
         // Arrange
-        final SchemaRegistryAsyncClient client = getSchemaRegistryClient();
+        LinkedList<Function<HttpRequest, HttpResponse>> responses = new LinkedList<>();
+        responses.add(request -> {
+            HttpHeaders headers = new HttpHeaders().add(HttpHeaderName.CONTENT_LENGTH, "0")
+                .add("Schema-Version", "2")
+                .add(HttpHeaderName.SERVER, "Microsoft-HTTPAPI/2.0")
+                .add("Schema-Name", "com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person")
+                .add("Schema-Id-Location",
+                    "https://conniey.servicebus.windows.net:443/$schemagroups/$schemas/f047cfa64b374167b3a1d101370c1483?api-version=2021-10")
+                .add(HttpHeaderName.DATE, "Wed, 12 Jan 2022 22:58:41 GMT")
+                .add(HttpHeaderName.STRICT_TRANSPORT_SECURITY, "max-age=31536000")
+                .add("Schema-Id", "f047cfa64b374167b3a1d101370c1483")
+                .add("Schema-Group-Name", "azsdk_java_group")
+                .add(HttpHeaderName.LOCATION,
+                    "https://conniey.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person/versions/2?api-version=2021-10")
+                .add("Schema-Versions-Location",
+                    "https://conniey.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person/versions?api-version=2021-10");
+            return new MockHttpResponse(request, 204, headers, new byte[0]);
+        });
+
+        responses.add(request -> {
+            HttpHeaders headers = new HttpHeaders().add(HttpHeaderName.TRANSFER_ENCODING, "chunked")
+                .add("Schema-Version", "2")
+                .add(HttpHeaderName.SERVER, "Microsoft-HTTPAPI/2.0")
+                .add("Schema-Name", "com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person")
+                .add("Schema-Id-Location",
+                    "https://conniey.servicebus.windows.net:443/$schemagroups/$schemas/f047cfa64b374167b3a1d101370c1483?api-version=2021-10")
+                .add(HttpHeaderName.DATE, "Wed, 12 Jan 2022 22:58:57 GMT")
+                .add(HttpHeaderName.STRICT_TRANSPORT_SECURITY, "max-age=31536000")
+                .add("Schema-Id", "f047cfa64b374167b3a1d101370c1483")
+                .add("Schema-Group-Name", "azsdk_java_group")
+                .add(HttpHeaderName.LOCATION,
+                    "https://conniey.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person/versions/2?api-version=2021-10")
+                .add("Schema-Versions-Location",
+                    "https://conniey.servicebus.windows.net:443/$schemagroups/azsdk_java_group/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person/versions?api-version=2021-10");
+            return new MockHttpResponse(request, 200, headers,
+                ("{\"namespace\":\"com.azure.data.schemaregistry.apacheavro.generatedtestsources\",\"type\":\"record\","
+                    + "\"name\":\"Person\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},"
+                    + "{\"name\":\"favourite_number\",\"type\":[\"int\",\"null\"]},{\"name\":\"favourite_colour\","
+                    + "\"type\":[\"string\",\"null\"]},{\"name\":\"favourite_pet\",\"type\":[\"string\",\"null\"]}]}")
+                        .getBytes(StandardCharsets.UTF_8));
+        });
+
+        final SchemaRegistryAsyncClient client = getSchemaRegistryClient(responses);
         final SchemaRegistryApacheAvroSerializer serializer
             = new SchemaRegistryApacheAvroSerializerBuilder().schemaGroup(PLAYBACK_TEST_GROUP)
                 .schemaRegistryClient(client)
@@ -431,43 +484,12 @@ public class SchemaRegistryApacheAvroSerializerTest {
      *
      * @return Corresponding SchemaRegistryAsyncClient.
      */
-    private SchemaRegistryAsyncClient getSchemaRegistryClient() {
-        final String resourceName = "/compat/" + testInfo.getTestMethod().get().getName() + ".json";
-
-        final RecordedData recordedData;
-        try (InputStream stream = SchemaRegistryApacheAvroSerializerTest.class.getResourceAsStream(resourceName)) {
-            recordedData = SERIALIZER.deserialize(stream, RecordedData.class, SerializerEncoding.JSON);
-        } catch (IOException e) {
-            throw new UncheckedIOException("Unable to get resource input stream for: " + resourceName, e);
-        }
-
-        final HttpClient mockedHttpClient = setupHttpClient(recordedData);
-
-        final SchemaRegistryClientBuilder builder
-            = new SchemaRegistryClientBuilder().credential(new MockTokenCredential())
-                .pipeline(new HttpPipelineBuilder().httpClient(mockedHttpClient).build())
-                .fullyQualifiedNamespace(PLAYBACK_ENDPOINT);
-
-        return builder.buildAsyncClient();
-    }
-
-    private static HttpClient setupHttpClient(RecordedData recordedData) {
-        return request -> {
-            final NetworkCallRecord networkRecord = recordedData.findFirstAndRemoveNetworkCall(e -> true);
-
-            final String body = networkRecord.getResponse().remove("Body");
-            final String statusCodeMessage = networkRecord.getResponse().remove("StatusCode");
-            final int statusCode = Integer.parseInt(statusCodeMessage);
-
-            final HttpHeaders headers = new HttpHeaders(networkRecord.getResponse());
-
-            if (body == null) {
-                System.out.println("Body is empty.");
-                return Mono.just(new MockHttpResponse(request, statusCode, headers, new byte[0]));
-            } else {
-                return Mono.just(new MockHttpResponse(request, statusCode, headers, body));
-            }
-        };
+    private SchemaRegistryAsyncClient getSchemaRegistryClient(Queue<Function<HttpRequest, HttpResponse>> responses) {
+        return new SchemaRegistryClientBuilder().credential(new MockTokenCredential())
+            .pipeline(
+                new HttpPipelineBuilder().httpClient(request -> Mono.just(responses.poll().apply(request))).build())
+            .fullyQualifiedNamespace(PLAYBACK_ENDPOINT)
+            .buildAsyncClient();
     }
 
     private static MockMessage getPayload(PlayingCard card) throws IOException {
