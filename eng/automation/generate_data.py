@@ -42,6 +42,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     )
 
     if not succeeded:
+        # error in emitter
         # fallback to generate from a clean folder
         clean_sdk_folder_succeeded = clean_sdk_folder(sdk_root, sdk_folder)
         if clean_sdk_folder_succeeded:
@@ -71,6 +72,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 module,
             )
         else:
+            # error in compile
             # fallback to generate from a clean folder
             clean_sdk_folder_succeeded = clean_sdk_folder(sdk_root, sdk_folder)
             if clean_sdk_folder_succeeded:
