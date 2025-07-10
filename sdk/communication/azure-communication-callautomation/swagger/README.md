@@ -30,7 +30,7 @@ autorest README.md --java --v4
 
 ``` yaml
 tag: package-2025-06-15
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.52'
 require:
     - https://github.com/Azure/azure-rest-api-specs/blob/6d7d3fc4315bbb2c446a9add65f8d47f20a85426/specification/communication/data-plane/CallAutomation/readme.md
 java: true
@@ -555,4 +555,18 @@ directive:
   where: $.definitions.AudioFormat["x-ms-enum"]
   transform: >
     $.name = "AudioFormatInternal";
+```
+
+### Configure participantRawId to skip path encoding
+
+getParticipant participantRawId is not encoded which results HMAC failures on the backend, to fix the issue, currently
+overriding the getParticipant signature and sending the participantRawId as encoded
+This needs to be fixed in the GA release
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.paths["/calling/callConnections/{callConnectionId}/participants/{participantRawId}"].get.parameters
+  transform: >
+    $.find(param => param.name === "participantRawId")["x-ms-skip-url-encoding"] = true;
 ```

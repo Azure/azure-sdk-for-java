@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class TeamsExtensionUserIdentifierModel implements JsonSerializable
     /*
      * The Id of the Microsoft Teams Extension user, i.e. the Entra ID object Id of the user.
      */
+    @Generated
     private String userId;
 
     /*
      * The tenant Id of the Microsoft Teams Extension user.
      */
+    @Generated
     private String tenantId;
 
     /*
      * The Communication Services resource Id.
      */
+    @Generated
     private String resourceId;
 
     /*
      * The cloud that the Microsoft Teams Extension user belongs to. By default 'public' if missing.
      */
+    @Generated
     private CommunicationCloudEnvironmentModel cloud;
 
     /**
      * Creates an instance of TeamsExtensionUserIdentifierModel class.
      */
+    @Generated
     public TeamsExtensionUserIdentifierModel() {
     }
 
@@ -47,6 +53,7 @@ public final class TeamsExtensionUserIdentifierModel implements JsonSerializable
      * 
      * @return the userId value.
      */
+    @Generated
     public String getUserId() {
         return this.userId;
     }
@@ -57,6 +64,7 @@ public final class TeamsExtensionUserIdentifierModel implements JsonSerializable
      * @param userId the userId value to set.
      * @return the TeamsExtensionUserIdentifierModel object itself.
      */
+    @Generated
     public TeamsExtensionUserIdentifierModel setUserId(String userId) {
         this.userId = userId;
         return this;
@@ -67,6 +75,7 @@ public final class TeamsExtensionUserIdentifierModel implements JsonSerializable
      * 
      * @return the tenantId value.
      */
+    @Generated
     public String getTenantId() {
         return this.tenantId;
     }
@@ -77,6 +86,7 @@ public final class TeamsExtensionUserIdentifierModel implements JsonSerializable
      * @param tenantId the tenantId value to set.
      * @return the TeamsExtensionUserIdentifierModel object itself.
      */
+    @Generated
     public TeamsExtensionUserIdentifierModel setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -87,6 +97,7 @@ public final class TeamsExtensionUserIdentifierModel implements JsonSerializable
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String getResourceId() {
         return this.resourceId;
     }
@@ -97,6 +108,7 @@ public final class TeamsExtensionUserIdentifierModel implements JsonSerializable
      * @param resourceId the resourceId value to set.
      * @return the TeamsExtensionUserIdentifierModel object itself.
      */
+    @Generated
     public TeamsExtensionUserIdentifierModel setResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
@@ -108,6 +120,7 @@ public final class TeamsExtensionUserIdentifierModel implements JsonSerializable
      * 
      * @return the cloud value.
      */
+    @Generated
     public CommunicationCloudEnvironmentModel getCloud() {
         return this.cloud;
     }
@@ -119,6 +132,7 @@ public final class TeamsExtensionUserIdentifierModel implements JsonSerializable
      * @param cloud the cloud value to set.
      * @return the TeamsExtensionUserIdentifierModel object itself.
      */
+    @Generated
     public TeamsExtensionUserIdentifierModel setCloud(CommunicationCloudEnvironmentModel cloud) {
         this.cloud = cloud;
         return this;
@@ -127,6 +141,7 @@ public final class TeamsExtensionUserIdentifierModel implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -146,6 +161,7 @@ public final class TeamsExtensionUserIdentifierModel implements JsonSerializable
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TeamsExtensionUserIdentifierModel.
      */
+    @Generated
     public static TeamsExtensionUserIdentifierModel fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TeamsExtensionUserIdentifierModel deserializedTeamsExtensionUserIdentifierModel

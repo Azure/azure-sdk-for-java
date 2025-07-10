@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,27 @@ public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneN
     /*
      * The phone number, usually in E.164 format.
      */
+    @Generated
     private String value;
 
     /*
-     * True if the phone number is anonymous. By default false if missing. If the phone number is anonymous, the value will be the string 'anonymous'.
+     * True if the phone number is anonymous. By default false if missing. If the phone number is anonymous, the value
+     * will be the string 'anonymous'.
      */
+    @Generated
     private Boolean isAnonymous;
 
     /*
-     * The asserted Id of the phone number. An asserted Id gets generated when the same phone number joins the same call more than once.
+     * The asserted Id of the phone number. An asserted Id gets generated when the same phone number joins the same call
+     * more than once.
      */
+    @Generated
     private String assertedId;
 
     /**
      * Creates an instance of PhoneNumberIdentifierModel class.
      */
+    @Generated
     public PhoneNumberIdentifierModel() {
     }
 
@@ -42,6 +49,7 @@ public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneN
      * 
      * @return the value value.
      */
+    @Generated
     public String getValue() {
         return this.value;
     }
@@ -52,6 +60,7 @@ public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneN
      * @param value the value value to set.
      * @return the PhoneNumberIdentifierModel object itself.
      */
+    @Generated
     public PhoneNumberIdentifierModel setValue(String value) {
         this.value = value;
         return this;
@@ -63,6 +72,7 @@ public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneN
      * 
      * @return the isAnonymous value.
      */
+    @Generated
     public Boolean isAnonymous() {
         return this.isAnonymous;
     }
@@ -74,6 +84,7 @@ public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneN
      * @param isAnonymous the isAnonymous value to set.
      * @return the PhoneNumberIdentifierModel object itself.
      */
+    @Generated
     public PhoneNumberIdentifierModel setIsAnonymous(Boolean isAnonymous) {
         this.isAnonymous = isAnonymous;
         return this;
@@ -85,6 +96,7 @@ public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneN
      * 
      * @return the assertedId value.
      */
+    @Generated
     public String getAssertedId() {
         return this.assertedId;
     }
@@ -96,6 +108,7 @@ public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneN
      * @param assertedId the assertedId value to set.
      * @return the PhoneNumberIdentifierModel object itself.
      */
+    @Generated
     public PhoneNumberIdentifierModel setAssertedId(String assertedId) {
         this.assertedId = assertedId;
         return this;
@@ -104,6 +117,7 @@ public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneN
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -122,6 +136,7 @@ public final class PhoneNumberIdentifierModel implements JsonSerializable<PhoneN
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PhoneNumberIdentifierModel.
      */
+    @Generated
     public static PhoneNumberIdentifierModel fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PhoneNumberIdentifierModel deserializedPhoneNumberIdentifierModel = new PhoneNumberIdentifierModel();

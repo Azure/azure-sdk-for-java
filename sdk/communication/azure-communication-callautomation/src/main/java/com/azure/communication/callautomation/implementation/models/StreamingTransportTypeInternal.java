@@ -4,6 +4,7 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,6 +16,7 @@ public final class StreamingTransportTypeInternal extends ExpandableStringEnum<S
     /**
      * Static value websocket for StreamingTransportTypeInternal.
      */
+    @Generated
     public static final StreamingTransportTypeInternal WEBSOCKET = fromString("websocket");
 
     /**
@@ -22,6 +24,7 @@ public final class StreamingTransportTypeInternal extends ExpandableStringEnum<S
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public StreamingTransportTypeInternal() {
     }
@@ -32,6 +35,7 @@ public final class StreamingTransportTypeInternal extends ExpandableStringEnum<S
      * @param name a name to look for.
      * @return the corresponding StreamingTransportTypeInternal.
      */
+    @Generated
     public static StreamingTransportTypeInternal fromString(String name) {
         return fromString(name, StreamingTransportTypeInternal.class);
     }
@@ -41,6 +45,7 @@ public final class StreamingTransportTypeInternal extends ExpandableStringEnum<S
      * 
      * @return known StreamingTransportTypeInternal values.
      */
+    @Generated
     public static Collection<StreamingTransportTypeInternal> values() {
         return values(StreamingTransportTypeInternal.class);
     }
