@@ -37,7 +37,6 @@ public class JobTests extends BatchClientTestBase {
                 try {
                     livePool = createIfNotExistIaaSPool(poolId);
                 } catch (Exception e) {
-                    // TODO (catch): Auto-generated catch block
                     e.printStackTrace();
                 }
                 Assertions.assertNotNull(livePool);
