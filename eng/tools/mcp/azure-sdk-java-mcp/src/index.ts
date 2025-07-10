@@ -224,7 +224,7 @@ server.registerTool(
     "prepare_java_sdk_environment",
     {
         description:
-            "Prepare the development environment required for Java SDK generation when there are errors complaining missing development environments. The tool returns a cookbook with step-by-step instructions to install necessary environments including Node.js/npm, Java/Maven, and TypeSpec tools.",
+            "Prepare the development environment required for Java SDK generation when there are errors about missing development environments. The tool returns a cookbook with step-by-step instructions to install necessary environments including Node.js/npm, Java/Maven, and TypeSpec tools.",
         inputSchema: {
             cwd: z
                 .string()
