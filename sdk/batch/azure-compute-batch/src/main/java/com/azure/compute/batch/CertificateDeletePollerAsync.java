@@ -45,6 +45,9 @@ public final class CertificateDeletePollerAsync {
 
     /**
      * Activation operation to start the delete.
+     *
+     * @return A function that initiates the delete request and returns a {@link PollResponse}
+     * with {@link LongRunningOperationStatus#IN_PROGRESS} status.
      */
     public Function<PollingContext<BatchCertificate>, Mono<PollResponse<BatchCertificate>>> getActivationOperation() {
         return context -> batchAsyncClient.deleteCertificateWithResponse(thumbprintAlgorithm, thumbprint, options)
@@ -53,6 +56,9 @@ public final class CertificateDeletePollerAsync {
 
     /**
      * Poll operation to check if the certificate is still being deleted or is gone.
+     *
+     * @return A function that polls the certificate state and returns a {@link PollResponse}
+     * with the current {@link LongRunningOperationStatus}.
      */
     public Function<PollingContext<BatchCertificate>, Mono<PollResponse<BatchCertificate>>> getPollOperation() {
         return context -> {
@@ -73,6 +79,8 @@ public final class CertificateDeletePollerAsync {
 
     /**
      * Cancel operation (not supported for certificate deletion).
+     *
+     * @return A function that always returns an empty {@link Mono}, indicating cancellation is unsupported.
      */
     public BiFunction<PollingContext<BatchCertificate>, PollResponse<BatchCertificate>, Mono<BatchCertificate>>
         getCancelOperation() {
@@ -81,6 +89,8 @@ public final class CertificateDeletePollerAsync {
 
     /**
      * Final result fetch operation (returns null; not required).
+     *
+     * @return A function that returns an empty {@link Mono}, indicating no final fetch is required.
      */
     public Function<PollingContext<BatchCertificate>, Mono<Void>> getFetchResultOperation() {
         return context -> Mono.empty();
