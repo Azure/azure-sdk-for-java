@@ -14,6 +14,7 @@ import io.netty.channel.ChannelPromise;
 import io.netty.channel.DefaultChannelConfig;
 import io.netty.channel.DefaultEventLoop;
 import io.netty.channel.EventLoop;
+import io.netty.util.AttributeKey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -24,6 +25,7 @@ import java.net.SocketAddress;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_CODEC;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_RESPONSE;
@@ -52,6 +54,7 @@ public class Netty4PipelineCleanupHandlerTests {
     public void setup() {
         MockitoAnnotations.openMocks(this);
         testChannel = new TestMockChannel(new MockEventLoop());
+        testChannel.attr(AttributeKey.valueOf("channel-lock")).set(new ReentrantLock());
         errorReference = new AtomicReference<>();
         latch = new CountDownLatch(1);
     }

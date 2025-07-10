@@ -39,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROXY;
@@ -50,6 +51,16 @@ import static io.clientcore.http.netty4.implementation.Netty4Utility.buildSslCon
  * A pool of Netty channels that can be reused for requests to the same remote address.
  */
 public class Netty4ConnectionPool implements Closeable {
+
+    /**
+     * An AttributeKey referring to a channel-specific {@link ReentrantLock}.
+     * <p>
+     * This lock is used to ensure that the setup and cleanup of a channel's pipeline are atomic operations.
+     * It protects against race conditions where a channel might be acquired from the pool and configured for a new
+     * request before the cleanup from the previous request has fully completed. Each channel gets its own unique
+     * lock instance, making the lock contention extremely low.
+     */
+    public static final AttributeKey<ReentrantLock> CHANNEL_LOCK = AttributeKey.valueOf("channel-lock");
 
     private static final AttributeKey<PooledConnection> POOLED_CONNECTION_KEY
         = AttributeKey.valueOf("pooled-connection-key");
@@ -356,6 +367,8 @@ public class Netty4ConnectionPool implements Closeable {
             newConnectionBootstrap.handler(new ChannelInitializer<Channel>() {
                 @Override
                 public void initChannel(Channel channel) throws SSLException {
+                    channel.attr(CHANNEL_LOCK).set(new ReentrantLock());
+
                     // Create the connection wrapper and attach it to the channel.
                     new PooledConnection(channel, key);
 

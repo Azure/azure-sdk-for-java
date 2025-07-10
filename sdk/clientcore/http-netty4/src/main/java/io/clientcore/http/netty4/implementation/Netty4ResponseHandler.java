@@ -176,14 +176,15 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
             return;
         }
 
-        if (!isHttp2) {
-            ctx.pipeline().remove(this);
-        }
-        ctx.fireChannelReadComplete();
-
         responseReference.set(new ResponseStateInfo(ctx.channel(), complete, statusCode, headers, eagerContent,
             ResponseBodyHandling.getBodyHandling(request, headers), isHttp2));
         latch.countDown();
+
+        if (!isHttp2 && ctx.pipeline().get(this.getClass()) != null) {
+            ctx.pipeline().remove(this);
+        }
+
+        ctx.fireChannelReadComplete();
     }
 
     @Override

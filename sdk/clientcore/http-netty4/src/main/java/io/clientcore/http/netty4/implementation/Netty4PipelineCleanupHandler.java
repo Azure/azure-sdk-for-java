@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.ALPN;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.CHUNKED_WRITER;
@@ -88,27 +89,34 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
             return;
         }
 
-        // Always reset autoRead to false before returning a channel to the pool
-        // to ensure predictable behavior for the next request.
-        ctx.channel().config().setAutoRead(false);
+        ReentrantLock lock = ctx.channel().attr(Netty4ConnectionPool.CHANNEL_LOCK).get();
+        lock.lock();
 
-        ChannelPipeline pipeline = ctx.channel().pipeline();
+        try {
+            // Always reset autoRead to false before returning a channel to the pool
+            // to ensure predictable behavior for the next request.
+            ctx.channel().config().setAutoRead(false);
 
-        HttpProtocolVersion protocolVersion = ctx.channel().attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).get();
-        boolean isHttp2 = protocolVersion == HttpProtocolVersion.HTTP_2;
+            ChannelPipeline pipeline = ctx.channel().pipeline();
 
-        for (String handlerName : HANDLERS_TO_REMOVE) {
-            if (isHttp2 && HTTP_CODEC.equals(handlerName)) {
-                continue;
+            HttpProtocolVersion protocolVersion = ctx.channel().attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).get();
+            boolean isHttp2 = protocolVersion == HttpProtocolVersion.HTTP_2;
+
+            for (String handlerName : HANDLERS_TO_REMOVE) {
+                if (isHttp2 && HTTP_CODEC.equals(handlerName)) {
+                    continue;
+                }
+
+                if (pipeline.get(handlerName) != null) {
+                    pipeline.remove(handlerName);
+                }
             }
 
-            if (pipeline.get(handlerName) != null) {
-                pipeline.remove(handlerName);
+            if (pipeline.get(Netty4PipelineCleanupHandler.class) != null) {
+                pipeline.remove(this);
             }
-        }
-
-        if (pipeline.get(Netty4PipelineCleanupHandler.class) != null) {
-            pipeline.remove(this);
+        } finally {
+            lock.unlock();
         }
 
         if (closeChannel || !ctx.channel().isActive() || connectionPool == null) {
