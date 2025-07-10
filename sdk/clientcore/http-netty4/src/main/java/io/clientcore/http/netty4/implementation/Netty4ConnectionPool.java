@@ -10,12 +10,21 @@ import io.clientcore.core.utils.AuthenticateChallenge;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
+import io.netty.handler.codec.http2.Http2Connection;
+import io.netty.handler.codec.http2.Http2GoAwayFrame;
+import io.netty.handler.codec.http2.HttpToHttp2ConnectionHandler;
+import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.proxy.ProxyHandler;
+import io.netty.handler.ssl.SslCloseCompletionEvent;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.SslHandler;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.Promise;
@@ -61,6 +70,10 @@ public class Netty4ConnectionPool implements Closeable {
      * lock instance, making the lock contention extremely low.
      */
     public static final AttributeKey<ReentrantLock> CHANNEL_LOCK = AttributeKey.valueOf("channel-lock");
+    public static final AttributeKey<Boolean> HTTP2_GOAWAY_RECEIVED = AttributeKey.valueOf("http2-goaway-received");
+
+    // A unique token to identify the current owner of a channel pipeline
+    public static final AttributeKey<Object> PIPELINE_OWNER_TOKEN = AttributeKey.valueOf("pipeline-owner-token");
 
     private static final AttributeKey<PooledConnection> POOLED_CONNECTION_KEY
         = AttributeKey.valueOf("pooled-connection-key");
@@ -83,6 +96,43 @@ public class Netty4ConnectionPool implements Closeable {
     private final Consumer<SslContextBuilder> sslContextModifier;
     private final AtomicReference<List<AuthenticateChallenge>> proxyChallenges;
     private final HttpProtocolVersion maximumHttpVersion;
+
+    @ChannelHandler.Sharable
+    public static class Http2GoAwayHandler extends ChannelInboundHandlerAdapter {
+        @Override
+        public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+            if (msg instanceof Http2GoAwayFrame) {
+                // A GOAWAY frame was received. Mark the channel so the pool knows
+                // not to reuse it for new requests.
+                ctx.channel().attr(HTTP2_GOAWAY_RECEIVED).set(true);
+            }
+            super.channelRead(ctx, msg);
+        }
+    }
+
+    @ChannelHandler.Sharable
+    public static final class SuppressProxyConnectExceptionWarningHandler extends ChannelInboundHandlerAdapter {
+        @Override
+        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+            if (cause instanceof HttpProxyHandler.HttpProxyConnectException) {
+                return;
+            }
+            ctx.fireExceptionCaught(cause);
+        }
+    }
+
+    @ChannelHandler.Sharable
+    private static class SslGracefulShutdownHandler extends ChannelInboundHandlerAdapter {
+        @Override
+        public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+            if (evt instanceof SslCloseCompletionEvent) {
+                ctx.channel().close();
+            }
+            super.userEventTriggered(ctx, evt);
+        }
+    }
+
+    private static final SslGracefulShutdownHandler SSL_GRACEFUL_SHUTDOWN_HANDLER = new SslGracefulShutdownHandler();
 
     public Netty4ConnectionPool(Bootstrap bootstrap,
         ChannelInitializationProxyHandler channelInitializationProxyHandler,
@@ -115,7 +165,7 @@ public class Netty4ConnectionPool implements Closeable {
     }
 
     /**
-     * Acquires a channel for the given remote address from the pool.
+     * Acquires a channel for the given composite key from the pool.
      *
      * @param key The composite key representing the connection route.
      * @param isHttps Flag indicating whether connections for this route should be secured using TLS/SSL.
@@ -132,10 +182,11 @@ public class Netty4ConnectionPool implements Closeable {
     }
 
     /**
-     * Releases a channel back to the pool.
+     * Releases a channel back to the connection pool.
      * The channel pipeline must be cleaned of request-specific handlers before releasing.
+     * This method is not responsible for that.
      *
-     * @param channel The channel to release.
+     * @param channel The channel to release back to the connection pool.
      */
     public void release(Channel channel) {
         if (channel == null) {
@@ -224,7 +275,8 @@ public class Netty4ConnectionPool implements Closeable {
     private class PerRoutePool {
         private final Deque<PooledConnection> idleConnections = new ConcurrentLinkedDeque<>();
         private final Deque<Promise<Channel>> pendingAcquirers = new ConcurrentLinkedDeque<>();
-        private final AtomicInteger activeConnections = new AtomicInteger(0);
+        // Counter for all connections for a specific route (active and idle).
+        private final AtomicInteger totalConnections = new AtomicInteger(0);
         private final Netty4ConnectionPoolKey key;
         private final SocketAddress route;
         private final boolean isHttps;
@@ -235,6 +287,17 @@ public class Netty4ConnectionPool implements Closeable {
             this.isHttps = isHttps;
         }
 
+        /**
+         * Acquires a connection.
+         *
+         * <p>
+         * This method is the entry point for getting a connection. It will first try to poll from the idle queue.
+         * If it can't, it will attempt to create a new one if pool capacity is not reached. If capacity is reached,
+         * it will queue the request.
+         * </p>
+         *
+         * @return A {@link Future} that completes with a {@link Channel}.
+         */
         Future<Channel> acquire() {
             if (closed.get()) {
                 return bootstrap.config()
@@ -243,121 +306,145 @@ public class Netty4ConnectionPool implements Closeable {
                     .newFailedFuture(new IllegalStateException(CLOSED_POOL_ERROR_MESSAGE));
             }
 
-            // First, optimistically try to acquire an existing idle connection.
-            while (true) {
-                PooledConnection connection = idleConnections.poll();
-                if (connection == null) {
-                    break;
-                }
-
-                if (isHealthy(connection)) {
-                    // Acquired an existing healthy connection. activeConnections count is not
-                    // yet incremented for idle channels, so we do it here.
-                    activeConnections.incrementAndGet();
-                    connection.idleSince = null; // Mark as active
-                    return connection.channel.eventLoop().newSucceededFuture(connection.channel);
-                }
-
-                // Unhealthy idle connection was found and discarded. Don't decrement activeConnections
-                // as it was already decremented when the channel was released to the idle queue.
-                connection.close();
+            // First, try the optimistic fast-path.
+            PooledConnection connection = pollIdleConnection();
+            if (connection != null) {
+                return connection.channel.eventLoop().newSucceededFuture(connection.channel);
             }
 
-            // No idle connections. Try to create a new one or queue the request.
-            while (true) {
-                int currentActive = activeConnections.get();
-                if (currentActive < maxConnectionsPerRoute) {
-                    // Try to reserve a slot for a new connection.
-                    if (activeConnections.compareAndSet(currentActive, currentActive + 1)) {
-                        return createNewConnection();
-                    }
-                    // CAS failed, another thread changed the count. Loop to retry.
-                } else {
-                    // Pool is full, queue the request if there is space.
-                    if (pendingAcquirers.size() >= maxPendingAcquires) {
-                        return bootstrap.config()
-                            .group()
-                            .next()
-                            .newFailedFuture(CoreException.from("Pending acquisition queue is full."));
-                    }
-
-                    Promise<Channel> promise = bootstrap.config().group().next().newPromise();
-                    promise.addListener(future -> {
-                        if (future.isCancelled()) {
-                            pendingAcquirers.remove(promise);
-                        }
-                    });
-                    pendingAcquirers.offer(promise);
-
-                    if (pendingAcquireTimeout != null) {
-                        bootstrap.config().group().schedule(() -> {
-                            if (!promise.isDone()) {
-                                promise.tryFailure(CoreException
-                                    .from("Connection acquisition timed out after " + pendingAcquireTimeout));
-                            }
-                        }, pendingAcquireTimeout.toMillis(), TimeUnit.MILLISECONDS);
-                    }
-                    return promise;
-                }
+            // No idle connections, we need to either create a new one or queue.
+            int currentTotal = totalConnections.getAndIncrement();
+            if (currentTotal < maxConnectionsPerRoute) {
+                return createNewConnection();
             }
+
+            // Pool is full, decrement the counter back and queue the request.
+            totalConnections.getAndDecrement();
+            return queueAcquireRequest();
         }
 
         void release(PooledConnection connection) {
             if (!isHealthy(connection)) {
-                activeConnections.decrementAndGet();
-                connection.close();
-                // A slot has been freed. Try to satisfy a waiting acquirer with a new connection.
-                satisfyWaiterWithNewConnection();
+                connection.close(); // The close listener will handle decrementing the counter.
                 return;
             }
 
-            // The channel is healthy. Now, check if anyone is waiting for a connection.
+            connection.idleSince = OffsetDateTime.now(ZoneOffset.UTC);
+
+            // Offer to the idle queue and then try to satisfy pending waiters.
+            idleConnections.offer(connection);
+            drainPendingAcquirers();
+        }
+
+        private PooledConnection pollIdleConnection() {
             while (true) {
-                Promise<Channel> waiterToNotify = pendingAcquirers.poll();
-                if (waiterToNotify == null) {
-                    // No waiters, return the connection to the idle queue.
-                    activeConnections.decrementAndGet();
-                    connection.idleSince = OffsetDateTime.now(ZoneOffset.UTC);
-                    idleConnections.offer(connection);
-                    break;
+                PooledConnection connection = idleConnections.poll();
+                if (connection == null) {
+                    return null;
                 }
 
-                // A waiter exists. Fulfill the promise. Active connection count remains the same.
-                if (waiterToNotify.trySuccess(connection.channel)) {
-                    // Waiter was notified successfully
-                    return;
+                if (isHealthy(connection)) {
+                    connection.idleSince = null; // Mark as active
+                    return connection;
                 }
-                // If trySuccess fails, the waiter was cancelled. Loop again to find another waiter.
+
+                // Unhealthy idle connection was found and discarded.
+                connection.close(); // The close listener will handle decrementing the counter.
             }
         }
 
-        private void satisfyWaiterWithNewConnection() {
-            // This method is called when a connection slot is freed.
-            while (true) {
-                int currentActive = activeConnections.get();
-                if (currentActive >= maxConnectionsPerRoute || pendingAcquirers.isEmpty()) {
-                    return;
-                }
+        /**
+         * Queues a new promise for a connection.
+         * This is called when the pool is at max capacity.
+         *
+         * @return A Future that will be completed later.
+         */
+        private Future<Channel> queueAcquireRequest() {
+            if (pendingAcquirers.size() >= maxPendingAcquires) {
+                return bootstrap.config()
+                    .group()
+                    .next()
+                    .newFailedFuture(CoreException.from("Pending acquisition queue is full."));
+            }
 
-                if (activeConnections.compareAndSet(currentActive, currentActive + 1)) {
-                    Promise<Channel> waiter = pendingAcquirers.poll();
-                    if (waiter != null) {
-                        // A waiter exists, and we have capacity, create a new connection for them.
-                        Future<Channel> newConnectionFuture = createNewConnection();
-                        newConnectionFuture.addListener(future -> {
-                            if (future.isSuccess()) {
-                                waiter.trySuccess((Channel) future.getNow());
-                            } else {
-                                waiter.tryFailure(future.cause());
-                            }
-                        });
-                    } else {
-                        // A waiter disappeared after we reserved a slot. Release the slot.
-                        activeConnections.decrementAndGet();
-                    }
-                    return; // Exit after attempting to satisfy one waiter.
+            Promise<Channel> promise = bootstrap.config().group().next().newPromise();
+            promise.addListener(future -> {
+                if (future.isCancelled()) {
+                    pendingAcquirers.remove(promise);
                 }
-                // CAS failed, another thread is operating. Loop to re-evaluate.
+            });
+            pendingAcquirers.offer(promise);
+
+            if (pendingAcquireTimeout != null) {
+                bootstrap.config().group().schedule(() -> {
+                    if (!promise.isDone()) {
+                        promise.tryFailure(
+                            CoreException.from("Connection acquisition timed out after " + pendingAcquireTimeout));
+                    }
+                }, pendingAcquireTimeout.toMillis(), TimeUnit.MILLISECONDS);
+            }
+
+            // After queueing, try to drain in case a connection was released in the meantime.
+            drainPendingAcquirers();
+
+            return promise;
+        }
+
+        /**
+         * This is the core logic that matches pending waiters with available resources.
+         * It can be triggered when a connection is released, or when a slot opens up.
+         */
+        private void drainPendingAcquirers() {
+            if (pendingAcquirers.isEmpty()) {
+                return;
+            }
+
+            // Try to satisfy a waiter with an idle connection.
+            PooledConnection idleConnection = pollIdleConnection();
+            if (idleConnection != null) {
+                Promise<Channel> waiter = pollNextWaiter();
+                if (waiter != null) {
+                    waiter.trySuccess(idleConnection.channel);
+                } else {
+                    // No waiter, put the connection back.
+                    idleConnections.addFirst(idleConnection);
+                }
+                return;
+            }
+
+            // No idle connections, try to satisfy a waiter with a new connection if we have capacity.
+            int currentTotal = totalConnections.getAndIncrement();
+            if (currentTotal < maxConnectionsPerRoute) {
+                Promise<Channel> waiter = pollNextWaiter();
+                if (waiter != null) {
+                    Future<Channel> newConnectionFuture = createNewConnection();
+                    newConnectionFuture.addListener(future -> {
+                        if (future.isSuccess()) {
+                            waiter.trySuccess((Channel) future.getNow());
+                        } else {
+                            waiter.tryFailure(future.cause());
+                        }
+                    });
+                } else {
+                    // No waiter was found, decrement our capacity reservation.
+                    totalConnections.getAndDecrement();
+                }
+            } else {
+                // No capacity, decrement our speculative increment.
+                totalConnections.getAndDecrement();
+            }
+        }
+
+        private Promise<Channel> pollNextWaiter() {
+            while (true) {
+                Promise<Channel> waiter = pendingAcquirers.poll();
+                if (waiter == null) {
+                    return null; // Queue is empty
+                }
+                if (!waiter.isCancelled()) {
+                    return waiter; // Found a valid waiter
+                }
+                // Discard the canceled waiter and try again.
             }
         }
 
@@ -379,17 +466,18 @@ public class Netty4ConnectionPool implements Closeable {
                     if (hasProxy) {
                         ProxyHandler proxyHandler = channelInitializationProxyHandler.createProxy(proxyChallenges);
                         pipeline.addFirst(PROXY, proxyHandler);
+                        pipeline.addAfter(PROXY, "clientcore.suppressproxyexception",
+                            new SuppressProxyConnectExceptionWarningHandler());
                     }
 
                     // Add SSL handling if the request is HTTPS.
                     if (isHttps) {
                         InetSocketAddress inetSocketAddress = (InetSocketAddress) key.getFinalDestination();
                         SslContext ssl = buildSslContext(maximumHttpVersion, sslContextModifier);
-                        // SSL handling is added last here. This is done as proxying could require SSL handling too.
-                        channel.pipeline()
-                            .addLast(SSL, ssl.newHandler(channel.alloc(), inetSocketAddress.getHostString(),
-                                inetSocketAddress.getPort()));
-                        channel.pipeline().addLast(SSL_INITIALIZER, new Netty4SslInitializationHandler());
+                        pipeline.addLast(SSL, ssl.newHandler(channel.alloc(), inetSocketAddress.getHostString(),
+                            inetSocketAddress.getPort()));
+                        pipeline.addAfter(SSL, "clientcore.sslshutdown", SSL_GRACEFUL_SHUTDOWN_HANDLER);
+                        pipeline.addLast(SSL_INITIALIZER, new Netty4SslInitializationHandler());
                     }
                 }
             });
@@ -397,14 +485,34 @@ public class Netty4ConnectionPool implements Closeable {
             newConnectionBootstrap.connect(route).addListener(future -> {
                 if (!future.isSuccess()) {
                     LOGGER.atError().setThrowable(future.cause()).log("Failed connection.");
-                    // Connect failed, release the slot and try to satisfy a waiter.
-                    activeConnections.decrementAndGet();
-                    satisfyWaiterWithNewConnection();
+                    totalConnections.getAndDecrement();
+                    drainPendingAcquirers();
                     promise.setFailure(future.cause());
                     return;
                 }
 
                 Channel newChannel = ((ChannelFuture) future).channel();
+                newChannel.closeFuture().addListener(closeFuture -> {
+                    totalConnections.getAndDecrement();
+                    drainPendingAcquirers();
+                });
+
+                Runnable connectionReadyRunner = () -> {
+                    SslHandler sslHandler = newChannel.pipeline().get(SslHandler.class);
+                    if (sslHandler != null) {
+                        sslHandler.handshakeFuture().addListener(sslFuture -> {
+                            if (sslFuture.isSuccess()) {
+                                promise.setSuccess(newChannel);
+                            } else {
+                                promise.setFailure(sslFuture.cause());
+                                newChannel.close();
+                            }
+                        });
+                    } else {
+                        promise.setSuccess(newChannel);
+                    }
+                };
+
                 ProxyHandler proxyHandler = (ProxyHandler) newChannel.pipeline().get(PROXY);
 
                 if (proxyHandler != null) {
@@ -413,16 +521,13 @@ public class Netty4ConnectionPool implements Closeable {
                         if (proxyFuture.isSuccess()) {
                             if (!newChannel.isActive()) {
                                 promise.setFailure(new ClosedChannelException());
-                                activeConnections.decrementAndGet();
-                                satisfyWaiterWithNewConnection();
+                                newChannel.close();
                                 return;
                             }
-                            promise.setSuccess(newChannel);
+                            connectionReadyRunner.run();
                         } else {
                             promise.setFailure(proxyFuture.cause());
                             newChannel.close();
-                            activeConnections.decrementAndGet();
-                            satisfyWaiterWithNewConnection();
                         }
                     });
                 } else {
@@ -433,16 +538,43 @@ public class Netty4ConnectionPool implements Closeable {
         }
 
         private boolean isHealthy(PooledConnection connection) {
+            Channel channel = connection.channel;
+
             if (!connection.isActiveAndWriteable()) {
                 return false;
             }
 
+            OffsetDateTime now = null; // To be initialized only if needed.
+
             if (maxLifetimeNanos > 0) {
-                OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+                now = OffsetDateTime.now(ZoneOffset.UTC);
                 if (Duration.between(connection.creationTime, now).toNanos() >= maxLifetimeNanos) {
                     return false;
                 }
             }
+
+            if (connection.idleSince != null && idleTimeoutNanos > 0) {
+                if (now == null) {
+                    now = OffsetDateTime.now(ZoneOffset.UTC);
+                }
+                if (Duration.between(connection.idleSince, now).toNanos() >= idleTimeoutNanos) {
+                    return false;
+                }
+            }
+
+            HttpProtocolVersion protocol = channel.attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).get();
+            if (protocol == HttpProtocolVersion.HTTP_2) {
+                if (Boolean.TRUE.equals(channel.attr(HTTP2_GOAWAY_RECEIVED).get())) {
+                    return false;
+                }
+
+                HttpToHttp2ConnectionHandler http2Handler = channel.pipeline().get(HttpToHttp2ConnectionHandler.class);
+                if (http2Handler != null) {
+                    Http2Connection.Endpoint<?> clientEndpoint = http2Handler.connection().local();
+                    return clientEndpoint.numActiveStreams() <= 0;
+                }
+            }
+
             return true;
         }
 
@@ -473,5 +605,4 @@ public class Netty4ConnectionPool implements Closeable {
             }
         }
     }
-
 }

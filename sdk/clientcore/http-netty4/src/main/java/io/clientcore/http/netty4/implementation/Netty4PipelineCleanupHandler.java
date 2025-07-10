@@ -35,6 +35,7 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
     private final AtomicReference<Throwable> errorReference;
     private final CountDownLatch latch;
     private final AtomicBoolean cleanedUp = new AtomicBoolean(false);
+    private final Object pipelineOwnerToken;
 
     private static final List<String> HANDLERS_TO_REMOVE;
 
@@ -51,10 +52,11 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
     }
 
     public Netty4PipelineCleanupHandler(Netty4ConnectionPool connectionPool, AtomicReference<Throwable> errorReference,
-        CountDownLatch latch) {
+        CountDownLatch latch, Object pipelineOwnerToken) {
         this.connectionPool = connectionPool;
         this.errorReference = errorReference;
         this.latch = latch;
+        this.pipelineOwnerToken = pipelineOwnerToken;
     }
 
     @Override
@@ -85,6 +87,13 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
     }
 
     public void cleanup(ChannelHandlerContext ctx, boolean closeChannel) {
+        // Check if this handler is still the rightful owner of the pipeline.
+        // If the tokens don't match, a new request has taken over this channel,
+        // so this stale cleanup handler must not do anything.
+        if (ctx.channel().attr(Netty4ConnectionPool.PIPELINE_OWNER_TOKEN).get() != pipelineOwnerToken) {
+            return;
+        }
+
         if (!cleanedUp.compareAndSet(false, true)) {
             return;
         }
