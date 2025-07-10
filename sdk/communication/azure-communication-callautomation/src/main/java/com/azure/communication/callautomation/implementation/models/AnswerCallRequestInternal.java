@@ -30,12 +30,6 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     private String callbackUri;
 
     /*
-     * Used by customer to send custom calling context to targets when answering On-Behalf-Of call
-     */
-    @Generated
-    private CustomCallingContext customCallingContext;
-
-    /*
      * A customer set value used to track the answering of a call.
      */
     @Generated
@@ -113,30 +107,6 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     @Generated
     public AnswerCallRequestInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
-        return this;
-    }
-
-    /**
-     * Get the customCallingContext property: Used by customer to send custom calling context to targets when answering
-     * On-Behalf-Of call.
-     * 
-     * @return the customCallingContext value.
-     */
-    @Generated
-    public CustomCallingContext getCustomCallingContext() {
-        return this.customCallingContext;
-    }
-
-    /**
-     * Set the customCallingContext property: Used by customer to send custom calling context to targets when answering
-     * On-Behalf-Of call.
-     * 
-     * @param customCallingContext the customCallingContext value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    @Generated
-    public AnswerCallRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
-        this.customCallingContext = customCallingContext;
         return this;
     }
 
@@ -260,7 +230,6 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("incomingCallContext", this.incomingCallContext);
         jsonWriter.writeStringField("callbackUri", this.callbackUri);
-        jsonWriter.writeJsonField("customCallingContext", this.customCallingContext);
         jsonWriter.writeStringField("operationContext", this.operationContext);
         jsonWriter.writeJsonField("callIntelligenceOptions", this.callIntelligenceOptions);
         jsonWriter.writeJsonField("answeredBy", this.answeredBy);
@@ -290,8 +259,6 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
                     deserializedAnswerCallRequestInternal.incomingCallContext = reader.getString();
                 } else if ("callbackUri".equals(fieldName)) {
                     deserializedAnswerCallRequestInternal.callbackUri = reader.getString();
-                } else if ("customCallingContext".equals(fieldName)) {
-                    deserializedAnswerCallRequestInternal.customCallingContext = CustomCallingContext.fromJson(reader);
                 } else if ("operationContext".equals(fieldName)) {
                     deserializedAnswerCallRequestInternal.operationContext = reader.getString();
                 } else if ("callIntelligenceOptions".equals(fieldName)) {

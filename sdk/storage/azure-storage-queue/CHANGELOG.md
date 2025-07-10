@@ -1,6 +1,6 @@
 # Release History
 
-## 12.26.0-beta.2 (Unreleased)
+## 12.27.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,13 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.27.0-beta.1 (2025-07-09)
+
+### Features Added
+- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
+- Added `QueueProperties.ApproximateMessagesCountLong` to replace `QueueProperties.ApproximateMessagesCount`.  This property will correctly handle approximate message counts greater than max int.
+- Added support for service version 2025-11-05.
 
 ## 12.25.1 (2025-06-19)
 
