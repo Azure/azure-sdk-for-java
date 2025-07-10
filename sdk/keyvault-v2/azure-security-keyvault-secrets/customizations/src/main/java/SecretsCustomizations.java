@@ -26,7 +26,7 @@ public class SecretsCustomizations extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         removeFiles(customization.getRawEditor());
         moveListResultFiles(customization);
-        customizeServiceVersion(customization.getRawEditor());
+        customizeServiceVersion(customization);
         customizeModuleInfo(customization.getRawEditor());
     }
 
