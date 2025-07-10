@@ -32,9 +32,9 @@ public final class NodeReimagePollerAsync {
      * Creates a new {@link NodeReimagePollerAsync}.
      *
      * @param batchAsyncClient Client used to call the Batch service.
-     * @param poolId           Pool that contains the node.
-     * @param nodeId           Node to re-image.
-     * @param options          Optional request options (may be {@code null}).
+     * @param poolId Pool that contains the node.
+     * @param nodeId Node to re-image.
+     * @param options Optional request options (may be {@code null}).
      */
     public NodeReimagePollerAsync(BatchAsyncClient batchAsyncClient, String poolId, String nodeId,
         RequestOptions options) {

@@ -102,7 +102,6 @@ public class TaskManager {
                     }
                 });
             } catch (Exception e) {
-                // TODO (catch): Auto-generated catch block
                 e.printStackTrace();
             }
         }
