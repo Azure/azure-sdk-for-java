@@ -91,10 +91,8 @@ public final class PoolStopResizePollerAsync {
 
                 return Mono.just(new PollResponse<>(status, pool));
             })
-                // Pool deleted ⇒ treat as success (final value = null)
                 .onErrorResume(ResourceNotFoundException.class,
                     ex -> Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null)))
-                // Any other error ⇒ fail the poller
                 .onErrorResume(e -> Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null)));
         };
     }
