@@ -4,6 +4,7 @@ package com.azure.cosmos.spark.fabric
 
 import com.azure.cosmos.spark.AccountDataResolver
 import com.azure.cosmos.spark.CosmosAccessToken
+import com.azure.cosmos.spark.CosmosConfigNames.AccountDataResolverServiceName
 import com.fasterxml.jackson.databind.ObjectMapper
 
 import java.time.{Instant, OffsetDateTime, ZoneOffset}
@@ -26,7 +27,7 @@ class FabricAccountDataResolver extends AccountDataResolver with BasicLoggingTra
   }
 
   private def isEnabled(configs: ConfigParameters): Boolean = {
-    configs.isEnabledConfigValue.isDefined && configs.isEnabledConfigValue.get.toBoolean
+    configs.accountDataResolverServiceName.isDefined && configs.accountDataResolverServiceName.get.equalsIgnoreCase("FabricAccountDataResolver")
   }
 
   override def getAccessTokenProvider(configs: Map[String, String]): Option[List[String] => CosmosAccessToken] = {
@@ -62,15 +63,13 @@ class FabricAccountDataResolver extends AccountDataResolver with BasicLoggingTra
 
   private[this] object FabricConfigNames {
     val Audience = "spark.cosmos.auth.fabric.audience"
-    val CustomAuthEnabled = "spark.cosmos.auth.fabric.enabled"
   }
-
-  private case class ConfigParameters(audience: Option[String], isEnabledConfigValue: Option[String])
+  private case class ConfigParameters(audience: Option[String], accountDataResolverServiceName: Option[String])
   private object ConfigParameters {
     def apply(configs: Map[String, String]): ConfigParameters = {
       new ConfigParameters(
         configs.get(FabricConfigNames.Audience),
-        configs.get(FabricConfigNames.CustomAuthEnabled)
+        configs.get(AccountDataResolverServiceName)
       )
     }
   }
