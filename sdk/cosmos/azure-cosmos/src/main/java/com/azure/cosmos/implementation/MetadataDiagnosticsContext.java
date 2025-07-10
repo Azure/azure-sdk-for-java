@@ -35,6 +35,10 @@ public class MetadataDiagnosticsContext {
         metadataDiagnosticList.add(metaDataDiagnostic);
     }
 
+    public boolean isEmpty() {
+        return metadataDiagnosticList == null || metadataDiagnosticList.isEmpty();
+    }
+
     @JsonSerialize(using = MetaDataDiagnosticSerializer.class)
     public static class MetadataDiagnostics {
         public volatile Instant startTimeUTC;
@@ -45,6 +49,23 @@ public class MetadataDiagnosticsContext {
             this.startTimeUTC = startTimeUTC;
             this.endTimeUTC = endTimeUTC;
             this.metaDataName = metaDataName;
+        }
+    }
+
+    @JsonSerialize(using = MetaDataDiagnosticSerializer.class)
+    public static class ContainerLookupMetadataDiagnostics extends MetadataDiagnostics {
+        public volatile String activityId;
+        public volatile String collectionRid;
+
+        public ContainerLookupMetadataDiagnostics(
+            Instant startTimeUTC,
+            Instant endTimeUTC,
+            MetadataType metaDataName,
+            String activityId,
+            String collectionRid) {
+            super(startTimeUTC, endTimeUTC, metaDataName);
+            this.activityId = activityId;
+            this.collectionRid = collectionRid;
         }
     }
 
@@ -69,9 +90,15 @@ public class MetadataDiagnosticsContext {
                 jsonGenerator.writeNumberField("durationinMS", durationinMS.toMillis());
             }
 
+            if (metaDataDiagnostic instanceof ContainerLookupMetadataDiagnostics) {
+                jsonGenerator.writeStringField("activityId", ((ContainerLookupMetadataDiagnostics)metaDataDiagnostic).activityId);
+                jsonGenerator.writeStringField("collectionRid", ((ContainerLookupMetadataDiagnostics)metaDataDiagnostic).collectionRid);
+            }
+
             jsonGenerator.writeEndObject();
         }
     }
+
     public enum MetadataType {
         CONTAINER_LOOK_UP,
         PARTITION_KEY_RANGE_LOOK_UP,
