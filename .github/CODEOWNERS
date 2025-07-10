@@ -274,7 +274,7 @@
 /sdk/communication/azure-communication-callingserver/  @minwoolee-msft
 
 # PRLabel: %Communication - Call Automation
-/sdk/communication/azure-communication-callautomation/ @juntuchen-msft @minwoolee-msft @fhaghbin-msft
+/sdk/communication/azure-communication-callautomation/ @juntuchen-msft @minwoolee-msft @fhaghbin-msft @v-dharmarajv
 
 # PRLabel: %Communication - Chat
 /sdk/communication/azure-communication-chat/           @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
