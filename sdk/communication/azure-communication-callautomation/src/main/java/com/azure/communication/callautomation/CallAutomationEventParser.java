@@ -40,6 +40,8 @@ import com.azure.communication.callautomation.models.events.IncomingCall;
 import com.azure.communication.callautomation.models.events.MediaStreamingFailed;
 import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
 import com.azure.communication.callautomation.models.events.MediaStreamingStopped;
+import com.azure.communication.callautomation.models.events.MoveParticipantFailed;
+import com.azure.communication.callautomation.models.events.MoveParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
 import com.azure.communication.callautomation.models.events.PlayCanceled;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
@@ -161,6 +163,10 @@ public final class CallAutomationEventParser {
                 ret = RemoveParticipantFailed.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.RemoveParticipantSucceeded")) {
                 ret = RemoveParticipantSucceeded.fromJson(jsonReader);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.MoveParticipantFailed")) {
+                ret = MoveParticipantFailed.fromJson(jsonReader);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.MoveParticipantSucceeded")) {
+                ret = MoveParticipantSucceeded.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.ContinuousDtmfRecognitionToneReceived")) {
                 ret = ContinuousDtmfRecognitionToneReceived.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.ContinuousDtmfRecognitionToneFailed")) {

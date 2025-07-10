@@ -53,6 +53,7 @@
     <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
+    <revapi.skip>true</revapi.skip> <!--Disabling RevAPI checks for this feature branch as it currently compares against the GA version, which is not relevant for these changes. Note: Do not apply this flag to the main branch -->
   </properties>
 
   <dependencies>
