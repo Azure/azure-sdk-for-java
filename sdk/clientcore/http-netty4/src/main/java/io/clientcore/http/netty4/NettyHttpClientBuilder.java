@@ -138,7 +138,7 @@ public class NettyHttpClientBuilder {
 
     // --- Connection Pool Configuration ---
     private int connectionPoolSize = 1000;
-    private Duration connectionIdleTimeout = Duration.ofSeconds(60);
+    private Duration connectionIdleTimeout = Duration.ofSeconds(50);
     private Duration maxConnectionLifetime;
     private Duration pendingAcquireTimeout = Duration.ofSeconds(60); // Default wait time for a connection
     private int maxPendingAcquires = 10_000; // Default pending queue size

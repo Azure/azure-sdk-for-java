@@ -454,11 +454,18 @@ public class NettyHttpClientTests {
             URI url = URI.create("http://localhost:" + port);
 
             Thread clientThread = new Thread(() -> {
-                HttpClient client = new NettyHttpClientBuilder().build();
-                HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
-                try (Response<BinaryData> response = client.send(request)) {
-                    assertEquals(200, response.getStatusCode());
-                    TestUtils.assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
+                NettyHttpClient client = null;
+                try {
+                    client = (NettyHttpClient) new NettyHttpClientBuilder().build();
+                    HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
+                    try (Response<BinaryData> response = client.send(request)) {
+                        assertEquals(200, response.getStatusCode());
+                        TestUtils.assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
+                    }
+                } finally {
+                    if (client != null) {
+                        client.close();
+                    }
                 }
             });
             clientThread.start();

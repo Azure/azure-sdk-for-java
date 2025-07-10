@@ -34,11 +34,15 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
      */
     public static final AttributeKey<HttpProtocolVersion> HTTP_PROTOCOL_VERSION_KEY
         = AttributeKey.valueOf("http-protocol-version");
+    private static final Netty4ConnectionPool.Http2GoAwayHandler GO_AWAY_HANDLER
+        = new Netty4ConnectionPool.Http2GoAwayHandler();
+
     private final HttpRequest request;
     private final AtomicReference<ResponseStateInfo> responseReference;
     private final AtomicReference<Throwable> errorReference;
     private final CountDownLatch latch;
     private final Netty4ConnectionPool connectionPool;
+    private final Object pipelineOwnerToken;
 
     /**
      * Creates a new instance of {@link Netty4AlpnHandler} with a fallback to using HTTP/1.1.
@@ -49,13 +53,15 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
      * @param connectionPool The connection pool.
      */
     public Netty4AlpnHandler(HttpRequest request, AtomicReference<ResponseStateInfo> responseReference,
-        AtomicReference<Throwable> errorReference, CountDownLatch latch, Netty4ConnectionPool connectionPool) {
+        AtomicReference<Throwable> errorReference, CountDownLatch latch, Netty4ConnectionPool connectionPool,
+        Object pipelineOwnerToken) {
         super(ApplicationProtocolNames.HTTP_1_1);
         this.request = request;
         this.responseReference = responseReference;
         this.errorReference = errorReference;
         this.latch = latch;
         this.connectionPool = connectionPool;
+        this.pipelineOwnerToken = pipelineOwnerToken;
     }
 
     /**
@@ -73,6 +79,7 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
         this.errorReference = errorReference;
         this.latch = latch;
         this.connectionPool = null;
+        this.pipelineOwnerToken = null;
     }
 
     @Override
@@ -97,8 +104,15 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
 
         configureHttpsPipeline(ctx.pipeline(), request, protocolVersion, responseReference, errorReference, latch);
 
-        ctx.pipeline()
-            .addLast(PIPELINE_CLEANUP, new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch));
+        if (protocolVersion == HttpProtocolVersion.HTTP_2) {
+            ctx.pipeline().addLast(GO_AWAY_HANDLER);
+        }
+
+        if (connectionPool != null) {
+            ctx.pipeline()
+                .addLast(PIPELINE_CLEANUP,
+                    new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch, pipelineOwnerToken));
+        }
 
         if (protocolVersion == HttpProtocolVersion.HTTP_2) {
             sendHttp2Request(request, ctx.channel(), errorReference, latch);
