@@ -25,6 +25,16 @@ Licensed under the MIT License.
       <url>${site.url}/site/${project.artifactId}</url>
     </site>
   </distributionManagement>
+  <repository>
+    <id>azure-sdk-for-java</id>
+    <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1</url>
+    <releases>
+      <enabled>true</enabled>
+    </releases>
+    <snapshots>
+      <enabled>true</enabled>
+    </snapshots>
+  </repository>
 
   <scm>
     <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
@@ -64,7 +74,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.47.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.56.0-alpha.20250623.6</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
