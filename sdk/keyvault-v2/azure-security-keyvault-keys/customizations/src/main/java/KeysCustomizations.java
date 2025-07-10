@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.Editor;
+import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
@@ -8,9 +11,6 @@ import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.javadoc.Javadoc;
-import com.microsoft.typespec.http.client.generator.core.customization.Customization;
-import com.microsoft.typespec.http.client.generator.core.customization.Editor;
-import com.microsoft.typespec.http.client.generator.core.customization.LibraryCustomization;
 import org.slf4j.Logger;
 
 import java.util.Arrays;
@@ -24,22 +24,22 @@ public class KeysCustomizations extends Customization {
     private static final String ROOT_FILE_PATH = "src/main/java/com/azure/v2/security/keyvault/keys/";
 
     @Override
-    public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        removeFiles(libraryCustomization.getRawEditor());
-        moveListResultFiles(libraryCustomization);
-        customizeServiceVersion(libraryCustomization);
-        customizeKeyCurveName(libraryCustomization);
-        customizeKeyOperation(libraryCustomization);
-        customizeKeyRotationPolicyAction(libraryCustomization);
-        customizeReleaseKeyResult(libraryCustomization);
-        customizeModuleInfo(libraryCustomization.getRawEditor());
+    public void customize(LibraryCustomization customization, Logger logger) {
+        removeFiles(customization.getRawEditor());
+        moveListResultFiles(customization);
+        customizeServiceVersion(customization);
+        customizeKeyCurveName(customization);
+        customizeKeyOperation(customization);
+        customizeKeyRotationPolicyAction(customization);
+        customizeReleaseKeyResult(customization);
+        customizeModuleInfo(customization.getRawEditor());
     }
 
     private static void removeFiles(Editor editor) {
-        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/keys/KeyClient.java");
-        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/keys/KeyClientBuilder.java");
-        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/keys/KeyVaultServiceVersion.java");
-        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/keys/implementation/implementation/models/package-info.java");
+        editor.removeFile(ROOT_FILE_PATH + "KeyClient.java");
+        editor.removeFile(ROOT_FILE_PATH + "KeyClientBuilder.java");
+        editor.removeFile(ROOT_FILE_PATH + "KeyVaultServiceVersion.java");
+        editor.removeFile(ROOT_FILE_PATH + "implementation/implementation/models/package-info.java");
     }
 
     private static void moveListResultFiles(LibraryCustomization customization) {
@@ -51,7 +51,7 @@ public class KeysCustomizations extends Customization {
             "com.azure.v2.security.keyvault.keys.implementation.models", "KeyListResult");
 
         // Update imports statements for moved classes in impl client.
-        String classPath = "src/main/java/com/azure/v2/security/keyvault/keys/implementation/KeyClientImpl.java";
+        String classPath = ROOT_FILE_PATH + "implementation/KeyClientImpl.java";
         Editor editor = customization.getRawEditor();
         String newFileContent = editor.getFileContent(classPath)
             .replace("implementation.implementation", "implementation");
@@ -76,11 +76,11 @@ public class KeysCustomizations extends Customization {
         String newFileContent = editor.getFileContent(oldClassPath)
             .replace("import " + oldPackage + "." + className.replace("ListResult", "Item") + ";\n", "");
 
-        // Replace file contents.
-        editor.replaceFile(oldClassPath, newFileContent);
+        // Write file with new contents.
+        editor.addFile(newClassPath, newFileContent);
 
-        // Move file to the new path.
-        editor.renameFile(oldClassPath, newClassPath);
+        // Remove old file.
+        editor.removeFile(oldClassPath);
     }
 
     private static void customizeServiceVersion(LibraryCustomization customization) {
@@ -121,12 +121,13 @@ public class KeysCustomizations extends Customization {
             .setBody(StaticJavaParser.parseBlock("{ return V7_5; }"));
 
         customization.getRawEditor()
-            .addFile("src/main/java/com/azure/v2/security/keyvault/keys/KeyServiceVersion.java",
+            .addFile(ROOT_FILE_PATH + "KeyServiceVersion.java",
                 compilationUnit.toString());
 
-        String fileName = "src/main/java/com/azure/v2/security/keyvault/keys/implementation/KeyClientImpl.java";
-        String fileContent = customization.getRawEditor().getFileContent(fileName);
-        fileContent = fileContent.replace("KeyVaultServiceVersion", "KeyServiceVersion");
+        String fileName = ROOT_FILE_PATH + "implementation/KeyClientImpl.java";
+        String fileContent = customization.getRawEditor().getFileContent(fileName)
+            .replace("KeyVaultServiceVersion", "KeyServiceVersion");
+
         customization.getRawEditor().replaceFile(fileName, fileContent);
     }
 
@@ -138,28 +139,21 @@ public class KeysCustomizations extends Customization {
 
     private static void customizeKeyOperation(LibraryCustomization customization) {
         customization.getClass("com.azure.v2.security.keyvault.keys.models", "KeyOperation")
-            .customizeAst(ast -> {
-                ast.getClassByName("KeyOperation").ifPresent(clazz -> {
-                    clazz.getFieldByName("EXPORT").ifPresent(field -> {
-                        field.setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
-                    });
-                });
-            });
+            .customizeAst(ast -> ast.getClassByName("KeyOperation")
+                .flatMap(clazz -> clazz.getFieldByName("EXPORT"))
+                .ifPresent(field -> field.setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL)));
     }
 
     private static void customizeKeyRotationPolicyAction(LibraryCustomization customization) {
         customization.getClass("com.azure.v2.security.keyvault.keys.models", "KeyRotationPolicyAction")
-            .customizeAst(ast -> {
-                ast.getEnumByName("KeyRotationPolicyAction").ifPresent(enumDecl -> {
-                    enumDecl.getEntries().forEach(entry -> {
-                        if ("ROTATE".equals(entry.getNameAsString())) {
-                            entry.setArgument(0, StaticJavaParser.parseExpression("\"rotate\""));
-                        } else if ("NOTIFY".equals(entry.getNameAsString())) {
-                            entry.setArgument(0, StaticJavaParser.parseExpression("\"notify\""));
-                        }
-                    });
-                });
-            });
+            .customizeAst(ast -> ast.getEnumByName("KeyRotationPolicyAction")
+                .ifPresent(enumDecl -> enumDecl.getEntries().forEach(entry -> {
+                    if ("ROTATE".equals(entry.getNameAsString())) {
+                        entry.setArgument(0, StaticJavaParser.parseExpression("\"rotate\""));
+                    } else if ("NOTIFY".equals(entry.getNameAsString())) {
+                        entry.setArgument(0, StaticJavaParser.parseExpression("\"notify\""));
+                    }
+                })));
     }
 
     private static void customizeReleaseKeyResult(LibraryCustomization customization) {

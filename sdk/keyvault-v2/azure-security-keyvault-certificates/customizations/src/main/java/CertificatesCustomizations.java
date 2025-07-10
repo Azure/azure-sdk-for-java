@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.Editor;
+import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
@@ -8,9 +11,6 @@ import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.javadoc.Javadoc;
-import com.microsoft.typespec.http.client.generator.core.customization.Customization;
-import com.microsoft.typespec.http.client.generator.core.customization.Editor;
-import com.microsoft.typespec.http.client.generator.core.customization.LibraryCustomization;
 import org.slf4j.Logger;
 
 import java.util.Arrays;
@@ -24,19 +24,20 @@ public class CertificatesCustomizations extends Customization {
     private static final String ROOT_FILE_PATH = "src/main/java/com/azure/v2/security/keyvault/certificates/";
 
     @Override
-    public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        removeFiles(libraryCustomization.getRawEditor());
-        customizeError(libraryCustomization);
-        customizeCertificateKeyUsage(libraryCustomization);
-        customizeServiceVersion(libraryCustomization);
-        customizeModuleInfo(libraryCustomization.getRawEditor());
+    public void customize(LibraryCustomization customization, Logger logger) {
+        removeFiles(customization.getRawEditor());
+        moveListResultFiles(customization);
+        customizeError(customization);
+        customizeCertificateKeyUsage(customization);
+        customizeServiceVersion(customization);
+        customizeModuleInfo(customization.getRawEditor());
     }
 
     private static void removeFiles(Editor editor) {
-        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/certificates/CertificateClient.java");
-        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/certificates/CertificateClientBuilder.java");
-        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/certificates/KeyVaultServiceVersion.java");
-        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/certificates/implementation/implementation/models/package-info.java");
+        editor.removeFile(ROOT_FILE_PATH + "CertificateClient.java");
+        editor.removeFile(ROOT_FILE_PATH + "CertificateClientBuilder.java");
+        editor.removeFile(ROOT_FILE_PATH + "KeyVaultServiceVersion.java");
+        editor.removeFile(ROOT_FILE_PATH + "implementation/implementation/models/package-info.java");
     }
 
     private static void moveListResultFiles(LibraryCustomization customization) {
@@ -51,7 +52,7 @@ public class CertificatesCustomizations extends Customization {
             "com.azure.v2.security.keyvault.certificates.implementation.models", "CertificateIssuerListResult");
 
         // Update imports statements for moved classes in impl client.
-        String classPath = "src/main/java/com/azure/v2/security/keyvault/certificates/implementation/CertificateClientImpl.java";
+        String classPath = ROOT_FILE_PATH + "implementation/CertificateClientImpl.java";
         Editor editor = customization.getRawEditor();
         String newFileContent = editor.getFileContent(classPath)
             .replace("implementation.implementation", "implementation");
@@ -76,17 +77,17 @@ public class CertificatesCustomizations extends Customization {
         String newFileContent = editor.getFileContent(oldClassPath)
             .replace("import " + oldPackage + "." + className.replace("ListResult", "Item") + ";\n", "");
 
-        // Replace file contents.
-        editor.replaceFile(oldClassPath, newFileContent);
+        // Write file with new contents.
+        editor.addFile(newClassPath, newFileContent);
 
-        // Move file to the new path.
-        editor.renameFile(oldClassPath, newClassPath);
+        // Remove old file.
+        editor.removeFile(oldClassPath);
     }
 
     private static void customizeError(LibraryCustomization customization) {
-        String implModelsDirectory = "src/main/java/com/azure/v2/security/keyvault/certificates/implementation/models/";
+        String implModelsDirectory = ROOT_FILE_PATH + "implementation/models/";
         String oldClassName = "KeyVaultErrorError";
-        String modelsDirectory = "src/main/java/com/azure/v2/security/keyvault/certificates/models/";
+        String modelsDirectory = ROOT_FILE_PATH + "models/";
         String newClassName = "CertificateOperationError";
 
         // Rename KeyVaultErrorError to CertificateOperationError and move it to the public models package.
@@ -159,12 +160,13 @@ public class CertificatesCustomizations extends Customization {
             .setBody(StaticJavaParser.parseBlock("{ return V7_5; }"));
 
         customization.getRawEditor()
-            .addFile("src/main/java/com/azure/v2/security/keyvault/certificates/CertificateServiceVersion.java",
+            .addFile(ROOT_FILE_PATH + "CertificateServiceVersion.java",
                 compilationUnit.toString());
 
-        String fileName = "src/main/java/com/azure/v2/security/keyvault/certificates/implementation/CertificateClientImpl.java";
-        String fileContent = customization.getRawEditor().getFileContent(fileName);
-        fileContent = fileContent.replace("KeyVaultServiceVersion", "CertificateServiceVersion");
+        String fileName = ROOT_FILE_PATH + "implementation/CertificateClientImpl.java";
+        String fileContent = customization.getRawEditor().getFileContent(fileName)
+            .replace("KeyVaultServiceVersion", "CertificateServiceVersion");
+
         customization.getRawEditor().replaceFile(fileName, fileContent);
     }
 

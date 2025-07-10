@@ -7,21 +7,15 @@ import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.javadoc.Javadoc;
-import com.microsoft.typespec.http.client.generator.core.customization.Customization;
-import com.microsoft.typespec.http.client.generator.core.customization.Editor;
-import com.microsoft.typespec.http.client.generator.core.customization.LibraryCustomization;
 import org.slf4j.Logger;
-
-import java.util.Arrays;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
+import java.util.Arrays;
 
 import static com.github.javaparser.javadoc.description.JavadocDescription.parseText;
 
@@ -32,21 +26,22 @@ public class AdministrationCustomizations extends Customization {
     private static final String ROOT_FILE_PATH = "src/main/java/com/azure/v2/security/keyvault/administration/";
 
     @Override
-    public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        removeFiles(libraryCustomization.getRawEditor());
-        customizeKeyVaultRoleScope(libraryCustomization);
-        customizeServiceVersion(libraryCustomization);
-        customizeImplClients(libraryCustomization);
-        customizeModuleInfo(libraryCustomization.getRawEditor());
+    public void customize(LibraryCustomization customization, Logger logger) {
+        removeFiles(customization.getRawEditor());
+        moveListResultFiles(customization);
+        customizeKeyVaultRoleScope(customization);
+        customizeServiceVersion(customization);
+        customizeImplClients(customization);
+        customizeModuleInfo(customization.getRawEditor());
     }
 
     private static void removeFiles(Editor editor) {
-        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/administration/KeyVaultAdministrationClient.java");
-        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/administration/KeyVaultAdministrationClientBuilder.java");
-        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/administration/KeyVaultServiceVersion.java");
-        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/administration/RoleAssignmentsClient.java");
-        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/administration/RoleDefinitionsClient.java");
-        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/administration/implementation/implementation/models/package-info.java");
+        editor.removeFile(ROOT_FILE_PATH + "KeyVaultAdministrationClient.java");
+        editor.removeFile(ROOT_FILE_PATH + "KeyVaultAdministrationClientBuilder.java");
+        editor.removeFile(ROOT_FILE_PATH + "KeyVaultServiceVersion.java");
+        editor.removeFile(ROOT_FILE_PATH + "RoleAssignmentsClient.java");
+        editor.removeFile(ROOT_FILE_PATH + "RoleDefinitionsClient.java");
+        editor.removeFile(ROOT_FILE_PATH + "implementation/implementation/models/package-info.java");
     }
 
     private static void moveListResultFiles(LibraryCustomization customization) {
@@ -58,7 +53,7 @@ public class AdministrationCustomizations extends Customization {
             "com.azure.v2.security.keyvault.administration.implementation.models", "RoleDefinitionListResult");
 
         // Update imports statements for moved classes in impl client.
-        String classPath = "src/main/java/com/azure/v2/security/keyvault/administration/implementation/KeyVaultAdministrationClientImpl.java";
+        String classPath = ROOT_FILE_PATH + "implementation/KeyVaultAdministrationClientImpl.java";
         Editor editor = customization.getRawEditor();
         String newFileContent = editor.getFileContent(classPath)
             .replace("implementation.implementation", "implementation");
@@ -66,68 +61,64 @@ public class AdministrationCustomizations extends Customization {
         editor.replaceFile(classPath, newFileContent);
 
         // Update imports statements for moved classes in impl client.
-        classPath = "src/main/java/com/azure/v2/security/keyvault/administration/implementation/RoleAssignmentsImpl.java";
+        classPath = ROOT_FILE_PATH + "implementation/RoleAssignmentsImpl.java";
         newFileContent = editor.getFileContent(classPath)
-            .replace("implementation.implementation", "implementation")
-            // TODO (vcolin7): Remove this workaround once the client is generated with the correct client reference.
-            .replace("this.httpPipeline", "client.getHttpPipeline()");
+            .replace("implementation.implementation", "implementation");
 
         editor.replaceFile(classPath, newFileContent);
 
         // Update imports statements for moved classes in impl client.
-        classPath = "src/main/java/com/azure/v2/security/keyvault/administration/implementation/RoleDefinitionsImpl.java";
+        classPath = ROOT_FILE_PATH + "implementation/RoleDefinitionsImpl.java";
         newFileContent = editor.getFileContent(classPath)
-            .replace("implementation.implementation", "implementation")
-            // TODO (vcolin7): Remove this workaround once the client is generated with the correct client reference.
-            .replace("this.httpPipeline", "client.getHttpPipeline()");
+            .replace("implementation.implementation", "implementation");
 
         editor.replaceFile(classPath, newFileContent);
     }
 
-    private static void moveSingleFile(LibraryCustomization libraryCustomization, String oldPackage, String newPackage,
+    private static void moveSingleFile(LibraryCustomization customization, String oldPackage, String newPackage,
         String className) {
 
-        Editor editor = libraryCustomization.getRawEditor();
+        Editor editor = customization.getRawEditor();
         String oldClassPath = "src/main/java/" + oldPackage.replace('.', '/') + "/" + className + ".java";
         String newClassPath = "src/main/java/" + newPackage.replace('.', '/') + "/" + className + ".java";
 
         // Update the package declaration.
-        libraryCustomization.getPackage(oldPackage)
+        customization.getPackage(oldPackage)
             .getClass(className)
             .customizeAst(ast -> ast.getPackageDeclaration()
                 .ifPresent(packageDeclaration -> packageDeclaration.setName(newPackage)));
 
         // Remove unnecessary import statement.
         String newFileContent = editor.getFileContent(oldClassPath)
-            .replace("import " + oldPackage + "." + className.replace("ListResult", "Item") + ";\n", "");
+            .replace("import " + oldPackage + "." + className.replace("ListResult", "") + ";\n", "");
 
-        // Replace file contents.
-        editor.replaceFile(oldClassPath, newFileContent);
+        // Write file with new contents.
+        editor.addFile(newClassPath, newFileContent);
 
-        // Move file to the new path.
-        editor.renameFile(oldClassPath, newClassPath);
+        // Remove old file.
+        editor.removeFile(oldClassPath);
     }
 
     private static void customizeImplClients(LibraryCustomization customization) {
         customization
             .getClass("com.azure.v2.security.keyvault.administration.implementation", "KeyVaultAdministrationClientImpl")
-            .customizeAst(ast -> {
+            .customizeAst(ast ->
                 ast.getClassByName("KeyVaultAdministrationClientImpl")
                     .ifPresent(clazz -> {
-                        clazz.addMethod("fullBackupStatusWithResponse", Modifier.Keyword.PUBLIC)
+                        clazz.addMethod("fullBackupOperationWithResponse", Modifier.Keyword.PUBLIC)
                             .setType("Response<FullBackupOperation>")
                             .addParameter("SASTokenParameter", "azureStorageBlobContainerUri")
                             .addParameter("RequestContext", "requestContext")
                             .setJavadocComment(new Javadoc(
                                 parseText("Creates a full backup using a user-provided SAS token to an Azure blob storage container."))
-                                    .addBlockTag("param", "azureStorageBlobContainerUri Azure blob shared access signature token pointing "
+                                    .addBlockTag("param", "azureStorageBlobContainerUri", "Azure blob shared access signature token pointing "
                                         + "to a valid Azure blob container where full backup needs to be stored. This token needs to be "
                                         + "valid for at least next 24 hours from the time of making this call.")
                                     .addBlockTag("param", "requestContext", "The context to configure the HTTP request before HTTP client sends it.")
                                     .addBlockTag("throws", "IllegalArgumentException", "thrown if parameters fail the validation.")
                                     .addBlockTag("throws", "HttpResponseException", "thrown if the service returns an error.")
-                                    .addBlockTag("throws", "RuntimeException", "all other wrapped checked exceptions if the request fails to be sent."))
-                                    .addBlockTag("return", "full backup operation.")
+                                    .addBlockTag("throws", "RuntimeException", "all other wrapped checked exceptions if the request fails to be sent.")
+                                    .addBlockTag("return", "full backup operation."))
                             .setBody(StaticJavaParser.parseBlock("{ final String contentType = \"application/json\";"
                                 + "final String accept = \"application/json\";"
                                 + "return service.fullBackup(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), contentType, accept, "
@@ -170,14 +161,13 @@ public class AdministrationCustomizations extends Customization {
                                 + "final String accept = \"application/json\";"
                                 + "return service.selectiveKeyRestoreOperation(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, "
                                 + "contentType, accept, restoreBlobDetails, requestContext); }"));
-                    });
-            });
+                    }));
     }
 
     private static void customizeKeyVaultRoleScope(LibraryCustomization customization) {
         customization
             .getClass("com.azure.v2.security.keyvault.administration.models", "KeyVaultRoleScope")
-            .customizeAst(ast -> {
+            .customizeAst(ast ->
                 ast.addImport(IllegalArgumentException.class)
                     .addImport(URL.class)
                     .addImport(MalformedURLException.class)
@@ -187,7 +177,7 @@ public class AdministrationCustomizations extends Customization {
                             .setType("KeyVaultRoleScope")
                             .addParameter("String", "url")
                             .setJavadocComment(new Javadoc(
-                                parseText("Creates of finds a {@link KeyVaultRoleScope} from its string representation."))
+                                parseText("Creates or finds a {@link KeyVaultRoleScope} from its string representation."))
                                     .addBlockTag("param", "url", "A string representing a URL containing the name of the scope to look for.")
                                     .addBlockTag("return", "The corresponding {@link KeyVaultRoleScope}.")
                                     .addBlockTag("throws", "IllegalArgumentException", "If the given {@code url} is malformed."))
@@ -198,12 +188,11 @@ public class AdministrationCustomizations extends Customization {
                             .setType("KeyVaultRoleScope")
                             .addParameter("URL", "url")
                             .setJavadocComment(new Javadoc(
-                                parseText("Creates of finds a {@link KeyVaultRoleScope} from its string representation."))
+                                parseText("Creates or finds a {@link KeyVaultRoleScope} from its string representation."))
                                     .addBlockTag("param", "url", "A URL containing the name of the scope to look for.")
                                     .addBlockTag("return", "The corresponding {@link KeyVaultRoleScope}."))
                             .setBody(StaticJavaParser.parseBlock("{ return fromValue(url.getPath()); }"));
-                    });
-                });
+                    }));
     }
 
     private static void customizeServiceVersion(LibraryCustomization customization) {
@@ -246,13 +235,14 @@ public class AdministrationCustomizations extends Customization {
             .setBody(StaticJavaParser.parseBlock("{ return V7_5; }"));
 
         customization.getRawEditor()
-            .addFile("src/main/java/com/azure/v2/security/keyvault/administration/KeyVaultAdministrationServiceVersion.java",
+            .addFile(ROOT_FILE_PATH + "KeyVaultAdministrationServiceVersion.java",
                 compilationUnit.toString());
 
         for (String impl : Arrays.asList("KeyVaultAdministrationClientImpl", "RoleAssignmentsImpl", "RoleDefinitionsImpl")) {
-            String fileName = "src/main/java/com/azure/v2/security/keyvault/administration/implementation/" + impl + ".java";
-            String fileContent = customization.getRawEditor().getFileContent(fileName);
-            fileContent = fileContent.replace("KeyVaultServiceVersion", "KeyVaultAdministrationServiceVersion");
+            String fileName = ROOT_FILE_PATH + "implementation/" + impl + ".java";
+            String fileContent = customization.getRawEditor().getFileContent(fileName)
+                .replace("KeyVaultServiceVersion", "KeyVaultAdministrationServiceVersion");
+
             customization.getRawEditor().replaceFile(fileName, fileContent);
         }
     }
