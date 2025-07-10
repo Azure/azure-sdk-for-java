@@ -24,6 +24,13 @@ public final class JobTerminatePollerAsync {
     private final RequestOptions options;
     private final Context requestContext;
 
+    /**
+     * Creates a new {@link JobTerminatePollerAsync}.
+     *
+     * @param batchAsyncClient The {@link BatchAsyncClient} used to interact with the Batch service.
+     * @param jobId The ID of the Job being terminated.
+     * @param options Optional request options for service calls.
+     */
     public JobTerminatePollerAsync(BatchAsyncClient batchAsyncClient, String jobId, RequestOptions options) {
         this.batchAsyncClient = batchAsyncClient;
         this.jobId = jobId;
@@ -33,6 +40,9 @@ public final class JobTerminatePollerAsync {
 
     /**
      * Activation operation to start the termination.
+     *
+     * @return A function that initiates the terminate request and returns a {@link PollResponse}
+     * with {@link LongRunningOperationStatus#IN_PROGRESS} status.
      */
     public Function<PollingContext<BatchJob>, Mono<PollResponse<BatchJob>>> getActivationOperation() {
         return context -> batchAsyncClient.terminateJobWithResponse(jobId, options)
@@ -41,6 +51,9 @@ public final class JobTerminatePollerAsync {
 
     /**
      * Poll operation to check the job's termination state.
+     *
+     * @return A function that polls the job and returns a {@link PollResponse}
+     * with the current {@link LongRunningOperationStatus}.
      */
     public Function<PollingContext<BatchJob>, Mono<PollResponse<BatchJob>>> getPollOperation() {
         return context -> {
@@ -68,6 +81,8 @@ public final class JobTerminatePollerAsync {
 
     /**
      * Cancel operation (not supported for terminate).
+     *
+     * @return A function that always returns an empty {@link Mono}, indicating cancellation is unsupported.
      */
     public BiFunction<PollingContext<BatchJob>, PollResponse<BatchJob>, Mono<BatchJob>> getCancelOperation() {
         return (context, pollResponse) -> Mono.empty();
@@ -75,6 +90,8 @@ public final class JobTerminatePollerAsync {
 
     /**
      * Final result fetch operation.
+     *
+     * @return A function that fetches the final {@link BatchJob} after successful termination.
      */
     public Function<PollingContext<BatchJob>, Mono<BatchJob>> getFetchResultOperation() {
         return context -> {
