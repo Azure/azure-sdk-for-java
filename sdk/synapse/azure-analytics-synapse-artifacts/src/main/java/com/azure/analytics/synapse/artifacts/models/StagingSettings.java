@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,27 +22,32 @@ public final class StagingSettings implements JsonSerializable<StagingSettings> 
     /*
      * Staging linked service reference.
      */
+    @Generated
     private LinkedServiceReference linkedServiceName;
 
     /*
      * The path to storage for storing the interim data. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object path;
 
     /*
      * Specifies whether to use compression when copying data via an interim staging. Default value is false. Type:
      * boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object enableCompression;
 
     /*
      * Staging settings.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of StagingSettings class.
      */
+    @Generated
     public StagingSettings() {
     }
 
@@ -50,6 +56,7 @@ public final class StagingSettings implements JsonSerializable<StagingSettings> 
      * 
      * @return the linkedServiceName value.
      */
+    @Generated
     public LinkedServiceReference getLinkedServiceName() {
         return this.linkedServiceName;
     }
@@ -60,6 +67,7 @@ public final class StagingSettings implements JsonSerializable<StagingSettings> 
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the StagingSettings object itself.
      */
+    @Generated
     public StagingSettings setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         this.linkedServiceName = linkedServiceName;
         return this;
@@ -71,6 +79,7 @@ public final class StagingSettings implements JsonSerializable<StagingSettings> 
      * 
      * @return the path value.
      */
+    @Generated
     public Object getPath() {
         return this.path;
     }
@@ -82,6 +91,7 @@ public final class StagingSettings implements JsonSerializable<StagingSettings> 
      * @param path the path value to set.
      * @return the StagingSettings object itself.
      */
+    @Generated
     public StagingSettings setPath(Object path) {
         this.path = path;
         return this;
@@ -93,6 +103,7 @@ public final class StagingSettings implements JsonSerializable<StagingSettings> 
      * 
      * @return the enableCompression value.
      */
+    @Generated
     public Object getEnableCompression() {
         return this.enableCompression;
     }
@@ -104,6 +115,7 @@ public final class StagingSettings implements JsonSerializable<StagingSettings> 
      * @param enableCompression the enableCompression value to set.
      * @return the StagingSettings object itself.
      */
+    @Generated
     public StagingSettings setEnableCompression(Object enableCompression) {
         this.enableCompression = enableCompression;
         return this;
@@ -114,6 +126,7 @@ public final class StagingSettings implements JsonSerializable<StagingSettings> 
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -124,6 +137,7 @@ public final class StagingSettings implements JsonSerializable<StagingSettings> 
      * @param additionalProperties the additionalProperties value to set.
      * @return the StagingSettings object itself.
      */
+    @Generated
     public StagingSettings setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -132,12 +146,17 @@ public final class StagingSettings implements JsonSerializable<StagingSettings> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
-        jsonWriter.writeUntypedField("path", this.path);
-        jsonWriter.writeUntypedField("enableCompression", this.enableCompression);
+        if (this.path != null) {
+            jsonWriter.writeUntypedField("path", this.path);
+        }
+        if (this.enableCompression != null) {
+            jsonWriter.writeUntypedField("enableCompression", this.enableCompression);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -155,6 +174,7 @@ public final class StagingSettings implements JsonSerializable<StagingSettings> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StagingSettings.
      */
+    @Generated
     public static StagingSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StagingSettings deserializedStagingSettings = new StagingSettings();

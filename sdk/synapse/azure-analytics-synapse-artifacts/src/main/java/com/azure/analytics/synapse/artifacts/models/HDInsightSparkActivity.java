@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,53 +22,63 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "HDInsightSpark";
 
     /*
      * The root path in 'sparkJobLinkedService' for all the job’s files. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object rootPath;
 
     /*
      * The relative path to the root folder of the code/package to be executed. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object entryFilePath;
 
     /*
      * The user-specified arguments to HDInsightSparkActivity.
      */
+    @Generated
     private List<Object> arguments;
 
     /*
      * Debug info option.
      */
+    @Generated
     private HDInsightActivityDebugInfoOption getDebugInfo;
 
     /*
      * The storage linked service for uploading the entry file and dependencies, and for receiving logs.
      */
+    @Generated
     private LinkedServiceReference sparkJobLinkedService;
 
     /*
      * The application's Java/Spark main class.
      */
+    @Generated
     private String className;
 
     /*
      * The user to impersonate that will execute the job. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object proxyUser;
 
     /*
      * Spark configuration property.
      */
+    @Generated
     private Map<String, Object> sparkConfig;
 
     /**
      * Creates an instance of HDInsightSparkActivity class.
      */
+    @Generated
     public HDInsightSparkActivity() {
     }
 
@@ -76,6 +87,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -87,6 +99,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * 
      * @return the rootPath value.
      */
+    @Generated
     public Object getRootPath() {
         return this.rootPath;
     }
@@ -98,6 +111,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * @param rootPath the rootPath value to set.
      * @return the HDInsightSparkActivity object itself.
      */
+    @Generated
     public HDInsightSparkActivity setRootPath(Object rootPath) {
         this.rootPath = rootPath;
         return this;
@@ -109,6 +123,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * 
      * @return the entryFilePath value.
      */
+    @Generated
     public Object getEntryFilePath() {
         return this.entryFilePath;
     }
@@ -120,6 +135,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * @param entryFilePath the entryFilePath value to set.
      * @return the HDInsightSparkActivity object itself.
      */
+    @Generated
     public HDInsightSparkActivity setEntryFilePath(Object entryFilePath) {
         this.entryFilePath = entryFilePath;
         return this;
@@ -130,6 +146,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * 
      * @return the arguments value.
      */
+    @Generated
     public List<Object> getArguments() {
         return this.arguments;
     }
@@ -140,6 +157,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * @param arguments the arguments value to set.
      * @return the HDInsightSparkActivity object itself.
      */
+    @Generated
     public HDInsightSparkActivity setArguments(List<Object> arguments) {
         this.arguments = arguments;
         return this;
@@ -150,6 +168,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * 
      * @return the getDebugInfo value.
      */
+    @Generated
     public HDInsightActivityDebugInfoOption getGetDebugInfo() {
         return this.getDebugInfo;
     }
@@ -160,6 +179,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * @param getDebugInfo the getDebugInfo value to set.
      * @return the HDInsightSparkActivity object itself.
      */
+    @Generated
     public HDInsightSparkActivity setGetDebugInfo(HDInsightActivityDebugInfoOption getDebugInfo) {
         this.getDebugInfo = getDebugInfo;
         return this;
@@ -171,6 +191,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * 
      * @return the sparkJobLinkedService value.
      */
+    @Generated
     public LinkedServiceReference getSparkJobLinkedService() {
         return this.sparkJobLinkedService;
     }
@@ -182,6 +203,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * @param sparkJobLinkedService the sparkJobLinkedService value to set.
      * @return the HDInsightSparkActivity object itself.
      */
+    @Generated
     public HDInsightSparkActivity setSparkJobLinkedService(LinkedServiceReference sparkJobLinkedService) {
         this.sparkJobLinkedService = sparkJobLinkedService;
         return this;
@@ -192,6 +214,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * 
      * @return the className value.
      */
+    @Generated
     public String getClassName() {
         return this.className;
     }
@@ -202,6 +225,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * @param className the className value to set.
      * @return the HDInsightSparkActivity object itself.
      */
+    @Generated
     public HDInsightSparkActivity setClassName(String className) {
         this.className = className;
         return this;
@@ -213,6 +237,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * 
      * @return the proxyUser value.
      */
+    @Generated
     public Object getProxyUser() {
         return this.proxyUser;
     }
@@ -224,6 +249,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * @param proxyUser the proxyUser value to set.
      * @return the HDInsightSparkActivity object itself.
      */
+    @Generated
     public HDInsightSparkActivity setProxyUser(Object proxyUser) {
         this.proxyUser = proxyUser;
         return this;
@@ -234,6 +260,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * 
      * @return the sparkConfig value.
      */
+    @Generated
     public Map<String, Object> getSparkConfig() {
         return this.sparkConfig;
     }
@@ -244,6 +271,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * @param sparkConfig the sparkConfig value to set.
      * @return the HDInsightSparkActivity object itself.
      */
+    @Generated
     public HDInsightSparkActivity setSparkConfig(Map<String, Object> sparkConfig) {
         this.sparkConfig = sparkConfig;
         return this;
@@ -252,6 +280,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightSparkActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -261,6 +290,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightSparkActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -270,6 +300,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightSparkActivity setName(String name) {
         super.setName(name);
@@ -279,6 +310,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightSparkActivity setDescription(String description) {
         super.setDescription(description);
@@ -288,6 +320,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightSparkActivity setState(ActivityState state) {
         super.setState(state);
@@ -297,6 +330,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightSparkActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -306,6 +340,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightSparkActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -315,6 +350,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightSparkActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -324,6 +360,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -354,7 +391,9 @@ public class HDInsightSparkActivity extends ExecutionActivity {
                 this.getDebugInfo == null ? null : this.getDebugInfo.toString());
             jsonWriter.writeJsonField("sparkJobLinkedService", this.sparkJobLinkedService);
             jsonWriter.writeStringField("className", this.className);
-            jsonWriter.writeUntypedField("proxyUser", this.proxyUser);
+            if (this.proxyUser != null) {
+                jsonWriter.writeUntypedField("proxyUser", this.proxyUser);
+            }
             jsonWriter.writeMapField("sparkConfig", this.sparkConfig,
                 (writer, element) -> writer.writeUntyped(element));
             jsonWriter.writeEndObject();
@@ -376,6 +415,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HDInsightSparkActivity.
      */
+    @Generated
     public static HDInsightSparkActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HDInsightSparkActivity deserializedHDInsightSparkActivity = new HDInsightSparkActivity();

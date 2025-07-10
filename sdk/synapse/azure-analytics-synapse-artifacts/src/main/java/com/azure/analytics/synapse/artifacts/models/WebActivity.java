@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public class WebActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "WebActivity";
 
     /*
      * Rest API method for target endpoint.
      */
+    @Generated
     private WebActivityMethod method;
 
     /*
      * Web activity target endpoint and path. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object url;
 
     /*
@@ -38,37 +42,44 @@ public class WebActivity extends ExecutionActivity {
      * "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object headers;
 
     /*
      * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
      * method Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object body;
 
     /*
      * Authentication method used for calling the endpoint.
      */
+    @Generated
     private WebActivityAuthentication authentication;
 
     /*
      * List of datasets passed to web endpoint.
      */
+    @Generated
     private List<DatasetReference> datasets;
 
     /*
      * List of linked services passed to web endpoint.
      */
+    @Generated
     private List<LinkedServiceReference> linkedServices;
 
     /*
      * The integration runtime reference.
      */
+    @Generated
     private IntegrationRuntimeReference connectVia;
 
     /**
      * Creates an instance of WebActivity class.
      */
+    @Generated
     public WebActivity() {
     }
 
@@ -77,6 +88,7 @@ public class WebActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -87,6 +99,7 @@ public class WebActivity extends ExecutionActivity {
      * 
      * @return the method value.
      */
+    @Generated
     public WebActivityMethod getMethod() {
         return this.method;
     }
@@ -97,6 +110,7 @@ public class WebActivity extends ExecutionActivity {
      * @param method the method value to set.
      * @return the WebActivity object itself.
      */
+    @Generated
     public WebActivity setMethod(WebActivityMethod method) {
         this.method = method;
         return this;
@@ -107,6 +121,7 @@ public class WebActivity extends ExecutionActivity {
      * 
      * @return the url value.
      */
+    @Generated
     public Object getUrl() {
         return this.url;
     }
@@ -117,6 +132,7 @@ public class WebActivity extends ExecutionActivity {
      * @param url the url value to set.
      * @return the WebActivity object itself.
      */
+    @Generated
     public WebActivity setUrl(Object url) {
         this.url = url;
         return this;
@@ -129,6 +145,7 @@ public class WebActivity extends ExecutionActivity {
      * 
      * @return the headers value.
      */
+    @Generated
     public Object getHeaders() {
         return this.headers;
     }
@@ -141,6 +158,7 @@ public class WebActivity extends ExecutionActivity {
      * @param headers the headers value to set.
      * @return the WebActivity object itself.
      */
+    @Generated
     public WebActivity setHeaders(Object headers) {
         this.headers = headers;
         return this;
@@ -152,6 +170,7 @@ public class WebActivity extends ExecutionActivity {
      * 
      * @return the body value.
      */
+    @Generated
     public Object getBody() {
         return this.body;
     }
@@ -163,6 +182,7 @@ public class WebActivity extends ExecutionActivity {
      * @param body the body value to set.
      * @return the WebActivity object itself.
      */
+    @Generated
     public WebActivity setBody(Object body) {
         this.body = body;
         return this;
@@ -173,6 +193,7 @@ public class WebActivity extends ExecutionActivity {
      * 
      * @return the authentication value.
      */
+    @Generated
     public WebActivityAuthentication getAuthentication() {
         return this.authentication;
     }
@@ -183,6 +204,7 @@ public class WebActivity extends ExecutionActivity {
      * @param authentication the authentication value to set.
      * @return the WebActivity object itself.
      */
+    @Generated
     public WebActivity setAuthentication(WebActivityAuthentication authentication) {
         this.authentication = authentication;
         return this;
@@ -193,6 +215,7 @@ public class WebActivity extends ExecutionActivity {
      * 
      * @return the datasets value.
      */
+    @Generated
     public List<DatasetReference> getDatasets() {
         return this.datasets;
     }
@@ -203,6 +226,7 @@ public class WebActivity extends ExecutionActivity {
      * @param datasets the datasets value to set.
      * @return the WebActivity object itself.
      */
+    @Generated
     public WebActivity setDatasets(List<DatasetReference> datasets) {
         this.datasets = datasets;
         return this;
@@ -213,6 +237,7 @@ public class WebActivity extends ExecutionActivity {
      * 
      * @return the linkedServices value.
      */
+    @Generated
     public List<LinkedServiceReference> getLinkedServices() {
         return this.linkedServices;
     }
@@ -223,6 +248,7 @@ public class WebActivity extends ExecutionActivity {
      * @param linkedServices the linkedServices value to set.
      * @return the WebActivity object itself.
      */
+    @Generated
     public WebActivity setLinkedServices(List<LinkedServiceReference> linkedServices) {
         this.linkedServices = linkedServices;
         return this;
@@ -233,6 +259,7 @@ public class WebActivity extends ExecutionActivity {
      * 
      * @return the connectVia value.
      */
+    @Generated
     public IntegrationRuntimeReference getConnectVia() {
         return this.connectVia;
     }
@@ -243,6 +270,7 @@ public class WebActivity extends ExecutionActivity {
      * @param connectVia the connectVia value to set.
      * @return the WebActivity object itself.
      */
+    @Generated
     public WebActivity setConnectVia(IntegrationRuntimeReference connectVia) {
         this.connectVia = connectVia;
         return this;
@@ -251,6 +279,7 @@ public class WebActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -260,6 +289,7 @@ public class WebActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -269,6 +299,7 @@ public class WebActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebActivity setName(String name) {
         super.setName(name);
@@ -278,6 +309,7 @@ public class WebActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebActivity setDescription(String description) {
         super.setDescription(description);
@@ -287,6 +319,7 @@ public class WebActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebActivity setState(ActivityState state) {
         super.setState(state);
@@ -296,6 +329,7 @@ public class WebActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -305,6 +339,7 @@ public class WebActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -314,6 +349,7 @@ public class WebActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -323,6 +359,7 @@ public class WebActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -348,8 +385,12 @@ public class WebActivity extends ExecutionActivity {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeStringField("method", this.method == null ? null : this.method.toString());
             jsonWriter.writeUntypedField("url", this.url);
-            jsonWriter.writeUntypedField("headers", this.headers);
-            jsonWriter.writeUntypedField("body", this.body);
+            if (this.headers != null) {
+                jsonWriter.writeUntypedField("headers", this.headers);
+            }
+            if (this.body != null) {
+                jsonWriter.writeUntypedField("body", this.body);
+            }
             jsonWriter.writeJsonField("authentication", this.authentication);
             jsonWriter.writeArrayField("datasets", this.datasets, (writer, element) -> writer.writeJson(element));
             jsonWriter.writeArrayField("linkedServices", this.linkedServices,
@@ -374,6 +415,7 @@ public class WebActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebActivity.
      */
+    @Generated
     public static WebActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebActivity deserializedWebActivity = new WebActivity();

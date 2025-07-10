@@ -4,6 +4,7 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,6 +21,7 @@ public final class UpdateSessionSettings implements JsonSerializable<UpdateSessi
      * Update to the time the session will run after it reached the 'Ready' state. It has to be larger than the current
      * value of maxLeaseTimeMinutes and less than 1440.
      */
+    @Generated
     private final int maxLeaseTimeMinutes;
 
     /**
@@ -27,6 +29,7 @@ public final class UpdateSessionSettings implements JsonSerializable<UpdateSessi
      * 
      * @param maxLeaseTimeMinutes the maxLeaseTimeMinutes value to set.
      */
+    @Generated
     public UpdateSessionSettings(int maxLeaseTimeMinutes) {
         this.maxLeaseTimeMinutes = maxLeaseTimeMinutes;
     }
@@ -37,6 +40,7 @@ public final class UpdateSessionSettings implements JsonSerializable<UpdateSessi
      * 
      * @return the maxLeaseTimeMinutes value.
      */
+    @Generated
     public int getMaxLeaseTimeMinutes() {
         return this.maxLeaseTimeMinutes;
     }
@@ -44,6 +48,7 @@ public final class UpdateSessionSettings implements JsonSerializable<UpdateSessi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -60,6 +65,7 @@ public final class UpdateSessionSettings implements JsonSerializable<UpdateSessi
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the UpdateSessionSettings.
      */
+    @Generated
     public static UpdateSessionSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean maxLeaseTimeMinutesFound = false;

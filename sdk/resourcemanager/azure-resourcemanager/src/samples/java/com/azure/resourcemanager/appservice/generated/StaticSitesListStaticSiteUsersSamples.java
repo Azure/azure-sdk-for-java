@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class StaticSitesListStaticSiteUsersSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/ListStaticSiteUsers.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/ListStaticSiteUsers.json
      */
     /**
      * Sample code: List users for a static site.

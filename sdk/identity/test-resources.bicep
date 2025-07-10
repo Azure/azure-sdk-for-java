@@ -21,7 +21,7 @@ param acrName string = 'acr${uniqueString(resourceGroup().id)}'
 
 param latestAksVersion string
 
-//See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
+//See https://docs.microsoft.com/azure/role-based-access-control/built-in-roles
 var blobContributor = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe') //Storage Blob Data Contributor
 var websiteContributor = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'de139f84-1756-47ae-9be6-808fbbe84772') //Website Contributor
 // cluster parameters

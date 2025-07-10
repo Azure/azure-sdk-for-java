@@ -125,7 +125,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -182,6 +181,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static final ImplementationBridgeHelpers.CosmosOperationDetailsHelper.CosmosOperationDetailsAccessor operationDetailsAccessor =
         ImplementationBridgeHelpers.CosmosOperationDetailsHelper.getCosmosOperationDetailsAccessor();
+
+    private static final ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.ReadConsistencyStrategyAccessor readConsistencyStrategyAccessor =
+        ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.getReadConsistencyStrategyAccessor();
 
     private static final String tempMachineId = "uuid:" + UUIDs.nonBlockingRandomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
@@ -841,7 +843,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             @Override
             public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
-                logger.info("Getting database account endpoint from {}", endpoint);
+                logger.info("Getting database account endpoint from {} - useThinClient: {}", endpoint, useThinClient());
                 return RxDocumentClientImpl.this.getDatabaseAccountFromEndpoint(endpoint);
             }
 
@@ -4520,7 +4522,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 throw(exception);
             }
         });
-        ctxAccessor.setRequestOptions(state.getDiagnosticsContextSnapshot(), optionsImpl);
+
+        ReadConsistencyStrategy requestLevelReadConsistencyStrategy = optionsImpl != null
+            ? optionsImpl.getReadConsistencyStrategy()
+            : null;
+
+        ReadConsistencyStrategy effectiveReadConsistencyStrategy = readConsistencyStrategyAccessor
+            .getEffectiveReadConsistencyStrategy(
+                ResourceType.Document,
+                OperationType.ReadFeed,
+                requestLevelReadConsistencyStrategy,
+                this.readConsistencyStrategy);
+
+        ctxAccessor.setRequestOptions(
+            state.getDiagnosticsContextSnapshot(),
+            optionsImpl,
+            effectiveReadConsistencyStrategy);
+
         return queryDocumentChangeFeed(collection, clonedOptions, classOfT);
     }
 
@@ -7663,15 +7681,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private boolean useThinClient() {
+    public boolean useThinClient() {
         return Configs.isThinClientEnabled() && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY;
     }
 
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
-        return useThinClient()
-            && this.globalEndpointManager.hasThinClientReadLocations()
-            && request.getResourceType() == ResourceType.Document
-            && request.getOperationType().isPointOperation();
+        if (!useThinClient()
+            || !this.globalEndpointManager.hasThinClientReadLocations()
+            || request.getResourceType() != ResourceType.Document) {
+            return false;
+        }
+
+        OperationType operationType = request.getOperationType();
+
+        return operationType.isPointOperation()
+                    || operationType == OperationType.Query
+                    || operationType == OperationType.Batch;
     }
 
     @FunctionalInterface
@@ -7681,6 +7706,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig,
             DiagnosticsClientContext clientContextOverride,
             CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext);
+    }
+
+    public boolean isClosed() {
+        return this.closed.get();
     }
 
     private static class NonTransientPointOperationResult {

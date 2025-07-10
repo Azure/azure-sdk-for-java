@@ -169,7 +169,7 @@ public final class DocumentTranslationClientImpl {
      * REST calls.
      */
     @Host("{endpoint}/translator")
-    @ServiceInterface(name = "DocumentTranslationC")
+    @ServiceInterface(name = "DocumentTranslationClient")
     public interface DocumentTranslationClientService {
         @Post("/document/batches")
         @ExpectedResponses({ 202 })

@@ -60,6 +60,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withHnsEnabled(true)
             .withAzureFilesAadIntegrationEnabled(false)
             .withInfrastructureEncryption()
+            .disableSharedKeyAccess()
             .createAsync();
         StorageAccount storageAccount = resourceStream.block();
         Assertions.assertEquals(rgName, storageAccount.resourceGroupName());
@@ -130,6 +131,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withNewResourceGroup(rgName)
             .withSku(StorageAccountSkuType.STANDARD_LRS)
             .withLargeFileShares(true)
+            .disableSharedKeyAccess()
             .create();
 
         Assertions.assertTrue(storageAccount.isLargeFileSharesEnabled());
@@ -144,21 +146,23 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .define(saName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
             .create();
 
         Assertions.assertEquals(Kind.STORAGE_V2, storageAccountDefault.kind());
         Assertions.assertEquals(SkuName.STANDARD_RAGRS, storageAccountDefault.skuType().name());
         Assertions.assertTrue(storageAccountDefault.isHttpsTrafficOnly());
         Assertions.assertEquals(MinimumTlsVersion.TLS1_2, storageAccountDefault.minimumTlsVersion());
-        Assertions.assertTrue(storageAccountDefault.isBlobPublicAccessAllowed());
-        Assertions.assertTrue(storageAccountDefault.isSharedKeyAccessAllowed());
+        Assertions.assertFalse(storageAccountDefault.isBlobPublicAccessAllowed());
+        Assertions.assertFalse(storageAccountDefault.isSharedKeyAccessAllowed());
 
         // update to non-default
         StorageAccount storageAccount = storageAccountDefault.update()
             .withHttpAndHttpsTraffic()
             .withMinimumTlsVersion(MinimumTlsVersion.TLS1_1)
             .disableBlobPublicAccess()
-            .disableSharedKeyAccess()
+            // Azure policy enforces shared key access to be disabled
+            //            .disableSharedKeyAccess()
             .apply();
 
         Assertions.assertTrue(storageAccount.isHttpsTrafficOnly());
@@ -175,7 +179,6 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withGeneralPurposeAccountKind()
             .withHttpAndHttpsTraffic()
             .withMinimumTlsVersion(MinimumTlsVersion.TLS1_1)
-            .disableBlobPublicAccess()
             .disableSharedKeyAccess()
             .create();
 
@@ -194,6 +197,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withRegion(Region.US_EAST2)
             .withNewResourceGroup(rgName)
             .withSku(StorageAccountSkuType.STANDARD_LRS)
+            .disableSharedKeyAccess()
             .create();
 
         Assertions.assertFalse(storageAccount.isAllowCrossTenantReplication());
@@ -211,6 +215,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withNewResourceGroup(rgName)
             .withSku(StorageAccountSkuType.STANDARD_LRS)
             .allowCrossTenantReplication()
+            .disableSharedKeyAccess()
             .create();
 
         Assertions.assertTrue(storageAccount.isAllowCrossTenantReplication());
@@ -227,6 +232,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withRegion(Region.US_EAST2)
             .withNewResourceGroup(rgName)
             .withSku(StorageAccountSkuType.STANDARD_LRS)
+            .disableSharedKeyAccess()
             .create();
 
         Assertions.assertFalse(storageAccount.isDefaultToOAuthAuthentication());
@@ -244,6 +250,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withNewResourceGroup(rgName)
             .withSku(StorageAccountSkuType.STANDARD_LRS)
             .enableDefaultToOAuthAuthentication()
+            .disableSharedKeyAccess()
             .create();
 
         Assertions.assertTrue(storageAccount.isDefaultToOAuthAuthentication());
@@ -262,6 +269,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
             .withSystemAssignedManagedServiceIdentity()
+            .disableSharedKeyAccess()
             .create();
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
@@ -276,6 +284,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .define(saName)
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
+            .disableSharedKeyAccess()
             .create();
         Assertions.assertNull(storageAccount.innerModel().identity());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
@@ -297,6 +306,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
             .withSystemAssignedManagedServiceIdentity()
+            .disableSharedKeyAccess()
             .create();
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
@@ -324,6 +334,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
             .withNewUserAssignedManagedServiceIdentity(identityCreatable)
+            .disableSharedKeyAccess()
             .create();
 
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
@@ -345,6 +356,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .define(saName)
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
+            .disableSharedKeyAccess()
             .create();
 
         Assertions.assertNull(storageAccount.innerModel().identity());
@@ -374,6 +386,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
             .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .disableSharedKeyAccess()
             .create();
 
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
@@ -395,6 +408,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .define(saName)
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
+            .disableSharedKeyAccess()
             .create();
 
         Assertions.assertNull(storageAccount.innerModel().identity());
@@ -424,6 +438,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
             .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .disableSharedKeyAccess()
             .create();
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
@@ -451,6 +466,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withExistingResourceGroup(rgName)
             .withSystemAssignedManagedServiceIdentity()
             .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .disableSharedKeyAccess()
             .create();
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
             storageAccount.innerModel().identity().type());
@@ -479,6 +495,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withExistingResourceGroup(rgName)
             .withSystemAssignedManagedServiceIdentity()
             .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .disableSharedKeyAccess()
             .create();
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
             storageAccount.innerModel().identity().type());
@@ -507,6 +524,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withExistingResourceGroup(rgName)
             .withSystemAssignedManagedServiceIdentity()
             .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .disableSharedKeyAccess()
             .create();
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
             storageAccount.innerModel().identity().type());
@@ -537,6 +555,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
             .withSystemAssignedManagedServiceIdentity()
+            .disableSharedKeyAccess()
             .create();
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
@@ -566,6 +585,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
             .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .disableSharedKeyAccess()
             .create();
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
@@ -595,6 +615,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
             .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .disableSharedKeyAccess()
             .create();
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
@@ -622,6 +643,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
             .withSystemAssignedManagedServiceIdentity()
+            .disableSharedKeyAccess()
             .create();
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
@@ -648,6 +670,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .define(saName)
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
+            .disableSharedKeyAccess()
             .create();
 
         storageAccount.update()
@@ -670,6 +693,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withExistingResourceGroup(rgName)
             .withSystemAssignedManagedServiceIdentity()
             .disablePublicNetworkAccess()
+            .disableSharedKeyAccess()
             .create();
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, storageAccount.publicNetworkAccess());
     }
@@ -682,6 +706,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
             .withSystemAssignedManagedServiceIdentity()
+            .disableSharedKeyAccess()
             .create();
         storageAccount.update().disablePublicNetworkAccess().apply();
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, storageAccount.publicNetworkAccess());

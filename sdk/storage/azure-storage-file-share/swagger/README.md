@@ -15,8 +15,8 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.50'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d18a495685ccec837b72891b4deea017f62e8190/specification/storage/data-plane/Microsoft.FileStorage/stable/2025-05-05/file.json
+use: '@autorest/java@4.1.52'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/596d8d2a8c1c50bd6ebe60036143f4c4787fc816/specification/storage/data-plane/Microsoft.FileStorage/stable/2025-11-05/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -30,7 +30,6 @@ custom-types: ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,Fi
 customization-class: src/main/java/ShareStorageCustomization.java
 use-input-stream-for-binary: true
 disable-client-builder: true
-use-eclipse-language-server: false
 ```
 
 ### Query Parameters

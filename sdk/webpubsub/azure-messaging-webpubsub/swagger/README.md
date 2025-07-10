@@ -29,16 +29,16 @@ autorest
 ## Generate autorest code
 
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/webpubsub/data-plane/WebPubSub/stable/2024-01-01/webpubsub.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/webpubsub/data-plane/WebPubSub/stable/2024-12-01/webpubsub.json
 java: true
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.52'
 output-folder: ..
 namespace: com.azure.messaging.webpubsub
 sync-methods: all
 client-side-validations: true
 license-header: MICROSOFT_MIT_SMALL
 generate-client-as-impl: true
-use-iterable: true
+enable-page-size: true
 data-plane: true
 generate-sync-async-clients: true
 service-name: WebPubSubService
@@ -49,4 +49,5 @@ service-versions:
   - '2021-10-01'
   - '2022-11-01'
   - '2024-01-01'
+  - '2024-12-01'
 ```

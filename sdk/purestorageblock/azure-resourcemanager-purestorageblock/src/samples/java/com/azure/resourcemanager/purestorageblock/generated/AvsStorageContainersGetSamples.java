@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class AvsStorageContainersGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/AvsStorageContainers_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-01/AvsStorageContainers_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsStorageContainers_Get.

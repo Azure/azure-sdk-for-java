@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.VirtualNetworksClient;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
@@ -70,5 +72,12 @@ public class NetworksImpl extends
             return null;
         }
         return new NetworkImpl(inner.name(), inner, this.manager());
+    }
+
+    @Override
+    public Network getByResourceGroup(String resourceGroupName, String name, Context context) {
+        return getByResourceGroupAsync(resourceGroupName, name)
+            .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
+            .block();
     }
 }

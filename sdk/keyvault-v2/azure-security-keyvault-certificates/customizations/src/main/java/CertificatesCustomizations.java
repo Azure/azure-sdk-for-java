@@ -21,10 +21,11 @@ import static com.github.javaparser.javadoc.description.JavadocDescription.parse
  * Contains customizations for Azure Key Vault's Certificates code generation.
  */
 public class CertificatesCustomizations extends Customization {
+    private static final String ROOT_FILE_PATH = "src/main/java/com/azure/v2/security/keyvault/certificates/";
+
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         removeFiles(libraryCustomization.getRawEditor());
-        moveListResultFiles(libraryCustomization);
         customizeError(libraryCustomization);
         customizeCertificateKeyUsage(libraryCustomization);
         customizeServiceVersion(libraryCustomization);
@@ -168,7 +169,7 @@ public class CertificatesCustomizations extends Customization {
     }
 
     private static void customizeModuleInfo(Editor editor) {
-        editor.replaceFile("src/main/java/module-info.java", joinWithNewline(
+        editor.replaceFile("src/main/java/module-info.java", String.join("\n",
             "// Copyright (c) Microsoft Corporation. All rights reserved.",
             "// Licensed under the MIT License.",
             "",
@@ -178,9 +179,5 @@ public class CertificatesCustomizations extends Customization {
             "    exports com.azure.v2.security.keyvault.certificates;",
             "    exports com.azure.v2.security.keyvault.certificates.models;",
             "}"));
-    }
-
-    private static String joinWithNewline(String... lines) {
-        return String.join("\n", lines);
     }
 }

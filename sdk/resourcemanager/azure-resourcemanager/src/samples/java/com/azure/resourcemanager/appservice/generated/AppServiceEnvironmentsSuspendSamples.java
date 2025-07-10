@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class AppServiceEnvironmentsSuspendSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/AppServiceEnvironments_Suspend.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/AppServiceEnvironments_Suspend.json
      */
     /**
      * Sample code: Suspend an App Service Environment.

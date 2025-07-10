@@ -12,37 +12,41 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
-import io.clientcore.core.utils.TestUtils;
-import org.conscrypt.Conscrypt;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.servlet.ServletException;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.SequenceInputStream;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.security.GeneralSecurityException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
+import static io.clientcore.core.implementation.http.client.JdkHttpClientLocalTestServer.LONG_BODY;
+import static io.clientcore.core.implementation.http.client.JdkHttpClientLocalTestServer.RETURN_HEADERS_AS_IS_PATH;
+import static io.clientcore.core.implementation.http.client.JdkHttpClientLocalTestServer.SHORT_BODY;
+import static io.clientcore.core.implementation.http.client.JdkHttpClientLocalTestServer.TIMEOUT;
 import static io.clientcore.core.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -54,93 +58,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DisabledForJreRange(max = JRE.JAVA_11)
 @Execution(ExecutionMode.SAME_THREAD)
 public class JdkHttpClientIT {
-    static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
-    private static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
-    private static final byte[] LONG_BODY = createLongBody();
     private static LocalTestServer server;
-    private static final String SSE_RESPONSE = "/serversentevent";
 
     @BeforeAll
     public static void startTestServer() {
-        server = new LocalTestServer((req, resp, requestBody) -> {
-            String path = req.getServletPath();
-            boolean get = "GET".equalsIgnoreCase(req.getMethod());
-            boolean post = "POST".equalsIgnoreCase(req.getMethod());
-            boolean put = "PUT".equalsIgnoreCase(req.getMethod());
-
-            if (get && "/short".equals(path)) {
-                resp.setContentType("application/octet-stream");
-                resp.setContentLength(SHORT_BODY.length);
-                resp.getOutputStream().write(SHORT_BODY);
-            } else if (get && "/long".equals(path)) {
-                resp.setContentType("application/octet-stream");
-                resp.setContentLength(LONG_BODY.length);
-                resp.getOutputStream().write(LONG_BODY);
-            } else if (get && "/error".equals(path)) {
-                resp.setStatus(500);
-                resp.setContentLength(5);
-                resp.getOutputStream().write("error".getBytes(StandardCharsets.UTF_8));
-            } else if (post && "/shortPost".equals(path)) {
-                resp.setContentType("application/octet-stream");
-                resp.setContentLength(SHORT_BODY.length);
-                resp.getOutputStream().write(SHORT_BODY);
-            } else if (get && RETURN_HEADERS_AS_IS_PATH.equals(path)) {
-                List<String> headerNames = Collections.list(req.getHeaderNames());
-                headerNames.forEach(headerName -> {
-                    List<String> headerValues = Collections.list(req.getHeaders(headerName));
-                    headerValues.forEach(headerValue -> resp.addHeader(headerName, headerValue));
-                });
-            } else if (get && "/empty".equals(path)) {
-                resp.setContentType("application/octet-stream");
-                resp.setContentLength(0);
-            } else if (get && "/connectionClose".equals(path)) {
-                resp.getHttpChannel().getConnection().close();
-            } else if (get && SSE_RESPONSE.equals(path)) {
-                if (req.getHeader("Last-Event-Id") != null) {
-                    sendSSELastEventIdResponse(resp);
-                } else {
-                    sendSSEResponseWithRetry(resp);
-                }
-            } else if (post && SSE_RESPONSE.equals(path)) {
-                sendSSEResponseWithDataOnly(resp);
-            } else if (put && SSE_RESPONSE.equals(path)) {
-                resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
-                resp.setStatus(200);
-                resp.getOutputStream().write(("msg hello world \n\n").getBytes());
-                resp.flushBuffer();
-            } else {
-                throw new ServletException("Unexpected request " + req.getMethod() + " " + path);
-            }
-        });
-
-        server.start();
-    }
-
-    private static void sendSSEResponseWithDataOnly(org.eclipse.jetty.server.Response resp) throws IOException {
-        resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
-        resp.getOutputStream().write(("data: YHOO\ndata: +2\ndata: 10\n\n").getBytes());
-        resp.flushBuffer();
-    }
-
-    private static String addServerSentEventWithRetry() {
-        return ": test stream\ndata: first event\nid: 1\nretry: 100\n\n"
-            + "data: This is the second message, it\ndata: has two lines.\nid: 2\n\ndata:  third event";
-    }
-
-    private static void sendSSEResponseWithRetry(org.eclipse.jetty.server.Response resp) throws IOException {
-        resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
-        resp.getOutputStream().write(addServerSentEventWithRetry().getBytes());
-        resp.flushBuffer();
-    }
-
-    private static String addServerSentEventLast() {
-        return "data: This is the second message, it\ndata: has two lines.\nid: 2\n\ndata:  third event";
-    }
-
-    private static void sendSSELastEventIdResponse(org.eclipse.jetty.server.Response resp) throws IOException {
-        resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
-        resp.getOutputStream().write(addServerSentEventLast().getBytes());
-        resp.flushBuffer();
+        server = JdkHttpClientLocalTestServer.getServer();
     }
 
     @AfterAll
@@ -187,7 +109,7 @@ public class JdkHttpClientIT {
     }
 
     @Test
-    public void validateHeadersReturnAsIs() throws IOException {
+    public void validateHeadersReturnAsIs() {
         HttpClient client = new JdkHttpClientBuilder().build();
 
         HttpHeaderName singleValueHeaderName = HttpHeaderName.fromString("singleValue");
@@ -219,7 +141,7 @@ public class JdkHttpClientIT {
     }
 
     @Test
-    public void testBufferedResponse() throws IOException {
+    public void testBufferedResponse() {
         HttpClient client = new JdkHttpClientBuilder().build();
 
         try (Response<BinaryData> response = getResponse(client, "/short", RequestContext.none())) {
@@ -228,7 +150,7 @@ public class JdkHttpClientIT {
     }
 
     @Test
-    public void testEmptyBufferResponse() throws IOException {
+    public void testEmptyBufferResponse() {
         HttpClient client = new JdkHttpClientBuilder().build();
 
         try (Response<BinaryData> response = getResponse(client, "/empty", RequestContext.none())) {
@@ -237,7 +159,7 @@ public class JdkHttpClientIT {
     }
 
     @Test
-    public void testRequestBodyPost() throws IOException {
+    public void testRequestBodyPost() {
         HttpClient client = new JdkHttpClientBuilder().build();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
@@ -252,47 +174,109 @@ public class JdkHttpClientIT {
     }
 
     @Test
-    public void testCustomSslSocketFactory() throws IOException, GeneralSecurityException {
-        SSLContext sslContext = SSLContext.getInstance("TLSv1.2", Conscrypt.newProvider());
+    @Disabled("Need to add ProgressReporter support.")
+    public void testProgressReporter() {
+        HttpClient httpClient = new JdkHttpClientBuilder().build();
 
-        // Initialize the SSL context with a trust manager that trusts all certificates.
-        sslContext.init(null, new TrustManager[] { new InsecureTrustManager() }, null);
+        ConcurrentLinkedDeque<Long> progress = new ConcurrentLinkedDeque<>();
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
+            .setUri(uri(server, "/shortPost"))
+            .setBody(BinaryData.fromStream(
+                new SequenceInputStream(new ByteArrayInputStream(LONG_BODY), new ByteArrayInputStream(SHORT_BODY))));
+        request.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(SHORT_BODY.length + LONG_BODY.length));
 
-        HttpClient httpClient = new JdkHttpClientBuilder().sslContext(sslContext).build();
+        //        Contexts contexts = Contexts.with(Context.NONE)
+        //            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::add));
 
-        try (Response<BinaryData> response
-            = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(httpsUri(server, "/short")))) {
-            TestUtils.assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
+        try (Response<BinaryData> response = httpClient.send(request)) {
+            assertEquals(200, response.getStatusCode());
+            List<Long> progressList = progress.stream().collect(Collectors.toList());
+            assertEquals(LONG_BODY.length, progressList.get(0));
+            assertEquals(SHORT_BODY.length + LONG_BODY.length, progressList.get(1));
         }
     }
 
-    private static Response<BinaryData> getResponse(HttpClient client, String path, RequestContext context)
-        throws IOException {
+    @Test
+    public void noResponseTimesOut() {
+        HttpClient client = new JdkHttpClientBuilder().responseTimeout(Duration.ofSeconds(1)).build();
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
+            try (Response<BinaryData> response = doRequest(client, "/noResponse")) {
+                assertNotNull(response);
+            }
+        }));
+
+        assertInstanceOf(IOException.class, ex.getCause());
+    }
+
+    @Test
+    public void slowStreamReadingTimesOut() {
+        // Set both the response timeout and read timeout to make sure we aren't getting a response timeout when the
+        // response body is slow to be sent.
+        HttpClient client = new JdkHttpClientBuilder().responseTimeout(Duration.ofSeconds(1))
+            .readTimeout(Duration.ofSeconds(1))
+            .build();
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
+            try (Response<BinaryData> response = doRequest(client, "/slowResponse")) {
+                assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
+            }
+        }));
+
+        assertInstanceOf(IOException.class, ex.getCause());
+    }
+
+    @Test
+    public void slowEagerReadingTimesOut() {
+        // Set both the response timeout and read timeout to make sure we aren't getting a response timeout when the
+        // response body is slow to be sent.
+        HttpClient client = new JdkHttpClientBuilder().responseTimeout(Duration.ofSeconds(1))
+            .readTimeout(Duration.ofSeconds(1))
+            .build();
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> assertTimeout(Duration.ofSeconds(5), () -> {
+            try (Response<BinaryData> response = doRequest(client, "/slowResponse")) {
+                assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
+            }
+        }));
+
+        assertInstanceOf(IOException.class, ex.getCause());
+    }
+
+    @Test
+    @Disabled("Need to implement per-call timeouts.")
+    public void perCallTimeout() {
+        HttpClient client = new JdkHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
+
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, TIMEOUT));
+
+        // Verify a smaller timeout sent through Context times out the request.
+        //        RuntimeException ex = assertThrows(RuntimeException.class,
+        //            () -> client.sendSync(request, new Context(HttpUtils.AZURE_RESPONSE_TIMEOUT, Duration.ofSeconds(1))));
+        //        assertInstanceOf(HttpTimeoutException.class, ex.getCause());
+
+        // Then verify not setting a timeout through Context does not time out the request.
+        try (Response<BinaryData> response = client.send(request)) {
+            assertEquals(200, response.getStatusCode());
+            assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
+        }
+    }
+
+    private static Response<BinaryData> getResponse(HttpClient client, String path, RequestContext context) {
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, path)).setContext(context);
 
         return client.send(request);
     }
 
     static URI uri(LocalTestServer server, String path) {
-        return URI.create(server.getHttpUri() + path);
+        return URI.create(server.getUri() + path);
     }
 
-    static URI httpsUri(LocalTestServer server, String path) {
-        return URI.create(server.getHttpsUri() + path);
+    static URI httpsUri(LocalTestServer server) {
+        return URI.create(server.getHttpsUri() + "/short");
     }
 
-    private static byte[] createLongBody() {
-        byte[] duplicateBytes = "abcdefghijk".getBytes(StandardCharsets.UTF_8);
-        byte[] longBody = new byte[duplicateBytes.length * 100000];
-
-        for (int i = 0; i < 100000; i++) {
-            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length, duplicateBytes.length);
-        }
-
-        return longBody;
-    }
-
-    private static Response<BinaryData> doRequest(HttpClient client, String path) throws IOException {
+    private static Response<BinaryData> doRequest(HttpClient client, String path) {
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, path));
 
         return client.send(request);

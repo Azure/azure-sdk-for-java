@@ -72,6 +72,22 @@ public final class ShareResourcesClientBuilder
     }
 
     /*
+     * The HTTP client used to send the request.
+     */
+    @Generated
+    private HttpClient httpClient;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Generated
+    @Override
+    public ShareResourcesClientBuilder httpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through.
      */
     @Generated
@@ -87,22 +103,6 @@ public final class ShareResourcesClientBuilder
             LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
-     * The HTTP client used to send the request.
-     */
-    @Generated
-    private HttpClient httpClient;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Generated
-    @Override
-    public ShareResourcesClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
         return this;
     }
 
@@ -327,7 +327,7 @@ public final class ShareResourcesClientBuilder
      */
     @Generated
     public ShareResourcesClient buildClient() {
-        return new ShareResourcesClient(new ShareResourcesAsyncClient(buildInnerClient().getShareResources()));
+        return new ShareResourcesClient(buildInnerClient().getShareResources());
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ShareResourcesClientBuilder.class);

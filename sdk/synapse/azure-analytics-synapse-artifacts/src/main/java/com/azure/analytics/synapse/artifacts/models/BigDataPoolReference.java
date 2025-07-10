@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class BigDataPoolReference implements JsonSerializable<BigDataPoolR
     /*
      * Big data pool reference type.
      */
+    @Generated
     private BigDataPoolReferenceType type;
 
     /*
      * Reference big data pool name.
      */
+    @Generated
     private String referenceName;
 
     /**
      * Creates an instance of BigDataPoolReference class.
      */
+    @Generated
     public BigDataPoolReference() {
     }
 
@@ -37,6 +41,7 @@ public final class BigDataPoolReference implements JsonSerializable<BigDataPoolR
      * 
      * @return the type value.
      */
+    @Generated
     public BigDataPoolReferenceType getType() {
         return this.type;
     }
@@ -47,6 +52,7 @@ public final class BigDataPoolReference implements JsonSerializable<BigDataPoolR
      * @param type the type value to set.
      * @return the BigDataPoolReference object itself.
      */
+    @Generated
     public BigDataPoolReference setType(BigDataPoolReferenceType type) {
         this.type = type;
         return this;
@@ -57,6 +63,7 @@ public final class BigDataPoolReference implements JsonSerializable<BigDataPoolR
      * 
      * @return the referenceName value.
      */
+    @Generated
     public String getReferenceName() {
         return this.referenceName;
     }
@@ -67,6 +74,7 @@ public final class BigDataPoolReference implements JsonSerializable<BigDataPoolR
      * @param referenceName the referenceName value to set.
      * @return the BigDataPoolReference object itself.
      */
+    @Generated
     public BigDataPoolReference setReferenceName(String referenceName) {
         this.referenceName = referenceName;
         return this;
@@ -75,6 +83,7 @@ public final class BigDataPoolReference implements JsonSerializable<BigDataPoolR
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class BigDataPoolReference implements JsonSerializable<BigDataPoolR
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BigDataPoolReference.
      */
+    @Generated
     public static BigDataPoolReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BigDataPoolReference deserializedBigDataPoolReference = new BigDataPoolReference();

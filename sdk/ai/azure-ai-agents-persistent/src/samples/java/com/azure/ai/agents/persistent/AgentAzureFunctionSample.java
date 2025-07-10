@@ -30,12 +30,13 @@ public class AgentAzureFunctionSample {
 
     public static void main(String[] args) {
 
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        PersistentAgentsAdministrationClient agentsClient = clientBuilder.buildClient();
-        ThreadsClient threadsClient = clientBuilder.buildThreadsClient();
-        MessagesClient messagesClient = clientBuilder.buildMessagesClient();
-        RunsClient runsClient = clientBuilder.buildRunsClient();
+        PersistentAgentsClient agentsClient = clientBuilder.buildClient();
+        PersistentAgentsAdministrationClient administrationClient = agentsClient.getPersistentAgentsAdministrationClient();
+        ThreadsClient threadsClient = agentsClient.getThreadsClient();
+        MessagesClient messagesClient = agentsClient.getMessagesClient();
+        RunsClient runsClient = agentsClient.getRunsClient();
 
         String storageQueueUri = Configuration.getGlobalConfiguration().get("STORAGE_QUEUE_URI", "");
         String azureFunctionName = Configuration.getGlobalConfiguration().get("AZURE_FUNCTION_NAME", "");
@@ -69,7 +70,7 @@ public class AgentAzureFunctionSample {
                 + "you are asked with the weather of any location")
             .setTools(Arrays.asList(azureFnTool));
         BinaryData createAgentRequest = BinaryData.fromObject(createAgentRequestObj);
-        PersistentAgent agent = agentsClient.createAgentWithResponse(createAgentRequest, requestOptions)
+        PersistentAgent agent = administrationClient.createAgentWithResponse(createAgentRequest, requestOptions)
             .getValue().toObject(PersistentAgent.class);
 
         PersistentAgentThread thread = threadsClient.createThread();
@@ -91,7 +92,7 @@ public class AgentAzureFunctionSample {
         } finally {
             //cleanup
             threadsClient.deleteThread(thread.getId());
-            agentsClient.deleteAgent(agent.getId());
+            administrationClient.deleteAgent(agent.getId());
         }
     }
 

@@ -68,7 +68,7 @@ public final class FiltersImpl {
      * perform REST calls.
      */
     @Host("{Endpoint}")
-    @ServiceInterface(name = "PurviewScanningClien")
+    @ServiceInterface(name = "PurviewScanningClientFilters")
     public interface FiltersService {
         @Get("/datasources/{dataSourceName}/scans/{scanName}/filters/custom")
         @ExpectedResponses({ 200 })

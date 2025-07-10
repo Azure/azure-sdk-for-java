@@ -29,10 +29,10 @@ autorest README.md --java --v4
 ### Code generation settings
 
 ``` yaml
-tag: package-2024-09-01-preview
-use: '@autorest/java@4.1.50'
+tag: package-2025-05-15
+use: '@autorest/java@4.1.52'
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/d1bedfa9c084a2e3f9cbeb075c532d691c3c0095/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/d87c0a3d1abbd1d1aa1b487d99e77769b6895ef4/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -47,7 +47,6 @@ add-context-parameter: true
 context-client-method-parameter: true
 customization-class: src/main/java/CallautomationCustomizations.java
 stream-style-serialization: true
-use-eclipse-language-server: false
 title: Azure Communication Call Automation Service
 directive:
 - rename-model:
@@ -159,11 +158,17 @@ directive:
     from: MediaStreamingOptions
     to: MediaStreamingOptionsInternal
 - rename-model:
+    from: WebSocketMediaStreamingOptions
+    to: WebSocketMediaStreamingOptionsInternal
+- rename-model:
     from: MediaStreamingSubscription
     to: MediaStreamingSubscriptionInternal
 - rename-model:
     from: TranscriptionSubscription
     to: TranscriptionSubscriptionInternal
+- rename-model:
+    from: WebSocketTranscriptionOptions
+    to: WebSocketTranscriptionOptionsInternal
 - rename-model:
     from: DtmfOptions
     to: DtmfOptionsInternal
@@ -412,24 +417,14 @@ directive:
     $.name = "MediaStreamingContentTypeInternal";
 ```
 
-### Rename MediaStreamingTransportType to MediaStreamingTransportTypeInternal
+### Rename StreamingTransportType to StreamingTransportTypeInternal
 
 ``` yaml
 directive:
 - from: swagger-document
-  where: $.definitions.MediaStreamingTransportType["x-ms-enum"]
+  where: $.definitions.StreamingTransportType["x-ms-enum"]
   transform: >
-    $.name = "MediaStreamingTransportTypeInternal";
-```
-
-### Rename TranscriptionTransportType to TranscriptionTransportTypeInternal
-
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.TranscriptionTransportType["x-ms-enum"]
-  transform: >
-    $.name = "TranscriptionTransportTypeInternal";
+    $.name = "StreamingTransportTypeInternal";
 ```
 
 ### Rename RecognitionType to RecognitionTypeInternal
