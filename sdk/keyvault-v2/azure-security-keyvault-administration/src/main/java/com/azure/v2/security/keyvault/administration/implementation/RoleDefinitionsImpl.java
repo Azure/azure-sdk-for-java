@@ -148,21 +148,6 @@ public final class RoleDefinitionsImpl {
     }
 
     /**
-     * Deletes a custom role definition.
-     * 
-     * @param scope The scope of the role definition to delete. Managed HSM only supports '/'.
-     * @param roleDefinitionName The name (GUID) of the role definition to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleDefinition delete(String scope, String roleDefinitionName) {
-        return deleteWithResponse(scope, roleDefinitionName, RequestContext.none()).getValue();
-    }
-
-    /**
      * Creates or updates a custom role definition.
      * 
      * @param scope The scope of the role definition to create or update. Managed HSM only supports '/'.
@@ -181,23 +166,6 @@ public final class RoleDefinitionsImpl {
         final String accept = "application/json";
         return service.createOrUpdate(this.client.getVaultBaseUrl(), this.client.getServiceVersion().getVersion(),
             scope, roleDefinitionName, contentType, accept, parameters, requestContext);
-    }
-
-    /**
-     * Creates or updates a custom role definition.
-     * 
-     * @param scope The scope of the role definition to create or update. Managed HSM only supports '/'.
-     * @param roleDefinitionName The name of the role definition to create or update. It can be any valid GUID.
-     * @param parameters Parameters for the role definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleDefinition createOrUpdate(String scope, String roleDefinitionName,
-        RoleDefinitionCreateParameters parameters) {
-        return createOrUpdateWithResponse(scope, roleDefinitionName, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -220,21 +188,6 @@ public final class RoleDefinitionsImpl {
     }
 
     /**
-     * Get the specified role definition.
-     * 
-     * @param scope The scope of the role definition to get. Managed HSM only supports '/'.
-     * @param roleDefinitionName The name of the role definition to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleDefinition get(String scope, String roleDefinitionName) {
-        return getWithResponse(scope, roleDefinitionName, RequestContext.none()).getValue();
-    }
-
-    /**
      * Get all role definitions that are applicable at scope and above.
      * 
      * @param scope The scope of the role definition.
@@ -251,7 +204,7 @@ public final class RoleDefinitionsImpl {
         Response<RoleDefinitionListResult> res = service.list(this.client.getVaultBaseUrl(),
             this.client.getServiceVersion().getVersion(), scope, filter, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -272,7 +225,7 @@ public final class RoleDefinitionsImpl {
         Response<RoleDefinitionListResult> res = service.list(this.client.getVaultBaseUrl(),
             this.client.getServiceVersion().getVersion(), scope, filter, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -417,7 +370,7 @@ public final class RoleDefinitionsImpl {
         Response<RoleDefinitionListResult> res
             = service.listNext(nextLink, this.client.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -436,7 +389,7 @@ public final class RoleDefinitionsImpl {
         Response<RoleDefinitionListResult> res
             = service.listNext(nextLink, this.client.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RoleDefinitionsImpl.class);

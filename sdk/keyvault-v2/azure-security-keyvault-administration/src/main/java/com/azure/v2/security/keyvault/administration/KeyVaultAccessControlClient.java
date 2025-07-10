@@ -344,9 +344,9 @@ public final class KeyVaultAccessControlClient {
     public KeyVaultRoleDefinition setRoleDefinition(KeyVaultRoleScope roleScope, String roleDefinitionName) {
         Objects.requireNonNull(roleScope, "'roleScope' cannot be null.");
 
-        return roleDefinitionToKeyVaultRoleDefinition(clientImpl.getRoleDefinitions()
-            .createOrUpdate(roleScope.toString(),
-                isNullOrEmpty(roleDefinitionName) ? UUID.randomUUID().toString() : roleDefinitionName, null));
+        return roleDefinitionToKeyVaultRoleDefinition(clientImpl.getRoleDefinitions().createOrUpdateWithResponse(
+            roleScope.toString(), isNullOrEmpty(roleDefinitionName) ? UUID.randomUUID().toString() : roleDefinitionName,
+            null, RequestContext.none()).getValue());
     }
 
     /**
@@ -452,7 +452,8 @@ public final class KeyVaultAccessControlClient {
         validateRoleDefinitionParameters(roleScope, roleDefinitionName, LOGGER);
 
         return roleDefinitionToKeyVaultRoleDefinition(
-            clientImpl.getRoleDefinitions().get(roleScope.toString(), roleDefinitionName));
+            clientImpl.getRoleDefinitions().getWithResponse(roleScope.toString(), roleDefinitionName,
+                RequestContext.none()).getValue());
     }
 
     /**
@@ -530,7 +531,8 @@ public final class KeyVaultAccessControlClient {
     public void deleteRoleDefinition(KeyVaultRoleScope roleScope, String roleDefinitionName) {
         validateRoleDefinitionParameters(roleScope, roleDefinitionName, LOGGER);
 
-        clientImpl.getRoleDefinitions().delete(roleScope.toString(), roleDefinitionName);
+        clientImpl.getRoleDefinitions().deleteWithResponse(roleScope.toString(), roleDefinitionName,
+            RequestContext.none());
     }
 
     /**
@@ -738,7 +740,8 @@ public final class KeyVaultAccessControlClient {
                 isNullOrEmpty(roleAssignmentName) ? UUID.randomUUID().toString() : roleAssignmentName, LOGGER);
 
         return roleAssignmentToKeyVaultRoleAssignment(
-            clientImpl.getRoleAssignments().create(roleScope.toString(), roleAssignmentName, parameters));
+            clientImpl.getRoleAssignments().createWithResponse(roleScope.toString(), roleAssignmentName, parameters,
+                RequestContext.none()).getValue());
     }
 
     /**
@@ -828,7 +831,8 @@ public final class KeyVaultAccessControlClient {
         validateRoleAssignmentParameters(roleScope, roleAssignmentName, LOGGER);
 
         return roleAssignmentToKeyVaultRoleAssignment(
-            clientImpl.getRoleAssignments().get(roleScope.toString(), roleAssignmentName));
+            clientImpl.getRoleAssignments().getWithResponse(roleScope.toString(), roleAssignmentName,
+                RequestContext.none()).getValue());
     }
 
     /**
@@ -903,7 +907,7 @@ public final class KeyVaultAccessControlClient {
     public void deleteRoleAssignment(KeyVaultRoleScope roleScope, String roleAssignmentName) {
         validateRoleAssignmentParameters(roleScope, roleAssignmentName, LOGGER);
 
-        clientImpl.getRoleAssignments().delete(roleScope.toString(), roleAssignmentName);
+        clientImpl.getRoleAssignments().deleteWithResponse(roleScope.toString(), roleAssignmentName, null);
     }
 
     /**
