@@ -7,6 +7,8 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * A policy within the {@link HttpPipeline}.
  *
@@ -22,6 +24,32 @@ public interface HttpPipelinePolicy {
      * @return The {@link Response} from the next policy or the HTTP client if there are no more policies.
      */
     Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next);
+
+    /**
+     * Processes the provided HTTP request asynchronously and invokes the next policy.
+     * <p>
+     * This method is called when {@link HttpPipeline#sendAsync(HttpRequest)} is used.
+     * <p>
+     * The default implementation of this method wraps the synchronous
+     * {@link #process(HttpRequest, HttpPipelineNextPolicy)} method with
+     * {@link CompletableFuture#completedFuture(Object)} if the request is successful. If the request completes
+     * exceptionally a {@link CompletableFuture} failed with {@link CompletableFuture#completeExceptionally(Throwable)}
+     * is returned instead.
+     *
+     * @param httpRequest The HTTP request.
+     * @param next The next policy to invoke.
+     * @return A {@link CompletableFuture} that completes with the {@link Response} from the next policy or the HTTP
+     * client if there are no more policies.
+     */
+    default CompletableFuture<Response<BinaryData>> processAsync(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        try {
+            return CompletableFuture.completedFuture(process(httpRequest, next));
+        } catch (Exception e) {
+            CompletableFuture<Response<BinaryData>> failedFuture = new CompletableFuture<>();
+            failedFuture.completeExceptionally(e);
+            return failedFuture;
+        }
+    }
 
     /**
      * Gets the position in the {@link HttpPipelineBuilder} the policy will be placed when added.

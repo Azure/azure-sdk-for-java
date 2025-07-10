@@ -10,6 +10,8 @@ import io.clientcore.core.implementation.http.HttpPipelineCallState;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * A type that invokes next policy in the pipeline.
  */
@@ -39,6 +41,22 @@ public class HttpPipelineNextPolicy {
             return this.state.getPipeline().getHttpClient().send(this.state.getHttpRequest());
         } else {
             return nextPolicy.process(this.state.getHttpRequest(), this);
+        }
+    }
+
+    /**
+     * Invokes the next {@link HttpPipelinePolicy} asynchronously.
+     *
+     * @return A {@link CompletableFuture} that completes with the response, or fails with an exception if an error
+     * occurs when sending the request or receiving the response.
+     */
+    public CompletableFuture<Response<BinaryData>> processAsync() {
+        HttpPipelinePolicy nextPolicy = state.getNextPolicy();
+
+        if (nextPolicy == null) {
+            return this.state.getPipeline().getHttpClient().sendAsync(this.state.getHttpRequest());
+        } else {
+            return nextPolicy.processAsync(this.state.getHttpRequest(), this);
         }
     }
 

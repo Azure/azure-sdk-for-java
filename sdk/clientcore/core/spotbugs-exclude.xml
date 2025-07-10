@@ -227,6 +227,10 @@
     </Or>
   </Match>
   <Match>
+    <Bug pattern="NP_NULL_ON_SOME_PATH" />
+    <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationLoggingTests" />
+  </Match>
+  <Match>
     <Bug pattern="NP_NULL_ON_SOME_PATH_MIGHT_BE_INFEASIBLE" />
     <Or>
       <Class name="io.clientcore.core.implementation.serializer.BinaryDataSerializationTests$ListProperty" />
@@ -367,7 +371,7 @@
   <Match>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
     <Or>
-      <Class name="io.clientcore.core.http.pipeline.RetryPolicyTests" />
+      <Class name="io.clientcore.core.http.pipeline.HttpRetryPolicyTests" />
       <Class name="io.clientcore.core.instrumentation.TelemetryForLibraryDevelopersJavaDocCodeSnippets" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataJavaDocCodeSnippet" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />

@@ -6,38 +6,48 @@ package io.clientcore.core.http.pipeline;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.configuration.Configuration;
+import org.junit.jupiter.params.ParameterizedClass;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import static io.clientcore.core.http.pipeline.PipelineTestHelpers.sendRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Contains tests for {@link UserAgentPolicy}.
  */
+@ParameterizedClass(name = "isAsync={0}")
+@ValueSource(booleans = { false, true })
 public class UserAgentPolicyTests {
+    private final boolean isAsync;
+
+    public UserAgentPolicyTests(boolean isAsync) {
+        this.isAsync = isAsync;
+    }
+
     @ParameterizedTest(name = "{displayName} [{index}]")
     @MethodSource("userAgentAndExpectedSupplier")
-    public void validateUserAgentPolicyHandling(UserAgentPolicy userAgentPolicy, String expected) throws IOException {
+    public void validateUserAgentPolicyHandling(UserAgentPolicy userAgentPolicy, String expected) {
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new ValidationHttpClient(
+            .httpClient(getValidationHttpClient(
                 request -> assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
             .addPolicy(userAgentPolicy)
             .build();
 
-        try (Response<?> response
-            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost"))) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -48,16 +58,15 @@ public class UserAgentPolicyTests {
      */
     @ParameterizedTest(name = "{displayName} [{index}]")
     @MethodSource("userAgentAndExpectedSupplier")
-    public void userAgentPolicyAfterRetryPolicy(UserAgentPolicy userAgentPolicy, String expected) throws IOException {
+    public void userAgentPolicyAfterRetryPolicy(UserAgentPolicy userAgentPolicy, String expected) {
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new RetryValidationHttpClient(
+            .httpClient(getRetryValidationHttpClient(
                 request -> assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
             .addPolicy(new HttpRetryPolicy(new HttpRetryOptions(5, Duration.ofMillis(10))))
             .addPolicy(userAgentPolicy)
             .build();
 
-        try (Response<?> response
-            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost"))) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -68,16 +77,15 @@ public class UserAgentPolicyTests {
      */
     @ParameterizedTest(name = "{displayName} [{index}]")
     @MethodSource("userAgentAndExpectedSupplier")
-    public void multipleUserAgentPolicies(UserAgentPolicy userAgentPolicy, String expected) throws IOException {
+    public void multipleUserAgentPolicies(UserAgentPolicy userAgentPolicy, String expected) {
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new ValidationHttpClient(
+            .httpClient(getValidationHttpClient(
                 request -> assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
             .addPolicy(userAgentPolicy)
             .addPolicy(userAgentPolicy)
             .build();
 
-        try (Response<?> response
-            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost"))) {
+        try (Response<BinaryData> response = sendRequest(pipeline, isAsync)) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -113,37 +121,22 @@ public class UserAgentPolicyTests {
      * Simple helper class which implements {@link HttpClient} and applies a validation method to the request sent
      * by the client.
      */
-    private static class ValidationHttpClient implements HttpClient {
-        private final Consumer<HttpRequest> validator;
-
-        ValidationHttpClient(Consumer<HttpRequest> validator) {
-            this.validator = validator;
-        }
-
-        @Override
-        public Response<BinaryData> send(HttpRequest request) {
+    private static HttpClient getValidationHttpClient(Consumer<HttpRequest> validator) {
+        return PipelineTestHelpers.createBasicHttpClient(request -> {
             validator.accept(request);
             return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
-        }
+        });
     }
 
-    private static class RetryValidationHttpClient implements HttpClient {
-        private final Consumer<HttpRequest> validator;
-        private int retryCount = 0;
-
-        RetryValidationHttpClient(Consumer<HttpRequest> validator) {
-            this.validator = validator;
-        }
-
-        @Override
-        public Response<BinaryData> send(HttpRequest request) {
-            if (retryCount < 5) {
-                retryCount++;
+    private static HttpClient getRetryValidationHttpClient(Consumer<HttpRequest> validator) {
+        AtomicInteger retryCount = new AtomicInteger(0);
+        return PipelineTestHelpers.createBasicHttpClient(request -> {
+            if (retryCount.getAndIncrement() < 5) {
                 throw CoreException.from(new IOException("Activating retry policy"));
             }
 
             validator.accept(request);
             return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
-        }
+        });
     }
 }

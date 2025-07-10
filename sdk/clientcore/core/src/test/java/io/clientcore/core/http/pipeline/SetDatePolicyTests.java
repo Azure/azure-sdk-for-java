@@ -4,27 +4,34 @@ package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedClass;
+import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static io.clientcore.core.http.pipeline.PipelineTestHelpers.sendRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * Unit tests for {@link SetDatePolicy}.
  */
+@ParameterizedClass(name = "isAsync={0}")
+@ValueSource(booleans = { false, true })
 public class SetDatePolicyTests {
+    private final boolean isAsync;
+
+    public SetDatePolicyTests(boolean isAsync) {
+        this.isAsync = isAsync;
+    }
+
     @Test
-    public void dateIsRefreshedOnRetry() throws IOException {
-        try (Response<?> response
-            = getPipeline().send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://azure.com"))) {
+    public void dateIsRefreshedOnRetry() {
+        try (Response<?> response = sendRequest(getPipeline(), isAsync)) {
             assertEquals(200, response.getStatusCode());
         }
     }
