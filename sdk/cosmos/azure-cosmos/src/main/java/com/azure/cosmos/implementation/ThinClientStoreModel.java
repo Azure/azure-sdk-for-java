@@ -117,20 +117,25 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
             if (response != null) {
                 ByteBuf payloadBuf = response.getContent();
-                if (payloadBuf == Unpooled.EMPTY_BUFFER) {
-                    // means the original RNTBD payload did not have any payload - so, we can release it
-                    content.release();
-                } else if (leakDetectionDebuggingEnabled) {
+
+                if (payloadBuf != Unpooled.EMPTY_BUFFER && leakDetectionDebuggingEnabled) {
                     content.touch(this);
                 }
 
-                return super.unwrapToStoreResponse(
+                StoreResponse storeResponse = super.unwrapToStoreResponse(
                     endpoint,
                     request,
                     response.getStatus().code(),
                     new HttpHeaders(response.getHeaders().asMap(request.getActivityId())),
                     payloadBuf
                 );
+
+                if (payloadBuf == Unpooled.EMPTY_BUFFER) {
+                    // means the original RNTBD payload did not have any payload - so, we can release it
+                    content.release();
+                }
+
+                return storeResponse;
             }
 
             content.release();
