@@ -75,6 +75,7 @@ import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
+import com.azure.cosmos.models.CosmosDatabaseAccountResponse;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -184,6 +185,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static final ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.ReadConsistencyStrategyAccessor readConsistencyStrategyAccessor =
         ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.getReadConsistencyStrategyAccessor();
+
+    private static final ImplementationBridgeHelpers.CosmosDatabaseAccountResponseHelper.CosmosDatabaseAccountResponseAccessor databaseAccountAccessor =
+        ImplementationBridgeHelpers.CosmosDatabaseAccountResponseHelper.getCosmosDatabaseAccountResponseAccessor();
 
     private static final String tempMachineId = "uuid:" + UUIDs.nonBlockingRandomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
@@ -6271,6 +6275,60 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public ConsistencyLevel getDefaultConsistencyLevelOfAccount() {
         return this.gatewayConfigurationReader.getDefaultConsistencyLevel();
+    }
+
+    @Override
+    public Mono<CosmosDatabaseAccountResponse> readDatabaseAccount(boolean shouldUseCachedAccountSnapshot) {
+
+        if (shouldUseCachedAccountSnapshot) {
+            return Mono.just(this.globalEndpointManager.getLatestDatabaseAccount())
+                .flatMap(databaseAccount -> {
+
+                    List<String> readableRegions
+                        = Utils.iterableToList(databaseAccount.getReadableLocations())
+                        .stream()
+                        .map(DatabaseAccountLocation::getName)
+                        .collect(Collectors.toList());
+
+                    List<String> writeableRegions
+                        = Utils.iterableToList(databaseAccount.getWritableLocations())
+                        .stream()
+                        .map(DatabaseAccountLocation::getName)
+                        .collect(Collectors.toList());
+
+                    return Mono.just(databaseAccountAccessor.build(
+                        databaseAccount.getId(),
+                        readableRegions,
+                        writeableRegions,
+                        databaseAccount.getEnableMultipleWriteLocations(),
+                        databaseAccount.getConsistencyPolicy().getDefaultConsistencyLevel()
+                    ));
+                });
+        } else {
+            return GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.serviceEndpoint, this.globalEndpointManager.getEffectivePreferredRegions(), this.globalEndpointManager::getDatabaseAccountAsync)
+                .flatMap(databaseAccount -> {
+
+                    List<String> readableRegions
+                        = Utils.iterableToList(databaseAccount.getReadableLocations())
+                        .stream()
+                        .map(DatabaseAccountLocation::getName)
+                        .collect(Collectors.toList());
+
+                    List<String> writeableRegions
+                        = Utils.iterableToList(databaseAccount.getWritableLocations())
+                        .stream()
+                        .map(DatabaseAccountLocation::getName)
+                        .collect(Collectors.toList());
+
+                    return Mono.just(databaseAccountAccessor.build(
+                        databaseAccount.getId(),
+                        readableRegions,
+                        writeableRegions,
+                        databaseAccount.getEnableMultipleWriteLocations(),
+                        databaseAccount.getConsistencyPolicy().getDefaultConsistencyLevel()
+                    ));
+                });
+        }
     }
 
     /***
