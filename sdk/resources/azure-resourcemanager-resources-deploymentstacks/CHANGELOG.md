@@ -1,14 +1,8 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 2.53.0 (2025-07-10)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Azure Resource Manager Deployment Stacks client library for Java. This package contains Microsoft Azure SDK for Deployment Stacks Management SDK. DeploymentStacks Client. Package tag package-2024-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## 1.0.0-beta.1 (2025-06-06)
 
