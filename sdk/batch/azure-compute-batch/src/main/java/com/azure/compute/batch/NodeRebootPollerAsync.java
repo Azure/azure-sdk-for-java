@@ -47,6 +47,9 @@ public final class NodeRebootPollerAsync {
 
     /**
      * Activation operation to start the reboot.
+     *
+     * @return A function that initiates the reboot call and returns a {@link PollResponse}
+     *         with {@link LongRunningOperationStatus#IN_PROGRESS}.
      */
     public Function<PollingContext<BatchNode>, Mono<PollResponse<BatchNode>>> getActivationOperation() {
         return ctx -> batchAsyncClient.rebootNodeWithResponse(poolId, nodeId, options)
@@ -55,6 +58,9 @@ public final class NodeRebootPollerAsync {
 
     /**
      * Poll operation – watches the node until it leaves {@code rebooting} and reaches {@code idle} or {@code running}.
+     *
+     * @return A function that polls the node and returns a {@link PollResponse}
+     *         reflecting the current long-running operation status.
      */
     public Function<PollingContext<BatchNode>, Mono<PollResponse<BatchNode>>> getPollOperation() {
         return ctx -> {
@@ -75,12 +81,20 @@ public final class NodeRebootPollerAsync {
         };
     }
 
-    /** Cancel operation (not supported for reboot). */
+    /**
+     * Cancel operation – not supported for reboot.
+     *
+     * @return A function that always returns an empty {@link Mono}, indicating cancellation is unsupported.
+     */
     public BiFunction<PollingContext<BatchNode>, PollResponse<BatchNode>, Mono<BatchNode>> getCancelOperation() {
         return (ctx, resp) -> Mono.empty();
     }
 
-    /** Final result fetch operation. */
+    /**
+     * Final-result fetch operation.
+     *
+     * @return A function that returns the final {@link BatchNode} from the latest poll response.
+     */
     public Function<PollingContext<BatchNode>, Mono<BatchNode>> getFetchResultOperation() {
         return ctx -> Mono.justOrEmpty(ctx.getLatestResponse().getValue());
     }
