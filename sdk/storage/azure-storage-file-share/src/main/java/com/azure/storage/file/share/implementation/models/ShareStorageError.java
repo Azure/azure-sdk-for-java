@@ -27,6 +27,8 @@ public final class ShareStorageError
     private String queryParameterValue;
     private String reason;
     private String extendedErrorDetail;
+    private String headerName;
+    private String headerValue;
 
     private ShareStorageError() {
     }
@@ -47,6 +49,15 @@ public final class ShareStorageError
      */
     public String getMessage() {
         return message;
+    }
+
+    /**
+     * Gets the header name returned by the Azure Storage Shares service.
+     *
+     * @return The name of the header parameter.
+     */
+    public String getHeaderName() {
+        return headerName;
     }
 
     @Override
@@ -133,6 +144,8 @@ public final class ShareStorageError
         xmlWriter.writeStringElement("QueryParameterValue", this.queryParameterValue);
         xmlWriter.writeStringElement("Reason", this.reason);
         xmlWriter.writeStringElement("ExtendedErrorDetail", this.extendedErrorDetail);
+        xmlWriter.writeStringElement("HeaderName", this.headerName);
+        xmlWriter.writeStringElement("HeaderValue", this.headerValue);
         return xmlWriter.writeEndElement();
     }
 
@@ -177,6 +190,10 @@ public final class ShareStorageError
                     deserializedStorageError.reason = reader.getStringElement();
                 } else if ("ExtendedErrorDetail".equals(elementName.getLocalPart())) {
                     deserializedStorageError.extendedErrorDetail = reader.getStringElement();
+                } else if ("HeaderName".equals(elementName.getLocalPart())) {
+                    deserializedStorageError.headerName = reader.getStringElement();
+                } else if ("HeaderValue".equals(elementName.getLocalPart())) {
+                    deserializedStorageError.headerValue = reader.getStringElement();
                 }
             }
 

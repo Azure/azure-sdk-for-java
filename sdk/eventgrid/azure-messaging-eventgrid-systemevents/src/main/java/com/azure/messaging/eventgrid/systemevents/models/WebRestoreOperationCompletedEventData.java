@@ -22,7 +22,7 @@ public final class WebRestoreOperationCompletedEventData
      * Detail of action on the app.
      */
     @Generated
-    private final AppEventTypeDetail appEventTypeDetail;
+    private AppEventTypeDetail appEventTypeDetail;
 
     /*
      * name of the web site that had this event.
@@ -62,12 +62,9 @@ public final class WebRestoreOperationCompletedEventData
 
     /**
      * Creates an instance of WebRestoreOperationCompletedEventData class.
-     *
-     * @param appEventTypeDetail the appEventTypeDetail value to set.
      */
     @Generated
-    private WebRestoreOperationCompletedEventData(AppEventTypeDetail appEventTypeDetail) {
-        this.appEventTypeDetail = appEventTypeDetail;
+    private WebRestoreOperationCompletedEventData() {
     }
 
     /**
@@ -166,48 +163,35 @@ public final class WebRestoreOperationCompletedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of WebRestoreOperationCompletedEventData if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebRestoreOperationCompletedEventData.
      */
     @Generated
     public static WebRestoreOperationCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AppEventTypeDetail appEventTypeDetail = null;
-            String name = null;
-            String clientRequestId = null;
-            String correlationRequestId = null;
-            String requestId = null;
-            String address = null;
-            String verb = null;
+            WebRestoreOperationCompletedEventData deserializedWebRestoreOperationCompletedEventData
+                = new WebRestoreOperationCompletedEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("appEventTypeDetail".equals(fieldName)) {
-                    appEventTypeDetail = AppEventTypeDetail.fromJson(reader);
+                    deserializedWebRestoreOperationCompletedEventData.appEventTypeDetail
+                        = AppEventTypeDetail.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
+                    deserializedWebRestoreOperationCompletedEventData.name = reader.getString();
                 } else if ("clientRequestId".equals(fieldName)) {
-                    clientRequestId = reader.getString();
+                    deserializedWebRestoreOperationCompletedEventData.clientRequestId = reader.getString();
                 } else if ("correlationRequestId".equals(fieldName)) {
-                    correlationRequestId = reader.getString();
+                    deserializedWebRestoreOperationCompletedEventData.correlationRequestId = reader.getString();
                 } else if ("requestId".equals(fieldName)) {
-                    requestId = reader.getString();
+                    deserializedWebRestoreOperationCompletedEventData.requestId = reader.getString();
                 } else if ("address".equals(fieldName)) {
-                    address = reader.getString();
+                    deserializedWebRestoreOperationCompletedEventData.address = reader.getString();
                 } else if ("verb".equals(fieldName)) {
-                    verb = reader.getString();
+                    deserializedWebRestoreOperationCompletedEventData.verb = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            WebRestoreOperationCompletedEventData deserializedWebRestoreOperationCompletedEventData
-                = new WebRestoreOperationCompletedEventData(appEventTypeDetail);
-            deserializedWebRestoreOperationCompletedEventData.name = name;
-            deserializedWebRestoreOperationCompletedEventData.clientRequestId = clientRequestId;
-            deserializedWebRestoreOperationCompletedEventData.correlationRequestId = correlationRequestId;
-            deserializedWebRestoreOperationCompletedEventData.requestId = requestId;
-            deserializedWebRestoreOperationCompletedEventData.address = address;
-            deserializedWebRestoreOperationCompletedEventData.verb = verb;
             return deserializedWebRestoreOperationCompletedEventData;
         });
     }

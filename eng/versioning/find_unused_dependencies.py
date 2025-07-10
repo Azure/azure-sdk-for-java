@@ -4,7 +4,6 @@
 # This script is used to find unused dependencies in the version_client.txt and external_dependencies.txt files.
 # It is used in the CI pipeline to ensure that all dependencies are used in the codebase.
 
-import argparse
 import os
 
 from utils import load_version_map_from_file
@@ -40,7 +39,6 @@ def main():
 
     fixup_version_map(version_file, version_map)
     fixup_version_map(dependency_file, ext_dep_map)
-
 
     for root, _, files in os.walk("."):
         try:
