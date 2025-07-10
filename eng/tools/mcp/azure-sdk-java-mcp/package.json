@@ -10,6 +10,7 @@
     "dev": "tsc --watch",
     "clean": "rimraf dist",
     "format": "prettier --write \"src/**/*.{ts,js,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,js,json}\"",
     "lint": "eslint src/**/*.{ts,js}",
     "lint:fix": "eslint src/**/*.{ts,js} --fix",
     "test": "vitest",

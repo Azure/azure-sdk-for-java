@@ -1,9 +1,7 @@
 import { CallToolResult } from "@modelcontextprotocol/sdk/types";
 
-export async function prepareJavaSdkEnvironmentCookbook(
-  cwd: string,
-): Promise<CallToolResult> {
-  const cookbook = `
+export async function prepareJavaSdkEnvironmentCookbook(cwd: string): Promise<CallToolResult> {
+    const cookbook = `
 # Java SDK Generation Environment Setup Guide
 
 **Working Directory:** \`${cwd}\`
@@ -64,7 +62,7 @@ node --version && npm --version && tsp-client --version && tsp --version && java
 
 **INSTALLATION COMMAND:**
 \`\`\`powershell
-$mavenVersion = "[REPLACE_WITH_LATEST_VERSION]"; $mavenUrl = "https://archive.apache.org/dist/maven/maven-3/$mavenVersion/binaries/apache-maven-$mavenVersion-bin.zip"; $downloadPath = "$env:TEMP\apache-maven-$mavenVersion-bin.zip"; $extractPath = "$env:USERPROFILE\maven"; Invoke-WebRequest -Uri $mavenUrl -OutFile $downloadPath; if (Test-Path $extractPath) { Remove-Item $extractPath -Recurse -Force }; Expand-Archive -Path $downloadPath -DestinationPath $extractPath; $mavenHome = "$extractPath\apache-maven-$mavenVersion"; [Environment]::SetEnvironmentVariable("MAVEN_HOME", $mavenHome, "User"); $currentPath = [Environment]::GetEnvironmentVariable("PATH", "User"); if ($currentPath -notlike "*$mavenHome\bin*") { [Environment]::SetEnvironmentVariable("PATH", "$currentPath;$mavenHome\bin", "User") }; $env:MAVEN_HOME = $mavenHome; $env:PATH = "$env:PATH;$mavenHome\bin"; Remove-Item $downloadPath
+$mavenVersion = "[REPLACE_WITH_LATEST_VERSION]"; $mavenUrl = "https://archive.apache.org/dist/maven/maven-3/$mavenVersion/binaries/apache-maven-$mavenVersion-bin.zip"; $downloadPath = "$env:TEMP\\apache-maven-$mavenVersion-bin.zip"; $extractPath = "$env:USERPROFILE\\maven"; Invoke-WebRequest -Uri $mavenUrl -OutFile $downloadPath; if (Test-Path $extractPath) { Remove-Item $extractPath -Recurse -Force }; Expand-Archive -Path $downloadPath -DestinationPath $extractPath; $mavenHome = "$extractPath\\apache-maven-$mavenVersion"; [Environment]::SetEnvironmentVariable("MAVEN_HOME", $mavenHome, "User"); $currentPath = [Environment]::GetEnvironmentVariable("PATH", "User"); if ($currentPath -notlike "*$mavenHome\bin*") { [Environment]::SetEnvironmentVariable("PATH", "$currentPath;$mavenHome\bin", "User") }; $env:MAVEN_HOME = $mavenHome; $env:PATH = "$env:PATH;$mavenHome\\bin"; Remove-Item $downloadPath
 \`\`\`
 
 **SUCCESS CRITERIA:** \`mvn --version\` shows Maven version and Java information.
@@ -120,16 +118,14 @@ node --version && npm --version && tsp-client --version && tsp --version && java
 - If versions are too old: Re-run the installation commands to get latest versions
   `;
 
-  console.error(
-    `Generated streamlined environment preparation cookbook for: ${cwd}`,
-  );
+    console.error(`Generated streamlined environment preparation cookbook for: ${cwd}`);
 
-  return {
-    content: [
-      {
-        type: "text",
-        text: cookbook,
-      },
-    ],
-  };
+    return {
+        content: [
+            {
+                type: "text",
+                text: cookbook,
+            },
+        ],
+    };
 }

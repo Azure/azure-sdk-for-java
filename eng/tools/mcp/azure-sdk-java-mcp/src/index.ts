@@ -15,16 +15,15 @@ import { updateChangelogMd } from "./update-changelog-md.js";
 
 // Create the MCP server
 const server = new McpServer({
-  name: "azure-sdk-java-mcp",
-  version: "1.0.0",
+    name: "azure-sdk-java-mcp",
+    version: "1.0.0",
 });
 
 // Setup logging function
 const logToolCall = (toolName: string) => {
-  const logMsg = `[${new Date().toISOString()}] [MCP] Tool called: ${toolName}\n`;
-  process.stderr.write(logMsg);
+    const logMsg = `[${new Date().toISOString()}] [MCP] Tool called: ${toolName}\n`;
+    process.stderr.write(logMsg);
 };
-
 
 // Tool: clean_java_source
 server.registerTool(
@@ -36,7 +35,7 @@ server.registerTool(
             cwd: z
                 .string()
                 .describe(
-                    "The absolute path to the module directory containing tsp-location.yaml. Example: C:\\workspace\\azure-sdk-for-java\\sdk\\communication\\azure-communication-messages"
+                    "The absolute path to the module directory containing tsp-location.yaml. Example: C:\\workspace\\azure-sdk-for-java\\sdk\\communication\\azure-communication-messages",
                 ),
         },
         annotations: {
@@ -59,12 +58,12 @@ server.registerTool(
             moduleDirectory: z
                 .string()
                 .describe(
-                    "The absolute path to the service submodule directory containing tsp-location.yaml. Example: C:\\workspace\\azure-sdk-for-java\\sdk\\communication\\azure-communication-messages"
+                    "The absolute path to the service submodule directory containing tsp-location.yaml. Example: C:\\workspace\\azure-sdk-for-java\\sdk\\communication\\azure-communication-messages",
                 ),
             rootDirectory: z
                 .string()
                 .describe(
-                    "The absolute path to the azure-sdk-for-java repository root directory. The moduleDirectory must be a subdirectory of this path."
+                    "The absolute path to the azure-sdk-for-java repository root directory. The moduleDirectory must be a subdirectory of this path.",
                 ),
             groupId: z.string().describe("The Maven groupId for the Java SDK module."),
             artifactId: z.string().describe("The Maven artifactId for the Java SDK module."),
@@ -75,12 +74,7 @@ server.registerTool(
     },
     async (args) => {
         logToolCall("build_java_sdk");
-        return await buildJavaSdk(
-            args.rootDirectory,
-            args.moduleDirectory,
-            args.groupId,
-            args.artifactId,
-        );
+        return await buildJavaSdk(args.rootDirectory, args.moduleDirectory, args.groupId, args.artifactId);
     },
 );
 
@@ -94,7 +88,7 @@ server.registerTool(
             jarPath: z
                 .string()
                 .describe(
-                    "Absolute path to the JAR file of the Java SDK, typically located in the `target` directory of the module."
+                    "Absolute path to the JAR file of the Java SDK, typically located in the `target` directory of the module.",
                 ),
             groupId: z.string().describe("The Maven groupId for the Java SDK module."),
             artifactId: z.string().describe("The Maven artifactId for the Java SDK module."),
@@ -104,14 +98,10 @@ server.registerTool(
         },
     },
     async (args) => {
-    logToolCall("get_java_sdk_changelog");
-    const result = await getJavaSdkChangelog(
-      args.jarPath,
-      args.groupId,
-      args.artifactId,
-    );
-    return result;
-  },
+        logToolCall("get_java_sdk_changelog");
+        const result = await getJavaSdkChangelog(args.jarPath, args.groupId, args.artifactId);
+        return result;
+    },
 );
 
 // Tool: update_java_sdk_changelog
@@ -124,7 +114,7 @@ server.registerTool(
             jarPath: z
                 .string()
                 .describe(
-                    "Absolute path to the JAR file of the Java SDK, typically located in the `target` directory of the module."
+                    "Absolute path to the JAR file of the Java SDK, typically located in the `target` directory of the module.",
                 ),
             groupId: z.string().describe("The Maven groupId for the Java SDK module."),
             artifactId: z.string().describe("The Maven artifactId for the Java SDK module."),
@@ -135,11 +125,7 @@ server.registerTool(
     },
     async (args) => {
         logToolCall("update_java_sdk_changelog");
-        return await updateChangelogMd(
-            args.jarPath,
-            args.groupId,
-            args.artifactId,
-        );
+        return await updateChangelogMd(args.jarPath, args.groupId, args.artifactId);
     },
 );
 
@@ -171,25 +157,22 @@ server.registerTool(
                 .string()
                 .optional()
                 .describe(
-                    "The local absolute path to the tspconfig.yaml file. Example: C:\\workspace\\azure-rest-api-specs\\specification\\communication\\Communication.Messages\\tspconfig.yaml"
+                    "The local absolute path to the tspconfig.yaml file. Example: C:\\workspace\\azure-rest-api-specs\\specification\\communication\\Communication.Messages\\tspconfig.yaml",
                 ),
             remoteTspConfigUrl: z
                 .string()
                 .optional()
                 .describe(
-                    "The remote URL to the tspconfig.yaml file. The URL must contain a commit id, not a branch name. Example: https://github.com/Azure/azure-rest-api-specs/blob/dee71463cbde1d416c47cf544e34f7966a94ddcb/specification/contosowidgetmanager/Contoso.WidgetManager/tspconfig.yaml"
+                    "The remote URL to the tspconfig.yaml file. The URL must contain a commit id, not a branch name. Example: https://github.com/Azure/azure-rest-api-specs/blob/dee71463cbde1d416c47cf544e34f7966a94ddcb/specification/contosowidgetmanager/Contoso.WidgetManager/tspconfig.yaml",
                 ),
-            },
-    annotations: {
-      title: "Sync Java SDK",
+        },
+        annotations: {
+            title: "Sync Java SDK",
+        },
     },
-   },
     async (args) => {
         logToolCall("sync_java_sdk");
-        const result = await initJavaSdk(
-            args.localTspConfigPath,
-            args.remoteTspConfigUrl,
-        );
+        const result = await initJavaSdk(args.localTspConfigPath, args.remoteTspConfigUrl);
         return result;
     },
 );
@@ -204,7 +187,7 @@ server.registerTool(
             cwd: z
                 .string()
                 .describe(
-                    "The absolute path to the working directory containing the 'TempTypeSpecFiles' directory with TypeSpec source files. Example: C:\\workspace\\azure-sdk-for-java\\sdk\\communication\\azure-communication-messages"
+                    "The absolute path to the working directory containing the 'TempTypeSpecFiles' directory with TypeSpec source files. Example: C:\\workspace\\azure-sdk-for-java\\sdk\\communication\\azure-communication-messages",
                 ),
         },
         annotations: {
@@ -213,10 +196,7 @@ server.registerTool(
     },
     async (args) => {
         logToolCall("generate_java_sdk");
-        const result = await generateJavaSdk(
-            args.cwd,
-            true
-        );
+        const result = await generateJavaSdk(args.cwd, true);
         return result;
     },
 );
@@ -226,15 +206,15 @@ server.registerTool(
     "update_client_name",
     {
         description:
-      "Update client name for both client.tsp and the generated java sdk. Follow the returned instruction to update old client name to new client name, be sure to ask for old client name and new client name. e.g. MediaMessageContent.mediaUri to MediaMessageContent.mediaUrl",
-    inputSchema: {},
+            "Update client name for both client.tsp and the generated java sdk. Follow the returned instruction to update old client name to new client name, be sure to ask for old client name and new client name. e.g. MediaMessageContent.mediaUri to MediaMessageContent.mediaUrl",
+        inputSchema: {},
         annotations: {
             title: "Update Client Name",
         },
     },
-  async () => {
+    async () => {
         logToolCall("update_client_name");
-    const result = await clientNameUpdateCookbook();
+        const result = await clientNameUpdateCookbook();
         return result;
     },
 );
@@ -249,7 +229,7 @@ server.registerTool(
             cwd: z
                 .string()
                 .describe(
-                    "The absolute path to the working directory where the Java SDK environment should be prepared."
+                    "The absolute path to the working directory where the Java SDK environment should be prepared.",
                 ),
         },
         annotations: {
@@ -265,18 +245,18 @@ server.registerTool(
 
 // Setup error handling
 server.server.onerror = (error: Error) => {
-  console.error("[MCP Error]", error);
+    console.error("[MCP Error]", error);
 };
 
 process.on("SIGINT", async () => {
-  await server.close();
-  process.exit(0);
+    await server.close();
+    process.exit(0);
 });
 
 // Start the server
 async function main() {
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
+    const transport = new StdioServerTransport();
+    await server.connect(transport);
 }
 
 main().catch(console.error);
