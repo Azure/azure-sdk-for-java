@@ -37,10 +37,10 @@ public final class NodeRemovePollerAsync {
     /**
      * Creates a new {@link NodeRemovePollerAsync}.
      *
-     * @param client      Batch async client.
-     * @param poolId      ID of the pool from which nodes are being removed.
-     * @param parameters  Body parameters (list of node IDs, deallocation option, …).
-     * @param options     Optional request options (may be {@code null}).
+     * @param client Batch async client.
+     * @param poolId ID of the pool from which nodes are being removed.
+     * @param parameters Body parameters (list of node IDs, deallocation option, …).
+     * @param options Optional request options (may be {@code null}).
      */
     public NodeRemovePollerAsync(BatchAsyncClient client, String poolId, BatchNodeRemoveParameters parameters,
         RequestOptions options) {
