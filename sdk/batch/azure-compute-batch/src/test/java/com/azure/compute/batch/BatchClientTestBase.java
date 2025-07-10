@@ -10,7 +10,6 @@ import com.azure.compute.batch.models.BatchPoolCreateParameters;
 import com.azure.compute.batch.models.BatchTask;
 import com.azure.compute.batch.models.BatchTaskState;
 import com.azure.compute.batch.models.ElevationLevel;
-import com.azure.compute.batch.models.LinuxUserConfiguration;
 import com.azure.compute.batch.models.BatchTasksListOptions;
 import com.azure.compute.batch.models.BatchVmImageReference;
 import com.azure.compute.batch.models.NetworkConfiguration;
