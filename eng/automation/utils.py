@@ -454,21 +454,3 @@ def compare_version(v1: str, v2: str) -> int:
     if v1_patch_version > v2_patch_version:
         return 1
     return 0
-
-
-def remove_customization_config(tsp_dir: str):
-    tsp_file_path = os.path.join(tsp_dir, "tspconfig.yaml")
-    if os.path.exists(tsp_file_path):
-        # remove "customization-class" emitter option
-        lines = []
-        with open(tsp_file_path, "r") as f_in:
-            for line in f_in.readlines():
-                if not line.strip().startswith("customization-class:"):
-                    lines.append(line)
-                else:
-                    print(
-                        "Java emitter option removed: customization-class",
-                        file=sys.stderr,
-                    )
-        with open(tsp_file_path, "w", encoding="utf-8") as f_out:
-            f_out.writelines(lines)

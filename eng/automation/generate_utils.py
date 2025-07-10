@@ -16,7 +16,7 @@ from typespec_utils import validate_tspconfig
 pwd = os.getcwd()
 # os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
-from utils import update_service_files_for_new_lib, remove_customization_config
+from utils import update_service_files_for_new_lib
 from utils import update_root_pom
 from utils import update_version
 from utils import is_windows
@@ -415,13 +415,13 @@ def generate_typespec_project(
                 tsp_dir,
             ]
 
-            if disable_customization:
-                remove_customization_config(tsp_dir)
-
-        emitter_options = []
-
         if tspconfig_valid:
-            tsp_cmd = tsp_cmd_base
+            emitter_options = []
+            if disable_customization:
+                emitter_options.append("customization-class=")
+                emitter_options.append("partial-update=false")
+
+            tsp_cmd = tsp_cmd_add_emitter_options(tsp_cmd_base, emitter_options)
             check_call(tsp_cmd, sdk_root)
 
             sdk_folder = find_sdk_folder(sdk_root)
@@ -459,9 +459,7 @@ def generate_typespec_project(
                     if api_version:
                         emitter_options.append(f"api-version={api_version}")
 
-                    if emitter_options:
-                        tsp_cmd.append("--emitter-options")
-                        tsp_cmd.append(";".join(emitter_options))
+                    tsp_cmd = tsp_cmd_add_emitter_options(tsp_cmd_base, emitter_options)
                     # regenerate
                     check_call(tsp_cmd, sdk_root)
                 succeeded = True
@@ -479,6 +477,14 @@ def generate_typespec_project(
             logging.error(f"[GENERATE] Code generation failed. Finding sdk folder fails: {e}")
 
     return succeeded, require_sdk_integration, sdk_folder, service, module
+
+
+def tsp_cmd_add_emitter_options(tsp_cmd_base: List[str], emitter_options: List[str]) -> List[str]:
+    tsp_cmd = tsp_cmd_base
+    if emitter_options:
+        tsp_cmd.append("--emitter-options")
+        tsp_cmd.append(";".join(emitter_options))
+    return tsp_cmd
 
 
 def parse_service_module(sdk_folder: str) -> Tuple:
