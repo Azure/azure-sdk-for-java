@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResourceTypeTemplateDeploymentPolicy model.
+ * The template deployment policy.
  */
 @Fluent
 public final class ResourceTypeTemplateDeploymentPolicy extends TemplateDeploymentPolicy {
@@ -38,6 +38,16 @@ public final class ResourceTypeTemplateDeploymentPolicy extends TemplateDeployme
     public ResourceTypeTemplateDeploymentPolicy
         withPreflightOptions(TemplateDeploymentPreflightOptions preflightOptions) {
         super.withPreflightOptions(preflightOptions);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResourceTypeTemplateDeploymentPolicy
+        withPreflightNotifications(TemplateDeploymentPreflightNotifications preflightNotifications) {
+        super.withPreflightNotifications(preflightNotifications);
         return this;
     }
 
@@ -71,6 +81,8 @@ public final class ResourceTypeTemplateDeploymentPolicy extends TemplateDeployme
         jsonWriter.writeStringField("capabilities", capabilities() == null ? null : capabilities().toString());
         jsonWriter.writeStringField("preflightOptions",
             preflightOptions() == null ? null : preflightOptions().toString());
+        jsonWriter.writeStringField("preflightNotifications",
+            preflightNotifications() == null ? null : preflightNotifications().toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -97,6 +109,9 @@ public final class ResourceTypeTemplateDeploymentPolicy extends TemplateDeployme
                 } else if ("preflightOptions".equals(fieldName)) {
                     deserializedResourceTypeTemplateDeploymentPolicy
                         .withPreflightOptions(TemplateDeploymentPreflightOptions.fromString(reader.getString()));
+                } else if ("preflightNotifications".equals(fieldName)) {
+                    deserializedResourceTypeTemplateDeploymentPolicy.withPreflightNotifications(
+                        TemplateDeploymentPreflightNotifications.fromString(reader.getString()));
                 } else {
                     reader.skipChildren();
                 }

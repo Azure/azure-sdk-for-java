@@ -28,6 +28,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.providerhub.fluent.NotificationRegistrationsClient;
 import com.azure.resourcemanager.providerhub.fluent.models.NotificationRegistrationInner;
 import com.azure.resourcemanager.providerhub.models.NotificationRegistrationArrayResponseWithContinuation;
@@ -63,13 +64,23 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ProviderHubNotificat")
+    @ServiceInterface(name = "ProviderHubNotificationRegistrations")
     public interface NotificationRegistrationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotificationRegistrationInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace,
+            @PathParam("notificationRegistrationName") String notificationRegistrationName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<NotificationRegistrationInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("providerNamespace") String providerNamespace,
             @PathParam("notificationRegistrationName") String notificationRegistrationName,
@@ -88,10 +99,32 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<NotificationRegistrationInner> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace,
+            @PathParam("notificationRegistrationName") String notificationRegistrationName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") NotificationRegistrationInner properties,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace,
+            @PathParam("notificationRegistrationName") String notificationRegistrationName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("providerNamespace") String providerNamespace,
             @PathParam("notificationRegistrationName") String notificationRegistrationName,
@@ -107,10 +140,27 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<NotificationRegistrationArrayResponseWithContinuation> listByProviderRegistrationSync(
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotificationRegistrationArrayResponseWithContinuation>> listByProviderRegistrationNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<NotificationRegistrationArrayResponseWithContinuation> listByProviderRegistrationNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -157,43 +207,6 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
      * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notification registration details along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NotificationRegistrationInner>> getWithResponseAsync(String providerNamespace,
-        String notificationRegistrationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (notificationRegistrationName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter notificationRegistrationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
-            notificationRegistrationName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the notification registration details.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param notificationRegistrationName The notification registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -220,7 +233,28 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NotificationRegistrationInner> getWithResponse(String providerNamespace,
         String notificationRegistrationName, Context context) {
-        return getWithResponseAsync(providerNamespace, notificationRegistrationName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (notificationRegistrationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter notificationRegistrationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            notificationRegistrationName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -247,8 +281,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notification registration definition along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NotificationRegistrationInner>> createOrUpdateWithResponseAsync(String providerNamespace,
@@ -288,53 +321,10 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @param properties The required body parameters supplied to the notification registration operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notification registration definition along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NotificationRegistrationInner>> createOrUpdateWithResponseAsync(String providerNamespace,
-        String notificationRegistrationName, NotificationRegistrationInner properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (notificationRegistrationName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter notificationRegistrationName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
-            notificationRegistrationName, this.client.getApiVersion(), properties, accept, context);
-    }
-
-    /**
-     * Creates or updates a notification registration.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param notificationRegistrationName The notification registration.
-     * @param properties The required body parameters supplied to the notification registration operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notification registration definition on successful completion of {@link Mono}.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NotificationRegistrationInner> createOrUpdateAsync(String providerNamespace,
@@ -353,13 +343,39 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notification registration definition along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NotificationRegistrationInner> createOrUpdateWithResponse(String providerNamespace,
         String notificationRegistrationName, NotificationRegistrationInner properties, Context context) {
-        return createOrUpdateWithResponseAsync(providerNamespace, notificationRegistrationName, properties, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (notificationRegistrationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter notificationRegistrationName is required and cannot be null."));
+        }
+        if (properties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            notificationRegistrationName, this.client.getApiVersion(), properties, accept, context);
     }
 
     /**
@@ -371,7 +387,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notification registration definition.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotificationRegistrationInner createOrUpdate(String providerNamespace, String notificationRegistrationName,
@@ -421,42 +437,6 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
      * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String providerNamespace, String notificationRegistrationName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (notificationRegistrationName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter notificationRegistrationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
-            notificationRegistrationName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Deletes a notification registration.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param notificationRegistrationName The notification registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -482,7 +462,28 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String providerNamespace, String notificationRegistrationName,
         Context context) {
-        return deleteWithResponseAsync(providerNamespace, notificationRegistrationName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (notificationRegistrationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter notificationRegistrationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            notificationRegistrationName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -537,41 +538,6 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
      * Gets the list of the notification registrations for the given provider.
      * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the notification registrations for the given provider along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NotificationRegistrationInner>>
-        listByProviderRegistrationSinglePageAsync(String providerNamespace, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByProviderRegistration(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets the list of the notification registrations for the given provider.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -588,18 +554,69 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
      * Gets the list of the notification registrations for the given provider.
      * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of the notification registrations for the given provider along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<NotificationRegistrationInner>
+        listByProviderRegistrationSinglePage(String providerNamespace) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<NotificationRegistrationArrayResponseWithContinuation> res
+            = service.listByProviderRegistrationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets the list of the notification registrations for the given provider.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the notification registrations for the given provider as paginated response with
-     * {@link PagedFlux}.
+     * @return the list of the notification registrations for the given provider along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NotificationRegistrationInner> listByProviderRegistrationAsync(String providerNamespace,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<NotificationRegistrationInner> listByProviderRegistrationSinglePage(String providerNamespace,
         Context context) {
-        return new PagedFlux<>(() -> listByProviderRegistrationSinglePageAsync(providerNamespace, context),
-            nextLink -> listByProviderRegistrationNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<NotificationRegistrationArrayResponseWithContinuation> res
+            = service.listByProviderRegistrationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -614,7 +631,8 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotificationRegistrationInner> listByProviderRegistration(String providerNamespace) {
-        return new PagedIterable<>(listByProviderRegistrationAsync(providerNamespace));
+        return new PagedIterable<>(() -> listByProviderRegistrationSinglePage(providerNamespace),
+            nextLink -> listByProviderRegistrationNextSinglePage(nextLink));
     }
 
     /**
@@ -631,7 +649,8 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotificationRegistrationInner> listByProviderRegistration(String providerNamespace,
         Context context) {
-        return new PagedIterable<>(listByProviderRegistrationAsync(providerNamespace, context));
+        return new PagedIterable<>(() -> listByProviderRegistrationSinglePage(providerNamespace, context),
+            nextLink -> listByProviderRegistrationNextSinglePage(nextLink, context));
     }
 
     /**
@@ -666,26 +685,57 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<NotificationRegistrationInner> listByProviderRegistrationNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<NotificationRegistrationArrayResponseWithContinuation> res
+            = service.listByProviderRegistrationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response body along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NotificationRegistrationInner>>
-        listByProviderRegistrationNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<NotificationRegistrationInner> listByProviderRegistrationNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByProviderRegistrationNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<NotificationRegistrationArrayResponseWithContinuation> res
+            = service.listByProviderRegistrationNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NotificationRegistrationsClientImpl.class);
 }
