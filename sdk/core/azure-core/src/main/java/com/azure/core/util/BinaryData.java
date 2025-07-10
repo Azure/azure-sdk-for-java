@@ -186,17 +186,26 @@ public final class BinaryData {
     }
 
     static {
-        BinaryDataHelper.setAccessor(new BinaryDataHelper.BinaryDataAccessor() {
-            @Override
-            public BinaryData createBinaryData(BinaryDataContent content) {
-                return new BinaryData(content);
-            }
 
-            @Override
-            public BinaryDataContent getContent(BinaryData binaryData) {
-                return binaryData.content;
-            }
-        });
+        try {
+            BinaryDataHelper.setAccessor(new BinaryDataHelper.BinaryDataAccessor() {
+                @Override
+                public BinaryData createBinaryData(BinaryDataContent content) {
+                    return new BinaryData(content);
+                }
+
+                @Override
+                public BinaryDataContent getContent(BinaryData binaryData) {
+                    return binaryData.content;
+                }
+            });
+        } catch (Throwable t) {
+            System.out.println(
+                "Error thrown while setting BinaryData accessor. This is likely due to a missing dependency in the classpath : "
+                    + t.getMessage());
+            t.printStackTrace(System.err);
+            throw t;
+        }
     }
 
     /**
