@@ -39,8 +39,8 @@ public final class PoolStopResizePollerAsync {
      * Creates a new {@link PoolStopResizePollerAsync}.
      *
      * @param batchAsyncClient Client used for Batch service calls.
-     * @param poolId           ID of the pool whose resize is being stopped.
-     * @param options          Optional {@link RequestOptions}; may be {@code null}.
+     * @param poolId ID of the pool whose resize is being stopped.
+     * @param options Optional {@link RequestOptions}; may be {@code null}.
      */
     public PoolStopResizePollerAsync(BatchAsyncClient batchAsyncClient, String poolId, RequestOptions options) {
 
