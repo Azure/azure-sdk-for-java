@@ -67,7 +67,6 @@ public class TaskTests extends BatchClientTestBase {
                 createIfNotExistIaaSPool(livePoolId);
                 createIfNotExistIaaSPool(liveIaasPoolId);
             } catch (Exception e) {
-                // TODO (Catch block) Auto-generated catch block
                 e.printStackTrace();
             }
         }

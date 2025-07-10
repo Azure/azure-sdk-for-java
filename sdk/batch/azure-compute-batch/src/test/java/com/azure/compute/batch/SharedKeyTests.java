@@ -122,7 +122,7 @@ public class SharedKeyTests extends BatchClientTestBase {
                 () -> batchClientWithSharedKey.updatePoolWithResponse(poolId,
                     BinaryData.fromObject(poolUpdateParameters), null),
                 () -> batchAsyncClientWithSharedKey.updatePoolWithResponse(poolId,
-                    BinaryData.fromObject(poolUpdateParameters), null));;
+                    BinaryData.fromObject(poolUpdateParameters), null));
             HttpRequest updatePoolRequest = updatePoolResponse.getRequest();
             HttpHeader ocpDateHeader = updatePoolRequest.getHeaders().get(HttpHeaderName.fromString("ocp-date"));
             Assertions.assertNull(ocpDateHeader);
