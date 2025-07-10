@@ -45,6 +45,10 @@ private[cosmos] trait BasicLoggingTrait {
     log.isDebugEnabled()
   }
 
+  protected def isTraceLogEnabled: Boolean = {
+    log.isTraceEnabled()
+  }
+
   protected def logDebug(msg: => String, throwable: Throwable) {
     if (log.isDebugEnabled) log.debug(msg, throwable)
   }

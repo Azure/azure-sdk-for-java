@@ -17,7 +17,11 @@ private[spark] object DiagnosticsLoader {
   def getDiagnosticsProvider(cfg: DiagnosticsConfig): DiagnosticsProvider = {
     cfg.mode match {
       case Some(value) =>
-        getDiagnosticsProvider(value)
+        if (value.equalsIgnoreCase("Sampled")) {
+          defaultDiagnostics
+        } else {
+          getDiagnosticsProvider(value)
+        }
       case None =>
         defaultDiagnostics
     }

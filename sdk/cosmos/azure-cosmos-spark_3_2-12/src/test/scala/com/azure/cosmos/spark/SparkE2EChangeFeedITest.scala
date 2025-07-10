@@ -24,7 +24,7 @@ import scala.jdk.CollectionConverters.asScalaBufferConverter
 
 class SparkE2EChangeFeedITest
   extends IntegrationSpec
-    with SparkWithDropwizardAndSlf4jMetrics
+    with SparkWithMetrics
     with CosmosClient
     with CosmosContainerWithRetention
     with BasicLoggingTrait

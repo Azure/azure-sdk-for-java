@@ -356,6 +356,9 @@ public class Configs {
     private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
 
+    public static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "applicationinsights.connection.string";
+    public static final String APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE = "APPLICATIONINSIGHTS_CONNECTION_STRING";
+
     // Config to indicate whether to emit Open Telemetry traces with attribute names following the
     // original implementation (`PRE_V1_RELEASE`) or the official semantic convention (`V1`) or both (`ALL`)
     public static final String OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME = "COSMOS.OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME";
@@ -1205,6 +1208,13 @@ public class Configs {
         return Integer.parseInt(warnLevelLoggingThresholdForPpaf);
     }
 
+    public static String getAzureMonitorConnectionString() {
+        return System.getProperty(
+            APPLICATIONINSIGHTS_CONNECTION_STRING,
+            System.getenv(APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE)
+        );
+    }
+    
     public static EnumSet<AttributeNamingScheme> getDefaultOtelSpanAttributeNamingScheme() {
         String valueFromSystemProperty = System.getProperty(OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {

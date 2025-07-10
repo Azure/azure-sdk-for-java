@@ -11,7 +11,7 @@ import java.util.UUID
 
 class SparkE2EGatewayQueryITest
 extends IntegrationSpec
-    with SparkWithDropwizardAndSlf4jMetrics
+    with SparkWithMetrics
     with CosmosGatewayClient
     with AutoCleanableCosmosContainer
     with BasicLoggingTrait

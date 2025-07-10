@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, ReadConsistencyStrategy}
+import org.apache.logging.log4j.Level
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
@@ -20,9 +21,7 @@ private[spark] case class CosmosClientConfiguration (
                                                       proactiveConnectionInitializationDurationInSeconds: Int,
                                                       httpConnectionPoolSize: Int,
                                                       readConsistencyStrategy: ReadConsistencyStrategy,
-                                                      enableClientTelemetry: Boolean,
                                                       disableTcpConnectionEndpointRediscovery: Boolean,
-                                                      clientTelemetryEndpoint: Option[String],
                                                       preferredRegionsList: Option[Array[String]],
                                                       subscriptionId: Option[String],
                                                       tenantId: Option[String],
@@ -30,7 +29,14 @@ private[spark] case class CosmosClientConfiguration (
                                                       azureEnvironmentEndpoints: java.util.Map[String, String],
                                                       sparkEnvironmentInfo: String,
                                                       clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
-                                                      clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]])
+                                                      clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
+                                                      sampledDiagnosticsLoggerConfig: Option[SampledDiagnosticsLoggerConfig],
+                                                      azureMonitorConfig: Option[AzureMonitorConfig]
+                                                    ) {
+  private[spark] def getRoleInstanceName(machineId: Option[String]): String = {
+    CosmosClientConfiguration.getRoleInstanceName(sparkEnvironmentInfo, machineId)
+  }
+}
 
 private[spark] object CosmosClientConfiguration {
   def apply(
@@ -78,9 +84,7 @@ private[spark] object CosmosClientConfiguration {
       cosmosAccountConfig.proactiveConnectionInitializationDurationInSeconds,
       cosmosAccountConfig.httpConnectionPoolSize,
       readConsistencyStrategy,
-      enableClientTelemetry = diagnosticsConfig.isClientTelemetryEnabled,
       cosmosAccountConfig.disableTcpConnectionEndpointRediscovery,
-      diagnosticsConfig.clientTelemetryEndpoint,
       cosmosAccountConfig.preferredRegionsList,
       cosmosAccountConfig.subscriptionId,
       cosmosAccountConfig.tenantId,
@@ -88,7 +92,25 @@ private[spark] object CosmosClientConfiguration {
       cosmosAccountConfig.azureEnvironmentEndpoints,
       sparkEnvironmentInfo,
       cosmosAccountConfig.clientBuilderInterceptors,
-      cosmosAccountConfig.clientInterceptors)
+      cosmosAccountConfig.clientInterceptors,
+      diagnosticsConfig.sampledDiagnosticsLoggerConfig,
+      diagnosticsConfig.azureMonitorConfig
+    )
+  }
+
+  private[spark] def getRoleInstanceName(sparkEnvironmentInfo: String, machineId: Option[String]): String = {
+    var roleInstanceName = sparkEnvironmentInfo
+
+    val runtimeInfo = runtimeInformation()
+    if (runtimeInfo.isDefined) {
+      roleInstanceName = s"$roleInstanceName|${runtimeInfo.get}"
+    }
+
+    if (!machineId.getOrElse("").isEmpty) {
+      roleInstanceName = s"$roleInstanceName|${machineId.get}"
+    }
+
+    roleInstanceName
   }
 
   private[spark] def getSparkEnvironmentInfo(sessionOption: Option[SparkSession]): String = {
