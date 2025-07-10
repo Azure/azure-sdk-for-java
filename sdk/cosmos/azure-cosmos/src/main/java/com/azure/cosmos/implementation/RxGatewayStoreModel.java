@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.http.HttpTransportSerializer;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import io.netty.buffer.ByteBuf;
@@ -192,6 +193,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     @Override
     public StoreResponse unwrapToStoreResponse(
+        String endpoint,
         RxDocumentServiceRequest request,
         int statusCode,
         HttpHeaders headers,
@@ -207,13 +209,17 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
         int size;
         if ((size = content.readableBytes()) > 0) {
-            return new StoreResponse(statusCode,
+            return new StoreResponse(
+                endpoint,
+                statusCode,
                 HttpUtils.unescape(headers.toMap()),
                 new ByteBufInputStream(content, true),
                 size);
         }
 
-        return new StoreResponse(statusCode,
+        return new StoreResponse(
+            endpoint,
+            statusCode,
             HttpUtils.unescape(headers.toMap()),
             null,
             0);
@@ -258,6 +264,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         }
     }
 
+    protected boolean partitionKeyRangeResolutionNeeded(RxDocumentServiceRequest request) {
+        return false;
+    }
+
     /**
      * Given the request it creates an flux which upon subscription issues HTTP call and emits one RxDocumentServiceResponse.
      *
@@ -266,6 +276,19 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
      * @return Flux<RxDocumentServiceResponse>
      */
     public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, URI requestUri) {
+        if (!partitionKeyRangeResolutionNeeded(request)) {
+            return this.performRequestInternalCore(request, requestUri);
+        }
+
+        return this
+            .resolvePartitionKeyRangeByPkRangeId(request)
+            .flatMap((pkRange) -> {
+                request.requestContext.resolvedPartitionKeyRange = pkRange;
+                return this.performRequestInternalCore(request, requestUri);
+            });
+    }
+
+    private Mono<RxDocumentServiceResponse> performRequestInternalCore(RxDocumentServiceRequest request, URI requestUri) {
 
         try {
             HttpRequest httpRequest = request
@@ -392,7 +415,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                     StoreResponse rsp = request
                         .getEffectiveHttpTransportSerializer(this)
-                        .unwrapToStoreResponse(request, httpResponseStatus, httpResponseHeaders, content);
+                        .unwrapToStoreResponse(httpRequest.uri().toString(), request, httpResponseStatus, httpResponseHeaders, content);
 
                     if (reactorNettyRequestRecord != null) {
                         rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
@@ -715,6 +738,67 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             });
         }
         return Mono.empty();
+    }
+
+    protected Mono<PartitionKeyRange> resolvePartitionKeyRangeByPkRangeId(RxDocumentServiceRequest request) {
+        Objects.requireNonNull(
+            request,
+            "Parameter 'request' is required and cannot be null");
+
+        Objects.requireNonNull(
+            this.partitionKeyRangeCache,
+            "Parameter 'this::partitionKeyRangeCache' is required and cannot be null");
+
+        Objects.requireNonNull(
+            this.collectionCache,
+            "Parameter 'this::collectionCache' is required and cannot be null");
+
+        PartitionKeyRangeIdentity pkRangeId = request.getPartitionKeyRangeIdentity();
+        Objects.requireNonNull(
+            pkRangeId,
+            "Parameter 'request::getPartitionKeyRangeIdentity()' is required and cannot be null");
+
+        MetadataDiagnosticsContext metadataCtx = BridgeInternal
+            .getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+
+        if (pkRangeId.getCollectionRid() != null) {
+            return resolvePartitionKeyRangeByPkRangeIdCore(pkRangeId, pkRangeId.getCollectionRid(), metadataCtx);
+        }
+
+        return this.collectionCache.resolveCollectionAsync(
+            metadataCtx,
+            request)
+            .flatMap(collectionHolder -> resolvePartitionKeyRangeByPkRangeIdCore(
+                pkRangeId,
+                collectionHolder.v.getResourceId(),
+                metadataCtx));
+    }
+
+    private Mono<PartitionKeyRange> resolvePartitionKeyRangeByPkRangeIdCore(
+        PartitionKeyRangeIdentity pkRangeId,
+        String effectiveCollectionRid,
+        MetadataDiagnosticsContext metadataCtx) {
+
+        Objects.requireNonNull(pkRangeId, "Parameter 'pkRangeId' is required and cannot be null");
+        Objects.requireNonNull(
+            this.partitionKeyRangeCache,
+            "Parameter 'this::partitionKeyRangeCache' is required and cannot be null");
+
+        return partitionKeyRangeCache
+            .tryLookupAsync(
+                metadataCtx,
+                effectiveCollectionRid,
+               null,
+               null
+            )
+            .flatMap(collectionRoutingMapValueHolder -> {
+
+
+           PartitionKeyRange range =
+               collectionRoutingMapValueHolder.v.getRangeByPartitionKeyRangeId(pkRangeId.getPartitionKeyRangeId());
+
+           return Mono.just(range);
+       });
     }
 
     private Mono<Void> applySessionToken(RxDocumentServiceRequest request) {
