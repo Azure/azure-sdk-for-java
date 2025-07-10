@@ -92,7 +92,7 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
     public void channelReadComplete(ChannelHandlerContext ctx) {
         ctx.fireChannelReadComplete();
         if (lastRead) {
-            signalComplete(ctx, false);
+            signalComplete(ctx);
         }
     }
 
@@ -100,7 +100,7 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         this.exception = cause;
         ctx.fireExceptionCaught(cause);
-        signalComplete(ctx, true);
+        signalComplete(ctx);
     }
 
     Throwable channelException() {
@@ -110,13 +110,13 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
     // TODO (alzimmer): Are the latch countdowns needed for unregistering and inactivity?
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
-        signalComplete(ctx, true);
+        signalComplete(ctx);
         ctx.fireChannelUnregistered();
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        signalComplete(ctx, true);
+        signalComplete(ctx);
         ctx.fireChannelInactive();
     }
 
@@ -130,7 +130,7 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
         }
     }
 
-    private void signalComplete(ChannelHandlerContext ctx, boolean forceClose) {
+    private void signalComplete(ChannelHandlerContext ctx) {
         if (ctx.pipeline().get(Netty4EagerConsumeChannelHandler.class) != null) {
             ctx.pipeline().remove(this);
         }

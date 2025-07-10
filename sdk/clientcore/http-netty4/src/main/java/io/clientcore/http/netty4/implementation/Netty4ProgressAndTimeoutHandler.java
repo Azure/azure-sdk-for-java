@@ -3,6 +3,7 @@
 
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.utils.ProgressReporter;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufHolder;
@@ -17,6 +18,8 @@ import io.netty.handler.codec.http.LastHttpContent;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROGRESS_AND_TIMEOUT;
 
 /**
  * Class containing all ChannelHandler concepts that ClientCore SDKs use.
@@ -233,6 +236,12 @@ public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler 
         this.lastReadMillis = System.currentTimeMillis();
         if (lastRead && trackingReadTimeout) {
             endReadTracking();
+
+            HttpProtocolVersion protocolVersion = ctx.channel().attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).get();
+
+            if (protocolVersion != HttpProtocolVersion.HTTP_2 && ctx.pipeline().get(PROGRESS_AND_TIMEOUT) != null) {
+                ctx.pipeline().remove(this);
+            }
         }
         ctx.fireChannelReadComplete();
     }

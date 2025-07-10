@@ -14,6 +14,7 @@ import io.netty.util.AttributeKey;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.ALPN;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PIPELINE_CLEANUP;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.configureHttpsPipeline;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.sendHttp11Request;
@@ -112,6 +113,10 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
                         sendListener.channel().read();
                     }
                 });
+        }
+
+        if (ctx.pipeline().get(ALPN) != null) {
+            ctx.pipeline().remove(this);
         }
     }
 
