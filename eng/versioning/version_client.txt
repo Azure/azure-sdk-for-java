@@ -522,7 +522,7 @@ io.clientcore:http-netty4;1.0.0-beta.1;1.0.0-beta.1
 io.clientcore:http-okhttp3;1.0.0-beta.2;1.0.0-beta.3
 io.clientcore:http-stress;1.0.0-beta.1;1.0.0-beta.1
 io.clientcore:optional-dependency-tests;1.0.0-beta.1;1.0.0-beta.1
-io.clientcore.tools:sdk-linting-extensions;1.0.0-beta.1;1.0.0-beta.1
+io.clientcore:sdk-linting-extensions;1.0.0-beta.1;1.0.0-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.
