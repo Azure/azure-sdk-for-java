@@ -34,9 +34,9 @@ import java.util.function.Consumer;
  * }</code></pre>
  */
 public class UseCaughtExceptionCauseCheck extends AbstractCheck {
-    static final String UNUSED_CAUGHT_EXCEPTION_ERROR = "Caught and rethrown exceptions should include the caught"
-        + " exception as the cause in the rethrown exception. Dropping the causal exception makes it more difficult"
-        + " to troubleshoot issues when they arise. Include the caught exception variable %s as the cause.";
+    static final String UNUSED_CAUGHT_EXCEPTION_ERROR = "Caught and thrown exceptions should include the caught "
+        + "exception as the cause in the newly thrown exception. Dropping the causal exception makes it more difficult "
+        + "to troubleshoot issues when they arise. Include the caught exception variable %s as the cause.";
 
     /**
      * Creates a new instance of {@link UseCaughtExceptionCauseCheck}.
