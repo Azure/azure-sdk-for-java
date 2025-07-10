@@ -15,7 +15,7 @@ import { updateChangelogMd } from "./update-changelog-md.js";
 
 // Create the MCP server
 const server = new McpServer({
-  name: "java-sdk-tools-server",
+  name: "azure-sdk-java-mcp",
   version: "1.0.0",
 });
 
