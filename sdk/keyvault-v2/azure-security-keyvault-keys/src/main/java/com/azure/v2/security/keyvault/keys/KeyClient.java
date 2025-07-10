@@ -1153,10 +1153,8 @@ public final class KeyClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return Poller.createPoller(Duration.ofSeconds(1),
-            pollingContext -> deleteKeyActivationOperation(name),
-            pollingContext -> deleteKeyPollOperation(name, pollingContext),
-            (pollingContext, firstResponse) -> null,
+        return Poller.createPoller(Duration.ofSeconds(1), pollingContext -> deleteKeyActivationOperation(name),
+            pollingContext -> deleteKeyPollOperation(name, pollingContext), (pollingContext, firstResponse) -> null,
             pollingContext -> null);
     }
 
@@ -1353,10 +1351,8 @@ public final class KeyClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return Poller.createPoller(Duration.ofSeconds(1),
-            pollingContext -> recoverKeyPollOperation(name),
-            pollingContext -> recoverKeyPollOperation(name, pollingContext),
-            (pollingContext, firstResponse) -> null,
+        return Poller.createPoller(Duration.ofSeconds(1), pollingContext -> recoverKeyPollOperation(name),
+            pollingContext -> recoverKeyPollOperation(name, pollingContext), (pollingContext, firstResponse) -> null,
             pollingContext -> null);
     }
 
@@ -1366,7 +1362,8 @@ public final class KeyClient {
         }
     }
 
-    private PollResponse<KeyVaultKey> recoverKeyPollOperation(String keyName, PollingContext<KeyVaultKey> pollingContext) {
+    private PollResponse<KeyVaultKey> recoverKeyPollOperation(String keyName,
+        PollingContext<KeyVaultKey> pollingContext) {
         try {
             return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 createKeyVaultKey(clientImpl.getKeyWithResponse(keyName, "", RequestContext.none()).getValue()));
@@ -1500,8 +1497,8 @@ public final class KeyClient {
     public KeyVaultKey restoreKeyBackup(byte[] backup) {
         Objects.requireNonNull(backup, "'backup' cannot be null.");
 
-        try (Response<KeyBundle> response = clientImpl.restoreKeyWithResponse(new KeyRestoreParameters(backup),
-            RequestContext.none())) {
+        try (Response<KeyBundle> response
+            = clientImpl.restoreKeyWithResponse(new KeyRestoreParameters(backup), RequestContext.none())) {
 
             return createKeyVaultKey(response.getValue());
         }
@@ -2199,8 +2196,8 @@ public final class KeyClient {
             throw LOGGER.throwableAtError().log("'keyName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try (Response<com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy> response =
-            clientImpl.updateKeyRotationPolicyWithResponse(keyName, mapKeyRotationPolicy(keyRotationPolicy),
+        try (Response<com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy> response
+            = clientImpl.updateKeyRotationPolicyWithResponse(keyName, mapKeyRotationPolicy(keyRotationPolicy),
                 RequestContext.none())) {
 
             return mapKeyRotationPolicyImpl(response.getValue());

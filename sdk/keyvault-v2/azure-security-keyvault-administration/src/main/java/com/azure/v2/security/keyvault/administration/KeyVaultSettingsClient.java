@@ -157,8 +157,9 @@ public final class KeyVaultSettingsClient {
             settingValue = Boolean.toString(setting.asBoolean());
         }
 
-        return transformToKeyVaultSetting(clientImpl.updateSettingWithResponse(
-            setting.getName(), new UpdateSettingRequest(settingValue), RequestContext.none()).getValue());
+        return transformToKeyVaultSetting(clientImpl
+            .updateSettingWithResponse(setting.getName(), new UpdateSettingRequest(settingValue), RequestContext.none())
+            .getValue());
     }
 
     /**

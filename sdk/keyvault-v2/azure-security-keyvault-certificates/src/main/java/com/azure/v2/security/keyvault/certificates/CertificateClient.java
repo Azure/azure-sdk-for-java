@@ -172,7 +172,8 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * @see CertificateClientBuilder
  */
 @ServiceClient(
-    builder = CertificateClientBuilder.class, serviceInterfaces = CertificateClientImpl.CertificateClientService.class)
+    builder = CertificateClientBuilder.class,
+    serviceInterfaces = CertificateClientImpl.CertificateClientService.class)
 public final class CertificateClient {
     private static final ClientLogger LOGGER = new ClientLogger(CertificateClient.class);
 
@@ -280,11 +281,11 @@ public final class CertificateClient {
 
         CertificateCreateParameters certificateCreateParameters
             = new CertificateCreateParameters().setCertificatePolicy(getImplCertificatePolicy(policy))
-            .setCertificateAttributes(new CertificateAttributes().setEnabled(isEnabled))
-            .setTags(tags);
+                .setCertificateAttributes(new CertificateAttributes().setEnabled(isEnabled))
+                .setTags(tags);
 
-        try (Response<com.azure.v2.security.keyvault.certificates.implementation.models.CertificateOperation> response =
-            clientImpl.createCertificateWithResponse(certificateName, certificateCreateParameters,
+        try (Response<com.azure.v2.security.keyvault.certificates.implementation.models.CertificateOperation> response
+            = clientImpl.createCertificateWithResponse(certificateName, certificateCreateParameters,
                 RequestContext.none())) {
 
             return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
@@ -300,9 +301,9 @@ public final class CertificateClient {
     }
 
     private CertificateOperation createCertificateCancellationOperation(String name) {
-        try (Response<com.azure.v2.security.keyvault.certificates.implementation.models.CertificateOperation> response =
-            clientImpl.updateCertificateOperationWithResponse(name,
-                new CertificateOperationUpdateParameter(true), RequestContext.none())) {
+        try (Response<com.azure.v2.security.keyvault.certificates.implementation.models.CertificateOperation> response
+            = clientImpl.updateCertificateOperationWithResponse(name, new CertificateOperationUpdateParameter(true),
+                RequestContext.none())) {
 
             return createCertificateOperation(response.getValue());
         }
@@ -493,8 +494,8 @@ public final class CertificateClient {
             = new CertificateUpdateParameters().setCertificateAttributes(certificateAttributes)
                 .setTags(certificateProperties.getTags());
 
-        try (Response<CertificateBundle> response =
-            clientImpl.updateCertificateWithResponse(certificateProperties.getName(), certificateUpdateParameters,
+        try (Response<CertificateBundle> response
+            = clientImpl.updateCertificateWithResponse(certificateProperties.getName(), certificateUpdateParameters,
                 certificateProperties.getVersion(), RequestContext.none())) {
 
             return createCertificateWithPolicy(response.getValue());
@@ -601,16 +602,14 @@ public final class CertificateClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return Poller.createPoller(Duration.ofSeconds(1),
-            pollingContext -> deleteCertificateActivationOperation(name),
+        return Poller.createPoller(Duration.ofSeconds(1), pollingContext -> deleteCertificateActivationOperation(name),
             pollingContext -> deleteCertificatePollOperation(name, pollingContext.getLatestResponse()),
-            (pollingContext, pollResponse) -> null,
-            pollingContext -> null);
+            (pollingContext, pollResponse) -> null, pollingContext -> null);
     }
 
     private PollResponse<DeletedCertificate> deleteCertificateActivationOperation(String name) {
-        try (Response<DeletedCertificateBundle> response = clientImpl.deleteCertificateWithResponse(name,
-            RequestContext.none())) {
+        try (Response<DeletedCertificateBundle> response
+            = clientImpl.deleteCertificateWithResponse(name, RequestContext.none())) {
 
             return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                 createDeletedCertificate(response.getValue()));
@@ -806,16 +805,14 @@ public final class CertificateClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return Poller.createPoller(Duration.ofSeconds(1),
-            pollingContext -> recoverCertificateActivationOperation(name),
+        return Poller.createPoller(Duration.ofSeconds(1), pollingContext -> recoverCertificateActivationOperation(name),
             pollingContext -> recoverDeletedCertificatePollOperation(name, pollingContext.getLatestResponse()),
-            (pollingContext, firstResponse) -> null,
-            pollingContext -> null);
+            (pollingContext, firstResponse) -> null, pollingContext -> null);
     }
 
     private PollResponse<KeyVaultCertificateWithPolicy> recoverCertificateActivationOperation(String name) {
-        try (Response<CertificateBundle> response = clientImpl.recoverDeletedCertificateWithResponse(name,
-            RequestContext.none())) {
+        try (Response<CertificateBundle> response
+            = clientImpl.recoverDeletedCertificateWithResponse(name, RequestContext.none())) {
 
             return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                 createCertificateWithPolicy(response.getValue()));
@@ -872,8 +869,8 @@ public final class CertificateClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try (Response<BackupCertificateResult> response =
-            clientImpl.backupCertificateWithResponse(name, RequestContext.none())) {
+        try (Response<BackupCertificateResult> response
+            = clientImpl.backupCertificateWithResponse(name, RequestContext.none())) {
 
             return response.getValue().getValue();
         }
@@ -941,8 +938,8 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultCertificateWithPolicy restoreCertificateBackup(byte[] backup) {
-        try (Response<CertificateBundle> response = clientImpl.restoreCertificateWithResponse(
-            new CertificateRestoreParameters(backup), RequestContext.none())) {
+        try (Response<CertificateBundle> response = clientImpl
+            .restoreCertificateWithResponse(new CertificateRestoreParameters(backup), RequestContext.none())) {
 
             return createCertificateWithPolicy(response.getValue());
         }
@@ -1420,8 +1417,8 @@ public final class CertificateClient {
 
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
-        try (Response<com.azure.v2.security.keyvault.certificates.implementation.models.CertificatePolicy> response =
-            clientImpl.updateCertificatePolicyWithResponse(certificateName, getImplCertificatePolicy(policy),
+        try (Response<com.azure.v2.security.keyvault.certificates.implementation.models.CertificatePolicy> response
+            = clientImpl.updateCertificatePolicyWithResponse(certificateName, getImplCertificatePolicy(policy),
                 RequestContext.none())) {
 
             return createCertificatePolicy(response.getValue());
@@ -1478,9 +1475,8 @@ public final class CertificateClient {
 
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
-        return mapResponse(
-            clientImpl.updateCertificatePolicyWithResponse(certificateName, getImplCertificatePolicy(policy),
-                requestContext), CertificatePolicyHelper::createCertificatePolicy);
+        return mapResponse(clientImpl.updateCertificatePolicyWithResponse(certificateName,
+            getImplCertificatePolicy(policy), requestContext), CertificatePolicyHelper::createCertificatePolicy);
     }
 
     /**
@@ -1681,8 +1677,8 @@ public final class CertificateClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try (Response<IssuerBundle> response = clientImpl.deleteCertificateIssuerWithResponse(name,
-            RequestContext.none())) {
+        try (Response<IssuerBundle> response
+            = clientImpl.deleteCertificateIssuerWithResponse(name, RequestContext.none())) {
 
             return createCertificateIssuer(response.getValue());
         }
@@ -1921,9 +1917,8 @@ public final class CertificateClient {
                 .setCredentials(issuerBundle.getCredentials())
                 .setAttributes(issuerBundle.getAttributes());
 
-        return mapResponse(
-            clientImpl.updateCertificateIssuerWithResponse(issuer.getName(), certificateIssuerUpdateParameters,
-                requestContext), CertificateIssuerHelper::createCertificateIssuer);
+        return mapResponse(clientImpl.updateCertificateIssuerWithResponse(issuer.getName(),
+            certificateIssuerUpdateParameters, requestContext), CertificateIssuerHelper::createCertificateIssuer);
     }
 
     /**
@@ -2164,8 +2159,8 @@ public final class CertificateClient {
                 .log("'certificateName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try (Response<com.azure.v2.security.keyvault.certificates.implementation.models.CertificateOperation> response =
-            clientImpl.deleteCertificateOperationWithResponse(certificateName, RequestContext.none())) {
+        try (Response<com.azure.v2.security.keyvault.certificates.implementation.models.CertificateOperation> response
+            = clientImpl.deleteCertificateOperationWithResponse(certificateName, RequestContext.none())) {
 
             return createCertificateOperation(response.getValue());
         }
@@ -2240,8 +2235,8 @@ public final class CertificateClient {
                 .log("'certificateName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        try (Response<com.azure.v2.security.keyvault.certificates.implementation.models.CertificateOperation> response =
-            clientImpl.updateCertificateOperationWithResponse(certificateName,
+        try (Response<com.azure.v2.security.keyvault.certificates.implementation.models.CertificateOperation> response
+            = clientImpl.updateCertificateOperationWithResponse(certificateName,
                 new CertificateOperationUpdateParameter(true), RequestContext.none())) {
 
             return createCertificateOperation(response.getValue());
@@ -2281,7 +2276,8 @@ public final class CertificateClient {
     public Response<CertificateOperation> cancelCertificateOperationWithResponse(String certificateName,
         RequestContext requestContext) {
 
-        return mapResponse(clientImpl.updateCertificateOperationWithResponse(certificateName,
+        return mapResponse(
+            clientImpl.updateCertificateOperationWithResponse(certificateName,
                 new CertificateOperationUpdateParameter(true), requestContext),
             CertificateOperationHelper::createCertificateOperation);
     }
@@ -2371,8 +2367,8 @@ public final class CertificateClient {
      * @throws NullPointerException If {@code mergeCertificateOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultCertificateWithPolicy> mergeCertificateWithResponse(
-        MergeCertificateOptions mergeCertificateOptions, RequestContext requestContext) {
+    public Response<KeyVaultCertificateWithPolicy>
+        mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateOptions, RequestContext requestContext) {
 
         Objects.requireNonNull(mergeCertificateOptions, "'mergeCertificateOptions' cannot be null.");
 
@@ -2386,9 +2382,9 @@ public final class CertificateClient {
                 .setTags(mergeCertificateOptions.getTags())
                 .setCertificateAttributes(new CertificateAttributes().setEnabled(mergeCertificateOptions.isEnabled()));
 
-        return mapResponse(
-            clientImpl.mergeCertificateWithResponse(mergeCertificateOptions.getName(), certificateMergeParameters,
-                requestContext), KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
+        return mapResponse(clientImpl.mergeCertificateWithResponse(mergeCertificateOptions.getName(),
+            certificateMergeParameters, requestContext),
+            KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
     }
 
     /**
@@ -2508,9 +2504,9 @@ public final class CertificateClient {
                 .setTags(importCertificateOptions.getTags())
                 .setCertificateAttributes(new CertificateAttributes().setEnabled(importCertificateOptions.isEnabled()));
 
-        return mapResponse(
-            clientImpl.importCertificateWithResponse(importCertificateOptions.getName(), certificateImportParameters,
-                requestContext), KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
+        return mapResponse(clientImpl.importCertificateWithResponse(importCertificateOptions.getName(),
+            certificateImportParameters, requestContext),
+            KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
     }
 
     private static <T, S> Response<S> mapResponse(Response<T> response, Function<T, S> mapper) {

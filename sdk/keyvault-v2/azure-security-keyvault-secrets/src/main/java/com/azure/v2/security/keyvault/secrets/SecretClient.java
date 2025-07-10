@@ -567,16 +567,14 @@ public final class SecretClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return Poller.createPoller(Duration.ofSeconds(1),
-            pollingContext -> deleteSecretActivationOperation(name),
-            pollingContext -> deleteSecretPollOperation(name, pollingContext),
-            (pollingContext, response) -> null,
+        return Poller.createPoller(Duration.ofSeconds(1), pollingContext -> deleteSecretActivationOperation(name),
+            pollingContext -> deleteSecretPollOperation(name, pollingContext), (pollingContext, response) -> null,
             pollingContext -> null);
     }
 
     private PollResponse<DeletedSecret> deleteSecretActivationOperation(String name) {
-        try (Response<DeletedSecretBundle> response = clientImpl.deleteSecretWithResponse(name,
-            RequestContext.none())) {
+        try (
+            Response<DeletedSecretBundle> response = clientImpl.deleteSecretWithResponse(name, RequestContext.none())) {
 
             return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, createDeletedSecret(response.getValue()));
         }
@@ -777,12 +775,12 @@ public final class SecretClient {
         return Poller.createPoller(Duration.ofSeconds(1),
             pollingContext -> recoverDeletedSecretActivationOperation(name),
             pollingContext -> recoverDeletedSecretPollOperation(name, pollingContext),
-            (pollingContext, response) -> null,
-            pollingContext -> null);
+            (pollingContext, response) -> null, pollingContext -> null);
     }
 
     private PollResponse<KeyVaultSecret> recoverDeletedSecretActivationOperation(String name) {
-        try (Response<SecretBundle> response = clientImpl.recoverDeletedSecretWithResponse(name, RequestContext.none())) {
+        try (Response<SecretBundle> response
+            = clientImpl.recoverDeletedSecretWithResponse(name, RequestContext.none())) {
             return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                 createKeyVaultSecret(response.getValue()));
         }
@@ -905,8 +903,8 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret restoreSecretBackup(byte[] backup) {
-        try (Response<SecretBundle> response = clientImpl.restoreSecretWithResponse(new SecretRestoreParameters(backup),
-            RequestContext.none())) {
+        try (Response<SecretBundle> response
+            = clientImpl.restoreSecretWithResponse(new SecretRestoreParameters(backup), RequestContext.none())) {
 
             return createKeyVaultSecret(response.getValue());
         }
