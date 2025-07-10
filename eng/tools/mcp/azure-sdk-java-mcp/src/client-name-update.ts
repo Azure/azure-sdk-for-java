@@ -1,7 +1,7 @@
 import { CallToolResult } from "@modelcontextprotocol/sdk/types";
 
 export async function clientNameUpdateCookbook(): Promise<CallToolResult> {
-  const cookbook = `
+    const cookbook = `
   Follow below instruction to update old client name to new client name in both client.tsp and the generated Java SDK.
 
 # How to Update the Client Name in the Generated Java SDK
@@ -60,14 +60,14 @@ export async function clientNameUpdateCookbook(): Promise<CallToolResult> {
 **Tip:** Use your IDE’s “rename symbol” or “find and replace” feature to ensure you update all references safely.
   `;
 
-  console.error(`Generated client name update cookbook:\n${cookbook}`);
+    console.error(`Generated client name update cookbook:\n${cookbook}`);
 
-  return {
-    content: [
-      {
-        type: "text",
-        text: cookbook,
-      },
-    ],
-  };
+    return {
+        content: [
+            {
+                type: "text",
+                text: cookbook,
+            },
+        ],
+    };
 }

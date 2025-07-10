@@ -1,7 +1,7 @@
 import { CallToolResult } from "@modelcontextprotocol/sdk/types";
 
 export async function brownfieldMigration(): Promise<CallToolResult> {
-  const cookbook = `Follow the instructions below to migrate the Java SDK to generate from TypeSpec.
+    const cookbook = `Follow the instructions below to migrate the Java SDK to generate from TypeSpec.
 
 1. Initiate the Java SDK with the given URL to the "tspconfig.yaml" file.
    Use the tool to initiate the Java SDK, from tspconfig.yaml URL. This tool create a "tsp-location.yaml" file.
@@ -33,12 +33,12 @@ export async function brownfieldMigration(): Promise<CallToolResult> {
 9. Go to step 5.
 `;
 
-  return {
-    content: [
-      {
-        type: "text",
-        text: cookbook,
-      },
-    ],
-  };
+    return {
+        content: [
+            {
+                type: "text",
+                text: cookbook,
+            },
+        ],
+    };
 }
