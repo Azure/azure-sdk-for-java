@@ -475,6 +475,8 @@ public class PoolTests extends BatchClientTestBase {
 
             String nodeId = firstNode.getId();
 
+            sleepIfRunningAgainstService(15000);
+
             // DEALLOCATE using LRO
             BatchNodeDeallocateParameters deallocateParams
                 = new BatchNodeDeallocateParameters().setNodeDeallocateOption(BatchNodeDeallocateOption.TERMINATE);
