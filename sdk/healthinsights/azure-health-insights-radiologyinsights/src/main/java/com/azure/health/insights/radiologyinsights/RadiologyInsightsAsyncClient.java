@@ -16,7 +16,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.health.insights.radiologyinsights.implementation.RadiologyInsightsClientImpl;
 import com.azure.health.insights.radiologyinsights.implementation.models.InferFromCustomModelIdRequest;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsCustomInferenceResponse;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsCustomInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsCustomJob;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
@@ -561,62 +561,6 @@ public final class RadiologyInsightsAsyncClient {
     }
 
     /**
-     * Create Radiology Insights job
-     *
-     * Creates a Radiology Insights job with the given request body.
-     *
-     * @param id The unique ID of the job.
-     * @param resource The resource instance.
-     * @param expand Expand the indicated resources into the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for the Radiology Insights request.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
-        RadiologyInsightsData resource, List<String> expand) {
-        RadiologyInsightsJob job = new RadiologyInsightsJob();
-        job.setJobData(resource);
-        RequestOptions requestOptions = new RequestOptions();
-        if (expand != null) {
-            for (String paramItemValue : expand) {
-                if (paramItemValue != null) {
-                    requestOptions.addQueryParam("expand", paramItemValue, false);
-                }
-            }
-        }
-        return serviceClient.beginInferRadiologyInsightsWithModelAsync(id, BinaryData.fromObject(job), requestOptions);
-    }
-
-    /**
-     * Create Radiology Insights job
-     *
-     * Creates a Radiology Insights job with the given request body.
-     *
-     * @param id The unique ID of the job.
-     * @param resource The resource instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for the Radiology Insights request.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
-        RadiologyInsightsData resource) {
-        RadiologyInsightsJob job = new RadiologyInsightsJob();
-        job.setJobData(resource);
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginInferRadiologyInsightsWithModelAsync(id, BinaryData.fromObject(job), requestOptions);
-    }
-
-    /**
      * Infer radiology insights using a custom model.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -1095,17 +1039,75 @@ public final class RadiologyInsightsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginInferFromCustomModelId(BinaryData inferFromCustomModelIdRequest,
+    public PollerFlux<BinaryData, BinaryData> beginBeginCustomInference(BinaryData inferFromCustomModelIdRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginInferFromCustomModelIdAsync(inferFromCustomModelIdRequest, requestOptions);
+        return this.serviceClient.beginBeginCustomInferenceAsync(inferFromCustomModelIdRequest, requestOptions);
+    }
+
+    /**
+     * Create Radiology Insights job
+     *
+     * Creates a Radiology Insights job with the given request body.
+     *
+     * @param id The unique ID of the job.
+     * @param resource The resource instance.
+     * @param expand Expand the indicated resources into the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of response for the Radiology Insights request.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
+        RadiologyInsightsJob resource, List<String> expand) {
+        // Generated convenience method for beginInferRadiologyInsightsWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        if (expand != null) {
+            for (String paramItemValue : expand) {
+                if (paramItemValue != null) {
+                    requestOptions.addQueryParam("expand", paramItemValue, false);
+                }
+            }
+        }
+        return serviceClient.beginInferRadiologyInsightsWithModelAsync(id, BinaryData.fromObject(resource),
+            requestOptions);
+    }
+
+    /**
+     * Create Radiology Insights job
+     *
+     * Creates a Radiology Insights job with the given request body.
+     *
+     * @param id The unique ID of the job.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of response for the Radiology Insights request.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
+        RadiologyInsightsJob resource) {
+        // Generated convenience method for beginInferRadiologyInsightsWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginInferRadiologyInsightsWithModelAsync(id, BinaryData.fromObject(resource),
+            requestOptions);
     }
 
     /**
      * Infer radiology insights using a custom model.
      *
      * @param inferenceData Contains the list of patients, and configuration data.
-     * @param id Models to be used for inference. If this is not specified, the model will use the default model for
-     * inference.
+     * @param modelIds Models to be used for inference. If this is not specified, the model will use the default model
+     * for inference.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1116,14 +1118,14 @@ public final class RadiologyInsightsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RadiologyInsightsCustomJob, RadiologyInsightsCustomInferenceResponse>
-        beginInferFromCustomModelId(RadiologyInsightsData inferenceData, List<String> id) {
-        // Generated convenience method for beginInferFromCustomModelIdWithModel
+    public PollerFlux<RadiologyInsightsCustomJob, RadiologyInsightsCustomInferenceResult>
+        beginBeginCustomInference(RadiologyInsightsData inferenceData, List<String> modelIds) {
+        // Generated convenience method for beginBeginCustomInferenceWithModel
         RequestOptions requestOptions = new RequestOptions();
         InferFromCustomModelIdRequest inferFromCustomModelIdRequestObj
-            = new InferFromCustomModelIdRequest(inferenceData).setId(id);
+            = new InferFromCustomModelIdRequest(inferenceData).setModelIds(modelIds);
         BinaryData inferFromCustomModelIdRequest = BinaryData.fromObject(inferFromCustomModelIdRequestObj);
-        return serviceClient.beginInferFromCustomModelIdWithModelAsync(inferFromCustomModelIdRequest, requestOptions);
+        return serviceClient.beginBeginCustomInferenceWithModelAsync(inferFromCustomModelIdRequest, requestOptions);
     }
 
     /**
@@ -1140,13 +1142,13 @@ public final class RadiologyInsightsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RadiologyInsightsCustomJob, RadiologyInsightsCustomInferenceResponse>
-        beginInferFromCustomModelId(RadiologyInsightsData inferenceData) {
-        // Generated convenience method for beginInferFromCustomModelIdWithModel
+    public PollerFlux<RadiologyInsightsCustomJob, RadiologyInsightsCustomInferenceResult>
+        beginBeginCustomInference(RadiologyInsightsData inferenceData) {
+        // Generated convenience method for beginBeginCustomInferenceWithModel
         RequestOptions requestOptions = new RequestOptions();
         InferFromCustomModelIdRequest inferFromCustomModelIdRequestObj
             = new InferFromCustomModelIdRequest(inferenceData);
         BinaryData inferFromCustomModelIdRequest = BinaryData.fromObject(inferFromCustomModelIdRequestObj);
-        return serviceClient.beginInferFromCustomModelIdWithModelAsync(inferFromCustomModelIdRequest, requestOptions);
+        return serviceClient.beginBeginCustomInferenceWithModelAsync(inferFromCustomModelIdRequest, requestOptions);
     }
 }

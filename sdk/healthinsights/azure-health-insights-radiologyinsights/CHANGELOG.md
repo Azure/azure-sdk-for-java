@@ -4,35 +4,34 @@
 
 ### Features Added
 
-* `models.RadiologyInsightsCustomInferenceResponse` was added
+#### Custom Model Inference Support
+- Added comprehensive support for custom model inference operations
+- All new APIs follow Azure SDK design guidelines and support both synchronous and asynchronous operations
 
-* `implementation.models.InferFromCustomModelIdRequest` was added
+#### New Model Classes
+- `models.RadiologyInsightsCustomJob` - Represents a custom inference job with status tracking
+- `models.RadiologyInsightsCustomInferenceResult` - Contains the results of custom model inference
+- `implementation.models.InferFromCustomModelIdRequest` - Request model for custom inference operations
 
-* `models.RadiologyInsightsCustomJob` was added
+#### `RadiologyInsightsClient` - Custom Model Inference Methods
+- `beginInferFromCustomModelId(RadiologyInsightsData data)` - Start custom inference with default options
+- `beginInferFromCustomModelId(RadiologyInsightsData data, List<String> modelIds)` - Start custom inference with specific model IDs
+- `beginInferFromCustomModelId(BinaryData request, RequestOptions options)` - Start custom inference with low-level API
 
-#### `RadiologyInsightsClient` was modified
+#### `RadiologyInsightsAsyncClient` - Custom Model Inference Methods  
+- `beginInferFromCustomModelId(RadiologyInsightsData data)` - Start custom inference asynchronously with default options
+- `beginInferFromCustomModelId(RadiologyInsightsData data, List<String> modelIds)` - Start custom inference asynchronously with specific model IDs
+- `beginInferFromCustomModelId(BinaryData request, RequestOptions options)` - Start custom inference asynchronously with low-level API
 
-* `beginInferFromCustomModelId(models.RadiologyInsightsData,java.util.List)` was added
-* `beginInferFromCustomModelId(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-* `beginInferFromCustomModelId(models.RadiologyInsightsData)` was added
+#### Long-Running Operations Support
+- All custom inference methods return `SyncPoller` (sync) or `PollerFlux` (async) for proper LRO handling
+- Built-in polling support with customizable polling intervals
+- Proper status tracking and error handling for long-running inference operations
 
-#### `implementation.RadiologyInsightsClientImpl$RadiologyInsightsClientService` was modified
-
-* `inferFromCustomModelIdSync(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions,com.azure.core.util.Context)` was added
-* `inferFromCustomModelId(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions,com.azure.core.util.Context)` was added
-
-#### `implementation.RadiologyInsightsClientImpl` was modified
-
-* `beginInferFromCustomModelId(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-* `beginInferFromCustomModelIdWithModel(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-* `beginInferFromCustomModelIdAsync(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-* `beginInferFromCustomModelIdWithModelAsync(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-
-#### `RadiologyInsightsAsyncClient` was modified
-
-* `beginInferFromCustomModelId(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-* `beginInferFromCustomModelId(models.RadiologyInsightsData)` was added
-* `beginInferFromCustomModelId(models.RadiologyInsightsData,java.util.List)` was added
+### Other Changes
+- Updated to latest TypeSpec definitions for improved API consistency
+- Enhanced error handling and validation for custom model operations
+- Updated metadata and configuration files to support new endpoints
 
 
 ## 1.1.1 (2025-06-19)

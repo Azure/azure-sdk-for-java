@@ -30,7 +30,7 @@ public final class RadiologyInsightsCustomJob implements JsonSerializable<Radiol
      * The result of the operation.
      */
     @Generated
-    private RadiologyInsightsCustomInferenceResponse result;
+    private RadiologyInsightsCustomInferenceResult result;
 
     /*
      * The unique ID of the job.
@@ -91,7 +91,7 @@ public final class RadiologyInsightsCustomJob implements JsonSerializable<Radiol
      * @return the result value.
      */
     @Generated
-    public RadiologyInsightsCustomInferenceResponse getResult() {
+    public RadiologyInsightsCustomInferenceResult getResult() {
         return this.result;
     }
 
@@ -190,7 +190,7 @@ public final class RadiologyInsightsCustomJob implements JsonSerializable<Radiol
                     deserializedRadiologyInsightsCustomJob.jobData = RadiologyInsightsData.fromJson(reader);
                 } else if ("result".equals(fieldName)) {
                     deserializedRadiologyInsightsCustomJob.result
-                        = RadiologyInsightsCustomInferenceResponse.fromJson(reader);
+                        = RadiologyInsightsCustomInferenceResult.fromJson(reader);
                 } else if ("createdAt".equals(fieldName)) {
                     deserializedRadiologyInsightsCustomJob.createdAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

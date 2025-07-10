@@ -13,37 +13,6 @@ import java.util.Collection;
 public final class QualityMeasureType extends ExpandableStringEnum<QualityMeasureType> {
 
     /**
-     * Creates a new instance of QualityMeasureType value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Generated
-    @Deprecated
-    public QualityMeasureType() {
-    }
-
-    /**
-     * Creates or finds a QualityMeasureType from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding QualityMeasureType.
-     */
-    @Generated
-    public static QualityMeasureType fromString(String name) {
-        return fromString(name, QualityMeasureType.class);
-    }
-
-    /**
-     * Gets known QualityMeasureType values.
-     *
-     * @return known QualityMeasureType values.
-     */
-    @Generated
-    public static Collection<QualityMeasureType> values() {
-        return values(QualityMeasureType.class);
-    }
-
-    /**
      * Mips 76.
      */
     @Generated
@@ -180,4 +149,35 @@ public final class QualityMeasureType extends ExpandableStringEnum<QualityMeasur
      */
     @Generated
     public static final QualityMeasureType QMM_19 = fromString("qmm19");
+
+    /**
+     * Creates a new instance of QualityMeasureType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Generated
+    @Deprecated
+    public QualityMeasureType() {
+    }
+
+    /**
+     * Creates or finds a QualityMeasureType from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding QualityMeasureType.
+     */
+    @Generated
+    public static QualityMeasureType fromString(String name) {
+        return fromString(name, QualityMeasureType.class);
+    }
+
+    /**
+     * Gets known QualityMeasureType values.
+     *
+     * @return known QualityMeasureType values.
+     */
+    @Generated
+    public static Collection<QualityMeasureType> values() {
+        return values(QualityMeasureType.class);
+    }
 }

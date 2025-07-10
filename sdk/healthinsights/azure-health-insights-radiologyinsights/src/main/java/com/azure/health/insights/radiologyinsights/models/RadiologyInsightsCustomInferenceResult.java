@@ -17,8 +17,8 @@ import java.util.List;
  * 'result' will contain an instance of RadiologyInsightsInferenceResult.
  */
 @Immutable
-public final class RadiologyInsightsCustomInferenceResponse
-    implements JsonSerializable<RadiologyInsightsCustomInferenceResponse> {
+public final class RadiologyInsightsCustomInferenceResult
+    implements JsonSerializable<RadiologyInsightsCustomInferenceResult> {
 
     /*
      * Results for the patients given in the request.
@@ -30,19 +30,19 @@ public final class RadiologyInsightsCustomInferenceResponse
      * Models to be used for inference. If this is not specified, the model will use the default model for inference.
      */
     @Generated
-    private final List<String> id;
+    private final List<String> modelIds;
 
     /**
-     * Creates an instance of RadiologyInsightsCustomInferenceResponse class.
+     * Creates an instance of RadiologyInsightsCustomInferenceResult class.
      *
      * @param patientResults the patientResults value to set.
-     * @param id the id value to set.
+     * @param modelIds the modelIds value to set.
      */
     @Generated
-    private RadiologyInsightsCustomInferenceResponse(List<RadiologyInsightsPatientResult> patientResults,
-        List<String> id) {
+    private RadiologyInsightsCustomInferenceResult(List<RadiologyInsightsPatientResult> patientResults,
+        List<String> modelIds) {
         this.patientResults = patientResults;
-        this.id = id;
+        this.modelIds = modelIds;
     }
 
     /**
@@ -56,14 +56,14 @@ public final class RadiologyInsightsCustomInferenceResponse
     }
 
     /**
-     * Get the id property: Models to be used for inference. If this is not specified, the model will use the default
-     * model for inference.
+     * Get the modelIds property: Models to be used for inference. If this is not specified, the model will use the
+     * default model for inference.
      *
-     * @return the id value.
+     * @return the modelIds value.
      */
     @Generated
-    public List<String> getId() {
-        return this.id;
+    public List<String> getModelIds() {
+        return this.modelIds;
     }
 
     /**
@@ -75,36 +75,36 @@ public final class RadiologyInsightsCustomInferenceResponse
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("patientResults", this.patientResults,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("id", this.id, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("id", this.modelIds, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of RadiologyInsightsCustomInferenceResponse from the JsonReader.
+     * Reads an instance of RadiologyInsightsCustomInferenceResult from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RadiologyInsightsCustomInferenceResponse if the JsonReader was pointing to an instance of
+     * @return An instance of RadiologyInsightsCustomInferenceResult if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RadiologyInsightsCustomInferenceResponse.
+     * @throws IOException If an error occurs while reading the RadiologyInsightsCustomInferenceResult.
      */
     @Generated
-    public static RadiologyInsightsCustomInferenceResponse fromJson(JsonReader jsonReader) throws IOException {
+    public static RadiologyInsightsCustomInferenceResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<RadiologyInsightsPatientResult> patientResults = null;
-            List<String> id = null;
+            List<String> modelIds = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("patientResults".equals(fieldName)) {
                     patientResults = reader.readArray(reader1 -> RadiologyInsightsPatientResult.fromJson(reader1));
                 } else if ("id".equals(fieldName)) {
-                    id = reader.readArray(reader1 -> reader1.getString());
+                    modelIds = reader.readArray(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new RadiologyInsightsCustomInferenceResponse(patientResults, id);
+            return new RadiologyInsightsCustomInferenceResult(patientResults, modelIds);
         });
     }
 }

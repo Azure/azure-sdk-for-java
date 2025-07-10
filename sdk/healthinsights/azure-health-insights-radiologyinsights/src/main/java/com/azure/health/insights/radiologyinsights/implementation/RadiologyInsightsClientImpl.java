@@ -38,7 +38,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.health.insights.radiologyinsights.RadiologyInsightsServiceVersion;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsCustomInferenceResponse;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsCustomInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsCustomJob;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
@@ -191,7 +191,7 @@ public final class RadiologyInsightsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> inferFromCustomModelId(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> beginCustomInference(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData inferFromCustomModelIdRequest, RequestOptions requestOptions,
@@ -203,7 +203,7 @@ public final class RadiologyInsightsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> inferFromCustomModelIdSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> beginCustomInferenceSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData inferFromCustomModelIdRequest, RequestOptions requestOptions,
@@ -3840,12 +3840,12 @@ public final class RadiologyInsightsClientImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> inferFromCustomModelIdWithResponseAsync(BinaryData inferFromCustomModelIdRequest,
+    private Mono<Response<BinaryData>> beginCustomInferenceWithResponseAsync(BinaryData inferFromCustomModelIdRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.inferFromCustomModelId(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            context -> service.beginCustomInference(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 contentType, accept, inferFromCustomModelIdRequest, requestOptions, context));
     }
 
@@ -4327,12 +4327,12 @@ public final class RadiologyInsightsClientImpl {
      * @return provides status details for long running operations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> inferFromCustomModelIdWithResponse(BinaryData inferFromCustomModelIdRequest,
+    private Response<BinaryData> beginCustomInferenceWithResponse(BinaryData inferFromCustomModelIdRequest,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.inferFromCustomModelIdSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            contentType, accept, inferFromCustomModelIdRequest, requestOptions, Context.NONE);
+        return service.beginCustomInferenceSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            accept, inferFromCustomModelIdRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -4813,11 +4813,11 @@ public final class RadiologyInsightsClientImpl {
      * @return the {@link PollerFlux} for polling of provides status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RadiologyInsightsCustomJob, RadiologyInsightsCustomInferenceResponse>
-        beginInferFromCustomModelIdWithModelAsync(BinaryData inferFromCustomModelIdRequest,
+    public PollerFlux<RadiologyInsightsCustomJob, RadiologyInsightsCustomInferenceResult>
+        beginBeginCustomInferenceWithModelAsync(BinaryData inferFromCustomModelIdRequest,
             RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.inferFromCustomModelIdWithResponseAsync(inferFromCustomModelIdRequest, requestOptions),
+            () -> this.beginCustomInferenceWithResponseAsync(inferFromCustomModelIdRequest, requestOptions),
             new com.azure.health.insights.radiologyinsights.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/health-insights".replace("{endpoint}", this.getEndpoint()))
@@ -4827,7 +4827,7 @@ public final class RadiologyInsightsClientImpl {
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "result"),
             TypeReference.createInstance(RadiologyInsightsCustomJob.class),
-            TypeReference.createInstance(RadiologyInsightsCustomInferenceResponse.class));
+            TypeReference.createInstance(RadiologyInsightsCustomInferenceResult.class));
     }
 
     /**
@@ -5308,10 +5308,10 @@ public final class RadiologyInsightsClientImpl {
      * @return the {@link SyncPoller} for polling of provides status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RadiologyInsightsCustomJob, RadiologyInsightsCustomInferenceResponse>
-        beginInferFromCustomModelIdWithModel(BinaryData inferFromCustomModelIdRequest, RequestOptions requestOptions) {
+    public SyncPoller<RadiologyInsightsCustomJob, RadiologyInsightsCustomInferenceResult>
+        beginBeginCustomInferenceWithModel(BinaryData inferFromCustomModelIdRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.inferFromCustomModelIdWithResponse(inferFromCustomModelIdRequest, requestOptions),
+            () -> this.beginCustomInferenceWithResponse(inferFromCustomModelIdRequest, requestOptions),
             new com.azure.health.insights.radiologyinsights.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/health-insights".replace("{endpoint}", this.getEndpoint()))
@@ -5321,7 +5321,7 @@ public final class RadiologyInsightsClientImpl {
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "result"),
             TypeReference.createInstance(RadiologyInsightsCustomJob.class),
-            TypeReference.createInstance(RadiologyInsightsCustomInferenceResponse.class));
+            TypeReference.createInstance(RadiologyInsightsCustomInferenceResult.class));
     }
 
     /**
@@ -5802,10 +5802,10 @@ public final class RadiologyInsightsClientImpl {
      * @return the {@link PollerFlux} for polling of provides status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginInferFromCustomModelIdAsync(BinaryData inferFromCustomModelIdRequest,
+    public PollerFlux<BinaryData, BinaryData> beginBeginCustomInferenceAsync(BinaryData inferFromCustomModelIdRequest,
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.inferFromCustomModelIdWithResponseAsync(inferFromCustomModelIdRequest, requestOptions),
+            () -> this.beginCustomInferenceWithResponseAsync(inferFromCustomModelIdRequest, requestOptions),
             new com.azure.health.insights.radiologyinsights.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/health-insights".replace("{endpoint}", this.getEndpoint()))
@@ -6295,10 +6295,10 @@ public final class RadiologyInsightsClientImpl {
      * @return the {@link SyncPoller} for polling of provides status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginInferFromCustomModelId(BinaryData inferFromCustomModelIdRequest,
+    public SyncPoller<BinaryData, BinaryData> beginBeginCustomInference(BinaryData inferFromCustomModelIdRequest,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.inferFromCustomModelIdWithResponse(inferFromCustomModelIdRequest, requestOptions),
+            () -> this.beginCustomInferenceWithResponse(inferFromCustomModelIdRequest, requestOptions),
             new com.azure.health.insights.radiologyinsights.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("{endpoint}/health-insights".replace("{endpoint}", this.getEndpoint()))

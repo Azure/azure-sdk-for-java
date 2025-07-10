@@ -29,7 +29,7 @@ public final class InferFromCustomModelIdRequest implements JsonSerializable<Inf
      * Models to be used for inference. If this is not specified, the model will use the default model for inference.
      */
     @Generated
-    private List<String> id;
+    private List<String> modelIds;
 
     /**
      * Creates an instance of InferFromCustomModelIdRequest class.
@@ -52,26 +52,26 @@ public final class InferFromCustomModelIdRequest implements JsonSerializable<Inf
     }
 
     /**
-     * Get the id property: Models to be used for inference. If this is not specified, the model will use the default
-     * model for inference.
+     * Get the modelIds property: Models to be used for inference. If this is not specified, the model will use the
+     * default model for inference.
      *
-     * @return the id value.
+     * @return the modelIds value.
      */
     @Generated
-    public List<String> getId() {
-        return this.id;
+    public List<String> getModelIds() {
+        return this.modelIds;
     }
 
     /**
-     * Set the id property: Models to be used for inference. If this is not specified, the model will use the default
-     * model for inference.
+     * Set the modelIds property: Models to be used for inference. If this is not specified, the model will use the
+     * default model for inference.
      *
-     * @param id the id value to set.
+     * @param modelIds the modelIds value to set.
      * @return the InferFromCustomModelIdRequest object itself.
      */
     @Generated
-    public InferFromCustomModelIdRequest setId(List<String> id) {
-        this.id = id;
+    public InferFromCustomModelIdRequest setModelIds(List<String> modelIds) {
+        this.modelIds = modelIds;
         return this;
     }
 
@@ -83,7 +83,7 @@ public final class InferFromCustomModelIdRequest implements JsonSerializable<Inf
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("inferenceData", this.inferenceData);
-        jsonWriter.writeArrayField("id", this.id, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("id", this.modelIds, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -100,21 +100,21 @@ public final class InferFromCustomModelIdRequest implements JsonSerializable<Inf
     public static InferFromCustomModelIdRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RadiologyInsightsData inferenceData = null;
-            List<String> id = null;
+            List<String> modelIds = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("inferenceData".equals(fieldName)) {
                     inferenceData = RadiologyInsightsData.fromJson(reader);
                 } else if ("id".equals(fieldName)) {
-                    id = reader.readArray(reader1 -> reader1.getString());
+                    modelIds = reader.readArray(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             InferFromCustomModelIdRequest deserializedInferFromCustomModelIdRequest
                 = new InferFromCustomModelIdRequest(inferenceData);
-            deserializedInferFromCustomModelIdRequest.id = id;
+            deserializedInferFromCustomModelIdRequest.modelIds = modelIds;
             return deserializedInferFromCustomModelIdRequest;
         });
     }
