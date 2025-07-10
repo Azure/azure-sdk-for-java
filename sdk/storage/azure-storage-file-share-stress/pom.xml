@@ -7,7 +7,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share-stress</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share-stress;current} -->
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,7 +45,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-stress</artifactId>
-      <version>1.0.0-beta.1</version>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-stress;current} -->
     </dependency>
 
     <!-- logging, tracing, metrics -->
@@ -73,7 +73,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.1</version>
+      <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>compile</scope>
     </dependency>
   </dependencies>
