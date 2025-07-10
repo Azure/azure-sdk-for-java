@@ -8,7 +8,7 @@
   <groupId>io.clientcore</groupId>
   <artifactId>sdk-linting-extensions</artifactId>
   <name>SDK Linting Extensions</name>
-  <version>1.0.0</version>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:sdk-linting-extensions;current} -->
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
