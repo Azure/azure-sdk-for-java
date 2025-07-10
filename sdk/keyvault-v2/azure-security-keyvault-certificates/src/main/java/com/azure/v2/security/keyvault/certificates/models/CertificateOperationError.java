@@ -44,7 +44,7 @@ public final class CertificateOperationError implements JsonSerializable<Certifi
 
     /**
      * Get the code property: The error code.
-     *
+     * 
      * @return the code value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -54,7 +54,7 @@ public final class CertificateOperationError implements JsonSerializable<Certifi
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -64,7 +64,7 @@ public final class CertificateOperationError implements JsonSerializable<Certifi
 
     /**
      * Get the innerError property: The key vault server error.
-     *
+     * 
      * @return the innerError value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -84,7 +84,7 @@ public final class CertificateOperationError implements JsonSerializable<Certifi
 
     /**
      * Reads an instance of CertificateOperationError from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateOperationError if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
