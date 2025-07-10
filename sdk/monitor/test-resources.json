@@ -85,6 +85,7 @@
         "name": "[parameters('sku')]"
       },
       "properties": {
+        "disableLocalAuth": true,
         "endpoint":"[variables('endpointValue')]"
       }
     },
@@ -117,6 +118,7 @@
         "capacity": 5
       },
       "properties": {
+        "disableLocalAuth": true,
         "zoneRedundant": false,
         "isAutoInflateEnabled": false,
         "maximumThroughputUnits": 0,
@@ -132,6 +134,7 @@
         "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
       ],
       "properties": {
+        "disableLocalAuth": true,
         "messageRetentionInDays": 1,
         "partitionCount": 5,
         "status": "Active"
@@ -183,6 +186,7 @@
       "location": "[parameters('location')]",
       "apiVersion": "2021-04-01",
       "properties": {
+        "disableLocalAuth": true,
         "networkAcls": {
           "publicNetworkAccess": "Enabled"
         }
@@ -246,6 +250,7 @@
       "name": "[variables('workspaceName')]",
       "location": "[variables('location')]",
       "properties": {
+        "disableLocalAuth": true,
         "sku": {
           "name": "pergb2018"
         },
@@ -266,6 +271,7 @@
       "name": "[variables('additionalWorkspaceName')]",
       "location": "[variables('location')]",
       "properties": {
+        "disableLocalAuth": true,
         "sku": {
           "name": "pergb2018"
         },
@@ -288,6 +294,7 @@
         "[resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaceName'))]"
       ],
       "properties": {
+        "disableLocalAuth": true,
         "totalRetentionInDays": 30,
         "plan": "Analytics",
         "schema": {
