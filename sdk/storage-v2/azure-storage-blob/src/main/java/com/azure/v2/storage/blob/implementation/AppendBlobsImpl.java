@@ -26,6 +26,7 @@ import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import java.lang.reflect.InvocationTargetException;
@@ -48,6 +49,11 @@ public final class AppendBlobsImpl {
     private final AzureBlobStorageImpl client;
 
     /**
+     * The instance of instrumentation to report telemetry.
+     */
+    private final Instrumentation instrumentation;
+
+    /**
      * Initializes an instance of AppendBlobsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
@@ -55,6 +61,7 @@ public final class AppendBlobsImpl {
     AppendBlobsImpl(AzureBlobStorageImpl client) {
         this.service = AppendBlobsService.getNewInstance(client.getHttpPipeline());
         this.client = client;
+        this.instrumentation = client.getInstrumentation();
     }
 
     /**
@@ -231,71 +238,74 @@ public final class AppendBlobsImpl {
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
         BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
         RequestContext requestContext) {
-        final String blobType = "AppendBlob";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (blobHttpHeaders != null) {
-            contentTypeInternal = blobHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (blobHttpHeaders != null) {
-            contentEncodingInternal = blobHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (blobHttpHeaders != null) {
-            contentLanguageInternal = blobHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        byte[] contentMd5Internal = null;
-        if (blobHttpHeaders != null) {
-            contentMd5Internal = blobHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String cacheControlInternal = null;
-        if (blobHttpHeaders != null) {
-            cacheControlInternal = blobHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentDispositionInternal = null;
-        if (blobHttpHeaders != null) {
-            contentDispositionInternal = blobHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String contentMd5Converted = new String(Base64.getEncoder().encode(contentMd5));
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return service.create(this.client.getUrl(), containerName, blob, blobType, timeout, contentLength, contentType,
-            contentEncoding, contentLanguage, contentMd5Converted, cacheControl, metadata, leaseId, contentDisposition,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
-            blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept,
-            requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Create", requestContext,
+            updatedContext -> {
+                final String blobType = "AppendBlob";
+                final String accept = "application/xml";
+                String contentTypeInternal = null;
+                if (blobHttpHeaders != null) {
+                    contentTypeInternal = blobHttpHeaders.getContentType();
+                }
+                String contentType = contentTypeInternal;
+                String contentEncodingInternal = null;
+                if (blobHttpHeaders != null) {
+                    contentEncodingInternal = blobHttpHeaders.getContentEncoding();
+                }
+                String contentEncoding = contentEncodingInternal;
+                String contentLanguageInternal = null;
+                if (blobHttpHeaders != null) {
+                    contentLanguageInternal = blobHttpHeaders.getContentLanguage();
+                }
+                String contentLanguage = contentLanguageInternal;
+                byte[] contentMd5Internal = null;
+                if (blobHttpHeaders != null) {
+                    contentMd5Internal = blobHttpHeaders.getContentMd5();
+                }
+                byte[] contentMd5 = contentMd5Internal;
+                String cacheControlInternal = null;
+                if (blobHttpHeaders != null) {
+                    cacheControlInternal = blobHttpHeaders.getCacheControl();
+                }
+                String cacheControl = cacheControlInternal;
+                String contentDispositionInternal = null;
+                if (blobHttpHeaders != null) {
+                    contentDispositionInternal = blobHttpHeaders.getContentDisposition();
+                }
+                String contentDisposition = contentDispositionInternal;
+                String encryptionKeyInternal = null;
+                if (cpkInfo != null) {
+                    encryptionKeyInternal = cpkInfo.getEncryptionKey();
+                }
+                String encryptionKey = encryptionKeyInternal;
+                String encryptionKeySha256Internal = null;
+                if (cpkInfo != null) {
+                    encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+                }
+                String encryptionKeySha256 = encryptionKeySha256Internal;
+                EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+                if (cpkInfo != null) {
+                    encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+                }
+                EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+                String encryptionScopeInternal = null;
+                if (encryptionScopeParam != null) {
+                    encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+                }
+                String encryptionScope = encryptionScopeInternal;
+                String contentMd5Converted = new String(Base64.getEncoder().encode(contentMd5));
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                DateTimeRfc1123 immutabilityPolicyExpiryConverted
+                    = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
+                return service.create(this.client.getUrl(), containerName, blob, blobType, timeout, contentLength,
+                    contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, metadata, leaseId,
+                    contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+                    ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                    this.client.getVersion(), requestId, blobTagsString, immutabilityPolicyExpiryConverted,
+                    immutabilityPolicyMode, legalHold, accept, updatedContext);
+            });
     }
 
     /**
@@ -349,39 +359,45 @@ public final class AppendBlobsImpl {
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
         RequestContext requestContext) {
-        final String comp = "appendblock";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String transactionalContentMD5Converted = new String(Base64.getEncoder().encode(transactionalContentMD5));
-        String transactionalContentCrc64Converted = new String(Base64.getEncoder().encode(transactionalContentCrc64));
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.appendBlock(this.client.getUrl(), containerName, blob, comp, timeout, contentLength,
-            transactionalContentMD5Converted, transactionalContentCrc64Converted, leaseId, maxSize, appendPosition,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
-            structuredBodyType, structuredContentLength, body, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.AppendBlock", requestContext,
+            updatedContext -> {
+                final String comp = "appendblock";
+                final String accept = "application/xml";
+                String encryptionKeyInternal = null;
+                if (cpkInfo != null) {
+                    encryptionKeyInternal = cpkInfo.getEncryptionKey();
+                }
+                String encryptionKey = encryptionKeyInternal;
+                String encryptionKeySha256Internal = null;
+                if (cpkInfo != null) {
+                    encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+                }
+                String encryptionKeySha256 = encryptionKeySha256Internal;
+                EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+                if (cpkInfo != null) {
+                    encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+                }
+                EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+                String encryptionScopeInternal = null;
+                if (encryptionScopeParam != null) {
+                    encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+                }
+                String encryptionScope = encryptionScopeInternal;
+                String transactionalContentMD5Converted
+                    = new String(Base64.getEncoder().encode(transactionalContentMD5));
+                String transactionalContentCrc64Converted
+                    = new String(Base64.getEncoder().encode(transactionalContentCrc64));
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.appendBlock(this.client.getUrl(), containerName, blob, comp, timeout, contentLength,
+                    transactionalContentMD5Converted, transactionalContentCrc64Converted, leaseId, maxSize,
+                    appendPosition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+                    ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                    this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept,
+                    updatedContext);
+            });
     }
 
     /**
@@ -443,45 +459,50 @@ public final class AppendBlobsImpl {
         String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, RequestContext requestContext) {
-        final String comp = "appendblock";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String sourceContentMD5Converted = new String(Base64.getEncoder().encode(sourceContentMD5));
-        String sourceContentcrc64Converted = new String(Base64.getEncoder().encode(sourceContentcrc64));
-        String transactionalContentMD5Converted = new String(Base64.getEncoder().encode(transactionalContentMD5));
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.appendBlockFromUrl(this.client.getUrl(), containerName, blob, comp, sourceUrl, sourceRange,
-            sourceContentMD5Converted, sourceContentcrc64Converted, timeout, contentLength,
-            transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
-            ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
-            sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.AppendBlockFromUrl", requestContext,
+            updatedContext -> {
+                final String comp = "appendblock";
+                final String accept = "application/xml";
+                String encryptionKeyInternal = null;
+                if (cpkInfo != null) {
+                    encryptionKeyInternal = cpkInfo.getEncryptionKey();
+                }
+                String encryptionKey = encryptionKeyInternal;
+                String encryptionKeySha256Internal = null;
+                if (cpkInfo != null) {
+                    encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+                }
+                String encryptionKeySha256 = encryptionKeySha256Internal;
+                EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+                if (cpkInfo != null) {
+                    encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+                }
+                EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+                String encryptionScopeInternal = null;
+                if (encryptionScopeParam != null) {
+                    encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+                }
+                String encryptionScope = encryptionScopeInternal;
+                String sourceContentMD5Converted = new String(Base64.getEncoder().encode(sourceContentMD5));
+                String sourceContentcrc64Converted = new String(Base64.getEncoder().encode(sourceContentcrc64));
+                String transactionalContentMD5Converted
+                    = new String(Base64.getEncoder().encode(transactionalContentMD5));
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                DateTimeRfc1123 sourceIfModifiedSinceConverted
+                    = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+                DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+                    = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
+                return service.appendBlockFromUrl(this.client.getUrl(), containerName, blob, comp, sourceUrl,
+                    sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout, contentLength,
+                    transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
+                    encryptionScope, leaseId, maxSize, appendPosition, ifModifiedSinceConverted,
+                    ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted,
+                    sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(),
+                    requestId, copySourceAuthorization, accept, updatedContext);
+            });
     }
 
     /**
@@ -516,14 +537,16 @@ public final class AppendBlobsImpl {
     public Response<Void> sealWithResponse(String containerName, String blob, Integer timeout, String requestId,
         String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, Long appendPosition, RequestContext requestContext) {
-        final String comp = "seal";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.seal(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
-            requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
-            appendPosition, accept, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Seal", requestContext, updatedContext -> {
+            final String comp = "seal";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            return service.seal(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
+                requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
+                appendPosition, accept, updatedContext);
+        });
     }
 }
