@@ -271,9 +271,10 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 > Note: Azure Toolkit for IntelliJ version 3.53 and higher are supported by this credential. If you are using an older version, please update to the latest version.
 
 
+
 # Troubleshoot `VisualStudioCodeCredential` authentication issues
 
-`VisualStudioCodeCredential` now uses broker authentication to sign in using the Azure Resources extension in Visual Studio Code. This approach requires the `azure-identity-broker` dependency and currently only works on Windows. Broker authentication is not yet supported on macOS or Linux.
+As of version 1.17.0-beta.1, `VisualStudioCodeCredential` uses broker authentication to sign in using the Azure Resources extension in Visual Studio Code. This approach requires the `azure-identity-broker` dependency and currently only works on Windows. Broker authentication is not yet supported on macOS or Linux.
 
 #### Platform Support
 
