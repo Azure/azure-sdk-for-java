@@ -6,10 +6,7 @@
 ### Features Added
 
 - **Visual Studio Code Credential** has been re-enabled and now supports **broker authentication** using the Azure account signed in via Visual Studio Code. [#45715](https://github.com/Azure/azure-sdk-for-java/pull/45715)
-- `DefaultAzureCredential` allows selecting one of its credential types by name via environment variable
-    `AZURE_TOKEN_CREDENTIALS`. It will use only the selected type at runtime. For example, set
-    `AZURE_TOKEN_CREDENTIALS=WorkloadIdentityCredential` to have `DefaultAzureCredential` use only
-    `WorkloadIdentityCredential`.
+- `DefaultAzureCredential` allows selecting one of its credentials by name via environment variable `AZURE_TOKEN_CREDENTIALS`. It will use only the selected type at runtime. For example, set `AZURE_TOKEN_CREDENTIALS=WorkloadIdentityCredential` to have `DefaultAzureCredential` use only `WorkloadIdentityCredential`.
 
 ### Breaking Changes
 

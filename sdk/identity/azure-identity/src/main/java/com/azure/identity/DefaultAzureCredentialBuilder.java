@@ -311,7 +311,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
                         + selectedCredential + "'. " + "Valid values are: 'prod', 'dev', or one of "
                         + "[EnvironmentCredential, WorkloadIdentityCredential, ManagedIdentityCredential, "
                         + "IntelliJCredential, AzureCliCredential, AzurePowerShellCredential, "
-                        + "AzureDeveloperCliCredential, VisualStudioCredential] (case-insensitive)."));
+                        + "AzureDeveloperCliCredential, VisualStudioCodeCredential] (case-insensitive)."));
             }
         }
 
