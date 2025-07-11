@@ -16,117 +16,6 @@
 ### OnlineExperimentationWorkspaces_CreateOrUpdate
 
 ```java
-/**
- * Samples for OnlineExperimentationWorkspaces GetByResourceGroup.
- */
-public final class OnlineExperimentationWorkspacesGetByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_Get.json
-     */
-    /**
-     * Sample code: Get a single OnlineExperimentationWorkspace.
-     * 
-     * @param manager Entry point to OnlineExperimentationManager.
-     */
-    public static void getASingleOnlineExperimentationWorkspace(
-        com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager manager) {
-        manager.onlineExperimentationWorkspaces()
-            .getByResourceGroupWithResponse("res9871", "expworkspace3", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### OnlineExperimentationWorkspaces_Delete
-
-```java
-/**
- * Samples for OnlineExperimentationWorkspaces ListByResourceGroup.
- */
-public final class OnlineExperimentationWorkspacesListByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_ListByResourceGroup.json
-     */
-    /**
-     * Sample code: List OnlineExperimentationWorkspaces in a resource group.
-     * 
-     * @param manager Entry point to OnlineExperimentationManager.
-     */
-    public static void listOnlineExperimentationWorkspacesInAResourceGroup(
-        com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager manager) {
-        manager.onlineExperimentationWorkspaces().listByResourceGroup("res9871", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### OnlineExperimentationWorkspaces_GetByResourceGroup
-
-```java
-/**
- * Samples for OnlineExperimentationWorkspaces Delete.
- */
-public final class OnlineExperimentationWorkspacesDeleteSamples {
-    /*
-     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_Delete.json
-     */
-    /**
-     * Sample code: Delete an Online Experimentation Workspace.
-     * 
-     * @param manager Entry point to OnlineExperimentationManager.
-     */
-    public static void deleteAnOnlineExperimentationWorkspace(
-        com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager manager) {
-        manager.onlineExperimentationWorkspaces().delete("res9871", "expworkspace3", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### OnlineExperimentationWorkspaces_List
-
-```java
-/**
- * Samples for Operations List.
- */
-public final class OperationsListSamples {
-    /*
-     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_OperationsList.json
-     */
-    /**
-     * Sample code: List Online Experimentation Workspaces operations.
-     * 
-     * @param manager Entry point to OnlineExperimentationManager.
-     */
-    public static void listOnlineExperimentationWorkspacesOperations(
-        com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### OnlineExperimentationWorkspaces_ListByResourceGroup
-
-```java
-/**
- * Samples for OnlineExperimentationWorkspaces List.
- */
-public final class OnlineExperimentationWorkspacesListSamples {
-    /*
-     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_ListBySubscription.json
-     */
-    /**
-     * Sample code: List Online Experimentation Workspaces in a subscription.
-     * 
-     * @param manager Entry point to OnlineExperimentationManager.
-     */
-    public static void listOnlineExperimentationWorkspacesInASubscription(
-        com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager manager) {
-        manager.onlineExperimentationWorkspaces().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### OnlineExperimentationWorkspaces_Update
-
-```java
 import com.azure.resourcemanager.onlineexperimentation.models.CustomerManagedKeyEncryption;
 import com.azure.resourcemanager.onlineexperimentation.models.KeyEncryptionKeyIdentity;
 import com.azure.resourcemanager.onlineexperimentation.models.KeyEncryptionKeyIdentityType;
@@ -226,7 +115,96 @@ public final class OnlineExperimentationWorkspacesCreateOrUpdateSamples {
 }
 ```
 
-### Operations_List
+### OnlineExperimentationWorkspaces_Delete
+
+```java
+/**
+ * Samples for OnlineExperimentationWorkspaces Delete.
+ */
+public final class OnlineExperimentationWorkspacesDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_Delete.json
+     */
+    /**
+     * Sample code: Delete an Online Experimentation Workspace.
+     * 
+     * @param manager Entry point to OnlineExperimentationManager.
+     */
+    public static void deleteAnOnlineExperimentationWorkspace(
+        com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager manager) {
+        manager.onlineExperimentationWorkspaces().delete("res9871", "expworkspace3", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OnlineExperimentationWorkspaces_GetByResourceGroup
+
+```java
+/**
+ * Samples for OnlineExperimentationWorkspaces GetByResourceGroup.
+ */
+public final class OnlineExperimentationWorkspacesGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_Get.json
+     */
+    /**
+     * Sample code: Get a single OnlineExperimentationWorkspace.
+     * 
+     * @param manager Entry point to OnlineExperimentationManager.
+     */
+    public static void getASingleOnlineExperimentationWorkspace(
+        com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager manager) {
+        manager.onlineExperimentationWorkspaces()
+            .getByResourceGroupWithResponse("res9871", "expworkspace3", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OnlineExperimentationWorkspaces_List
+
+```java
+/**
+ * Samples for OnlineExperimentationWorkspaces List.
+ */
+public final class OnlineExperimentationWorkspacesListSamples {
+    /*
+     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_ListBySubscription.json
+     */
+    /**
+     * Sample code: List Online Experimentation Workspaces in a subscription.
+     * 
+     * @param manager Entry point to OnlineExperimentationManager.
+     */
+    public static void listOnlineExperimentationWorkspacesInASubscription(
+        com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager manager) {
+        manager.onlineExperimentationWorkspaces().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OnlineExperimentationWorkspaces_ListByResourceGroup
+
+```java
+/**
+ * Samples for OnlineExperimentationWorkspaces ListByResourceGroup.
+ */
+public final class OnlineExperimentationWorkspacesListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_ListByResourceGroup.json
+     */
+    /**
+     * Sample code: List OnlineExperimentationWorkspaces in a resource group.
+     * 
+     * @param manager Entry point to OnlineExperimentationManager.
+     */
+    public static void listOnlineExperimentationWorkspacesInAResourceGroup(
+        com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager manager) {
+        manager.onlineExperimentationWorkspaces().listByResourceGroup("res9871", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OnlineExperimentationWorkspaces_Update
 
 ```java
 import com.azure.resourcemanager.onlineexperimentation.models.CustomerManagedKeyEncryption;
@@ -313,6 +291,28 @@ public final class OnlineExperimentationWorkspacesUpdateSamples {
             map.put(key, value);
         }
         return map;
+    }
+}
+```
+
+### Operations_List
+
+```java
+/**
+ * Samples for Operations List.
+ */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_OperationsList.json
+     */
+    /**
+     * Sample code: List Online Experimentation Workspaces operations.
+     * 
+     * @param manager Entry point to OnlineExperimentationManager.
+     */
+    public static void listOnlineExperimentationWorkspacesOperations(
+        com.azure.resourcemanager.onlineexperimentation.OnlineExperimentationManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```

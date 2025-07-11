@@ -115,7 +115,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         }
         SimpleXmlSerializable deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(SimpleXmlSerializable.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
@@ -142,7 +142,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         }
         SimpleXmlSerializable deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(SimpleXmlSerializable.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
+        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
             deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
