@@ -3,6 +3,18 @@
 
 package com.azure.storage.blob.specialized;
 
+import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
+
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -42,20 +54,9 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.channels.SeekableByteChannel;
-import java.time.Duration;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
@@ -69,7 +70,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
 public final class BlockBlobClient extends BlobClientBase {
     private static final ClientLogger LOGGER = new ClientLogger(BlockBlobClient.class);
 
-    private final BlockBlobAsyncClient client;
+    private final BlockBlobAsyncClient blockClient;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
@@ -129,7 +130,7 @@ public final class BlockBlobClient extends BlobClientBase {
         EncryptionScope encryptionScope, String versionId) {
         super(client, pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot,
             customerProvidedKey, encryptionScope, versionId);
-        this.client = client;
+        this.blockClient = client;
     }
 
     /**
@@ -144,7 +145,7 @@ public final class BlockBlobClient extends BlobClientBase {
         if (encryptionScope != null) {
             finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
         }
-        return new BlockBlobClient(client.getEncryptionScopeAsyncClient(encryptionScope), getHttpPipeline(),
+        return new BlockBlobClient(blockClient.getEncryptionScopeAsyncClient(encryptionScope), getHttpPipeline(),
             getAccountUrl(), getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), getSnapshotId(),
             getCustomerProvidedKey(), finalEncryptionScope, getVersionId());
     }
@@ -164,9 +165,9 @@ public final class BlockBlobClient extends BlobClientBase {
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
-        return new BlockBlobClient(client.getCustomerProvidedKeyAsyncClient(customerProvidedKey), getHttpPipeline(),
-            getAccountUrl(), getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), getSnapshotId(),
-            finalCustomerProvidedKey, encryptionScope, getVersionId());
+        return new BlockBlobClient(blockClient.getCustomerProvidedKeyAsyncClient(customerProvidedKey),
+            getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(), getContainerName(),
+            getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope, getVersionId());
     }
 
     /**
@@ -577,7 +578,7 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<BlockBlobItem> uploadWithResponse(BlockBlobSimpleUploadOptions options, Duration timeout,
         Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(options, context);
+        Mono<Response<BlockBlobItem>> upload = blockClient.uploadWithResponse(options, context);
         try {
             return blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
@@ -690,7 +691,7 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<BlockBlobItem> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options, Duration timeout,
         Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        Mono<Response<BlockBlobItem>> upload = client.uploadFromUrlWithResponse(options, context);
+        Mono<Response<BlockBlobItem>> upload = blockClient.uploadFromUrlWithResponse(options, context);
         try {
             return blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
@@ -791,7 +792,7 @@ public final class BlockBlobClient extends BlobClientBase {
             = Utility.convertStreamToByteBuffer(data, length, BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
 
         Mono<Response<Void>> response
-            = client.stageBlockWithResponse(base64BlockId, fbb, length, contentMd5, leaseId, context);
+            = blockClient.stageBlockWithResponse(base64BlockId, fbb, length, contentMd5, leaseId, context);
         return blockWithOptionalTimeout(response, timeout);
     }
 
@@ -827,8 +828,8 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockWithResponse(BlockBlobStageBlockOptions options, Duration timeout,
         Context context) {
         Objects.requireNonNull(options, "options must not be null");
-        Mono<Response<Void>> response = client.stageBlockWithResponse(options.getBase64BlockId(), options.getData(),
-            options.getContentMd5(), options.getLeaseId(), context);
+        Mono<Response<Void>> response = blockClient.stageBlockWithResponse(options.getBase64BlockId(),
+            options.getData(), options.getContentMd5(), options.getLeaseId(), context);
         return blockWithOptionalTimeout(response, timeout);
     }
 
@@ -939,7 +940,7 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stageBlockFromUrlWithResponse(BlockBlobStageBlockFromUrlOptions options, Duration timeout,
         Context context) {
-        Mono<Response<Void>> response = client.stageBlockFromUrlWithResponse(options, context);
+        Mono<Response<Void>> response = blockClient.stageBlockFromUrlWithResponse(options, context);
         return blockWithOptionalTimeout(response, timeout);
     }
 
@@ -1033,7 +1034,7 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockList> listBlocksWithResponse(BlockBlobListBlocksOptions options, Duration timeout,
         Context context) {
-        return blockWithOptionalTimeout(client.listBlocksWithResponse(options, context), timeout);
+        return blockWithOptionalTimeout(blockClient.listBlocksWithResponse(options, context), timeout);
     }
 
     /**
@@ -1189,7 +1190,7 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options,
         Duration timeout, Context context) {
-        Mono<Response<BlockBlobItem>> response = client.commitBlockListWithResponse(options, context);
+        Mono<Response<BlockBlobItem>> response = blockClient.commitBlockListWithResponse(options, context);
 
         return blockWithOptionalTimeout(response, timeout);
     }
