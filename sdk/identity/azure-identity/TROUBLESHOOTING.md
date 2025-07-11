@@ -272,7 +272,10 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 
 
 
+
 # Troubleshoot `VisualStudioCodeCredential` authentication issues
+
+> **Applies to:** Version 1.17.0-beta.1 and later
 
 As of version 1.17.0-beta.1, `VisualStudioCodeCredential` uses broker authentication to sign in using the Azure Resources extension in Visual Studio Code. This approach requires the `azure-identity-broker` dependency and currently only works on Windows. Broker authentication is not yet supported on macOS or Linux.
 
