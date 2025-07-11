@@ -497,7 +497,7 @@ com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-fluxconf
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensions;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensiontypes;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-cloudhealth;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-resources-deploymentstacks;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-resources-deploymentstacks;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-privatelinkscopes;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resources-bicep;1.0.0-beta.1;1.0.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
