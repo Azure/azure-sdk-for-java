@@ -191,7 +191,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             = new TransferCallToParticipantOptions(new PhoneNumberIdentifier(CALL_PSTN_TARGET_ID))
                 .setOperationContext(CALL_OPERATION_CONTEXT);
         transferCallToParticipantOptions.getCustomCallingContext()
-            .addSipX("Test-Sip-Header", "Test-Sip-Value", SipHeaderPrefix.XMSCustom);
+            .addSipX("Test-Sip-Header", "Test-Sip-Value", SipHeaderPrefix.X_MS_CUSTOM);
         Response<TransferCallResult> transferCallResultResponse
             = callConnectionAsync.transferCallToParticipantWithResponse(transferCallToParticipantOptions).block();
         assertNotNull(transferCallResultResponse);
@@ -249,7 +249,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
                 .setOperationContext(CALL_OPERATION_CONTEXT)
                 .setTransferee(new CommunicationUserIdentifier(CALL_TRANSFEREE_ID));
         transferCallToParticipantOptions.getCustomCallingContext()
-            .addSipX("Test-Sip-Header", "Test-Sip-Value", SipHeaderPrefix.XMSCustom);
+            .addSipX("Test-Sip-Header", "Test-Sip-Value", SipHeaderPrefix.X_MS_CUSTOM);
         Response<TransferCallResult> transferCallResultResponse
             = callConnectionAsync.transferCallToParticipantWithResponse(transferCallToParticipantOptions).block();
         assertNotNull(transferCallResultResponse);

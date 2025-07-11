@@ -19,7 +19,7 @@ public final class SipHeaderPrefix extends ExpandableStringEnum<SipHeaderPrefix>
     /**
      * Use the legacy "X-MS-Custom" prefix.
      */
-    public static final SipHeaderPrefix XMSCustom = fromString("XMSCustom");
+    public static final SipHeaderPrefix X_MS_CUSTOM = fromString("XMSCustom");
 
     /**
      * Creates a new instance of SipHeaderPrefix value.

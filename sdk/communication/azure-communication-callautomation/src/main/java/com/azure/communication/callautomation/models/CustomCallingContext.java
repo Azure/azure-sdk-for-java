@@ -78,7 +78,7 @@ public final class CustomCallingContext {
      * @param value custom context sip x header's value.
      */
     public void addSipX(String key, String value) {
-        addSipX(key, value, SipHeaderPrefix.XMSCustom);
+        addSipX(key, value, SipHeaderPrefix.X_MS_CUSTOM);
     }
 
     /**

@@ -191,7 +191,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             = new TransferCallToParticipantOptions(new PhoneNumberIdentifier(CALL_PSTN_TARGET_ID))
                 .setOperationContext(CALL_OPERATION_CONTEXT);
         transferCallToParticipantOptions.getCustomCallingContext()
-            .addSipX("Test-Sip-Header", "Test-Sip-Value", SipHeaderPrefix.XMSCustom);
+            .addSipX("Test-Sip-Header", "Test-Sip-Value", SipHeaderPrefix.X_MS_CUSTOM);
         Response<TransferCallResult> transferCallResultResponse
             = callConnection.transferCallToParticipantWithResponse(transferCallToParticipantOptions, Context.NONE);
 
