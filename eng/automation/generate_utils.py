@@ -159,7 +159,7 @@ def generate_changelog_and_breaking_change(
 
 def update_changelog(changelog_file, changelog):
     version_pattern = r"^## (\d+\.\d+\.\d+(?:-[\w\d\.]+)?) \((.*?)\)"
-    with open(changelog_file, "r") as fin:
+    with open(changelog_file, "r", encoding="utf-8") as fin:
         old_changelog = fin.read()
 
     first_version = re.search(version_pattern, old_changelog, re.M)
@@ -182,7 +182,7 @@ def update_changelog(changelog_file, changelog):
     if changelog.strip() != "":
         first_version_part += changelog.strip() + "\n\n"
 
-    with open(changelog_file, "w") as fout:
+    with open(changelog_file, "w", encoding="utf-8") as fout:
         fout.write(first_version_part + old_changelog[first_version.end() + second_version.start() :])
 
     logging.info("[Changelog][Success] Write to changelog")
@@ -239,7 +239,7 @@ def get_version(
     version_file = os.path.join(sdk_root, "eng/versioning/version_client.txt")
     project = "{0}:{1}".format(group_id, module)
 
-    with open(version_file, "r") as fin:
+    with open(version_file, "r", encoding="utf-8") as fin:
         for line in fin.readlines():
             version_line = line.strip()
             if version_line.startswith("#"):
@@ -258,7 +258,7 @@ def valid_service(service: str):
 def read_api_specs(api_specs_file: str) -> Tuple[str, dict]:
     # return comment and api_specs
 
-    with open(api_specs_file) as fin:
+    with open(api_specs_file, "r", encoding="utf-8") as fin:
         lines = fin.readlines()
 
     comment = ""
@@ -275,7 +275,7 @@ def read_api_specs(api_specs_file: str) -> Tuple[str, dict]:
 
 
 def write_api_specs(api_specs_file: str, comment: str, api_specs: dict):
-    with open(api_specs_file, "w") as fout:
+    with open(api_specs_file, "w", encoding="utf-8") as fout:
         fout.write(comment)
         fout.write(yaml.dump(api_specs, width=sys.maxsize, Dumper=ListIndentDumper))
 
@@ -364,6 +364,7 @@ def generate_typespec_project(
     api_version: str = None,
     generate_beta_sdk: bool = True,
     version: str = None,  # SDK version
+    disable_customization: bool = False,
     **kwargs,
 ):
 
@@ -386,7 +387,7 @@ def generate_typespec_project(
         tspconfig_valid = True
         if url_match:
             # generate from remote url
-            tsp_cmd = [
+            tsp_cmd_base = [
                 "npx" + (".cmd" if is_windows() else ""),
                 "tsp-client",
                 "init",
@@ -399,7 +400,7 @@ def generate_typespec_project(
             tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
             tspconfig_valid = validate_tspconfig(tsp_dir)
             repo = remove_prefix(repo_url, "https://github.com/")
-            tsp_cmd = [
+            tsp_cmd_base = [
                 "npx" + (".cmd" if is_windows() else ""),
                 "tsp-client",
                 "init",
@@ -415,6 +416,12 @@ def generate_typespec_project(
             ]
 
         if tspconfig_valid:
+            emitter_options = []
+            if disable_customization:
+                emitter_options.append("customization-class=")
+                emitter_options.append("partial-update=false")
+
+            tsp_cmd = tsp_cmd_add_emitter_options(tsp_cmd_base, emitter_options)
             check_call(tsp_cmd, sdk_root)
 
             sdk_folder = find_sdk_folder(sdk_root)
@@ -446,12 +453,13 @@ def generate_typespec_project(
                     _, current_version = set_or_increase_version(
                         sdk_root, group_id, module, version=version, preview=generate_beta_sdk
                     )
-                    tsp_cmd.append("--emitter-options")
-                    emitter_options = f"package-version={current_version}"
+
+                    emitter_options.append(f"package-version={current_version}")
                     # currently for self-serve, may also need it in regular generation
                     if api_version:
-                        emitter_options += f";api-version={api_version}"
-                    tsp_cmd.append(emitter_options)
+                        emitter_options.append(f"api-version={api_version}")
+
+                    tsp_cmd = tsp_cmd_add_emitter_options(tsp_cmd_base, emitter_options)
                     # regenerate
                     check_call(tsp_cmd, sdk_root)
                 succeeded = True
@@ -469,6 +477,14 @@ def generate_typespec_project(
             logging.error(f"[GENERATE] Code generation failed. Finding sdk folder fails: {e}")
 
     return succeeded, require_sdk_integration, sdk_folder, service, module
+
+
+def tsp_cmd_add_emitter_options(tsp_cmd_base: List[str], emitter_options: List[str]) -> List[str]:
+    tsp_cmd = tsp_cmd_base
+    if emitter_options:
+        tsp_cmd.append("--emitter-options")
+        tsp_cmd.append(";".join(emitter_options))
+    return tsp_cmd
 
 
 def parse_service_module(sdk_folder: str) -> Tuple:
@@ -514,7 +530,7 @@ def find_sdk_folder(sdk_root: str):
     return sdk_folder
 
 
-def clean_sdk_folder_if_swagger(sdk_root: str, sdk_folder: str) -> bool:
+def clean_sdk_folder(sdk_root: str, sdk_folder: str) -> bool:
     succeeded = False
     # try to find the sdk_folder
     if not sdk_folder:
@@ -523,13 +539,18 @@ def clean_sdk_folder_if_swagger(sdk_root: str, sdk_folder: str) -> bool:
         sdk_path = os.path.join(sdk_root, sdk_folder)
         # check whether this is migration from Swagger
         if os.path.exists(os.path.join(sdk_path, "swagger")):
-            logging.info(f"[GENERATE] Delete folder: {sdk_folder}")
             print(
                 "Existing package in SDK was from Swagger. It cannot be automatically converted to package from TypeSpec. Generate a fresh package from TypeSpec.",
                 file=sys.stderr,
             )
-            # delete the folder
-            shutil.rmtree(sdk_path, ignore_errors=True)
+        else:
+            print(
+                "Generate a fresh package from TypeSpec. If there was prior customization on the package, please check whether it causes failure, and fix them before apiview.",
+                file=sys.stderr,
+            )
 
-            succeeded = True
+        # delete the folder regardless of Swagger or not
+        logging.info(f"[GENERATE] Delete folder: {sdk_folder}")
+        shutil.rmtree(sdk_path, ignore_errors=True)
+        succeeded = True
     return succeeded
