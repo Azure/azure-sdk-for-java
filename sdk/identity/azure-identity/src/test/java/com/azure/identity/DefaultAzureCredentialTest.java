@@ -701,8 +701,8 @@ public class DefaultAzureCredentialTest {
         assertInstanceOf(EnvironmentCredential.class, credentials.get(0));
         assertInstanceOf(WorkloadIdentityCredential.class, credentials.get(1));
         assertInstanceOf(ManagedIdentityCredential.class, credentials.get(2));
-        assertInstanceOf(VisualStudioCodeCredential.class, credentials.get(3));
-        assertInstanceOf(IntelliJCredential.class, credentials.get(4));
+        assertInstanceOf(IntelliJCredential.class, credentials.get(3));
+        assertInstanceOf(VisualStudioCodeCredential.class, credentials.get(4));
         assertInstanceOf(AzureCliCredential.class, credentials.get(5));
         assertInstanceOf(AzurePowerShellCredential.class, credentials.get(6));
         assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(7));
