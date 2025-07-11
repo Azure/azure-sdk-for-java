@@ -311,7 +311,9 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
                         + selectedCredential + "'. " + "Valid values are: 'prod', 'dev', or one of "
                         + "[EnvironmentCredential, WorkloadIdentityCredential, ManagedIdentityCredential, "
                         + "IntelliJCredential, AzureCliCredential, AzurePowerShellCredential, "
-                        + "AzureDeveloperCliCredential, VisualStudioCodeCredential] (case-insensitive)."));
+                        + "AzureDeveloperCliCredential, VisualStudioCodeCredential] (case-insensitive). "
+                        + "To mitigate this issue, please refer to the troubleshooting guidelines here at "
+                        + "https://aka.ms/azure-identity-java-default-azure-credential-troubleshoot"));
             }
         }
 
