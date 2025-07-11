@@ -55,7 +55,7 @@ public final class SystemAssignedIdentitiesClientImpl implements SystemAssignedI
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ManagedServiceIdenti")
+    @ServiceInterface(name = "ManagedServiceIdentityClientSystemAssignedIdentities")
     public interface SystemAssignedIdentitiesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.ManagedIdentity/identities/default")

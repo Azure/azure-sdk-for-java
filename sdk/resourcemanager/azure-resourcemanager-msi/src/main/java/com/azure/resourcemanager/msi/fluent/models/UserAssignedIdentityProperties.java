@@ -4,11 +4,12 @@
 
 package com.azure.resourcemanager.msi.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.msi.models.IsolationScope;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -17,7 +18,7 @@ import java.util.UUID;
  * 
  * The properties associated with the user assigned identity.
  */
-@Immutable
+@Fluent
 public final class UserAssignedIdentityProperties implements JsonSerializable<UserAssignedIdentityProperties> {
     /*
      * The id of the tenant which the identity belongs to.
@@ -33,6 +34,11 @@ public final class UserAssignedIdentityProperties implements JsonSerializable<Us
      * The id of the app associated with the identity. This is a random generated UUID by MSI.
      */
     private UUID clientId;
+
+    /*
+     * Enum to configure regional restrictions on identity assignment, as necessary.
+     */
+    private IsolationScope isolationScope;
 
     /**
      * Creates an instance of UserAssignedIdentityProperties class.
@@ -69,6 +75,26 @@ public final class UserAssignedIdentityProperties implements JsonSerializable<Us
     }
 
     /**
+     * Get the isolationScope property: Enum to configure regional restrictions on identity assignment, as necessary.
+     * 
+     * @return the isolationScope value.
+     */
+    public IsolationScope isolationScope() {
+        return this.isolationScope;
+    }
+
+    /**
+     * Set the isolationScope property: Enum to configure regional restrictions on identity assignment, as necessary.
+     * 
+     * @param isolationScope the isolationScope value to set.
+     * @return the UserAssignedIdentityProperties object itself.
+     */
+    public UserAssignedIdentityProperties withIsolationScope(IsolationScope isolationScope) {
+        this.isolationScope = isolationScope;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -82,6 +108,8 @@ public final class UserAssignedIdentityProperties implements JsonSerializable<Us
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("isolationScope",
+            this.isolationScope == null ? null : this.isolationScope.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -110,6 +138,9 @@ public final class UserAssignedIdentityProperties implements JsonSerializable<Us
                 } else if ("clientId".equals(fieldName)) {
                     deserializedUserAssignedIdentityProperties.clientId
                         = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("isolationScope".equals(fieldName)) {
+                    deserializedUserAssignedIdentityProperties.isolationScope
+                        = IsolationScope.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

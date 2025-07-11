@@ -14,7 +14,7 @@ import java.util.Map;
 public final class UserAssignedIdentitiesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2023-01-31/examples/IdentityUpdate.json
+     * specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2024-11-30/examples/IdentityUpdate.json
      */
     /**
      * Sample code: IdentityUpdate.
