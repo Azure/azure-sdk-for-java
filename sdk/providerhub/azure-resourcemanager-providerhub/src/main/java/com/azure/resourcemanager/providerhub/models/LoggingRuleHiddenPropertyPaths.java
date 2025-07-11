@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The LoggingRuleHiddenPropertyPaths model.
+ * The hidden property paths.
  */
 @Fluent
 public final class LoggingRuleHiddenPropertyPaths extends LoggingHiddenPropertyPath {

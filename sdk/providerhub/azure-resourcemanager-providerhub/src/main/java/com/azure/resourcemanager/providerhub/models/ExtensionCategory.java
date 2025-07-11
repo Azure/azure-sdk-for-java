@@ -93,6 +93,17 @@ public final class ExtensionCategory extends ExpandableStringEnum<ExtensionCateg
     public static final ExtensionCategory RESOURCE_MOVE_COMPLETED = fromString("ResourceMoveCompleted");
 
     /**
+     * Static value BestMatchOperationBegin for ExtensionCategory.
+     */
+    public static final ExtensionCategory BEST_MATCH_OPERATION_BEGIN = fromString("BestMatchOperationBegin");
+
+    /**
+     * Static value SubscriptionLifecycleNotificationDeletion for ExtensionCategory.
+     */
+    public static final ExtensionCategory SUBSCRIPTION_LIFECYCLE_NOTIFICATION_DELETION
+        = fromString("SubscriptionLifecycleNotificationDeletion");
+
+    /**
      * Creates a new instance of ExtensionCategory value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

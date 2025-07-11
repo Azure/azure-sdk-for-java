@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.providerhub.implementation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.providerhub.fluent.models.DefaultRolloutInner;
 import com.azure.resourcemanager.providerhub.models.DefaultRollout;
@@ -29,6 +30,10 @@ public final class DefaultRolloutImpl implements DefaultRollout, DefaultRollout.
 
     public DefaultRolloutProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public DefaultRolloutInner innerModel() {

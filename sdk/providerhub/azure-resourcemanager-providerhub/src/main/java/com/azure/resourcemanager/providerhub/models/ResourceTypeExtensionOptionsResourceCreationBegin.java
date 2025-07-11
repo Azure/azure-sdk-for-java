@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The ResourceTypeExtensionOptionsResourceCreationBegin model.
+ * Resource creation begin.
  */
 @Fluent
 public final class ResourceTypeExtensionOptionsResourceCreationBegin extends ExtensionOptions {

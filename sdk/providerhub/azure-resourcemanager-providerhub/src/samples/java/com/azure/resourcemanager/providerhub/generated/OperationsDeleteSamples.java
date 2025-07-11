@@ -10,7 +10,7 @@ package com.azure.resourcemanager.providerhub.generated;
 public final class OperationsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/Operations_Delete.
+     * specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/Operations_Delete.
      * json
      */
     /**

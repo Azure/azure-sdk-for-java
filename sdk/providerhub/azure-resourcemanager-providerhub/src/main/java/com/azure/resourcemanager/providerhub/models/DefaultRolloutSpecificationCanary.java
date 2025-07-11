@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The DefaultRolloutSpecificationCanary model.
+ * The canary traffic region configuration.
  */
 @Fluent
 public final class DefaultRolloutSpecificationCanary extends CanaryTrafficRegionRolloutConfiguration {

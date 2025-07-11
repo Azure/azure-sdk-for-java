@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface ProviderHub {
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -101,4 +101,32 @@ public interface ProviderHub {
      * @return the SkusClient object.
      */
     SkusClient getSkus();
+
+    /**
+     * Gets the ResourceActionsClient object to access its operations.
+     * 
+     * @return the ResourceActionsClient object.
+     */
+    ResourceActionsClient getResourceActions();
+
+    /**
+     * Gets the AuthorizedApplicationsClient object to access its operations.
+     * 
+     * @return the AuthorizedApplicationsClient object.
+     */
+    AuthorizedApplicationsClient getAuthorizedApplications();
+
+    /**
+     * Gets the ProviderMonitorSettingsClient object to access its operations.
+     * 
+     * @return the ProviderMonitorSettingsClient object.
+     */
+    ProviderMonitorSettingsClient getProviderMonitorSettings();
+
+    /**
+     * Gets the NewRegionFrontloadReleasesClient object to access its operations.
+     * 
+     * @return the NewRegionFrontloadReleasesClient object.
+     */
+    NewRegionFrontloadReleasesClient getNewRegionFrontloadReleases();
 }

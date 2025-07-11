@@ -7,6 +7,7 @@ package com.azure.resourcemanager.providerhub.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.providerhub.fluent.models.OperationsPutContentInner;
 import java.util.List;
 
 /**
@@ -68,8 +69,8 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<OperationsContent> createOrUpdateWithResponse(String providerNamespace,
-        OperationsPutContent operationsPutContent, Context context);
+    Response<OperationsPutContent> createOrUpdateWithResponse(String providerNamespace,
+        OperationsPutContentInner operationsPutContent, Context context);
 
     /**
      * Creates or updates the operation supported by the given provider.
@@ -81,7 +82,7 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    OperationsContent createOrUpdate(String providerNamespace, OperationsPutContent operationsPutContent);
+    OperationsPutContent createOrUpdate(String providerNamespace, OperationsPutContentInner operationsPutContent);
 
     /**
      * Deletes an operation.

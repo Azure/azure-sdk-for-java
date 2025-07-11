@@ -17,22 +17,22 @@ import java.io.IOException;
 @Fluent
 public class SkuCapacity implements JsonSerializable<SkuCapacity> {
     /*
-     * The minimum property.
+     * The minimum.
      */
     private int minimum;
 
     /*
-     * The maximum property.
+     * The maximum.
      */
     private Integer maximum;
 
     /*
-     * The default property.
+     * The default.
      */
     private Integer defaultProperty;
 
     /*
-     * The scaleType property.
+     * The scale type.
      */
     private SkuScaleType scaleType;
 
@@ -43,7 +43,7 @@ public class SkuCapacity implements JsonSerializable<SkuCapacity> {
     }
 
     /**
-     * Get the minimum property: The minimum property.
+     * Get the minimum property: The minimum.
      * 
      * @return the minimum value.
      */
@@ -52,7 +52,7 @@ public class SkuCapacity implements JsonSerializable<SkuCapacity> {
     }
 
     /**
-     * Set the minimum property: The minimum property.
+     * Set the minimum property: The minimum.
      * 
      * @param minimum the minimum value to set.
      * @return the SkuCapacity object itself.
@@ -63,7 +63,7 @@ public class SkuCapacity implements JsonSerializable<SkuCapacity> {
     }
 
     /**
-     * Get the maximum property: The maximum property.
+     * Get the maximum property: The maximum.
      * 
      * @return the maximum value.
      */
@@ -72,7 +72,7 @@ public class SkuCapacity implements JsonSerializable<SkuCapacity> {
     }
 
     /**
-     * Set the maximum property: The maximum property.
+     * Set the maximum property: The maximum.
      * 
      * @param maximum the maximum value to set.
      * @return the SkuCapacity object itself.
@@ -83,7 +83,7 @@ public class SkuCapacity implements JsonSerializable<SkuCapacity> {
     }
 
     /**
-     * Get the defaultProperty property: The default property.
+     * Get the defaultProperty property: The default.
      * 
      * @return the defaultProperty value.
      */
@@ -92,7 +92,7 @@ public class SkuCapacity implements JsonSerializable<SkuCapacity> {
     }
 
     /**
-     * Set the defaultProperty property: The default property.
+     * Set the defaultProperty property: The default.
      * 
      * @param defaultProperty the defaultProperty value to set.
      * @return the SkuCapacity object itself.
@@ -103,7 +103,7 @@ public class SkuCapacity implements JsonSerializable<SkuCapacity> {
     }
 
     /**
-     * Get the scaleType property: The scaleType property.
+     * Get the scaleType property: The scale type.
      * 
      * @return the scaleType value.
      */
@@ -112,7 +112,7 @@ public class SkuCapacity implements JsonSerializable<SkuCapacity> {
     }
 
     /**
-     * Set the scaleType property: The scaleType property.
+     * Set the scaleType property: The scale type.
      * 
      * @param scaleType the scaleType value to set.
      * @return the SkuCapacity object itself.

@@ -19,14 +19,19 @@ import java.util.Map;
 @Fluent
 public class CustomRolloutStatus implements JsonSerializable<CustomRolloutStatus> {
     /*
-     * The completedRegions property.
+     * The completed regions.
      */
     private List<String> completedRegions;
 
     /*
-     * Dictionary of <ExtendedErrorInfo>
+     * The failed or skipped regions.
      */
     private Map<String, ExtendedErrorInfo> failedOrSkippedRegions;
+
+    /*
+     * The manifest checkin status.
+     */
+    private CustomRolloutStatusManifestCheckinStatus manifestCheckinStatus;
 
     /**
      * Creates an instance of CustomRolloutStatus class.
@@ -35,7 +40,7 @@ public class CustomRolloutStatus implements JsonSerializable<CustomRolloutStatus
     }
 
     /**
-     * Get the completedRegions property: The completedRegions property.
+     * Get the completedRegions property: The completed regions.
      * 
      * @return the completedRegions value.
      */
@@ -44,7 +49,7 @@ public class CustomRolloutStatus implements JsonSerializable<CustomRolloutStatus
     }
 
     /**
-     * Set the completedRegions property: The completedRegions property.
+     * Set the completedRegions property: The completed regions.
      * 
      * @param completedRegions the completedRegions value to set.
      * @return the CustomRolloutStatus object itself.
@@ -55,7 +60,7 @@ public class CustomRolloutStatus implements JsonSerializable<CustomRolloutStatus
     }
 
     /**
-     * Get the failedOrSkippedRegions property: Dictionary of &lt;ExtendedErrorInfo&gt;.
+     * Get the failedOrSkippedRegions property: The failed or skipped regions.
      * 
      * @return the failedOrSkippedRegions value.
      */
@@ -64,13 +69,34 @@ public class CustomRolloutStatus implements JsonSerializable<CustomRolloutStatus
     }
 
     /**
-     * Set the failedOrSkippedRegions property: Dictionary of &lt;ExtendedErrorInfo&gt;.
+     * Set the failedOrSkippedRegions property: The failed or skipped regions.
      * 
      * @param failedOrSkippedRegions the failedOrSkippedRegions value to set.
      * @return the CustomRolloutStatus object itself.
      */
     public CustomRolloutStatus withFailedOrSkippedRegions(Map<String, ExtendedErrorInfo> failedOrSkippedRegions) {
         this.failedOrSkippedRegions = failedOrSkippedRegions;
+        return this;
+    }
+
+    /**
+     * Get the manifestCheckinStatus property: The manifest checkin status.
+     * 
+     * @return the manifestCheckinStatus value.
+     */
+    public CustomRolloutStatusManifestCheckinStatus manifestCheckinStatus() {
+        return this.manifestCheckinStatus;
+    }
+
+    /**
+     * Set the manifestCheckinStatus property: The manifest checkin status.
+     * 
+     * @param manifestCheckinStatus the manifestCheckinStatus value to set.
+     * @return the CustomRolloutStatus object itself.
+     */
+    public CustomRolloutStatus
+        withManifestCheckinStatus(CustomRolloutStatusManifestCheckinStatus manifestCheckinStatus) {
+        this.manifestCheckinStatus = manifestCheckinStatus;
         return this;
     }
 
@@ -87,6 +113,9 @@ public class CustomRolloutStatus implements JsonSerializable<CustomRolloutStatus
                 }
             });
         }
+        if (manifestCheckinStatus() != null) {
+            manifestCheckinStatus().validate();
+        }
     }
 
     /**
@@ -99,6 +128,7 @@ public class CustomRolloutStatus implements JsonSerializable<CustomRolloutStatus
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("failedOrSkippedRegions", this.failedOrSkippedRegions,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("manifestCheckinStatus", this.manifestCheckinStatus);
         return jsonWriter.writeEndObject();
     }
 
@@ -124,6 +154,9 @@ public class CustomRolloutStatus implements JsonSerializable<CustomRolloutStatus
                     Map<String, ExtendedErrorInfo> failedOrSkippedRegions
                         = reader.readMap(reader1 -> ExtendedErrorInfo.fromJson(reader1));
                     deserializedCustomRolloutStatus.failedOrSkippedRegions = failedOrSkippedRegions;
+                } else if ("manifestCheckinStatus".equals(fieldName)) {
+                    deserializedCustomRolloutStatus.manifestCheckinStatus
+                        = CustomRolloutStatusManifestCheckinStatus.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for TemplateDeploymentCapabilities.
+ * The capabilities.
  */
 public final class TemplateDeploymentCapabilities extends ExpandableStringEnum<TemplateDeploymentCapabilities> {
     /**

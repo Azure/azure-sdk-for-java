@@ -18,12 +18,12 @@ import java.util.List;
 @Fluent
 public class TemplateDeploymentOptions implements JsonSerializable<TemplateDeploymentOptions> {
     /*
-     * The preflightSupported property.
+     * Whether preflight is supported.
      */
     private Boolean preflightSupported;
 
     /*
-     * The preflightOptions property.
+     * The preflight options.
      */
     private List<PreflightOption> preflightOptions;
 
@@ -34,7 +34,7 @@ public class TemplateDeploymentOptions implements JsonSerializable<TemplateDeplo
     }
 
     /**
-     * Get the preflightSupported property: The preflightSupported property.
+     * Get the preflightSupported property: Whether preflight is supported.
      * 
      * @return the preflightSupported value.
      */
@@ -43,7 +43,7 @@ public class TemplateDeploymentOptions implements JsonSerializable<TemplateDeplo
     }
 
     /**
-     * Set the preflightSupported property: The preflightSupported property.
+     * Set the preflightSupported property: Whether preflight is supported.
      * 
      * @param preflightSupported the preflightSupported value to set.
      * @return the TemplateDeploymentOptions object itself.
@@ -54,7 +54,7 @@ public class TemplateDeploymentOptions implements JsonSerializable<TemplateDeplo
     }
 
     /**
-     * Get the preflightOptions property: The preflightOptions property.
+     * Get the preflightOptions property: The preflight options.
      * 
      * @return the preflightOptions value.
      */
@@ -63,7 +63,7 @@ public class TemplateDeploymentOptions implements JsonSerializable<TemplateDeplo
     }
 
     /**
-     * Set the preflightOptions property: The preflightOptions property.
+     * Set the preflightOptions property: The preflight options.
      * 
      * @param preflightOptions the preflightOptions value to set.
      * @return the TemplateDeploymentOptions object itself.

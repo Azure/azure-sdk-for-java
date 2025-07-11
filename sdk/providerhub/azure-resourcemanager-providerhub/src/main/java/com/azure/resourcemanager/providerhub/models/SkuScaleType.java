@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for SkuScaleType.
+ * The scale type.
  */
 public final class SkuScaleType extends ExpandableStringEnum<SkuScaleType> {
     /**

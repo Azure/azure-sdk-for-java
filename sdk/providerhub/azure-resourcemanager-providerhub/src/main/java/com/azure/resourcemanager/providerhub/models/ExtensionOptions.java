@@ -18,12 +18,12 @@ import java.util.List;
 @Fluent
 public class ExtensionOptions implements JsonSerializable<ExtensionOptions> {
     /*
-     * The request property.
+     * The request.
      */
     private List<ExtensionOptionType> request;
 
     /*
-     * The response property.
+     * The response.
      */
     private List<ExtensionOptionType> response;
 
@@ -34,7 +34,7 @@ public class ExtensionOptions implements JsonSerializable<ExtensionOptions> {
     }
 
     /**
-     * Get the request property: The request property.
+     * Get the request property: The request.
      * 
      * @return the request value.
      */
@@ -43,7 +43,7 @@ public class ExtensionOptions implements JsonSerializable<ExtensionOptions> {
     }
 
     /**
-     * Set the request property: The request property.
+     * Set the request property: The request.
      * 
      * @param request the request value to set.
      * @return the ExtensionOptions object itself.
@@ -54,7 +54,7 @@ public class ExtensionOptions implements JsonSerializable<ExtensionOptions> {
     }
 
     /**
-     * Get the response property: The response property.
+     * Get the response property: The response.
      * 
      * @return the response value.
      */
@@ -63,7 +63,7 @@ public class ExtensionOptions implements JsonSerializable<ExtensionOptions> {
     }
 
     /**
-     * Set the response property: The response property.
+     * Set the response property: The response.
      * 
      * @param response the response value to set.
      * @return the ExtensionOptions object itself.

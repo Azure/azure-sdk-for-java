@@ -14,7 +14,7 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * The DefaultRolloutSpecificationHighTraffic model.
+ * The high traffic region configuration.
  */
 @Fluent
 public final class DefaultRolloutSpecificationHighTraffic extends TrafficRegionRolloutConfiguration {

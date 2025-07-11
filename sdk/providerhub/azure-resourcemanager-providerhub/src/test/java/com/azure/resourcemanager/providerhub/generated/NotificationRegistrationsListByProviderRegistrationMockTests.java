@@ -7,14 +7,13 @@ package com.azure.resourcemanager.providerhub.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.providerhub.ProviderHubManager;
 import com.azure.resourcemanager.providerhub.models.MessageScope;
 import com.azure.resourcemanager.providerhub.models.NotificationMode;
 import com.azure.resourcemanager.providerhub.models.NotificationRegistration;
-import com.azure.resourcemanager.providerhub.models.ProvisioningState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -25,27 +24,25 @@ public final class NotificationRegistrationsListByProviderRegistrationMockTests 
     @Test
     public void testListByProviderRegistration() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"notificationMode\":\"NotSpecified\",\"messageScope\":\"NotSpecified\",\"includedEvents\":[\"lejchcsr\"],\"notificationEndpoints\":[{\"notificationDestination\":\"mzlanru\",\"locations\":[\"vnphc\",\"zqtpjhmq\"]},{\"notificationDestination\":\"v\",\"locations\":[\"aiwdcxsmlzzhz\",\"txetlgydl\",\"qvlnnpxybafiqgea\",\"rbgjekglkl\"]},{\"notificationDestination\":\"ulidwc\",\"locations\":[\"zegjonfhjirwgdn\",\"z\"]},{\"notificationDestination\":\"fkspzhzmtksjci\",\"locations\":[\"gsxcdgljplkeua\",\"htomflrytswfp\",\"mdgycxn\"]}],\"provisioningState\":\"Deleting\"},\"id\":\"whqjjyslurlpshhk\",\"name\":\"pedwqsl\",\"type\":\"rhmpqvwwsk\"}]}";
+            = "{\"value\":[{\"properties\":{\"notificationMode\":\"WebHook\",\"messageScope\":\"RegisteredSubscriptions\",\"includedEvents\":[\"hapfjiik\",\"jdiq\",\"liejhpc\",\"bi\"],\"notificationEndpoints\":[{\"notificationDestination\":\"bwceivbvzip\",\"locations\":[\"goooxz\",\"rad\",\"s\"]}],\"provisioningState\":\"MovingResources\"},\"id\":\"pdgzigjsugswhg\",\"name\":\"aodkwwnbafoc\",\"type\":\"ohzha\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ProviderHubManager manager = ProviderHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NotificationRegistration> response = manager.notificationRegistrations()
-            .listByProviderRegistration("mwamxqzragpgdph", com.azure.core.util.Context.NONE);
+            .listByProviderRegistration("uwaedrympmlqoi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(NotificationMode.NOT_SPECIFIED,
-            response.iterator().next().properties().notificationMode());
-        Assertions.assertEquals(MessageScope.NOT_SPECIFIED, response.iterator().next().properties().messageScope());
-        Assertions.assertEquals("lejchcsr", response.iterator().next().properties().includedEvents().get(0));
-        Assertions.assertEquals("mzlanru",
+        Assertions.assertEquals(NotificationMode.WEB_HOOK, response.iterator().next().properties().notificationMode());
+        Assertions.assertEquals(MessageScope.REGISTERED_SUBSCRIPTIONS,
+            response.iterator().next().properties().messageScope());
+        Assertions.assertEquals("hapfjiik", response.iterator().next().properties().includedEvents().get(0));
+        Assertions.assertEquals("bwceivbvzip",
             response.iterator().next().properties().notificationEndpoints().get(0).notificationDestination());
-        Assertions.assertEquals("vnphc",
+        Assertions.assertEquals("goooxz",
             response.iterator().next().properties().notificationEndpoints().get(0).locations().get(0));
-        Assertions.assertEquals(ProvisioningState.DELETING,
-            response.iterator().next().properties().provisioningState());
     }
 }

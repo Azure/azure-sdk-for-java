@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for TemplateDeploymentPreflightOptions.
+ * The preflight options.
  */
 public final class TemplateDeploymentPreflightOptions extends ExpandableStringEnum<TemplateDeploymentPreflightOptions> {
     /**

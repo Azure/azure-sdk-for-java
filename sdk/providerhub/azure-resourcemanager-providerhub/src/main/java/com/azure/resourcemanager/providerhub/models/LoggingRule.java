@@ -18,22 +18,22 @@ import java.io.IOException;
 @Fluent
 public final class LoggingRule implements JsonSerializable<LoggingRule> {
     /*
-     * The action property.
+     * The action.
      */
     private String action;
 
     /*
-     * The direction property.
+     * The direction.
      */
     private LoggingDirections direction;
 
     /*
-     * The detailLevel property.
+     * The detail level.
      */
     private LoggingDetails detailLevel;
 
     /*
-     * The hiddenPropertyPaths property.
+     * The hidden property paths.
      */
     private LoggingRuleHiddenPropertyPaths hiddenPropertyPaths;
 
@@ -44,7 +44,7 @@ public final class LoggingRule implements JsonSerializable<LoggingRule> {
     }
 
     /**
-     * Get the action property: The action property.
+     * Get the action property: The action.
      * 
      * @return the action value.
      */
@@ -53,7 +53,7 @@ public final class LoggingRule implements JsonSerializable<LoggingRule> {
     }
 
     /**
-     * Set the action property: The action property.
+     * Set the action property: The action.
      * 
      * @param action the action value to set.
      * @return the LoggingRule object itself.
@@ -64,7 +64,7 @@ public final class LoggingRule implements JsonSerializable<LoggingRule> {
     }
 
     /**
-     * Get the direction property: The direction property.
+     * Get the direction property: The direction.
      * 
      * @return the direction value.
      */
@@ -73,7 +73,7 @@ public final class LoggingRule implements JsonSerializable<LoggingRule> {
     }
 
     /**
-     * Set the direction property: The direction property.
+     * Set the direction property: The direction.
      * 
      * @param direction the direction value to set.
      * @return the LoggingRule object itself.
@@ -84,7 +84,7 @@ public final class LoggingRule implements JsonSerializable<LoggingRule> {
     }
 
     /**
-     * Get the detailLevel property: The detailLevel property.
+     * Get the detailLevel property: The detail level.
      * 
      * @return the detailLevel value.
      */
@@ -93,7 +93,7 @@ public final class LoggingRule implements JsonSerializable<LoggingRule> {
     }
 
     /**
-     * Set the detailLevel property: The detailLevel property.
+     * Set the detailLevel property: The detail level.
      * 
      * @param detailLevel the detailLevel value to set.
      * @return the LoggingRule object itself.
@@ -104,7 +104,7 @@ public final class LoggingRule implements JsonSerializable<LoggingRule> {
     }
 
     /**
-     * Get the hiddenPropertyPaths property: The hiddenPropertyPaths property.
+     * Get the hiddenPropertyPaths property: The hidden property paths.
      * 
      * @return the hiddenPropertyPaths value.
      */
@@ -113,7 +113,7 @@ public final class LoggingRule implements JsonSerializable<LoggingRule> {
     }
 
     /**
-     * Set the hiddenPropertyPaths property: The hiddenPropertyPaths property.
+     * Set the hiddenPropertyPaths property: The hidden property paths.
      * 
      * @param hiddenPropertyPaths the hiddenPropertyPaths value to set.
      * @return the LoggingRule object itself.
