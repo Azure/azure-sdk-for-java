@@ -31,6 +31,11 @@ public final class SupportedCapabilities implements JsonSerializable<SupportedCa
      */
     private Architecture architecture;
 
+    /*
+     * Refers to the security capability of the disk supported to create a Trusted launch or Confidential VM
+     */
+    private SupportedSecurityOption supportedSecurityOption;
+
     /**
      * Creates an instance of SupportedCapabilities class.
      */
@@ -102,6 +107,28 @@ public final class SupportedCapabilities implements JsonSerializable<SupportedCa
     }
 
     /**
+     * Get the supportedSecurityOption property: Refers to the security capability of the disk supported to create a
+     * Trusted launch or Confidential VM.
+     * 
+     * @return the supportedSecurityOption value.
+     */
+    public SupportedSecurityOption supportedSecurityOption() {
+        return this.supportedSecurityOption;
+    }
+
+    /**
+     * Set the supportedSecurityOption property: Refers to the security capability of the disk supported to create a
+     * Trusted launch or Confidential VM.
+     * 
+     * @param supportedSecurityOption the supportedSecurityOption value to set.
+     * @return the SupportedCapabilities object itself.
+     */
+    public SupportedCapabilities withSupportedSecurityOption(SupportedSecurityOption supportedSecurityOption) {
+        this.supportedSecurityOption = supportedSecurityOption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -118,6 +145,8 @@ public final class SupportedCapabilities implements JsonSerializable<SupportedCa
         jsonWriter.writeStringField("diskControllerTypes", this.diskControllerTypes);
         jsonWriter.writeBooleanField("acceleratedNetwork", this.acceleratedNetwork);
         jsonWriter.writeStringField("architecture", this.architecture == null ? null : this.architecture.toString());
+        jsonWriter.writeStringField("supportedSecurityOption",
+            this.supportedSecurityOption == null ? null : this.supportedSecurityOption.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -142,6 +171,9 @@ public final class SupportedCapabilities implements JsonSerializable<SupportedCa
                     deserializedSupportedCapabilities.acceleratedNetwork = reader.getNullable(JsonReader::getBoolean);
                 } else if ("architecture".equals(fieldName)) {
                     deserializedSupportedCapabilities.architecture = Architecture.fromString(reader.getString());
+                } else if ("supportedSecurityOption".equals(fieldName)) {
+                    deserializedSupportedCapabilities.supportedSecurityOption
+                        = SupportedSecurityOption.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

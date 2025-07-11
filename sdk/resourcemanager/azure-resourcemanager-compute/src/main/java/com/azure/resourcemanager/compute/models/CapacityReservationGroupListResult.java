@@ -20,7 +20,7 @@ import java.util.List;
 @Fluent
 public final class CapacityReservationGroupListResult implements JsonSerializable<CapacityReservationGroupListResult> {
     /*
-     * The list of capacity reservation groups
+     * The list of capacity reservation groups.
      */
     private List<CapacityReservationGroupInner> value;
 

@@ -15,6 +15,7 @@ import com.azure.resourcemanager.compute.models.EncryptionSettingsCollection;
 import com.azure.resourcemanager.compute.models.NetworkAccessPolicy;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.PublicNetworkAccess;
+import com.azure.resourcemanager.compute.models.SnapshotAccessState;
 import com.azure.resourcemanager.compute.models.SupportedCapabilities;
 import java.io.IOException;
 
@@ -75,6 +76,11 @@ public final class SnapshotUpdateProperties implements JsonSerializable<Snapshot
      * List of supported capabilities for the image from which the OS disk was created.
      */
     private SupportedCapabilities supportedCapabilities;
+
+    /*
+     * The state of snapshot which determines the access availability of the snapshot.
+     */
+    private SnapshotAccessState snapshotAccessState;
 
     /**
      * Creates an instance of SnapshotUpdateProperties class.
@@ -298,6 +304,16 @@ public final class SnapshotUpdateProperties implements JsonSerializable<Snapshot
     }
 
     /**
+     * Get the snapshotAccessState property: The state of snapshot which determines the access availability of the
+     * snapshot.
+     * 
+     * @return the snapshotAccessState value.
+     */
+    public SnapshotAccessState snapshotAccessState() {
+        return this.snapshotAccessState;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -376,6 +392,9 @@ public final class SnapshotUpdateProperties implements JsonSerializable<Snapshot
                         = DataAccessAuthMode.fromString(reader.getString());
                 } else if ("supportedCapabilities".equals(fieldName)) {
                     deserializedSnapshotUpdateProperties.supportedCapabilities = SupportedCapabilities.fromJson(reader);
+                } else if ("snapshotAccessState".equals(fieldName)) {
+                    deserializedSnapshotUpdateProperties.snapshotAccessState
+                        = SnapshotAccessState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

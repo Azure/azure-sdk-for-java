@@ -20,7 +20,7 @@ import java.util.List;
 @Fluent
 public final class ProximityPlacementGroupListResult implements JsonSerializable<ProximityPlacementGroupListResult> {
     /*
-     * The list of proximity placement groups
+     * The list of proximity placement groups.
      */
     private List<ProximityPlacementGroupInner> value;
 

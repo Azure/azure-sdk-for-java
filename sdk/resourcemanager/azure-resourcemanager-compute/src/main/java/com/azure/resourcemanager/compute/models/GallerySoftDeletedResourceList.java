@@ -20,13 +20,12 @@ import java.util.List;
 @Fluent
 public final class GallerySoftDeletedResourceList implements JsonSerializable<GallerySoftDeletedResourceList> {
     /*
-     * A list of soft-deleted resources.
+     * The GallerySoftDeletedResource items on this page
      */
     private List<GallerySoftDeletedResourceInner> value;
 
     /*
-     * The uri to fetch the next page of soft-deleted resources. Call ListNext() with this to fetch the next page of
-     * soft-deleted resources.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -37,7 +36,7 @@ public final class GallerySoftDeletedResourceList implements JsonSerializable<Ga
     }
 
     /**
-     * Get the value property: A list of soft-deleted resources.
+     * Get the value property: The GallerySoftDeletedResource items on this page.
      * 
      * @return the value value.
      */
@@ -46,7 +45,7 @@ public final class GallerySoftDeletedResourceList implements JsonSerializable<Ga
     }
 
     /**
-     * Set the value property: A list of soft-deleted resources.
+     * Set the value property: The GallerySoftDeletedResource items on this page.
      * 
      * @param value the value value to set.
      * @return the GallerySoftDeletedResourceList object itself.
@@ -57,8 +56,7 @@ public final class GallerySoftDeletedResourceList implements JsonSerializable<Ga
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of soft-deleted resources. Call ListNext() with this to
-     * fetch the next page of soft-deleted resources.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
@@ -67,8 +65,7 @@ public final class GallerySoftDeletedResourceList implements JsonSerializable<Ga
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of soft-deleted resources. Call ListNext() with this to
-     * fetch the next page of soft-deleted resources.
+     * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
      * @return the GallerySoftDeletedResourceList object itself.

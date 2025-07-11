@@ -26,6 +26,11 @@ public final class AccessUriInner implements JsonSerializable<AccessUriInner> {
      */
     private String securityDataAccessSas;
 
+    /*
+     * A SAS uri for accessing a VM metadata.
+     */
+    private String securityMetadataAccessSas;
+
     /**
      * Creates an instance of AccessUriInner class.
      */
@@ -48,6 +53,15 @@ public final class AccessUriInner implements JsonSerializable<AccessUriInner> {
      */
     public String securityDataAccessSas() {
         return this.securityDataAccessSas;
+    }
+
+    /**
+     * Get the securityMetadataAccessSas property: A SAS uri for accessing a VM metadata.
+     * 
+     * @return the securityMetadataAccessSas value.
+     */
+    public String securityMetadataAccessSas() {
+        return this.securityMetadataAccessSas;
     }
 
     /**
@@ -86,6 +100,8 @@ public final class AccessUriInner implements JsonSerializable<AccessUriInner> {
                     deserializedAccessUriInner.accessSas = reader.getString();
                 } else if ("securityDataAccessSAS".equals(fieldName)) {
                     deserializedAccessUriInner.securityDataAccessSas = reader.getString();
+                } else if ("securityMetadataAccessSAS".equals(fieldName)) {
+                    deserializedAccessUriInner.securityMetadataAccessSas = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
