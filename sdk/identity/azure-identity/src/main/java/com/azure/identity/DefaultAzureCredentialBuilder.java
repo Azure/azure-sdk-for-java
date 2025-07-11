@@ -334,12 +334,10 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     // Helper to add dev credentials
     private void addDevCredentials(List<TokenCredential> credentials) {
         credentials.add(new IntelliJCredential(tenantId, identityClientOptions.clone()));
+        credentials.add(new VisualStudioCodeCredential(tenantId, identityClientOptions.clone()));
         credentials.add(new AzureCliCredential(tenantId, identityClientOptions.clone()));
         credentials.add(new AzurePowerShellCredential(tenantId, identityClientOptions.clone()));
         credentials.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
-        if (IdentityUtil.isVsCodeBrokerAuthAvailable()) {
-            credentials.add(new VisualStudioCodeCredential(tenantId, identityClientOptions.clone()));
-        }
     }
 
     private WorkloadIdentityCredential getWorkloadIdentityCredential() {

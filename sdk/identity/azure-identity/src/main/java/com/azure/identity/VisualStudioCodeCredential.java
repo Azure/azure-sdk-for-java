@@ -68,7 +68,8 @@ public class VisualStudioCodeCredential implements TokenCredential {
                 return Mono
                     .error(new CredentialUnavailableException("Visual Studio Code Authentication is not available."
                         + " Ensure you have azure-identity-broker dependency added to your application."
-                        + " Then ensure, you have signed into Azure via VS Code and have Azure Resources Extension installed in VS Code."));
+                        + " Then ensure, you have signed into Azure via VS Code and have Azure Resources Extension installed in VS Code."
+                        + " For more details, refer to https://aka.ms/azsdk/java/identity/vscodecredential/troubleshoot"));
             }
         }).doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request)).doOnError(error -> {
             LoggingUtil.logTokenError(LOGGER, clientOptions, request, error);
