@@ -42,8 +42,6 @@ autorest --tag=metrics-definitions
 autorest --tag=metrics-namespaces
 ```
 
-## input-file: https://dev.loganalytics.io/swagger/api.loganalytics.io/v1/swagger.json
-
 ## Log Query
 These settings apply only when `--tag=log` is specified on the command line.
 

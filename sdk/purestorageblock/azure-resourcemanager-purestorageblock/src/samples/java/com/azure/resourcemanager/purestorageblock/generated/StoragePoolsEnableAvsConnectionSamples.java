@@ -11,7 +11,7 @@ import com.azure.resourcemanager.purestorageblock.models.StoragePoolEnableAvsCon
  */
 public final class StoragePoolsEnableAvsConnectionSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/StoragePools_EnableAvsConnection_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-01/StoragePools_EnableAvsConnection_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_EnableAvsConnection.
