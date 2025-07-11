@@ -131,20 +131,6 @@ public final class AzureCommunicationCallAutomationServiceImpl {
     }
 
     /**
-     * The CallDialogsImpl object to access its operations.
-     */
-    private final CallDialogsImpl callDialogs;
-
-    /**
-     * Gets the CallDialogsImpl object to access its operations.
-     * 
-     * @return the CallDialogsImpl object.
-     */
-    public CallDialogsImpl getCallDialogs() {
-        return this.callDialogs;
-    }
-
-    /**
      * The CallRecordingsImpl object to access its operations.
      */
     private final CallRecordingsImpl callRecordings;
@@ -196,7 +182,6 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         this.apiVersion = apiVersion;
         this.callConnections = new CallConnectionsImpl(this);
         this.callMedias = new CallMediasImpl(this);
-        this.callDialogs = new CallDialogsImpl(this);
         this.callRecordings = new CallRecordingsImpl(this);
         this.service = RestProxy.create(AzureCommunicationCallAutomationServiceService.class, this.httpPipeline,
             this.getSerializerAdapter());
