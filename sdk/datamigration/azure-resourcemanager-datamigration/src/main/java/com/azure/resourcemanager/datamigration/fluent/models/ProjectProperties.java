@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datamigration.models.AzureActiveDirectoryApp;
 import com.azure.resourcemanager.datamigration.models.ConnectionInfo;
 import com.azure.resourcemanager.datamigration.models.DatabaseInfo;
 import com.azure.resourcemanager.datamigration.models.ProjectProvisioningState;
@@ -29,6 +30,11 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      * Source platform for the project
      */
     private ProjectSourcePlatform sourcePlatform;
+
+    /*
+     * Field that defines the Azure active directory application info, used to connect to the target Azure resource
+     */
+    private AzureActiveDirectoryApp azureAuthenticationInfo;
 
     /*
      * Target platform for the project
@@ -83,6 +89,28 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
      */
     public ProjectProperties withSourcePlatform(ProjectSourcePlatform sourcePlatform) {
         this.sourcePlatform = sourcePlatform;
+        return this;
+    }
+
+    /**
+     * Get the azureAuthenticationInfo property: Field that defines the Azure active directory application info, used to
+     * connect to the target Azure resource.
+     * 
+     * @return the azureAuthenticationInfo value.
+     */
+    public AzureActiveDirectoryApp azureAuthenticationInfo() {
+        return this.azureAuthenticationInfo;
+    }
+
+    /**
+     * Set the azureAuthenticationInfo property: Field that defines the Azure active directory application info, used to
+     * connect to the target Azure resource.
+     * 
+     * @param azureAuthenticationInfo the azureAuthenticationInfo value to set.
+     * @return the ProjectProperties object itself.
+     */
+    public ProjectProperties withAzureAuthenticationInfo(AzureActiveDirectoryApp azureAuthenticationInfo) {
+        this.azureAuthenticationInfo = azureAuthenticationInfo;
         return this;
     }
 
@@ -195,6 +223,9 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
                 .log(new IllegalArgumentException(
                     "Missing required property sourcePlatform in model ProjectProperties"));
         }
+        if (azureAuthenticationInfo() != null) {
+            azureAuthenticationInfo().validate();
+        }
         if (targetPlatform() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -223,6 +254,7 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
             this.sourcePlatform == null ? null : this.sourcePlatform.toString());
         jsonWriter.writeStringField("targetPlatform",
             this.targetPlatform == null ? null : this.targetPlatform.toString());
+        jsonWriter.writeJsonField("azureAuthenticationInfo", this.azureAuthenticationInfo);
         jsonWriter.writeJsonField("sourceConnectionInfo", this.sourceConnectionInfo);
         jsonWriter.writeJsonField("targetConnectionInfo", this.targetConnectionInfo);
         jsonWriter.writeArrayField("databasesInfo", this.databasesInfo, (writer, element) -> writer.writeJson(element));
@@ -249,6 +281,8 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
                     deserializedProjectProperties.sourcePlatform = ProjectSourcePlatform.fromString(reader.getString());
                 } else if ("targetPlatform".equals(fieldName)) {
                     deserializedProjectProperties.targetPlatform = ProjectTargetPlatform.fromString(reader.getString());
+                } else if ("azureAuthenticationInfo".equals(fieldName)) {
+                    deserializedProjectProperties.azureAuthenticationInfo = AzureActiveDirectoryApp.fromJson(reader);
                 } else if ("creationTime".equals(fieldName)) {
                     deserializedProjectProperties.creationTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

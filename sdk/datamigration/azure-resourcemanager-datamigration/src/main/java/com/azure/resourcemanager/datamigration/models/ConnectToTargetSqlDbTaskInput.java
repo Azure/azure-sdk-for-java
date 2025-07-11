@@ -22,6 +22,11 @@ public final class ConnectToTargetSqlDbTaskInput implements JsonSerializable<Con
      */
     private SqlConnectionInfo targetConnectionInfo;
 
+    /*
+     * Boolean flag indicating whether to query object counts for each database on the target server
+     */
+    private Boolean queryObjectCounts;
+
     /**
      * Creates an instance of ConnectToTargetSqlDbTaskInput class.
      */
@@ -49,6 +54,28 @@ public final class ConnectToTargetSqlDbTaskInput implements JsonSerializable<Con
     }
 
     /**
+     * Get the queryObjectCounts property: Boolean flag indicating whether to query object counts for each database on
+     * the target server.
+     * 
+     * @return the queryObjectCounts value.
+     */
+    public Boolean queryObjectCounts() {
+        return this.queryObjectCounts;
+    }
+
+    /**
+     * Set the queryObjectCounts property: Boolean flag indicating whether to query object counts for each database on
+     * the target server.
+     * 
+     * @param queryObjectCounts the queryObjectCounts value to set.
+     * @return the ConnectToTargetSqlDbTaskInput object itself.
+     */
+    public ConnectToTargetSqlDbTaskInput withQueryObjectCounts(Boolean queryObjectCounts) {
+        this.queryObjectCounts = queryObjectCounts;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -72,6 +99,7 @@ public final class ConnectToTargetSqlDbTaskInput implements JsonSerializable<Con
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("targetConnectionInfo", this.targetConnectionInfo);
+        jsonWriter.writeBooleanField("queryObjectCounts", this.queryObjectCounts);
         return jsonWriter.writeEndObject();
     }
 
@@ -94,6 +122,9 @@ public final class ConnectToTargetSqlDbTaskInput implements JsonSerializable<Con
 
                 if ("targetConnectionInfo".equals(fieldName)) {
                     deserializedConnectToTargetSqlDbTaskInput.targetConnectionInfo = SqlConnectionInfo.fromJson(reader);
+                } else if ("queryObjectCounts".equals(fieldName)) {
+                    deserializedConnectToTargetSqlDbTaskInput.queryObjectCounts
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

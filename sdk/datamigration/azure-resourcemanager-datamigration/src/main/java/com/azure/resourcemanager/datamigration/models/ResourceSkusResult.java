@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The DMS List SKUs operation response.
+ * The DMS (classic) List SKUs operation response.
  */
 @Fluent
 public final class ResourceSkusResult implements JsonSerializable<ResourceSkusResult> {
@@ -25,7 +25,8 @@ public final class ResourceSkusResult implements JsonSerializable<ResourceSkusRe
     private List<ResourceSkuInner> value;
 
     /*
-     * The uri to fetch the next page of DMS SKUs. Call ListNext() with this to fetch the next page of DMS SKUs.
+     * The uri to fetch the next page of DMS (classic) SKUs. Call ListNext() with this to fetch the next page of DMS
+     * (classic) SKUs.
      */
     private String nextLink;
 
@@ -56,8 +57,8 @@ public final class ResourceSkusResult implements JsonSerializable<ResourceSkusRe
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of DMS SKUs. Call ListNext() with this to fetch the
-     * next page of DMS SKUs.
+     * Get the nextLink property: The uri to fetch the next page of DMS (classic) SKUs. Call ListNext() with this to
+     * fetch the next page of DMS (classic) SKUs.
      * 
      * @return the nextLink value.
      */
@@ -66,8 +67,8 @@ public final class ResourceSkusResult implements JsonSerializable<ResourceSkusRe
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of DMS SKUs. Call ListNext() with this to fetch the
-     * next page of DMS SKUs.
+     * Set the nextLink property: The uri to fetch the next page of DMS (classic) SKUs. Call ListNext() with this to
+     * fetch the next page of DMS (classic) SKUs.
      * 
      * @param nextLink the nextLink value to set.
      * @return the ResourceSkusResult object itself.

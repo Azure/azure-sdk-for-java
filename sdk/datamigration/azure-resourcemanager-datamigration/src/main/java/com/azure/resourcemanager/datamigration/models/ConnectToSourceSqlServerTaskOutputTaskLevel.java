@@ -37,6 +37,11 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectTo
     private String agentJobs;
 
     /*
+     * Mapping from database name to TDE certificate name, if applicable
+     */
+    private String databaseTdeCertificateMapping;
+
+    /*
      * Source server version
      */
     private String sourceServerVersion;
@@ -92,6 +97,16 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectTo
      */
     public String agentJobs() {
         return this.agentJobs;
+    }
+
+    /**
+     * Get the databaseTdeCertificateMapping property: Mapping from database name to TDE certificate name, if
+     * applicable.
+     * 
+     * @return the databaseTdeCertificateMapping value.
+     */
+    public String databaseTdeCertificateMapping() {
+        return this.databaseTdeCertificateMapping;
     }
 
     /**
@@ -169,6 +184,9 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevel extends ConnectTo
                     deserializedConnectToSourceSqlServerTaskOutputTaskLevel.logins = reader.getString();
                 } else if ("agentJobs".equals(fieldName)) {
                     deserializedConnectToSourceSqlServerTaskOutputTaskLevel.agentJobs = reader.getString();
+                } else if ("databaseTdeCertificateMapping".equals(fieldName)) {
+                    deserializedConnectToSourceSqlServerTaskOutputTaskLevel.databaseTdeCertificateMapping
+                        = reader.getString();
                 } else if ("sourceServerVersion".equals(fieldName)) {
                     deserializedConnectToSourceSqlServerTaskOutputTaskLevel.sourceServerVersion = reader.getString();
                 } else if ("sourceServerBrandVersion".equals(fieldName)) {

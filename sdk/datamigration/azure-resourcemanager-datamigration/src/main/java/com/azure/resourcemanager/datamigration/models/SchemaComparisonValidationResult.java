@@ -53,12 +53,35 @@ public final class SchemaComparisonValidationResult implements JsonSerializable<
     }
 
     /**
+     * Set the schemaDifferences property: List of schema differences between the source and target databases.
+     * 
+     * @param schemaDifferences the schemaDifferences value to set.
+     * @return the SchemaComparisonValidationResult object itself.
+     */
+    public SchemaComparisonValidationResult
+        withSchemaDifferences(SchemaComparisonValidationResultType schemaDifferences) {
+        this.schemaDifferences = schemaDifferences;
+        return this;
+    }
+
+    /**
      * Get the validationErrors property: List of errors that happened while performing schema compare validation.
      * 
      * @return the validationErrors value.
      */
     public ValidationError validationErrors() {
         return this.validationErrors;
+    }
+
+    /**
+     * Set the validationErrors property: List of errors that happened while performing schema compare validation.
+     * 
+     * @param validationErrors the validationErrors value to set.
+     * @return the SchemaComparisonValidationResult object itself.
+     */
+    public SchemaComparisonValidationResult withValidationErrors(ValidationError validationErrors) {
+        this.validationErrors = validationErrors;
+        return this;
     }
 
     /**
@@ -121,6 +144,8 @@ public final class SchemaComparisonValidationResult implements JsonSerializable<
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("schemaDifferences", this.schemaDifferences);
+        jsonWriter.writeJsonField("validationErrors", this.validationErrors);
         jsonWriter.writeMapField("sourceDatabaseObjectCount", this.sourceDatabaseObjectCount,
             (writer, element) -> writer.writeLong(element));
         jsonWriter.writeMapField("targetDatabaseObjectCount", this.targetDatabaseObjectCount,

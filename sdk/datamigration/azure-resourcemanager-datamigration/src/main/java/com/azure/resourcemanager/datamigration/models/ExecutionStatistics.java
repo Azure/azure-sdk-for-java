@@ -64,6 +64,17 @@ public final class ExecutionStatistics implements JsonSerializable<ExecutionStat
     }
 
     /**
+     * Set the executionCount property: No. of query executions.
+     * 
+     * @param executionCount the executionCount value to set.
+     * @return the ExecutionStatistics object itself.
+     */
+    public ExecutionStatistics withExecutionCount(Long executionCount) {
+        this.executionCount = executionCount;
+        return this;
+    }
+
+    /**
      * Get the cpuTimeMs property: CPU Time in millisecond(s) for the query execution.
      * 
      * @return the cpuTimeMs value.
@@ -73,12 +84,34 @@ public final class ExecutionStatistics implements JsonSerializable<ExecutionStat
     }
 
     /**
+     * Set the cpuTimeMs property: CPU Time in millisecond(s) for the query execution.
+     * 
+     * @param cpuTimeMs the cpuTimeMs value to set.
+     * @return the ExecutionStatistics object itself.
+     */
+    public ExecutionStatistics withCpuTimeMs(Float cpuTimeMs) {
+        this.cpuTimeMs = cpuTimeMs;
+        return this;
+    }
+
+    /**
      * Get the elapsedTimeMs property: Time taken in millisecond(s) for executing the query.
      * 
      * @return the elapsedTimeMs value.
      */
     public Float elapsedTimeMs() {
         return this.elapsedTimeMs;
+    }
+
+    /**
+     * Set the elapsedTimeMs property: Time taken in millisecond(s) for executing the query.
+     * 
+     * @param elapsedTimeMs the elapsedTimeMs value to set.
+     * @return the ExecutionStatistics object itself.
+     */
+    public ExecutionStatistics withElapsedTimeMs(Float elapsedTimeMs) {
+        this.elapsedTimeMs = elapsedTimeMs;
+        return this;
     }
 
     /**
@@ -111,12 +144,34 @@ public final class ExecutionStatistics implements JsonSerializable<ExecutionStat
     }
 
     /**
+     * Set the hasErrors property: Indicates whether the query resulted in an error.
+     * 
+     * @param hasErrors the hasErrors value to set.
+     * @return the ExecutionStatistics object itself.
+     */
+    public ExecutionStatistics withHasErrors(Boolean hasErrors) {
+        this.hasErrors = hasErrors;
+        return this;
+    }
+
+    /**
      * Get the sqlErrors property: List of sql Errors.
      * 
      * @return the sqlErrors value.
      */
     public List<String> sqlErrors() {
         return this.sqlErrors;
+    }
+
+    /**
+     * Set the sqlErrors property: List of sql Errors.
+     * 
+     * @param sqlErrors the sqlErrors value to set.
+     * @return the ExecutionStatistics object itself.
+     */
+    public ExecutionStatistics withSqlErrors(List<String> sqlErrors) {
+        this.sqlErrors = sqlErrors;
+        return this;
     }
 
     /**
@@ -140,7 +195,12 @@ public final class ExecutionStatistics implements JsonSerializable<ExecutionStat
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("executionCount", this.executionCount);
+        jsonWriter.writeNumberField("cpuTimeMs", this.cpuTimeMs);
+        jsonWriter.writeNumberField("elapsedTimeMs", this.elapsedTimeMs);
         jsonWriter.writeMapField("waitStats", this.waitStats, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("hasErrors", this.hasErrors);
+        jsonWriter.writeArrayField("sqlErrors", this.sqlErrors, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
