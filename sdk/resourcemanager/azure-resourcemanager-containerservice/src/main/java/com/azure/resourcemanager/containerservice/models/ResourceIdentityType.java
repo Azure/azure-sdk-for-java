@@ -5,9 +5,8 @@
 package com.azure.resourcemanager.containerservice.models;
 
 /**
- * The type of identity used for the managed cluster.
- * 
- * For more information see [use managed identities in AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
+ * The type of identity used for the managed cluster. For more information see [use managed identities in
+ * AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
  */
 public enum ResourceIdentityType {
     /**

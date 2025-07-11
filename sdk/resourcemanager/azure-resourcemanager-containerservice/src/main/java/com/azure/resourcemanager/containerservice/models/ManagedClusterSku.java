@@ -22,7 +22,7 @@ public final class ManagedClusterSku implements JsonSerializable<ManagedClusterS
     private ManagedClusterSkuName name;
 
     /*
-     * If not specified, the default is 'Free'. See [AKS Pricing
+     * The tier of a managed cluster SKU. If not specified, the default is 'Free'. See [AKS Pricing
      * Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
      */
     private ManagedClusterSkuTier tier;
@@ -54,8 +54,8 @@ public final class ManagedClusterSku implements JsonSerializable<ManagedClusterS
     }
 
     /**
-     * Get the tier property: If not specified, the default is 'Free'. See [AKS Pricing
-     * Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
+     * Get the tier property: The tier of a managed cluster SKU. If not specified, the default is 'Free'. See [AKS
+     * Pricing Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
      * 
      * @return the tier value.
      */
@@ -64,8 +64,8 @@ public final class ManagedClusterSku implements JsonSerializable<ManagedClusterS
     }
 
     /**
-     * Set the tier property: If not specified, the default is 'Free'. See [AKS Pricing
-     * Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
+     * Set the tier property: The tier of a managed cluster SKU. If not specified, the default is 'Free'. See [AKS
+     * Pricing Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
      * 
      * @param tier the tier value to set.
      * @return the ManagedClusterSku object itself.

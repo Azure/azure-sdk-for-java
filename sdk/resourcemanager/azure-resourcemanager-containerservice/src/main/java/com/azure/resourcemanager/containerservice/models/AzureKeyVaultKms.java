@@ -30,9 +30,9 @@ public final class AzureKeyVaultKms implements JsonSerializable<AzureKeyVaultKms
     private String keyId;
 
     /*
-     * Network access of key vault. The possible values are `Public` and `Private`. `Public` means the key vault allows
-     * public access from all networks. `Private` means the key vault disables public access and enables private link.
-     * The default value is `Public`.
+     * Network access of the key vault. Network access of key vault. The possible values are `Public` and `Private`.
+     * `Public` means the key vault allows public access from all networks. `Private` means the key vault disables
+     * public access and enables private link. The default value is `Public`.
      */
     private KeyVaultNetworkAccessTypes keyVaultNetworkAccess;
 
@@ -95,9 +95,9 @@ public final class AzureKeyVaultKms implements JsonSerializable<AzureKeyVaultKms
     }
 
     /**
-     * Get the keyVaultNetworkAccess property: Network access of key vault. The possible values are `Public` and
-     * `Private`. `Public` means the key vault allows public access from all networks. `Private` means the key vault
-     * disables public access and enables private link. The default value is `Public`.
+     * Get the keyVaultNetworkAccess property: Network access of the key vault. Network access of key vault. The
+     * possible values are `Public` and `Private`. `Public` means the key vault allows public access from all networks.
+     * `Private` means the key vault disables public access and enables private link. The default value is `Public`.
      * 
      * @return the keyVaultNetworkAccess value.
      */
@@ -106,9 +106,9 @@ public final class AzureKeyVaultKms implements JsonSerializable<AzureKeyVaultKms
     }
 
     /**
-     * Set the keyVaultNetworkAccess property: Network access of key vault. The possible values are `Public` and
-     * `Private`. `Public` means the key vault allows public access from all networks. `Private` means the key vault
-     * disables public access and enables private link. The default value is `Public`.
+     * Set the keyVaultNetworkAccess property: Network access of the key vault. Network access of key vault. The
+     * possible values are `Public` and `Private`. `Public` means the key vault allows public access from all networks.
+     * `Private` means the key vault disables public access and enables private link. The default value is `Public`.
      * 
      * @param keyVaultNetworkAccess the keyVaultNetworkAccess value to set.
      * @return the AzureKeyVaultKms object itself.

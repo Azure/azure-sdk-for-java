@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class ManagedClusterMetricsProfile implements JsonSerializable<ManagedClusterMetricsProfile> {
     /*
-     * The cost analysis configuration for the cluster
+     * The configuration for detailed per-Kubernetes resource cost analysis.
      */
     private ManagedClusterCostAnalysis costAnalysis;
 
@@ -28,7 +28,7 @@ public final class ManagedClusterMetricsProfile implements JsonSerializable<Mana
     }
 
     /**
-     * Get the costAnalysis property: The cost analysis configuration for the cluster.
+     * Get the costAnalysis property: The configuration for detailed per-Kubernetes resource cost analysis.
      * 
      * @return the costAnalysis value.
      */
@@ -37,7 +37,7 @@ public final class ManagedClusterMetricsProfile implements JsonSerializable<Mana
     }
 
     /**
-     * Set the costAnalysis property: The cost analysis configuration for the cluster.
+     * Set the costAnalysis property: The configuration for detailed per-Kubernetes resource cost analysis.
      * 
      * @param costAnalysis the costAnalysis value to set.
      * @return the ManagedClusterMetricsProfile object itself.
