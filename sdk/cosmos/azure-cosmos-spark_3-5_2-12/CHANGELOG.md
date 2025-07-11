@@ -36,7 +36,7 @@
 
 ### 4.36.0 (2025-01-14)
 > [!IMPORTANT]
-> We strongly recommend our customers to use version 4.34.0 and above.
+> We strongly recommend our customers to use version 4.36.0 and above especially if using all versions and deletes change feed.
 
 #### Features Added
 * Added the udfs `GetFeedRangesForContainer` and `GetOverlappingFeedRange` to ease mapping of cosmos partition key to databricks table partition key. - See [PR 43092](https://github.com/Azure/azure-sdk-for-java/pull/43092)
