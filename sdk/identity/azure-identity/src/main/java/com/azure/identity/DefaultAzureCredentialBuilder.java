@@ -301,10 +301,10 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
 
         if (useDeveloperCredentials) {
             output.add(new IntelliJCredential(tenantId, identityClientOptions.clone()));
+            output.add(new VisualStudioCodeCredential(tenantId, identityClientOptions.clone()));
             output.add(new AzureCliCredential(tenantId, identityClientOptions.clone()));
             output.add(new AzurePowerShellCredential(tenantId, identityClientOptions.clone()));
             output.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
-            output.add(new VisualStudioCodeCredential(tenantId, identityClientOptions.clone()));
         }
 
         return output;
