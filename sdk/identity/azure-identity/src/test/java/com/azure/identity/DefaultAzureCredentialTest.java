@@ -27,6 +27,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -666,6 +667,81 @@ public class DefaultAzureCredentialTest {
         assertInstanceOf(AzureCliCredential.class, credentials.get(2));
         assertInstanceOf(AzurePowerShellCredential.class, credentials.get(3));
         assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(4));
+    }
+
+    @ParameterizedTest
+    @ValueSource(
+        strings = {
+            "AzureCliCredential",
+            "azureclicredential",
+            "AZURECLICREDENTIAL",
+            "IntelliJCredential",
+            "intellijcredential",
+            "AzurePowerShellCredential",
+            "azurepowershellcredential",
+            "AzureDeveloperCliCredential",
+            "azuredeveloperclicredential",
+            "EnvironmentCredential",
+            "environmentcredential",
+            "WorkloadIdentityCredential",
+            "workloadidentitycredential",
+            "ManagedIdentityCredential",
+            "managedidentitycredential",
+            "VisualStudioCodeCredential",
+            "visualstudiocodecredential" })
+    public void testTargetedCredentialSelection(String credentialValue) {
+        // Setup config with targeted credential value (case-insensitive)
+        TestConfigurationSource configSource
+            = new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", credentialValue);
+        Configuration configuration = TestUtils.createTestConfiguration(configSource);
+
+        // Build the credential with the test configuration
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
+        List<TokenCredential> credentials = extractCredentials(credential);
+
+        // Should contain exactly one credential
+        assertEquals(1, credentials.size());
+
+        // Assert that the only credential matches expected type
+        Class<? extends TokenCredential> expectedType;
+        switch (credentialValue.toLowerCase(Locale.ROOT)) {
+            case "azureclicredential":
+                expectedType = AzureCliCredential.class;
+                break;
+
+            case "intellijcredential":
+                expectedType = IntelliJCredential.class;
+                break;
+
+            case "azurepowershellcredential":
+                expectedType = AzurePowerShellCredential.class;
+                break;
+
+            case "azuredeveloperclicredential":
+                expectedType = AzureDeveloperCliCredential.class;
+                break;
+
+            case "environmentcredential":
+                expectedType = EnvironmentCredential.class;
+                break;
+
+            case "workloadidentitycredential":
+                expectedType = WorkloadIdentityCredential.class;
+                break;
+
+            case "managedidentitycredential":
+                expectedType = ManagedIdentityCredential.class;
+                break;
+
+            case "visualstudiocodecredential":
+                expectedType = VisualStudioCodeCredential.class;
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unsupported test value: " + credentialValue);
+        }
+
+        assertInstanceOf(expectedType, credentials.get(0));
     }
 
     @ParameterizedTest
