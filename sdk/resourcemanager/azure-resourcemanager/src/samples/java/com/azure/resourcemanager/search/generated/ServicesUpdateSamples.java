@@ -13,6 +13,8 @@ import com.azure.resourcemanager.search.models.IdentityType;
 import com.azure.resourcemanager.search.models.IpRule;
 import com.azure.resourcemanager.search.models.NetworkRuleSet;
 import com.azure.resourcemanager.search.models.PublicNetworkAccess;
+import com.azure.resourcemanager.search.models.SearchBypass;
+import com.azure.resourcemanager.search.models.SearchDataExfiltrationProtection;
 import com.azure.resourcemanager.search.models.SearchEncryptionWithCmk;
 import com.azure.resourcemanager.search.models.SearchSemanticSearch;
 import com.azure.resourcemanager.search.models.SearchServiceUpdate;
@@ -27,7 +29,7 @@ import java.util.Map;
  */
 public final class ServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/
      * SearchUpdateServiceDisableLocalAuth.json
      */
     /**
@@ -49,7 +51,53 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/
+     * x-ms-original-file:
+     * specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchUpdateServiceWithSku.json
+     */
+    /**
+     * Sample code: SearchUpdateServiceWithSku.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void searchUpdateServiceWithSku(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .updateWithResponse("rg1", "mysearchservice",
+                new SearchServiceUpdate().withSku(new Sku().withName(SkuName.STANDARD2))
+                    .withTags(mapOf("app-name", "My e-commerce app", "new-tag", "Adding a new tag")),
+                null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/
+     * SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
+     */
+    /**
+     * Sample code: SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void searchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .updateWithResponse("rg1", "mysearchservice",
+                new SearchServiceUpdate().withReplicaCount(3)
+                    .withPartitionCount(1)
+                    .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                    .withNetworkRuleSet(new NetworkRuleSet()
+                        .withIpRules(
+                            Arrays.asList(new IpRule().withValue("123.4.5.6"), new IpRule().withValue("123.4.6.0/18")))
+                        .withBypass(SearchBypass.AZURE_SERVICES)),
+                null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/
      * SearchUpdateServiceWithCmkEnforcement.json
      */
     /**
@@ -71,7 +119,29 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/
+     * SearchUpdateServiceWithDataExfiltration.json
+     */
+    /**
+     * Sample code: SearchUpdateServiceWithDataExfiltration.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void searchUpdateServiceWithDataExfiltration(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .updateWithResponse("rg1", "mysearchservice",
+                new SearchServiceUpdate()
+                    .withTags(mapOf("app-name", "My e-commerce app", "new-tag", "Adding a new tag"))
+                    .withReplicaCount(2)
+                    .withDataExfiltrationProtections(Arrays.asList(SearchDataExfiltrationProtection.BLOCK_ALL)),
+                null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/
      * SearchUpdateServiceToRemoveIdentity.json
      */
     /**
@@ -91,7 +161,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/
      * SearchUpdateServiceWithSemanticSearch.json
      */
     /**
@@ -113,7 +183,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/
      * SearchUpdateServiceToAllowAccessFromPrivateEndpoints.json
      */
     /**
@@ -135,7 +205,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/
      * SearchUpdateServiceToAllowAccessFromPublicCustomIPs.json
      */
     /**
@@ -160,7 +230,7 @@ public final class ServicesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateServiceAuthOptions.
+     * specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchUpdateServiceAuthOptions.
      * json
      */
     /**
@@ -184,7 +254,7 @@ public final class ServicesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchUpdateService.json
+     * specification/search/resource-manager/Microsoft.Search/stable/2025-05-01/examples/SearchUpdateService.json
      */
     /**
      * Sample code: SearchUpdateService.
