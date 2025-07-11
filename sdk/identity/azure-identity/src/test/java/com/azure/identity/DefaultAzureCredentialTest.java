@@ -658,7 +658,7 @@ public class DefaultAzureCredentialTest {
         List<TokenCredential> credentials = extractCredentials(credential);
 
         // Only developer credentials should be present (4)
-        assertEquals(4, credentials.size());
+        assertEquals(5, credentials.size());
 
         // Verify developer credentials in order
         assertInstanceOf(IntelliJCredential.class, credentials.get(0));
@@ -696,7 +696,7 @@ public class DefaultAzureCredentialTest {
         List<TokenCredential> credentials = extractCredentials(credential);
 
         // Verify the complete chain with all 7 credentials
-        assertEquals(7, credentials.size());
+        assertEquals(8, credentials.size());
         assertInstanceOf(EnvironmentCredential.class, credentials.get(0));
         assertInstanceOf(WorkloadIdentityCredential.class, credentials.get(1));
         assertInstanceOf(ManagedIdentityCredential.class, credentials.get(2));
