@@ -221,9 +221,6 @@ directive:
     from: UpdateTranscriptionRequest
     to: UpdateTranscriptionRequestInternal
 - rename-model:
-    from: StartDialogRequest
-    to: StartDialogRequestInternal
-- rename-model:
     from: RecordingStorageKind
     to: RecordingStorageType
 
@@ -254,15 +251,6 @@ directive:
 - remove-model: SpeechResult
 - remove-model: CancelAddParticipantSucceeded
 - remove-model: CancelAddParticipantFailed
-- remove-model: DialogCompleted
-- remove-model: DialogConsent
-- remove-model: DialogFailed
-- remove-model: DialogHangup
-- remove-model: DialogLanguageChange
-- remove-model: DialogSensitivityUpdate
-- remove-model: DialogStarted
-- remove-model: DialogTransfer
-- remove-model: DialogFailed
 - remove-model: TeamsComplianceRecordingStateChanged
 - remove-model: TeamsRecordingStateChanged
 - remove-model: TranscriptionStarted
