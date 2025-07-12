@@ -21,6 +21,7 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static io.clientcore.http.netty4.implementation.Netty4Utility.awaitLatch;
 
@@ -36,6 +37,11 @@ public final class Netty4ChannelBinaryData extends BinaryData {
     private final Channel channel;
     private final Long length;
     private final boolean isHttp2;
+    private final AtomicBoolean streamDrained = new AtomicBoolean(false);
+    private final CountDownLatch drainLatch = new CountDownLatch(1);
+    // Manages the "closed" state, ensuring cleanup happens only once.
+    private final AtomicBoolean closed = new AtomicBoolean(false);
+    private final Runnable onClose;
 
     // Non-final to allow nulling out after use.
     private ByteArrayOutputStream eagerContent;
@@ -49,12 +55,23 @@ public final class Netty4ChannelBinaryData extends BinaryData {
      * @param channel The Netty {@link Channel}.
      * @param length Size of the response body (if known).
      * @param isHttp2 Flag indicating whether the handler is used for HTTP/2 or not.
+     * @param onClose The Runnable to run when the {@code close()} method is triggered.
      */
+    public Netty4ChannelBinaryData(ByteArrayOutputStream eagerContent, Channel channel, Long length, boolean isHttp2,
+        Runnable onClose) {
+        this.eagerContent = eagerContent;
+        this.channel = channel;
+        this.length = length;
+        this.isHttp2 = isHttp2;
+        this.onClose = onClose;
+    }
+
     public Netty4ChannelBinaryData(ByteArrayOutputStream eagerContent, Channel channel, Long length, boolean isHttp2) {
         this.eagerContent = eagerContent;
         this.channel = channel;
         this.length = length;
         this.isHttp2 = isHttp2;
+        this.onClose = null;
     }
 
     @Override
@@ -64,27 +81,8 @@ public final class Netty4ChannelBinaryData extends BinaryData {
         }
 
         if (bytes == null) {
-            CountDownLatch latch = new CountDownLatch(1);
-            Netty4EagerConsumeChannelHandler handler = new Netty4EagerConsumeChannelHandler(latch,
-                buf -> buf.readBytes(eagerContent, buf.readableBytes()), isHttp2);
-            channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, handler);
-            channel.config().setAutoRead(true);
-
-            awaitLatch(latch);
-
-            Throwable exception = handler.channelException();
-            if (exception != null) {
-                if (exception instanceof Error) {
-                    throw (Error) exception;
-                } else {
-                    throw CoreException.from(exception);
-                }
-            } else {
-                bytes = eagerContent.toByteArray();
-            }
-            eagerContent = null;
+            drainStream();
         }
-
         return bytes;
     }
 
@@ -105,7 +103,7 @@ public final class Netty4ChannelBinaryData extends BinaryData {
     @Override
     public InputStream toStream() {
         if (bytes == null) {
-            return new Netty4ChannelInputStream(eagerContent, channel, isHttp2);
+            return new Netty4ChannelInputStream(eagerContent, channel, isHttp2, this::close);
         } else {
             return new ByteArrayInputStream(bytes);
         }
@@ -124,36 +122,11 @@ public final class Netty4ChannelBinaryData extends BinaryData {
 
     @Override
     public void writeTo(OutputStream outputStream) {
+        Objects.requireNonNull(outputStream, "'outputStream' cannot be null.");
         try {
-            if (bytes == null) {
-                // Channel hasn't been read yet, don't buffer it, just write it to the OutputStream as it's being read.
-                if (eagerContent.size() > 0) {
-                    outputStream.write(eagerContent.toByteArray());
-                }
-
-                CountDownLatch latch = new CountDownLatch(1);
-                Netty4EagerConsumeChannelHandler handler = new Netty4EagerConsumeChannelHandler(latch,
-                    buf -> buf.readBytes(outputStream, buf.readableBytes()), isHttp2);
-                channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, handler);
-                channel.config().setAutoRead(true);
-
-                awaitLatch(latch);
-
-                Throwable exception = handler.channelException();
-                if (exception != null) {
-                    if (exception instanceof Error) {
-                        throw (Error) exception;
-                    } else {
-                        throw CoreException.from(exception);
-                    }
-                }
-                eagerContent = null;
-            } else {
-                // Already converted the Channel to a byte[], use it.
-                outputStream.write(bytes);
-            }
-        } catch (IOException ex) {
-            throw LOGGER.throwableAtError().log(ex, CoreException::from);
+            outputStream.write(toBytes());
+        } catch (IOException e) {
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -182,10 +155,89 @@ public final class Netty4ChannelBinaryData extends BinaryData {
         return BinaryData.fromBytes(toBytes());
     }
 
+    /**
+     * Ensures the underlying network stream is fully consumed but does not close the channel,
+     * allowing it to be reused by the connection pool.
+     */
     @Override
     public void close() {
-        eagerContent = null;
-        channel.disconnect();
-        channel.close();
+        if (closed.compareAndSet(false, true)) {
+            // If draining hasn't started, it means the stream was not consumed.
+            // We need to drain it to ensure the connection can be safely reused.
+            if (!streamDrained.get()) {
+                drainAndCleanupAsync();
+            } else {
+                if (onClose != null) {
+                    onClose.run();
+                }
+            }
+        }
+    }
+
+    private void drainAndCleanupAsync() {
+        if (streamDrained.compareAndSet(false, true)) {
+            if (!channel.isActive()) {
+                if (onClose != null) {
+                    onClose.run();
+                }
+                drainLatch.countDown();
+                return;
+            }
+
+            Netty4EagerConsumeChannelHandler handler = new Netty4EagerConsumeChannelHandler(() -> {
+                if (onClose != null) {
+                    onClose.run();
+                }
+                drainLatch.countDown();
+            }, isHttp2);
+
+            channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, handler);
+            channel.config().setAutoRead(true);
+        } else {
+            awaitLatch(drainLatch);
+        }
+    }
+
+    private void drainStream() {
+        if (streamDrained.compareAndSet(false, true)) {
+            try {
+                if (length != null && eagerContent != null && eagerContent.size() >= length) {
+                    bytes = eagerContent.toByteArray();
+                    return;
+                }
+
+                if (!channel.isActive()) {
+                    bytes = (eagerContent == null) ? new byte[0] : eagerContent.toByteArray();
+                    return;
+                }
+
+                CountDownLatch ioLatch = new CountDownLatch(1);
+                // This handler is responsible for triggering the cleanup when it completes.
+                Netty4EagerConsumeChannelHandler handler = new Netty4EagerConsumeChannelHandler(ioLatch,
+                    buf -> buf.readBytes(eagerContent, buf.readableBytes()), isHttp2);
+
+                channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, handler);
+                channel.config().setAutoRead(true);
+
+                awaitLatch(ioLatch);
+                bytes = eagerContent.toByteArray();
+                Throwable exception = handler.channelException();
+
+                if (exception != null) {
+                    if (exception instanceof Error) {
+                        throw (Error) exception;
+                    } else {
+                        throw CoreException.from(exception);
+                    }
+                } else {
+                    bytes = eagerContent.toByteArray();
+                }
+            } finally {
+                eagerContent = null;
+                drainLatch.countDown();
+            }
+        } else {
+            awaitLatch(drainLatch);
+        }
     }
 }
