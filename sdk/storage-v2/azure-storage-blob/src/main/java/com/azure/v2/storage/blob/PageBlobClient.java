@@ -20,6 +20,7 @@ import io.clientcore.core.annotations.ServiceMethod;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.models.binarydata.BinaryData;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -32,14 +33,18 @@ public final class PageBlobClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     private final PageBlobsImpl serviceClient;
 
+    private final Instrumentation instrumentation;
+
     /**
      * Initializes an instance of PageBlobClient class.
      * 
      * @param serviceClient the service client implementation.
+     * @param instrumentation the instrumentation instance.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    PageBlobClient(PageBlobsImpl serviceClient) {
+    PageBlobClient(PageBlobsImpl serviceClient, Instrumentation instrumentation) {
         this.serviceClient = serviceClient;
+        this.instrumentation = instrumentation;
     }
 
     /**
@@ -94,10 +99,11 @@ public final class PageBlobClient {
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
         BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
         RequestContext requestContext) {
-        return this.serviceClient.createWithResponse(containerName, blob, contentLength, blobContentLength, timeout,
-            tier, metadata, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags,
-            blobSequenceNumber, requestId, blobTagsString, immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold,
-            blobHttpHeaders, cpkInfo, encryptionScopeParam, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Create", requestContext,
+            updatedContext -> this.serviceClient.createWithResponse(containerName, blob, contentLength,
+                blobContentLength, timeout, tier, metadata, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch,
+                ifNoneMatch, ifTags, blobSequenceNumber, requestId, blobTagsString, immutabilityPolicyExpiry,
+                immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo, encryptionScopeParam, updatedContext));
     }
 
     /**
@@ -204,11 +210,12 @@ public final class PageBlobClient {
         Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, String structuredBodyType, Long structuredContentLength,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, RequestContext requestContext) {
-        return this.serviceClient.uploadPagesWithResponse(containerName, blob, contentLength, body,
-            transactionalContentMD5, transactionalContentCrc64, timeout, range, leaseId,
-            ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince,
-            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, structuredBodyType, structuredContentLength,
-            cpkInfo, encryptionScopeParam, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.UploadPages", requestContext,
+            updatedContext -> this.serviceClient.uploadPagesWithResponse(containerName, blob, contentLength, body,
+                transactionalContentMD5, transactionalContentCrc64, timeout, range, leaseId,
+                ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince,
+                ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, structuredBodyType, structuredContentLength,
+                cpkInfo, encryptionScopeParam, updatedContext));
     }
 
     /**
@@ -306,9 +313,11 @@ public final class PageBlobClient {
         Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
         RequestContext requestContext) {
-        return this.serviceClient.clearPagesWithResponse(containerName, blob, contentLength, timeout, range, leaseId,
-            ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince,
-            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, cpkInfo, encryptionScopeParam, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ClearPages", requestContext,
+            updatedContext -> this.serviceClient.clearPagesWithResponse(containerName, blob, contentLength, timeout,
+                range, leaseId, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
+                ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, cpkInfo,
+                encryptionScopeParam, updatedContext));
     }
 
     /**
@@ -413,12 +422,13 @@ public final class PageBlobClient {
         String ifNoneMatch, String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, RequestContext requestContext) {
-        return this.serviceClient.uploadPagesFromURLWithResponse(containerName, blob, sourceUrl, sourceRange,
-            contentLength, range, sourceContentMD5, sourceContentcrc64, timeout, leaseId,
-            ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince,
-            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince,
-            sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo, encryptionScopeParam,
-            requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.UploadPagesFromURL", requestContext,
+            updatedContext -> this.serviceClient.uploadPagesFromURLWithResponse(containerName, blob, sourceUrl,
+                sourceRange, contentLength, range, sourceContentMD5, sourceContentcrc64, timeout, leaseId,
+                ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince,
+                ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince,
+                sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo, encryptionScopeParam,
+                updatedContext));
     }
 
     /**
@@ -530,9 +540,10 @@ public final class PageBlobClient {
         Integer timeout, String range, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String ifMatch, String ifNoneMatch, String ifTags, String requestId, String marker, Integer maxresults,
         RequestContext requestContext) {
-        return this.serviceClient.getPageRangesWithResponse(containerName, blob, snapshot, timeout, range, leaseId,
-            ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, marker, maxresults,
-            requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetPageRanges", requestContext,
+            updatedContext -> this.serviceClient.getPageRangesWithResponse(containerName, blob, snapshot, timeout,
+                range, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, marker,
+                maxresults, updatedContext));
     }
 
     /**
@@ -638,9 +649,10 @@ public final class PageBlobClient {
         Integer timeout, String prevsnapshot, String prevSnapshotUrl, String range, String leaseId,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, String marker, Integer maxresults, RequestContext requestContext) {
-        return this.serviceClient.getPageRangesDiffWithResponse(containerName, blob, snapshot, timeout, prevsnapshot,
-            prevSnapshotUrl, range, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags,
-            requestId, marker, maxresults, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetPageRangesDiff", requestContext,
+            updatedContext -> this.serviceClient.getPageRangesDiffWithResponse(containerName, blob, snapshot, timeout,
+                prevsnapshot, prevSnapshotUrl, range, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
+                ifTags, requestId, marker, maxresults, updatedContext));
     }
 
     /**
@@ -735,9 +747,10 @@ public final class PageBlobClient {
         String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
         RequestContext requestContext) {
-        return this.serviceClient.resizeWithResponse(containerName, blob, blobContentLength, timeout, leaseId,
-            ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, cpkInfo, encryptionScopeParam,
-            requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Resize", requestContext,
+            updatedContext -> this.serviceClient.resizeWithResponse(containerName, blob, blobContentLength, timeout,
+                leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, cpkInfo,
+                encryptionScopeParam, updatedContext));
     }
 
     /**
@@ -810,9 +823,10 @@ public final class PageBlobClient {
         SequenceNumberActionType sequenceNumberAction, Integer timeout, String leaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, Long blobSequenceNumber,
         String requestId, RequestContext requestContext) {
-        return this.serviceClient.updateSequenceNumberWithResponse(containerName, blob, sequenceNumberAction, timeout,
-            leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, blobSequenceNumber, requestId,
-            requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.UpdateSequenceNumber", requestContext,
+            updatedContext -> this.serviceClient.updateSequenceNumberWithResponse(containerName, blob,
+                sequenceNumberAction, timeout, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
+                ifTags, blobSequenceNumber, requestId, updatedContext));
     }
 
     /**
@@ -885,8 +899,9 @@ public final class PageBlobClient {
     public Response<Void> copyIncrementalWithResponse(String containerName, String blob, String copySource,
         Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, RequestContext requestContext) {
-        return this.serviceClient.copyIncrementalWithResponse(containerName, blob, copySource, timeout, ifModifiedSince,
-            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.CopyIncremental", requestContext,
+            updatedContext -> this.serviceClient.copyIncrementalWithResponse(containerName, blob, copySource, timeout,
+                ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, updatedContext));
     }
 
     /**

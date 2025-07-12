@@ -21,6 +21,8 @@ import io.clientcore.core.http.pipeline.HttpRetryOptions;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.http.pipeline.UserAgentOptions;
 import io.clientcore.core.http.pipeline.UserAgentPolicy;
+import io.clientcore.core.instrumentation.Instrumentation;
+import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
 import io.clientcore.core.traits.ConfigurationTrait;
 import io.clientcore.core.traits.HttpTrait;
 import io.clientcore.core.traits.ProxyTrait;
@@ -236,8 +238,17 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
         String localVersion = (version != null) ? version : "2025-01-05";
         AzureBlobStorageServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : AzureBlobStorageServiceVersion.getLatest();
-        AzureBlobStorageImpl client
-            = new AzureBlobStorageImpl(createHttpPipeline(), this.url, localVersion, localServiceVersion);
+        HttpInstrumentationOptions localHttpInstrumentationOptions = this.httpInstrumentationOptions == null
+            ? new HttpInstrumentationOptions()
+            : this.httpInstrumentationOptions;
+        SdkInstrumentationOptions sdkInstrumentationOptions
+            = new SdkInstrumentationOptions(PROPERTIES.getOrDefault(SDK_NAME, "UnknownName"))
+                .setSdkVersion(PROPERTIES.get(SDK_VERSION))
+                .setEndpoint(null);
+        Instrumentation instrumentation
+            = Instrumentation.create(localHttpInstrumentationOptions, sdkInstrumentationOptions);
+        AzureBlobStorageImpl client = new AzureBlobStorageImpl(createHttpPipeline(), instrumentation, this.url,
+            localVersion, localServiceVersion);
         return client;
     }
 
@@ -275,7 +286,8 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public StorageServiceClient buildServiceClient() {
-        return new StorageServiceClient(buildInnerClient().getServices());
+        AzureBlobStorageImpl innerClient = buildInnerClient();
+        return new StorageServiceClient(innerClient.getServices(), innerClient.getInstrumentation());
     }
 
     /**
@@ -285,7 +297,8 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public ContainerClient buildContainerClient() {
-        return new ContainerClient(buildInnerClient().getContainers());
+        AzureBlobStorageImpl innerClient = buildInnerClient();
+        return new ContainerClient(innerClient.getContainers(), innerClient.getInstrumentation());
     }
 
     /**
@@ -295,7 +308,8 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public BlobClient buildBlobClient() {
-        return new BlobClient(buildInnerClient().getBlobs());
+        AzureBlobStorageImpl innerClient = buildInnerClient();
+        return new BlobClient(innerClient.getBlobs(), innerClient.getInstrumentation());
     }
 
     /**
@@ -305,7 +319,8 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public PageBlobClient buildPageBlobClient() {
-        return new PageBlobClient(buildInnerClient().getPageBlobs());
+        AzureBlobStorageImpl innerClient = buildInnerClient();
+        return new PageBlobClient(innerClient.getPageBlobs(), innerClient.getInstrumentation());
     }
 
     /**
@@ -315,7 +330,8 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public AppendBlobClient buildAppendBlobClient() {
-        return new AppendBlobClient(buildInnerClient().getAppendBlobs());
+        AzureBlobStorageImpl innerClient = buildInnerClient();
+        return new AppendBlobClient(innerClient.getAppendBlobs(), innerClient.getInstrumentation());
     }
 
     /**
@@ -325,6 +341,7 @@ public final class AzureBlobStorageBuilder implements HttpTrait<AzureBlobStorage
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public BlockBlobClient buildBlockBlobClient() {
-        return new BlockBlobClient(buildInnerClient().getBlockBlobs());
+        AzureBlobStorageImpl innerClient = buildInnerClient();
+        return new BlockBlobClient(innerClient.getBlockBlobs(), innerClient.getInstrumentation());
     }
 }
