@@ -659,13 +659,14 @@ public class DefaultAzureCredentialTest {
         List<TokenCredential> credentials = extractCredentials(credential);
 
         // Only developer credentials should be present (4)
-        assertEquals(4, credentials.size());
+        assertEquals(5, credentials.size());
 
         // Verify developer credentials in order
         assertInstanceOf(IntelliJCredential.class, credentials.get(0));
-        assertInstanceOf(AzureCliCredential.class, credentials.get(1));
-        assertInstanceOf(AzurePowerShellCredential.class, credentials.get(2));
-        assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(3));
+        assertInstanceOf(VisualStudioCodeCredential.class, credentials.get(1));
+        assertInstanceOf(AzureCliCredential.class, credentials.get(2));
+        assertInstanceOf(AzurePowerShellCredential.class, credentials.get(3));
+        assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(4));
     }
 
     @ParameterizedTest
@@ -772,14 +773,15 @@ public class DefaultAzureCredentialTest {
         List<TokenCredential> credentials = extractCredentials(credential);
 
         // Verify the complete chain with all 7 credentials
-        assertEquals(7, credentials.size());
+        assertEquals(8, credentials.size());
         assertInstanceOf(EnvironmentCredential.class, credentials.get(0));
         assertInstanceOf(WorkloadIdentityCredential.class, credentials.get(1));
         assertInstanceOf(ManagedIdentityCredential.class, credentials.get(2));
         assertInstanceOf(IntelliJCredential.class, credentials.get(3));
-        assertInstanceOf(AzureCliCredential.class, credentials.get(4));
-        assertInstanceOf(AzurePowerShellCredential.class, credentials.get(5));
-        assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(6));
+        assertInstanceOf(VisualStudioCodeCredential.class, credentials.get(4));
+        assertInstanceOf(AzureCliCredential.class, credentials.get(5));
+        assertInstanceOf(AzurePowerShellCredential.class, credentials.get(6));
+        assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(7));
     }
 
     /**
