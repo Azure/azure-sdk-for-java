@@ -1470,6 +1470,13 @@
         "RESOURCEID"
 
       ]
+    },
+    {
+      "filename": "sdk/tools/sdk-linting-extensions/**",
+      "words": [
+        "elist",
+        "slist"
+      ]
     }
   ],
   "allowCompoundWords": true
