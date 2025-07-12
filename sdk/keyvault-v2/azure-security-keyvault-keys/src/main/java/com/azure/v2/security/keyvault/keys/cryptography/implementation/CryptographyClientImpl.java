@@ -129,7 +129,7 @@ public final class CryptographyClientImpl {
                 .setAad(additionalAuthenticatedData);
 
         try (Response<KeyOperationResult> response
-            = keyClient.encryptWithResponse(keyName, keyVersion, keyOperationsParameters, requestContext)) {
+            = keyClient.encryptWithResponse(keyName, keyOperationsParameters, keyVersion, requestContext)) {
 
             KeyOperationResult result = response.getValue();
 
@@ -164,7 +164,7 @@ public final class CryptographyClientImpl {
                 .setTag(authenticationTag);
 
         try (Response<KeyOperationResult> response
-            = keyClient.decryptWithResponse(keyName, keyVersion, keyOperationsParameters, requestContext)) {
+            = keyClient.decryptWithResponse(keyName, keyOperationsParameters, keyVersion, requestContext)) {
 
             return new DecryptResult(response.getValue().getResult(), algorithm, keyId);
         }
@@ -178,7 +178,7 @@ public final class CryptographyClientImpl {
         KeySignParameters keySignParameters = new KeySignParameters(mapKeySignatureAlgorithm(algorithm), digest);
 
         try (Response<KeyOperationResult> response
-            = keyClient.signWithResponse(keyName, keyVersion, keySignParameters, requestContext)) {
+            = keyClient.signWithResponse(keyName, keySignParameters, keyVersion, requestContext)) {
 
             return new SignResult(response.getValue().getResult(), algorithm, keyId);
         }
@@ -195,7 +195,7 @@ public final class CryptographyClientImpl {
             = new KeyVerifyParameters(mapKeySignatureAlgorithm(algorithm), digest, signature);
 
         try (Response<KeyVerifyResult> response
-            = keyClient.verifyWithResponse(keyName, keyVersion, keyVerifyParameters, requestContext)) {
+            = keyClient.verifyWithResponse(keyName, keyVerifyParameters, keyVersion, requestContext)) {
 
             return new VerifyResult(response.getValue().isValue(), algorithm, keyId);
         }
@@ -209,7 +209,7 @@ public final class CryptographyClientImpl {
         KeyOperationsParameters keyOperationsParameters = new KeyOperationsParameters(mapWrapAlgorithm(algorithm), key);
 
         try (Response<KeyOperationResult> response
-            = keyClient.wrapKeyWithResponse(keyName, keyVersion, keyOperationsParameters, requestContext)) {
+            = keyClient.wrapKeyWithResponse(keyName, keyOperationsParameters, keyVersion, requestContext)) {
 
             return new WrapResult(response.getValue().getResult(), algorithm, keyId);
         }
@@ -223,7 +223,7 @@ public final class CryptographyClientImpl {
             = new KeyOperationsParameters(mapWrapAlgorithm(algorithm), encryptedKey);
 
         try (Response<KeyOperationResult> response
-            = keyClient.unwrapKeyWithResponse(keyName, keyVersion, keyOperationsParameters, requestContext)) {
+            = keyClient.unwrapKeyWithResponse(keyName, keyOperationsParameters, keyVersion, requestContext)) {
 
             return new UnwrapResult(response.getValue().getResult(), algorithm, keyId);
         }

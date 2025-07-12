@@ -12,7 +12,6 @@ import com.azure.v2.security.keyvault.administration.implementation.models.RoleD
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -27,6 +26,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -49,7 +49,7 @@ public final class RoleDefinitionsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     RoleDefinitionsImpl(KeyVaultAdministrationClientImpl client) {
-        this.service = RestProxy.create(RoleDefinitionsService.class, client.getHttpPipeline());
+        this.service = RoleDefinitionsService.getNewInstance(client.getHttpPipeline());
         this.client = client;
     }
 
@@ -66,7 +66,7 @@ public final class RoleDefinitionsImpl {
      * The interface defining all the services for KeyVaultAdministrationClientRoleDefinitions to be used by the proxy
      * service to perform REST calls.
      */
-    @ServiceInterface(name = "KeyVaultAdministrati", host = "{vaultBaseUrl}")
+    @ServiceInterface(name = "KeyVaultAdministrationClientRoleDefinitions", host = "{vaultBaseUrl}")
     public interface RoleDefinitionsService {
         static RoleDefinitionsService getNewInstance(HttpPipeline pipeline) {
             try {
@@ -148,21 +148,6 @@ public final class RoleDefinitionsImpl {
     }
 
     /**
-     * Deletes a custom role definition.
-     * 
-     * @param scope The scope of the role definition to delete. Managed HSM only supports '/'.
-     * @param roleDefinitionName The name (GUID) of the role definition to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleDefinition delete(String scope, String roleDefinitionName) {
-        return deleteWithResponse(scope, roleDefinitionName, RequestContext.none()).getValue();
-    }
-
-    /**
      * Creates or updates a custom role definition.
      * 
      * @param scope The scope of the role definition to create or update. Managed HSM only supports '/'.
@@ -181,23 +166,6 @@ public final class RoleDefinitionsImpl {
         final String accept = "application/json";
         return service.createOrUpdate(this.client.getVaultBaseUrl(), this.client.getServiceVersion().getVersion(),
             scope, roleDefinitionName, contentType, accept, parameters, requestContext);
-    }
-
-    /**
-     * Creates or updates a custom role definition.
-     * 
-     * @param scope The scope of the role definition to create or update. Managed HSM only supports '/'.
-     * @param roleDefinitionName The name of the role definition to create or update. It can be any valid GUID.
-     * @param parameters Parameters for the role definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleDefinition createOrUpdate(String scope, String roleDefinitionName,
-        RoleDefinitionCreateParameters parameters) {
-        return createOrUpdateWithResponse(scope, roleDefinitionName, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -220,21 +188,6 @@ public final class RoleDefinitionsImpl {
     }
 
     /**
-     * Get the specified role definition.
-     * 
-     * @param scope The scope of the role definition to get. Managed HSM only supports '/'.
-     * @param roleDefinitionName The name of the role definition to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleDefinition get(String scope, String roleDefinitionName) {
-        return getWithResponse(scope, roleDefinitionName, RequestContext.none()).getValue();
-    }
-
-    /**
      * Get all role definitions that are applicable at scope and above.
      * 
      * @param scope The scope of the role definition.
@@ -251,7 +204,7 @@ public final class RoleDefinitionsImpl {
         Response<RoleDefinitionListResult> res = service.list(this.client.getVaultBaseUrl(),
             this.client.getServiceVersion().getVersion(), scope, filter, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -272,7 +225,7 @@ public final class RoleDefinitionsImpl {
         Response<RoleDefinitionListResult> res = service.list(this.client.getVaultBaseUrl(),
             this.client.getServiceVersion().getVersion(), scope, filter, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -288,8 +241,33 @@ public final class RoleDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleDefinition> list(String scope, String filter) {
-        return new PagedIterable<>((pagingOptions) -> listSinglePage(scope, filter),
-            (pagingOptions, nextLink) -> listNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return listSinglePage(scope, filter);
+        }, (pagingOptions, nextLink) -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -304,8 +282,33 @@ public final class RoleDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleDefinition> list(String scope) {
         final String filter = null;
-        return new PagedIterable<>((pagingOptions) -> listSinglePage(scope, filter),
-            (pagingOptions, nextLink) -> listNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return listSinglePage(scope, filter);
+        }, (pagingOptions, nextLink) -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -323,8 +326,33 @@ public final class RoleDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleDefinition> list(String scope, String filter, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> listSinglePage(scope, filter, requestContext),
-            (pagingOptions, nextLink) -> listNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "list")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return listSinglePage(scope, filter, requestContext);
+        }, (pagingOptions, nextLink) -> listNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -342,7 +370,7 @@ public final class RoleDefinitionsImpl {
         Response<RoleDefinitionListResult> res
             = service.listNext(nextLink, this.client.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -361,6 +389,8 @@ public final class RoleDefinitionsImpl {
         Response<RoleDefinitionListResult> res
             = service.listNext(nextLink, this.client.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RoleDefinitionsImpl.class);
 }
