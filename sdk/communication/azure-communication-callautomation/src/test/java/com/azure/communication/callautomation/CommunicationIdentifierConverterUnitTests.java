@@ -27,7 +27,7 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     private final String testTeamsExtensionUserId = "TeamsExtensionId";
     private final String testTeamsExtensionResourceId = "ResourceId";
     private final String testTeamsExtensionTenantId = "TenantId";
-    private final String testTeamsExtensionRawId = "TeamsExtensionId_TenantId_ResourceId";
+    private final String testTeamsExtensionRawId = "8:gcch-acs:ResourceId_TenantId_TeamsExtensionId";
 
     @Test
     public void convertWithoutKindCommunicationUser() {
@@ -204,6 +204,8 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
                     .setRawId(testTeamsExtensionRawId);
 
         assertNull(communicationIdentifierModel.getKind());
+        System.out.println("got.getRawId(): " + got.getRawId());
+        System.out.println("expected.getRawId(): " + expected.getRawId());
         assertEquals(expected, got);
     }
 

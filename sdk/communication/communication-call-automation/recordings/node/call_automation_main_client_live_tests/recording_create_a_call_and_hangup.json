@@ -1,0 +1,265 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://Sanitized/identities?api-version=2023-10-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "Authorization": "Sanitized",
+        "Connection": "keep-alive",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-js-communication-identity/1.3.1 core-rest-pipeline/1.21.0 Node/22.14.0 OS/(x64-Windows_NT-10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-content-sha256": "Sanitized",
+        "x-ms-date": "Sat, 12 Jul 2025 00:41:25 GMT"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "api-supported-versions": "2020-07-20-preview2, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01, 2023-10-01, 2025-03-02-preview, 2025-06-30",
+        "Connection": "keep-alive",
+        "Content-Length": "101",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sat, 12 Jul 2025 00:41:26 GMT",
+        "MS-CV": "Sanitized",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "x-ms-client-request-id": "Sanitized",
+        "X-Processing-Time": "12ms"
+      },
+      "ResponseBody": {
+        "identity": {
+          "id": "8:acs:00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized/identities?api-version=2023-10-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "Authorization": "Sanitized",
+        "Connection": "keep-alive",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-js-communication-identity/1.3.1 core-rest-pipeline/1.21.0 Node/22.14.0 OS/(x64-Windows_NT-10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-content-sha256": "Sanitized",
+        "x-ms-date": "Sat, 12 Jul 2025 00:41:25 GMT"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "api-supported-versions": "2020-07-20-preview2, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01, 2023-10-01, 2025-03-02-preview, 2025-06-30",
+        "Connection": "keep-alive",
+        "Content-Length": "101",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sat, 12 Jul 2025 00:41:26 GMT",
+        "MS-CV": "Sanitized",
+        "Request-Context": "appId=",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "x-ms-client-request-id": "Sanitized",
+        "X-Processing-Time": "16ms"
+      },
+      "ResponseBody": {
+        "identity": {
+          "id": "8:acs:00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized/calling/callConnections?api-version=2025-06-15",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "Authorization": "Sanitized",
+        "Connection": "keep-alive",
+        "Content-Length": "608",
+        "Content-Type": "application/json",
+        "Repeatability-First-Sent": "Sanitized",
+        "Repeatability-Request-ID": "Sanitized",
+        "User-Agent": "azsdk-js-communication-call-automation/1.5.0 core-rest-pipeline/1.22.1 Node/22.14.0 OS/(x64-Windows_NT-10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-content-sha256": "Sanitized",
+        "x-ms-date": "Sat, 12 Jul 2025 00:41:27 GMT"
+      },
+      "RequestBody": {
+        "targets": [
+          {
+            "kind": "communicationUser",
+            "rawId": "8:acs:00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000",
+            "communicationUser": {
+              "id": "8:acs:00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000"
+            }
+          }
+        ],
+        "source": {
+          "id": "8:acs:00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000"
+        },
+        "operationContext": "operationContextCreateCall",
+        "callbackUri": "https://Sanitized/api/servicebuscallback/events?q=8acs00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-0000000000008acs00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "api-supported-versions": "2023-03-06, 2023-10-15, 2024-04-15, 2024-09-15, 2025-05-15, 2025-06-15",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sat, 12 Jul 2025 00:41:29 GMT",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Microsoft-Skype-Chain-ID": "d8a27168-b8bb-4916-9c96-1107c3397931",
+        "X-Microsoft-Skype-Client": "azsdk-js-communication-call-automation/1.5.0 core-rest-pipeline/1.22.1 Node/22.14.0 OS/(x64-Windows_NT-10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "X-Ms-Client-Version": "azsdk-js-communication-call-automation/1.5.0 core-rest-pipeline/1.22.1 Node/22.14.0 OS/(x64-Windows_NT-10.0.26100)"
+      },
+      "ResponseBody": {
+        "callConnectionId": "05006780-5dc3-4787-bd53-9c40641d40c7",
+        "targets": [
+          {
+            "rawId": "8:acs:00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000",
+            "kind": "communicationUser",
+            "communicationUser": {
+              "id": "8:acs:00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000"
+            }
+          }
+        ],
+        "callConnectionState": "connecting",
+        "callbackUri": "https://Sanitized/api/servicebuscallback/events?q=8acs00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-0000000000008acs00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000",
+        "sourceDisplayName": "",
+        "source": {
+          "rawId": "8:acs:00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000",
+          "kind": "communicationUser",
+          "communicationUser": {
+            "id": "8:acs:00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "correlationId": "d8a27168-b8bb-4916-9c96-1107c3397931",
+        "mediaStreamingSubscription": {
+          "id": "5d374e56-4c71-42b8-972d-057f939c0e73",
+          "state": "disabled",
+          "subscribedContentTypes": [
+            "audio"
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized/calling/callConnections:answer?api-version=2025-06-15",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "Authorization": "Sanitized",
+        "Connection": "keep-alive",
+        "Content-Length": "406",
+        "Content-Type": "application/json",
+        "Repeatability-First-Sent": "Sanitized",
+        "Repeatability-Request-ID": "Sanitized",
+        "User-Agent": "azsdk-js-communication-call-automation/1.5.0 core-rest-pipeline/1.22.1 Node/22.14.0 OS/(x64-Windows_NT-10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-content-sha256": "Sanitized",
+        "x-ms-date": "Sat, 12 Jul 2025 00:41:31 GMT"
+      },
+      "RequestBody": {
+        "incomingCallContext": "Sanitized",
+        "callbackUri": "https://Sanitized/api/servicebuscallback/events?q=8acs00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-0000000000008acs00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000",
+        "operationContext": "operationContextAnswerCall",
+        "answeredBy": {
+          "id": "8:acs:00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "api-supported-versions": "2023-03-06, 2023-10-15, 2024-04-15, 2024-09-15, 2025-05-15, 2025-06-15",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sat, 12 Jul 2025 00:41:32 GMT",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Microsoft-Skype-Chain-ID": "d8a27168-b8bb-4916-9c96-1107c3397931",
+        "X-Microsoft-Skype-Client": "azsdk-js-communication-call-automation/1.5.0 core-rest-pipeline/1.22.1 Node/22.14.0 OS/(x64-Windows_NT-10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "X-Ms-Client-Version": "azsdk-js-communication-call-automation/1.5.0 core-rest-pipeline/1.22.1 Node/22.14.0 OS/(x64-Windows_NT-10.0.26100)"
+      },
+      "ResponseBody": {
+        "callConnectionId": "2f006780-4384-41fc-a836-56896b0200f1",
+        "serverCallId": "Sanitized",
+        "targets": [
+          {
+            "rawId": "8:acs:00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000",
+            "kind": "communicationUser",
+            "communicationUser": {
+              "id": "8:acs:00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000"
+            }
+          }
+        ],
+        "callConnectionState": "connecting",
+        "callbackUri": "https://Sanitized/api/servicebuscallback/events?q=8acs00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-0000000000008acs00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000",
+        "source": {
+          "rawId": "8:acs:00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000",
+          "kind": "communicationUser",
+          "communicationUser": {
+            "id": "8:acs:00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "correlationId": "d8a27168-b8bb-4916-9c96-1107c3397931",
+        "answeredBy": {
+          "id": "8:acs:00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000"
+        },
+        "mediaStreamingSubscription": {
+          "id": "0ed49822-1463-4a53-8ce8-ea48913115e6",
+          "state": "disabled",
+          "subscribedContentTypes": [
+            "audio"
+          ]
+        }
+      }
+    },
+    {
+      "RequestUri": "https://Sanitized/calling/callConnections/05006780-5dc3-4787-bd53-9c40641d40c7:terminate?api-version=2025-06-15",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip,deflate",
+        "Authorization": "Sanitized",
+        "Connection": "keep-alive",
+        "Content-Length": "0",
+        "Repeatability-First-Sent": "Sanitized",
+        "Repeatability-Request-ID": "Sanitized",
+        "User-Agent": "azsdk-js-communication-call-automation/1.5.0 core-rest-pipeline/1.22.1 Node/22.14.0 OS/(x64-Windows_NT-10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "x-ms-content-sha256": "Sanitized",
+        "x-ms-date": "Sat, 12 Jul 2025 00:41:32 GMT"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "api-supported-versions": "2023-03-06, 2023-10-15, 2024-04-15, 2024-09-15, 2025-05-15, 2025-06-15",
+        "Connection": "keep-alive",
+        "Date": "Sat, 12 Jul 2025 00:41:33 GMT",
+        "Repeatability-Result": "accepted",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "x-azure-ref": "Sanitized",
+        "X-Cache": "CONFIG_NOCACHE",
+        "X-Microsoft-Skype-Chain-ID": "d8a27168-b8bb-4916-9c96-1107c3397931",
+        "X-Microsoft-Skype-Client": "azsdk-js-communication-call-automation/1.5.0 core-rest-pipeline/1.22.1 Node/22.14.0 OS/(x64-Windows_NT-10.0.26100)",
+        "x-ms-client-request-id": "Sanitized",
+        "X-Ms-Client-Version": "azsdk-js-communication-call-automation/1.5.0 core-rest-pipeline/1.22.1 Node/22.14.0 OS/(x64-Windows_NT-10.0.26100)"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

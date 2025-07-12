@@ -81,7 +81,7 @@ public class CommunicationIdentifierConverter {
                 "'Cloud' of the CommunicationIdentifierModel cannot be null.");
             Objects.requireNonNull(rawId, "'RawID' of the CommunicationIdentifierModel cannot be null.");
             return new TeamsExtensionUserIdentifier(teamsExtensionUserIdentifierModel.getUserId(),
-                teamsExtensionUserIdentifierModel.getResourceId(), teamsExtensionUserIdentifierModel.getTenantId())
+                teamsExtensionUserIdentifierModel.getTenantId(), teamsExtensionUserIdentifierModel.getResourceId())
                     .setRawId(rawId)
                     .setCloudEnvironment(CommunicationCloudEnvironment
                         .fromString(teamsExtensionUserIdentifierModel.getCloud().toString()));
@@ -202,6 +202,9 @@ public class CommunicationIdentifierConverter {
         }
         if (identifier.getMicrosoftTeamsApp() != null) {
             return CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP;
+        }
+        if (identifier.getTeamsExtensionUser() != null) {
+            return CommunicationIdentifierModelKind.TEAMS_EXTENSION_USER;
         }
         return CommunicationIdentifierModelKind.UNKNOWN;
     }
