@@ -32,10 +32,6 @@
 [CmdletBinding()]
 param()
 
-# Since we're skipping Management for the moment, only look for files with certain parents. These
-# limitations will vanish once Management track is updated.
-$ValidParents = ("azure-sdk-parent", "azure-client-sdk-parent", "azure-data-sdk-parent", "azure-perf-test-parent", "azure-cosmos-spark_3_2-12", "io.clientcore:clientcore-parent")
-
 # SpringSampleParents is necessary for the spring samples which have to build using the spring-boot-starter-parent BOM.
 # The problem with this is, it's a BOM file and the spring dependencies are pulled in through that which means any
 # dependencies may or may not have versions. Unfortunately, there are still version tags azure sdk client libraries
@@ -70,13 +66,11 @@ $StartTime = $(get-date)
 # to this is the blanket, wildcard include for com.azure and com.microsoft.azure libraries.
 $ComAzureAllowlistIncludes = ("com.azure:*", "com.azure.v2:*", "com.azure.resourcemanager:*", "com.microsoft.azure:*", "com.azure.spring:*", "io.clientcore:*")
 
-function Join-With-NewLine([string]$msg, [string]$append)
-{
+function Join-With-NewLine([string]$msg, [string]$append) {
     return $msg + [Environment]::NewLine + $append
 }
 
-function Write-Log-Message([string]$msg, [boolean]$hasError)
-{
+function Write-Log-Message([string]$msg, [boolean]$hasError) {
     if ($hasError) {
         $script:FoundError = $true
         Write-Error-With-Color $potentialLogMessage
@@ -85,8 +79,7 @@ function Write-Log-Message([string]$msg, [boolean]$hasError)
     }
 }
 
-function Write-Error-With-Color([string]$msg)
-{
+function Write-Error-With-Color([string]$msg) {
     Write-Host "$($msg)" -ForegroundColor Red
 }
 
@@ -164,8 +157,7 @@ function Get-ArtifactsList-Per-Service-Directory {
         }
         # The ci.cosmos.yml lives in spring and is used to test the cosmos spring library. Its exception
         # will be moved once things are corrected.
-        if ($ymlFile.FullName.Split([IO.Path]::DirectorySeparatorChar) -contains "resourcemanagerhybrid" -or
-            $ymlFile.Name -eq "ci.cosmos.yml") {
+        if ($ymlFile.FullName.Split([IO.Path]::DirectorySeparatorChar) -contains "resourcemanagerhybrid" -or $ymlFile.Name -eq "ci.cosmos.yml") {
             continue
         }
         # The path is going to be the key. Since there can be multiple yml files for a single path,
@@ -242,14 +234,11 @@ function Build-Dependency-Hash-From-File {
         [hashtable]$depHash,
         [string]$depFile,
         [boolean]$extDepHash)
-    foreach($line in Get-Content $depFile)
-    {
-        if (!$line -or $line.Trim() -eq '' -or $line.StartsWith("#"))
-        {
+    foreach($line in Get-Content $depFile) {
+        if (!$line -or $line.Trim() -eq '' -or $line.StartsWith("#")) {
             continue
         }
-        if (!$extDepHash)
-        {
+        if (!$extDepHash) {
             try {
                 [Dependency]$dep = [Dependency]::new($line)
                 # This is the case where there is no current version but dependency isn't
@@ -259,32 +248,26 @@ function Build-Dependency-Hash-From-File {
                     Write-Error-With-Color "Invalid dependency line='$($line) in file=$($depFile) has no current version and is not unreleased_ or beta_.`nPlease ensure the format is <groupId>:<artifactId>;<dependencyVer>;<currentVer> and the seperators are semicolons (;)"
                     $script:FoundError = $true
                 }
-                if ($depHash.ContainsKey($dep.id))
-                {
+                if ($depHash.ContainsKey($dep.id)) {
                     Write-Error-With-Color "Error: Duplicate dependency encountered. '$($dep.id)' defined in '$($depFile)' already exists in the dependency list which means it is defined in multiple version_*.txt files."
                     $script:FoundError = $true
                     continue
                 }
                 $depHash.Add($dep.id, $dep)
-            }
-            catch {
+            } catch {
                 Write-Error-With-Color "Invalid dependency line='$($line) in file=$($depFile)"
                 $script:FoundError = $true
             }
-        }
-        else
-        {
+        } else {
             try {
                 [ExternalDependency]$dep = [ExternalDependency]::new($line)
-                if ($depHash.ContainsKey($dep.id))
-                {
+                if ($depHash.ContainsKey($dep.id)) {
                     Write-Error-With-Color "Error: Duplicate external_dependency encountered. '$($dep.id)' has a duplicate entry defined in '$($depFile)'. Please ensure that all entries are unique."
                     $script:FoundError = $true
                     continue
                 }
                 $depHash.Add($dep.id, $dep)
-            }
-            catch {
+            } catch {
                 Write-Error-With-Color "Invalid external dependency line='$($line) in file=$($depFile)"
                 $script:FoundError = $true
             }
@@ -309,77 +292,51 @@ function Test-Dependency-Tag-And-Version {
     # from the versionUpdateString in case it ends up being one of the dependency exceptions
     # which will have a <unique identifier>_ prepended to the groupId:artifactId
     $split = $versionUpdateString.Trim().Split(";")
-    if ($split.Count -ne 3)
-    {
+    if ($split.Count -ne 3) {
         return "Error: malformed dependency update tag='$($versionUpdateString)'. The dependency tag should have the following format: $($UpdateTagFormat)"
     }
     $depKey = $split[1]
     $depType = $split[2]
     # remove the trailing end brace
-    if (-not $depType.EndsWith("}"))
-    {
+    if (-not $depType.EndsWith("}")) {
         return "Error: malformed dependency update tag='$($versionUpdateString)' is missing the end brace."
     }
     $depType = $depType.Substring(0, $depType.IndexOf("}"))
 
-    if ($depType -eq $DependencyTypeExternal)
-    {
-        if (!$extDepHash.ContainsKey($depKey))
-        {
+    if ($depType -eq $DependencyTypeExternal) {
+        if (!$extDepHash.ContainsKey($depKey)) {
             return "Error: external_dependency '$($depKey)' does not exist in the external_dependencies. Please ensure the dependency type is correct or the dependency is appropriately added to the file."
+        } elseif ($versionString -ne $extDepHash[$depKey].ver) {
+            return "Error: $($depKey)'s <version> is '$($versionString)' but the external_dependency version is listed as $($extDepHash[$depKey].ver)"
         }
-        else
-        {
-            if ($versionString -ne $extDepHash[$depKey].ver)
-            {
-                return "Error: $($depKey)'s <version> is '$($versionString)' but the external_dependency version is listed as $($extDepHash[$depKey].ver)"
-            }
-        }
-    }
-    # at this point the dependency type is "current" or "dependency"
-    else
-    {
-        if (!$libHash.ContainsKey($depKey))
-        {
+    } else {
+        # at this point the dependency type is "current" or "dependency"
+        if (!$libHash.ContainsKey($depKey)) {
             return "Error: $($depKey)'s dependency type is '$($depType)' but the dependency does not exist in any of the version_*.txt files. Should this be an external_dependency? Please ensure the dependency type is correct or the dependency is added to the appropriate file."
-        }
-        else
-        {
-            if ($depType -eq $DependencyTypeDependency)
-            {
+        } else {
+            if ($depType -eq $DependencyTypeDependency) {
                 # Any libraries built as part of the same pipeline need to use the current
                 # version of other libraries within the same pipeline. Verify that this
                 # dependency, of type dependency, shouldn't be current
-                if ($libPerSDHash) {
-                    if ($libPerSDHash.Contains($depKey)) {
-                        return "Error: $($versionUpdateString.Trim()) is incorrectly set to $DependencyTypeDependency. Libraries building and releasing as part of the same pipeline need to be using the $DependencyTypeCurrent versions of each other."
-                    }
+                if ($libPerSDHash -and $libPerSDHash.Contains($depKey)) {
+                    return "Error: $($versionUpdateString.Trim()) is incorrectly set to $DependencyTypeDependency. Libraries building and releasing as part of the same pipeline need to be using the $DependencyTypeCurrent versions of each other."
                 }
-                if ($versionString -ne $libHash[$depKey].depVer)
-                {
+                if ($versionString -ne $libHash[$depKey].depVer) {
                     return "Error: $($depKey)'s <version> is '$($versionString)' but the dependency version is listed as $($libHash[$depKey].depVer)"
                 }
-            }
-            elseif ($depType -eq $DependencyTypeCurrent)
-            {
+            } elseif ($depType -eq $DependencyTypeCurrent) {
                 # Verify that none of the 'current' dependencies are using a groupId that starts with 'unreleased_' or 'beta_'
-                if ($depKey.StartsWith('unreleased_') -or $depKey.StartsWith('beta_'))
-                {
+                if ($depKey.StartsWith('unreleased_') -or $depKey.StartsWith('beta_')) {
                     return "Error: $($versionUpdateString.Trim()) is using an unreleased_ or beta_ dependency and trying to set current value. Only dependency versions can be set with an unreleased or beta dependency."
                 }
-                if ($libPerSDHash) {
-                    if (-not $libPerSDHash.Contains($depKey)) {
-                        return "Error: $($versionUpdateString.Trim()) is incorrectly set to $DependencyTypeCurrent. Only libraries building and releasing as part of the same pipeline should be using the $DependencyTypeCurrent versions of each other."
-                    }
+                if ($libPerSDHash -and -not $libPerSDHash.Contains($depKey)) {
+                    return "Error: $($versionUpdateString.Trim()) is incorrectly set to $DependencyTypeCurrent. Only libraries building and releasing as part of the same pipeline should be using the $DependencyTypeCurrent versions of each other."
                 }
-                if ($versionString -ne $libHash[$depKey].curVer)
-                {
+                if ($versionString -ne $libHash[$depKey].curVer) {
                     return "Error: $($depKey)'s <version> is '$($versionString)' but the current version is listed as $($libHash[$depKey].curVer)"
                 }
-            }
-            # At this point the version update string, itself, has an incorrect dependency tag
-            else
-            {
+            } else {
+                # At this point the version update string, itself, has an incorrect dependency tag
                 return "Error: Invalid dependency type '$($depType)' in version update string $($versionUpdateString). Dependency type must be one of $($DependencyTypeForError)"
             }
         }
@@ -400,8 +357,7 @@ function Confirm-Node-Is-Part-Of-Configuration {
     # which will have a type of just 'xml'. If we encounter a configuration node return true
     # otherwise return false.
     while ($theNode.GetType() -ieq [System.Xml.XmlElement]) {
-        if ($theNode.Name -ieq 'configuration')
-        {
+        if ($theNode.Name -ieq 'configuration') {
             return $true
         }
         $theNode = $theNode.ParentNode
@@ -425,22 +381,19 @@ function Assert-Spring-Sample-Version-Tags {
     $xmlNsManagerSpring = New-Object -TypeName "Xml.XmlNamespaceManager" -ArgumentList $xmlPomFile.NameTable
     $xmlNsManagerSpring.AddNamespace("ns", $xmlPomFile.DocumentElement.NamespaceURI)
 
-    if (-not $xmlPomFile.project.parent.groupId)
-    {
+    if (-not $xmlPomFile.project.parent.groupId) {
         $hasError = $true
         $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: parent/groupId is missing."
     }
 
     $versionNode = $xmlPomFile.SelectSingleNode("/ns:project/ns:parent/ns:version", $xmlNsManagerSpring)
-    if (-not $versionNode)
-    {
+    if (-not $versionNode){
         $hasError = $true
         $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: parent/version is missing."
         $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Missing project/version update tag. The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
     } else {
         $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
-        if ($retVal)
-        {
+        if ($retVal) {
             $hasError = $true
 
             $potentialLogMessage = Join-With-NewLine $potentialLogMessage "$($retVal)"
@@ -449,17 +402,14 @@ function Assert-Spring-Sample-Version-Tags {
 
     # Loop through the dependencies. If any dependency is in the libHash (aka, the libraries we build)
     # then it needs to have a version element and update tag.
-    foreach($dependencyNode in $xmlPomFile.GetElementsByTagName("dependency"))
-    {
+    foreach($dependencyNode in $xmlPomFile.GetElementsByTagName("dependency")) {
         $artifactId = $dependencyNode.artifactId
         $groupId = $dependencyNode.groupId
         # If the artifactId and groupId are both empty then check to see if this
         # is part of a configuration entry. If so then just continue.
-        if (!$artifactId -and !$groupId)
-        {
+        if (!$artifactId -and !$groupId) {
             $isPartOfConfig = Confirm-Node-Is-Part-Of-Configuration $dependencyNode
-            if (!$isPartOfConfig)
-            {
+            if (!$isPartOfConfig) {
                 $hasError = $true
                 # Because this particular case is harder to track down, print the OuterXML which is effectively the entire tag
                 $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency is missing version element and/or artifactId and groupId elements dependencyNode=$($dependencyNode.OuterXml)"
@@ -469,19 +419,15 @@ function Assert-Spring-Sample-Version-Tags {
         $hashKey = "$($groupId):$($artifactId)"
         $versionNode = $dependencyNode.GetElementsByTagName("version")[0]
         # If this is something we build and release, it better have a version and a version tag
-        if ($libHash.ContainsKey($hashKey))
-        {
-            if (-not $versionNode)
-            {
+        if ($libHash.ContainsKey($hashKey)) {
+            if (-not $versionNode) {
                 $hasError = $true
                 $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency is missing version element and tag groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             } else {
                 # verify the version tag and version are correct
-                if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
-                {
+                if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment") {
                     $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
-                    if ($retVal)
-                    {
+                    if ($retVal) {
                         $hasError = $true
                         $potentialLogMessage = Join-With-NewLine $potentialLogMessage "$($retVal)"
                     }
@@ -490,24 +436,19 @@ function Assert-Spring-Sample-Version-Tags {
                     $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency is missing version tag groupId=$($groupId), artifactId=$($artifactId) tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
                 }
             }
-        } else {
+        } elseif ($versionNode) {
             # else, if there's a version tag verify it, otherwise just skip it since the version should be coming
             # from the bom
-            if ($versionNode)
-            {
-                if  ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
-                {
-                    $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
-                    if ($retVal)
-                    {
-                        $hasError = $true
-                        $potentialLogMessage = Join-With-NewLine $potentialLogMessage "$($retVal)"
-                    }
-                # If there's no version tag then error, if there's a version then it must be tagged
-                } else {
+            if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment") {
+                $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
+                if ($retVal) {
                     $hasError = $true
-                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency is missing version tag groupId=$($groupId), artifactId=$($artifactId) tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage "$($retVal)"
                 }
+            # If there's no version tag then error, if there's a version then it must be tagged
+            } else {
+                $hasError = $true
+                $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency is missing version tag groupId=$($groupId), artifactId=$($artifactId) tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             }
         }
     }
@@ -524,8 +465,7 @@ Get-ArtifactsList-Per-Service-Directory $ArtifactsPerSD
 $libHash = @{}
 $verClientFile = Join-Path $Path "eng/versioning/version_client.txt"
 Build-Dependency-Hash-From-File $libHash $verClientFile $false
-if ($script:FoundError)
-{
+if ($script:FoundError) {
     Write-Error-With-Color "There were errors encountered building the dependency hash from version_client.txt. Please fix errors and run the script again."
     Write-Error-With-Color "This script can be run locally from the root of the repo. .\eng\versioning\pom_file_version_scanner.ps1"
     exit 1
@@ -534,8 +474,7 @@ if ($script:FoundError)
 $extDepHash = @{}
 $extDepFile = Join-Path $Path "eng/versioning/external_dependencies.txt"
 Build-Dependency-Hash-From-File $extDepHash $extDepFile $true
-if ($script:FoundError)
-{
+if ($script:FoundError) {
     Write-Error-With-Color "There were errors encountered building the external dependency has from external_dependencies.txt. Please fix errors and run the script again."
     Write-Error-With-Color "This script can be run locally from the root of the repo. .\eng\versioning\pom_file_version_scanner.ps1"
     exit 1
@@ -544,12 +483,17 @@ if ($script:FoundError)
 # Loop through every client and data POM file and perform the verification. Right now
 # management isn't being processed, when it is the checks below will go away and every
 # POM file under the sdk directory will get processed.
-Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
+$sdkRootPathCount = $SdkRoot.ToString().Split([IO.Path]::DirectorySeparatorChar).Count
+Get-ChildItem -Path $SdkRoot -Filter pom*.xml -Recurse -File -Depth 2 | ForEach-Object {
     $pomFile = $_.FullName
     $xmlPomFile = $null
 
-    if ($_.FullName -like "*azure-arm-parent*")
-    {
+    # Only check POM files that are three levels deep under sdk. This is to avoid checking
+    # the POM files that are in the root of the sdk directory which are used for
+    # building the SDK and are not libraries.
+    # Ex, sdk/core/azure-core/pom.xml is three levels deep but sdk/core/pom.xml is two levels deep.
+    $splitPomFile = $pomFile.Split([IO.Path]::DirectorySeparatorChar)
+    if ($splitPomFile.Count -ne ($sdkRootPathCount + 3)) {
         return
     }
 
@@ -557,38 +501,31 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     # that uses BOM and some dependencies will not have versions as they are deduced from
     # the BOM. Running version checks on these samples will always fail. So, we'll skip
     # all version checks in the root samples directory.
-    if ($_.FullName.StartsWith($SamplesPath))
-    {
+    if ($_.FullName.StartsWith($SamplesPath)) {
         return
     }
 
     # azure-core-jackson-tests verifies compatibility with different
     # Jackson versions, it should be excluded from version checks
-    if ($_.FullName -like "*azure-core-jackson-tests*")
-    {
+    if ($_.FullName -like "*azure-core-jackson-tests*") {
         return
     }
 
     # Packages under sdk/resourcemanagerhybrid has duplicate artifactId with that under sdk/resourcemanager
-    if ($_.FullName -like "*resourcemanagerhybrid*")
-    {
+    if ($_.FullName -like "*resourcemanagerhybrid*") {
         return
     }
 
     # Code customization packages should be excluded.
-    if ($_.FullName -like "*swagger*")
-    {
+    if ($_.FullName -like "*swagger*") {
         return
     }
 
     $xmlPomFile = New-Object xml
     $xmlPomFile.Load($pomFile)
-    if ($ValidParents -notcontains $xmlPomFile.project.parent.artifactId -and $ValidParents -notcontains $xmlPomFile.project.artifactId)
-    {
-        if ($SpringSampleParents -contains $xmlPomFile.project.parent.artifactId)
-        {
-            Assert-Spring-Sample-Version-Tags $libHash $extDepHash $xmlPomFile
-        }
+    if ($SpringSampleParents -contains $xmlPomFile.project.parent.artifactId) {
+        Assert-Spring-Sample-Version-Tags $libHash $extDepHash $xmlPomFile
+
         # This may look odd but ForEach-Object is a cmdlet which means that "continue"
         # exits the loop altogether and "return" behaves like continue for a particular
         # loop
@@ -597,8 +534,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
 
     $hasError = $false
     $potentialLogMessage = "processing pomFile=$($pomFile)"
-    if ($xmlPomFile.project.dependencyManagement)
-    {
+    if ($xmlPomFile.project.dependencyManagement -and $splitPomFile -notcontains "boms") {
         $hasError = $true
         $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: <dependencyManagement> is not allowed. Every dependency must have its own version and version update tag"
     }
@@ -608,44 +544,32 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
 
     # Ensure that the project has a version tag with the exception of projects under the eng directory which
     # aren't releasing libraries but still need to have their dependencies checked
-    if ($pomFile.Split([IO.Path]::DirectorySeparatorChar) -notcontains "eng")
-    {
+    if ($pomFile.Split([IO.Path]::DirectorySeparatorChar) -notcontains "eng") {
         $versionNode = $xmlPomFile.SelectSingleNode("/ns:project/ns:version", $xmlNsManager)
-        if ($xmlPomFile.project.version -and $versionNode)
-        {
+        if ($xmlPomFile.project.version -and $versionNode) {
             $artifactId = $xmlPomFile.project.artifactId
             $groupId = $xmlPomFile.project.groupId
-            if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
-            {
+            if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment") {
                 # the project's version will always be an update type of "current"
-                if ($versionNode.NextSibling.Value.Trim() -ne "{x-version-update;$($groupId):$($artifactId);current}")
-                {
+                if ($versionNode.NextSibling.Value.Trim() -ne "{x-version-update;$($groupId):$($artifactId);current}") {
                     $hasError = $true
                     # every project string needs to have an update tag and projects version tags are always 'current'
                     $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: project/version update tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
-                }
-                else
-                {
+                } else {
                     # verify the version tag and version are correct
                     $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
-                    if ($retVal)
-                    {
+                    if ($retVal) {
                         $hasError = $true
                         $potentialLogMessage = Join-With-NewLine $potentialLogMessage "$($retVal)"
                     }
                 }
-            }
-            else
-            {
+            } else {
                 $hasError = $true
                 # <!-- {x-version-update;<groupId>:<artifactId>;current} -->
                 # every project string needs to have an update tag and projects version tags are always 'current'
                 $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Missing project/version update tag. The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
             }
-
-        }
-        else
-        {
+        } else {
             # output an error for missing version element
             $hasError = $true
             $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Could not find project/version node for $($pomFile)"
@@ -655,39 +579,29 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     if ($xmlPomFile.project.parent) {
         # Verify the parent's version
         $versionNode = $xmlPomFile.SelectSingleNode("/ns:project/ns:parent/ns:version", $xmlNsManager)
-        if ($xmlPomFile.project.parent.version -and $versionNode)
-        {
+        if ($xmlPomFile.project.parent.version -and $versionNode) {
             $artifactId = $xmlPomFile.project.parent.artifactId
             $groupId = $xmlPomFile.project.parent.groupId
             # versionNode.NextSibling.Value should be the actual XML tag starting with {x-version-update
-            if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
-            {
+            if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment") {
                 # parent version
-                if ($versionNode.NextSibling.Value.Trim() -ne "{x-version-update;$($groupId):$($artifactId);current}")
-                {
+                if ($versionNode.NextSibling.Value.Trim() -ne "{x-version-update;$($groupId):$($artifactId);current}") {
                     $hasError = $true
                     $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: project/parent/version update tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
-                }
-                else
-                {
+                } else {
                     # verify the version tag and version are correct
                     $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
-                    if ($retVal)
-                    {
+                    if ($retVal) {
                         $hasError = $true
                         $potentialLogMessage = Join-With-NewLine $potentialLogMessage "$($retVal)"
                     }
                 }
-            }
-            else
-            {
+            } else {
                 $hasError = $true
                 # every project string needs to have an update tag and projects version tags are always 'current'
                 $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Missing project/parent/version update tag. The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current} -->"
             }
-        }
-        else
-        {
+        } else {
             # output an error for missing version element
             $hasError = $true
             $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Could not find project/parent/version node for $($pomFile)"
@@ -698,17 +612,19 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
 
     # Verify every dependency as a group, artifact and version
     # GetElementsByTagName should get all dependencies including dependencies under plugins
-    foreach($dependencyNode in $xmlPomFile.GetElementsByTagName("dependency"))
-    {
+    foreach($dependencyNode in $xmlPomFile.GetElementsByTagName("dependency")) {
+        if ($dependencyNode.ParentNode.ParentNode.Name -eq "dependencyManagement") {
+            # If this is a dependencyManagement entry then skip it since these are not
+            # dependencies that are being used in the project.
+            continue
+        }
+        
         $artifactId = $dependencyNode.artifactId
         $groupId = $dependencyNode.groupId
         # If the artifactId and groupId are both empty then check to see if this
         # is part of a configuration entry. If so then just continue.
-        if (!$artifactId -and !$groupId)
-        {
-            $isPartOfConfig = Confirm-Node-Is-Part-Of-Configuration $dependencyNode
-            if (!$isPartOfConfig)
-            {
+        if (!$artifactId -and !$groupId) {
+            if (-not (Confirm-Node-Is-Part-Of-Configuration $dependencyNode)) {
                 $hasError = $true
                 # Because this particular case is harder to track down, print the OuterXML which is effectively the entire tag
                 $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency is missing version element and/or artifactId and groupId elements dependencyNode=$($dependencyNode.OuterXml)"
@@ -717,34 +633,26 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         }
 
         $versionNode = $dependencyNode.GetElementsByTagName("version")[0]
-        if (!$versionNode)
-        {
+        if (!$versionNode) {
             $hasError = $true
             $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency is missing version element for groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             continue
         }
-        if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
-        {
+        if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment") {
             # unfortunately because there are POM exceptions we need to wildcard the group which may be
             # something like <area>_groupId
-            if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(.+)?$($groupId):$($artifactId);\w+}")
-            {
+            if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(.+)?$($groupId):$($artifactId);\w+}") {
                 $hasError = $true
                 $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
-            }
-            else
-            {
+            } else {
                 # verify the version tag and version are correct
                 $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value $artifactsPerSDHashSet
-                if ($retVal)
-                {
+                if ($retVal) {
                     $hasError = $true
                     $potentialLogMessage = Join-With-NewLine $potentialLogMessage $retVal
                 }
             }
-        }
-        else
-        {
+        } else {
             $hasError = $true
             $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Missing dependency version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
         }
@@ -752,17 +660,14 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     # Verify every plugin has a group, artifact and version
     # Verify every dependency has a group, artifact and version
     # GetElementsByTagName should get all dependencies including dependencies under plugins
-    foreach($pluginNode in $xmlPomFile.GetElementsByTagName("plugin"))
-    {
+    foreach($pluginNode in $xmlPomFile.GetElementsByTagName("plugin")) {
         $artifactId = $pluginNode.artifactId
         $groupId = $pluginNode.groupId
         # If the artifactId and groupId are both empty then check to see if this
         # is part of a configuration entry.
-        if (!$artifactId -and !$groupId)
-        {
+        if (!$artifactId -and !$groupId) {
             $isPartOfConfig = Confirm-Node-Is-Part-Of-Configuration $pluginNode
-            if (!$isPartOfConfig)
-            {
+            if (!$isPartOfConfig) {
                 $hasError = $true
                 # Because this particular case is harder to track down, print the OuterXML which is effectively the entire tag
                 $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: plugin is missing version element and/or artifactId and groupId elements pluginNode=$($pluginNode.OuterXml)"
@@ -770,57 +675,45 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             continue
         }
         # plugins should always have an artifact but may not have a groupId
-        if (!$groupId)
-        {
+        if (!$groupId) {
             $hasError = $true
             $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: plugin $($artifactId) is missing its groupId tag"
             continue
         }
         $versionNode = $pluginNode.GetElementsByTagName("version")[0]
-        if (!$versionNode)
-        {
+        if (!$versionNode) {
             $hasError = $true
             $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: plugin is missing version element for groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             continue
         }
-        if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
-        {
+        if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment") {
             # unfortunately because there are POM exceptions we need to wildcard the group which may be
             # something like <area>_groupId
-            if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(.+)?$($groupId):$($artifactId);\w+}")
-            {
+            if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(.+)?$($groupId):$($artifactId);\w+}") {
                 $hasError = $true
                 $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: plugin version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
-            }
-            else
-            {
+            } else {
                 # verify the version tag and version are correct
                 $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
-                if ($retVal)
-                {
+                if ($retVal) {
                     $hasError = $true
                     $potentialLogMessage = Join-With-NewLine $potentialLogMessage "$($retVal)"
                 }
             }
-        }
-        else
-        {
+        } else {
             $hasError = $true
             $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Missing plugin version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
         }
     }
 
-    foreach($signatureNode in $xmlPomFile.GetElementsByTagName("signature"))
-    {
+    foreach($signatureNode in $xmlPomFile.GetElementsByTagName("signature")) {
         $artifactId = $signatureNode.artifactId
         $groupId = $signatureNode.groupId
         # If the artifactId and groupId are both empty then check to see if this
         # is part of a configuration entry.
-        if (!$artifactId -and !$groupId)
-        {
+        if (!$artifactId -and !$groupId) {
             $isPartOfConfig = Confirm-Node-Is-Part-Of-Configuration $signatureNode
-            if (!$isPartOfConfig)
-            {
+            if (!$isPartOfConfig) {
                 $hasError = $true
                 # Because this particular case is harder to track down, print the OuterXML which is effectively the entire tag
                 $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: signature is missing version element and/or artifactId and groupId elements signatureNode=$($signatureNode.OuterXml)"
@@ -828,82 +721,62 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             continue
         }
         # signatures should always have an artifact but may not have a groupId
-        if (!$groupId)
-        {
+        if (!$groupId) {
             $hasError = $true
             $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: signature $($artifactId) is missing its groupId tag"
             continue
         }
         $versionNode = $signatureNode.GetElementsByTagName("version")[0]
-        if (!$versionNode)
-        {
+        if (!$versionNode) {
             $hasError = $true
             $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: signature is missing version element for groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             continue
         }
-        if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
-        {
+        if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment") {
             # unfortunately because there are POM exceptions we need to wildcard the group which may be
             # something like <area>_groupId
-            if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(.+)?$($groupId):$($artifactId);\w+}")
-            {
+            if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(.+)?$($groupId):$($artifactId);\w+}") {
                 $hasError = $true
                 $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: signature version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
-            }
-            else
-            {
+            } else {
                 # verify the version tag and version are correct
                 $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
-                if ($retVal)
-                {
+                if ($retVal) {
                     $hasError = $true
                     $potentialLogMessage = Join-With-NewLine $potentialLogMessage "$($retVal)"
                 }
             }
-        }
-        else
-        {
+        } else {
             $hasError = $true
             $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Missing signature version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
         }
     }
 
     # This is for the allowlist dependencies. Fetch the banned dependencies
-    foreach($bannedDependencies in $xmlPomFile.GetElementsByTagName("bannedDependencies"))
-    {
+    foreach($bannedDependencies in $xmlPomFile.GetElementsByTagName("bannedDependencies")) {
         # Include nodes will look like the following:
         # <include>groupId:artifactId:[version]</include> <!-- {x-include-update;groupId:artifactId;external_dependency} -->
-        foreach($includeNode in $bannedDependencies.GetElementsByTagName("include"))
-        {
+        foreach($includeNode in $bannedDependencies.GetElementsByTagName("include")) {
             $rawIncludeText = $includeNode.InnerText.Trim()
             $split = $rawIncludeText.Split(":")
-            if ($split.Count -eq 3)
-            {
+            if ($split.Count -eq 3) {
                 $groupId = $split[0]
                 $artifactId = $split[1]
                 $version = $split[2]
                 # The groupId match has to be able to deal with <area>_ for external dependency exceptions
-                if (!$includeNode.NextSibling -or $includeNode.NextSibling.NodeType -ne "Comment")
-                {
+                if (!$includeNode.NextSibling -or $includeNode.NextSibling.NodeType -ne "Comment") {
                     $hasError = $true
                     $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: <include> is missing the update tag which should be <!-- {x-include-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
-                }
-                elseif ($includeNode.NextSibling.Value.Trim() -notmatch "{x-include-update;(.+)?$($groupId):$($artifactId);(current|dependency|external_dependency)}")
-                {
+                } elseif ($includeNode.NextSibling.Value.Trim() -notmatch "{x-include-update;(.+)?$($groupId):$($artifactId);(current|dependency|external_dependency)}") {
                     $hasError = $true
                     $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: <include> version update tag for $($includeNode.InnerText) should be <!-- {x-include-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
-                }
-                else
-                {
+                } else {
                     # verify that the version is formatted correctly
-                    if (!$version.StartsWith("[") -or !$version.EndsWith("]"))
-                    {
+                    if (!$version.StartsWith("[") -or !$version.EndsWith("]")) {
                         $hasError = $true
                         $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: the version entry '$($version)' for <include> '$($rawIncludeText)' is not formatted correctly. The include version needs to of the form '[<version>]', the braces lock the include to a specific version for these entries. -->"
-                    }
-                    # verify the version has the correct value
-                    else
-                    {
+                    } else {
+                        # verify the version has the correct value
                         $versionWithoutBraces = $version.Substring(1, $version.Length -2)
                         # the key into the dependency has needs to be created from the tag's group/artifact
                         # entries in case it's an external dependency entry. Because this has already
@@ -911,49 +784,34 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                         $depKey = $includeNode.NextSibling.Value.Trim().Split(";")[1]
                         $depType = $includeNode.NextSibling.Value.Trim().Split(";")[2]
                         $depType = $depType.Substring(0, $depType.IndexOf("}"))
-                        if ($depType -eq $DependencyTypeExternal)
-                        {
-                            if ($extDepHash.ContainsKey($depKey))
-                            {
-                                if ($versionWithoutBraces -ne $extDepHash[$depKey].ver)
-                                {
+                        if ($depType -eq $DependencyTypeExternal) {
+                            if ($extDepHash.ContainsKey($depKey)) {
+                                if ($versionWithoutBraces -ne $extDepHash[$depKey].ver) {
                                     $hasError = $true
                                     $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: $($depKey)'s version is '$($versionWithoutBraces)' but the external_dependency version is listed as $($extDepHash[$depKey].ver)"
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 $hasError = $true
                                 $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: the groupId:artifactId entry '$($depKey)' for <include> '$($rawIncludeText)' is not a valid external dependency. Please verify the entry exists in the external_dependencies.txt file. -->"
                             }
-                        }
-                        else
-                        {
+                        } else {
                             # If the tag isn't external_dependency then verify it exists in the library hash
-                            if (!$libHash.ContainsKey($depKey))
-                            {
+                            if (!$libHash.ContainsKey($depKey)) {
                                 $hasError = $true
                                 return "Error: $($depKey)'s dependency type is '$($depType)' but the dependency does not exist in any of the version_*.txt files. Should this be an external_dependency? Please ensure the dependency type is correct or the dependency is added to the appropriate file."
-
                             }
-                            if ($depType -eq $DependencyTypeDependency)
-                            {
-                                if ($versionWithoutBraces -ne $libHash[$depKey].depVer)
-                                {
+                            if ($depType -eq $DependencyTypeDependency) {
+                                if ($versionWithoutBraces -ne $libHash[$depKey].depVer) {
                                     $hasError = $true
                                     return "Error: $($depKey)'s <version> is '$($versionString)' but the dependency version is listed as $($libHash[$depKey].depVer)"
                                 }
-                            }
-                            elseif ($depType -eq $DependencyTypeCurrent)
-                            {
+                            } elseif ($depType -eq $DependencyTypeCurrent) {
                                 # Verify that none of the 'current' dependencies are using a groupId that starts with 'unreleased_' or 'beta_'
-                                if ($depKey.StartsWith('unreleased_') -or $depKey.StartsWith('beta_'))
-                                {
+                                if ($depKey.StartsWith('unreleased_') -or $depKey.StartsWith('beta_')) {
                                     $hasError = $true
                                     return "Error: $($versionUpdateString) is using an unreleased_ or beta_ dependency and trying to set current value. Only dependency versions can be set with an unreleased or beta dependency."
                                 }
-                                if ($versionWithoutBraces -ne $libHash[$depKey].curVer)
-                                {
+                                if ($versionWithoutBraces -ne $libHash[$depKey].curVer) {
                                     $hasError = $true
                                     return "Error: $($depKey)'s <version> is '$($versionString)' but the current version is listed as $($libHash[$depKey].curVer)"
                                 }
@@ -961,21 +819,16 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                         }
                     }
                 }
-            }
-            # The only time a split count of 2 is allowed is in the following case.
-            # <include>com.azure:*</include>
-            # These entries will not and should not have an update tag
-            elseif ($split.Count -eq 2)
-            {
-                if ($ComAzureAllowlistIncludes -notcontains $rawIncludeText)
-                {
+            } elseif ($split.Count -eq 2) {
+                # The only time a split count of 2 is allowed is in the following case.
+                # <include>com.azure:*</include>
+                # These entries will not and should not have an update tag
+                if ($ComAzureAllowlistIncludes -notcontains $rawIncludeText) {
                     $hasError = $true
                     $AllowListIncludeForError = $ComAzureAllowlistIncludes -join " and "
                     $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error:  $($rawIncludeText) is not a valid <include> entry. With the exception of the $($AllowListIncludeForError), every <include> entry must be of the form <include>groupId:artifactId:[version]<include>"
                 }
-            }
-            else
-            {
+            } else {
                 # At this point the include entry is wildly incorrect.
                 $hasError = $true
                 $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error:  $($rawIncludeText) is not a valid <include> entry. Every <include> entry must be of the form <include>groupId:artifactId:[version]<include>"
@@ -986,15 +839,13 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     Write-Log-Message $potentialLogMessage $hasError
 }
 
-if ($UseVerboseLogging)
-{
+if ($UseVerboseLogging) {
     $ElapsedTime = $(get-date) - $StartTime
     $TotalRunTime = "{0:HH:mm:ss}" -f ([datetime]$ElapsedTime.Ticks)
     Write-Host "Total run time=$($TotalRunTime)"
 }
 
-if ($script:FoundError)
-{
+if ($script:FoundError) {
     Write-Error-With-Color "There were errors encountered during execution. Please fix errors and run the script again."
     Write-Error-With-Color "This script can be run locally from the root of the repo. .\eng\versioning\pom_file_version_scanner.ps1"
     exit 1

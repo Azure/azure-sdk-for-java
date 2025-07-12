@@ -6,14 +6,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
   <artifactId>azure-openrewrite-compiler-maven-plugin</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-openrewrite-compiler-maven-plugin;current} -->
   <packaging>maven-plugin</packaging>
 
   <name>Azure OpenRewrite Golden Image Compiler</name>
   <description>A custom Maven plugin for compiling golden images.</description>
 
   <properties>
-    <maven-plugin-tools.version>3.15.1</maven-plugin-tools.version> <!-- {x-version-update;org.apache.maven.plugin-tools:maven-plugin-annotations;external_dependency} -->
+    <maven-plugin-tools.version></maven-plugin-tools.version> <!-- {x-version-update;org.apache.maven.plugin-tools:maven-plugin-annotations;external_dependency} -->
   </properties>
 
   <dependencies>
@@ -30,7 +30,7 @@
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>${maven-plugin-tools.version}</version>
+      <version>3.15.1</version> <!-- {x-version-update;org.apache.maven.plugin-tools:maven-plugin-annotations;external_dependency} -->
     </dependency>
   </dependencies>
 
@@ -40,7 +40,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-plugin-plugin</artifactId>
-          <version>${maven-plugin-tools.version}</version>
+          <version>3.15.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-plugin-plugin;external_dependency} -->
           <executions>
             <execution>
               <id>help-mojo</id>
