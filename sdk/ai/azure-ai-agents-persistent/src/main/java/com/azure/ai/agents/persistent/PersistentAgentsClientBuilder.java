@@ -31,9 +31,16 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.LibraryTelemetryOptions;
+import com.azure.core.util.MetricsOptions;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.metrics.Meter;
+import com.azure.core.util.metrics.MeterProvider;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +68,10 @@ import java.util.Objects;
 public final class PersistentAgentsClientBuilder
     implements HttpTrait<PersistentAgentsClientBuilder>, ConfigurationTrait<PersistentAgentsClientBuilder>,
     TokenCredentialTrait<PersistentAgentsClientBuilder>, EndpointTrait<PersistentAgentsClientBuilder> {
+
+    private static final String OTEL_SCHEMA_URL = "https://opentelemetry.io/schemas/1.29.0";
+
+    private static final String RP_NAMESPACE = "Microsoft.CognitiveServices";
 
     @Generated
     private static final String SDK_NAME = "name";
@@ -275,7 +286,6 @@ public final class PersistentAgentsClientBuilder
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
-    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -309,6 +319,7 @@ public final class PersistentAgentsClientBuilder
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(localClientOptions)
+            .tracer(createTracer())
             .build();
         return httpPipeline;
     }
@@ -332,9 +343,8 @@ public final class PersistentAgentsClientBuilder
      *
      * @return an instance of PersistentAgentsAsyncClient.
      */
-    @Generated
     public PersistentAgentsAsyncClient buildAsyncClient() {
-        return new PersistentAgentsAsyncClient(buildInnerClient());
+        return new PersistentAgentsAsyncClient(buildInnerClient(), this.configuration, createTracer(), createMeter());
     }
 
     /**
@@ -342,8 +352,31 @@ public final class PersistentAgentsClientBuilder
      *
      * @return an instance of PersistentAgentsClient.
      */
-    @Generated
     public PersistentAgentsClient buildClient() {
-        return new PersistentAgentsClient(buildInnerClient());
+        return new PersistentAgentsClient(buildInnerClient(), this.configuration, createTracer(), createMeter());
+    }
+
+    private Tracer createTracer() {
+        final String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        final String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        final LibraryTelemetryOptions telemetryOptions
+            = new LibraryTelemetryOptions(clientName).setLibraryVersion(clientVersion)
+                .setResourceProviderNamespace(RP_NAMESPACE)
+                .setSchemaUrl(OTEL_SCHEMA_URL);
+        final TracingOptions tracingOptions
+            = this.clientOptions == null ? null : this.clientOptions.getTracingOptions();
+        return TracerProvider.getDefaultProvider().createTracer(telemetryOptions, tracingOptions);
+    }
+
+    private Meter createMeter() {
+        final String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        final String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        final LibraryTelemetryOptions telemetryOptions
+            = new LibraryTelemetryOptions(clientName).setLibraryVersion(clientVersion)
+                .setResourceProviderNamespace(RP_NAMESPACE)
+                .setSchemaUrl(OTEL_SCHEMA_URL);
+        final MetricsOptions metricsOptions
+            = this.clientOptions == null ? null : this.clientOptions.getMetricsOptions();
+        return MeterProvider.getDefaultProvider().createMeter(telemetryOptions, metricsOptions);
     }
 }
