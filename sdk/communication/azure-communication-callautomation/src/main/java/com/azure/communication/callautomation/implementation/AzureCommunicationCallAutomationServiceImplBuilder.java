@@ -275,7 +275,7 @@ public final class AzureCommunicationCallAutomationServiceImplBuilder
     public AzureCommunicationCallAutomationServiceImpl buildClient() {
         this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2025-05-15";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2025-06-15";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureCommunicationCallAutomationServiceImpl client = new AzureCommunicationCallAutomationServiceImpl(
