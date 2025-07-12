@@ -22,7 +22,7 @@ public final class CustomCallingContext {
     /**
      * Creates an instance of CustomCallingContext class.
      */
-    public CustomCallingContext() {
+    CustomCallingContext() {
         this.sipHeaders = new HashMap<String, String>();
         this.voipHeaders = new HashMap<String, String>();
         this.logger = new ClientLogger(CustomCallingContext.class);
