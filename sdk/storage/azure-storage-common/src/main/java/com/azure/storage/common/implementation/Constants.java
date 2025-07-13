@@ -92,6 +92,12 @@ public final class Constants {
 
     public static final String ADJUSTED_BLOB_LENGTH_KEY = "adjustedBlobLength";
 
+    public static final String CONTENT_VALIDATION_BEHAVIOR_KEY = "contentValidationBehavior";
+
+    public static final String USE_CRC64_CHECKSUM_HEADER_CONTEXT = "crc64ChecksumHeaderContext";
+
+    public static final String USE_STRUCTURED_MESSAGE_CONTEXT = "structuredMessageChecksumAlgorithm";
+
     private Constants() {
     }
 
@@ -255,6 +261,24 @@ public final class Constants {
         public static final String SMB_PROTOCOL = "SMB";
 
         public static final String NFS_PROTOCOL = "NFS";
+
+        /**
+         * Content validation related headers.
+         */
+
+        public static final String CONTENT_CRC64 = "x-ms-content-crc64";
+
+        public static final HttpHeaderName CONTENT_CRC64_HEADER_NAME = HttpHeaderName.fromString(CONTENT_CRC64);
+
+        public static final String STRUCTURED_BODY_TYPE = "x-ms-structured-body";
+
+        public static final HttpHeaderName STRUCTURED_BODY_TYPE_HEADER_NAME
+            = HttpHeaderName.fromString(STRUCTURED_BODY_TYPE);
+
+        public static final String STRUCTURED_CONTENT_LENGTH = "x-ms-structured-content-length";
+
+        public static final HttpHeaderName STRUCTURED_CONTENT_LENGTH_HEADER_NAME
+            = HttpHeaderName.fromString(STRUCTURED_CONTENT_LENGTH);
 
         private HeaderConstants() {
             // Private to prevent construction.

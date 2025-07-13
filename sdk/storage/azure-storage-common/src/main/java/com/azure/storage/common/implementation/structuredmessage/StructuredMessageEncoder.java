@@ -6,8 +6,8 @@ package com.azure.storage.common.implementation.structuredmessage;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import reactor.core.publisher.Flux;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteOrder;
@@ -119,16 +119,19 @@ public class StructuredMessageEncoder {
         return buffer.array();
     }
 
+    public Flux<ByteBuffer> encode(Flux<ByteBuffer> unencodedBufferFlux) {
+        return unencodedBufferFlux.map(this::encode).filter(ByteBuffer::hasRemaining);
+    }
+
     /**
      * Encodes the given buffer into a structured message format.
      *
      * @param unencodedBuffer The buffer to be encoded.
      * @return The encoded buffer.
-     * @throws IOException If an error occurs while encoding the buffer.
      * @throws IllegalArgumentException If the buffer length exceeds the content length, or the content has already been
      * encoded.
      */
-    public ByteBuffer encode(ByteBuffer unencodedBuffer) throws IOException {
+    public ByteBuffer encode(ByteBuffer unencodedBuffer) {
         StorageImplUtils.assertNotNull("unencodedBuffer", unencodedBuffer);
 
         if (currentContentOffset == contentLength) {
@@ -255,7 +258,7 @@ public class StructuredMessageEncoder {
      *
      * @return The length of the message.
      */
-    public int getMessageLength() {
-        return messageLength;
+    public String getEncodedMessageLength() {
+        return String.valueOf(messageLength);
     }
 }
