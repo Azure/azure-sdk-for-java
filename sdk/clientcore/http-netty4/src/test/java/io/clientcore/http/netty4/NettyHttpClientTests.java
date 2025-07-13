@@ -28,9 +28,7 @@ import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
 import io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.proxy.ProxyConnectException;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -97,24 +95,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class NettyHttpClientTests {
     private static final String SERVER_HTTP_URI = NettyHttpClientLocalTestServer.getServer().getUri();
 
-    private static HttpClient sharedClient;
-
-    @BeforeAll
-    public static void setup() {
-        sharedClient = new NettyHttpClientProvider().getSharedInstance();
-    }
-
-    @AfterAll
-    public static void cleanup() {
-        if (sharedClient instanceof NettyHttpClient) {
-            ((NettyHttpClient) sharedClient).close();
-        }
-    }
-
     @Test
     public void testConcurrentRequestsSync() throws InterruptedException, ExecutionException {
         int numRequests = 100; // 100 = 1GB of data read
-        HttpClient client = sharedClient;
+        HttpClient client = new NettyHttpClientProvider().getSharedInstance();
 
         ForkJoinPool pool = new ForkJoinPool((int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0));
         try {
@@ -145,7 +129,7 @@ public class NettyHttpClientTests {
 
     @Test
     public void testProgressReporterSync() {
-        HttpClient client = sharedClient;
+        HttpClient client = new NettyHttpClientProvider().getSharedInstance();
 
         ConcurrentLinkedDeque<Long> progress = new ConcurrentLinkedDeque<>();
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
@@ -170,7 +154,7 @@ public class NettyHttpClientTests {
         tempFile.toFile().deleteOnExit();
         BinaryData body = BinaryData.fromFile(tempFile, 1L, 42L);
 
-        HttpClient client = sharedClient;
+        HttpClient client = new NettyHttpClientProvider().getSharedInstance();
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
             .setUri(uri(SHORT_POST_BODY_WITH_VALIDATION_PATH))
             .setBody(body);
@@ -182,7 +166,7 @@ public class NettyHttpClientTests {
 
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
-        HttpClient client = sharedClient;
+        HttpClient client = new NettyHttpClientProvider().getSharedInstance();
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
             .setUri(uri(SHORT_POST_BODY_PATH))
             .setHeaders(new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "132"))
@@ -200,7 +184,7 @@ public class NettyHttpClientTests {
 
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponseSyncInGetMethod() {
-        HttpClient client = sharedClient;
+        HttpClient client = new NettyHttpClientProvider().getSharedInstance();
 
         try (Response<BinaryData> response
             = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(LONG_BODY_PATH)))) {
@@ -213,7 +197,7 @@ public class NettyHttpClientTests {
     @Test
     @Timeout(20)
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
-        HttpClient client = sharedClient;
+        HttpClient client = new NettyHttpClientProvider().getSharedInstance();
         try (Response<BinaryData> response = sendRequest(client, "/error")) {
             assertEquals(500, response.getStatusCode());
             assertEquals("error", response.getValue().toString());
@@ -223,7 +207,7 @@ public class NettyHttpClientTests {
     @ParameterizedTest
     @MethodSource("requestHeaderSupplier")
     public void requestHeader(String headerValue, String expectedValue) {
-        HttpClient client = sharedClient;
+        HttpClient client = new NettyHttpClientProvider().getSharedInstance();
 
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
             .setUri(uri(HTTP_HEADERS_PATH))
@@ -237,7 +221,7 @@ public class NettyHttpClientTests {
 
     @Test
     public void validateRequestHasOneUserAgentHeader() {
-        HttpClient httpClient = sharedClient;
+        HttpClient httpClient = new NettyHttpClientProvider().getSharedInstance();
 
         try (Response<BinaryData> response = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET)
             .setUri(uri(NO_DOUBLE_UA_PATH))
@@ -249,7 +233,7 @@ public class NettyHttpClientTests {
 
     @Test
     public void validateHeadersReturnAsIs() {
-        HttpClient client = sharedClient;
+        HttpClient client = new NettyHttpClientProvider().getSharedInstance();
 
         HttpHeaderName singleValueHeaderName = HttpHeaderName.fromString("singleValue");
         final String singleValueHeaderValue = "value";
@@ -299,25 +283,17 @@ public class NettyHttpClientTests {
                 = new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()).setCredentials("1", "1");
 
             // Create an HttpPipeline where any exception has a retry delay of 10 seconds.
-            NettyHttpClient httpClient = null;
-            try {
-                httpClient = (NettyHttpClient) new NettyHttpClientBuilder().proxy(proxyOptions).build();
-                HttpPipeline httpPipeline = new HttpPipelineBuilder().addPolicy(retryPolicy)
-                    .addPolicy(callCountingPolicy)
-                    .httpClient(httpClient)
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().addPolicy(retryPolicy)
+                .addPolicy(callCountingPolicy)
+                .httpClient(new NettyHttpClientBuilder().proxy(proxyOptions).build())
+                .build();
 
-                try (Response<BinaryData> response
-                    = httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(PROXY_TO_ADDRESS)))) {
-                    assertEquals(418, response.getStatusCode());
-                }
-
-                assertEquals(1, callCount.get());
-            } finally {
-                if (httpClient != null) {
-                    httpClient.close();
-                }
+            try (Response<BinaryData> response
+                = httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(PROXY_TO_ADDRESS)))) {
+                assertEquals(418, response.getStatusCode());
             }
+
+            assertEquals(1, callCount.get());
         }
     }
 
@@ -328,38 +304,32 @@ public class NettyHttpClientTests {
     @RepeatedTest(100)
     public void failedProxyAuthenticationReturnsCorrectError() {
         try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
-            NettyHttpClient httpClient = null;
-            try {
-                httpClient = (NettyHttpClient) new NettyHttpClientBuilder().proxy(
+            HttpClient httpClient = new NettyHttpClientBuilder()
+                .proxy(
                     new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()).setCredentials("2", "2"))
-                    .build();
-                final HttpClient finalClient = httpClient;
-                CoreException coreException = assertThrows(CoreException.class,
-                    () -> finalClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(PROXY_TO_ADDRESS))));
+                .build();
 
-                Throwable exception = coreException.getCause();
-                assertTrue(exception instanceof ProxyConnectException || exception instanceof ClosedChannelException,
-                    "Exception was not of expected type ProxyConnectException or ClosedChannelException, but was "
-                        + exception.getClass().getName());
+            CoreException coreException = assertThrows(CoreException.class,
+                () -> httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(PROXY_TO_ADDRESS))));
 
-                if (exception instanceof ProxyConnectException) {
-                    assertInstanceOf(ProxyConnectException.class, exception, () -> {
-                        StringWriter stringWriter = new StringWriter();
-                        stringWriter.write(exception.toString());
-                        PrintWriter printWriter = new PrintWriter(stringWriter);
-                        exception.printStackTrace(printWriter);
+            Throwable exception = coreException.getCause();
+            assertTrue(exception instanceof ProxyConnectException || exception instanceof ClosedChannelException,
+                "Exception was not of expected type ProxyConnectException or ClosedChannelException, but was "
+                    + exception.getClass().getName());
 
-                        return stringWriter.toString();
-                    });
+            if (exception instanceof ProxyConnectException) {
+                assertInstanceOf(ProxyConnectException.class, exception, () -> {
+                    StringWriter stringWriter = new StringWriter();
+                    stringWriter.write(exception.toString());
+                    PrintWriter printWriter = new PrintWriter(stringWriter);
+                    exception.printStackTrace(printWriter);
 
-                    assertTrue(coreException.getCause().getMessage().contains("Proxy Authentication Required"),
-                        () -> "Expected exception message to contain \"Proxy Authentication Required\", it was: "
-                            + coreException.getCause().getMessage());
-                }
-            } finally {
-                if (httpClient != null) {
-                    httpClient.close();
-                }
+                    return stringWriter.toString();
+                });
+
+                assertTrue(coreException.getCause().getMessage().contains("Proxy Authentication Required"),
+                    () -> "Expected exception message to contain \"Proxy Authentication Required\", it was: "
+                        + coreException.getCause().getMessage());
             }
         }
     }
@@ -389,24 +359,17 @@ public class NettyHttpClientTests {
      */
     @Test
     public void progressAndTimeoutHandlerNotAdded() throws IOException {
-        NettyHttpClient httpClient = null;
-        try {
-            httpClient = (NettyHttpClient) new NettyHttpClientBuilder().connectTimeout(Duration.ZERO)
-                .writeTimeout(Duration.ZERO)
-                .responseTimeout(Duration.ZERO)
-                .readTimeout(Duration.ZERO)
-                .build();
+        HttpClient client = new NettyHttpClientBuilder().connectTimeout(Duration.ZERO)
+            .writeTimeout(Duration.ZERO)
+            .responseTimeout(Duration.ZERO)
+            .readTimeout(Duration.ZERO)
+            .build();
 
-            try (Response<BinaryData> response
-                = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(LONG_BODY_PATH)))) {
-                assertNotNull(response);
-                assertEquals(200, response.getStatusCode());
-                assertArraysEqual(LONG_BODY, response.getValue().toBytes());
-            }
-        } finally {
-            if (httpClient != null) {
-                httpClient.close();
-            }
+        try (Response<BinaryData> response
+            = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(LONG_BODY_PATH)))) {
+            assertNotNull(response);
+            assertEquals(200, response.getStatusCode());
+            assertArraysEqual(LONG_BODY, response.getValue().toBytes());
         }
     }
 
@@ -437,27 +400,20 @@ public class NettyHttpClientTests {
             sseServer.start();
             final CountDownLatch latch = new CountDownLatch(2);
             final AtomicReference<ServerSentEvent> lastEvent = new AtomicReference<>();
-            NettyHttpClient httpClient = null;
-            try {
-                httpClient = (NettyHttpClient) new NettyHttpClientBuilder().build();
-                HttpRequest request
-                    = new HttpRequest().setMethod(HttpMethod.GET).setUri(URI.create(sseServer.getUri()));
-                request.setServerSentEventListener(event -> {
-                    lastEvent.set(event);
-                    latch.countDown();
-                });
 
-                try (Response<BinaryData> response = httpClient.send(request)) {
-                    assertEquals(200, response.getStatusCode());
-                    assertTrue(latch.await(10, TimeUnit.SECONDS));
-                    assertNotNull(lastEvent.get());
-                    assertEquals("2", lastEvent.get().getId());
-                    assertEquals("message", lastEvent.get().getEvent());
-                }
-            } finally {
-                if (httpClient != null) {
-                    httpClient.close();
-                }
+            HttpClient client = new NettyHttpClientBuilder().build();
+            HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(URI.create(sseServer.getUri()));
+            request.setServerSentEventListener(event -> {
+                lastEvent.set(event);
+                latch.countDown();
+            });
+
+            try (Response<BinaryData> response = client.send(request)) {
+                assertEquals(200, response.getStatusCode());
+                assertTrue(latch.await(10, TimeUnit.SECONDS));
+                assertNotNull(lastEvent.get());
+                assertEquals("2", lastEvent.get().getId());
+                assertEquals("message", lastEvent.get().getEvent());
             }
         } finally {
             sseServer.stop();
@@ -476,19 +432,14 @@ public class NettyHttpClientTests {
             }
         });
 
-        NettyHttpClient client = null;
         try {
             sseServer.start();
-            client = (NettyHttpClient) new NettyHttpClientBuilder().build();
+            HttpClient client = new NettyHttpClientBuilder().build();
             HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(URI.create(sseServer.getUri()));
 
-            final NettyHttpClient finalClient = client;
-            IllegalStateException ex = assertThrows(IllegalStateException.class, () -> finalClient.send(request));
+            IllegalStateException ex = assertThrows(IllegalStateException.class, () -> client.send(request));
             assertTrue(ex.getMessage().contains("No ServerSentEventListener attached"));
         } finally {
-            if (client != null) {
-                client.close();
-            }
             sseServer.stop();
         }
     }
@@ -535,19 +486,12 @@ public class NettyHttpClientTests {
 
     @Test
     public void nonPooledClientSendsRequestSuccessfully() {
-        NettyHttpClient client = null;
-        try {
-            client = (NettyHttpClient) new NettyHttpClientBuilder().connectionPoolSize(0).build();
+        HttpClient client = new NettyHttpClientBuilder().connectionPoolSize(0).build();
 
-            try (Response<BinaryData> response
-                = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(SHORT_BODY_PATH)))) {
-                assertEquals(200, response.getStatusCode());
-                assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
-            }
-        } finally {
-            if (client != null) {
-                client.close();
-            }
+        try (Response<BinaryData> response
+            = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(SHORT_BODY_PATH)))) {
+            assertEquals(200, response.getStatusCode());
+            assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
         }
     }
 
@@ -556,7 +500,7 @@ public class NettyHttpClientTests {
     }
 
     private static Response<BinaryData> getResponse(String path) {
-        HttpClient client = sharedClient;
+        HttpClient client = new NettyHttpClientProvider().getSharedInstance();
         return getResponse(client, path);
     }
 
@@ -570,7 +514,7 @@ public class NettyHttpClientTests {
     }
 
     private static void checkBodyReceived(byte[] expectedBody, String path) {
-        HttpClient client = sharedClient;
+        HttpClient client = new NettyHttpClientProvider().getSharedInstance();
         try (Response<BinaryData> response = sendRequest(client, path)) {
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
             WritableByteChannel body = Channels.newChannel(outStream);
