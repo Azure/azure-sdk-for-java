@@ -55,7 +55,8 @@ final class QuickPulseDataCollector {
     private static final OperatingSystemMXBean operatingSystemMxBean = ManagementFactory.getOperatingSystemMXBean();
 
     private final AtomicReference<Counters> counters = new AtomicReference<>(null);
-    private final CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator = getCpuPerformanceCounterCalculator();
+    private final CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator
+        = getCpuPerformanceCounterCalculator();
 
     // used to prevent race condition between processing a telemetry item and reporting it to the Quick Pulse service
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
@@ -99,8 +100,8 @@ final class QuickPulseDataCollector {
         lock.writeLock().lock();
         try {
             FilteringConfiguration config = configuration.get();
-        Counters currentCounters
-            = counters.getAndSet(new Counters(config.getValidProjectionInitInfo(), config.getErrors()));
+            Counters currentCounters
+                = counters.getAndSet(new Counters(config.getValidProjectionInitInfo(), config.getErrors()));
             if (currentCounters != null) {
                 return new FinalCounters(currentCounters);
             }
@@ -145,8 +146,10 @@ final class QuickPulseDataCollector {
         FilteringConfiguration currentConfig = configuration.get();
         MonitorDomain data = telemetryItem.getData().getBaseData();
 
-        if (!(data instanceof RequestData) && !(data instanceof RemoteDependencyData)
-                && !(data instanceof TelemetryExceptionData) && !(data instanceof MessageData)) {
+        if (!(data instanceof RequestData)
+            && !(data instanceof RemoteDependencyData)
+            && !(data instanceof TelemetryExceptionData)
+            && !(data instanceof MessageData)) {
             // optimization before acquiring lock
             return;
         }
@@ -224,7 +227,8 @@ final class QuickPulseDataCollector {
         }
     }
 
-    private void addDependency(RemoteDependencyData telemetry, int itemCount, FilteringConfiguration currentConfig, Counters counters) {
+    private void addDependency(RemoteDependencyData telemetry, int itemCount, FilteringConfiguration currentConfig,
+        Counters counters) {
 
         long durationMillis = parseDurationToMillis(telemetry.getDuration());
         counters.rddsAndDuations.addAndGet(Counters.encodeCountAndDuration(itemCount, durationMillis));
@@ -254,9 +258,9 @@ final class QuickPulseDataCollector {
         }
     }
 
-    private void addException(TelemetryExceptionData exceptionData, int itemCount,
-        FilteringConfiguration currentConfig, Counters counters) {
- 
+    private void addException(TelemetryExceptionData exceptionData, int itemCount, FilteringConfiguration currentConfig,
+        Counters counters) {
+
         counters.exceptions.addAndGet(itemCount);
 
         ExceptionDataColumns columns = new ExceptionDataColumns(exceptionData);
