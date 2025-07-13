@@ -8,6 +8,7 @@ import io.clientcore.core.models.CoreException;
 import io.clientcore.core.shared.LocalTestServer;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -54,6 +55,7 @@ public class Netty4ConnectionPoolTests {
         server.start();
         eventLoopGroup = new NioEventLoopGroup(2);
         bootstrap = new Bootstrap().group(eventLoopGroup).channel(NioSocketChannel.class);
+        bootstrap.option(ChannelOption.AUTO_READ, false);
         SocketAddress socketAddress = new InetSocketAddress("localhost", server.getPort());
         connectionPoolKey = new Netty4ConnectionPoolKey(socketAddress, socketAddress);
     }

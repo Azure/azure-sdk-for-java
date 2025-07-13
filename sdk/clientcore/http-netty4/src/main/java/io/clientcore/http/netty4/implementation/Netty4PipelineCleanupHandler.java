@@ -4,6 +4,8 @@
 package io.clientcore.http.netty4.implementation;
 
 import io.clientcore.core.http.client.HttpProtocolVersion;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
@@ -22,7 +24,10 @@ import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.EAGER_
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_CODEC;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_RESPONSE;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROGRESS_AND_TIMEOUT;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROXY;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.READ_ONE;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL_INITIALIZER;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppressError;
 
 /**
@@ -31,6 +36,7 @@ import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppre
  */
 public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
 
+    private static final ClientLogger LOGGER = new ClientLogger(Netty4PipelineCleanupHandler.class);
     private final Netty4ConnectionPool connectionPool;
     private final AtomicReference<Throwable> errorReference;
     private final CountDownLatch latch;
@@ -98,6 +104,7 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
             return;
         }
 
+        final Channel channel = ctx.channel();
         ReentrantLock lock = ctx.channel().attr(Netty4ConnectionPool.CHANNEL_LOCK).get();
         lock.lock();
 
@@ -124,14 +131,46 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
             if (pipeline.get(Netty4PipelineCleanupHandler.class) != null) {
                 pipeline.remove(this);
             }
+
+            if (!isPipelineClean(pipeline, isHttp2)) {
+                closeChannel = true;
+            }
+
         } finally {
             lock.unlock();
+            if (closeChannel || !channel.isActive() || connectionPool == null) {
+                channel.close();
+            } else {
+                channel.eventLoop().execute(() -> connectionPool.release(channel));
+            }
         }
+    }
 
-        if (closeChannel || !ctx.channel().isActive() || connectionPool == null) {
-            ctx.channel().close();
-        } else {
-            connectionPool.release(ctx.channel());
+    private boolean isPipelineClean(ChannelPipeline pipeline, boolean isHttp2) {
+
+        for (String handlerName : pipeline.names()) {
+            if (handlerName.contains("HeadContext") || handlerName.contains("TailContext")) {
+                continue;
+            }
+
+            if (isHttp2 && handlerName.equals(Netty4HandlerNames.HTTP_CODEC)) {
+                continue;
+            }
+
+            if (handlerName.equals(PROXY)
+                || handlerName.equals("clientcore.suppressproxyexception") // TODO: move those to handler names class
+                || handlerName.equals(SSL)
+                || handlerName.equals("clientcore.sslshutdown")
+                || handlerName.equals(SSL_INITIALIZER)
+                || handlerName.equals(Netty4ConnectionPool.Http2GoAwayHandler.class.getName())) {
+                continue;
+            }
+
+            LOGGER.atWarning()
+                .addKeyValue("handlerName", handlerName)
+                .log("Found unexpected handler in pipeline during cleanup.");
+            return false;
         }
+        return true;
     }
 }

@@ -394,8 +394,8 @@ public class NettyHttpClientBuilder {
             .channel(channelClass)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) getTimeoutMillis(connectTimeout, 10_000));
         // Disable auto-read as we want to control when and how data is read from the channel.
-        bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
         bootstrap.option(ChannelOption.AUTO_READ, false);
+        bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
 
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
