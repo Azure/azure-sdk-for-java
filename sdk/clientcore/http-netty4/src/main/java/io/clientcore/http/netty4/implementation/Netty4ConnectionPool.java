@@ -16,9 +16,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
-import io.netty.handler.codec.http2.Http2Connection;
 import io.netty.handler.codec.http2.Http2GoAwayFrame;
-import io.netty.handler.codec.http2.HttpToHttp2ConnectionHandler;
 import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.proxy.ProxyHandler;
 import io.netty.handler.ssl.SslCloseCompletionEvent;
@@ -348,7 +346,6 @@ public class Netty4ConnectionPool implements Closeable {
                     return connection;
                 }
 
-                // Unhealthy idle connection was found and discarded.
                 connection.close(); // The close listener will handle decrementing the counter.
             }
         }
@@ -426,7 +423,7 @@ public class Netty4ConnectionPool implements Closeable {
                         }
                     });
                 } else {
-                    // No waiter was found, decrement our capacity reservation.
+                    // No waiter was found, decrement the capacity reservation.
                     totalConnections.getAndDecrement();
                 }
             } else {
@@ -442,9 +439,8 @@ public class Netty4ConnectionPool implements Closeable {
                     return null; // Queue is empty
                 }
                 if (!waiter.isCancelled()) {
-                    return waiter; // Found a valid waiter
+                    return waiter;
                 }
-                // Discard the canceled waiter and try again.
             }
         }
 
@@ -564,15 +560,7 @@ public class Netty4ConnectionPool implements Closeable {
 
             HttpProtocolVersion protocol = channel.attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).get();
             if (protocol == HttpProtocolVersion.HTTP_2) {
-                if (Boolean.TRUE.equals(channel.attr(HTTP2_GOAWAY_RECEIVED).get())) {
-                    return false;
-                }
-
-                HttpToHttp2ConnectionHandler http2Handler = channel.pipeline().get(HttpToHttp2ConnectionHandler.class);
-                if (http2Handler != null) {
-                    Http2Connection.Endpoint<?> clientEndpoint = http2Handler.connection().local();
-                    return clientEndpoint.numActiveStreams() <= 0;
-                }
+                return !Boolean.TRUE.equals(channel.attr(HTTP2_GOAWAY_RECEIVED).get());
             }
 
             return true;
