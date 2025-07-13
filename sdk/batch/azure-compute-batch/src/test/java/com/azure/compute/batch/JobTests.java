@@ -49,8 +49,7 @@ public class JobTests extends BatchClientTestBase {
         // Generate a jobId that is unique per test mode (sync vs async)
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         // CREATE
-        String jobId
-            = getStringIdWithUserNamePrefix("-Job-canCRUD" + testModeSuffix + "-" + System.currentTimeMillis());
+        String jobId = getStringIdWithUserNamePrefix("-Job-canCRUD" + testModeSuffix);
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(poolId);
@@ -128,8 +127,7 @@ public class JobTests extends BatchClientTestBase {
     public void canUpdateJobState() {
         // Generate a jobId that is unique per test mode (sync vs async)
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String jobId
-            = getStringIdWithUserNamePrefix("-Job-CanUpdateState" + testModeSuffix + "-" + System.currentTimeMillis());
+        String jobId = getStringIdWithUserNamePrefix("-Job-CanUpdateState" + testModeSuffix);
 
         BatchPoolInfo poolInfo = new BatchPoolInfo().setPoolId(poolId);
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
@@ -252,8 +250,7 @@ public class JobTests extends BatchClientTestBase {
     @SyncAsyncTest
     public void canCRUDJobWithPoolNodeCommunicationMode() {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String jobId = getStringIdWithUserNamePrefix(
-            "-Job-canCRUDWithPoolNodeComm" + testModeSuffix + "-" + System.currentTimeMillis());
+        String jobId = getStringIdWithUserNamePrefix("-Job-canCRUDWithPoolNodeComm" + testModeSuffix);
         BatchNodeCommunicationMode targetMode = BatchNodeCommunicationMode.SIMPLIFIED;
 
         BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("microsoftwindowsserver")
