@@ -20,15 +20,21 @@ import java.util.concurrent.TimeUnit;
 @Timeout(value = 3, unit = TimeUnit.MINUTES)
 public class NettyHttpClientHttpClientTests extends HttpClientTests {
     private static LocalTestServer server;
+    private static HttpClient sharedClient;
 
     @BeforeAll
     public static void startTestServer() {
         server = HttpClientTestsServer.getHttpClientTestsServer(HttpProtocolVersion.HTTP_1_1, false);
         server.start();
+        sharedClient = new NettyHttpClientBuilder().build();
     }
 
     @AfterAll
     public static void stopTestServer() {
+        if (sharedClient instanceof NettyHttpClient) {
+            ((NettyHttpClient) sharedClient).close();
+        }
+
         if (server != null) {
             server.stop();
         }
@@ -47,6 +53,6 @@ public class NettyHttpClientHttpClientTests extends HttpClientTests {
 
     @Override
     protected HttpClient getHttpClient() {
-        return new NettyHttpClientBuilder().build();
+        return sharedClient;
     }
 }

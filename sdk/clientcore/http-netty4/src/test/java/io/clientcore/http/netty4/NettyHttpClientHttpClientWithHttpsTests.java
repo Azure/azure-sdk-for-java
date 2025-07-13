@@ -40,6 +40,10 @@ public class NettyHttpClientHttpClientWithHttpsTests extends HttpClientTests {
 
     @AfterAll
     public static void stopTestServer() {
+        if (HTTP_CLIENT_INSTANCE instanceof NettyHttpClient) {
+            ((NettyHttpClient) HTTP_CLIENT_INSTANCE).close();
+        }
+
         if (server != null) {
             server.stop();
         }

@@ -238,6 +238,14 @@
           </rules>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.2</version><!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <configuration>
+          <reuseForks>false</reuseForks>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
