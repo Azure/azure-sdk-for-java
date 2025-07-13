@@ -6,7 +6,7 @@ import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 import java.util.concurrent.atomic.{AtomicInteger, AtomicLong}
 
-class CosmosSamplingDiagnosticsLogger(val maxLogCount: Int, val samplingIntervalInSeconds: Int)  extends CosmosDiagnosticsHandler with BasicLoggingTrait {
+private[spark] class CosmosSamplingDiagnosticsLogger(val maxLogCount: Int, val samplingIntervalInSeconds: Int)  extends CosmosDiagnosticsHandler with BasicLoggingTrait {
   require(maxLogCount > 0, "Argument 'maxLogCount' must be a positive integer.")
 
   private val logCountInSamplingInterval: AtomicInteger = new AtomicInteger(0)

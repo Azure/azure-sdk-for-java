@@ -433,6 +433,12 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       Result.DENY // If below threshold
     )
 
+    val sampledDiagnosticsLoggerFilter: Filter = ThresholdFilter.createFilter(
+      Level.INFO, // Minimum log level to emit (e.g., WARN or ERROR)
+      Result.ACCEPT, // If above threshold
+      Result.DENY // If below threshold
+    )
+
     val otelAppenderBuilder: OpenTelemetryAppender.Builder[OpenTelemetryAppender.Builder[_]] =
       OpenTelemetryAppender.builder()
 
@@ -448,7 +454,13 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
     // 4. Attach to **all** existing logger configs
     config.getLoggers.values().forEach { loggerConfig =>
-      loggerConfig.addAppender(otelAppender, azMonConfig.logLevel, filter)
+      if ((azMonConfig.logLevel == Level.WARN || azMonConfig.logLevel == Level.ERROR)
+        && loggerConfig.getName.contains("CosmosSamplingDiagnosticsLogger")) {
+
+        loggerConfig.addAppender(otelAppender, Level.INFO, sampledDiagnosticsLoggerFilter)
+      } else {
+        loggerConfig.addAppender(otelAppender, azMonConfig.logLevel, filter)
+      }
     }
 
     // 5. Also attach to root logger
