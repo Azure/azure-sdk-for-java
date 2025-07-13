@@ -53,8 +53,7 @@ public class FileTests extends BatchClientTestBase {
     public void canReadFromTaskFile() throws Exception {
         // Generate a jobId that is unique per test mode (sync vs async)
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String jobId = getStringIdWithUserNamePrefix(
-            "-Job-canReadFromTaskFile-" + testModeSuffix + "-" + System.currentTimeMillis());
+        String jobId = getStringIdWithUserNamePrefix("-Job-canReadFromTaskFile-" + testModeSuffix);
         String taskId = "mytask";
         int taskCompleteTimeoutInSeconds = 60; // 60 seconds timeout
 
@@ -125,9 +124,8 @@ public class FileTests extends BatchClientTestBase {
     public void canReadFromNode() throws Exception {
         // Generate unique IDs to prevent test clashes
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String jobId = getStringIdWithUserNamePrefix(
-            "-Job-canReadFromNode-" + testModeSuffix + "-" + System.currentTimeMillis());
-        String taskId = "mytask-" + System.currentTimeMillis();
+        String jobId = getStringIdWithUserNamePrefix("-Job-canReadFromNode-" + testModeSuffix);
+        String taskId = "mytask-";
         int taskCompleteTimeoutInSeconds = 60; // 60 seconds timeout
 
         try {

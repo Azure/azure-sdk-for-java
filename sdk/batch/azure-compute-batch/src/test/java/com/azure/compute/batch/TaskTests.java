@@ -78,8 +78,8 @@ public class TaskTests extends BatchClientTestBase {
     @SyncAsyncTest
     public void testTaskUnifiedModel() {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String taskId = "task-canPut" + testModeSuffix + "-" + System.currentTimeMillis();
-        String jobId = getStringIdWithUserNamePrefix("-SampleJob" + testModeSuffix + "-" + System.currentTimeMillis());
+        String taskId = "task-canPut" + testModeSuffix;
+        String jobId = getStringIdWithUserNamePrefix("-SampleJob" + testModeSuffix);
         try {
             //CREATE JOB
             BatchPoolInfo poolInfo = new BatchPoolInfo();
@@ -131,9 +131,8 @@ public class TaskTests extends BatchClientTestBase {
     @SyncAsyncTest
     public void testJobUser() {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String jobId
-            = getStringIdWithUserNamePrefix("-testJobUser" + testModeSuffix + "-" + System.currentTimeMillis());
-        String taskId = "mytask" + testModeSuffix + "-" + System.currentTimeMillis();
+        String jobId = getStringIdWithUserNamePrefix("-testJobUser" + testModeSuffix);
+        String taskId = "mytask" + testModeSuffix;
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(livePoolId);
@@ -179,15 +178,14 @@ public class TaskTests extends BatchClientTestBase {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         int taskCompleteTimeoutInSeconds = 60; // 60 seconds timeout
         String standardConsoleOutputFilename = "stdout.txt";
-        String blobFileName = "test-" + System.currentTimeMillis() + ".txt";
-        String taskId = "mytask" + testModeSuffix + "-" + System.currentTimeMillis();
+        String blobFileName = "test.txt";
+        String taskId = "mytask" + testModeSuffix;
         File temp = File.createTempFile("tempFile", ".tmp");
         BufferedWriter bw = new BufferedWriter(new FileWriter(temp));
         bw.write("This is an example");
         bw.close();
         temp.deleteOnExit();
-        String jobId
-            = getStringIdWithUserNamePrefix("-canCRUDTest" + testModeSuffix + "-" + System.currentTimeMillis());
+        String jobId = getStringIdWithUserNamePrefix("-canCRUDTest" + testModeSuffix);
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(liveIaasPoolId);
@@ -206,7 +204,7 @@ public class TaskTests extends BatchClientTestBase {
             // Playback mode is configured to test Batch operations only.
             if (getTestMode() != TestMode.PLAYBACK) {
                 // Create storage container
-                String containerName = "testingtaskcreate" + testModeSuffix + "-" + System.currentTimeMillis();
+                String containerName = "testingtaskcreate" + testModeSuffix;
                 container = createBlobContainer(storageAccountName, storageAccountKey, containerName);
                 sas = uploadFileToCloud(container, blobFileName, temp.getAbsolutePath());
             } else {
@@ -396,8 +394,7 @@ public class TaskTests extends BatchClientTestBase {
         batchClient = batchClientBuilder.buildClient();
         batchAsyncClient = batchClientBuilder.buildAsyncClient();
 
-        String jobId = getStringIdWithUserNamePrefix(
-            "-testAddMultiTasksWithError" + testModeSuffix + "-" + System.currentTimeMillis());
+        String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasksWithError" + testModeSuffix);
         int taskCount = 1000;
 
         try {
@@ -426,8 +423,7 @@ public class TaskTests extends BatchClientTestBase {
         Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "This Test only runs in Live/Record mode");
 
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String jobId = getStringIdWithUserNamePrefix(
-            "-failIfPoisonTaskTooLarge" + testModeSuffix + "-" + System.currentTimeMillis());
+        String jobId = getStringIdWithUserNamePrefix("-failIfPoisonTaskTooLarge" + testModeSuffix);
         String taskId = "mytask" + testModeSuffix;
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
@@ -486,9 +482,8 @@ public class TaskTests extends BatchClientTestBase {
         Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "This Test only runs in Live/Record mode");
 
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String jobId
-            = getStringIdWithUserNamePrefix("-succeedWithRetry" + testModeSuffix + "-" + System.currentTimeMillis());
-        String taskId = "mytask" + testModeSuffix + "-" + System.currentTimeMillis();
+        String jobId = getStringIdWithUserNamePrefix("-succeedWithRetry" + testModeSuffix);
+        String taskId = "mytask" + testModeSuffix;
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(liveIaasPoolId);
@@ -539,8 +534,7 @@ public class TaskTests extends BatchClientTestBase {
     @SyncAsyncTest
     public void testGetTaskCounts() {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String jobId
-            = getStringIdWithUserNamePrefix("-testGetTaskCounts" + testModeSuffix + "-" + System.currentTimeMillis());
+        String jobId = getStringIdWithUserNamePrefix("-testGetTaskCounts" + testModeSuffix);
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(livePoolId);
@@ -602,10 +596,9 @@ public class TaskTests extends BatchClientTestBase {
     public void testOutputFiles() {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         int taskCompleteTimeoutInSeconds = 60; // 60 seconds timeout
-        String jobId
-            = getStringIdWithUserNamePrefix("-testOutputFiles" + testModeSuffix + "-" + System.currentTimeMillis());
-        String taskId = "mytask" + testModeSuffix + "-" + System.currentTimeMillis();
-        String badTaskId = "mytask1" + testModeSuffix + "-" + System.currentTimeMillis();
+        String jobId = getStringIdWithUserNamePrefix("-testOutputFiles" + testModeSuffix);
+        String taskId = "mytask" + testModeSuffix;
+        String badTaskId = "mytask1" + testModeSuffix;
         String storageAccountName = System.getenv("STORAGE_ACCOUNT_NAME");
         String storageAccountKey = System.getenv("STORAGE_ACCOUNT_KEY");
 

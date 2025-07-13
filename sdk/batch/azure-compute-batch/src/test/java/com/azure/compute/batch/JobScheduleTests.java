@@ -59,8 +59,7 @@ public class JobScheduleTests extends BatchClientTestBase {
         // Generate a jobId that is unique per test mode (sync vs async)
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         // CREATE
-        String jobScheduleId
-            = getStringIdWithUserNamePrefix("-JobSchedule-canCRUD" + testModeSuffix + "-" + System.currentTimeMillis());
+        String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-canCRUD" + testModeSuffix);
 
         BatchPoolInfo poolInfo = new BatchPoolInfo().setPoolId(poolId);
 
@@ -173,8 +172,7 @@ public class JobScheduleTests extends BatchClientTestBase {
         // Generate a jobId that is unique per test mode (sync vs async)
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         // CREATE
-        String jobScheduleId = getStringIdWithUserNamePrefix(
-            "-JobSchedule-updateJobScheduleState" + testModeSuffix + "-" + System.currentTimeMillis());
+        String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-updateJobScheduleState" + testModeSuffix);
 
         BatchPoolInfo poolInfo = new BatchPoolInfo().setPoolId(poolId);
         BatchJobSpecification spec = new BatchJobSpecification(poolInfo).setPriority(100);
