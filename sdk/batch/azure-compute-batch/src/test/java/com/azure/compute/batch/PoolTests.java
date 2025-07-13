@@ -82,7 +82,7 @@ public class PoolTests extends BatchClientTestBase {
     @SyncAsyncTest
     public void canCreateDataDisk() {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String poolId = getStringIdWithUserNamePrefix("-testpool3" + testModeSuffix + "-" + System.currentTimeMillis());
+        String poolId = getStringIdWithUserNamePrefix("-testpool3" + testModeSuffix);
 
         // Create a pool with 0 Small VMs
         String poolVmSize = "STANDARD_D1_V2";
@@ -134,8 +134,7 @@ public class PoolTests extends BatchClientTestBase {
     public void canCRUDLowPriIaaSPool() {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         // CREATE
-        String poolId = getStringIdWithUserNamePrefix(
-            "-canCRUDLowPri-testPool" + testModeSuffix + "-" + System.currentTimeMillis());
+        String poolId = getStringIdWithUserNamePrefix("-canCRUDLowPri-testPool" + testModeSuffix);
 
         // Create a pool with 3 Small VMs
         String poolVmSize = "STANDARD_D1_V2";
@@ -354,8 +353,7 @@ public class PoolTests extends BatchClientTestBase {
     @SyncAsyncTest
     public void canCreatePoolWithConfidentialVM() throws Exception {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String poolId
-            = getStringIdWithUserNamePrefix("ConfidentialVMPool" + testModeSuffix + "-" + System.currentTimeMillis());
+        String poolId = getStringIdWithUserNamePrefix("ConfidentialVMPool" + testModeSuffix);
 
         boolean exists = SyncAsyncExtension.execute(() -> poolExists(batchClient, poolId),
             () -> poolExists(batchAsyncClient, poolId));
@@ -427,9 +425,7 @@ public class PoolTests extends BatchClientTestBase {
     @SyncAsyncTest
     public void canDeallocateAndStartComputeNode() throws Exception {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String poolId = getStringIdWithUserNamePrefix(
-            "-deallocateStartNodePool" + testModeSuffix + "-" + System.currentTimeMillis());
-
+        String poolId = getStringIdWithUserNamePrefix("-deallocateStartNodePool" + testModeSuffix);
         // Define the VM size and node count
         String poolVmSize = "STANDARD_D2s_V3";
         int poolVmCount = 1;
@@ -552,7 +548,7 @@ public class PoolTests extends BatchClientTestBase {
     @SyncAsyncTest
     public void canRebootReimageRemoveNodesAndStopResize() throws Exception {
         String modeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String poolId = getStringIdWithUserNamePrefix("-nodeOpsPool" + modeSuffix + "-" + System.currentTimeMillis());
+        String poolId = getStringIdWithUserNamePrefix("-nodeOpsPool" + modeSuffix);
 
         // Create or ensure a pool with 2 dedicated nodes
         final int startingDedicated = 2;

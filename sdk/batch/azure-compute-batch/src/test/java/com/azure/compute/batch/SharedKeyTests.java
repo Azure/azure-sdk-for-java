@@ -50,7 +50,7 @@ public class SharedKeyTests extends BatchClientTestBase {
     public void testPoolCRUD() {
         // Generate a jobId that is unique per test mode (sync vs async)
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String poolId = sharedKeyPoolPrefix + "-" + testModeSuffix + "-" + System.currentTimeMillis();
+        String poolId = sharedKeyPoolPrefix + "-" + testModeSuffix;
         try {
             /*
              * Creating Pool
