@@ -4,9 +4,9 @@
 
 package com.azure.communication.phonenumbers.siprouting.models;
 
-import com.azure.core.annotation.Fluent;
-
 import java.util.List;
+
+import com.azure.core.annotation.Fluent;
 
 /** Represents a trunk route for routing calls. */
 @Fluent
@@ -36,6 +36,11 @@ public final class SipTrunkRoute {
      * represented as FQDN.
      */
     private List<String> trunks;
+
+    /*
+     * Gets or sets caller ID override. This value will override caller ID of outgoing call specified at runtime.
+     */
+    private String callerIdOverride;
 
     /**
      * Constructor with required properties.
@@ -105,5 +110,27 @@ public final class SipTrunkRoute {
     public SipTrunkRoute setTrunks(List<String> trunks) {
         this.trunks = trunks;
         return this;
+    }
+
+    /**
+     * Set the callerIdOverride property: Gets or sets caller ID override. This value will override caller ID of
+     * outgoing call specified at runtime.
+     * 
+     * @param callerIdOverride the callerIdOverride value to set.
+     * @return the SipTrunkRoute object itself.
+     */
+    public SipTrunkRoute setCallerIdOverride(String callerIdOverride) {
+        this.callerIdOverride = callerIdOverride;
+        return this;
+    }
+
+    /**
+     * Get the callerIdOverride property: Gets or sets caller ID override. This value will override caller ID of
+     * outgoing call specified at runtime.
+     * 
+     * @return the callerIdOverride value.
+     */
+    public String getCallerIdOverride() {
+        return this.callerIdOverride;
     }
 }

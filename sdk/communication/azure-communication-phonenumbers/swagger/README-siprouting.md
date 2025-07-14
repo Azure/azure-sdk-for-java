@@ -24,10 +24,11 @@ autorest README-siprouting.md --java
 ### Code generation settings
 ```yaml
 title: Azure Communication Phone Numbers SIP Routing Service
-tag: package-2023-03
+tag: package-2024-11-15-preview
 use: '@autorest/java@4.1.52'
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/communication/data-plane/SipRouting/readme.md
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/abb839b726184aa10f8d1eaac8e9fe590833619c/specification/communication/data-plane/SipRouting/readme.md
 override-client-name: SipRoutingAdminClient
+custom-types: TlsHealth,PingHealth,TrunkHealth,OverallHealth,HealthStatusReason,TlsStatus,PrivacyHeader,PingStatus,OverallHealthStatus,IpAddressVersion
 custom-types-subpackage: models
 models-subpackage: implementation.models
 java: true
@@ -78,4 +79,49 @@ directive:
       where: "$.definitions.TrunkRoute" 
       transform: >
           $["x-ms-client-name"] = "SipTrunkRoute";
+```
+
+### Directive renaming "Domain" model to "SipDomain"
+```yaml
+directive:
+    - from: swagger-document
+      where: "$.definitions.Domain" 
+      transform: >
+          $["x-ms-client-name"] = "SipDomain";
+```
+
+### Directive renaming "Health" to "TrunkHealth"
+```yaml
+directive:
+    - from: swagger-document
+      where: "$.definitions.Health" 
+      transform: >
+          $["x-ms-client-name"] = "TrunkHealth";
+```
+
+### Directive renaming "Tls" to "TlsHealth"
+```yaml
+directive:
+    - from: swagger-document
+      where: "$.definitions.Tls" 
+      transform: >
+          $["x-ms-client-name"] = "TlsHealth";
+```
+
+### Directive renaming "Ping" to "PingHealth"
+```yaml
+directive:
+    - from: swagger-document
+      where: "$.definitions.Ping" 
+      transform: >
+          $["x-ms-client-name"] = "PingHealth";
+```
+
+### Directive renaming "InactiveStatusReason" enum to "HealthStatusReason"
+```yaml
+directive:
+    - from: swagger-document
+      where: "$.definitions.OverallHealth" 
+      transform: >
+          $.properties.reason["x-ms-enum"].name = "HealthStatusReason";
 ```

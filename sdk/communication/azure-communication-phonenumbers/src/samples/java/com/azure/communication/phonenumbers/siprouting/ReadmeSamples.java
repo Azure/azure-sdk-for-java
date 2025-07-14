@@ -5,6 +5,7 @@ package com.azure.communication.phonenumbers.siprouting;
 
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
+
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -12,6 +13,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import static java.util.Arrays.asList;
+
+import com.azure.communication.phonenumbers.siprouting.models.SipDomain;
 
 public class ReadmeSamples {
 
@@ -89,12 +92,16 @@ public class ReadmeSamples {
     /**
      * Sample code for listing SIP trunks and routes.
      */
-    public void listTrunksAndRoutes() {
+    public void listDomainsTrunksAndRoutes() {
         SipRoutingClient sipRoutingClient = createSipRoutingClient();
 
-        // BEGIN: readme-sample-listTrunksAndRoutes
+        // BEGIN: readme-sample-listDomainsTrunksAndRoutes
+        PagedIterable<SipDomain> domains = sipRoutingClient.listDomains();
         PagedIterable<SipTrunk> trunks = sipRoutingClient.listTrunks();
         PagedIterable<SipTrunkRoute> routes = sipRoutingClient.listRoutes();
+        for (SipDomain domain : domains) {
+            System.out.println("Domains " + domain.getFqdn() + ":" + domain.isEnabled());
+        }
         for (SipTrunk trunk : trunks) {
             System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
         }
@@ -104,7 +111,7 @@ public class ReadmeSamples {
             System.out.println("Route number pattern: " + route.getNumberPattern());
             System.out.println("Route trunks: " + String.join(",", route.getTrunks()));
         }
-        // END: readme-sample-listTrunksAndRoutes
+        // END: readme-sample-listDomainsTrunksAndRoutes
     }
 
     /**
@@ -125,12 +132,32 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code for setting SIP trunks and routes.
+     * Sample code for getting a SIP domain based on its domain name.
      */
-    public void setTrunksAndRoutes() {
+    public void getDomain() {
         SipRoutingClient sipRoutingClient = createSipRoutingClient();
 
-        // BEGIN: readme-sample-setTrunksAndRoutes
+        // BEGIN: readme-sample-getDomain
+        String domainName = "<domain name>";
+        SipDomain domain = sipRoutingClient.getDomain(domainName);
+        if (domain != null) {
+            System.out.println("Domain " + domain.isEnabled());
+        } else {
+            System.out.println("Domain not found. " + domainName);
+        }
+        // END: readme-sample-getDomain
+    }
+
+    /**
+     * Sample code for setting SIP trunks and routes.
+     */
+    public void setDomainsTrunksAndRoutes() {
+        SipRoutingClient sipRoutingClient = createSipRoutingClient();
+
+        // BEGIN: readme-sample-setDomainsTrunksAndRoutes
+        sipRoutingClient.setDomains(asList(
+            new SipDomain("<domain fqdn>", false)
+        ));
         sipRoutingClient.setTrunks(asList(
             new SipTrunk("<first trunk fqdn>", 12345),
             new SipTrunk("<second trunk fqdn>", 23456)
@@ -139,7 +166,7 @@ public class ReadmeSamples {
             new SipTrunkRoute("route name1", ".*9").setTrunks(asList("<first trunk fqdn>", "<second trunk fqdn>")),
             new SipTrunkRoute("route name2", ".*").setTrunks(asList("<second trunk fqdn>"))
         ));
-        // END: readme-sample-setTrunksAndRoutes
+        // END: readme-sample-setDomainsTrunksAndRoutes
     }
 
     /**
@@ -163,4 +190,26 @@ public class ReadmeSamples {
         sipRoutingClient.deleteTrunk("<trunk fqdn>");
         // END: readme-sample-deleteTrunk
     }
+
+    /**
+     * Sample code for setting a SIP Domain.
+     */
+    public void setDomain() {
+        SipRoutingClient sipRoutingClient = createSipRoutingClient();
+
+        // BEGIN: readme-sample-setDomain
+        sipRoutingClient.setDomain(new SipDomain("<trunk fqdn>", false));
+        // END: readme-sample-setDomain
+    }
+
+    /**
+     * Sample code for deleting a SIP domain.
+     */
+    public void deleteDomain() {
+        SipRoutingClient sipRoutingClient = createSipRoutingClient();
+
+        // BEGIN: readme-sample-deleteDomain
+        sipRoutingClient.deleteDomain("<domain name>");
+        // END: readme-sample-deleteDomain
+    } 
 }

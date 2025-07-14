@@ -4,6 +4,9 @@
 
 package com.azure.communication.phonenumbers.siprouting.implementation.models;
 
+import com.azure.communication.phonenumbers.siprouting.models.IpAddressVersion;
+import com.azure.communication.phonenumbers.siprouting.models.PrivacyHeader;
+import com.azure.communication.phonenumbers.siprouting.models.TrunkHealth;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
@@ -13,7 +16,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Represents a SIP trunk for routing calls. See RFC 4904.
+ * Represents a SIP trunk for routing calls. See RFC 4904. Can be expanded with additional data.
  */
 @Fluent
 public final class SipTrunk implements JsonSerializable<SipTrunk> {
@@ -22,6 +25,31 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
      */
     @Generated
     private int sipSignalingPort;
+
+    /*
+     * Enabled flag
+     */
+    private Boolean enabled;
+
+    /*
+     * Represents health state of a SIP trunk for routing calls.
+     */
+    private TrunkHealth health;
+
+    /*
+     * When enabled, removes Azure Communication Services from the signaling path on call transfer and sets the SIP Refer-To header to the trunk's FQDN. By default false.
+     */
+    private Boolean directTransfer;
+
+    /*
+     * SIP Privacy header. Default value is id.
+     */
+    private PrivacyHeader privacyHeader;
+
+    /*
+     * IP address version used by the trunk. Default value is ipv4.
+     */
+    private IpAddressVersion ipAddressVersion;
 
     /**
      * Creates an instance of SipTrunk class.
@@ -53,6 +81,97 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
     }
 
     /**
+     * Get the enabled property: Enabled flag.
+     * 
+     * @return the enabled value.
+     */
+    public Boolean isEnabled() {
+        return this.enabled;
+    }
+
+    /**
+     * Set the enabled property: Enabled flag.
+     * 
+     * @param enabled the enabled value to set.
+     * @return the SipTrunk object itself.
+     */
+    public SipTrunk setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+        return this;
+    }
+
+    /**
+     * Get the health property: Represents health state of a SIP trunk for routing calls.
+     * 
+     * @return the health value.
+     */
+    public TrunkHealth getHealth() {
+        return this.health;
+    }
+
+    /**
+     * Get the directTransfer property: When enabled, removes Azure Communication Services from the signaling path on
+     * call transfer and sets the SIP Refer-To header to the trunk's FQDN. By default false.
+     * 
+     * @return the directTransfer value.
+     */
+    public Boolean isDirectTransfer() {
+        return this.directTransfer;
+    }
+
+    /**
+     * Set the directTransfer property: When enabled, removes Azure Communication Services from the signaling path on
+     * call transfer and sets the SIP Refer-To header to the trunk's FQDN. By default false.
+     * 
+     * @param directTransfer the directTransfer value to set.
+     * @return the SipTrunk object itself.
+     */
+    public SipTrunk setDirectTransfer(Boolean directTransfer) {
+        this.directTransfer = directTransfer;
+        return this;
+    }
+
+    /**
+     * Get the privacyHeader property: SIP Privacy header. Default value is id.
+     * 
+     * @return the privacyHeader value.
+     */
+    public PrivacyHeader getPrivacyHeader() {
+        return this.privacyHeader;
+    }
+
+    /**
+     * Set the privacyHeader property: SIP Privacy header. Default value is id.
+     * 
+     * @param privacyHeader the privacyHeader value to set.
+     * @return the SipTrunk object itself.
+     */
+    public SipTrunk setPrivacyHeader(PrivacyHeader privacyHeader) {
+        this.privacyHeader = privacyHeader;
+        return this;
+    }
+
+    /**
+     * Get the ipAddressVersion property: IP address version used by the trunk. Default value is ipv4.
+     * 
+     * @return the ipAddressVersion value.
+     */
+    public IpAddressVersion getIpAddressVersion() {
+        return this.ipAddressVersion;
+    }
+
+    /**
+     * Set the ipAddressVersion property: IP address version used by the trunk. Default value is ipv4.
+     * 
+     * @param ipAddressVersion the ipAddressVersion value to set.
+     * @return the SipTrunk object itself.
+     */
+    public SipTrunk setIpAddressVersion(IpAddressVersion ipAddressVersion) {
+        this.ipAddressVersion = ipAddressVersion;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -60,6 +179,11 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("sipSignalingPort", this.sipSignalingPort);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeBooleanField("directTransfer", this.directTransfer);
+        jsonWriter.writeStringField("privacyHeader", this.privacyHeader == null ? null : this.privacyHeader.toString());
+        jsonWriter.writeStringField("ipAddressVersion",
+            this.ipAddressVersion == null ? null : this.ipAddressVersion.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -82,6 +206,16 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
 
                 if ("sipSignalingPort".equals(fieldName)) {
                     deserializedSipTrunk.sipSignalingPort = reader.getInt();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedSipTrunk.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("health".equals(fieldName)) {
+                    deserializedSipTrunk.health = TrunkHealth.fromJson(reader);
+                } else if ("directTransfer".equals(fieldName)) {
+                    deserializedSipTrunk.directTransfer = reader.getNullable(JsonReader::getBoolean);
+                } else if ("privacyHeader".equals(fieldName)) {
+                    deserializedSipTrunk.privacyHeader = PrivacyHeader.fromString(reader.getString());
+                } else if ("ipAddressVersion".equals(fieldName)) {
+                    deserializedSipTrunk.ipAddressVersion = IpAddressVersion.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
