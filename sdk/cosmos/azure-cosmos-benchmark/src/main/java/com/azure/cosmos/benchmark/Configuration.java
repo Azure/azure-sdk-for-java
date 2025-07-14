@@ -496,7 +496,10 @@ public class Configuration {
         String instrumentationKey = System.getProperty("azure.cosmos.monitoring.azureMonitor.instrumentationKey",
             StringUtils.defaultString(Strings.emptyToNull(
                 System.getenv().get("AZURE_INSTRUMENTATION_KEY")), null));
-        return instrumentationKey == null ? null : this.azureMonitorMeterRegistry(instrumentationKey);
+        String connectionString = System.getProperty("applicationinsights.connection.string",
+            StringUtils.defaultString(Strings.emptyToNull(
+                System.getenv().get("APPLICATIONINSIGHTS_CONNECTION_STRING")), null));
+        return instrumentationKey == null ? null : this.azureMonitorMeterRegistry(connectionString, instrumentationKey);
     }
 
     public MeterRegistry getGraphiteMeterRegistry() {
@@ -732,7 +735,7 @@ public class Configuration {
             "COSMOS_RESULT_UPLOAD_CONTAINER")), resultUploadContainer);
     }
 
-    private synchronized MeterRegistry azureMonitorMeterRegistry(String instrumentationKey) {
+    private synchronized MeterRegistry azureMonitorMeterRegistry(String connectionString, String instrumentationKey) {
 
         if (this.azureMonitorMeterRegistry == null) {
 
@@ -751,8 +754,12 @@ public class Configuration {
                 @Override
                 @Nullable
                 public String instrumentationKey() {
-                    return instrumentationKey;
+                    return connectionString != null ? null : instrumentationKey;
                 }
+
+                @Override
+                public String connectionString() { return connectionString; }
+
 
                 @Override
                 public Duration step() {
