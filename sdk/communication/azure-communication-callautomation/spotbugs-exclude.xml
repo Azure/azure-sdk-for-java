@@ -13,13 +13,11 @@
       <Class name="com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImpl" />
       <Class name="com.azure.communication.callautomation.implementation.converters.TranscriptionDataConverter" />
       <Class name="com.azure.communication.callautomation.implementation.eventprocessor.EventWithBacklogId" />
-      <Class name="com.azure.communication.callautomation.implementation.models.BaseDialog" />
       <Class name="com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal" />
       <Class name="com.azure.communication.callautomation.implementation.models.CollectTonesResultInternal" />
       <Class name="com.azure.communication.callautomation.implementation.models.CommunicationError" />
       <Class name="com.azure.communication.callautomation.implementation.models.CreateCallRequestInternal" />
       <Class name="com.azure.communication.callautomation.implementation.models.CustomCallingContext" />
-      <Class name="com.azure.communication.callautomation.implementation.models.DialogUpdateBase" />
       <Class name="com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal" />
       <Class name="com.azure.communication.callautomation.implementation.models.DtmfResult" />
       <Class name="com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal" />
@@ -55,7 +53,6 @@
       <Class name="com.azure.communication.callautomation.models.RecognitionChoice" />
       <Class name="com.azure.communication.callautomation.models.RemoveParticipantEventResult" />
       <Class name="com.azure.communication.callautomation.models.SendDtmfTonesOptions" />
-      <Class name="com.azure.communication.callautomation.models.StartDialogOptions" />
       <Class name="com.azure.communication.callautomation.models.StartRecordingOptions" />
       <Class name="com.azure.communication.callautomation.models.TransferCallToParticipantEventResult" />
       <Class name="com.azure.communication.callautomation.models.TransferCallToParticipantOptions" />
@@ -74,11 +71,9 @@
     <Or>
       <Class name="com.azure.communication.callautomation.CallAutomationClientBuilder" />
       <Class name="com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImplBuilder" />
-      <Class name="com.azure.communication.callautomation.implementation.models.BaseDialog" />
       <Class name="com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal" />
       <Class name="com.azure.communication.callautomation.implementation.models.CreateCallRequestInternal" />
       <Class name="com.azure.communication.callautomation.implementation.models.CustomCallingContext" />
-      <Class name="com.azure.communication.callautomation.implementation.models.DialogUpdateBase" />
       <Class name="com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal" />
       <Class name="com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal" />
       <Class name="com.azure.communication.callautomation.implementation.models.MuteParticipantsRequestInternal" />
@@ -106,7 +101,6 @@
       <Class name="com.azure.communication.callautomation.models.RecognitionChoice" />
       <Class name="com.azure.communication.callautomation.models.ResultWithEventHandling" />
       <Class name="com.azure.communication.callautomation.models.SendDtmfTonesOptions" />
-      <Class name="com.azure.communication.callautomation.models.StartDialogOptions" />
       <Class name="com.azure.communication.callautomation.models.StartRecordingOptions" />
       <Class name="com.azure.communication.callautomation.models.TransferCallToParticipantOptions" />
       <Class name="com.azure.communication.callautomation.models.streaming.transcription.TranscriptionData" />
@@ -128,7 +122,6 @@
   <Match>
     <Bug pattern="UUF_UNUSED_FIELD" />
     <Or>
-      <Class name="com.azure.communication.callautomation.models.DialogStateResult" />
       <Class name="com.azure.communication.callautomation.models.CallMediaRecognizeOptions" />
       <Class name="com.azure.communication.callautomation.models.OutStreamingData" />
       <Class name="com.azure.communication.callautomation.models.events.CallTransferAccepted" />

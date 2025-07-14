@@ -13,51 +13,23 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Configuration of Media streaming.
+ * Options for media streaming.
  */
 @Fluent
-public final class MediaStreamingOptionsInternal implements JsonSerializable<MediaStreamingOptionsInternal> {
+public class MediaStreamingOptionsInternal implements JsonSerializable<MediaStreamingOptionsInternal> {
     /*
-     * Transport URL for media streaming
+     * Defines the transport type used for streaming. Note that future values may be introduced that are not currently
+     * documented.
      */
     @Generated
-    private String transportUrl;
+    private StreamingTransportTypeInternal transportType
+        = StreamingTransportTypeInternal.fromString("MediaStreamingOptionsInternal");
 
     /*
-     * The type of transport to be used for media streaming, eg. Websocket
-     */
-    @Generated
-    private MediaStreamingTransportTypeInternal transportType;
-
-    /*
-     * Content type to stream, eg. audio
-     */
-    @Generated
-    private MediaStreamingContentTypeInternal contentType;
-
-    /*
-     * Audio channel type to stream, eg. unmixed audio, mixed audio
+     * The audio channel type to stream, e.g., unmixed audio, mixed audio.
      */
     @Generated
     private MediaStreamingAudioChannelTypeInternal audioChannelType;
-
-    /*
-     * Determines if the media streaming should be started immediately after call is answered or not.
-     */
-    @Generated
-    private Boolean startMediaStreaming;
-
-    /*
-     * A value indicating whether bidirectional streaming is enabled.
-     */
-    @Generated
-    private Boolean enableBidirectional;
-
-    /*
-     * Specifies the audio format used for encoding, including sample rate and channel type.
-     */
-    @Generated
-    private AudioFormatInternal audioFormat;
 
     /**
      * Creates an instance of MediaStreamingOptionsInternal class.
@@ -67,73 +39,18 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
     }
 
     /**
-     * Get the transportUrl property: Transport URL for media streaming.
-     * 
-     * @return the transportUrl value.
-     */
-    @Generated
-    public String getTransportUrl() {
-        return this.transportUrl;
-    }
-
-    /**
-     * Set the transportUrl property: Transport URL for media streaming.
-     * 
-     * @param transportUrl the transportUrl value to set.
-     * @return the MediaStreamingOptionsInternal object itself.
-     */
-    @Generated
-    public MediaStreamingOptionsInternal setTransportUrl(String transportUrl) {
-        this.transportUrl = transportUrl;
-        return this;
-    }
-
-    /**
-     * Get the transportType property: The type of transport to be used for media streaming, eg. Websocket.
+     * Get the transportType property: Defines the transport type used for streaming. Note that future values may be
+     * introduced that are not currently documented.
      * 
      * @return the transportType value.
      */
     @Generated
-    public MediaStreamingTransportTypeInternal getTransportType() {
+    public StreamingTransportTypeInternal getTransportType() {
         return this.transportType;
     }
 
     /**
-     * Set the transportType property: The type of transport to be used for media streaming, eg. Websocket.
-     * 
-     * @param transportType the transportType value to set.
-     * @return the MediaStreamingOptionsInternal object itself.
-     */
-    @Generated
-    public MediaStreamingOptionsInternal setTransportType(MediaStreamingTransportTypeInternal transportType) {
-        this.transportType = transportType;
-        return this;
-    }
-
-    /**
-     * Get the contentType property: Content type to stream, eg. audio.
-     * 
-     * @return the contentType value.
-     */
-    @Generated
-    public MediaStreamingContentTypeInternal getContentType() {
-        return this.contentType;
-    }
-
-    /**
-     * Set the contentType property: Content type to stream, eg. audio.
-     * 
-     * @param contentType the contentType value to set.
-     * @return the MediaStreamingOptionsInternal object itself.
-     */
-    @Generated
-    public MediaStreamingOptionsInternal setContentType(MediaStreamingContentTypeInternal contentType) {
-        this.contentType = contentType;
-        return this;
-    }
-
-    /**
-     * Get the audioChannelType property: Audio channel type to stream, eg. unmixed audio, mixed audio.
+     * Get the audioChannelType property: The audio channel type to stream, e.g., unmixed audio, mixed audio.
      * 
      * @return the audioChannelType value.
      */
@@ -143,7 +60,7 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
     }
 
     /**
-     * Set the audioChannelType property: Audio channel type to stream, eg. unmixed audio, mixed audio.
+     * Set the audioChannelType property: The audio channel type to stream, e.g., unmixed audio, mixed audio.
      * 
      * @param audioChannelType the audioChannelType value to set.
      * @return the MediaStreamingOptionsInternal object itself.
@@ -155,90 +72,15 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
     }
 
     /**
-     * Get the startMediaStreaming property: Determines if the media streaming should be started immediately after call
-     * is answered or not.
-     * 
-     * @return the startMediaStreaming value.
-     */
-    @Generated
-    public Boolean isStartMediaStreaming() {
-        return this.startMediaStreaming;
-    }
-
-    /**
-     * Set the startMediaStreaming property: Determines if the media streaming should be started immediately after call
-     * is answered or not.
-     * 
-     * @param startMediaStreaming the startMediaStreaming value to set.
-     * @return the MediaStreamingOptionsInternal object itself.
-     */
-    @Generated
-    public MediaStreamingOptionsInternal setStartMediaStreaming(Boolean startMediaStreaming) {
-        this.startMediaStreaming = startMediaStreaming;
-        return this;
-    }
-
-    /**
-     * Get the enableBidirectional property: A value indicating whether bidirectional streaming is enabled.
-     * 
-     * @return the enableBidirectional value.
-     */
-    @Generated
-    public Boolean isEnableBidirectional() {
-        return this.enableBidirectional;
-    }
-
-    /**
-     * Set the enableBidirectional property: A value indicating whether bidirectional streaming is enabled.
-     * 
-     * @param enableBidirectional the enableBidirectional value to set.
-     * @return the MediaStreamingOptionsInternal object itself.
-     */
-    @Generated
-    public MediaStreamingOptionsInternal setEnableBidirectional(Boolean enableBidirectional) {
-        this.enableBidirectional = enableBidirectional;
-        return this;
-    }
-
-    /**
-     * Get the audioFormat property: Specifies the audio format used for encoding, including sample rate and channel
-     * type.
-     * 
-     * @return the audioFormat value.
-     */
-    @Generated
-    public AudioFormatInternal getAudioFormat() {
-        return this.audioFormat;
-    }
-
-    /**
-     * Set the audioFormat property: Specifies the audio format used for encoding, including sample rate and channel
-     * type.
-     * 
-     * @param audioFormat the audioFormat value to set.
-     * @return the MediaStreamingOptionsInternal object itself.
-     */
-    @Generated
-    public MediaStreamingOptionsInternal setAudioFormat(AudioFormatInternal audioFormat) {
-        this.audioFormat = audioFormat;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("transportUrl", this.transportUrl);
-        jsonWriter.writeStringField("transportType", this.transportType == null ? null : this.transportType.toString());
-        jsonWriter.writeStringField("contentType", this.contentType == null ? null : this.contentType.toString());
         jsonWriter.writeStringField("audioChannelType",
             this.audioChannelType == null ? null : this.audioChannelType.toString());
-        jsonWriter.writeBooleanField("startMediaStreaming", this.startMediaStreaming);
-        jsonWriter.writeBooleanField("enableBidirectional", this.enableBidirectional);
-        jsonWriter.writeStringField("audioFormat", this.audioFormat == null ? null : this.audioFormat.toString());
+        jsonWriter.writeStringField("transportType", this.transportType == null ? null : this.transportType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -254,32 +96,44 @@ public final class MediaStreamingOptionsInternal implements JsonSerializable<Med
     @Generated
     public static MediaStreamingOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("transportType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("websocket".equals(discriminatorValue)) {
+                    return WebSocketMediaStreamingOptionsInternal.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    @Generated
+    static MediaStreamingOptionsInternal fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
             MediaStreamingOptionsInternal deserializedMediaStreamingOptionsInternal
                 = new MediaStreamingOptionsInternal();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("transportUrl".equals(fieldName)) {
-                    deserializedMediaStreamingOptionsInternal.transportUrl = reader.getString();
-                } else if ("transportType".equals(fieldName)) {
-                    deserializedMediaStreamingOptionsInternal.transportType
-                        = MediaStreamingTransportTypeInternal.fromString(reader.getString());
-                } else if ("contentType".equals(fieldName)) {
-                    deserializedMediaStreamingOptionsInternal.contentType
-                        = MediaStreamingContentTypeInternal.fromString(reader.getString());
-                } else if ("audioChannelType".equals(fieldName)) {
+                if ("audioChannelType".equals(fieldName)) {
                     deserializedMediaStreamingOptionsInternal.audioChannelType
                         = MediaStreamingAudioChannelTypeInternal.fromString(reader.getString());
-                } else if ("startMediaStreaming".equals(fieldName)) {
-                    deserializedMediaStreamingOptionsInternal.startMediaStreaming
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else if ("enableBidirectional".equals(fieldName)) {
-                    deserializedMediaStreamingOptionsInternal.enableBidirectional
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else if ("audioFormat".equals(fieldName)) {
-                    deserializedMediaStreamingOptionsInternal.audioFormat
-                        = AudioFormatInternal.fromString(reader.getString());
+                } else if ("transportType".equals(fieldName)) {
+                    deserializedMediaStreamingOptionsInternal.transportType
+                        = StreamingTransportTypeInternal.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

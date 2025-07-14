@@ -115,6 +115,9 @@
   <!-- Suppress the long package name in kubernetesconfiguration and all its sub services/packages  -->
   <suppress checks="PackageName" files="com.azure.resourcemanager.kubernetesconfiguration.*" />
 
+  <!-- Suppress the @Immutable class with a property named "setPasswordLink"  -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ImmutableClassCheck" files="com.azure.resourcemanager.datadog.fluent.models.DatadogSetPasswordLinkInner" />
+
   <!-- ### begin: Spring related suppression -->
   <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-data-cosmos[/\\]src[/\\]test[/\\]"/>

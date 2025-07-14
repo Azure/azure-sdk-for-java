@@ -22,6 +22,11 @@ The Azure SDK for Java repository contains client libraries for Azure services, 
 - **Management Libraries**: Libraries with Maven group `com.azure.resourcemanager`
 - **Spring Libraries**: Libraries with Maven group `com.azure.spring`
 
+## SDK Generation Guildlines
+
+ACTION: Use azure-sdk-java-mcp sdk tools to generate the SDK.
+ACTION: Use azure-sdk-java-mcp sdk tools to build the SDK.
+
 ## Behavior
 
 - Always ensure your solutions prioritize clarity, maintainability, and testability.

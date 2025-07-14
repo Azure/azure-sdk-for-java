@@ -181,6 +181,7 @@
     <module>sdk/personalizer</module>
     <module>sdk/pineconevectordb</module>
     <module>sdk/planetarycomputer</module>
+    <module>sdk/playwright</module>
     <module>sdk/playwrighttesting</module>
     <module>sdk/policyinsights</module>
     <module>sdk/portalservices</module>
