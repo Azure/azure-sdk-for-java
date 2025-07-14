@@ -519,7 +519,20 @@ public final class Netty4Utility {
         CountDownLatch latch) {
         io.netty.handler.codec.http.HttpRequest nettyRequest = toNettyHttpRequest(request);
 
-        channel.writeAndFlush(nettyRequest).addListener(future -> {
+        final ChannelFuture writeFuture;
+
+        if (nettyRequest instanceof FullHttpRequest) {
+            writeFuture = channel.writeAndFlush(nettyRequest);
+        } else {
+            channel.write(nettyRequest);
+
+            BinaryData requestBody = request.getBody();
+            ChunkedInput<HttpContent> chunkedInput = new HttpChunkedInput(new ChunkedStream(requestBody.toStream()));
+
+            writeFuture = channel.writeAndFlush(chunkedInput);
+        }
+
+        writeFuture.addListener(future -> {
             if (future.isSuccess()) {
                 channel.read();
             } else {
@@ -527,18 +540,6 @@ public final class Netty4Utility {
                 latch.countDown();
             }
         });
-
-        if (!(nettyRequest instanceof FullHttpRequest)) {
-            BinaryData requestBody = request.getBody();
-            ChunkedInput<HttpContent> chunkedInput = new HttpChunkedInput(new ChunkedStream(requestBody.toStream()));
-
-            channel.writeAndFlush(chunkedInput).addListener(future -> {
-                if (!future.isSuccess()) {
-                    setOrSuppressError(errorReference, future.cause());
-                    latch.countDown();
-                }
-            });
-        }
     }
 
     private static io.netty.handler.codec.http.HttpRequest toNettyHttpRequest(HttpRequest request) {

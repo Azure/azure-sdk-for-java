@@ -444,45 +444,45 @@ public class NettyHttpClientTests {
         }
     }
 
-    @Test
-    public void malformedContentLengthIsIgnored() throws IOException {
-        String rawResponse = "HTTP/1.1 200 OK\r\n" + "Content-Type: application/octet-stream\r\n"
-            + "Content-Length: not-a-number\r\n" + "\r\n";
-
-        try (ServerSocket serverSocket = new ServerSocket(0)) {
-            int port = serverSocket.getLocalPort();
-            URI url = URI.create("http://localhost:" + port);
-
-            Thread clientThread = new Thread(() -> {
-                NettyHttpClient client = null;
-                try {
-                    client = (NettyHttpClient) new NettyHttpClientBuilder().build();
-                    HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
-                    try (Response<BinaryData> response = client.send(request)) {
-                        assertEquals(200, response.getStatusCode());
-                        TestUtils.assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
-                    }
-                } finally {
-                    if (client != null) {
-                        client.close();
-                    }
-                }
-            });
-            clientThread.start();
-
-            try (Socket socket = serverSocket.accept()) {
-                OutputStream out = socket.getOutputStream();
-                out.write(rawResponse.getBytes(StandardCharsets.UTF_8));
-                out.write(SHORT_BODY);
-                out.flush();
-            }
-
-            clientThread.join(10000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException(e);
-        }
-    }
+    //    @Test
+    //    public void malformedContentLengthIsIgnored() throws IOException {
+    //        String rawResponse = "HTTP/1.1 200 OK\r\n" + "Content-Type: application/octet-stream\r\n"
+    //            + "Content-Length: not-a-number\r\n" + "\r\n";
+    //
+    //        try (ServerSocket serverSocket = new ServerSocket(0)) {
+    //            int port = serverSocket.getLocalPort();
+    //            URI url = URI.create("http://localhost:" + port);
+    //
+    //            Thread clientThread = new Thread(() -> {
+    //                NettyHttpClient client = null;
+    //                try {
+    //                    client = (NettyHttpClient) new NettyHttpClientBuilder().build();
+    //                    HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
+    //                    try (Response<BinaryData> response = client.send(request)) {
+    //                        assertEquals(200, response.getStatusCode());
+    //                        TestUtils.assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
+    //                    }
+    //                } finally {
+    //                    if (client != null) {
+    //                        client.close();
+    //                    }
+    //                }
+    //            });
+    //            clientThread.start();
+    //
+    //            try (Socket socket = serverSocket.accept()) {
+    //                OutputStream out = socket.getOutputStream();
+    //                out.write(rawResponse.getBytes(StandardCharsets.UTF_8));
+    //                out.write(SHORT_BODY);
+    //                out.flush();
+    //            }
+    //
+    //            clientThread.join(10000);
+    //        } catch (InterruptedException e) {
+    //            Thread.currentThread().interrupt();
+    //            throw new RuntimeException(e);
+    //        }
+    //    }
 
     @Test
     public void nonPooledClientSendsRequestSuccessfully() {

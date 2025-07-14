@@ -17,7 +17,6 @@ module io.clientcore.http.netty4 {
     requires io.netty.resolver;
     requires io.netty.codec.http2;
     requires java.sql;
-    requires java.management;
 
     exports io.clientcore.http.netty4;
 

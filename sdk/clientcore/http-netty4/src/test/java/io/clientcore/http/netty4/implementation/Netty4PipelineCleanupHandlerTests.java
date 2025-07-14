@@ -57,6 +57,7 @@ public class Netty4PipelineCleanupHandlerTests {
         testChannel = new TestMockChannel(new MockEventLoop());
         testChannel.attr(AttributeKey.valueOf("channel-lock")).set(new ReentrantLock());
         testChannel.attr(AttributeKey.valueOf("pipeline-owner-token")).set(OBJECT);
+        testChannel.config.setAutoRead(false);
         errorReference = new AtomicReference<>();
         latch = new CountDownLatch(1);
     }
@@ -72,8 +73,8 @@ public class Netty4PipelineCleanupHandlerTests {
 
         handler.cleanup(ctx, false);
 
-        //verify(connectionPool).release(testChannel);
-        //assertEquals(0, testChannel.getCloseCallCount());
+        verify(connectionPool).release(testChannel);
+        assertEquals(0, testChannel.getCloseCallCount());
         assertNull(testChannel.pipeline().get(HTTP_CODEC));
         assertFalse(testChannel.config().isAutoRead());
     }
@@ -131,7 +132,7 @@ public class Netty4PipelineCleanupHandlerTests {
 
         assertNotNull(testChannel.pipeline().get(HTTP_CODEC));
         assertNull(testChannel.pipeline().get(HTTP_RESPONSE));
-        //verify(connectionPool).release(testChannel);
+        verify(connectionPool).release(testChannel);
     }
 
     @Test
