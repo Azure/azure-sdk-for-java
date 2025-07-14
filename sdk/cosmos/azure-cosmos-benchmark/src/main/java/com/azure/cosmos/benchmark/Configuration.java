@@ -775,11 +775,22 @@ public class Configuration {
             };
 
             this.azureMonitorMeterRegistry = new AzureMonitorMeterRegistry(config, Clock.SYSTEM);
+            List<Tag> globalTags = new ArrayList<>();
             if (!Strings.isNullOrEmpty(testCategoryTag)) {
-                List<Tag> globalTags = new ArrayList<>();
                 globalTags.add(Tag.of("TestCategory", testCategoryTag));
-                this.azureMonitorMeterRegistry.config().commonTags(globalTags);
             }
+
+            String roleName = System.getenv("APPLICATIONINSIGHTS_ROLE_NAME");
+            if (roleName != null) {
+                globalTags.add(Tag.of("cloud_RoleName", roleName));
+            }
+
+            String roleInstance = System.getenv("APPLICATIONINSIGHTS_ROLE_INSTANCE");
+            if (roleName != null) {
+                globalTags.add(Tag.of("cloud_RoleInstance", roleInstance));
+            }
+
+            this.azureMonitorMeterRegistry.config().commonTags(globalTags);
         }
 
         return this.azureMonitorMeterRegistry;
