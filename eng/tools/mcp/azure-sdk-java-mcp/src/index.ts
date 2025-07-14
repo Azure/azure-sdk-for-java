@@ -146,9 +146,9 @@ server.registerTool(
     },
 );
 
-// Tool: sync_java_sdk
+// Tool: sync_typespec_source_file
 server.registerTool(
-    "sync_java_sdk",
+    "sync_typespec_source_files",
     {
         description:
             "Synchronize or download the TypeSpec source for a target service to enable Java SDK generation. Accepts either a local absolute path to tspconfig.yaml or a remote URL (with commit id, not branch name).",
@@ -167,11 +167,11 @@ server.registerTool(
                 ),
         },
         annotations: {
-            title: "Sync Java SDK",
+            title: "Sync TypeSpec Source Files",
         },
     },
     async (args) => {
-        logToolCall("sync_java_sdk");
+        logToolCall("sync_typespec_source_files");
         const result = await initJavaSdk(args.localTspConfigPath, args.remoteTspConfigUrl);
         return result;
     },
@@ -182,7 +182,7 @@ server.registerTool(
     "generate_java_sdk",
     {
         description:
-            "Generate the Java SDK from TypeSpec source files located in the 'TempTypeSpecFiles' directory within the specified working directory. If 'TempTypeSpecFiles' is not present, prompt the user to specify whether to generate from a local or remote TypeSpec source, and use the sync_java_sdk tool as needed before proceeding.",
+            "Generate the Java SDK from TypeSpec source files located in the 'TempTypeSpecFiles' directory within the specified working directory. If 'TempTypeSpecFiles' is not present, prompt the user to specify whether to generate from a local or remote TypeSpec source, and use the sync_typespec_source_files tool as needed before proceeding.",
         inputSchema: {
             cwd: z
                 .string()
