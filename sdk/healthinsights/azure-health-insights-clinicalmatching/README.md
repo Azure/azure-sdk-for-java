@@ -161,7 +161,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [clinical_matching_client_class]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-clinicalmatching/src/main/java/com/azure/health/insights/clinicalmatching/ClinicalMatchingClient.java
 [package]: https://central.sonatype.com/artifact/com.azure/azure-health-insights-clinicalmatching
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-clinicalmatching/src/
-[clinical_matching_api_documentation]: https://learn.microsoft.com/rest/api/cognitiveservices/healthinsights/trial-matcher
+[clinical_matching_api_documentation]: https://learn.microsoft.com/rest/api/healthinsights/trial-matcher
 [product_documentation]: https://learn.microsoft.com/azure/azure-health-insights/trial-matcher/
 [samples_location]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/healthinsights/azure-health-insights-clinicalmatching/src/samples
 

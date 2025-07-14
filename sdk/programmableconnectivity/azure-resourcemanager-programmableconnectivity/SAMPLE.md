@@ -75,70 +75,25 @@ public final class GatewaysCreateOrUpdateSamples {
 
 ```java
 /**
- * Samples for OperatorApiConnections GetByResourceGroup.
+ * Samples for Gateways Delete.
  */
-public final class OperatorApiConnectionsGetByResourceGroupSamples {
+public final class GatewaysDeleteSamples {
     /*
-     * x-ms-original-file: 2024-01-15-preview/OperatorApiConnections_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-01-15-preview/Gateways_Delete_MinimumSet_Gen.json
      */
     /**
-     * Sample code: OperatorApiConnections_Get.
+     * Sample code: Gateways_Delete.
      * 
      * @param manager Entry point to ProgrammableConnectivityManager.
      */
-    public static void operatorApiConnectionsGet(
-        com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
-        manager.operatorApiConnections()
-            .getByResourceGroupWithResponse("rgopenapi", "uetzqjrwqtkwgcirdqy", com.azure.core.util.Context.NONE);
+    public static void
+        gatewaysDelete(com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
+        manager.gateways().delete("rgopenapi", "udveaau", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
 ### Gateways_GetByResourceGroup
-
-```java
-/**
- * Samples for Operations List.
- */
-public final class OperationsListSamples {
-    /*
-     * x-ms-original-file: 2024-01-15-preview/Operations_List_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Operations_List.
-     * 
-     * @param manager Entry point to ProgrammableConnectivityManager.
-     */
-    public static void
-        operationsList(com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Gateways_List
-
-```java
-/**
- * Samples for OperatorApiConnections Delete.
- */
-public final class OperatorApiConnectionsDeleteSamples {
-    /*
-     * x-ms-original-file: 2024-01-15-preview/OperatorApiConnections_Delete_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: OperatorApiConnections_Delete.
-     * 
-     * @param manager Entry point to ProgrammableConnectivityManager.
-     */
-    public static void operatorApiConnectionsDelete(
-        com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
-        manager.operatorApiConnections().delete("rgopenapi", "dawr", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Gateways_ListByResourceGroup
 
 ```java
 /**
@@ -161,88 +116,51 @@ public final class GatewaysGetByResourceGroupSamples {
 }
 ```
 
+### Gateways_List
+
+```java
+/**
+ * Samples for Gateways List.
+ */
+public final class GatewaysListSamples {
+    /*
+     * x-ms-original-file: 2024-01-15-preview/Gateways_ListBySubscription_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Gateways_ListBySubscription.
+     * 
+     * @param manager Entry point to ProgrammableConnectivityManager.
+     */
+    public static void gatewaysListBySubscription(
+        com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
+        manager.gateways().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Gateways_ListByResourceGroup
+
+```java
+/**
+ * Samples for Gateways ListByResourceGroup.
+ */
+public final class GatewaysListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-01-15-preview/Gateways_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Gateways_ListByResourceGroup.
+     * 
+     * @param manager Entry point to ProgrammableConnectivityManager.
+     */
+    public static void gatewaysListByResourceGroup(
+        com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
+        manager.gateways().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Gateways_Update
-
-```java
-/**
- * Samples for OperatorApiConnections List.
- */
-public final class OperatorApiConnectionsListSamples {
-    /*
-     * x-ms-original-file: 2024-01-15-preview/OperatorApiConnections_ListBySubscription_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: OperatorApiConnections_ListBySubscription.
-     * 
-     * @param manager Entry point to ProgrammableConnectivityManager.
-     */
-    public static void operatorApiConnectionsListBySubscription(
-        com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
-        manager.operatorApiConnections().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Operations_List
-
-```java
-import com.azure.resourcemanager.programmableconnectivity.models.ApplicationProperties;
-import com.azure.resourcemanager.programmableconnectivity.models.OperatorApiConnection;
-import com.azure.resourcemanager.programmableconnectivity.models.OperatorApiConnectionUpdateProperties;
-import com.azure.resourcemanager.programmableconnectivity.models.SaasProperties;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for OperatorApiConnections Update.
- */
-public final class OperatorApiConnectionsUpdateSamples {
-    /*
-     * x-ms-original-file: 2024-01-15-preview/OperatorApiConnections_Update_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: OperatorApiConnections_Update.
-     * 
-     * @param manager Entry point to ProgrammableConnectivityManager.
-     */
-    public static void operatorApiConnectionsUpdate(
-        com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
-        OperatorApiConnection resource = manager.operatorApiConnections()
-            .getByResourceGroupWithResponse("rgopenapi", "syefewgf", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withTags(mapOf("key3150", "fakeTokenPlaceholder"))
-            .withProperties(new OperatorApiConnectionUpdateProperties().withOperatorApiPlanId(
-                "/subscriptions/00000000-0000-0000-0000-00000000000/providers/Microsoft.ProgrammableConnectivity/operatorApiPlans/yhlygxdwvrzgazbfzyz")
-                .withSaasProperties(
-                    new SaasProperties().withSaasSubscriptionId("mgyusmqt").withSaasResourceId("pekejefyvfviabimdrmno"))
-                .withConfiguredApplication(new ApplicationProperties().withName("idzqqen")
-                    .withApplicationDescription("gjlwegnqvffvsc")
-                    .withApplicationType("f")
-                    .withLegalName("ar")
-                    .withOrganizationDescription("fcueqzlxxr")
-                    .withTaxNumber("ngzv")
-                    .withPrivacyContactEmailAddress("l"))
-                .withAppId("mkfcrn")
-                .withAppSecret("fakeTokenPlaceholder"))
-            .apply();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### OperatorApiConnections_Create
 
 ```java
 import com.azure.resourcemanager.programmableconnectivity.models.Gateway;
@@ -283,51 +201,29 @@ public final class GatewaysUpdateSamples {
 }
 ```
 
-### OperatorApiConnections_Delete
+### Operations_List
 
 ```java
 /**
- * Samples for OperatorApiPlans List.
+ * Samples for Operations List.
  */
-public final class OperatorApiPlansListSamples {
+public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-01-15-preview/OperatorApiPlans_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-01-15-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
-     * Sample code: OperatorApiPlans_ListBySubscription.
-     * 
-     * @param manager Entry point to ProgrammableConnectivityManager.
-     */
-    public static void operatorApiPlansListBySubscription(
-        com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
-        manager.operatorApiPlans().list(null, null, null, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### OperatorApiConnections_GetByResourceGroup
-
-```java
-/**
- * Samples for Gateways Delete.
- */
-public final class GatewaysDeleteSamples {
-    /*
-     * x-ms-original-file: 2024-01-15-preview/Gateways_Delete_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: Gateways_Delete.
+     * Sample code: Operations_List.
      * 
      * @param manager Entry point to ProgrammableConnectivityManager.
      */
     public static void
-        gatewaysDelete(com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
-        manager.gateways().delete("rgopenapi", "udveaau", com.azure.core.util.Context.NONE);
+        operationsList(com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### OperatorApiConnections_List
+### OperatorApiConnections_Create
 
 ```java
 import com.azure.resourcemanager.programmableconnectivity.models.AccountType;
@@ -389,7 +285,155 @@ public final class OperatorApiConnectionsCreateSamples {
 }
 ```
 
+### OperatorApiConnections_Delete
+
+```java
+/**
+ * Samples for OperatorApiConnections Delete.
+ */
+public final class OperatorApiConnectionsDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-01-15-preview/OperatorApiConnections_Delete_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: OperatorApiConnections_Delete.
+     * 
+     * @param manager Entry point to ProgrammableConnectivityManager.
+     */
+    public static void operatorApiConnectionsDelete(
+        com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
+        manager.operatorApiConnections().delete("rgopenapi", "dawr", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OperatorApiConnections_GetByResourceGroup
+
+```java
+/**
+ * Samples for OperatorApiConnections GetByResourceGroup.
+ */
+public final class OperatorApiConnectionsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-01-15-preview/OperatorApiConnections_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: OperatorApiConnections_Get.
+     * 
+     * @param manager Entry point to ProgrammableConnectivityManager.
+     */
+    public static void operatorApiConnectionsGet(
+        com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
+        manager.operatorApiConnections()
+            .getByResourceGroupWithResponse("rgopenapi", "uetzqjrwqtkwgcirdqy", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OperatorApiConnections_List
+
+```java
+/**
+ * Samples for OperatorApiConnections List.
+ */
+public final class OperatorApiConnectionsListSamples {
+    /*
+     * x-ms-original-file: 2024-01-15-preview/OperatorApiConnections_ListBySubscription_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: OperatorApiConnections_ListBySubscription.
+     * 
+     * @param manager Entry point to ProgrammableConnectivityManager.
+     */
+    public static void operatorApiConnectionsListBySubscription(
+        com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
+        manager.operatorApiConnections().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### OperatorApiConnections_ListByResourceGroup
+
+```java
+/**
+ * Samples for OperatorApiConnections ListByResourceGroup.
+ */
+public final class OperatorApiConnectionsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2024-01-15-preview/OperatorApiConnections_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: OperatorApiConnections_ListByResourceGroup.
+     * 
+     * @param manager Entry point to ProgrammableConnectivityManager.
+     */
+    public static void operatorApiConnectionsListByResourceGroup(
+        com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
+        manager.operatorApiConnections().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OperatorApiConnections_Update
+
+```java
+import com.azure.resourcemanager.programmableconnectivity.models.ApplicationProperties;
+import com.azure.resourcemanager.programmableconnectivity.models.OperatorApiConnection;
+import com.azure.resourcemanager.programmableconnectivity.models.OperatorApiConnectionUpdateProperties;
+import com.azure.resourcemanager.programmableconnectivity.models.SaasProperties;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for OperatorApiConnections Update.
+ */
+public final class OperatorApiConnectionsUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-01-15-preview/OperatorApiConnections_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: OperatorApiConnections_Update.
+     * 
+     * @param manager Entry point to ProgrammableConnectivityManager.
+     */
+    public static void operatorApiConnectionsUpdate(
+        com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
+        OperatorApiConnection resource = manager.operatorApiConnections()
+            .getByResourceGroupWithResponse("rgopenapi", "syefewgf", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key3150", "fakeTokenPlaceholder"))
+            .withProperties(new OperatorApiConnectionUpdateProperties().withOperatorApiPlanId(
+                "/subscriptions/00000000-0000-0000-0000-00000000000/providers/Microsoft.ProgrammableConnectivity/operatorApiPlans/yhlygxdwvrzgazbfzyz")
+                .withSaasProperties(
+                    new SaasProperties().withSaasSubscriptionId("mgyusmqt").withSaasResourceId("pekejefyvfviabimdrmno"))
+                .withConfiguredApplication(new ApplicationProperties().withName("idzqqen")
+                    .withApplicationDescription("gjlwegnqvffvsc")
+                    .withApplicationType("f")
+                    .withLegalName("ar")
+                    .withOrganizationDescription("fcueqzlxxr")
+                    .withTaxNumber("ngzv")
+                    .withPrivacyContactEmailAddress("l"))
+                .withAppId("mkfcrn")
+                .withAppSecret("fakeTokenPlaceholder"))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### OperatorApiPlans_Get
 
 ```java
 /**
@@ -411,68 +455,24 @@ public final class OperatorApiPlansGetSamples {
 }
 ```
 
-### OperatorApiConnections_Update
-
-```java
-/**
- * Samples for Gateways List.
- */
-public final class GatewaysListSamples {
-    /*
-     * x-ms-original-file: 2024-01-15-preview/Gateways_ListBySubscription_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Gateways_ListBySubscription.
-     * 
-     * @param manager Entry point to ProgrammableConnectivityManager.
-     */
-    public static void gatewaysListBySubscription(
-        com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
-        manager.gateways().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### OperatorApiPlans_Get
-
-```java
-/**
- * Samples for Gateways ListByResourceGroup.
- */
-public final class GatewaysListByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2024-01-15-preview/Gateways_ListByResourceGroup_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Gateways_ListByResourceGroup.
-     * 
-     * @param manager Entry point to ProgrammableConnectivityManager.
-     */
-    public static void gatewaysListByResourceGroup(
-        com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
-        manager.gateways().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### OperatorApiPlans_List
 
 ```java
 /**
- * Samples for OperatorApiConnections ListByResourceGroup.
+ * Samples for OperatorApiPlans List.
  */
-public final class OperatorApiConnectionsListByResourceGroupSamples {
+public final class OperatorApiPlansListSamples {
     /*
-     * x-ms-original-file: 2024-01-15-preview/OperatorApiConnections_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-01-15-preview/OperatorApiPlans_ListBySubscription_MaximumSet_Gen.json
      */
     /**
-     * Sample code: OperatorApiConnections_ListByResourceGroup.
+     * Sample code: OperatorApiPlans_ListBySubscription.
      * 
      * @param manager Entry point to ProgrammableConnectivityManager.
      */
-    public static void operatorApiConnectionsListByResourceGroup(
+    public static void operatorApiPlansListBySubscription(
         com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager manager) {
-        manager.operatorApiConnections().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
+        manager.operatorApiPlans().list(null, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```

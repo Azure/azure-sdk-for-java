@@ -35,6 +35,7 @@ public final class Netty4ChannelBinaryData extends BinaryData {
 
     private final Channel channel;
     private final Long length;
+    private final boolean isHttp2;
 
     // Non-final to allow nulling out after use.
     private ByteArrayOutputStream eagerContent;
@@ -47,11 +48,13 @@ public final class Netty4ChannelBinaryData extends BinaryData {
      * @param eagerContent Response body content that was eagerly read by Netty while processing the HTTP headers.
      * @param channel The Netty {@link Channel}.
      * @param length Size of the response body (if known).
+     * @param isHttp2 Flag indicating whether the handler is used for HTTP/2 or not.
      */
-    public Netty4ChannelBinaryData(ByteArrayOutputStream eagerContent, Channel channel, Long length) {
+    public Netty4ChannelBinaryData(ByteArrayOutputStream eagerContent, Channel channel, Long length, boolean isHttp2) {
         this.eagerContent = eagerContent;
         this.channel = channel;
         this.length = length;
+        this.isHttp2 = isHttp2;
     }
 
     @Override
@@ -62,16 +65,9 @@ public final class Netty4ChannelBinaryData extends BinaryData {
 
         if (bytes == null) {
             CountDownLatch latch = new CountDownLatch(1);
-            Netty4EagerConsumeChannelHandler handler = new Netty4EagerConsumeChannelHandler(latch, buf -> {
-                try {
-                    buf.readBytes(eagerContent, buf.readableBytes());
-                } catch (IOException ex) {
-                    // This exception thrown here will eventually close the Channel, resulting in the latch being
-                    // counted down.
-                    throw LOGGER.throwableAtError().log(ex, CoreException::from);
-                }
-            });
-            channel.pipeline().addLast(handler);
+            Netty4EagerConsumeChannelHandler handler = new Netty4EagerConsumeChannelHandler(latch,
+                buf -> buf.readBytes(eagerContent, buf.readableBytes()), isHttp2);
+            channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, handler);
             channel.config().setAutoRead(true);
 
             awaitLatch(latch);
@@ -109,7 +105,7 @@ public final class Netty4ChannelBinaryData extends BinaryData {
     @Override
     public InputStream toStream() {
         if (bytes == null) {
-            return new Netty4ChannelInputStream(eagerContent, channel);
+            return new Netty4ChannelInputStream(eagerContent, channel, isHttp2);
         } else {
             return new ByteArrayInputStream(bytes);
         }
@@ -136,16 +132,9 @@ public final class Netty4ChannelBinaryData extends BinaryData {
                 }
 
                 CountDownLatch latch = new CountDownLatch(1);
-                Netty4EagerConsumeChannelHandler handler = new Netty4EagerConsumeChannelHandler(latch, buf -> {
-                    try {
-                        buf.readBytes(outputStream, buf.readableBytes());
-                    } catch (IOException ex) {
-                        // This exception thrown here will eventually close the Channel, resulting in the latch being
-                        // counted down.
-                        throw LOGGER.throwableAtError().log(ex, CoreException::from);
-                    }
-                });
-                channel.pipeline().addLast(handler);
+                Netty4EagerConsumeChannelHandler handler = new Netty4EagerConsumeChannelHandler(latch,
+                    buf -> buf.readBytes(outputStream, buf.readableBytes()), isHttp2);
+                channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, handler);
                 channel.config().setAutoRead(true);
 
                 awaitLatch(latch);

@@ -13,8 +13,12 @@ import java.io.IOException;
 
 /**
  * Describes the schema of the common properties across all ARN system topic events.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
+@Deprecated
 public class ResourceNotificationsResourceUpdatedEventData
     implements JsonSerializable<ResourceNotificationsResourceUpdatedEventData> {
 

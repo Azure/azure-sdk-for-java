@@ -14,28 +14,26 @@
 ### CopilotSettings_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.portalservicescopilot.models.CopilotSettingsResourceUpdate;
-import com.azure.resourcemanager.portalservicescopilot.models.CopilotSettingsResourceUpdateProperties;
+import com.azure.resourcemanager.portalservicescopilot.fluent.models.CopilotSettingsResourceInner;
+import com.azure.resourcemanager.portalservicescopilot.models.CopilotSettingsProperties;
 
 /**
- * Samples for CopilotSettings Update.
+ * Samples for CopilotSettings CreateOrUpdate.
  */
-public final class CopilotSettingsUpdateSamples {
+public final class CopilotSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-04-01-preview/CopilotSettings_Update.json
+     * x-ms-original-file: 2024-04-01-preview/CopilotSettings_CreateOrUpdate.json
      */
     /**
-     * Sample code: Update Copilot Settings.
+     * Sample code: Create a new Copilot settings or update an existing one.
      * 
      * @param manager Entry point to PortalServicesCopilotManager.
      */
-    public static void
-        updateCopilotSettings(com.azure.resourcemanager.portalservicescopilot.PortalServicesCopilotManager manager) {
+    public static void createANewCopilotSettingsOrUpdateAnExistingOne(
+        com.azure.resourcemanager.portalservicescopilot.PortalServicesCopilotManager manager) {
         manager.copilotSettings()
-            .updateWithResponse(
-                new CopilotSettingsResourceUpdate()
-                    .withProperties(new CopilotSettingsResourceUpdateProperties().withAccessControlEnabled(true)),
-                com.azure.core.util.Context.NONE);
+            .createOrUpdateWithResponse(new CopilotSettingsResourceInner().withProperties(
+                new CopilotSettingsProperties().withAccessControlEnabled(true)), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -87,6 +85,35 @@ public final class CopilotSettingsGetSamples {
 ### CopilotSettings_Update
 
 ```java
+import com.azure.resourcemanager.portalservicescopilot.models.CopilotSettingsResourceUpdate;
+import com.azure.resourcemanager.portalservicescopilot.models.CopilotSettingsResourceUpdateProperties;
+
+/**
+ * Samples for CopilotSettings Update.
+ */
+public final class CopilotSettingsUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-04-01-preview/CopilotSettings_Update.json
+     */
+    /**
+     * Sample code: Update Copilot Settings.
+     * 
+     * @param manager Entry point to PortalServicesCopilotManager.
+     */
+    public static void
+        updateCopilotSettings(com.azure.resourcemanager.portalservicescopilot.PortalServicesCopilotManager manager) {
+        manager.copilotSettings()
+            .updateWithResponse(
+                new CopilotSettingsResourceUpdate()
+                    .withProperties(new CopilotSettingsResourceUpdateProperties().withAccessControlEnabled(true)),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Operations_List
+
+```java
 /**
  * Samples for Operations List.
  */
@@ -102,33 +129,6 @@ public final class OperationsListSamples {
     public static void listTheOperationsForTheMicrosoftPortalServicesProvider(
         com.azure.resourcemanager.portalservicescopilot.PortalServicesCopilotManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Operations_List
-
-```java
-import com.azure.resourcemanager.portalservicescopilot.fluent.models.CopilotSettingsResourceInner;
-import com.azure.resourcemanager.portalservicescopilot.models.CopilotSettingsProperties;
-
-/**
- * Samples for CopilotSettings CreateOrUpdate.
- */
-public final class CopilotSettingsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2024-04-01-preview/CopilotSettings_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: Create a new Copilot settings or update an existing one.
-     * 
-     * @param manager Entry point to PortalServicesCopilotManager.
-     */
-    public static void createANewCopilotSettingsOrUpdateAnExistingOne(
-        com.azure.resourcemanager.portalservicescopilot.PortalServicesCopilotManager manager) {
-        manager.copilotSettings()
-            .createOrUpdateWithResponse(new CopilotSettingsResourceInner().withProperties(
-                new CopilotSettingsProperties().withAccessControlEnabled(true)), com.azure.core.util.Context.NONE);
     }
 }
 ```

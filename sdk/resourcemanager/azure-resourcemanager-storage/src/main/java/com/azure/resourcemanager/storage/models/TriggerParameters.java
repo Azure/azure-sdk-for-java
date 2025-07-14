@@ -44,7 +44,7 @@ public final class TriggerParameters implements JsonSerializable<TriggerParamete
     private OffsetDateTime endBy;
 
     /*
-     * When to start task execution. This is an optional field when ExecutionTrigger.properties.type is 'RunOnce'; this
+     * When to start task execution. This is a required field when ExecutionTrigger.properties.type is 'RunOnce'; this
      * property should not be present when ExecutionTrigger.properties.type is 'OnSchedule'
      */
     private OffsetDateTime startOn;
@@ -152,7 +152,7 @@ public final class TriggerParameters implements JsonSerializable<TriggerParamete
     }
 
     /**
-     * Get the startOn property: When to start task execution. This is an optional field when
+     * Get the startOn property: When to start task execution. This is a required field when
      * ExecutionTrigger.properties.type is 'RunOnce'; this property should not be present when
      * ExecutionTrigger.properties.type is 'OnSchedule'.
      * 
@@ -163,7 +163,7 @@ public final class TriggerParameters implements JsonSerializable<TriggerParamete
     }
 
     /**
-     * Set the startOn property: When to start task execution. This is an optional field when
+     * Set the startOn property: When to start task execution. This is a required field when
      * ExecutionTrigger.properties.type is 'RunOnce'; this property should not be present when
      * ExecutionTrigger.properties.type is 'OnSchedule'.
      * 

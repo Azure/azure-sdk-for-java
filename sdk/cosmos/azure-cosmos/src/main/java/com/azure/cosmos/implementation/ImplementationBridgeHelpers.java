@@ -33,6 +33,7 @@ import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
+import com.azure.cosmos.implementation.clienttelemetry.AttributeNamingScheme;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
@@ -905,7 +906,9 @@ public class ImplementationBridgeHelpers {
 
             OverridableRequestOptions getRequestOptions(CosmosDiagnosticsContext ctx);
 
-            void setRequestOptions(CosmosDiagnosticsContext ctx, OverridableRequestOptions requestOptions);
+            void setRequestOptions(CosmosDiagnosticsContext ctx,
+                                   OverridableRequestOptions requestOptions,
+                                   ReadConsistencyStrategy updatedEffectiveReadConsistencyStrategy);
 
             CosmosDiagnosticsSystemUsageSnapshot createSystemUsageSnapshot(
                 String cpu,
@@ -1637,6 +1640,11 @@ public class ImplementationBridgeHelpers {
             Collection<CosmosDiagnosticsHandler> getDiagnosticHandlers(CosmosClientTelemetryConfig config);
             void setAccountName(CosmosClientTelemetryConfig config, String accountName);
             String getAccountName(CosmosClientTelemetryConfig config);
+            CosmosClientTelemetryConfig setOtelSpanAttributeNamingSchema(
+                CosmosClientTelemetryConfig config,
+                String attributeNamingScheme
+            );
+            EnumSet<AttributeNamingScheme> getOtelSpanAttributeNamingSchema(CosmosClientTelemetryConfig config);
             void setClientCorrelationTag(CosmosClientTelemetryConfig config, Tag clientCorrelationTag);
             Tag getClientCorrelationTag(CosmosClientTelemetryConfig config);
             void setClientTelemetry(CosmosClientTelemetryConfig config, ClientTelemetry clientTelemetry);
@@ -1892,6 +1900,11 @@ public class ImplementationBridgeHelpers {
 
         public interface ReadConsistencyStrategyAccessor {
             ReadConsistencyStrategy createFromServiceSerializedFormat(String serviceSerializedFormat);
+            ReadConsistencyStrategy getEffectiveReadConsistencyStrategy(
+                ResourceType resourceType,
+                OperationType operationType,
+                ReadConsistencyStrategy desiredReadConsistencyStrategyOfOperation,
+                ReadConsistencyStrategy clientLevelReadConsistencyStrategy);
         }
     }
 }
