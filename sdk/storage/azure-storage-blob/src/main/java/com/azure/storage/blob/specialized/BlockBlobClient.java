@@ -42,6 +42,7 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
+import com.azure.storage.common.implementation.UploadUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -791,7 +792,9 @@ public final class BlockBlobClient extends BlobClientBase {
             = Utility.convertStreamToByteBuffer(data, length, BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
 
         Mono<Response<Void>> response
-            = client.stageBlockWithResponse(base64BlockId, fbb, length, contentMd5, leaseId, context);
+            = client.stageBlockWithResponse(new BlockBlobStageBlockOptions(base64BlockId, fbb, length)
+                .setContentValidationInfo(new UploadUtils.ContentValidationInfo().setMD5checksum(contentMd5))
+                .setLeaseId(leaseId), context);
         return blockWithOptionalTimeout(response, timeout);
     }
 
@@ -827,8 +830,7 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockWithResponse(BlockBlobStageBlockOptions options, Duration timeout,
         Context context) {
         Objects.requireNonNull(options, "options must not be null");
-        Mono<Response<Void>> response = client.stageBlockWithResponse(options.getBase64BlockId(), options.getData(),
-            options.getContentMd5(), options.getLeaseId(), context);
+        Mono<Response<Void>> response = client.stageBlockWithResponse(options, context);
         return blockWithOptionalTimeout(response, timeout);
     }
 

@@ -42,6 +42,7 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
+import com.azure.storage.common.implementation.UploadUtils.ContentValidationInfo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -707,7 +708,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         byte[] contentMd5, String leaseId) {
         try {
             return withContext(
-                context -> stageBlockWithResponse(base64BlockId, data, length, contentMd5, leaseId, context));
+                context -> stageBlockWithResponse(new BlockBlobStageBlockOptions(base64BlockId, data, length)
+                    .setContentValidationInfo(new UploadUtils.ContentValidationInfo().setMD5checksum(contentMd5))
+                    .setLeaseId(leaseId), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -743,27 +746,36 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<Void>> stageBlockWithResponse(BlockBlobStageBlockOptions options) {
         Objects.requireNonNull(options, "options must not be null");
         try {
-            return withContext(context -> stageBlockWithResponse(options.getBase64BlockId(), options.getData(),
-                options.getContentMd5(), options.getLeaseId(), context));
+            return withContext(context -> stageBlockWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
-        byte[] contentMd5, String leaseId, Context context) {
-        return BinaryData.fromFlux(data, length, false)
-            .flatMap(binaryData -> stageBlockWithResponse(base64BlockId, binaryData, contentMd5, leaseId, context));
-    }
+    Mono<Response<Void>> stageBlockWithResponse(BlockBlobStageBlockOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        ContentValidationInfo contentValidationInfo = options.getContentValidationInfo() == null
+            ? new ContentValidationInfo()
+            : options.getContentValidationInfo();
+        BinaryData binaryData = options.getBinaryData();
+        Context finalContext = context == null ? Context.NONE : context;
 
-    Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, BinaryData data, byte[] contentMd5,
-        String leaseId, Context context) {
-        Objects.requireNonNull(data, "data must not be null");
-        Objects.requireNonNull(data.getLength(), "data must have defined length");
-        context = context == null ? Context.NONE : context;
-        return this.azureBlobStorage.getBlockBlobs()
-            .stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName, base64BlockId, data.getLength(), data,
-                contentMd5, null, null, leaseId, null, null, null, getCustomerProvidedKey(), encryptionScope, context);
+        if (binaryData == null) {
+            return BinaryData.fromFlux(options.getFluxData(), options.getLength(), false)
+                .flatMap(data -> this.azureBlobStorage.getBlockBlobs()
+                    .stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName, options.getBase64BlockId(),
+                        options.getLength(), data, contentValidationInfo.getMD5checksum(),
+                        contentValidationInfo.getCRC64checksum(), null, options.getLeaseId(), null,
+                        contentValidationInfo.getStructuredBodyType(), contentValidationInfo.getOriginalContentLength(),
+                        getCustomerProvidedKey(), encryptionScope, finalContext));
+        } else {
+            return this.azureBlobStorage.getBlockBlobs()
+                .stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName, options.getBase64BlockId(),
+                    options.getLength(), options.getBinaryData(), contentValidationInfo.getMD5checksum(),
+                    contentValidationInfo.getCRC64checksum(), null, options.getLeaseId(), null,
+                    contentValidationInfo.getStructuredBodyType(), contentValidationInfo.getOriginalContentLength(),
+                    getCustomerProvidedKey(), encryptionScope, context);
+        }
     }
 
     /**

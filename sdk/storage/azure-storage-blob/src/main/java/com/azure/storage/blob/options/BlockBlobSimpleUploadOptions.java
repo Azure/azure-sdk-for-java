@@ -10,7 +10,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.UploadUtils;
+import com.azure.storage.common.implementation.UploadUtils.ContentValidationInfo;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -33,7 +33,7 @@ public class BlockBlobSimpleUploadOptions {
     private BlobRequestConditions requestConditions;
     private BlobImmutabilityPolicy immutabilityPolicy;
     private Boolean legalHold;
-    private UploadUtils.ContentValidationInfo contentValidationInfo;
+    private ContentValidationInfo contentValidationInfo;
 
     /**
      * Creates a new instance of {@link BlockBlobSimpleUploadOptions}.
@@ -296,12 +296,20 @@ public class BlockBlobSimpleUploadOptions {
         return this;
     }
 
-    public UploadUtils.ContentValidationInfo getContentValidationInfo() {
+    /**
+     * comment
+     * @return comment
+     */
+    public ContentValidationInfo getContentValidationInfo() {
         return contentValidationInfo;
     }
 
-    public BlockBlobSimpleUploadOptions
-        setContentValidationInfo(UploadUtils.ContentValidationInfo contentValidationInfo) {
+    /**
+     * comment
+     * @param contentValidationInfo comment
+     * @return comment
+     */
+    public BlockBlobSimpleUploadOptions setContentValidationInfo(ContentValidationInfo contentValidationInfo) {
         this.contentValidationInfo = contentValidationInfo;
         return this;
     }

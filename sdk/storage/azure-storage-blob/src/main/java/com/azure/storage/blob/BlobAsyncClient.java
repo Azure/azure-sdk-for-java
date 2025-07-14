@@ -784,19 +784,22 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .concatWith(Flux.defer(stagingArea::flush))
             .flatMapSequential(bufferAggregator -> {
                 Flux<ByteBuffer> chunkData = bufferAggregator.asFlux();
-
                 String blockId = Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString().getBytes(UTF_8));
-                return UploadUtils.computeMd5(chunkData, computeMd5, LOGGER).flatMap(fluxMd5Wrapper -> {
-                    Mono<Response<Void>> responseMono = blockBlobAsyncClient.stageBlockWithResponse(blockId,
-                        fluxMd5Wrapper.getData(), bufferAggregator.length(),
-                        fluxMd5Wrapper.getContentValidationInfo().getMD5checksum(), requestConditions.getLeaseId());
-                    if (progressReporter != null) {
-                        responseMono = responseMono.contextWrite(FluxUtil.toReactorContext(Contexts.empty()
-                            .setHttpRequestProgressReporter(progressReporter.createChild())
-                            .getContext()));
-                    }
-                    return responseMono;
-                })
+                return UploadUtils
+                    .computeChecksum(chunkData, computeMd5, storageChecksumAlgorithm, bufferAggregator.length(), LOGGER)
+                    .flatMap(fluxContentValidationWrapper -> {
+                        BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(blockId,
+                            fluxContentValidationWrapper.getData(), bufferAggregator.length())
+                                .setContentValidationInfo(fluxContentValidationWrapper.getContentValidationInfo())
+                                .setLeaseId(requestConditions.getLeaseId());
+                        Mono<Response<Void>> responseMono = blockBlobAsyncClient.stageBlockWithResponse(options);
+                        if (progressReporter != null) {
+                            responseMono = responseMono.contextWrite(FluxUtil.toReactorContext(Contexts.empty()
+                                .setHttpRequestProgressReporter(progressReporter.createChild())
+                                .getContext()));
+                        }
+                        return responseMono;
+                    })
                     // We only care about the stageBlock insofar as it was successful, but we need to collect the ids.
                     .map(x -> blockId);
             }, parallelTransferOptions.getMaxConcurrency(), 1)

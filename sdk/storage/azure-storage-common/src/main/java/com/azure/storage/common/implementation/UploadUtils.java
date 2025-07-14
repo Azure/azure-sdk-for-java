@@ -163,14 +163,13 @@ public class UploadUtils {
             if (length <= STATIC_MAXIMUM_ENCODED_DATA_LENGTH) {
                 return computeCRC64(data, logger);
             } else {
-                return applyStructuredMessage(data, length, logger);
+                return applyStructuredMessage(data, length);
             }
         }
         return Mono.just(new FluxContentValidationWrapper(data, new ContentValidationInfo()));
     }
 
-    public static Mono<FluxContentValidationWrapper> applyStructuredMessage(Flux<ByteBuffer> data, long length,
-        ClientLogger logger) {
+    public static Mono<FluxContentValidationWrapper> applyStructuredMessage(Flux<ByteBuffer> data, long length) {
         StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder((int) length,
             V1_DEFAULT_SEGMENT_CONTENT_LENGTH, StructuredMessageFlags.STORAGE_CRC64);
 
@@ -230,6 +229,9 @@ public class UploadUtils {
         }
     }
 
+    /**
+     * comment
+     */
     public static class ContentValidationInfo {
         private byte[] MD5checksum;
         private byte[] CRC64checksum;
