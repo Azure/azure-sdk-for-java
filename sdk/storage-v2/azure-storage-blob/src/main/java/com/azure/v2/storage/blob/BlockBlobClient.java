@@ -22,6 +22,7 @@ import io.clientcore.core.annotations.ServiceMethod;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.models.binarydata.BinaryData;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -34,14 +35,18 @@ public final class BlockBlobClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     private final BlockBlobsImpl serviceClient;
 
+    private final Instrumentation instrumentation;
+
     /**
      * Initializes an instance of BlockBlobClient class.
      * 
      * @param serviceClient the service client implementation.
+     * @param instrumentation the instrumentation instance.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    BlockBlobClient(BlockBlobsImpl serviceClient) {
+    BlockBlobClient(BlockBlobsImpl serviceClient, Instrumentation instrumentation) {
         this.serviceClient = serviceClient;
+        this.instrumentation = instrumentation;
     }
 
     /**
@@ -102,11 +107,12 @@ public final class BlockBlobClient {
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, byte[] transactionalContentCrc64,
         String structuredBodyType, Long structuredContentLength, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam, RequestContext requestContext) {
-        return this.serviceClient.uploadWithResponse(containerName, blob, contentLength, body, timeout,
-            transactionalContentMD5, metadata, leaseId, tier, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
-            ifTags, requestId, blobTagsString, immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold,
-            transactionalContentCrc64, structuredBodyType, structuredContentLength, blobHttpHeaders, cpkInfo,
-            encryptionScopeParam, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Upload", requestContext,
+            updatedContext -> this.serviceClient.uploadWithResponse(containerName, blob, contentLength, body, timeout,
+                transactionalContentMD5, metadata, leaseId, tier, ifModifiedSince, ifUnmodifiedSince, ifMatch,
+                ifNoneMatch, ifTags, requestId, blobTagsString, immutabilityPolicyExpiry, immutabilityPolicyMode,
+                legalHold, transactionalContentCrc64, structuredBodyType, structuredContentLength, blobHttpHeaders,
+                cpkInfo, encryptionScopeParam, updatedContext));
     }
 
     /**
@@ -165,10 +171,10 @@ public final class BlockBlobClient {
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, byte[] transactionalContentCrc64,
         String structuredBodyType, Long structuredContentLength, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam) {
-        this.serviceClient.upload(containerName, blob, contentLength, body, timeout, transactionalContentMD5, metadata,
+        uploadWithResponse(containerName, blob, contentLength, body, timeout, transactionalContentMD5, metadata,
             leaseId, tier, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobTagsString,
             immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, transactionalContentCrc64, structuredBodyType,
-            structuredContentLength, blobHttpHeaders, cpkInfo, encryptionScopeParam);
+            structuredContentLength, blobHttpHeaders, cpkInfo, encryptionScopeParam, RequestContext.none());
     }
 
     /**
@@ -239,11 +245,13 @@ public final class BlockBlobClient {
         String requestId, byte[] sourceContentMD5, String blobTagsString, Boolean copySourceBlobProperties,
         String copySourceAuthorization, BlobCopySourceTagsMode copySourceTags, BlobHttpHeaders blobHttpHeaders,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, RequestContext requestContext) {
-        return this.serviceClient.putBlobFromUrlWithResponse(containerName, blob, contentLength, copySource, timeout,
-            transactionalContentMD5, metadata, leaseId, tier, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
-            ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, sourceIfTags,
-            requestId, sourceContentMD5, blobTagsString, copySourceBlobProperties, copySourceAuthorization,
-            copySourceTags, blobHttpHeaders, cpkInfo, encryptionScopeParam, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.PutBlobFromUrl", requestContext,
+            updatedContext -> this.serviceClient.putBlobFromUrlWithResponse(containerName, blob, contentLength,
+                copySource, timeout, transactionalContentMD5, metadata, leaseId, tier, ifModifiedSince,
+                ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince,
+                sourceIfMatch, sourceIfNoneMatch, sourceIfTags, requestId, sourceContentMD5, blobTagsString,
+                copySourceBlobProperties, copySourceAuthorization, copySourceTags, blobHttpHeaders, cpkInfo,
+                encryptionScopeParam, updatedContext));
     }
 
     /**
@@ -312,11 +320,11 @@ public final class BlockBlobClient {
         String blobTagsString, Boolean copySourceBlobProperties, String copySourceAuthorization,
         BlobCopySourceTagsMode copySourceTags, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam) {
-        this.serviceClient.putBlobFromUrl(containerName, blob, contentLength, copySource, timeout,
-            transactionalContentMD5, metadata, leaseId, tier, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
-            ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, sourceIfTags,
-            requestId, sourceContentMD5, blobTagsString, copySourceBlobProperties, copySourceAuthorization,
-            copySourceTags, blobHttpHeaders, cpkInfo, encryptionScopeParam);
+        putBlobFromUrlWithResponse(containerName, blob, contentLength, copySource, timeout, transactionalContentMD5,
+            metadata, leaseId, tier, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags,
+            sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, sourceIfTags, requestId,
+            sourceContentMD5, blobTagsString, copySourceBlobProperties, copySourceAuthorization, copySourceTags,
+            blobHttpHeaders, cpkInfo, encryptionScopeParam, RequestContext.none());
     }
 
     /**
@@ -355,9 +363,10 @@ public final class BlockBlobClient {
         BinaryData body, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout,
         String leaseId, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam, RequestContext requestContext) {
-        return this.serviceClient.stageBlockWithResponse(containerName, blob, blockId, contentLength, body,
-            transactionalContentMD5, transactionalContentCrc64, timeout, leaseId, requestId, structuredBodyType,
-            structuredContentLength, cpkInfo, encryptionScopeParam, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.StageBlock", requestContext,
+            updatedContext -> this.serviceClient.stageBlockWithResponse(containerName, blob, blockId, contentLength,
+                body, transactionalContentMD5, transactionalContentCrc64, timeout, leaseId, requestId,
+                structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam, updatedContext));
     }
 
     /**
@@ -394,9 +403,9 @@ public final class BlockBlobClient {
         byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout, String leaseId,
         String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam) {
-        this.serviceClient.stageBlock(containerName, blob, blockId, contentLength, body, transactionalContentMD5,
+        stageBlockWithResponse(containerName, blob, blockId, contentLength, body, transactionalContentMD5,
             transactionalContentCrc64, timeout, leaseId, requestId, structuredBodyType, structuredContentLength,
-            cpkInfo, encryptionScopeParam);
+            cpkInfo, encryptionScopeParam, RequestContext.none());
     }
 
     /**
@@ -443,10 +452,11 @@ public final class BlockBlobClient {
         Integer timeout, String leaseId, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, RequestContext requestContext) {
-        return this.serviceClient.stageBlockFromURLWithResponse(containerName, blob, blockId, contentLength, sourceUrl,
-            sourceRange, sourceContentMD5, sourceContentcrc64, timeout, leaseId, sourceIfModifiedSince,
-            sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo,
-            encryptionScopeParam, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.StageBlockFromURL", requestContext,
+            updatedContext -> this.serviceClient.stageBlockFromURLWithResponse(containerName, blob, blockId,
+                contentLength, sourceUrl, sourceRange, sourceContentMD5, sourceContentcrc64, timeout, leaseId,
+                sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId,
+                copySourceAuthorization, cpkInfo, encryptionScopeParam, updatedContext));
     }
 
     /**
@@ -491,9 +501,10 @@ public final class BlockBlobClient {
         String leaseId, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
-        this.serviceClient.stageBlockFromURL(containerName, blob, blockId, contentLength, sourceUrl, sourceRange,
+        stageBlockFromURLWithResponse(containerName, blob, blockId, contentLength, sourceUrl, sourceRange,
             sourceContentMD5, sourceContentcrc64, timeout, leaseId, sourceIfModifiedSince, sourceIfUnmodifiedSince,
-            sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo, encryptionScopeParam);
+            sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo, encryptionScopeParam,
+            RequestContext.none());
     }
 
     /**
@@ -551,10 +562,11 @@ public final class BlockBlobClient {
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
         BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
         RequestContext requestContext) {
-        return this.serviceClient.commitBlockListWithResponse(containerName, blob, blocks, timeout,
-            transactionalContentMD5, transactionalContentCrc64, metadata, leaseId, tier, ifModifiedSince,
-            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobTagsString, immutabilityPolicyExpiry,
-            immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo, encryptionScopeParam, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.CommitBlockList", requestContext,
+            updatedContext -> this.serviceClient.commitBlockListWithResponse(containerName, blob, blocks, timeout,
+                transactionalContentMD5, transactionalContentCrc64, metadata, leaseId, tier, ifModifiedSince,
+                ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobTagsString, immutabilityPolicyExpiry,
+                immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo, encryptionScopeParam, updatedContext));
     }
 
     /**
@@ -609,10 +621,10 @@ public final class BlockBlobClient {
         String ifNoneMatch, String ifTags, String requestId, String blobTagsString,
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
         BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
-        this.serviceClient.commitBlockList(containerName, blob, blocks, timeout, transactionalContentMD5,
+        commitBlockListWithResponse(containerName, blob, blocks, timeout, transactionalContentMD5,
             transactionalContentCrc64, metadata, leaseId, tier, ifModifiedSince, ifUnmodifiedSince, ifMatch,
             ifNoneMatch, ifTags, requestId, blobTagsString, immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold,
-            blobHttpHeaders, cpkInfo, encryptionScopeParam);
+            blobHttpHeaders, cpkInfo, encryptionScopeParam, RequestContext.none());
     }
 
     /**
@@ -644,8 +656,9 @@ public final class BlockBlobClient {
     public Response<BlockList> getBlockListWithResponse(String containerName, String blob, BlockListType listType,
         String snapshot, Integer timeout, String leaseId, String ifTags, String requestId,
         RequestContext requestContext) {
-        return this.serviceClient.getBlockListWithResponse(containerName, blob, listType, snapshot, timeout, leaseId,
-            ifTags, requestId, requestContext);
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetBlockList", requestContext,
+            updatedContext -> this.serviceClient.getBlockListWithResponse(containerName, blob, listType, snapshot,
+                timeout, leaseId, ifTags, requestId, updatedContext));
     }
 
     /**
@@ -675,7 +688,7 @@ public final class BlockBlobClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlockList getBlockList(String containerName, String blob, BlockListType listType, String snapshot,
         Integer timeout, String leaseId, String ifTags, String requestId) {
-        return this.serviceClient.getBlockList(containerName, blob, listType, snapshot, timeout, leaseId, ifTags,
-            requestId);
+        return getBlockListWithResponse(containerName, blob, listType, snapshot, timeout, leaseId, ifTags, requestId,
+            RequestContext.none()).getValue();
     }
 }

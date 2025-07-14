@@ -30,6 +30,7 @@ import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import java.io.InputStream;
@@ -55,6 +56,11 @@ public final class ContainersImpl {
     private final AzureBlobStorageImpl client;
 
     /**
+     * The instance of instrumentation to report telemetry.
+     */
+    private final Instrumentation instrumentation;
+
+    /**
      * Initializes an instance of ContainersImpl.
      * 
      * @param client the instance of the service client containing this operation class.
@@ -62,6 +68,7 @@ public final class ContainersImpl {
     ContainersImpl(AzureBlobStorageImpl client) {
         this.service = ContainersService.getNewInstance(client.getHttpPipeline());
         this.client = client;
+        this.instrumentation = client.getInstrumentation();
     }
 
     /**
@@ -304,51 +311,25 @@ public final class ContainersImpl {
     public Response<Void> createWithResponse(String containerName, Integer timeout, Map<String, String> metadata,
         PublicAccessType access, String requestId, BlobContainerEncryptionScope blobContainerEncryptionScope,
         RequestContext requestContext) {
-        final String restype = "container";
-        final String accept = "application/xml";
-        String defaultEncryptionScopeInternal = null;
-        if (blobContainerEncryptionScope != null) {
-            defaultEncryptionScopeInternal = blobContainerEncryptionScope.getDefaultEncryptionScope();
-        }
-        String defaultEncryptionScope = defaultEncryptionScopeInternal;
-        Boolean encryptionScopeOverridePreventedInternal = null;
-        if (blobContainerEncryptionScope != null) {
-            encryptionScopeOverridePreventedInternal
-                = blobContainerEncryptionScope.isEncryptionScopeOverridePrevented();
-        }
-        Boolean encryptionScopeOverridePrevented = encryptionScopeOverridePreventedInternal;
-        return service.create(this.client.getUrl(), containerName, restype, timeout, metadata, access,
-            this.client.getVersion(), requestId, defaultEncryptionScope, encryptionScopeOverridePrevented, accept,
-            requestContext);
-    }
-
-    /**
-     * creates a new container under the specified account. If the container with the same name already exists, the
-     * operation fails.
-     * 
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
-     * pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob.
-     * If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and
-     * metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names
-     * must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata
-     * for more information.
-     * @param access Specifies whether data in the container may be accessed publicly and the level of access.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param blobContainerEncryptionScope Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void create(String containerName, Integer timeout, Map<String, String> metadata, PublicAccessType access,
-        String requestId, BlobContainerEncryptionScope blobContainerEncryptionScope) {
-        createWithResponse(containerName, timeout, metadata, access, requestId, blobContainerEncryptionScope,
-            RequestContext.none());
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Create", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String accept = "application/xml";
+                String defaultEncryptionScopeInternal = null;
+                if (blobContainerEncryptionScope != null) {
+                    defaultEncryptionScopeInternal = blobContainerEncryptionScope.getDefaultEncryptionScope();
+                }
+                String defaultEncryptionScope = defaultEncryptionScopeInternal;
+                Boolean encryptionScopeOverridePreventedInternal = null;
+                if (blobContainerEncryptionScope != null) {
+                    encryptionScopeOverridePreventedInternal
+                        = blobContainerEncryptionScope.isEncryptionScopeOverridePrevented();
+                }
+                Boolean encryptionScopeOverridePrevented = encryptionScopeOverridePreventedInternal;
+                return service.create(this.client.getUrl(), containerName, restype, timeout, metadata, access,
+                    this.client.getVersion(), requestId, defaultEncryptionScope, encryptionScopeOverridePrevented,
+                    accept, updatedContext);
+            });
     }
 
     /**
@@ -371,30 +352,13 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getPropertiesWithResponse(String containerName, Integer timeout, String leaseId,
         String requestId, RequestContext requestContext) {
-        final String restype = "container";
-        final String accept = "application/xml";
-        return service.getProperties(this.client.getUrl(), containerName, restype, timeout, leaseId,
-            this.client.getVersion(), requestId, accept, requestContext);
-    }
-
-    /**
-     * returns all user-defined metadata and system properties for the specified container. The data returned does not
-     * include the container's list of blobs.
-     * 
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getProperties(String containerName, Integer timeout, String leaseId, String requestId) {
-        getPropertiesWithResponse(containerName, timeout, leaseId, requestId, RequestContext.none());
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetProperties", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String accept = "application/xml";
+                return service.getProperties(this.client.getUrl(), containerName, restype, timeout, leaseId,
+                    this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -422,40 +386,18 @@ public final class ContainersImpl {
     public Response<Void> deleteWithResponse(String containerName, Integer timeout, String leaseId,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        final String restype = "container";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.delete(this.client.getUrl(), containerName, restype, timeout, leaseId, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept, requestContext);
-    }
-
-    /**
-     * operation marks the specified container for deletion. The container and any blobs contained within it are later
-     * deleted during garbage collection.
-     * 
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     * specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     * the specified date/time.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String containerName, Integer timeout, String leaseId, OffsetDateTime ifModifiedSince,
-        OffsetDateTime ifUnmodifiedSince, String requestId) {
-        deleteWithResponse(containerName, timeout, leaseId, ifModifiedSince, ifUnmodifiedSince, requestId,
-            RequestContext.none());
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Delete", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.delete(this.client.getUrl(), containerName, restype, timeout, leaseId,
+                    ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept,
+                    updatedContext);
+            });
     }
 
     /**
@@ -485,42 +427,16 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataWithResponse(String containerName, Integer timeout, String leaseId,
         Map<String, String> metadata, OffsetDateTime ifModifiedSince, String requestId, RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "metadata";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        return service.setMetadata(this.client.getUrl(), containerName, restype, comp, timeout, leaseId, metadata,
-            ifModifiedSinceConverted, this.client.getVersion(), requestId, accept, requestContext);
-    }
-
-    /**
-     * operation sets one or more user-defined name-value pairs for the specified container.
-     * 
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
-     * pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob.
-     * If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and
-     * metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names
-     * must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata
-     * for more information.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     * specified date/time.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void setMetadata(String containerName, Integer timeout, String leaseId, Map<String, String> metadata,
-        OffsetDateTime ifModifiedSince, String requestId) {
-        setMetadataWithResponse(containerName, timeout, leaseId, metadata, ifModifiedSince, requestId,
-            RequestContext.none());
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SetMetadata", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "metadata";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                return service.setMetadata(this.client.getUrl(), containerName, restype, comp, timeout, leaseId,
+                    metadata, ifModifiedSinceConverted, this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -543,34 +459,14 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobSignedIdentifierWrapper> getAccessPolicyWithResponse(String containerName, Integer timeout,
         String leaseId, String requestId, RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "acl";
-        final String accept = "application/xml";
-        return service.getAccessPolicy(this.client.getUrl(), containerName, restype, comp, timeout, leaseId,
-            this.client.getVersion(), requestId, accept, requestContext);
-    }
-
-    /**
-     * gets the permissions for the specified container. The permissions indicate whether container data may be accessed
-     * publicly.
-     * 
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the permissions for the specified container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlobSignedIdentifierWrapper getAccessPolicy(String containerName, Integer timeout, String leaseId,
-        String requestId) {
-        return getAccessPolicyWithResponse(containerName, timeout, leaseId, requestId, RequestContext.none())
-            .getValue();
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetAccessPolicy", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "acl";
+                final String accept = "application/xml";
+                return service.getAccessPolicy(this.client.getUrl(), containerName, restype, comp, timeout, leaseId,
+                    this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -600,46 +496,20 @@ public final class ContainersImpl {
     public Response<Void> setAccessPolicyWithResponse(String containerName, Integer timeout, String leaseId,
         PublicAccessType access, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         List<BlobSignedIdentifier> containerAcl, RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "acl";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        BlobSignedIdentifierWrapper containerAclConverted = new BlobSignedIdentifierWrapper(containerAcl);
-        return service.setAccessPolicy(this.client.getUrl(), containerName, restype, comp, timeout, leaseId, access,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
-            containerAclConverted, accept, requestContext);
-    }
-
-    /**
-     * sets the permissions for the specified container. The permissions indicate whether blobs in a container may be
-     * accessed publicly.
-     * 
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param access Specifies whether data in the container may be accessed publicly and the level of access.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     * specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     * the specified date/time.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param containerAcl the acls for the container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void setAccessPolicy(String containerName, Integer timeout, String leaseId, PublicAccessType access,
-        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
-        List<BlobSignedIdentifier> containerAcl) {
-        setAccessPolicyWithResponse(containerName, timeout, leaseId, access, ifModifiedSince, ifUnmodifiedSince,
-            requestId, containerAcl, RequestContext.none());
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SetAccessPolicy", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "acl";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                BlobSignedIdentifierWrapper containerAclConverted = new BlobSignedIdentifierWrapper(containerAcl);
+                return service.setAccessPolicy(this.client.getUrl(), containerName, restype, comp, timeout, leaseId,
+                    access, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
+                    containerAclConverted, accept, updatedContext);
+            });
     }
 
     /**
@@ -664,35 +534,15 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> restoreWithResponse(String containerName, Integer timeout, String requestId,
         String deletedContainerName, String deletedContainerVersion, RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "undelete";
-        final String accept = "application/xml";
-        return service.restore(this.client.getUrl(), containerName, restype, comp, timeout, this.client.getVersion(),
-            requestId, deletedContainerName, deletedContainerVersion, accept, requestContext);
-    }
-
-    /**
-     * Restores a previously-deleted container.
-     * 
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param deletedContainerName Optional. Version 2019-12-12 and later. Specifies the name of the deleted container
-     * to restore.
-     * @param deletedContainerVersion Optional. Version 2019-12-12 and later. Specifies the version of the deleted
-     * container to restore.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void restore(String containerName, Integer timeout, String requestId, String deletedContainerName,
-        String deletedContainerVersion) {
-        restoreWithResponse(containerName, timeout, requestId, deletedContainerName, deletedContainerVersion,
-            RequestContext.none());
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Restore", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "undelete";
+                final String accept = "application/xml";
+                return service.restore(this.client.getUrl(), containerName, restype, comp, timeout,
+                    this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, accept,
+                    updatedContext);
+            });
     }
 
     /**
@@ -716,34 +566,14 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameWithResponse(String containerName, String sourceContainerName, Integer timeout,
         String requestId, String sourceLeaseId, RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "rename";
-        final String accept = "application/xml";
-        return service.rename(this.client.getUrl(), containerName, restype, comp, timeout, this.client.getVersion(),
-            requestId, sourceContainerName, sourceLeaseId, accept, requestContext);
-    }
-
-    /**
-     * Renames an existing container.
-     * 
-     * @param containerName The container name.
-     * @param sourceContainerName Required. Specifies the name of the container to rename.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param sourceLeaseId A lease ID for the source path. If specified, the source path must have an active lease and
-     * the lease ID must match.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void rename(String containerName, String sourceContainerName, Integer timeout, String requestId,
-        String sourceLeaseId) {
-        renameWithResponse(containerName, sourceContainerName, timeout, requestId, sourceLeaseId,
-            RequestContext.none());
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Rename", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "rename";
+                final String accept = "application/xml";
+                return service.rename(this.client.getUrl(), containerName, restype, comp, timeout,
+                    this.client.getVersion(), requestId, sourceContainerName, sourceLeaseId, accept, updatedContext);
+            });
     }
 
     /**
@@ -769,36 +599,14 @@ public final class ContainersImpl {
     public Response<InputStream> submitBatchWithResponse(String containerName, long contentLength,
         String multipartContentType, BinaryData body, Integer timeout, String requestId,
         RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "batch";
-        final String accept = "application/xml";
-        return service.submitBatch(this.client.getUrl(), containerName, restype, comp, contentLength,
-            multipartContentType, timeout, this.client.getVersion(), requestId, body, accept, requestContext);
-    }
-
-    /**
-     * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
-     * 
-     * @param containerName The container name.
-     * @param contentLength The length of the request.
-     * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary.
-     * Example header value: multipart/mixed; boundary=batch_&lt;GUID&gt;.
-     * @param body Initial data.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InputStream submitBatch(String containerName, long contentLength, String multipartContentType,
-        BinaryData body, Integer timeout, String requestId) {
-        return submitBatchWithResponse(containerName, contentLength, multipartContentType, body, timeout, requestId,
-            RequestContext.none()).getValue();
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.SubmitBatch", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "batch";
+                final String accept = "application/xml";
+                return service.submitBatch(this.client.getUrl(), containerName, restype, comp, contentLength,
+                    multipartContentType, timeout, this.client.getVersion(), requestId, body, accept, updatedContext);
+            });
     }
 
     /**
@@ -833,50 +641,20 @@ public final class ContainersImpl {
     public Response<FilterBlobSegment> filterBlobsWithResponse(String containerName, Integer timeout, String requestId,
         String where, String marker, Integer maxresults, List<FilterBlobsIncludeItem> include,
         RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "blobs";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return service.filterBlobs(this.client.getUrl(), containerName, restype, comp, timeout,
-            this.client.getVersion(), requestId, where, marker, maxresults, includeConverted, accept, requestContext);
-    }
-
-    /**
-     * The Filter Blobs operation enables callers to list blobs in a container whose tags match a given search
-     * expression. Filter blobs searches within the given container.
-     * 
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param where Filters the results to return only to return only blobs whose tags match the specified expression.
-     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
-     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
-     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
-     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
-     * is opaque to the client.
-     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
-     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
-     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
-     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
-     * specified by maxresults, or than the default of 5000.
-     * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a Filter Blobs API call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FilterBlobSegment filterBlobs(String containerName, Integer timeout, String requestId, String where,
-        String marker, Integer maxresults, List<FilterBlobsIncludeItem> include) {
-        return filterBlobsWithResponse(containerName, timeout, requestId, where, marker, maxresults, include,
-            RequestContext.none()).getValue();
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.FilterBlobs", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "blobs";
+                final String accept = "application/xml";
+                String includeConverted = (include == null)
+                    ? null
+                    : include.stream()
+                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                        .collect(Collectors.joining(","));
+                return service.filterBlobs(this.client.getUrl(), containerName, restype, comp, timeout,
+                    this.client.getVersion(), requestId, where, marker, maxresults, includeConverted, accept,
+                    updatedContext);
+            });
     }
 
     /**
@@ -909,48 +687,20 @@ public final class ContainersImpl {
     public Response<Void> acquireLeaseWithResponse(String containerName, Integer timeout, Integer duration,
         String proposedLeaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "acquire";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.acquireLease(this.client.getUrl(), containerName, comp, restype, action, timeout, duration,
-            proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
-            accept, requestContext);
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
-     * seconds, or can be infinite.
-     * 
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never
-     * expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or
-     * change.
-     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
-     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
-     * string formats.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     * specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     * the specified date/time.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void acquireLease(String containerName, Integer timeout, Integer duration, String proposedLeaseId,
-        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        acquireLeaseWithResponse(containerName, timeout, duration, proposedLeaseId, ifModifiedSince, ifUnmodifiedSince,
-            requestId, RequestContext.none());
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.AcquireLease", requestContext,
+            updatedContext -> {
+                final String comp = "lease";
+                final String restype = "container";
+                final String action = "acquire";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.acquireLease(this.client.getUrl(), containerName, comp, restype, action, timeout,
+                    duration, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                    this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -978,43 +728,20 @@ public final class ContainersImpl {
     public Response<Void> releaseLeaseWithResponse(String containerName, String leaseId, Integer timeout,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "release";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.releaseLease(this.client.getUrl(), containerName, comp, restype, action, timeout, leaseId,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept,
-            requestContext);
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
-     * seconds, or can be infinite.
-     * 
-     * @param containerName The container name.
-     * @param leaseId Specifies the current lease ID on the resource.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     * specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     * the specified date/time.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void releaseLease(String containerName, String leaseId, Integer timeout, OffsetDateTime ifModifiedSince,
-        OffsetDateTime ifUnmodifiedSince, String requestId) {
-        releaseLeaseWithResponse(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId,
-            RequestContext.none());
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ReleaseLease", requestContext,
+            updatedContext -> {
+                final String comp = "lease";
+                final String restype = "container";
+                final String action = "release";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.releaseLease(this.client.getUrl(), containerName, comp, restype, action, timeout,
+                    leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
+                    accept, updatedContext);
+            });
     }
 
     /**
@@ -1042,43 +769,20 @@ public final class ContainersImpl {
     public Response<Void> renewLeaseWithResponse(String containerName, String leaseId, Integer timeout,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "renew";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.renewLease(this.client.getUrl(), containerName, comp, restype, action, timeout, leaseId,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept,
-            requestContext);
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
-     * seconds, or can be infinite.
-     * 
-     * @param containerName The container name.
-     * @param leaseId Specifies the current lease ID on the resource.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     * specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     * the specified date/time.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void renewLease(String containerName, String leaseId, Integer timeout, OffsetDateTime ifModifiedSince,
-        OffsetDateTime ifUnmodifiedSince, String requestId) {
-        renewLeaseWithResponse(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince, requestId,
-            RequestContext.none());
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.RenewLease", requestContext,
+            updatedContext -> {
+                final String comp = "lease";
+                final String restype = "container";
+                final String action = "renew";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.renewLease(this.client.getUrl(), containerName, comp, restype, action, timeout, leaseId,
+                    ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept,
+                    updatedContext);
+            });
     }
 
     /**
@@ -1111,48 +815,20 @@ public final class ContainersImpl {
     public Response<Void> breakLeaseWithResponse(String containerName, Integer timeout, Integer breakPeriod,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "break";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.breakLease(this.client.getUrl(), containerName, comp, restype, action, timeout, breakPeriod,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept,
-            requestContext);
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
-     * seconds, or can be infinite.
-     * 
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in
-     * seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease.
-     * If longer, the time remaining on the lease is used. A new lease will not be available before the break period has
-     * expired, but the lease may be held for longer than the break period. If this header does not appear with a break
-     * operation, a fixed-duration lease breaks after the remaining lease period elapses, and an infinite lease breaks
-     * immediately.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     * specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     * the specified date/time.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void breakLease(String containerName, Integer timeout, Integer breakPeriod, OffsetDateTime ifModifiedSince,
-        OffsetDateTime ifUnmodifiedSince, String requestId) {
-        breakLeaseWithResponse(containerName, timeout, breakPeriod, ifModifiedSince, ifUnmodifiedSince, requestId,
-            RequestContext.none());
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.BreakLease", requestContext,
+            updatedContext -> {
+                final String comp = "lease";
+                final String restype = "container";
+                final String action = "break";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.breakLease(this.client.getUrl(), containerName, comp, restype, action, timeout,
+                    breakPeriod, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(),
+                    requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -1183,46 +859,20 @@ public final class ContainersImpl {
     public Response<Void> changeLeaseWithResponse(String containerName, String leaseId, String proposedLeaseId,
         Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         RequestContext requestContext) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "change";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.changeLease(this.client.getUrl(), containerName, comp, restype, action, timeout, leaseId,
-            proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
-            accept, requestContext);
-    }
-
-    /**
-     * [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60
-     * seconds, or can be infinite.
-     * 
-     * @param containerName The container name.
-     * @param leaseId Specifies the current lease ID on the resource.
-     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
-     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
-     * string formats.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     * specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     * the specified date/time.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void changeLease(String containerName, String leaseId, String proposedLeaseId, Integer timeout,
-        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
-        changeLeaseWithResponse(containerName, leaseId, proposedLeaseId, timeout, ifModifiedSince, ifUnmodifiedSince,
-            requestId, RequestContext.none());
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ChangeLease", requestContext,
+            updatedContext -> {
+                final String comp = "lease";
+                final String restype = "container";
+                final String action = "change";
+                final String accept = "application/xml";
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.changeLease(this.client.getUrl(), containerName, comp, restype, action, timeout, leaseId,
+                    proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(),
+                    requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -1256,49 +906,19 @@ public final class ContainersImpl {
     public Response<ListBlobsFlatSegmentResponse> listBlobFlatSegmentWithResponse(String containerName, String prefix,
         String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId,
         RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return service.listBlobFlatSegment(this.client.getUrl(), containerName, restype, comp, prefix, marker,
-            maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept, requestContext);
-    }
-
-    /**
-     * [Update] The List Blobs operation returns a list of the blobs under the specified container.
-     * 
-     * @param containerName The container name.
-     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
-     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
-     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
-     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
-     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
-     * is opaque to the client.
-     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
-     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
-     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
-     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
-     * specified by maxresults, or than the default of 5000.
-     * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of blobs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListBlobsFlatSegmentResponse listBlobFlatSegment(String containerName, String prefix, String marker,
-        Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
-        return listBlobFlatSegmentWithResponse(containerName, prefix, marker, maxresults, include, timeout, requestId,
-            RequestContext.none()).getValue();
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ListBlobFlatSegment", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "list";
+                final String accept = "application/xml";
+                String includeConverted = (include == null)
+                    ? null
+                    : include.stream()
+                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                        .collect(Collectors.joining(","));
+                return service.listBlobFlatSegment(this.client.getUrl(), containerName, restype, comp, prefix, marker,
+                    maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 
     /**
@@ -1335,53 +955,20 @@ public final class ContainersImpl {
     public Response<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentWithResponse(String containerName,
         String delimiter, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include,
         Integer timeout, String requestId, RequestContext requestContext) {
-        final String restype = "container";
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return service.listBlobHierarchySegment(this.client.getUrl(), containerName, restype, comp, prefix, delimiter,
-            marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept, requestContext);
-    }
-
-    /**
-     * [Update] The List Blobs operation returns a list of the blobs under the specified container.
-     * 
-     * @param containerName The container name.
-     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
-     * response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
-     * appearance of the delimiter character. The delimiter may be a single character or a string.
-     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
-     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
-     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
-     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
-     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
-     * is opaque to the client.
-     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
-     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
-     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
-     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
-     * specified by maxresults, or than the default of 5000.
-     * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of blobs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListBlobsHierarchySegmentResponse listBlobHierarchySegment(String containerName, String delimiter,
-        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
-        String requestId) {
-        return listBlobHierarchySegmentWithResponse(containerName, delimiter, prefix, marker, maxresults, include,
-            timeout, requestId, RequestContext.none()).getValue();
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ListBlobHierarchySegment", requestContext,
+            updatedContext -> {
+                final String restype = "container";
+                final String comp = "list";
+                final String accept = "application/xml";
+                String includeConverted = (include == null)
+                    ? null
+                    : include.stream()
+                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                        .collect(Collectors.joining(","));
+                return service.listBlobHierarchySegment(this.client.getUrl(), containerName, restype, comp, prefix,
+                    delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId,
+                    accept, updatedContext);
+            });
     }
 
     /**
@@ -1402,28 +989,13 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getAccountInfoWithResponse(String containerName, Integer timeout, String requestId,
         RequestContext requestContext) {
-        final String restype = "account";
-        final String comp = "properties";
-        final String accept = "application/xml";
-        return service.getAccountInfo(this.client.getUrl(), containerName, restype, comp, timeout,
-            this.client.getVersion(), requestId, accept, requestContext);
-    }
-
-    /**
-     * Returns the sku name and account kind.
-     * 
-     * @param containerName The container name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getAccountInfo(String containerName, Integer timeout, String requestId) {
-        getAccountInfoWithResponse(containerName, timeout, requestId, RequestContext.none());
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.GetAccountInfo", requestContext,
+            updatedContext -> {
+                final String restype = "account";
+                final String comp = "properties";
+                final String accept = "application/xml";
+                return service.getAccountInfo(this.client.getUrl(), containerName, restype, comp, timeout,
+                    this.client.getVersion(), requestId, accept, updatedContext);
+            });
     }
 }

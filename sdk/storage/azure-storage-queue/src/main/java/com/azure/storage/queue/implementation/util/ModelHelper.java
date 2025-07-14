@@ -5,6 +5,7 @@ package com.azure.storage.queue.implementation.util;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.QueueMessageEncoding;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
@@ -101,6 +102,9 @@ public class ModelHelper {
      * @return The public exception.
      */
     public static QueueStorageException mapToQueueStorageException(QueueStorageExceptionInternal internal) {
-        return new QueueStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
+        String code = internal.getValue() == null ? null : internal.getValue().getCode();
+        String headerName = internal.getValue() == null ? null : internal.getValue().getHeaderName();
+        return new QueueStorageException(StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(),
+            internal.getResponse(), code, headerName), internal.getResponse(), internal.getValue());
     }
 }

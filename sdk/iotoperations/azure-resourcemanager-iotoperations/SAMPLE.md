@@ -105,7 +105,7 @@ import java.util.Map;
  */
 public final class BrokerCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Broker_CreateOrUpdate_Minimal.json
+     * x-ms-original-file: 2025-04-01/Broker_CreateOrUpdate_Minimal.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate_Minimal.
@@ -124,7 +124,7 @@ public final class BrokerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Broker_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2025-04-01/Broker_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate_Complex.
@@ -149,7 +149,7 @@ public final class BrokerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Broker_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Broker_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate.
@@ -238,7 +238,7 @@ public final class BrokerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Broker_CreateOrUpdate_Simple.json
+     * x-ms-original-file: 2025-04-01/Broker_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate_Simple.
@@ -283,7 +283,7 @@ public final class BrokerCreateOrUpdateSamples {
  */
 public final class BrokerDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Broker_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Broker_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Broker_Delete.
@@ -305,7 +305,7 @@ public final class BrokerDeleteSamples {
  */
 public final class BrokerGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Broker_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Broker_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Broker_Get.
@@ -328,7 +328,7 @@ public final class BrokerGetSamples {
  */
 public final class BrokerListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Broker_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Broker_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Broker_ListByResourceGroup.
@@ -364,7 +364,7 @@ import java.util.Map;
  */
 public final class BrokerAuthenticationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/BrokerAuthentication_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/BrokerAuthentication_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthentication_CreateOrUpdate.
@@ -401,7 +401,7 @@ public final class BrokerAuthenticationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/BrokerAuthentication_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2025-04-01/BrokerAuthentication_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: BrokerAuthentication_CreateOrUpdate_Complex.
@@ -456,7 +456,7 @@ public final class BrokerAuthenticationCreateOrUpdateSamples {
  */
 public final class BrokerAuthenticationDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01/BrokerAuthentication_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/BrokerAuthentication_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthentication_Delete.
@@ -480,7 +480,7 @@ public final class BrokerAuthenticationDeleteSamples {
  */
 public final class BrokerAuthenticationGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01/BrokerAuthentication_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/BrokerAuthentication_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthentication_Get.
@@ -503,7 +503,7 @@ public final class BrokerAuthenticationGetSamples {
  */
 public final class BrokerAuthenticationListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01/BrokerAuthentication_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/BrokerAuthentication_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthentication_ListByResourceGroup.
@@ -543,7 +543,7 @@ import java.util.Map;
  */
 public final class BrokerAuthorizationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/BrokerAuthorization_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/BrokerAuthorization_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthorization_CreateOrUpdate.
@@ -576,7 +576,7 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/BrokerAuthorization_CreateOrUpdate_Simple.json
+     * x-ms-original-file: 2025-04-01/BrokerAuthorization_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: BrokerAuthorization_CreateOrUpdate_Simple.
@@ -608,7 +608,7 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/BrokerAuthorization_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2025-04-01/BrokerAuthorization_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: BrokerAuthorization_CreateOrUpdate_Complex.
@@ -669,7 +669,7 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
  */
 public final class BrokerAuthorizationDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01/BrokerAuthorization_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/BrokerAuthorization_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthorization_Delete.
@@ -692,7 +692,7 @@ public final class BrokerAuthorizationDeleteSamples {
  */
 public final class BrokerAuthorizationGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01/BrokerAuthorization_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/BrokerAuthorization_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthorization_Get.
@@ -715,7 +715,7 @@ public final class BrokerAuthorizationGetSamples {
  */
 public final class BrokerAuthorizationListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01/BrokerAuthorization_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/BrokerAuthorization_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthorization_ListByResourceGroup.
@@ -757,7 +757,7 @@ import java.util.Arrays;
  */
 public final class BrokerListenerCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/BrokerListener_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/BrokerListener_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate.
@@ -794,7 +794,7 @@ public final class BrokerListenerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/BrokerListener_CreateOrUpdate_Simple.json
+     * x-ms-original-file: 2025-04-01/BrokerListener_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate_Simple.
@@ -813,7 +813,7 @@ public final class BrokerListenerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/BrokerListener_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2025-04-01/BrokerListener_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate_Complex.
@@ -859,7 +859,7 @@ public final class BrokerListenerCreateOrUpdateSamples {
  */
 public final class BrokerListenerDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01/BrokerListener_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/BrokerListener_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerListener_Delete.
@@ -882,7 +882,7 @@ public final class BrokerListenerDeleteSamples {
  */
 public final class BrokerListenerGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01/BrokerListener_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/BrokerListener_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerListener_Get.
@@ -905,7 +905,7 @@ public final class BrokerListenerGetSamples {
  */
 public final class BrokerListenerListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01/BrokerListener_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/BrokerListener_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerListener_ListByResourceGroup.
@@ -947,7 +947,7 @@ import java.util.Arrays;
  */
 public final class DataflowCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Dataflow_CreateOrUpdate_FilterToTopic.json
+     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_FilterToTopic.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_FilterToTopic.
@@ -991,7 +991,7 @@ public final class DataflowCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Dataflow_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate.
@@ -1041,7 +1041,7 @@ public final class DataflowCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Dataflow_CreateOrUpdate_ComplexContextualization.json
+     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_ComplexContextualization.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_ComplexContextualization.
@@ -1085,7 +1085,7 @@ public final class DataflowCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Dataflow_CreateOrUpdate_ComplexEventHub.json
+     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_ComplexEventHub.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_ComplexEventHub.
@@ -1149,7 +1149,7 @@ public final class DataflowCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Dataflow_CreateOrUpdate_SimpleFabric.json
+     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_SimpleFabric.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_SimpleFabric.
@@ -1186,7 +1186,7 @@ public final class DataflowCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/Dataflow_CreateOrUpdate_SimpleEventGrid.json
+     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_SimpleEventGrid.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_SimpleEventGrid.
@@ -1225,7 +1225,7 @@ public final class DataflowCreateOrUpdateSamples {
  */
 public final class DataflowDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Dataflow_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Dataflow_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Dataflow_Delete.
@@ -1248,7 +1248,7 @@ public final class DataflowDeleteSamples {
  */
 public final class DataflowGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Dataflow_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Dataflow_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Dataflow_Get.
@@ -1271,7 +1271,7 @@ public final class DataflowGetSamples {
  */
 public final class DataflowListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Dataflow_ListByProfileResource_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Dataflow_ListByProfileResource_MaximumSet_Gen.json
      */
     /**
      * Sample code: Dataflow_ListByProfileResource.
@@ -1335,7 +1335,7 @@ import com.azure.resourcemanager.iotoperations.models.TlsProperties;
  */
 public final class DataflowEndpointCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_EventGrid.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_EventGrid.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_EventGrid.
@@ -1361,7 +1361,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_ADLSv2.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_ADLSv2.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_ADLSv2.
@@ -1388,7 +1388,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_EventHub.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_EventHub.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_EventHub.
@@ -1415,7 +1415,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate.
@@ -1540,7 +1540,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_ADX.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_ADX.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_ADX.
@@ -1567,7 +1567,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_Fabric.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_Fabric.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_Fabric.
@@ -1595,7 +1595,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_LocalStorage.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_LocalStorage.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_LocalStorage.
@@ -1616,7 +1616,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_AIO.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_AIO.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_AIO.
@@ -1644,7 +1644,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_MQTT.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_MQTT.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_MQTT.
@@ -1677,7 +1677,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_Kafka.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_Kafka.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_Kafka.
@@ -1723,7 +1723,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
  */
 public final class DataflowEndpointDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowEndpoint_Delete.
@@ -1745,7 +1745,7 @@ public final class DataflowEndpointDeleteSamples {
  */
 public final class DataflowEndpointGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowEndpoint_Get.
@@ -1768,7 +1768,7 @@ public final class DataflowEndpointGetSamples {
  */
 public final class DataflowEndpointListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowEndpoint_ListByResourceGroup.
@@ -1798,7 +1798,7 @@ import com.azure.resourcemanager.iotoperations.models.ProfileDiagnostics;
  */
 public final class DataflowProfileCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/DataflowProfile_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/DataflowProfile_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowProfile_CreateOrUpdate.
@@ -1820,7 +1820,7 @@ public final class DataflowProfileCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowProfile_CreateOrUpdate_Minimal.json
+     * x-ms-original-file: 2025-04-01/DataflowProfile_CreateOrUpdate_Minimal.json
      */
     /**
      * Sample code: DataflowProfile_CreateOrUpdate_Minimal.
@@ -1839,7 +1839,7 @@ public final class DataflowProfileCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowProfile_CreateOrUpdate_Multi.json
+     * x-ms-original-file: 2025-04-01/DataflowProfile_CreateOrUpdate_Multi.json
      */
     /**
      * Sample code: DataflowProfile_CreateOrUpdate_Multi.
@@ -1867,7 +1867,7 @@ public final class DataflowProfileCreateOrUpdateSamples {
  */
 public final class DataflowProfileDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01/DataflowProfile_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/DataflowProfile_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowProfile_Delete.
@@ -1889,7 +1889,7 @@ public final class DataflowProfileDeleteSamples {
  */
 public final class DataflowProfileGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01/DataflowProfile_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/DataflowProfile_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowProfile_Get.
@@ -1912,7 +1912,7 @@ public final class DataflowProfileGetSamples {
  */
 public final class DataflowProfileListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01/DataflowProfile_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/DataflowProfile_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowProfile_ListByResourceGroup.
@@ -1944,7 +1944,7 @@ import java.util.Map;
  */
 public final class InstanceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_CreateOrUpdate.
@@ -1989,7 +1989,7 @@ public final class InstanceCreateOrUpdateSamples {
  */
 public final class InstanceDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Instance_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Instance_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_Delete.
@@ -2010,7 +2010,7 @@ public final class InstanceDeleteSamples {
  */
 public final class InstanceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Instance_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Instance_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_Get.
@@ -2032,7 +2032,7 @@ public final class InstanceGetByResourceGroupSamples {
  */
 public final class InstanceListSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Instance_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Instance_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_ListBySubscription.
@@ -2054,7 +2054,7 @@ public final class InstanceListSamples {
  */
 public final class InstanceListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Instance_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Instance_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_ListByResourceGroup.
@@ -2082,7 +2082,7 @@ import java.util.Map;
  */
 public final class InstanceUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Instance_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Instance_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_Update.
@@ -2122,7 +2122,7 @@ public final class InstanceUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-11-01/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List.

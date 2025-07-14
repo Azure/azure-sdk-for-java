@@ -215,7 +215,7 @@ def update_version(sdk_root: str, output_folder: str):
         os.chdir(sdk_root)
         print(os.getcwd())
         subprocess.run(
-            [python_cmd, "eng/versioning/update_versions.py", "--ut", "library", "--bt", "client", "--sr"],
+            [python_cmd, "eng/versioning/update_versions.py", "--skip-readme"],
             stdout=subprocess.DEVNULL,
             stderr=sys.stderr,
         )
@@ -223,11 +223,7 @@ def update_version(sdk_root: str, output_folder: str):
             [
                 python_cmd,
                 "eng/versioning/update_versions.py",
-                "--ut",
-                "library",
-                "--bt",
-                "client",
-                "--tf",
+                "--target-file",
                 "{0}/README.md".format(output_folder),
             ],
             stdout=subprocess.DEVNULL,

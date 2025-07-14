@@ -172,7 +172,7 @@ public final class MongoDBAtlasManagementClientImpl implements MongoDBAtlasManag
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-11-18-preview";
+        this.apiVersion = "2025-06-01";
         this.operations = new OperationsClientImpl(this);
         this.organizations = new OrganizationsClientImpl(this);
     }

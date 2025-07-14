@@ -3,8 +3,9 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
+
+import com.azure.core.util.ExpandableStringEnum;
 
 /**
  * Specifies the streaming data kind
@@ -19,6 +20,11 @@ public final class StreamingDataKind extends ExpandableStringEnum<StreamingDataK
      * Streamind Data kind "audioMetadata".
      */
     public static final StreamingDataKind AUDIO_METADATA = fromString("audioMetadata");
+
+    /**
+     * Streamind Data kind "dtmfData"
+     */
+    public static final StreamingDataKind DTMF_DATA = fromString("dtmfData");
 
     /**
     * Streamind Data kind "transcriptionData".
