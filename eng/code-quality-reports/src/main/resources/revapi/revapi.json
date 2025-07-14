@@ -1018,7 +1018,7 @@
         {
           "code" : "java.class.removed",
           "old" : "class com.azure.resourcemanager.compute.models.ComputeOperationListResult",
-          "justification" : "Pageable result class for implementation, not likely used by user."
+          "justification" : "Pageable result class for implementation, not used by user."
         },
         {
           "code" : "java.method.returnTypeChanged",
