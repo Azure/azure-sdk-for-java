@@ -11,6 +11,7 @@ import com.beust.jcommander.ParameterException;
 import com.google.common.base.Strings;
 import com.google.common.net.HostAndPort;
 import com.google.common.net.PercentEscaper;
+import com.microsoft.applicationinsights.TelemetryConfiguration;
 import io.micrometer.azuremonitor.AzureMonitorConfig;
 import io.micrometer.azuremonitor.AzureMonitorMeterRegistry;
 import io.micrometer.core.instrument.Clock;
@@ -774,15 +775,15 @@ public class Configuration {
                 }
             };
 
+            String roleName = System.getenv("APPLICATIONINSIGHTS_ROLE_NAME");
+            if (roleName != null) {
+                TelemetryConfiguration.getActive().setRoleName(roleName);
+            }
+
             this.azureMonitorMeterRegistry = new AzureMonitorMeterRegistry(config, Clock.SYSTEM);
             List<Tag> globalTags = new ArrayList<>();
             if (!Strings.isNullOrEmpty(testCategoryTag)) {
                 globalTags.add(Tag.of("TestCategory", testCategoryTag));
-            }
-
-            String roleName = System.getenv("APPLICATIONINSIGHTS_ROLE_NAME");
-            if (roleName != null) {
-                globalTags.add(Tag.of("cloud_RoleName", roleName));
             }
 
             String roleInstance = System.getenv("APPLICATIONINSIGHTS_ROLE_INSTANCE");
