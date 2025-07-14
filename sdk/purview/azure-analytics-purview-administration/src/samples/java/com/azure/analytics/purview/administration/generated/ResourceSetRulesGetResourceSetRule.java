@@ -17,9 +17,9 @@ public class ResourceSetRulesGetResourceSetRule {
             = new ResourceSetRulesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{endpoint}")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.administration.generated.resourcesetrulesgetresourcesetrule.resourcesetrulesgetresourcesetrule
+        // BEGIN:com.azure.analytics.purview.administration.generated.resource-set-rules-get-resource-set-rule.resource-set-rules-get-resource-set-rule
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = resourceSetRulesClient.getResourceSetRuleWithResponse(requestOptions);
-        // END:com.azure.analytics.purview.administration.generated.resourcesetrulesgetresourcesetrule.resourcesetrulesgetresourcesetrule
+        // END:com.azure.analytics.purview.administration.generated.resource-set-rules-get-resource-set-rule.resource-set-rules-get-resource-set-rule
     }
 }

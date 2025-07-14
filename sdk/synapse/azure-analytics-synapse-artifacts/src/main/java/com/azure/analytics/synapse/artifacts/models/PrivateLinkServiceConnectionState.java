@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class PrivateLinkServiceConnectionState implements JsonSerializable
     /*
      * The private link service connection status.
      */
+    @Generated
     private String status;
 
     /*
      * The private link service connection description.
      */
+    @Generated
     private String description;
 
     /*
      * The actions required for private link service connection.
      */
+    @Generated
     private String actionsRequired;
 
     /**
      * Creates an instance of PrivateLinkServiceConnectionState class.
      */
+    @Generated
     public PrivateLinkServiceConnectionState() {
     }
 
@@ -42,6 +47,7 @@ public final class PrivateLinkServiceConnectionState implements JsonSerializable
      * 
      * @return the status value.
      */
+    @Generated
     public String getStatus() {
         return this.status;
     }
@@ -52,6 +58,7 @@ public final class PrivateLinkServiceConnectionState implements JsonSerializable
      * @param status the status value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
+    @Generated
     public PrivateLinkServiceConnectionState setStatus(String status) {
         this.status = status;
         return this;
@@ -62,6 +69,7 @@ public final class PrivateLinkServiceConnectionState implements JsonSerializable
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -72,6 +80,7 @@ public final class PrivateLinkServiceConnectionState implements JsonSerializable
      * @param description the description value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
+    @Generated
     public PrivateLinkServiceConnectionState setDescription(String description) {
         this.description = description;
         return this;
@@ -82,6 +91,7 @@ public final class PrivateLinkServiceConnectionState implements JsonSerializable
      * 
      * @return the actionsRequired value.
      */
+    @Generated
     public String getActionsRequired() {
         return this.actionsRequired;
     }
@@ -89,6 +99,7 @@ public final class PrivateLinkServiceConnectionState implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -105,6 +116,7 @@ public final class PrivateLinkServiceConnectionState implements JsonSerializable
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PrivateLinkServiceConnectionState.
      */
+    @Generated
     public static PrivateLinkServiceConnectionState fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PrivateLinkServiceConnectionState deserializedPrivateLinkServiceConnectionState

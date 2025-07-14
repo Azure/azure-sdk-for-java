@@ -120,14 +120,10 @@ public final class ReflectionSerializable {
 
         try (JsonReader jsonReader = JsonReader.fromBytes(json)) {
             return readJson.invokeStatic(jsonReader);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e;
-            } else if (e instanceof Exception) {
-                throw new IOException(e);
-            } else {
-                throw (Error) e;
-            }
+        } catch (IOException e) {
+            throw e;
+        } catch (Exception e) {
+            throw LOGGER.throwableAtError().log(e, IOException::new);
         }
     }
 

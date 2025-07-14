@@ -30,8 +30,10 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.dnsresolver.fluent.DnsResolversClient;
@@ -73,13 +75,25 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DnsResolverManagemen")
+    @ServiceInterface(name = "DnsResolverManagementClientDnsResolvers")
     public interface DnsResolversService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}")
         @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("dnsResolverName") String dnsResolverName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @BodyParam("application/json") DnsResolverInner parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dnsResolverName") String dnsResolverName, @QueryParam("api-version") String apiVersion,
@@ -99,10 +113,31 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("dnsResolverName") String dnsResolverName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @BodyParam("application/json") DnsResolverPatch parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("dnsResolverName") String dnsResolverName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dnsResolverName") String dnsResolverName, @QueryParam("api-version") String apiVersion,
@@ -119,10 +154,29 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DnsResolverInner> getByResourceGroupSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("dnsResolverName") String dnsResolverName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DnsResolverListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DnsResolverListResult> listByResourceGroupSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
@@ -136,10 +190,28 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
             @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsResolvers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DnsResolverListResult> listSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/listDnsResolvers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SubResourceListResult>> listByVirtualNetwork(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualNetworkName") String virtualNetworkName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/listDnsResolvers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SubResourceListResult> listByVirtualNetworkSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualNetworkName") String virtualNetworkName, @QueryParam("api-version") String apiVersion,
@@ -157,6 +229,14 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DnsResolverListResult> listByResourceGroupNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DnsResolverListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
@@ -164,7 +244,22 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DnsResolverListResult> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SubResourceListResult>> listByVirtualNetworkNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SubResourceListResult> listByVirtualNetworkNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -226,39 +321,88 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
      * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS resolver along with {@link Response} on successful completion of {@link Mono}.
+     * @return describes a DNS resolver along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String dnsResolverName, DnsResolverInner parameters, String ifMatch, String ifNoneMatch, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String dnsResolverName,
+        DnsResolverInner parameters, String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsResolverName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dnsResolverName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dnsResolverName is required and cannot be null."));
         }
         if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            dnsResolverName, this.client.getApiVersion(), ifMatch, ifNoneMatch, parameters, accept, Context.NONE);
+    }
+
+    /**
+     * Creates or updates a DNS resolver.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsResolverName The name of the DNS resolver.
+     * @param parameters Parameters supplied to the CreateOrUpdate operation.
+     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
+     * resource. Other values will be ignored.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a DNS resolver along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String dnsResolverName,
+        DnsResolverInner parameters, String ifMatch, String ifNoneMatch, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (dnsResolverName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dnsResolverName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             dnsResolverName, this.client.getApiVersion(), ifMatch, ifNoneMatch, parameters, accept, context);
     }
 
@@ -319,21 +463,18 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
      * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a DNS resolver.
+     * @return the {@link SyncPoller} for polling of describes a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DnsResolverInner>, DnsResolverInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String dnsResolverName, DnsResolverInner parameters, String ifMatch,
-        String ifNoneMatch, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, dnsResolverName,
-            parameters, ifMatch, ifNoneMatch, context);
-        return this.client.<DnsResolverInner, DnsResolverInner>getLroResult(mono, this.client.getHttpPipeline(),
-            DnsResolverInner.class, DnsResolverInner.class, context);
+    public SyncPoller<PollResult<DnsResolverInner>, DnsResolverInner> beginCreateOrUpdate(String resourceGroupName,
+        String dnsResolverName, DnsResolverInner parameters, String ifMatch, String ifNoneMatch) {
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, dnsResolverName, parameters, ifMatch, ifNoneMatch);
+        return this.client.<DnsResolverInner, DnsResolverInner>getLroResult(response, DnsResolverInner.class,
+            DnsResolverInner.class, Context.NONE);
     }
 
     /**
@@ -352,8 +493,10 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
         String dnsResolverName, DnsResolverInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return this.beginCreateOrUpdateAsync(resourceGroupName, dnsResolverName, parameters, ifMatch, ifNoneMatch)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, dnsResolverName, parameters, ifMatch, ifNoneMatch);
+        return this.client.<DnsResolverInner, DnsResolverInner>getLroResult(response, DnsResolverInner.class,
+            DnsResolverInner.class, Context.NONE);
     }
 
     /**
@@ -375,9 +518,10 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsResolverInner>, DnsResolverInner> beginCreateOrUpdate(String resourceGroupName,
         String dnsResolverName, DnsResolverInner parameters, String ifMatch, String ifNoneMatch, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, dnsResolverName, parameters, ifMatch, ifNoneMatch, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, dnsResolverName, parameters, ifMatch, ifNoneMatch, context);
+        return this.client.<DnsResolverInner, DnsResolverInner>getLroResult(response, DnsResolverInner.class,
+            DnsResolverInner.class, context);
     }
 
     /**
@@ -428,30 +572,6 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS resolver on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DnsResolverInner> createOrUpdateAsync(String resourceGroupName, String dnsResolverName,
-        DnsResolverInner parameters, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, dnsResolverName, parameters, ifMatch, ifNoneMatch, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates a DNS resolver.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -462,7 +582,8 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
         DnsResolverInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return createOrUpdateAsync(resourceGroupName, dnsResolverName, parameters, ifMatch, ifNoneMatch).block();
+        return beginCreateOrUpdate(resourceGroupName, dnsResolverName, parameters, ifMatch, ifNoneMatch)
+            .getFinalResult();
     }
 
     /**
@@ -484,8 +605,8 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResolverInner createOrUpdate(String resourceGroupName, String dnsResolverName,
         DnsResolverInner parameters, String ifMatch, String ifNoneMatch, Context context) {
-        return createOrUpdateAsync(resourceGroupName, dnsResolverName, parameters, ifMatch, ifNoneMatch, context)
-            .block();
+        return beginCreateOrUpdate(resourceGroupName, dnsResolverName, parameters, ifMatch, ifNoneMatch, context)
+            .getFinalResult();
     }
 
     /**
@@ -540,39 +661,86 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
      * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS resolver along with {@link Response} on successful completion of {@link Mono}.
+     * @return describes a DNS resolver along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String dnsResolverName,
-        DnsResolverPatch parameters, String ifMatch, Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String dnsResolverName,
+        DnsResolverPatch parameters, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsResolverName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dnsResolverName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dnsResolverName is required and cannot be null."));
         }
         if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            dnsResolverName, this.client.getApiVersion(), ifMatch, parameters, accept, Context.NONE);
+    }
+
+    /**
+     * Updates a DNS resolver.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsResolverName The name of the DNS resolver.
+     * @param parameters Parameters supplied to the Update operation.
+     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a DNS resolver along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String dnsResolverName,
+        DnsResolverPatch parameters, String ifMatch, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (dnsResolverName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dnsResolverName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             dnsResolverName, this.client.getApiVersion(), ifMatch, parameters, accept, context);
     }
 
@@ -627,20 +795,17 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
      * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a DNS resolver.
+     * @return the {@link SyncPoller} for polling of describes a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DnsResolverInner>, DnsResolverInner> beginUpdateAsync(String resourceGroupName,
-        String dnsResolverName, DnsResolverPatch parameters, String ifMatch, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, dnsResolverName, parameters, ifMatch, context);
-        return this.client.<DnsResolverInner, DnsResolverInner>getLroResult(mono, this.client.getHttpPipeline(),
-            DnsResolverInner.class, DnsResolverInner.class, context);
+    public SyncPoller<PollResult<DnsResolverInner>, DnsResolverInner> beginUpdate(String resourceGroupName,
+        String dnsResolverName, DnsResolverPatch parameters, String ifMatch) {
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, dnsResolverName, parameters, ifMatch);
+        return this.client.<DnsResolverInner, DnsResolverInner>getLroResult(response, DnsResolverInner.class,
+            DnsResolverInner.class, Context.NONE);
     }
 
     /**
@@ -658,7 +823,9 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
     public SyncPoller<PollResult<DnsResolverInner>, DnsResolverInner> beginUpdate(String resourceGroupName,
         String dnsResolverName, DnsResolverPatch parameters) {
         final String ifMatch = null;
-        return this.beginUpdateAsync(resourceGroupName, dnsResolverName, parameters, ifMatch).getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, dnsResolverName, parameters, ifMatch);
+        return this.client.<DnsResolverInner, DnsResolverInner>getLroResult(response, DnsResolverInner.class,
+            DnsResolverInner.class, Context.NONE);
     }
 
     /**
@@ -678,7 +845,10 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsResolverInner>, DnsResolverInner> beginUpdate(String resourceGroupName,
         String dnsResolverName, DnsResolverPatch parameters, String ifMatch, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, dnsResolverName, parameters, ifMatch, context).getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, dnsResolverName, parameters, ifMatch, context);
+        return this.client.<DnsResolverInner, DnsResolverInner>getLroResult(response, DnsResolverInner.class,
+            DnsResolverInner.class, context);
     }
 
     /**
@@ -726,27 +896,6 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS resolver on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DnsResolverInner> updateAsync(String resourceGroupName, String dnsResolverName,
-        DnsResolverPatch parameters, String ifMatch, Context context) {
-        return beginUpdateAsync(resourceGroupName, dnsResolverName, parameters, ifMatch, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates a DNS resolver.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param parameters Parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -755,7 +904,7 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResolverInner update(String resourceGroupName, String dnsResolverName, DnsResolverPatch parameters) {
         final String ifMatch = null;
-        return updateAsync(resourceGroupName, dnsResolverName, parameters, ifMatch).block();
+        return beginUpdate(resourceGroupName, dnsResolverName, parameters, ifMatch).getFinalResult();
     }
 
     /**
@@ -775,7 +924,7 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResolverInner update(String resourceGroupName, String dnsResolverName, DnsResolverPatch parameters,
         String ifMatch, Context context) {
-        return updateAsync(resourceGroupName, dnsResolverName, parameters, ifMatch, context).block();
+        return beginUpdate(resourceGroupName, dnsResolverName, parameters, ifMatch, context).getFinalResult();
     }
 
     /**
@@ -823,34 +972,72 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * @param dnsResolverName The name of the DNS resolver.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
      * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String dnsResolverName, String ifMatch) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (dnsResolverName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dnsResolverName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            dnsResolverName, this.client.getApiVersion(), ifMatch, accept, Context.NONE);
+    }
+
+    /**
+     * Deletes a DNS resolver. WARNING: This operation cannot be undone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsResolverName The name of the DNS resolver.
+     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String dnsResolverName,
-        String ifMatch, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String dnsResolverName, String ifMatch,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (dnsResolverName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dnsResolverName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dnsResolverName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             dnsResolverName, this.client.getApiVersion(), ifMatch, accept, context);
     }
 
@@ -899,20 +1086,16 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * @param dnsResolverName The name of the DNS resolver.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
      * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String dnsResolverName,
-        String ifMatch, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, dnsResolverName, ifMatch, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverName,
+        String ifMatch) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, dnsResolverName, ifMatch);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -928,7 +1111,8 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverName) {
         final String ifMatch = null;
-        return this.beginDeleteAsync(resourceGroupName, dnsResolverName, ifMatch).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, dnsResolverName, ifMatch);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -947,7 +1131,8 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverName,
         String ifMatch, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, dnsResolverName, ifMatch, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, dnsResolverName, ifMatch, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -990,25 +1175,6 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String dnsResolverName, String ifMatch, Context context) {
-        return beginDeleteAsync(resourceGroupName, dnsResolverName, ifMatch, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a DNS resolver. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1016,7 +1182,7 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dnsResolverName) {
         final String ifMatch = null;
-        deleteAsync(resourceGroupName, dnsResolverName, ifMatch).block();
+        beginDelete(resourceGroupName, dnsResolverName, ifMatch).getFinalResult();
     }
 
     /**
@@ -1033,7 +1199,7 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dnsResolverName, String ifMatch, Context context) {
-        deleteAsync(resourceGroupName, dnsResolverName, ifMatch, context).block();
+        beginDelete(resourceGroupName, dnsResolverName, ifMatch, context).getFinalResult();
     }
 
     /**
@@ -1078,42 +1244,6 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a DNS resolver along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DnsResolverInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
-        String dnsResolverName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (dnsResolverName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dnsResolverName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            dnsResolverName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets properties of a DNS resolver.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1139,7 +1269,27 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DnsResolverInner> getByResourceGroupWithResponse(String resourceGroupName, String dnsResolverName,
         Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, dnsResolverName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (dnsResolverName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dnsResolverName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, dnsResolverName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1197,42 +1347,6 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS resolvers along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DnsResolverInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
-        Integer top, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                this.client.getApiVersion(), top, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Lists DNS resolvers within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top The maximum number of results to return. If not specified, returns up to 100 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1265,17 +1379,67 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an enumeration operation on DNS resolvers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DnsResolverInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DnsResolverListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), top, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Lists DNS resolvers within a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of results to return. If not specified, returns up to 100 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS resolvers as paginated response with {@link PagedFlux}.
+     * @return the response to an enumeration operation on DNS resolvers along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DnsResolverInner> listByResourceGroupAsync(String resourceGroupName, Integer top,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DnsResolverInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
         Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DnsResolverListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), top, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1291,7 +1455,8 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsResolverInner> listByResourceGroup(String resourceGroupName) {
         final Integer top = null;
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, top));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -1308,7 +1473,8 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsResolverInner> listByResourceGroup(String resourceGroupName, Integer top, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, top, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, context),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1344,36 +1510,6 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * Lists DNS resolvers in all resource groups of a subscription.
      * 
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS resolvers along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DnsResolverInner>> listSinglePageAsync(Integer top, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), top, accept,
-                context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Lists DNS resolvers in all resource groups of a subscription.
-     * 
-     * @param top The maximum number of results to return. If not specified, returns up to 100 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1401,16 +1537,57 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * Lists DNS resolvers in all resource groups of a subscription.
      * 
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an enumeration operation on DNS resolvers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DnsResolverInner> listSinglePage(Integer top) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DnsResolverListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), this.client.getApiVersion(), top, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Lists DNS resolvers in all resource groups of a subscription.
+     * 
+     * @param top The maximum number of results to return. If not specified, returns up to 100 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS resolvers as paginated response with {@link PagedFlux}.
+     * @return the response to an enumeration operation on DNS resolvers along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DnsResolverInner> listAsync(Integer top, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(top, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DnsResolverInner> listSinglePage(Integer top, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DnsResolverListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), this.client.getApiVersion(), top, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1424,7 +1601,7 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsResolverInner> list() {
         final Integer top = null;
-        return new PagedIterable<>(listAsync(top));
+        return new PagedIterable<>(() -> listSinglePage(top), nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -1440,7 +1617,8 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsResolverInner> list(Integer top, Context context) {
-        return new PagedIterable<>(listAsync(top, context));
+        return new PagedIterable<>(() -> listSinglePage(top, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1490,47 +1668,6 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName The name of the virtual network.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on sub-resources along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SubResource>> listByVirtualNetworkSinglePageAsync(String resourceGroupName,
-        String virtualNetworkName, Integer top, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByVirtualNetwork(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                virtualNetworkName, this.client.getApiVersion(), top, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Lists DNS resolver resource IDs linked to a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param top The maximum number of results to return. If not specified, returns up to 100 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1566,18 +1703,79 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName The name of the virtual network.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an enumeration operation on sub-resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SubResource> listByVirtualNetworkSinglePage(String resourceGroupName,
+        String virtualNetworkName, Integer top) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<SubResourceListResult> res
+            = service.listByVirtualNetworkSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, virtualNetworkName, this.client.getApiVersion(), top, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Lists DNS resolver resource IDs linked to a virtual network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param top The maximum number of results to return. If not specified, returns up to 100 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on sub-resources as paginated response with {@link PagedFlux}.
+     * @return the response to an enumeration operation on sub-resources along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SubResource> listByVirtualNetworkAsync(String resourceGroupName, String virtualNetworkName,
-        Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByVirtualNetworkSinglePageAsync(resourceGroupName, virtualNetworkName, top, context),
-            nextLink -> listByVirtualNetworkNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SubResource> listByVirtualNetworkSinglePage(String resourceGroupName,
+        String virtualNetworkName, Integer top, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<SubResourceListResult> res
+            = service.listByVirtualNetworkSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, virtualNetworkName, this.client.getApiVersion(), top, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1594,7 +1792,8 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubResource> listByVirtualNetwork(String resourceGroupName, String virtualNetworkName) {
         final Integer top = null;
-        return new PagedIterable<>(listByVirtualNetworkAsync(resourceGroupName, virtualNetworkName, top));
+        return new PagedIterable<>(() -> listByVirtualNetworkSinglePage(resourceGroupName, virtualNetworkName, top),
+            nextLink -> listByVirtualNetworkNextSinglePage(nextLink));
     }
 
     /**
@@ -1613,7 +1812,9 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubResource> listByVirtualNetwork(String resourceGroupName, String virtualNetworkName,
         Integer top, Context context) {
-        return new PagedIterable<>(listByVirtualNetworkAsync(resourceGroupName, virtualNetworkName, top, context));
+        return new PagedIterable<>(
+            () -> listByVirtualNetworkSinglePage(resourceGroupName, virtualNetworkName, top, context),
+            nextLink -> listByVirtualNetworkNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1648,28 +1849,55 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an enumeration operation on DNS resolvers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DnsResolverInner> listByResourceGroupNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DnsResolverListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS resolvers along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the response to an enumeration operation on DNS resolvers along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DnsResolverInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<DnsResolverInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DnsResolverListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1702,27 +1930,55 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an enumeration operation on DNS resolvers along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DnsResolverInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DnsResolverListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS resolvers along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the response to an enumeration operation on DNS resolvers along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DnsResolverInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<DnsResolverInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DnsResolverListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1757,26 +2013,56 @@ public final class DnsResolversClientImpl implements DnsResolversClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an enumeration operation on sub-resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SubResource> listByVirtualNetworkNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<SubResourceListResult> res
+            = service.listByVirtualNetworkNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on sub-resources along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the response to an enumeration operation on sub-resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SubResource>> listByVirtualNetworkNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<SubResource> listByVirtualNetworkNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByVirtualNetworkNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<SubResourceListResult> res
+            = service.listByVirtualNetworkNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DnsResolversClientImpl.class);
 }

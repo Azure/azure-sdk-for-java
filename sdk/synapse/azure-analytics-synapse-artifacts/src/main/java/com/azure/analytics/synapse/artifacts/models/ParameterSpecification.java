@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class ParameterSpecification implements JsonSerializable<ParameterS
     /*
      * Parameter type.
      */
+    @Generated
     private ParameterType type;
 
     /*
      * Default value of parameter.
      */
+    @Generated
     private Object defaultValue;
 
     /**
      * Creates an instance of ParameterSpecification class.
      */
+    @Generated
     public ParameterSpecification() {
     }
 
@@ -37,6 +41,7 @@ public final class ParameterSpecification implements JsonSerializable<ParameterS
      * 
      * @return the type value.
      */
+    @Generated
     public ParameterType getType() {
         return this.type;
     }
@@ -47,6 +52,7 @@ public final class ParameterSpecification implements JsonSerializable<ParameterS
      * @param type the type value to set.
      * @return the ParameterSpecification object itself.
      */
+    @Generated
     public ParameterSpecification setType(ParameterType type) {
         this.type = type;
         return this;
@@ -57,6 +63,7 @@ public final class ParameterSpecification implements JsonSerializable<ParameterS
      * 
      * @return the defaultValue value.
      */
+    @Generated
     public Object getDefaultValue() {
         return this.defaultValue;
     }
@@ -67,6 +74,7 @@ public final class ParameterSpecification implements JsonSerializable<ParameterS
      * @param defaultValue the defaultValue value to set.
      * @return the ParameterSpecification object itself.
      */
+    @Generated
     public ParameterSpecification setDefaultValue(Object defaultValue) {
         this.defaultValue = defaultValue;
         return this;
@@ -75,11 +83,14 @@ public final class ParameterSpecification implements JsonSerializable<ParameterS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeUntypedField("defaultValue", this.defaultValue);
+        if (this.defaultValue != null) {
+            jsonWriter.writeUntypedField("defaultValue", this.defaultValue);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -92,6 +103,7 @@ public final class ParameterSpecification implements JsonSerializable<ParameterS
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ParameterSpecification.
      */
+    @Generated
     public static ParameterSpecification fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ParameterSpecification deserializedParameterSpecification = new ParameterSpecification();

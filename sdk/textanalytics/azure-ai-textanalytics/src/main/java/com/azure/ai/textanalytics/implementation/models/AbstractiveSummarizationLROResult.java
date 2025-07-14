@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class AbstractiveSummarizationLROResult extends AnalyzeTextLROResul
     /*
      * Enumeration of supported Text Analysis long-running operation task results.
      */
+    @Generated
     private AnalyzeTextLROResultsKind kind = AnalyzeTextLROResultsKind.ABSTRACTIVE_SUMMARIZATION_LRORESULTS;
 
     /*
      * An object representing the pre-build summarization results of each document.
      */
+    @Generated
     private AbstractiveSummarizationResult results;
 
     /**
      * Creates an instance of AbstractiveSummarizationLROResult class.
      */
+    @Generated
     public AbstractiveSummarizationLROResult() {
     }
 
@@ -39,6 +43,7 @@ public final class AbstractiveSummarizationLROResult extends AnalyzeTextLROResul
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public AnalyzeTextLROResultsKind getKind() {
         return this.kind;
@@ -49,6 +54,7 @@ public final class AbstractiveSummarizationLROResult extends AnalyzeTextLROResul
      * 
      * @return the results value.
      */
+    @Generated
     public AbstractiveSummarizationResult getResults() {
         return this.results;
     }
@@ -59,6 +65,7 @@ public final class AbstractiveSummarizationLROResult extends AnalyzeTextLROResul
      * @param results the results value to set.
      * @return the AbstractiveSummarizationLROResult object itself.
      */
+    @Generated
     public AbstractiveSummarizationLROResult setResults(AbstractiveSummarizationResult results) {
         this.results = results;
         return this;
@@ -67,6 +74,7 @@ public final class AbstractiveSummarizationLROResult extends AnalyzeTextLROResul
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AbstractiveSummarizationLROResult setTaskName(String taskName) {
         super.setTaskName(taskName);
@@ -76,6 +84,7 @@ public final class AbstractiveSummarizationLROResult extends AnalyzeTextLROResul
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AbstractiveSummarizationLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
         super.setLastUpdateDateTime(lastUpdateDateTime);
@@ -85,6 +94,7 @@ public final class AbstractiveSummarizationLROResult extends AnalyzeTextLROResul
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AbstractiveSummarizationLROResult setStatus(State status) {
         super.setStatus(status);
@@ -94,6 +104,7 @@ public final class AbstractiveSummarizationLROResult extends AnalyzeTextLROResul
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,6 +128,7 @@ public final class AbstractiveSummarizationLROResult extends AnalyzeTextLROResul
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AbstractiveSummarizationLROResult.
      */
+    @Generated
     public static AbstractiveSummarizationLROResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AbstractiveSummarizationLROResult deserializedAbstractiveSummarizationLROResult

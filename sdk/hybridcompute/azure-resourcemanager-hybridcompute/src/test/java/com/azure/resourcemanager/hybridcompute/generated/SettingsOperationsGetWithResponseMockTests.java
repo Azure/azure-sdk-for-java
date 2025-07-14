@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.Settings;
@@ -21,19 +21,20 @@ public final class SettingsOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"tenantId\":\"wzohm\",\"gatewayProperties\":{\"gatewayResourceId\":\"xbsojkli\"}},\"id\":\"mdptys\",\"name\":\"rqsgnzx\",\"type\":\"jp\"}";
+            = "{\"properties\":{\"tenantId\":\"ukyrdnqodxahh\",\"gatewayProperties\":{\"gatewayResourceId\":\"faqnvz\"}},\"id\":\"gyipem\",\"name\":\"hgav\",\"type\":\"czuejdtxptl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Settings response = manager.settingsOperations()
-            .getWithResponse("bxcea", "xcptsoqfyiaseqc", "krtt", "razisg", "kiuemv", com.azure.core.util.Context.NONE)
+            .getWithResponse("zucafeddww", "lzafwxu", "gnhgook", "talvnbwgp", "emeluclv",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xbsojkli", response.gatewayResourceId());
+        Assertions.assertEquals("faqnvz", response.gatewayResourceId());
     }
 }

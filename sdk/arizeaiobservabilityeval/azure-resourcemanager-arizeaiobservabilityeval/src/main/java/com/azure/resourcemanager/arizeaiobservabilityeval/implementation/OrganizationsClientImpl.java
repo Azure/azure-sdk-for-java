@@ -72,7 +72,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArizeAIObservability")
+    @ServiceInterface(name = "ArizeAIObservabilityEvalMgmtClientOrganizations")
     public interface OrganizationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/ArizeAi.ObservabilityEval/organizations/{organizationname}")

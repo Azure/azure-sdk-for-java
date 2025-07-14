@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,6 +24,7 @@ public final class ListIndexStatsSummary implements JsonSerializable<ListIndexSt
     /*
      * The Statistics summary of all indexes in the Search service.
      */
+    @Generated
     private final List<IndexStatisticsSummary> indexesStatistics;
 
     /**
@@ -30,6 +32,7 @@ public final class ListIndexStatsSummary implements JsonSerializable<ListIndexSt
      * 
      * @param indexesStatistics the indexesStatistics value to set.
      */
+    @Generated
     public ListIndexStatsSummary(List<IndexStatisticsSummary> indexesStatistics) {
         this.indexesStatistics = indexesStatistics;
     }
@@ -39,6 +42,7 @@ public final class ListIndexStatsSummary implements JsonSerializable<ListIndexSt
      * 
      * @return the indexesStatistics value.
      */
+    @Generated
     public List<IndexStatisticsSummary> getIndexesStatistics() {
         return this.indexesStatistics;
     }
@@ -46,6 +50,7 @@ public final class ListIndexStatsSummary implements JsonSerializable<ListIndexSt
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -61,6 +66,7 @@ public final class ListIndexStatsSummary implements JsonSerializable<ListIndexSt
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ListIndexStatsSummary.
      */
+    @Generated
     public static ListIndexStatsSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean indexesStatisticsFound = false;

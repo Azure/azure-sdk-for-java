@@ -52,11 +52,6 @@ public final class DockerTaskStep extends TaskStepProperties {
      */
     private List<Argument> arguments;
 
-    /*
-     * List of base image dependencies for a step.
-     */
-    private List<BaseImageDependency> baseImageDependencies;
-
     /**
      * Creates an instance of DockerTaskStep class.
      */
@@ -196,16 +191,6 @@ public final class DockerTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Get the baseImageDependencies property: List of base image dependencies for a step.
-     * 
-     * @return the baseImageDependencies value.
-     */
-    @Override
-    public List<BaseImageDependency> baseImageDependencies() {
-        return this.baseImageDependencies;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -230,13 +215,15 @@ public final class DockerTaskStep extends TaskStepProperties {
      */
     @Override
     public void validate() {
-        super.validate();
         if (dockerFilePath() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property dockerFilePath in model DockerTaskStep"));
         }
         if (arguments() != null) {
             arguments().forEach(e -> e.validate());
+        }
+        if (baseImageDependencies() != null) {
+            baseImageDependencies().forEach(e -> e.validate());
         }
     }
 
@@ -279,7 +266,7 @@ public final class DockerTaskStep extends TaskStepProperties {
                 if ("baseImageDependencies".equals(fieldName)) {
                     List<BaseImageDependency> baseImageDependencies
                         = reader.readArray(reader1 -> BaseImageDependency.fromJson(reader1));
-                    deserializedDockerTaskStep.baseImageDependencies = baseImageDependencies;
+                    deserializedDockerTaskStep.withBaseImageDependencies(baseImageDependencies);
                 } else if ("contextPath".equals(fieldName)) {
                     deserializedDockerTaskStep.withContextPath(reader.getString());
                 } else if ("contextAccessToken".equals(fieldName)) {

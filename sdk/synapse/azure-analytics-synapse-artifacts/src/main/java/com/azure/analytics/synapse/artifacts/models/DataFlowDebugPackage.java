@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,46 +23,55 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
     /*
      * The ID of data flow debug session.
      */
+    @Generated
     private String sessionId;
 
     /*
      * Data flow instance.
      */
+    @Generated
     private DataFlowDebugResource dataFlow;
 
     /*
      * List of Data flows
      */
+    @Generated
     private List<DataFlowDebugResource> dataFlows;
 
     /*
      * List of datasets.
      */
+    @Generated
     private List<DatasetDebugResource> datasets;
 
     /*
      * List of linked services.
      */
+    @Generated
     private List<LinkedServiceDebugResource> linkedServices;
 
     /*
      * Staging info for debug session.
      */
+    @Generated
     private DataFlowStagingInfo staging;
 
     /*
      * Data flow debug settings.
      */
+    @Generated
     private DataFlowDebugPackageDebugSettings debugSettings;
 
     /*
      * Request body structure for starting data flow debug session.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of DataFlowDebugPackage class.
      */
+    @Generated
     public DataFlowDebugPackage() {
     }
 
@@ -70,6 +80,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
      * 
      * @return the sessionId value.
      */
+    @Generated
     public String getSessionId() {
         return this.sessionId;
     }
@@ -80,6 +91,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
      * @param sessionId the sessionId value to set.
      * @return the DataFlowDebugPackage object itself.
      */
+    @Generated
     public DataFlowDebugPackage setSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
@@ -90,6 +102,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
      * 
      * @return the dataFlow value.
      */
+    @Generated
     public DataFlowDebugResource getDataFlow() {
         return this.dataFlow;
     }
@@ -100,6 +113,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
      * @param dataFlow the dataFlow value to set.
      * @return the DataFlowDebugPackage object itself.
      */
+    @Generated
     public DataFlowDebugPackage setDataFlow(DataFlowDebugResource dataFlow) {
         this.dataFlow = dataFlow;
         return this;
@@ -110,6 +124,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
      * 
      * @return the dataFlows value.
      */
+    @Generated
     public List<DataFlowDebugResource> getDataFlows() {
         return this.dataFlows;
     }
@@ -120,6 +135,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
      * @param dataFlows the dataFlows value to set.
      * @return the DataFlowDebugPackage object itself.
      */
+    @Generated
     public DataFlowDebugPackage setDataFlows(List<DataFlowDebugResource> dataFlows) {
         this.dataFlows = dataFlows;
         return this;
@@ -130,6 +146,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
      * 
      * @return the datasets value.
      */
+    @Generated
     public List<DatasetDebugResource> getDatasets() {
         return this.datasets;
     }
@@ -140,6 +157,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
      * @param datasets the datasets value to set.
      * @return the DataFlowDebugPackage object itself.
      */
+    @Generated
     public DataFlowDebugPackage setDatasets(List<DatasetDebugResource> datasets) {
         this.datasets = datasets;
         return this;
@@ -150,6 +168,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
      * 
      * @return the linkedServices value.
      */
+    @Generated
     public List<LinkedServiceDebugResource> getLinkedServices() {
         return this.linkedServices;
     }
@@ -160,6 +179,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
      * @param linkedServices the linkedServices value to set.
      * @return the DataFlowDebugPackage object itself.
      */
+    @Generated
     public DataFlowDebugPackage setLinkedServices(List<LinkedServiceDebugResource> linkedServices) {
         this.linkedServices = linkedServices;
         return this;
@@ -170,6 +190,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
      * 
      * @return the staging value.
      */
+    @Generated
     public DataFlowStagingInfo getStaging() {
         return this.staging;
     }
@@ -180,6 +201,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
      * @param staging the staging value to set.
      * @return the DataFlowDebugPackage object itself.
      */
+    @Generated
     public DataFlowDebugPackage setStaging(DataFlowStagingInfo staging) {
         this.staging = staging;
         return this;
@@ -190,6 +212,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
      * 
      * @return the debugSettings value.
      */
+    @Generated
     public DataFlowDebugPackageDebugSettings getDebugSettings() {
         return this.debugSettings;
     }
@@ -200,6 +223,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
      * @param debugSettings the debugSettings value to set.
      * @return the DataFlowDebugPackage object itself.
      */
+    @Generated
     public DataFlowDebugPackage setDebugSettings(DataFlowDebugPackageDebugSettings debugSettings) {
         this.debugSettings = debugSettings;
         return this;
@@ -210,6 +234,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -220,6 +245,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
      * @param additionalProperties the additionalProperties value to set.
      * @return the DataFlowDebugPackage object itself.
      */
+    @Generated
     public DataFlowDebugPackage setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -228,6 +254,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -255,6 +282,7 @@ public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebu
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataFlowDebugPackage.
      */
+    @Generated
     public static DataFlowDebugPackage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowDebugPackage deserializedDataFlowDebugPackage = new DataFlowDebugPackage();

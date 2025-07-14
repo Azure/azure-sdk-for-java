@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,29 +21,34 @@ public final class XmlReadSettings extends FormatReadSettings {
     /*
      * The read setting type.
      */
+    @Generated
     private String type = "XmlReadSettings";
 
     /*
      * Compression settings.
      */
+    @Generated
     private CompressionReadSettings compressionProperties;
 
     /*
      * Indicates what validation method is used when reading the xml files. Allowed values: 'none', 'xsd', or 'dtd'.
      * Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object validationMode;
 
     /*
      * Indicates whether type detection is enabled when reading the xml files. Type: boolean (or Expression with
      * resultType boolean).
      */
+    @Generated
     private Object detectDataType;
 
     /*
      * Indicates whether namespace is enabled when reading the xml files. Type: boolean (or Expression with resultType
      * boolean).
      */
+    @Generated
     private Object namespaces;
 
     /*
@@ -50,11 +56,13 @@ public final class XmlReadSettings extends FormatReadSettings {
      * is defined for a namespace uri, the prefix of xml element/attribute name in the xml data file will be used.
      * Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or Expression with resultType object).
      */
+    @Generated
     private Object namespacePrefixes;
 
     /**
      * Creates an instance of XmlReadSettings class.
      */
+    @Generated
     public XmlReadSettings() {
     }
 
@@ -63,6 +71,7 @@ public final class XmlReadSettings extends FormatReadSettings {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -73,6 +82,7 @@ public final class XmlReadSettings extends FormatReadSettings {
      * 
      * @return the compressionProperties value.
      */
+    @Generated
     public CompressionReadSettings getCompressionProperties() {
         return this.compressionProperties;
     }
@@ -83,6 +93,7 @@ public final class XmlReadSettings extends FormatReadSettings {
      * @param compressionProperties the compressionProperties value to set.
      * @return the XmlReadSettings object itself.
      */
+    @Generated
     public XmlReadSettings setCompressionProperties(CompressionReadSettings compressionProperties) {
         this.compressionProperties = compressionProperties;
         return this;
@@ -94,6 +105,7 @@ public final class XmlReadSettings extends FormatReadSettings {
      * 
      * @return the validationMode value.
      */
+    @Generated
     public Object getValidationMode() {
         return this.validationMode;
     }
@@ -105,6 +117,7 @@ public final class XmlReadSettings extends FormatReadSettings {
      * @param validationMode the validationMode value to set.
      * @return the XmlReadSettings object itself.
      */
+    @Generated
     public XmlReadSettings setValidationMode(Object validationMode) {
         this.validationMode = validationMode;
         return this;
@@ -116,6 +129,7 @@ public final class XmlReadSettings extends FormatReadSettings {
      * 
      * @return the detectDataType value.
      */
+    @Generated
     public Object getDetectDataType() {
         return this.detectDataType;
     }
@@ -127,6 +141,7 @@ public final class XmlReadSettings extends FormatReadSettings {
      * @param detectDataType the detectDataType value to set.
      * @return the XmlReadSettings object itself.
      */
+    @Generated
     public XmlReadSettings setDetectDataType(Object detectDataType) {
         this.detectDataType = detectDataType;
         return this;
@@ -138,6 +153,7 @@ public final class XmlReadSettings extends FormatReadSettings {
      * 
      * @return the namespaces value.
      */
+    @Generated
     public Object getNamespaces() {
         return this.namespaces;
     }
@@ -149,6 +165,7 @@ public final class XmlReadSettings extends FormatReadSettings {
      * @param namespaces the namespaces value to set.
      * @return the XmlReadSettings object itself.
      */
+    @Generated
     public XmlReadSettings setNamespaces(Object namespaces) {
         this.namespaces = namespaces;
         return this;
@@ -162,6 +179,7 @@ public final class XmlReadSettings extends FormatReadSettings {
      * 
      * @return the namespacePrefixes value.
      */
+    @Generated
     public Object getNamespacePrefixes() {
         return this.namespacePrefixes;
     }
@@ -175,6 +193,7 @@ public final class XmlReadSettings extends FormatReadSettings {
      * @param namespacePrefixes the namespacePrefixes value to set.
      * @return the XmlReadSettings object itself.
      */
+    @Generated
     public XmlReadSettings setNamespacePrefixes(Object namespacePrefixes) {
         this.namespacePrefixes = namespacePrefixes;
         return this;
@@ -183,15 +202,24 @@ public final class XmlReadSettings extends FormatReadSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("compressionProperties", this.compressionProperties);
-        jsonWriter.writeUntypedField("validationMode", this.validationMode);
-        jsonWriter.writeUntypedField("detectDataType", this.detectDataType);
-        jsonWriter.writeUntypedField("namespaces", this.namespaces);
-        jsonWriter.writeUntypedField("namespacePrefixes", this.namespacePrefixes);
+        if (this.validationMode != null) {
+            jsonWriter.writeUntypedField("validationMode", this.validationMode);
+        }
+        if (this.detectDataType != null) {
+            jsonWriter.writeUntypedField("detectDataType", this.detectDataType);
+        }
+        if (this.namespaces != null) {
+            jsonWriter.writeUntypedField("namespaces", this.namespaces);
+        }
+        if (this.namespacePrefixes != null) {
+            jsonWriter.writeUntypedField("namespacePrefixes", this.namespacePrefixes);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -208,6 +236,7 @@ public final class XmlReadSettings extends FormatReadSettings {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the XmlReadSettings.
      */
+    @Generated
     public static XmlReadSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             XmlReadSettings deserializedXmlReadSettings = new XmlReadSettings();

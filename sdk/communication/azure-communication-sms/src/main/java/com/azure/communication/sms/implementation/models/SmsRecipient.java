@@ -5,6 +5,7 @@
 package com.azure.communication.sms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,30 @@ public final class SmsRecipient implements JsonSerializable<SmsRecipient> {
     /*
      * The recipient's phone number in E.164 format.
      */
+    @Generated
     private String to;
 
     /*
-     * If specified, the client directs that the request is repeatable; that is, the client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate response without the server executing the request multiple times. The value of the Repeatability-Request-ID is an opaque string representing a client-generated, 36-character hexadecimal case-insensitive encoding of a UUID (GUID), identifier for the request.
+     * If specified, the client directs that the request is repeatable; that is, the client can make the request
+     * multiple times with the same Repeatability-Request-ID and get back an appropriate response without the server
+     * executing the request multiple times. The value of the Repeatability-Request-ID is an opaque string representing
+     * a client-generated, 36-character hexadecimal case-insensitive encoding of a UUID (GUID), identifier for the
+     * request.
      */
+    @Generated
     private String repeatabilityRequestId;
 
     /*
-     * MUST be sent by clients to specify that a request is repeatable. Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue, 26 Mar 2019 16:06:51 GMT
+     * MUST be sent by clients to specify that a request is repeatable. Repeatability-First-Sent is used to specify the
+     * date and time at which the request was first created.eg- Tue, 26 Mar 2019 16:06:51 GMT
      */
+    @Generated
     private String repeatabilityFirstSent;
 
     /**
      * Creates an instance of SmsRecipient class.
      */
+    @Generated
     public SmsRecipient() {
     }
 
@@ -42,6 +52,7 @@ public final class SmsRecipient implements JsonSerializable<SmsRecipient> {
      * 
      * @return the to value.
      */
+    @Generated
     public String getTo() {
         return this.to;
     }
@@ -52,6 +63,7 @@ public final class SmsRecipient implements JsonSerializable<SmsRecipient> {
      * @param to the to value to set.
      * @return the SmsRecipient object itself.
      */
+    @Generated
     public SmsRecipient setTo(String to) {
         this.to = to;
         return this;
@@ -66,6 +78,7 @@ public final class SmsRecipient implements JsonSerializable<SmsRecipient> {
      * 
      * @return the repeatabilityRequestId value.
      */
+    @Generated
     public String getRepeatabilityRequestId() {
         return this.repeatabilityRequestId;
     }
@@ -80,6 +93,7 @@ public final class SmsRecipient implements JsonSerializable<SmsRecipient> {
      * @param repeatabilityRequestId the repeatabilityRequestId value to set.
      * @return the SmsRecipient object itself.
      */
+    @Generated
     public SmsRecipient setRepeatabilityRequestId(String repeatabilityRequestId) {
         this.repeatabilityRequestId = repeatabilityRequestId;
         return this;
@@ -92,6 +106,7 @@ public final class SmsRecipient implements JsonSerializable<SmsRecipient> {
      * 
      * @return the repeatabilityFirstSent value.
      */
+    @Generated
     public String getRepeatabilityFirstSent() {
         return this.repeatabilityFirstSent;
     }
@@ -104,6 +119,7 @@ public final class SmsRecipient implements JsonSerializable<SmsRecipient> {
      * @param repeatabilityFirstSent the repeatabilityFirstSent value to set.
      * @return the SmsRecipient object itself.
      */
+    @Generated
     public SmsRecipient setRepeatabilityFirstSent(String repeatabilityFirstSent) {
         this.repeatabilityFirstSent = repeatabilityFirstSent;
         return this;
@@ -112,6 +128,7 @@ public final class SmsRecipient implements JsonSerializable<SmsRecipient> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -130,6 +147,7 @@ public final class SmsRecipient implements JsonSerializable<SmsRecipient> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SmsRecipient.
      */
+    @Generated
     public static SmsRecipient fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SmsRecipient deserializedSmsRecipient = new SmsRecipient();

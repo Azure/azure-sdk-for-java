@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class RunNotebookSnapshotResponse implements JsonSerializable<RunNo
     /*
      * Response message.
      */
+    @Generated
     private String message;
 
     /*
      * Run notebook snapshot result.
      */
+    @Generated
     private RunNotebookSnapshotResult result;
 
     /**
      * Creates an instance of RunNotebookSnapshotResponse class.
      */
+    @Generated
     public RunNotebookSnapshotResponse() {
     }
 
@@ -37,6 +41,7 @@ public final class RunNotebookSnapshotResponse implements JsonSerializable<RunNo
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -46,6 +51,7 @@ public final class RunNotebookSnapshotResponse implements JsonSerializable<RunNo
      * 
      * @return the result value.
      */
+    @Generated
     public RunNotebookSnapshotResult getResult() {
         return this.result;
     }
@@ -56,6 +62,7 @@ public final class RunNotebookSnapshotResponse implements JsonSerializable<RunNo
      * @param result the result value to set.
      * @return the RunNotebookSnapshotResponse object itself.
      */
+    @Generated
     public RunNotebookSnapshotResponse setResult(RunNotebookSnapshotResult result) {
         this.result = result;
         return this;
@@ -64,6 +71,7 @@ public final class RunNotebookSnapshotResponse implements JsonSerializable<RunNo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -79,6 +87,7 @@ public final class RunNotebookSnapshotResponse implements JsonSerializable<RunNo
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RunNotebookSnapshotResponse.
      */
+    @Generated
     public static RunNotebookSnapshotResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RunNotebookSnapshotResponse deserializedRunNotebookSnapshotResponse = new RunNotebookSnapshotResponse();

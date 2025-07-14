@@ -33,6 +33,11 @@ public final class ManagedRuleSet implements JsonSerializable<ManagedRuleSet> {
      */
     private List<ManagedRuleGroupOverride> ruleGroupOverrides;
 
+    /*
+     * Stores the final list of disabled rule groups
+     */
+    private List<ManagedRuleSetRuleGroup> computedDisabledRules;
+
     /**
      * Creates an instance of ManagedRuleSet class.
      */
@@ -100,6 +105,15 @@ public final class ManagedRuleSet implements JsonSerializable<ManagedRuleSet> {
     }
 
     /**
+     * Get the computedDisabledRules property: Stores the final list of disabled rule groups.
+     * 
+     * @return the computedDisabledRules value.
+     */
+    public List<ManagedRuleSetRuleGroup> computedDisabledRules() {
+        return this.computedDisabledRules;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -115,6 +129,9 @@ public final class ManagedRuleSet implements JsonSerializable<ManagedRuleSet> {
         }
         if (ruleGroupOverrides() != null) {
             ruleGroupOverrides().forEach(e -> e.validate());
+        }
+        if (computedDisabledRules() != null) {
+            computedDisabledRules().forEach(e -> e.validate());
         }
     }
 
@@ -157,6 +174,10 @@ public final class ManagedRuleSet implements JsonSerializable<ManagedRuleSet> {
                     List<ManagedRuleGroupOverride> ruleGroupOverrides
                         = reader.readArray(reader1 -> ManagedRuleGroupOverride.fromJson(reader1));
                     deserializedManagedRuleSet.ruleGroupOverrides = ruleGroupOverrides;
+                } else if ("computedDisabledRules".equals(fieldName)) {
+                    List<ManagedRuleSetRuleGroup> computedDisabledRules
+                        = reader.readArray(reader1 -> ManagedRuleSetRuleGroup.fromJson(reader1));
+                    deserializedManagedRuleSet.computedDisabledRules = computedDisabledRules;
                 } else {
                     reader.skipChildren();
                 }

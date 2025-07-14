@@ -255,7 +255,9 @@ public final class WorkflowRunActionRepetitionProperties extends OperationResult
         jsonWriter.writeJsonField("correlation", correlation());
         jsonWriter.writeStringField("status", status() == null ? null : status().toString());
         jsonWriter.writeStringField("code", code());
-        jsonWriter.writeUntypedField("error", error());
+        if (error() != null) {
+            jsonWriter.writeUntypedField("error", error());
+        }
         jsonWriter.writeArrayField("retryHistory", retryHistory(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("iterationCount", iterationCount());
         jsonWriter.writeArrayField("repetitionIndexes", this.repetitionIndexes,

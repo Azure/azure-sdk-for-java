@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -23,41 +24,19 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /*
      * data source type
      */
+    @Generated
     private DataSourceType dataSourceType = DataSourceType.MY_SQL;
 
     /*
      * The dataSourceParameter property.
      */
+    @Generated
     private SqlSourceParameter dataSourceParameter;
-
-    /*
-     * data feed created time
-     */
-    private OffsetDateTime createdTime;
-
-    /*
-     * data feed status
-     */
-    private EntityStatus status;
-
-    /*
-     * data feed creator
-     */
-    private String creator;
-
-    /*
-     * the query user is one of data feed administrator or not
-     */
-    private Boolean isAdmin;
-
-    /*
-     * data feed unique id
-     */
-    private UUID dataFeedId;
 
     /**
      * Creates an instance of MySqlDataFeed class.
      */
+    @Generated
     public MySqlDataFeed() {
     }
 
@@ -66,6 +45,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
      * 
      * @return the dataSourceType value.
      */
+    @Generated
     @Override
     public DataSourceType getDataSourceType() {
         return this.dataSourceType;
@@ -76,6 +56,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
      * 
      * @return the dataSourceParameter value.
      */
+    @Generated
     public SqlSourceParameter getDataSourceParameter() {
         return this.dataSourceParameter;
     }
@@ -86,64 +67,16 @@ public final class MySqlDataFeed extends DataFeedDetail {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the MySqlDataFeed object itself.
      */
+    @Generated
     public MySqlDataFeed setDataSourceParameter(SqlSourceParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
     }
 
     /**
-     * Get the createdTime property: data feed created time.
-     * 
-     * @return the createdTime value.
-     */
-    @Override
-    public OffsetDateTime getCreatedTime() {
-        return this.createdTime;
-    }
-
-    /**
-     * Get the status property: data feed status.
-     * 
-     * @return the status value.
-     */
-    @Override
-    public EntityStatus getStatus() {
-        return this.status;
-    }
-
-    /**
-     * Get the creator property: data feed creator.
-     * 
-     * @return the creator value.
-     */
-    @Override
-    public String getCreator() {
-        return this.creator;
-    }
-
-    /**
-     * Get the isAdmin property: the query user is one of data feed administrator or not.
-     * 
-     * @return the isAdmin value.
-     */
-    @Override
-    public Boolean isAdmin() {
-        return this.isAdmin;
-    }
-
-    /**
-     * Get the dataFeedId property: data feed unique id.
-     * 
-     * @return the dataFeedId value.
-     */
-    @Override
-    public UUID getDataFeedId() {
-        return this.dataFeedId;
-    }
-
-    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setDataFeedName(String dataFeedName) {
         super.setDataFeedName(dataFeedName);
@@ -153,6 +86,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setDataFeedDescription(String dataFeedDescription) {
         super.setDataFeedDescription(dataFeedDescription);
@@ -162,6 +96,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setGranularityName(Granularity granularityName) {
         super.setGranularityName(granularityName);
@@ -171,6 +106,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setGranularityAmount(Integer granularityAmount) {
         super.setGranularityAmount(granularityAmount);
@@ -180,6 +116,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setMetrics(List<DataFeedMetric> metrics) {
         super.setMetrics(metrics);
@@ -189,6 +126,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setDimension(List<DataFeedDimension> dimension) {
         super.setDimension(dimension);
@@ -198,6 +136,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setTimestampColumn(String timestampColumn) {
         super.setTimestampColumn(timestampColumn);
@@ -207,6 +146,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setDataStartFrom(OffsetDateTime dataStartFrom) {
         super.setDataStartFrom(dataStartFrom);
@@ -216,6 +156,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setStartOffsetInSeconds(Long startOffsetInSeconds) {
         super.setStartOffsetInSeconds(startOffsetInSeconds);
@@ -225,6 +166,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setMaxConcurrency(Integer maxConcurrency) {
         super.setMaxConcurrency(maxConcurrency);
@@ -234,6 +176,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
@@ -243,6 +186,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
@@ -252,6 +196,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setNeedRollup(NeedRollupEnum needRollup) {
         super.setNeedRollup(needRollup);
@@ -261,6 +206,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setRollUpMethod(RollUpMethod rollUpMethod) {
         super.setRollUpMethod(rollUpMethod);
@@ -270,6 +216,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setRollUpColumns(List<String> rollUpColumns) {
         super.setRollUpColumns(rollUpColumns);
@@ -279,6 +226,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setAllUpIdentification(String allUpIdentification) {
         super.setAllUpIdentification(allUpIdentification);
@@ -288,6 +236,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         super.setFillMissingPointType(fillMissingPointType);
@@ -297,6 +246,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setFillMissingPointValue(Double fillMissingPointValue) {
         super.setFillMissingPointValue(fillMissingPointValue);
@@ -306,6 +256,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setViewMode(ViewMode viewMode) {
         super.setViewMode(viewMode);
@@ -315,6 +266,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setAdmins(List<String> admins) {
         super.setAdmins(admins);
@@ -324,6 +276,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setViewers(List<String> viewers) {
         super.setViewers(viewers);
@@ -333,6 +286,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setActionLinkTemplate(String actionLinkTemplate) {
         super.setActionLinkTemplate(actionLinkTemplate);
@@ -342,6 +296,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         super.setAuthenticationType(authenticationType);
@@ -351,6 +306,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlDataFeed setCredentialId(String credentialId) {
         super.setCredentialId(credentialId);
@@ -360,6 +316,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -407,6 +364,7 @@ public final class MySqlDataFeed extends DataFeedDetail {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MySqlDataFeed.
      */
+    @Generated
     public static MySqlDataFeed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MySqlDataFeed deserializedMySqlDataFeed = new MySqlDataFeed();
@@ -425,8 +383,8 @@ public final class MySqlDataFeed extends DataFeedDetail {
                     deserializedMySqlDataFeed.setDataStartFrom(reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("dataFeedId".equals(fieldName)) {
-                    deserializedMySqlDataFeed.dataFeedId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedMySqlDataFeed
+                        .setDataFeedId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("dataFeedDescription".equals(fieldName)) {
                     deserializedMySqlDataFeed.setDataFeedDescription(reader.getString());
                 } else if ("granularityAmount".equals(fieldName)) {
@@ -468,14 +426,14 @@ public final class MySqlDataFeed extends DataFeedDetail {
                     List<String> viewers = reader.readArray(reader1 -> reader1.getString());
                     deserializedMySqlDataFeed.setViewers(viewers);
                 } else if ("isAdmin".equals(fieldName)) {
-                    deserializedMySqlDataFeed.isAdmin = reader.getNullable(JsonReader::getBoolean);
+                    deserializedMySqlDataFeed.setIsAdmin(reader.getNullable(JsonReader::getBoolean));
                 } else if ("creator".equals(fieldName)) {
-                    deserializedMySqlDataFeed.creator = reader.getString();
+                    deserializedMySqlDataFeed.setCreator(reader.getString());
                 } else if ("status".equals(fieldName)) {
-                    deserializedMySqlDataFeed.status = EntityStatus.fromString(reader.getString());
+                    deserializedMySqlDataFeed.setStatus(EntityStatus.fromString(reader.getString()));
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedMySqlDataFeed.createdTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedMySqlDataFeed.setCreatedTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("actionLinkTemplate".equals(fieldName)) {
                     deserializedMySqlDataFeed.setActionLinkTemplate(reader.getString());
                 } else if ("authenticationType".equals(fieldName)) {

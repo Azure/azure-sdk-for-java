@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class IntegrationRuntimeEdition extends ExpandableStringEnum<Integr
     /**
      * Static value Standard for IntegrationRuntimeEdition.
      */
+    @Generated
     public static final IntegrationRuntimeEdition STANDARD = fromString("Standard");
 
     /**
      * Static value Enterprise for IntegrationRuntimeEdition.
      */
+    @Generated
     public static final IntegrationRuntimeEdition ENTERPRISE = fromString("Enterprise");
 
     /**
@@ -26,6 +29,7 @@ public final class IntegrationRuntimeEdition extends ExpandableStringEnum<Integr
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IntegrationRuntimeEdition() {
     }
@@ -36,6 +40,7 @@ public final class IntegrationRuntimeEdition extends ExpandableStringEnum<Integr
      * @param name a name to look for.
      * @return the corresponding IntegrationRuntimeEdition.
      */
+    @Generated
     public static IntegrationRuntimeEdition fromString(String name) {
         return fromString(name, IntegrationRuntimeEdition.class);
     }
@@ -45,6 +50,7 @@ public final class IntegrationRuntimeEdition extends ExpandableStringEnum<Integr
      * 
      * @return known IntegrationRuntimeEdition values.
      */
+    @Generated
     public static Collection<IntegrationRuntimeEdition> values() {
         return values(IntegrationRuntimeEdition.class);
     }

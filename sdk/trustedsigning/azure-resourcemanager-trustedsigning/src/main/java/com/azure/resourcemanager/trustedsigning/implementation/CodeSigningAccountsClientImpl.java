@@ -75,7 +75,7 @@ public final class CodeSigningAccountsClientImpl implements CodeSigningAccountsC
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "TrustedSigningManage")
+    @ServiceInterface(name = "TrustedSigningManagementClientCodeSigningAccounts")
     public interface CodeSigningAccountsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}")

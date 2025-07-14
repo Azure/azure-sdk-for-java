@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface DnsResolverManagementClient {
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -87,4 +87,32 @@ public interface DnsResolverManagementClient {
      * @return the VirtualNetworkLinksClient object.
      */
     VirtualNetworkLinksClient getVirtualNetworkLinks();
+
+    /**
+     * Gets the DnsResolverPoliciesClient object to access its operations.
+     * 
+     * @return the DnsResolverPoliciesClient object.
+     */
+    DnsResolverPoliciesClient getDnsResolverPolicies();
+
+    /**
+     * Gets the DnsSecurityRulesClient object to access its operations.
+     * 
+     * @return the DnsSecurityRulesClient object.
+     */
+    DnsSecurityRulesClient getDnsSecurityRules();
+
+    /**
+     * Gets the DnsResolverPolicyVirtualNetworkLinksClient object to access its operations.
+     * 
+     * @return the DnsResolverPolicyVirtualNetworkLinksClient object.
+     */
+    DnsResolverPolicyVirtualNetworkLinksClient getDnsResolverPolicyVirtualNetworkLinks();
+
+    /**
+     * Gets the DnsResolverDomainListsClient object to access its operations.
+     * 
+     * @return the DnsResolverDomainListsClient object.
+     */
+    DnsResolverDomainListsClient getDnsResolverDomainLists();
 }

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SalesforceSourceReadBehavior extends ExpandableStringEnum<Sal
     /**
      * Static value Query for SalesforceSourceReadBehavior.
      */
+    @Generated
     public static final SalesforceSourceReadBehavior QUERY = fromString("Query");
 
     /**
      * Static value QueryAll for SalesforceSourceReadBehavior.
      */
+    @Generated
     public static final SalesforceSourceReadBehavior QUERY_ALL = fromString("QueryAll");
 
     /**
@@ -26,6 +29,7 @@ public final class SalesforceSourceReadBehavior extends ExpandableStringEnum<Sal
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SalesforceSourceReadBehavior() {
     }
@@ -36,6 +40,7 @@ public final class SalesforceSourceReadBehavior extends ExpandableStringEnum<Sal
      * @param name a name to look for.
      * @return the corresponding SalesforceSourceReadBehavior.
      */
+    @Generated
     public static SalesforceSourceReadBehavior fromString(String name) {
         return fromString(name, SalesforceSourceReadBehavior.class);
     }
@@ -45,6 +50,7 @@ public final class SalesforceSourceReadBehavior extends ExpandableStringEnum<Sal
      * 
      * @return known SalesforceSourceReadBehavior values.
      */
+    @Generated
     public static Collection<SalesforceSourceReadBehavior> values() {
         return values(SalesforceSourceReadBehavior.class);
     }

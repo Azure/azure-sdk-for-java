@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class ArtifactRenameRequest implements JsonSerializable<ArtifactRen
     /*
      * New name of the artifact.
      */
+    @Generated
     private String newName;
 
     /**
      * Creates an instance of ArtifactRenameRequest class.
      */
+    @Generated
     public ArtifactRenameRequest() {
     }
 
@@ -32,6 +35,7 @@ public final class ArtifactRenameRequest implements JsonSerializable<ArtifactRen
      * 
      * @return the newName value.
      */
+    @Generated
     public String getNewName() {
         return this.newName;
     }
@@ -42,6 +46,7 @@ public final class ArtifactRenameRequest implements JsonSerializable<ArtifactRen
      * @param newName the newName value to set.
      * @return the ArtifactRenameRequest object itself.
      */
+    @Generated
     public ArtifactRenameRequest setNewName(String newName) {
         this.newName = newName;
         return this;
@@ -50,6 +55,7 @@ public final class ArtifactRenameRequest implements JsonSerializable<ArtifactRen
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class ArtifactRenameRequest implements JsonSerializable<ArtifactRen
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ArtifactRenameRequest.
      */
+    @Generated
     public static ArtifactRenameRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ArtifactRenameRequest deserializedArtifactRenameRequest = new ArtifactRenameRequest();

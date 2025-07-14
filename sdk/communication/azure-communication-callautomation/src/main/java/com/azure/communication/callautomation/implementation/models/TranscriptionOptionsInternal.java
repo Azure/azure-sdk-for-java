@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,36 +20,43 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
     /*
      * Transport URL for live transcription
      */
+    @Generated
     private String transportUrl;
 
     /*
      * The type of transport to be used for live transcription, eg. Websocket
      */
+    @Generated
     private TranscriptionTransportTypeInternal transportType;
 
     /*
      * Defines the locale for the data e.g en-CA, en-AU
      */
+    @Generated
     private String locale;
 
     /*
      * Endpoint where the custom model was deployed.
      */
+    @Generated
     private String speechRecognitionModelEndpointId;
 
     /*
      * Determines if the transcription should be started immediately after call is answered or not.
      */
+    @Generated
     private boolean startTranscription;
 
     /*
      * Enables intermediate results for the transcribed speech.
      */
+    @Generated
     private Boolean enableIntermediateResults;
 
     /**
      * Creates an instance of TranscriptionOptionsInternal class.
      */
+    @Generated
     public TranscriptionOptionsInternal() {
     }
 
@@ -57,6 +65,7 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
      * 
      * @return the transportUrl value.
      */
+    @Generated
     public String getTransportUrl() {
         return this.transportUrl;
     }
@@ -67,6 +76,7 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
      * @param transportUrl the transportUrl value to set.
      * @return the TranscriptionOptionsInternal object itself.
      */
+    @Generated
     public TranscriptionOptionsInternal setTransportUrl(String transportUrl) {
         this.transportUrl = transportUrl;
         return this;
@@ -77,6 +87,7 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
      * 
      * @return the transportType value.
      */
+    @Generated
     public TranscriptionTransportTypeInternal getTransportType() {
         return this.transportType;
     }
@@ -87,6 +98,7 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
      * @param transportType the transportType value to set.
      * @return the TranscriptionOptionsInternal object itself.
      */
+    @Generated
     public TranscriptionOptionsInternal setTransportType(TranscriptionTransportTypeInternal transportType) {
         this.transportType = transportType;
         return this;
@@ -97,6 +109,7 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
      * 
      * @return the locale value.
      */
+    @Generated
     public String getLocale() {
         return this.locale;
     }
@@ -107,6 +120,7 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
      * @param locale the locale value to set.
      * @return the TranscriptionOptionsInternal object itself.
      */
+    @Generated
     public TranscriptionOptionsInternal setLocale(String locale) {
         this.locale = locale;
         return this;
@@ -117,6 +131,7 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
      * 
      * @return the speechRecognitionModelEndpointId value.
      */
+    @Generated
     public String getSpeechRecognitionModelEndpointId() {
         return this.speechRecognitionModelEndpointId;
     }
@@ -127,6 +142,7 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
      * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
      * @return the TranscriptionOptionsInternal object itself.
      */
+    @Generated
     public TranscriptionOptionsInternal setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
         this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
         return this;
@@ -138,6 +154,7 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
      * 
      * @return the startTranscription value.
      */
+    @Generated
     public boolean isStartTranscription() {
         return this.startTranscription;
     }
@@ -149,6 +166,7 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
      * @param startTranscription the startTranscription value to set.
      * @return the TranscriptionOptionsInternal object itself.
      */
+    @Generated
     public TranscriptionOptionsInternal setStartTranscription(boolean startTranscription) {
         this.startTranscription = startTranscription;
         return this;
@@ -159,6 +177,7 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
      * 
      * @return the enableIntermediateResults value.
      */
+    @Generated
     public Boolean isEnableIntermediateResults() {
         return this.enableIntermediateResults;
     }
@@ -169,6 +188,7 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
      * @param enableIntermediateResults the enableIntermediateResults value to set.
      * @return the TranscriptionOptionsInternal object itself.
      */
+    @Generated
     public TranscriptionOptionsInternal setEnableIntermediateResults(Boolean enableIntermediateResults) {
         this.enableIntermediateResults = enableIntermediateResults;
         return this;
@@ -177,6 +197,7 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -198,6 +219,7 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TranscriptionOptionsInternal.
      */
+    @Generated
     public static TranscriptionOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TranscriptionOptionsInternal deserializedTranscriptionOptionsInternal = new TranscriptionOptionsInternal();

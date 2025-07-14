@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -24,16 +25,19 @@ public final class QuotaDetails implements JsonSerializable<QuotaDetails> {
     /*
      * Amount of the resource quota used.
      */
+    @Generated
     private final int used;
 
     /*
      * Resource quota limit.
      */
+    @Generated
     private final int quota;
 
     /*
      * Date/time when the resource quota usage will be reset.
      */
+    @Generated
     private final OffsetDateTime quotaResetDateTime;
 
     /**
@@ -43,6 +47,7 @@ public final class QuotaDetails implements JsonSerializable<QuotaDetails> {
      * @param quota the quota value to set.
      * @param quotaResetDateTime the quotaResetDateTime value to set.
      */
+    @Generated
     public QuotaDetails(int used, int quota, OffsetDateTime quotaResetDateTime) {
         this.used = used;
         this.quota = quota;
@@ -54,6 +59,7 @@ public final class QuotaDetails implements JsonSerializable<QuotaDetails> {
      * 
      * @return the used value.
      */
+    @Generated
     public int getUsed() {
         return this.used;
     }
@@ -63,6 +69,7 @@ public final class QuotaDetails implements JsonSerializable<QuotaDetails> {
      * 
      * @return the quota value.
      */
+    @Generated
     public int getQuota() {
         return this.quota;
     }
@@ -72,6 +79,7 @@ public final class QuotaDetails implements JsonSerializable<QuotaDetails> {
      * 
      * @return the quotaResetDateTime value.
      */
+    @Generated
     public OffsetDateTime getQuotaResetDateTime() {
         return this.quotaResetDateTime;
     }
@@ -79,6 +87,7 @@ public final class QuotaDetails implements JsonSerializable<QuotaDetails> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -100,6 +109,7 @@ public final class QuotaDetails implements JsonSerializable<QuotaDetails> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the QuotaDetails.
      */
+    @Generated
     public static QuotaDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean usedFound = false;

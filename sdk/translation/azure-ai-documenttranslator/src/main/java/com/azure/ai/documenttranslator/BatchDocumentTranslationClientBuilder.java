@@ -7,11 +7,11 @@ package com.azure.ai.documenttranslator;
 import com.azure.ai.documenttranslator.implementation.BatchDocumentTranslationClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.client.traits.KeyCredentialTrait;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -20,12 +20,11 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.KeyCredentialPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -34,19 +33,21 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the BatchDocumentTranslationClient type. */
+/**
+ * A builder for creating a new instance of the BatchDocumentTranslationClient type.
+ */
 @ServiceClientBuilder(
     serviceClients = { BatchDocumentTranslationClient.class, BatchDocumentTranslationAsyncClient.class })
 public final class BatchDocumentTranslationClientBuilder implements HttpTrait<BatchDocumentTranslationClientBuilder>,
     ConfigurationTrait<BatchDocumentTranslationClientBuilder>,
-    AzureKeyCredentialTrait<BatchDocumentTranslationClientBuilder>,
-    EndpointTrait<BatchDocumentTranslationClientBuilder> {
+    KeyCredentialTrait<BatchDocumentTranslationClientBuilder>, EndpointTrait<BatchDocumentTranslationClientBuilder> {
     @Generated
     private static final String SDK_NAME = "name";
 
@@ -60,24 +61,12 @@ public final class BatchDocumentTranslationClientBuilder implements HttpTrait<Ba
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the BatchDocumentTranslationClientBuilder. */
+    /**
+     * Create an instance of the BatchDocumentTranslationClientBuilder.
+     */
     @Generated
     public BatchDocumentTranslationClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
-    }
-
-    /*
-     * The HTTP pipeline to send requests through.
-     */
-    @Generated
-    private HttpPipeline pipeline;
-
-    /** {@inheritDoc}. */
-    @Generated
-    @Override
-    public BatchDocumentTranslationClientBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = pipeline;
-        return this;
     }
 
     /*
@@ -86,11 +75,32 @@ public final class BatchDocumentTranslationClientBuilder implements HttpTrait<Ba
     @Generated
     private HttpClient httpClient;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public BatchDocumentTranslationClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
+        return this;
+    }
+
+    /*
+     * The HTTP pipeline to send requests through.
+     */
+    @Generated
+    private HttpPipeline pipeline;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Generated
+    @Override
+    public BatchDocumentTranslationClientBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
+        this.pipeline = pipeline;
         return this;
     }
 
@@ -100,7 +110,9 @@ public final class BatchDocumentTranslationClientBuilder implements HttpTrait<Ba
     @Generated
     private HttpLogOptions httpLogOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public BatchDocumentTranslationClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -114,7 +126,9 @@ public final class BatchDocumentTranslationClientBuilder implements HttpTrait<Ba
     @Generated
     private ClientOptions clientOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public BatchDocumentTranslationClientBuilder clientOptions(ClientOptions clientOptions) {
@@ -128,7 +142,9 @@ public final class BatchDocumentTranslationClientBuilder implements HttpTrait<Ba
     @Generated
     private RetryOptions retryOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public BatchDocumentTranslationClientBuilder retryOptions(RetryOptions retryOptions) {
@@ -136,7 +152,9 @@ public final class BatchDocumentTranslationClientBuilder implements HttpTrait<Ba
         return this;
     }
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public BatchDocumentTranslationClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -151,7 +169,9 @@ public final class BatchDocumentTranslationClientBuilder implements HttpTrait<Ba
     @Generated
     private Configuration configuration;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public BatchDocumentTranslationClientBuilder configuration(Configuration configuration) {
@@ -160,16 +180,18 @@ public final class BatchDocumentTranslationClientBuilder implements HttpTrait<Ba
     }
 
     /*
-     * The AzureKeyCredential used for authentication.
+     * The KeyCredential used for authentication.
      */
     @Generated
-    private AzureKeyCredential azureKeyCredential;
+    private KeyCredential keyCredential;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
-    public BatchDocumentTranslationClientBuilder credential(AzureKeyCredential azureKeyCredential) {
-        this.azureKeyCredential = azureKeyCredential;
+    public BatchDocumentTranslationClientBuilder credential(KeyCredential keyCredential) {
+        this.keyCredential = keyCredential;
         return this;
     }
 
@@ -179,11 +201,31 @@ public final class BatchDocumentTranslationClientBuilder implements HttpTrait<Ba
     @Generated
     private String endpoint;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public BatchDocumentTranslationClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
+        return this;
+    }
+
+    /*
+     * Service version
+     */
+    @Generated
+    private BatchDocumentTranslationServiceVersion serviceVersion;
+
+    /**
+     * Sets Service version.
+     * 
+     * @param serviceVersion the serviceVersion value.
+     * @return the BatchDocumentTranslationClientBuilder.
+     */
+    @Generated
+    public BatchDocumentTranslationClientBuilder serviceVersion(BatchDocumentTranslationServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
         return this;
     }
 
@@ -195,7 +237,7 @@ public final class BatchDocumentTranslationClientBuilder implements HttpTrait<Ba
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     *
+     * 
      * @param retryPolicy the retryPolicy value.
      * @return the BatchDocumentTranslationClientBuilder.
      */
@@ -207,15 +249,25 @@ public final class BatchDocumentTranslationClientBuilder implements HttpTrait<Ba
 
     /**
      * Builds an instance of BatchDocumentTranslationClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of BatchDocumentTranslationClientImpl.
      */
     @Generated
     private BatchDocumentTranslationClientImpl buildInnerClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        BatchDocumentTranslationServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : BatchDocumentTranslationServiceVersion.getLatest();
         BatchDocumentTranslationClientImpl client = new BatchDocumentTranslationClientImpl(localPipeline,
-            JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+            JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
+    }
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
     @Generated
@@ -231,9 +283,8 @@ public final class BatchDocumentTranslationClientBuilder implements HttpTrait<Ba
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()
@@ -242,15 +293,14 @@ public final class BatchDocumentTranslationClientBuilder implements HttpTrait<Ba
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        policies.add(new CookiePolicy());
-        if (azureKeyCredential != null) {
-            policies.add(new AzureKeyCredentialPolicy("Ocp-Apim-Subscription-Key", azureKeyCredential));
+        if (keyCredential != null) {
+            policies.add(new KeyCredentialPolicy("Ocp-Apim-Subscription-Key", keyCredential));
         }
         this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(localClientOptions)
@@ -260,7 +310,7 @@ public final class BatchDocumentTranslationClientBuilder implements HttpTrait<Ba
 
     /**
      * Builds an instance of BatchDocumentTranslationAsyncClient class.
-     *
+     * 
      * @return an instance of BatchDocumentTranslationAsyncClient.
      */
     @Generated
@@ -270,11 +320,13 @@ public final class BatchDocumentTranslationClientBuilder implements HttpTrait<Ba
 
     /**
      * Builds an instance of BatchDocumentTranslationClient class.
-     *
+     * 
      * @return an instance of BatchDocumentTranslationClient.
      */
     @Generated
     public BatchDocumentTranslationClient buildClient() {
         return new BatchDocumentTranslationClient(buildInnerClient().getDocumentTranslations());
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BatchDocumentTranslationClientBuilder.class);
 }

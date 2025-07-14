@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class CreateDataFlowDebugSessionRequest implements JsonSerializable
      * Compute type of the cluster. The value will be overwritten by the same setting in integration runtime if
      * provided.
      */
+    @Generated
     private String computeType;
 
     /*
      * Core count of the cluster. The value will be overwritten by the same setting in integration runtime if provided.
      */
+    @Generated
     private Integer coreCount;
 
     /*
      * Time to live setting of the cluster in minutes.
      */
+    @Generated
     private Integer timeToLive;
 
     /*
      * Set to use integration runtime setting for data flow debug session.
      */
+    @Generated
     private IntegrationRuntimeDebugResource integrationRuntime;
 
     /**
      * Creates an instance of CreateDataFlowDebugSessionRequest class.
      */
+    @Generated
     public CreateDataFlowDebugSessionRequest() {
     }
 
@@ -49,6 +55,7 @@ public final class CreateDataFlowDebugSessionRequest implements JsonSerializable
      * 
      * @return the computeType value.
      */
+    @Generated
     public String getComputeType() {
         return this.computeType;
     }
@@ -60,6 +67,7 @@ public final class CreateDataFlowDebugSessionRequest implements JsonSerializable
      * @param computeType the computeType value to set.
      * @return the CreateDataFlowDebugSessionRequest object itself.
      */
+    @Generated
     public CreateDataFlowDebugSessionRequest setComputeType(String computeType) {
         this.computeType = computeType;
         return this;
@@ -71,6 +79,7 @@ public final class CreateDataFlowDebugSessionRequest implements JsonSerializable
      * 
      * @return the coreCount value.
      */
+    @Generated
     public Integer getCoreCount() {
         return this.coreCount;
     }
@@ -82,6 +91,7 @@ public final class CreateDataFlowDebugSessionRequest implements JsonSerializable
      * @param coreCount the coreCount value to set.
      * @return the CreateDataFlowDebugSessionRequest object itself.
      */
+    @Generated
     public CreateDataFlowDebugSessionRequest setCoreCount(Integer coreCount) {
         this.coreCount = coreCount;
         return this;
@@ -92,6 +102,7 @@ public final class CreateDataFlowDebugSessionRequest implements JsonSerializable
      * 
      * @return the timeToLive value.
      */
+    @Generated
     public Integer getTimeToLive() {
         return this.timeToLive;
     }
@@ -102,6 +113,7 @@ public final class CreateDataFlowDebugSessionRequest implements JsonSerializable
      * @param timeToLive the timeToLive value to set.
      * @return the CreateDataFlowDebugSessionRequest object itself.
      */
+    @Generated
     public CreateDataFlowDebugSessionRequest setTimeToLive(Integer timeToLive) {
         this.timeToLive = timeToLive;
         return this;
@@ -112,6 +124,7 @@ public final class CreateDataFlowDebugSessionRequest implements JsonSerializable
      * 
      * @return the integrationRuntime value.
      */
+    @Generated
     public IntegrationRuntimeDebugResource getIntegrationRuntime() {
         return this.integrationRuntime;
     }
@@ -122,6 +135,7 @@ public final class CreateDataFlowDebugSessionRequest implements JsonSerializable
      * @param integrationRuntime the integrationRuntime value to set.
      * @return the CreateDataFlowDebugSessionRequest object itself.
      */
+    @Generated
     public CreateDataFlowDebugSessionRequest setIntegrationRuntime(IntegrationRuntimeDebugResource integrationRuntime) {
         this.integrationRuntime = integrationRuntime;
         return this;
@@ -130,6 +144,7 @@ public final class CreateDataFlowDebugSessionRequest implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -148,6 +163,7 @@ public final class CreateDataFlowDebugSessionRequest implements JsonSerializable
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CreateDataFlowDebugSessionRequest.
      */
+    @Generated
     public static CreateDataFlowDebugSessionRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CreateDataFlowDebugSessionRequest deserializedCreateDataFlowDebugSessionRequest

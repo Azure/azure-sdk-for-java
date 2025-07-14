@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public class DataFlow implements JsonSerializable<DataFlow> {
     /*
      * Type of data flow.
      */
+    @Generated
     private String type = "DataFlow";
 
     /*
      * The description of the data flow.
      */
+    @Generated
     private String description;
 
     /*
      * List of tags that can be used for describing the data flow.
      */
+    @Generated
     private List<Object> annotations;
 
     /*
      * The folder that this data flow is in. If not specified, Data flow will appear at the root level.
      */
+    @Generated
     private DataFlowFolder folder;
 
     /**
      * Creates an instance of DataFlow class.
      */
+    @Generated
     public DataFlow() {
     }
 
@@ -48,6 +54,7 @@ public class DataFlow implements JsonSerializable<DataFlow> {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -57,6 +64,7 @@ public class DataFlow implements JsonSerializable<DataFlow> {
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -67,6 +75,7 @@ public class DataFlow implements JsonSerializable<DataFlow> {
      * @param description the description value to set.
      * @return the DataFlow object itself.
      */
+    @Generated
     public DataFlow setDescription(String description) {
         this.description = description;
         return this;
@@ -77,6 +86,7 @@ public class DataFlow implements JsonSerializable<DataFlow> {
      * 
      * @return the annotations value.
      */
+    @Generated
     public List<Object> getAnnotations() {
         return this.annotations;
     }
@@ -87,6 +97,7 @@ public class DataFlow implements JsonSerializable<DataFlow> {
      * @param annotations the annotations value to set.
      * @return the DataFlow object itself.
      */
+    @Generated
     public DataFlow setAnnotations(List<Object> annotations) {
         this.annotations = annotations;
         return this;
@@ -98,6 +109,7 @@ public class DataFlow implements JsonSerializable<DataFlow> {
      * 
      * @return the folder value.
      */
+    @Generated
     public DataFlowFolder getFolder() {
         return this.folder;
     }
@@ -109,6 +121,7 @@ public class DataFlow implements JsonSerializable<DataFlow> {
      * @param folder the folder value to set.
      * @return the DataFlow object itself.
      */
+    @Generated
     public DataFlow setFolder(DataFlowFolder folder) {
         this.folder = folder;
         return this;
@@ -117,6 +130,7 @@ public class DataFlow implements JsonSerializable<DataFlow> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -135,6 +149,7 @@ public class DataFlow implements JsonSerializable<DataFlow> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the DataFlow.
      */
+    @Generated
     public static DataFlow fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -162,6 +177,7 @@ public class DataFlow implements JsonSerializable<DataFlow> {
         });
     }
 
+    @Generated
     static DataFlow fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlow deserializedDataFlow = new DataFlow();

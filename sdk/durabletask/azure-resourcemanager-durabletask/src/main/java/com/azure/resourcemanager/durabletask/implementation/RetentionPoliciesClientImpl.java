@@ -71,7 +71,7 @@ public final class RetentionPoliciesClientImpl implements RetentionPoliciesClien
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DurableTaskManagemen")
+    @ServiceInterface(name = "DurableTaskManagementClientRetentionPolicies")
     public interface RetentionPoliciesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/retentionPolicies/default")

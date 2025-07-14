@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class RouteOptimizedWaypoint implements JsonSerializable<RouteOptim
     /*
      * Way point index provided by the user.
      */
+    @Generated
     private Integer providedIndex;
 
     /*
      * Optimized way point index from the system.
      */
+    @Generated
     private Integer optimizedIndex;
 
     /**
      * Creates an instance of RouteOptimizedWaypoint class.
      */
+    @Generated
     public RouteOptimizedWaypoint() {
     }
 
@@ -37,6 +41,7 @@ public final class RouteOptimizedWaypoint implements JsonSerializable<RouteOptim
      * 
      * @return the providedIndex value.
      */
+    @Generated
     public Integer getProvidedIndex() {
         return this.providedIndex;
     }
@@ -46,6 +51,7 @@ public final class RouteOptimizedWaypoint implements JsonSerializable<RouteOptim
      * 
      * @return the optimizedIndex value.
      */
+    @Generated
     public Integer getOptimizedIndex() {
         return this.optimizedIndex;
     }
@@ -53,6 +59,7 @@ public final class RouteOptimizedWaypoint implements JsonSerializable<RouteOptim
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +74,7 @@ public final class RouteOptimizedWaypoint implements JsonSerializable<RouteOptim
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RouteOptimizedWaypoint.
      */
+    @Generated
     public static RouteOptimizedWaypoint fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteOptimizedWaypoint deserializedRouteOptimizedWaypoint = new RouteOptimizedWaypoint();

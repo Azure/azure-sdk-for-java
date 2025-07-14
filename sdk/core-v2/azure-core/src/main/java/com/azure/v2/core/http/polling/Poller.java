@@ -3,7 +3,9 @@
 
 package com.azure.v2.core.http.polling;
 
+import com.azure.v2.core.implementation.ImplUtils;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.CoreException;
 
 import java.lang.reflect.Type;
 import java.time.Duration;
@@ -226,7 +228,10 @@ public interface Poller<T, U> {
         Function<PollingContext<T>, PollResponse<T>> syncActivationOperation = pollingContext -> {
             Response<T> response = initialOperation.get();
             if (!strategy.canPoll(response)) {
-                throw new IllegalStateException("Cannot poll with strategy " + strategy.getClass().getSimpleName());
+                throw ImplUtils.getPollerLogger()
+                    .throwableAtError()
+                    .addKeyValue("pollingStrategy", strategy.getClass().getCanonicalName())
+                    .log("Cannot poll with provided strategy.", CoreException::from);
             }
 
             return strategy.onInitialResponse(response, pollingContext, pollResponseType);

@@ -393,7 +393,9 @@ public final class PolicyAssignmentProperties implements JsonSerializable<Policy
         jsonWriter.writeArrayField("notScopes", this.notScopes, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeUntypedField("metadata", this.metadata);
+        if (this.metadata != null) {
+            jsonWriter.writeUntypedField("metadata", this.metadata);
+        }
         jsonWriter.writeStringField("enforcementMode",
             this.enforcementMode == null ? null : this.enforcementMode.toString());
         jsonWriter.writeArrayField("nonComplianceMessages", this.nonComplianceMessages,

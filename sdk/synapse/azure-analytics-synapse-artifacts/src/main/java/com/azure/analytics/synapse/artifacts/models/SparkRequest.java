@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,76 +22,91 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
     /*
      * The name property.
      */
+    @Generated
     private String name;
 
     /*
      * The file property.
      */
+    @Generated
     private String file;
 
     /*
      * The className property.
      */
+    @Generated
     private String className;
 
     /*
      * The args property.
      */
+    @Generated
     private List<String> arguments;
 
     /*
      * The jars property.
      */
+    @Generated
     private List<String> jars;
 
     /*
      * The pyFiles property.
      */
+    @Generated
     private List<String> pythonFiles;
 
     /*
      * The files property.
      */
+    @Generated
     private List<String> files;
 
     /*
      * The archives property.
      */
+    @Generated
     private List<String> archives;
 
     /*
      * Dictionary of <string>
      */
+    @Generated
     private Map<String, String> configuration;
 
     /*
      * The driverMemory property.
      */
+    @Generated
     private String driverMemory;
 
     /*
      * The driverCores property.
      */
+    @Generated
     private Integer driverCores;
 
     /*
      * The executorMemory property.
      */
+    @Generated
     private String executorMemory;
 
     /*
      * The executorCores property.
      */
+    @Generated
     private Integer executorCores;
 
     /*
      * The numExecutors property.
      */
+    @Generated
     private Integer executorCount;
 
     /**
      * Creates an instance of SparkRequest class.
      */
+    @Generated
     public SparkRequest() {
     }
 
@@ -99,6 +115,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -109,6 +126,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * @param name the name value to set.
      * @return the SparkRequest object itself.
      */
+    @Generated
     public SparkRequest setName(String name) {
         this.name = name;
         return this;
@@ -119,6 +137,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * 
      * @return the file value.
      */
+    @Generated
     public String getFile() {
         return this.file;
     }
@@ -129,6 +148,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * @param file the file value to set.
      * @return the SparkRequest object itself.
      */
+    @Generated
     public SparkRequest setFile(String file) {
         this.file = file;
         return this;
@@ -139,6 +159,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * 
      * @return the className value.
      */
+    @Generated
     public String getClassName() {
         return this.className;
     }
@@ -149,6 +170,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * @param className the className value to set.
      * @return the SparkRequest object itself.
      */
+    @Generated
     public SparkRequest setClassName(String className) {
         this.className = className;
         return this;
@@ -159,6 +181,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * 
      * @return the arguments value.
      */
+    @Generated
     public List<String> getArguments() {
         return this.arguments;
     }
@@ -169,6 +192,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * @param arguments the arguments value to set.
      * @return the SparkRequest object itself.
      */
+    @Generated
     public SparkRequest setArguments(List<String> arguments) {
         this.arguments = arguments;
         return this;
@@ -179,6 +203,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * 
      * @return the jars value.
      */
+    @Generated
     public List<String> getJars() {
         return this.jars;
     }
@@ -189,6 +214,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * @param jars the jars value to set.
      * @return the SparkRequest object itself.
      */
+    @Generated
     public SparkRequest setJars(List<String> jars) {
         this.jars = jars;
         return this;
@@ -199,6 +225,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * 
      * @return the pythonFiles value.
      */
+    @Generated
     public List<String> getPythonFiles() {
         return this.pythonFiles;
     }
@@ -209,6 +236,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * @param pythonFiles the pythonFiles value to set.
      * @return the SparkRequest object itself.
      */
+    @Generated
     public SparkRequest setPythonFiles(List<String> pythonFiles) {
         this.pythonFiles = pythonFiles;
         return this;
@@ -219,6 +247,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * 
      * @return the files value.
      */
+    @Generated
     public List<String> getFiles() {
         return this.files;
     }
@@ -229,6 +258,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * @param files the files value to set.
      * @return the SparkRequest object itself.
      */
+    @Generated
     public SparkRequest setFiles(List<String> files) {
         this.files = files;
         return this;
@@ -239,6 +269,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * 
      * @return the archives value.
      */
+    @Generated
     public List<String> getArchives() {
         return this.archives;
     }
@@ -249,6 +280,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * @param archives the archives value to set.
      * @return the SparkRequest object itself.
      */
+    @Generated
     public SparkRequest setArchives(List<String> archives) {
         this.archives = archives;
         return this;
@@ -259,6 +291,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * 
      * @return the configuration value.
      */
+    @Generated
     public Map<String, String> getConfiguration() {
         return this.configuration;
     }
@@ -269,6 +302,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * @param configuration the configuration value to set.
      * @return the SparkRequest object itself.
      */
+    @Generated
     public SparkRequest setConfiguration(Map<String, String> configuration) {
         this.configuration = configuration;
         return this;
@@ -279,6 +313,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * 
      * @return the driverMemory value.
      */
+    @Generated
     public String getDriverMemory() {
         return this.driverMemory;
     }
@@ -289,6 +324,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * @param driverMemory the driverMemory value to set.
      * @return the SparkRequest object itself.
      */
+    @Generated
     public SparkRequest setDriverMemory(String driverMemory) {
         this.driverMemory = driverMemory;
         return this;
@@ -299,6 +335,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * 
      * @return the driverCores value.
      */
+    @Generated
     public Integer getDriverCores() {
         return this.driverCores;
     }
@@ -309,6 +346,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * @param driverCores the driverCores value to set.
      * @return the SparkRequest object itself.
      */
+    @Generated
     public SparkRequest setDriverCores(Integer driverCores) {
         this.driverCores = driverCores;
         return this;
@@ -319,6 +357,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * 
      * @return the executorMemory value.
      */
+    @Generated
     public String getExecutorMemory() {
         return this.executorMemory;
     }
@@ -329,6 +368,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * @param executorMemory the executorMemory value to set.
      * @return the SparkRequest object itself.
      */
+    @Generated
     public SparkRequest setExecutorMemory(String executorMemory) {
         this.executorMemory = executorMemory;
         return this;
@@ -339,6 +379,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * 
      * @return the executorCores value.
      */
+    @Generated
     public Integer getExecutorCores() {
         return this.executorCores;
     }
@@ -349,6 +390,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * @param executorCores the executorCores value to set.
      * @return the SparkRequest object itself.
      */
+    @Generated
     public SparkRequest setExecutorCores(Integer executorCores) {
         this.executorCores = executorCores;
         return this;
@@ -359,6 +401,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * 
      * @return the executorCount value.
      */
+    @Generated
     public Integer getExecutorCount() {
         return this.executorCount;
     }
@@ -369,6 +412,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * @param executorCount the executorCount value to set.
      * @return the SparkRequest object itself.
      */
+    @Generated
     public SparkRequest setExecutorCount(Integer executorCount) {
         this.executorCount = executorCount;
         return this;
@@ -377,6 +421,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -405,6 +450,7 @@ public final class SparkRequest implements JsonSerializable<SparkRequest> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SparkRequest.
      */
+    @Generated
     public static SparkRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkRequest deserializedSparkRequest = new SparkRequest();

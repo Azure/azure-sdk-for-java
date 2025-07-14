@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class ScriptAction implements JsonSerializable<ScriptAction> {
     /*
      * The user provided name of the script action.
      */
+    @Generated
     private String name;
 
     /*
      * The URI for the script action.
      */
+    @Generated
     private String uri;
 
     /*
      * The node types on which the script action should be executed.
      */
+    @Generated
     private Object roles;
 
     /*
      * The parameters for the script action.
      */
+    @Generated
     private String parameters;
 
     /**
      * Creates an instance of ScriptAction class.
      */
+    @Generated
     public ScriptAction() {
     }
 
@@ -47,6 +53,7 @@ public final class ScriptAction implements JsonSerializable<ScriptAction> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -57,6 +64,7 @@ public final class ScriptAction implements JsonSerializable<ScriptAction> {
      * @param name the name value to set.
      * @return the ScriptAction object itself.
      */
+    @Generated
     public ScriptAction setName(String name) {
         this.name = name;
         return this;
@@ -67,6 +75,7 @@ public final class ScriptAction implements JsonSerializable<ScriptAction> {
      * 
      * @return the uri value.
      */
+    @Generated
     public String getUri() {
         return this.uri;
     }
@@ -77,6 +86,7 @@ public final class ScriptAction implements JsonSerializable<ScriptAction> {
      * @param uri the uri value to set.
      * @return the ScriptAction object itself.
      */
+    @Generated
     public ScriptAction setUri(String uri) {
         this.uri = uri;
         return this;
@@ -87,6 +97,7 @@ public final class ScriptAction implements JsonSerializable<ScriptAction> {
      * 
      * @return the roles value.
      */
+    @Generated
     public Object getRoles() {
         return this.roles;
     }
@@ -97,6 +108,7 @@ public final class ScriptAction implements JsonSerializable<ScriptAction> {
      * @param roles the roles value to set.
      * @return the ScriptAction object itself.
      */
+    @Generated
     public ScriptAction setRoles(Object roles) {
         this.roles = roles;
         return this;
@@ -107,6 +119,7 @@ public final class ScriptAction implements JsonSerializable<ScriptAction> {
      * 
      * @return the parameters value.
      */
+    @Generated
     public String getParameters() {
         return this.parameters;
     }
@@ -117,6 +130,7 @@ public final class ScriptAction implements JsonSerializable<ScriptAction> {
      * @param parameters the parameters value to set.
      * @return the ScriptAction object itself.
      */
+    @Generated
     public ScriptAction setParameters(String parameters) {
         this.parameters = parameters;
         return this;
@@ -125,6 +139,7 @@ public final class ScriptAction implements JsonSerializable<ScriptAction> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -144,6 +159,7 @@ public final class ScriptAction implements JsonSerializable<ScriptAction> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ScriptAction.
      */
+    @Generated
     public static ScriptAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ScriptAction deserializedScriptAction = new ScriptAction();

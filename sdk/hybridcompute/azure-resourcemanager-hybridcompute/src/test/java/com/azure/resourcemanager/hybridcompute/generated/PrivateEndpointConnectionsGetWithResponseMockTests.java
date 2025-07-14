@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.PrivateEndpointConnection;
@@ -21,22 +21,21 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"szngafpgyl\"},\"privateLinkServiceConnectionState\":{\"status\":\"ecjujcng\",\"description\":\"adyedmzrgjfok\",\"actionsRequired\":\"bnoit\"},\"provisioningState\":\"pz\",\"groupIds\":[\"dgxvco\",\"raswugyxpqit\",\"eialwvskb\",\"hzacaqtyltco\"]},\"id\":\"ujpdsxzak\",\"name\":\"ejkm\",\"type\":\"bizt\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"ouambewre\"},\"privateLinkServiceConnectionState\":{\"status\":\"moweg\",\"description\":\"mut\",\"actionsRequired\":\"xeyg\"},\"provisioningState\":\"igijiitnspxlz\",\"groupIds\":[\"ygr\",\"jwaiuf\"]},\"id\":\"raybfueqfr\",\"name\":\"jsydgrhydkygywez\",\"type\":\"kiecafygzm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("khyxvrqtvbcz", "ulmdgglm", "pjpfseykgs", com.azure.core.util.Context.NONE)
+            .getWithResponse("wbqerzwxiytxtd", "ukvlb", "ktg", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("szngafpgyl", response.properties().privateEndpoint().id());
-        Assertions.assertEquals("ecjujcng", response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("adyedmzrgjfok",
-            response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("ouambewre", response.properties().privateEndpoint().id());
+        Assertions.assertEquals("moweg", response.properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("mut", response.properties().privateLinkServiceConnectionState().description());
     }
 }

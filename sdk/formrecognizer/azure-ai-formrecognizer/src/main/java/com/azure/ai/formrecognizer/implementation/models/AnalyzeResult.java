@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,31 +21,37 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     /*
      * Version of schema used for this result.
      */
+    @Generated
     private String version;
 
     /*
      * Text extracted from the input.
      */
+    @Generated
     private List<ReadResult> readResults;
 
     /*
      * Page-level information extracted from the input.
      */
+    @Generated
     private List<PageResult> pageResults;
 
     /*
      * Document-level information extracted from the input.
      */
+    @Generated
     private List<DocumentResult> documentResults;
 
     /*
      * List of errors reported during the analyze operation.
      */
+    @Generated
     private List<ErrorInformation> errors;
 
     /**
      * Creates an instance of AnalyzeResult class.
      */
+    @Generated
     public AnalyzeResult() {
     }
 
@@ -53,6 +60,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @return the version value.
      */
+    @Generated
     public String getVersion() {
         return this.version;
     }
@@ -63,6 +71,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @param version the version value to set.
      * @return the AnalyzeResult object itself.
      */
+    @Generated
     public AnalyzeResult setVersion(String version) {
         this.version = version;
         return this;
@@ -73,6 +82,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @return the readResults value.
      */
+    @Generated
     public List<ReadResult> getReadResults() {
         return this.readResults;
     }
@@ -83,6 +93,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @param readResults the readResults value to set.
      * @return the AnalyzeResult object itself.
      */
+    @Generated
     public AnalyzeResult setReadResults(List<ReadResult> readResults) {
         this.readResults = readResults;
         return this;
@@ -93,6 +104,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @return the pageResults value.
      */
+    @Generated
     public List<PageResult> getPageResults() {
         return this.pageResults;
     }
@@ -103,6 +115,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @param pageResults the pageResults value to set.
      * @return the AnalyzeResult object itself.
      */
+    @Generated
     public AnalyzeResult setPageResults(List<PageResult> pageResults) {
         this.pageResults = pageResults;
         return this;
@@ -113,6 +126,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @return the documentResults value.
      */
+    @Generated
     public List<DocumentResult> getDocumentResults() {
         return this.documentResults;
     }
@@ -123,6 +137,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @param documentResults the documentResults value to set.
      * @return the AnalyzeResult object itself.
      */
+    @Generated
     public AnalyzeResult setDocumentResults(List<DocumentResult> documentResults) {
         this.documentResults = documentResults;
         return this;
@@ -133,6 +148,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * 
      * @return the errors value.
      */
+    @Generated
     public List<ErrorInformation> getErrors() {
         return this.errors;
     }
@@ -143,6 +159,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @param errors the errors value to set.
      * @return the AnalyzeResult object itself.
      */
+    @Generated
     public AnalyzeResult setErrors(List<ErrorInformation> errors) {
         this.errors = errors;
         return this;
@@ -151,6 +168,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -172,6 +190,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnalyzeResult.
      */
+    @Generated
     public static AnalyzeResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnalyzeResult deserializedAnalyzeResult = new AnalyzeResult();

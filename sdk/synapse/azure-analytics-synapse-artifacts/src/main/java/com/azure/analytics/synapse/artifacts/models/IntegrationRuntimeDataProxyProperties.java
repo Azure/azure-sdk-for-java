@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class IntegrationRuntimeDataProxyProperties
     /*
      * The self-hosted integration runtime reference.
      */
+    @Generated
     private EntityReference connectVia;
 
     /*
      * The staging linked service reference.
      */
+    @Generated
     private EntityReference stagingLinkedService;
 
     /*
      * The path to contain the staged data in the Blob storage.
      */
+    @Generated
     private String path;
 
     /**
      * Creates an instance of IntegrationRuntimeDataProxyProperties class.
      */
+    @Generated
     public IntegrationRuntimeDataProxyProperties() {
     }
 
@@ -43,6 +48,7 @@ public final class IntegrationRuntimeDataProxyProperties
      * 
      * @return the connectVia value.
      */
+    @Generated
     public EntityReference getConnectVia() {
         return this.connectVia;
     }
@@ -53,6 +59,7 @@ public final class IntegrationRuntimeDataProxyProperties
      * @param connectVia the connectVia value to set.
      * @return the IntegrationRuntimeDataProxyProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeDataProxyProperties setConnectVia(EntityReference connectVia) {
         this.connectVia = connectVia;
         return this;
@@ -63,6 +70,7 @@ public final class IntegrationRuntimeDataProxyProperties
      * 
      * @return the stagingLinkedService value.
      */
+    @Generated
     public EntityReference getStagingLinkedService() {
         return this.stagingLinkedService;
     }
@@ -73,6 +81,7 @@ public final class IntegrationRuntimeDataProxyProperties
      * @param stagingLinkedService the stagingLinkedService value to set.
      * @return the IntegrationRuntimeDataProxyProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeDataProxyProperties setStagingLinkedService(EntityReference stagingLinkedService) {
         this.stagingLinkedService = stagingLinkedService;
         return this;
@@ -83,6 +92,7 @@ public final class IntegrationRuntimeDataProxyProperties
      * 
      * @return the path value.
      */
+    @Generated
     public String getPath() {
         return this.path;
     }
@@ -93,6 +103,7 @@ public final class IntegrationRuntimeDataProxyProperties
      * @param path the path value to set.
      * @return the IntegrationRuntimeDataProxyProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeDataProxyProperties setPath(String path) {
         this.path = path;
         return this;
@@ -101,6 +112,7 @@ public final class IntegrationRuntimeDataProxyProperties
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +130,7 @@ public final class IntegrationRuntimeDataProxyProperties
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the IntegrationRuntimeDataProxyProperties.
      */
+    @Generated
     public static IntegrationRuntimeDataProxyProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IntegrationRuntimeDataProxyProperties deserializedIntegrationRuntimeDataProxyProperties

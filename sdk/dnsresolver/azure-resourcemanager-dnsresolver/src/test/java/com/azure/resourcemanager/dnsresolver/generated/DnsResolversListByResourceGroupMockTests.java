@@ -7,8 +7,8 @@ package com.azure.resourcemanager.dnsresolver.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dnsresolver.DnsResolverManager;
 import com.azure.resourcemanager.dnsresolver.models.DnsResolver;
@@ -22,20 +22,20 @@ public final class DnsResolversListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"hseyvju\",\"properties\":{\"virtualNetwork\":{\"id\":\"tslhspkdeem\"},\"dnsResolverState\":\"Connected\",\"provisioningState\":\"Failed\",\"resourceGuid\":\"gkvtmelmqkrhah\"},\"location\":\"juahaquhcdhmdual\",\"tags\":{\"adm\":\"qpv\",\"r\":\"sr\",\"fmisg\":\"vxpvgomz\"},\"id\":\"bnbbeldawkz\",\"name\":\"ali\",\"type\":\"urqhaka\"}]}";
+            = "{\"value\":[{\"etag\":\"xhexiilivpdti\",\"properties\":{\"virtualNetwork\":{\"id\":\"q\"},\"dnsResolverState\":\"Disconnected\",\"provisioningState\":\"Creating\",\"resourceGuid\":\"oruzfgsquyfxrxx\"},\"location\":\"ptramxj\",\"tags\":{\"tdooaoj\":\"lwnwxuqlcvydyp\",\"nuj\":\"niodkooeb\",\"odtji\":\"emmsbvdkc\"},\"id\":\"fw\",\"name\":\"lfltka\",\"type\":\"jvefkdlfoakggkfp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DnsResolverManager manager = DnsResolverManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<DnsResolver> response
-            = manager.dnsResolvers().listByResourceGroup("rnwb", 1267023941, com.azure.core.util.Context.NONE);
+        PagedIterable<DnsResolver> response = manager.dnsResolvers()
+            .listByResourceGroup("thzvaytdwkqbrqu", 965192802, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("juahaquhcdhmdual", response.iterator().next().location());
-        Assertions.assertEquals("qpv", response.iterator().next().tags().get("adm"));
-        Assertions.assertEquals("tslhspkdeem", response.iterator().next().virtualNetwork().id());
+        Assertions.assertEquals("ptramxj", response.iterator().next().location());
+        Assertions.assertEquals("lwnwxuqlcvydyp", response.iterator().next().tags().get("tdooaoj"));
+        Assertions.assertEquals("q", response.iterator().next().virtualNetwork().id());
     }
 }

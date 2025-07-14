@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,16 +21,19 @@ public final class MicrosoftAccessSink extends CopySink {
     /*
      * Copy sink type.
      */
+    @Generated
     private String type = "MicrosoftAccessSink";
 
     /*
      * A query to execute before starting the copy. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object preCopyScript;
 
     /**
      * Creates an instance of MicrosoftAccessSink class.
      */
+    @Generated
     public MicrosoftAccessSink() {
     }
 
@@ -38,6 +42,7 @@ public final class MicrosoftAccessSink extends CopySink {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -49,6 +54,7 @@ public final class MicrosoftAccessSink extends CopySink {
      * 
      * @return the preCopyScript value.
      */
+    @Generated
     public Object getPreCopyScript() {
         return this.preCopyScript;
     }
@@ -60,6 +66,7 @@ public final class MicrosoftAccessSink extends CopySink {
      * @param preCopyScript the preCopyScript value to set.
      * @return the MicrosoftAccessSink object itself.
      */
+    @Generated
     public MicrosoftAccessSink setPreCopyScript(Object preCopyScript) {
         this.preCopyScript = preCopyScript;
         return this;
@@ -68,6 +75,7 @@ public final class MicrosoftAccessSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MicrosoftAccessSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
@@ -77,6 +85,7 @@ public final class MicrosoftAccessSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MicrosoftAccessSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
@@ -86,6 +95,7 @@ public final class MicrosoftAccessSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MicrosoftAccessSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
@@ -95,6 +105,7 @@ public final class MicrosoftAccessSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MicrosoftAccessSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
@@ -104,6 +115,7 @@ public final class MicrosoftAccessSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MicrosoftAccessSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -113,16 +125,29 @@ public final class MicrosoftAccessSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getWriteBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        }
+        if (getWriteBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        }
+        if (getSinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        }
+        if (getSinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("preCopyScript", this.preCopyScript);
+        if (this.preCopyScript != null) {
+            jsonWriter.writeUntypedField("preCopyScript", this.preCopyScript);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -139,6 +164,7 @@ public final class MicrosoftAccessSink extends CopySink {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the MicrosoftAccessSink.
      */
+    @Generated
     public static MicrosoftAccessSink fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MicrosoftAccessSink deserializedMicrosoftAccessSink = new MicrosoftAccessSink();

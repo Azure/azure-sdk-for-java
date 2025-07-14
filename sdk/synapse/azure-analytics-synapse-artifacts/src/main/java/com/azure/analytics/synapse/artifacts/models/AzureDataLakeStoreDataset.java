@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,31 +22,37 @@ public class AzureDataLakeStoreDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "AzureDataLakeStoreFile";
 
     /*
      * Path to the folder in the Azure Data Lake Store. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object folderPath;
 
     /*
      * The name of the file in the Azure Data Lake Store. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object fileName;
 
     /*
      * The format of the Data Lake Store.
      */
+    @Generated
     private DatasetStorageFormat format;
 
     /*
      * The data compression method used for the item(s) in the Azure Data Lake Store.
      */
+    @Generated
     private DatasetCompression compression;
 
     /**
      * Creates an instance of AzureDataLakeStoreDataset class.
      */
+    @Generated
     public AzureDataLakeStoreDataset() {
     }
 
@@ -54,6 +61,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -65,6 +73,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
      * 
      * @return the folderPath value.
      */
+    @Generated
     public Object getFolderPath() {
         return this.folderPath;
     }
@@ -76,6 +85,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
      * @param folderPath the folderPath value to set.
      * @return the AzureDataLakeStoreDataset object itself.
      */
+    @Generated
     public AzureDataLakeStoreDataset setFolderPath(Object folderPath) {
         this.folderPath = folderPath;
         return this;
@@ -87,6 +97,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
      * 
      * @return the fileName value.
      */
+    @Generated
     public Object getFileName() {
         return this.fileName;
     }
@@ -98,6 +109,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
      * @param fileName the fileName value to set.
      * @return the AzureDataLakeStoreDataset object itself.
      */
+    @Generated
     public AzureDataLakeStoreDataset setFileName(Object fileName) {
         this.fileName = fileName;
         return this;
@@ -108,6 +120,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
      * 
      * @return the format value.
      */
+    @Generated
     public DatasetStorageFormat getFormat() {
         return this.format;
     }
@@ -118,6 +131,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
      * @param format the format value to set.
      * @return the AzureDataLakeStoreDataset object itself.
      */
+    @Generated
     public AzureDataLakeStoreDataset setFormat(DatasetStorageFormat format) {
         this.format = format;
         return this;
@@ -128,6 +142,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
      * 
      * @return the compression value.
      */
+    @Generated
     public DatasetCompression getCompression() {
         return this.compression;
     }
@@ -138,6 +153,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
      * @param compression the compression value to set.
      * @return the AzureDataLakeStoreDataset object itself.
      */
+    @Generated
     public AzureDataLakeStoreDataset setCompression(DatasetCompression compression) {
         this.compression = compression;
         return this;
@@ -146,6 +162,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataLakeStoreDataset setDescription(String description) {
         super.setDescription(description);
@@ -155,6 +172,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataLakeStoreDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -164,6 +182,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataLakeStoreDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -173,6 +192,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataLakeStoreDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -182,6 +202,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataLakeStoreDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -191,6 +212,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataLakeStoreDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -200,6 +222,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataLakeStoreDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -209,21 +232,30 @@ public class AzureDataLakeStoreDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
         jsonWriter.writeStringField("type", this.type);
         if (folderPath != null || fileName != null || format != null || compression != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("folderPath", this.folderPath);
-            jsonWriter.writeUntypedField("fileName", this.fileName);
+            if (this.folderPath != null) {
+                jsonWriter.writeUntypedField("folderPath", this.folderPath);
+            }
+            if (this.fileName != null) {
+                jsonWriter.writeUntypedField("fileName", this.fileName);
+            }
             jsonWriter.writeJsonField("format", this.format);
             jsonWriter.writeJsonField("compression", this.compression);
             jsonWriter.writeEndObject();
@@ -245,6 +277,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureDataLakeStoreDataset.
      */
+    @Generated
     public static AzureDataLakeStoreDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureDataLakeStoreDataset deserializedAzureDataLakeStoreDataset = new AzureDataLakeStoreDataset();

@@ -54,25 +54,25 @@ public final class DeidServicesClientImpl implements DeidServicesClient {
     /**
      * The service client containing this operation class.
      */
-    private final HealthDataAIServicesClientImpl client;
+    private final HealthDataAIServicesManagementClientImpl client;
 
     /**
      * Initializes an instance of DeidServicesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    DeidServicesClientImpl(HealthDataAIServicesClientImpl client) {
+    DeidServicesClientImpl(HealthDataAIServicesManagementClientImpl client) {
         this.service
             = RestProxy.create(DeidServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for HealthDataAIServicesClientDeidServices to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for HealthDataAIServicesManagementClientDeidServices to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "HealthDataAIServices")
+    @ServiceInterface(name = "HealthDataAIServicesManagementClientDeidServices")
     public interface DeidServicesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}")

@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.messaging.eventgrid.SystemEventNames;
+import com.azure.messaging.eventgrid.systemevents.models.StorageBlobCreatedEventData;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,26 +23,31 @@ public final class IntegrationRuntimeVNetProperties implements JsonSerializable<
     /*
      * The ID of the VNet that this integration runtime will join.
      */
+    @Generated
     private String vNetId;
 
     /*
      * The name of the subnet this integration runtime will join.
      */
+    @Generated
     private String subnet;
 
     /*
      * Resource IDs of the public IP addresses that this integration runtime will use.
      */
+    @Generated
     private List<String> publicIPs;
 
     /*
      * VNet properties for managed integration runtime.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of IntegrationRuntimeVNetProperties class.
      */
+    @Generated
     public IntegrationRuntimeVNetProperties() {
     }
 
@@ -50,6 +56,7 @@ public final class IntegrationRuntimeVNetProperties implements JsonSerializable<
      * 
      * @return the vNetId value.
      */
+    @Generated
     public String getVNetId() {
         return this.vNetId;
     }
@@ -60,6 +67,7 @@ public final class IntegrationRuntimeVNetProperties implements JsonSerializable<
      * @param vNetId the vNetId value to set.
      * @return the IntegrationRuntimeVNetProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeVNetProperties setVNetId(String vNetId) {
         this.vNetId = vNetId;
         return this;
@@ -70,6 +78,7 @@ public final class IntegrationRuntimeVNetProperties implements JsonSerializable<
      * 
      * @return the subnet value.
      */
+    @Generated
     public String getSubnet() {
         return this.subnet;
     }
@@ -80,6 +89,7 @@ public final class IntegrationRuntimeVNetProperties implements JsonSerializable<
      * @param subnet the subnet value to set.
      * @return the IntegrationRuntimeVNetProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeVNetProperties setSubnet(String subnet) {
         this.subnet = subnet;
         return this;
@@ -90,6 +100,7 @@ public final class IntegrationRuntimeVNetProperties implements JsonSerializable<
      * 
      * @return the publicIPs value.
      */
+    @Generated
     public List<String> getPublicIPs() {
         return this.publicIPs;
     }
@@ -100,6 +111,7 @@ public final class IntegrationRuntimeVNetProperties implements JsonSerializable<
      * @param publicIPs the publicIPs value to set.
      * @return the IntegrationRuntimeVNetProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeVNetProperties setPublicIPs(List<String> publicIPs) {
         this.publicIPs = publicIPs;
         return this;
@@ -110,6 +122,7 @@ public final class IntegrationRuntimeVNetProperties implements JsonSerializable<
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -120,6 +133,7 @@ public final class IntegrationRuntimeVNetProperties implements JsonSerializable<
      * @param additionalProperties the additionalProperties value to set.
      * @return the IntegrationRuntimeVNetProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeVNetProperties setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -128,6 +142,7 @@ public final class IntegrationRuntimeVNetProperties implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -150,6 +165,7 @@ public final class IntegrationRuntimeVNetProperties implements JsonSerializable<
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the IntegrationRuntimeVNetProperties.
      */
+    @Generated
     public static IntegrationRuntimeVNetProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IntegrationRuntimeVNetProperties deserializedIntegrationRuntimeVNetProperties

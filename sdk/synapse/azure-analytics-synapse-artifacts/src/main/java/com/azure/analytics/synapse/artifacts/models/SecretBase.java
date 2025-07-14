@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public class SecretBase implements JsonSerializable<SecretBase> {
     /*
      * Type of the secret.
      */
+    @Generated
     private String type = "SecretBase";
 
     /**
      * Creates an instance of SecretBase class.
      */
+    @Generated
     public SecretBase() {
     }
 
@@ -32,6 +35,7 @@ public class SecretBase implements JsonSerializable<SecretBase> {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -39,6 +43,7 @@ public class SecretBase implements JsonSerializable<SecretBase> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -54,6 +59,7 @@ public class SecretBase implements JsonSerializable<SecretBase> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the SecretBase.
      */
+    @Generated
     public static SecretBase fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -81,6 +87,7 @@ public class SecretBase implements JsonSerializable<SecretBase> {
         });
     }
 
+    @Generated
     static SecretBase fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SecretBase deserializedSecretBase = new SecretBase();

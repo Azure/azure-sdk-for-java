@@ -51,7 +51,7 @@ public final class SigningCertificatesImpl {
      * to perform REST calls.
      */
     @Host("{instanceUrl}")
-    @ServiceInterface(name = "AttestationClientSig")
+    @ServiceInterface(name = "AttestationClientSigningCertificates")
     public interface SigningCertificatesService {
         @Get("/certs")
         @ExpectedResponses({ 200 })

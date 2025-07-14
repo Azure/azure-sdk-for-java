@@ -63,7 +63,7 @@ public final class LinkedServicesImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientLinke")
+    @ServiceInterface(name = "ArtifactsClientLinkedServices")
     public interface LinkedServicesService {
         @Get("/linkedservices")
         @ExpectedResponses({ 200 })

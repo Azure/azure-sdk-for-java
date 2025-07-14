@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,22 +22,26 @@ public class SmartsheetLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Smartsheet";
 
     /*
      * The api token for the Smartsheet source.
      */
+    @Generated
     private SecretBase apiToken;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of SmartsheetLinkedService class.
      */
+    @Generated
     public SmartsheetLinkedService() {
     }
 
@@ -45,6 +50,7 @@ public class SmartsheetLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -55,6 +61,7 @@ public class SmartsheetLinkedService extends LinkedService {
      * 
      * @return the apiToken value.
      */
+    @Generated
     public SecretBase getApiToken() {
         return this.apiToken;
     }
@@ -65,6 +72,7 @@ public class SmartsheetLinkedService extends LinkedService {
      * @param apiToken the apiToken value to set.
      * @return the SmartsheetLinkedService object itself.
      */
+    @Generated
     public SmartsheetLinkedService setApiToken(SecretBase apiToken) {
         this.apiToken = apiToken;
         return this;
@@ -76,6 +84,7 @@ public class SmartsheetLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -87,6 +96,7 @@ public class SmartsheetLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SmartsheetLinkedService object itself.
      */
+    @Generated
     public SmartsheetLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -95,6 +105,7 @@ public class SmartsheetLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SmartsheetLinkedService setVersion(String version) {
         super.setVersion(version);
@@ -104,6 +115,7 @@ public class SmartsheetLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SmartsheetLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -113,6 +125,7 @@ public class SmartsheetLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SmartsheetLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -122,6 +135,7 @@ public class SmartsheetLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SmartsheetLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -131,6 +145,7 @@ public class SmartsheetLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SmartsheetLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -140,6 +155,7 @@ public class SmartsheetLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -152,7 +168,9 @@ public class SmartsheetLinkedService extends LinkedService {
         if (apiToken != null || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeJsonField("apiToken", this.apiToken);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -172,6 +190,7 @@ public class SmartsheetLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SmartsheetLinkedService.
      */
+    @Generated
     public static SmartsheetLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SmartsheetLinkedService deserializedSmartsheetLinkedService = new SmartsheetLinkedService();

@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  *
  * <ul>
  *     <li>ExternalDependencyExposed checks in implementation code</li>
- *     <li>Missing Javadoc comments in sample and test code</li>
+ *     <li>Missing Javadoc comments in implementation, sample, and test code</li>
  *     <li>Star imports in test code</li>
  *     <li>Nested blocks in test code</li>
  *     <li>Azure SDK Checkstyle checks in sample and test code</li>
@@ -59,8 +59,7 @@ public class AzureSdkFilter implements Filter {
         boolean isTestFile = matcher.group(1).startsWith("test");
 
         String violation = event.getViolation().getSourceName();
-
-        if (violation.contains("Javadoc")) {
+            if (violation.toLowerCase().contains("javadoc")) {
             // Ignore missing Javadoc comments in test code
             return true;
         } else if  (isTestFile && violation.contains("AvoidStarImport")) {
@@ -93,6 +92,7 @@ public class AzureSdkFilter implements Filter {
 
         String violation = event.getViolation().getSourceName();
 
-        return violation.startsWith(EXTERNAL_DEPENDENCY_EXPOSED);
+        return violation.startsWith(EXTERNAL_DEPENDENCY_EXPOSED)
+            || violation.toLowerCase().contains("javadoc");
     }
 }

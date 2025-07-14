@@ -41,6 +41,11 @@ import java.util.Map;
 @Fluent
 public final class ClusterInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The extended location of the cluster manager associated with the cluster.
      */
     private ExtendedLocation extendedLocation;
@@ -79,6 +84,15 @@ public final class ClusterInner extends Resource {
      * Creates an instance of ClusterInner class.
      */
     public ClusterInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -799,6 +813,8 @@ public final class ClusterInner extends Resource {
                     deserializedClusterInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedClusterInner.innerProperties = ClusterProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedClusterInner.etag = reader.getString();
                 } else if ("identity".equals(fieldName)) {
                     deserializedClusterInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

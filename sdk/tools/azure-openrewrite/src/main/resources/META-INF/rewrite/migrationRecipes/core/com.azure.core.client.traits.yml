@@ -1,0 +1,100 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for azure.core.clients.traits
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipe.azure.core.clients.traits
+displayName: Migrate from azure.core.clients.traits to next generation stack
+description: This recipe migrates azure.core.clients.traits package to the next generation stack.
+recipeList:
+
+  # --------------------------------------------------------------------
+  # AzureKeyCredentialTrait
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.client.traits.AzureKeyCredentialTrait
+      newFullyQualifiedTypeName: com.azure.v2.core.traits.AzureKeyCredentialTrait
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # AzureNamedKeyCredentialTrait
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.client.traits.AzureNamedKeyCredentialTrait
+      newFullyQualifiedTypeName: com.azure.v2.core.traits.AzureNamedKeyCredentialTrait
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # AzureSasCredentialTrait
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.client.traits.AzureSasCredentialTrait
+      newFullyQualifiedTypeName: com.azure.v2.core.traits.AzureSasCredentialTrait
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # ConfigurationTrait
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.client.traits.ConfigurationTrait
+      newFullyQualifiedTypeName: io.clientcore.core.traits.ConfigurationTrait
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # ConnectionStringTrait
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.client.traits.ConnectionStringTrait
+      newFullyQualifiedTypeName: com.azure.v2.core.traits.ConnectionStringTrait
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # EndpointTrait
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.client.traits.EndpointTrait
+      newFullyQualifiedTypeName: io.clientcore.core.traits.EndpointTrait
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # HttpTrait
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.client.traits.HttpTrait
+      newFullyQualifiedTypeName: io.clientcore.core.traits.HttpTrait
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # KeyCredentialTrait
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.client.traits.KeyCredentialTrait
+      newFullyQualifiedTypeName: io.clientcore.core.traits.KeyCredentialTrait
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # TokenCredentialTrait
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.client.traits.TokenCredentialTrait
+      newFullyQualifiedTypeName: com.azure.v2.core.traits.TokenCredentialTrait
+
+  # TODO: Migrate Methods and Fields

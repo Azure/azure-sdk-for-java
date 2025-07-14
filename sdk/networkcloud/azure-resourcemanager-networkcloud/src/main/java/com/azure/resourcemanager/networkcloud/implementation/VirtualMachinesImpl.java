@@ -80,8 +80,10 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
     }
 
-    public OperationStatusResult delete(String resourceGroupName, String virtualMachineName, Context context) {
-        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, virtualMachineName, context);
+    public OperationStatusResult delete(String resourceGroupName, String virtualMachineName, String ifMatch,
+        String ifNoneMatch, Context context) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, virtualMachineName, ifMatch, ifNoneMatch, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -202,10 +204,13 @@ public final class VirtualMachinesImpl implements VirtualMachines {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
-        return this.delete(resourceGroupName, virtualMachineName, Context.NONE);
+        String localIfMatch = null;
+        String localIfNoneMatch = null;
+        return this.delete(resourceGroupName, virtualMachineName, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
-    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+    public OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch,
+        Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -216,7 +221,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
-        return this.delete(resourceGroupName, virtualMachineName, context);
+        return this.delete(resourceGroupName, virtualMachineName, ifMatch, ifNoneMatch, context);
     }
 
     private VirtualMachinesClient serviceClient() {

@@ -57,7 +57,7 @@ public final class LogsImpl {
      * perform REST calls.
      */
     @Host("{Endpoint}/personalizer/{ApiVersion}")
-    @ServiceInterface(name = "PersonalizerClientV1")
+    @ServiceInterface(name = "PersonalizerClientV1Preview3Logs")
     public interface LogsService {
         @Post("/logs/interactions")
         @ExpectedResponses({ 204 })

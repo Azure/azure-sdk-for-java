@@ -192,6 +192,6 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

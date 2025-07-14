@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,36 +20,43 @@ public final class NotebookCellOutputItem implements JsonSerializable<NotebookCe
     /*
      * For output_type=stream, determines the name of stream (stdout / stderr).
      */
+    @Generated
     private String name;
 
     /*
      * Execution sequence number.
      */
+    @Generated
     private Integer executionCount;
 
     /*
      * Execution, display, or stream outputs.
      */
+    @Generated
     private CellOutputType outputType;
 
     /*
      * For output_type=stream, the stream's text output, represented as a string or an array of strings.
      */
+    @Generated
     private Object text;
 
     /*
      * Output data. Use MIME type as key, and content as value.
      */
+    @Generated
     private Object data;
 
     /*
      * Metadata for the output item.
      */
+    @Generated
     private Object metadata;
 
     /**
      * Creates an instance of NotebookCellOutputItem class.
      */
+    @Generated
     public NotebookCellOutputItem() {
     }
 
@@ -57,6 +65,7 @@ public final class NotebookCellOutputItem implements JsonSerializable<NotebookCe
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -67,6 +76,7 @@ public final class NotebookCellOutputItem implements JsonSerializable<NotebookCe
      * @param name the name value to set.
      * @return the NotebookCellOutputItem object itself.
      */
+    @Generated
     public NotebookCellOutputItem setName(String name) {
         this.name = name;
         return this;
@@ -77,6 +87,7 @@ public final class NotebookCellOutputItem implements JsonSerializable<NotebookCe
      * 
      * @return the executionCount value.
      */
+    @Generated
     public Integer getExecutionCount() {
         return this.executionCount;
     }
@@ -87,6 +98,7 @@ public final class NotebookCellOutputItem implements JsonSerializable<NotebookCe
      * @param executionCount the executionCount value to set.
      * @return the NotebookCellOutputItem object itself.
      */
+    @Generated
     public NotebookCellOutputItem setExecutionCount(Integer executionCount) {
         this.executionCount = executionCount;
         return this;
@@ -97,6 +109,7 @@ public final class NotebookCellOutputItem implements JsonSerializable<NotebookCe
      * 
      * @return the outputType value.
      */
+    @Generated
     public CellOutputType getOutputType() {
         return this.outputType;
     }
@@ -107,6 +120,7 @@ public final class NotebookCellOutputItem implements JsonSerializable<NotebookCe
      * @param outputType the outputType value to set.
      * @return the NotebookCellOutputItem object itself.
      */
+    @Generated
     public NotebookCellOutputItem setOutputType(CellOutputType outputType) {
         this.outputType = outputType;
         return this;
@@ -118,6 +132,7 @@ public final class NotebookCellOutputItem implements JsonSerializable<NotebookCe
      * 
      * @return the text value.
      */
+    @Generated
     public Object getText() {
         return this.text;
     }
@@ -129,6 +144,7 @@ public final class NotebookCellOutputItem implements JsonSerializable<NotebookCe
      * @param text the text value to set.
      * @return the NotebookCellOutputItem object itself.
      */
+    @Generated
     public NotebookCellOutputItem setText(Object text) {
         this.text = text;
         return this;
@@ -139,6 +155,7 @@ public final class NotebookCellOutputItem implements JsonSerializable<NotebookCe
      * 
      * @return the data value.
      */
+    @Generated
     public Object getData() {
         return this.data;
     }
@@ -149,6 +166,7 @@ public final class NotebookCellOutputItem implements JsonSerializable<NotebookCe
      * @param data the data value to set.
      * @return the NotebookCellOutputItem object itself.
      */
+    @Generated
     public NotebookCellOutputItem setData(Object data) {
         this.data = data;
         return this;
@@ -159,6 +177,7 @@ public final class NotebookCellOutputItem implements JsonSerializable<NotebookCe
      * 
      * @return the metadata value.
      */
+    @Generated
     public Object getMetadata() {
         return this.metadata;
     }
@@ -169,6 +188,7 @@ public final class NotebookCellOutputItem implements JsonSerializable<NotebookCe
      * @param metadata the metadata value to set.
      * @return the NotebookCellOutputItem object itself.
      */
+    @Generated
     public NotebookCellOutputItem setMetadata(Object metadata) {
         this.metadata = metadata;
         return this;
@@ -177,15 +197,22 @@ public final class NotebookCellOutputItem implements JsonSerializable<NotebookCe
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("output_type", this.outputType == null ? null : this.outputType.toString());
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeNumberField("execution_count", this.executionCount);
-        jsonWriter.writeUntypedField("text", this.text);
-        jsonWriter.writeUntypedField("data", this.data);
-        jsonWriter.writeUntypedField("metadata", this.metadata);
+        if (this.text != null) {
+            jsonWriter.writeUntypedField("text", this.text);
+        }
+        if (this.data != null) {
+            jsonWriter.writeUntypedField("data", this.data);
+        }
+        if (this.metadata != null) {
+            jsonWriter.writeUntypedField("metadata", this.metadata);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -198,6 +225,7 @@ public final class NotebookCellOutputItem implements JsonSerializable<NotebookCe
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the NotebookCellOutputItem.
      */
+    @Generated
     public static NotebookCellOutputItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             NotebookCellOutputItem deserializedNotebookCellOutputItem = new NotebookCellOutputItem();

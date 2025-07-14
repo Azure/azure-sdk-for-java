@@ -209,6 +209,6 @@ public final class SapApplicationServerInstanceImpl implements SapApplicationSer
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

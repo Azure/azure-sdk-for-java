@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,21 +19,25 @@ public final class AnalyzeTextSentimentAnalysisInput extends AnalyzeTextTask {
     /*
      * Enumeration of supported Text Analysis tasks.
      */
+    @Generated
     private AnalyzeTextTaskKind kind = AnalyzeTextTaskKind.SENTIMENT_ANALYSIS;
 
     /*
      * The analysisInput property.
      */
+    @Generated
     private MultiLanguageAnalysisInput analysisInput;
 
     /*
      * Supported parameters for a Sentiment Analysis task.
      */
+    @Generated
     private SentimentAnalysisTaskParameters parameters;
 
     /**
      * Creates an instance of AnalyzeTextSentimentAnalysisInput class.
      */
+    @Generated
     public AnalyzeTextSentimentAnalysisInput() {
     }
 
@@ -41,6 +46,7 @@ public final class AnalyzeTextSentimentAnalysisInput extends AnalyzeTextTask {
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public AnalyzeTextTaskKind getKind() {
         return this.kind;
@@ -51,6 +57,7 @@ public final class AnalyzeTextSentimentAnalysisInput extends AnalyzeTextTask {
      * 
      * @return the analysisInput value.
      */
+    @Generated
     public MultiLanguageAnalysisInput getAnalysisInput() {
         return this.analysisInput;
     }
@@ -61,6 +68,7 @@ public final class AnalyzeTextSentimentAnalysisInput extends AnalyzeTextTask {
      * @param analysisInput the analysisInput value to set.
      * @return the AnalyzeTextSentimentAnalysisInput object itself.
      */
+    @Generated
     public AnalyzeTextSentimentAnalysisInput setAnalysisInput(MultiLanguageAnalysisInput analysisInput) {
         this.analysisInput = analysisInput;
         return this;
@@ -71,6 +79,7 @@ public final class AnalyzeTextSentimentAnalysisInput extends AnalyzeTextTask {
      * 
      * @return the parameters value.
      */
+    @Generated
     public SentimentAnalysisTaskParameters getParameters() {
         return this.parameters;
     }
@@ -81,6 +90,7 @@ public final class AnalyzeTextSentimentAnalysisInput extends AnalyzeTextTask {
      * @param parameters the parameters value to set.
      * @return the AnalyzeTextSentimentAnalysisInput object itself.
      */
+    @Generated
     public AnalyzeTextSentimentAnalysisInput setParameters(SentimentAnalysisTaskParameters parameters) {
         this.parameters = parameters;
         return this;
@@ -89,6 +99,7 @@ public final class AnalyzeTextSentimentAnalysisInput extends AnalyzeTextTask {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -106,6 +117,7 @@ public final class AnalyzeTextSentimentAnalysisInput extends AnalyzeTextTask {
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AnalyzeTextSentimentAnalysisInput.
      */
+    @Generated
     public static AnalyzeTextSentimentAnalysisInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnalyzeTextSentimentAnalysisInput deserializedAnalyzeTextSentimentAnalysisInput

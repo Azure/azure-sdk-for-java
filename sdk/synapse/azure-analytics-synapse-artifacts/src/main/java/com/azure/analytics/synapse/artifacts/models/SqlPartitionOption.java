@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class SqlPartitionOption extends ExpandableStringEnum<SqlPartitionO
     /**
      * Static value None for SqlPartitionOption.
      */
+    @Generated
     public static final SqlPartitionOption NONE = fromString("None");
 
     /**
      * Static value PhysicalPartitionsOfTable for SqlPartitionOption.
      */
+    @Generated
     public static final SqlPartitionOption PHYSICAL_PARTITIONS_OF_TABLE = fromString("PhysicalPartitionsOfTable");
 
     /**
      * Static value DynamicRange for SqlPartitionOption.
      */
+    @Generated
     public static final SqlPartitionOption DYNAMIC_RANGE = fromString("DynamicRange");
 
     /**
@@ -31,6 +35,7 @@ public final class SqlPartitionOption extends ExpandableStringEnum<SqlPartitionO
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SqlPartitionOption() {
     }
@@ -41,6 +46,7 @@ public final class SqlPartitionOption extends ExpandableStringEnum<SqlPartitionO
      * @param name a name to look for.
      * @return the corresponding SqlPartitionOption.
      */
+    @Generated
     public static SqlPartitionOption fromString(String name) {
         return fromString(name, SqlPartitionOption.class);
     }
@@ -50,6 +56,7 @@ public final class SqlPartitionOption extends ExpandableStringEnum<SqlPartitionO
      * 
      * @return known SqlPartitionOption values.
      */
+    @Generated
     public static Collection<SqlPartitionOption> values() {
         return values(SqlPartitionOption.class);
     }

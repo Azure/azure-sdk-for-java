@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
     /*
      * Type of expressions supported by the system. Type: string.
      */
+    @Generated
     private ExpressionV2Type type;
 
     /*
      * Value for Constant/Field Type: string.
      */
+    @Generated
     private String value;
 
     /*
      * Expression operator value Type: list of strings.
      */
+    @Generated
     private List<String> operators;
 
     /*
      * List of nested expressions.
      */
+    @Generated
     private List<ExpressionV2> operands;
 
     /**
      * Creates an instance of ExpressionV2 class.
      */
+    @Generated
     public ExpressionV2() {
     }
 
@@ -48,6 +54,7 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
      * 
      * @return the type value.
      */
+    @Generated
     public ExpressionV2Type getType() {
         return this.type;
     }
@@ -58,6 +65,7 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
      * @param type the type value to set.
      * @return the ExpressionV2 object itself.
      */
+    @Generated
     public ExpressionV2 setType(ExpressionV2Type type) {
         this.type = type;
         return this;
@@ -68,6 +76,7 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
      * 
      * @return the value value.
      */
+    @Generated
     public String getValue() {
         return this.value;
     }
@@ -78,6 +87,7 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
      * @param value the value value to set.
      * @return the ExpressionV2 object itself.
      */
+    @Generated
     public ExpressionV2 setValue(String value) {
         this.value = value;
         return this;
@@ -88,6 +98,7 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
      * 
      * @return the operators value.
      */
+    @Generated
     public List<String> getOperators() {
         return this.operators;
     }
@@ -98,6 +109,7 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
      * @param operators the operators value to set.
      * @return the ExpressionV2 object itself.
      */
+    @Generated
     public ExpressionV2 setOperators(List<String> operators) {
         this.operators = operators;
         return this;
@@ -108,6 +120,7 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
      * 
      * @return the operands value.
      */
+    @Generated
     public List<ExpressionV2> getOperands() {
         return this.operands;
     }
@@ -118,6 +131,7 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
      * @param operands the operands value to set.
      * @return the ExpressionV2 object itself.
      */
+    @Generated
     public ExpressionV2 setOperands(List<ExpressionV2> operands) {
         this.operands = operands;
         return this;
@@ -126,6 +140,7 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -144,6 +159,7 @@ public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ExpressionV2.
      */
+    @Generated
     public static ExpressionV2 fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ExpressionV2 deserializedExpressionV2 = new ExpressionV2();

@@ -63,7 +63,7 @@ public final class SkillsetsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SearchServiceClientS")
+    @ServiceInterface(name = "SearchServiceClientSkillsets")
     public interface SkillsetsService {
         @Put("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 200, 201 })

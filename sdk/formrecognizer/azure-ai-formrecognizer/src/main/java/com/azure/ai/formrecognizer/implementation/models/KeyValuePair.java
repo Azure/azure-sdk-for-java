@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class KeyValuePair implements JsonSerializable<KeyValuePair> {
     /*
      * A user defined label for the key/value pair entry.
      */
+    @Generated
     private String label;
 
     /*
      * Information about the extracted key in a key-value pair.
      */
+    @Generated
     private KeyValueElement key;
 
     /*
      * Information about the extracted value in a key-value pair.
      */
+    @Generated
     private KeyValueElement value;
 
     /*
      * Confidence value.
      */
+    @Generated
     private float confidence;
 
     /**
      * Creates an instance of KeyValuePair class.
      */
+    @Generated
     public KeyValuePair() {
     }
 
@@ -47,6 +53,7 @@ public final class KeyValuePair implements JsonSerializable<KeyValuePair> {
      * 
      * @return the label value.
      */
+    @Generated
     public String getLabel() {
         return this.label;
     }
@@ -57,6 +64,7 @@ public final class KeyValuePair implements JsonSerializable<KeyValuePair> {
      * @param label the label value to set.
      * @return the KeyValuePair object itself.
      */
+    @Generated
     public KeyValuePair setLabel(String label) {
         this.label = label;
         return this;
@@ -67,6 +75,7 @@ public final class KeyValuePair implements JsonSerializable<KeyValuePair> {
      * 
      * @return the key value.
      */
+    @Generated
     public KeyValueElement getKey() {
         return this.key;
     }
@@ -77,6 +86,7 @@ public final class KeyValuePair implements JsonSerializable<KeyValuePair> {
      * @param key the key value to set.
      * @return the KeyValuePair object itself.
      */
+    @Generated
     public KeyValuePair setKey(KeyValueElement key) {
         this.key = key;
         return this;
@@ -87,6 +97,7 @@ public final class KeyValuePair implements JsonSerializable<KeyValuePair> {
      * 
      * @return the value value.
      */
+    @Generated
     public KeyValueElement getValue() {
         return this.value;
     }
@@ -97,6 +108,7 @@ public final class KeyValuePair implements JsonSerializable<KeyValuePair> {
      * @param value the value value to set.
      * @return the KeyValuePair object itself.
      */
+    @Generated
     public KeyValuePair setValue(KeyValueElement value) {
         this.value = value;
         return this;
@@ -107,6 +119,7 @@ public final class KeyValuePair implements JsonSerializable<KeyValuePair> {
      * 
      * @return the confidence value.
      */
+    @Generated
     public float getConfidence() {
         return this.confidence;
     }
@@ -117,6 +130,7 @@ public final class KeyValuePair implements JsonSerializable<KeyValuePair> {
      * @param confidence the confidence value to set.
      * @return the KeyValuePair object itself.
      */
+    @Generated
     public KeyValuePair setConfidence(float confidence) {
         this.confidence = confidence;
         return this;
@@ -125,6 +139,7 @@ public final class KeyValuePair implements JsonSerializable<KeyValuePair> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -144,6 +159,7 @@ public final class KeyValuePair implements JsonSerializable<KeyValuePair> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyValuePair.
      */
+    @Generated
     public static KeyValuePair fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KeyValuePair deserializedKeyValuePair = new KeyValuePair();

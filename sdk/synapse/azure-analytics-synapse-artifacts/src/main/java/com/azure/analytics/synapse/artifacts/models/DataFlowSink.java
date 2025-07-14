@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +19,19 @@ public final class DataFlowSink extends Transformation {
     /*
      * Schema linked service reference.
      */
+    @Generated
     private LinkedServiceReference schemaLinkedService;
 
     /*
      * Rejected data linked service reference.
      */
+    @Generated
     private LinkedServiceReference rejectedDataLinkedService;
 
     /**
      * Creates an instance of DataFlowSink class.
      */
+    @Generated
     public DataFlowSink() {
     }
 
@@ -36,6 +40,7 @@ public final class DataFlowSink extends Transformation {
      * 
      * @return the schemaLinkedService value.
      */
+    @Generated
     public LinkedServiceReference getSchemaLinkedService() {
         return this.schemaLinkedService;
     }
@@ -46,6 +51,7 @@ public final class DataFlowSink extends Transformation {
      * @param schemaLinkedService the schemaLinkedService value to set.
      * @return the DataFlowSink object itself.
      */
+    @Generated
     public DataFlowSink setSchemaLinkedService(LinkedServiceReference schemaLinkedService) {
         this.schemaLinkedService = schemaLinkedService;
         return this;
@@ -56,6 +62,7 @@ public final class DataFlowSink extends Transformation {
      * 
      * @return the rejectedDataLinkedService value.
      */
+    @Generated
     public LinkedServiceReference getRejectedDataLinkedService() {
         return this.rejectedDataLinkedService;
     }
@@ -66,6 +73,7 @@ public final class DataFlowSink extends Transformation {
      * @param rejectedDataLinkedService the rejectedDataLinkedService value to set.
      * @return the DataFlowSink object itself.
      */
+    @Generated
     public DataFlowSink setRejectedDataLinkedService(LinkedServiceReference rejectedDataLinkedService) {
         this.rejectedDataLinkedService = rejectedDataLinkedService;
         return this;
@@ -74,6 +82,7 @@ public final class DataFlowSink extends Transformation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DataFlowSink setName(String name) {
         super.setName(name);
@@ -83,6 +92,7 @@ public final class DataFlowSink extends Transformation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DataFlowSink setDescription(String description) {
         super.setDescription(description);
@@ -92,6 +102,7 @@ public final class DataFlowSink extends Transformation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DataFlowSink setDataset(DatasetReference dataset) {
         super.setDataset(dataset);
@@ -101,6 +112,7 @@ public final class DataFlowSink extends Transformation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DataFlowSink setLinkedService(LinkedServiceReference linkedService) {
         super.setLinkedService(linkedService);
@@ -110,6 +122,7 @@ public final class DataFlowSink extends Transformation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DataFlowSink setFlowlet(DataFlowReference flowlet) {
         super.setFlowlet(flowlet);
@@ -119,6 +132,7 @@ public final class DataFlowSink extends Transformation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -141,6 +155,7 @@ public final class DataFlowSink extends Transformation {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataFlowSink.
      */
+    @Generated
     public static DataFlowSink fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowSink deserializedDataFlowSink = new DataFlowSink();

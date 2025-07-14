@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class LinkConnectionSourceDatabase implements JsonSerializable<Link
     /*
      * Linked service reference
      */
+    @Generated
     private LinkedServiceReference linkedService;
 
     /*
      * Source database type properties
      */
+    @Generated
     private LinkConnectionSourceDatabaseTypeProperties typeProperties;
 
     /**
      * Creates an instance of LinkConnectionSourceDatabase class.
      */
+    @Generated
     public LinkConnectionSourceDatabase() {
     }
 
@@ -37,6 +41,7 @@ public final class LinkConnectionSourceDatabase implements JsonSerializable<Link
      * 
      * @return the linkedService value.
      */
+    @Generated
     public LinkedServiceReference getLinkedService() {
         return this.linkedService;
     }
@@ -47,6 +52,7 @@ public final class LinkConnectionSourceDatabase implements JsonSerializable<Link
      * @param linkedService the linkedService value to set.
      * @return the LinkConnectionSourceDatabase object itself.
      */
+    @Generated
     public LinkConnectionSourceDatabase setLinkedService(LinkedServiceReference linkedService) {
         this.linkedService = linkedService;
         return this;
@@ -57,6 +63,7 @@ public final class LinkConnectionSourceDatabase implements JsonSerializable<Link
      * 
      * @return the typeProperties value.
      */
+    @Generated
     public LinkConnectionSourceDatabaseTypeProperties getTypeProperties() {
         return this.typeProperties;
     }
@@ -67,6 +74,7 @@ public final class LinkConnectionSourceDatabase implements JsonSerializable<Link
      * @param typeProperties the typeProperties value to set.
      * @return the LinkConnectionSourceDatabase object itself.
      */
+    @Generated
     public LinkConnectionSourceDatabase setTypeProperties(LinkConnectionSourceDatabaseTypeProperties typeProperties) {
         this.typeProperties = typeProperties;
         return this;
@@ -75,6 +83,7 @@ public final class LinkConnectionSourceDatabase implements JsonSerializable<Link
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class LinkConnectionSourceDatabase implements JsonSerializable<Link
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the LinkConnectionSourceDatabase.
      */
+    @Generated
     public static LinkConnectionSourceDatabase fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkConnectionSourceDatabase deserializedLinkConnectionSourceDatabase = new LinkConnectionSourceDatabase();

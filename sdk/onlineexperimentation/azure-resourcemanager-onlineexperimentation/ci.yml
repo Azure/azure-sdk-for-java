@@ -1,0 +1,35 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/onlineexperimentation/azure-resourcemanager-onlineexperimentation/
+    exclude:
+      - sdk/onlineexperimentation/azure-resourcemanager-onlineexperimentation/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/onlineexperimentation/azure-resourcemanager-onlineexperimentation/
+    exclude:
+      - sdk/onlineexperimentation/azure-resourcemanager-onlineexperimentation/pom.xml
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: onlineexperimentation/azure-resourcemanager-onlineexperimentation
+    Artifacts:
+      - name: azure-resourcemanager-onlineexperimentation
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanageronlineexperimentation

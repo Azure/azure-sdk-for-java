@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class EditTablesRequest implements JsonSerializable<EditTablesReque
     /*
      * Edit link tables request
      */
+    @Generated
     private List<LinkTableRequest> linkTables;
 
     /**
      * Creates an instance of EditTablesRequest class.
      */
+    @Generated
     public EditTablesRequest() {
     }
 
@@ -33,6 +36,7 @@ public final class EditTablesRequest implements JsonSerializable<EditTablesReque
      * 
      * @return the linkTables value.
      */
+    @Generated
     public List<LinkTableRequest> getLinkTables() {
         return this.linkTables;
     }
@@ -43,6 +47,7 @@ public final class EditTablesRequest implements JsonSerializable<EditTablesReque
      * @param linkTables the linkTables value to set.
      * @return the EditTablesRequest object itself.
      */
+    @Generated
     public EditTablesRequest setLinkTables(List<LinkTableRequest> linkTables) {
         this.linkTables = linkTables;
         return this;
@@ -51,6 +56,7 @@ public final class EditTablesRequest implements JsonSerializable<EditTablesReque
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -66,6 +72,7 @@ public final class EditTablesRequest implements JsonSerializable<EditTablesReque
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the EditTablesRequest.
      */
+    @Generated
     public static EditTablesRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EditTablesRequest deserializedEditTablesRequest = new EditTablesRequest();

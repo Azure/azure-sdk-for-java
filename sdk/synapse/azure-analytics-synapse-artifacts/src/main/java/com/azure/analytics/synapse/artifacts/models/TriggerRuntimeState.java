@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class TriggerRuntimeState extends ExpandableStringEnum<TriggerRunti
     /**
      * Static value Started for TriggerRuntimeState.
      */
+    @Generated
     public static final TriggerRuntimeState STARTED = fromString("Started");
 
     /**
      * Static value Stopped for TriggerRuntimeState.
      */
+    @Generated
     public static final TriggerRuntimeState STOPPED = fromString("Stopped");
 
     /**
      * Static value Disabled for TriggerRuntimeState.
      */
+    @Generated
     public static final TriggerRuntimeState DISABLED = fromString("Disabled");
 
     /**
@@ -31,6 +35,7 @@ public final class TriggerRuntimeState extends ExpandableStringEnum<TriggerRunti
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TriggerRuntimeState() {
     }
@@ -41,6 +46,7 @@ public final class TriggerRuntimeState extends ExpandableStringEnum<TriggerRunti
      * @param name a name to look for.
      * @return the corresponding TriggerRuntimeState.
      */
+    @Generated
     public static TriggerRuntimeState fromString(String name) {
         return fromString(name, TriggerRuntimeState.class);
     }
@@ -50,6 +56,7 @@ public final class TriggerRuntimeState extends ExpandableStringEnum<TriggerRunti
      * 
      * @return known TriggerRuntimeState values.
      */
+    @Generated
     public static Collection<TriggerRuntimeState> values() {
         return values(TriggerRuntimeState.class);
     }

@@ -67,6 +67,20 @@ public class ExceptionLoggingEvent {
     }
 
     /**
+     * Adds a key with an Object value to the context of current log
+     * and exception being created.
+     *
+     * @param key Key to associate the provided {@code value} with.
+     * @param value The object value.
+     * @return The updated {@link ExceptionLoggingEvent} object.
+     * @see LoggingEvent#addKeyValue(String, Object)
+     */
+    public ExceptionLoggingEvent addKeyValue(String key, Object value) {
+        log.addKeyValue(key, value);
+        return this;
+    }
+
+    /**
      * Sets operation context on the log event being created.
      * It's used to correlate logs between each other and with other telemetry items.
      *

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,27 +22,32 @@ public class AzureMariaDBLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AzureMariaDB";
 
     /*
      * An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
+    @Generated
     private AzureKeyVaultSecretReference pwd;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of AzureMariaDBLinkedService class.
      */
+    @Generated
     public AzureMariaDBLinkedService() {
     }
 
@@ -50,6 +56,7 @@ public class AzureMariaDBLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -61,6 +68,7 @@ public class AzureMariaDBLinkedService extends LinkedService {
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -72,6 +80,7 @@ public class AzureMariaDBLinkedService extends LinkedService {
      * @param connectionString the connectionString value to set.
      * @return the AzureMariaDBLinkedService object itself.
      */
+    @Generated
     public AzureMariaDBLinkedService setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -82,6 +91,7 @@ public class AzureMariaDBLinkedService extends LinkedService {
      * 
      * @return the pwd value.
      */
+    @Generated
     public AzureKeyVaultSecretReference getPwd() {
         return this.pwd;
     }
@@ -92,6 +102,7 @@ public class AzureMariaDBLinkedService extends LinkedService {
      * @param pwd the pwd value to set.
      * @return the AzureMariaDBLinkedService object itself.
      */
+    @Generated
     public AzureMariaDBLinkedService setPwd(AzureKeyVaultSecretReference pwd) {
         this.pwd = pwd;
         return this;
@@ -103,6 +114,7 @@ public class AzureMariaDBLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -114,6 +126,7 @@ public class AzureMariaDBLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureMariaDBLinkedService object itself.
      */
+    @Generated
     public AzureMariaDBLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -122,6 +135,7 @@ public class AzureMariaDBLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMariaDBLinkedService setVersion(String version) {
         super.setVersion(version);
@@ -131,6 +145,7 @@ public class AzureMariaDBLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMariaDBLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -140,6 +155,7 @@ public class AzureMariaDBLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMariaDBLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -149,6 +165,7 @@ public class AzureMariaDBLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMariaDBLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -158,6 +175,7 @@ public class AzureMariaDBLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMariaDBLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -167,6 +185,7 @@ public class AzureMariaDBLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -178,9 +197,13 @@ public class AzureMariaDBLinkedService extends LinkedService {
         jsonWriter.writeStringField("type", this.type);
         if (connectionString != null || pwd != null || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            if (this.connectionString != null) {
+                jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            }
             jsonWriter.writeJsonField("pwd", this.pwd);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -199,6 +222,7 @@ public class AzureMariaDBLinkedService extends LinkedService {
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureMariaDBLinkedService.
      */
+    @Generated
     public static AzureMariaDBLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureMariaDBLinkedService deserializedAzureMariaDBLinkedService = new AzureMariaDBLinkedService();

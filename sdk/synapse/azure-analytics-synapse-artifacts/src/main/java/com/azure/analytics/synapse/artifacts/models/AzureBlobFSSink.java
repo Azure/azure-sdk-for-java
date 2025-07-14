@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,16 +21,19 @@ public final class AzureBlobFSSink extends CopySink {
     /*
      * Copy sink type.
      */
+    @Generated
     private String type = "AzureBlobFSSink";
 
     /*
      * The type of copy behavior for copy sink. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object copyBehavior;
 
     /**
      * Creates an instance of AzureBlobFSSink class.
      */
+    @Generated
     public AzureBlobFSSink() {
     }
 
@@ -38,6 +42,7 @@ public final class AzureBlobFSSink extends CopySink {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -49,6 +54,7 @@ public final class AzureBlobFSSink extends CopySink {
      * 
      * @return the copyBehavior value.
      */
+    @Generated
     public Object getCopyBehavior() {
         return this.copyBehavior;
     }
@@ -60,6 +66,7 @@ public final class AzureBlobFSSink extends CopySink {
      * @param copyBehavior the copyBehavior value to set.
      * @return the AzureBlobFSSink object itself.
      */
+    @Generated
     public AzureBlobFSSink setCopyBehavior(Object copyBehavior) {
         this.copyBehavior = copyBehavior;
         return this;
@@ -68,6 +75,7 @@ public final class AzureBlobFSSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobFSSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
@@ -77,6 +85,7 @@ public final class AzureBlobFSSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobFSSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
@@ -86,6 +95,7 @@ public final class AzureBlobFSSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobFSSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
@@ -95,6 +105,7 @@ public final class AzureBlobFSSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobFSSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
@@ -104,6 +115,7 @@ public final class AzureBlobFSSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobFSSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -113,16 +125,29 @@ public final class AzureBlobFSSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getWriteBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        }
+        if (getWriteBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        }
+        if (getSinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        }
+        if (getSinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("copyBehavior", this.copyBehavior);
+        if (this.copyBehavior != null) {
+            jsonWriter.writeUntypedField("copyBehavior", this.copyBehavior);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -139,6 +164,7 @@ public final class AzureBlobFSSink extends CopySink {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureBlobFSSink.
      */
+    @Generated
     public static AzureBlobFSSink fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureBlobFSSink deserializedAzureBlobFSSink = new AzureBlobFSSink();

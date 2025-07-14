@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class ResourceStatus extends ExpandableStringEnum<ResourceStatus> {
     /**
      * Static value Creating for ResourceStatus.
      */
+    @Generated
     public static final ResourceStatus CREATING = fromString("Creating");
 
     /**
      * Static value Created for ResourceStatus.
      */
+    @Generated
     public static final ResourceStatus CREATED = fromString("Created");
 
     /**
      * Static value Failed for ResourceStatus.
      */
+    @Generated
     public static final ResourceStatus FAILED = fromString("Failed");
 
     /**
@@ -31,6 +35,7 @@ public final class ResourceStatus extends ExpandableStringEnum<ResourceStatus> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ResourceStatus() {
     }
@@ -41,6 +46,7 @@ public final class ResourceStatus extends ExpandableStringEnum<ResourceStatus> {
      * @param name a name to look for.
      * @return the corresponding ResourceStatus.
      */
+    @Generated
     public static ResourceStatus fromString(String name) {
         return fromString(name, ResourceStatus.class);
     }
@@ -50,6 +56,7 @@ public final class ResourceStatus extends ExpandableStringEnum<ResourceStatus> {
      * 
      * @return known ResourceStatus values.
      */
+    @Generated
     public static Collection<ResourceStatus> values() {
         return values(ResourceStatus.class);
     }

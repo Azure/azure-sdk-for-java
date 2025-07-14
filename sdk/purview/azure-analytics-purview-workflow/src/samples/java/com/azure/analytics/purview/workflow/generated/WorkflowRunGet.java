@@ -18,10 +18,10 @@ public class WorkflowRunGet {
             = new WorkflowRunClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.workflow.generated.workflowrunget.workflowrunget
+        // BEGIN:com.azure.analytics.purview.workflow.generated.workflow-run-get.workflow-run-get
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = workflowRunClient.getWithResponse("04334a74-3400-11ed-a261-0242ac120002", requestOptions);
-        // END:com.azure.analytics.purview.workflow.generated.workflowrunget.workflowrunget
+        // END:com.azure.analytics.purview.workflow.generated.workflow-run-get.workflow-run-get
     }
 }

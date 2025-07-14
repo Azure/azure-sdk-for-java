@@ -162,7 +162,7 @@ public final class ServerForUpdate implements JsonSerializable<ServerForUpdate> 
     }
 
     /**
-     * Get the version property: PostgreSQL Server version. Version 16 is currently not supported for MVU.
+     * Get the version property: PostgreSQL Server version. Version 17 is currently not supported for MVU.
      * 
      * @return the version value.
      */
@@ -171,7 +171,7 @@ public final class ServerForUpdate implements JsonSerializable<ServerForUpdate> 
     }
 
     /**
-     * Set the version property: PostgreSQL Server version. Version 16 is currently not supported for MVU.
+     * Set the version property: PostgreSQL Server version. Version 17 is currently not supported for MVU.
      * 
      * @param version the version value to set.
      * @return the ServerForUpdate object itself.
@@ -415,6 +415,29 @@ public final class ServerForUpdate implements JsonSerializable<ServerForUpdate> 
             this.innerProperties = new ServerPropertiesForUpdate();
         }
         this.innerProperties().withNetwork(network);
+        return this;
+    }
+
+    /**
+     * Get the cluster property: Cluster properties of a server.
+     * 
+     * @return the cluster value.
+     */
+    public Cluster cluster() {
+        return this.innerProperties() == null ? null : this.innerProperties().cluster();
+    }
+
+    /**
+     * Set the cluster property: Cluster properties of a server.
+     * 
+     * @param cluster the cluster value to set.
+     * @return the ServerForUpdate object itself.
+     */
+    public ServerForUpdate withCluster(Cluster cluster) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withCluster(cluster);
         return this;
     }
 

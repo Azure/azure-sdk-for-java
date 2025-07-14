@@ -35,9 +35,6 @@ directive:
   - rename-model:
         from: Point
         to: MapsPoint  
-  - rename-model:
-        from: TrafficIncidentViewportViewpResp
-        to: TrafficIncidentViewportResponse
   - from: swagger-document
     where: "$"
     transform: >
@@ -48,7 +45,7 @@ title: TrafficClient
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Traffic/preview/1.0/traffic.json
 namespace: com.azure.maps.traffic
 java: true
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.52'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 payload-flattening-threshold: 0
@@ -63,7 +60,31 @@ generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: TileFormat,TrafficFlowTileStyle,TileIndex,DelayMagnitude,IconCategory,IncidentDetailStyle,IncidentGeometryType,ProjectionStandard,SpeedUnit,TileFormat,TrafficFlowSegmentStyle,TrafficFlowTileStyle,TrafficIncidentTileStyle,TrafficIncidentPointOfInterest,TrafficFlowSegmentData,TrafficFlowSegmentDataFlowSegmentDataCoordinates,TrafficIncidentViewport,TrafficIncidentViewportViewpResp,TrafficState,MapsPoint,TrafficIncidentDetail
+custom-types: TileFormat,TrafficFlowTileStyle,TileIndex,DelayMagnitude,IconCategory,IncidentDetailStyle,IncidentGeometryType,ProjectionStandard,SpeedUnit,TileFormat,TrafficFlowSegmentStyle,TrafficFlowTileStyle,TrafficIncidentTileStyle,TrafficIncidentPointOfInterest,TrafficFlowSegmentData,TrafficFlowSegmentDataPropertiesCoordinates,TrafficIncidentViewport,TrafficIncidentViewportResponse,TrafficState,MapsPoint,TrafficIncidentDetail
 customization-class: src/main/java/TrafficCustomization.java
 no-custom-headers: true
+```
+
+### Create definition TrafficFlowSegmentDataPropertiesCoordinates
+
+``` yaml
+directive:
+  - from: traffic.json
+    where: $.definitions
+    transform: >
+      $.TrafficFlowSegmentDataPropertiesCoordinates = $.TrafficFlowSegmentData.properties.flowSegmentData.properties.coordinates;
+      delete $.TrafficFlowSegmentData.properties.flowSegmentData.properties.coordinates;
+      $.TrafficFlowSegmentData.properties.flowSegmentData.properties.coordinates = { "$ref": "#/definitions/TrafficFlowSegmentDataPropertiesCoordinates" };
+```
+
+### Create definition TrafficIncidentViewportResponse
+
+``` yaml
+directive:
+  - from: traffic.json
+    where: $.definitions
+    transform: >
+      $.TrafficIncidentViewportResponse = $.TrafficIncidentViewport.properties.viewpResp;
+      delete $.TrafficIncidentViewport.properties.viewpResp;
+      $.TrafficIncidentViewport.properties.viewpResp = { "$ref": "#/definitions/TrafficIncidentViewportResponse" };
 ```

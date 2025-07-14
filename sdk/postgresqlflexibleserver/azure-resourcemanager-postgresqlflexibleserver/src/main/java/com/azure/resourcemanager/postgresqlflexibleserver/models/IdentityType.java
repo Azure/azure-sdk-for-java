@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * the types of identities associated with this resource; currently restricted to 'None and UserAssigned'.
+ * the types of identities associated with this resource.
  */
 public final class IdentityType extends ExpandableStringEnum<IdentityType> {
     /**
@@ -25,6 +25,11 @@ public final class IdentityType extends ExpandableStringEnum<IdentityType> {
      * Static value SystemAssigned for IdentityType.
      */
     public static final IdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
+
+    /**
+     * Static value SystemAssigned,UserAssigned for IdentityType.
+     */
+    public static final IdentityType SYSTEM_ASSIGNED_USER_ASSIGNED = fromString("SystemAssigned,UserAssigned");
 
     /**
      * Creates a new instance of IdentityType value.

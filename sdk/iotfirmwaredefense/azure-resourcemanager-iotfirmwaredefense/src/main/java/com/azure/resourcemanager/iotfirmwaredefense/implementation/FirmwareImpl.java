@@ -252,6 +252,6 @@ public final class FirmwareImpl implements Firmware, Firmware.Definition, Firmwa
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

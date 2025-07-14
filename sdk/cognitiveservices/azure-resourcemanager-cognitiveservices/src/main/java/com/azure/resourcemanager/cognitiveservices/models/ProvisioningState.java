@@ -47,6 +47,11 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
     public static final ProvisioningState RESOLVING_DNS = fromString("ResolvingDNS");
 
     /**
+     * Static value Canceled for ProvisioningState.
+     */
+    public static final ProvisioningState CANCELED = fromString("Canceled");
+
+    /**
      * Creates a new instance of ProvisioningState value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -82,36 +82,6 @@ public class FhirR4DomainResource extends FhirR4Resource {
     }
 
     /**
-     * Get the contained property: Contained, inline Resources.
-     *
-     * @return the contained value.
-     */
-    @Generated
-    public List<FhirR4Resource> getContained() {
-        return this.contained;
-    }
-
-    /**
-     * Get the extension property: Additional Content defined by implementations.
-     *
-     * @return the extension value.
-     */
-    @Generated
-    public List<FhirR4Extension> getExtension() {
-        return this.extension;
-    }
-
-    /**
-     * Get the modifierExtension property: Extensions that cannot be ignored.
-     *
-     * @return the modifierExtension value.
-     */
-    @Generated
-    public List<FhirR4Extension> getModifierExtension() {
-        return this.modifierExtension;
-    }
-
-    /**
      * Set the text property: Text summary of the resource, for human interpretation.
      *
      * @param text the text value to set.
@@ -121,6 +91,16 @@ public class FhirR4DomainResource extends FhirR4Resource {
     FhirR4DomainResource setText(FhirR4Narrative text) {
         this.text = text;
         return this;
+    }
+
+    /**
+     * Get the contained property: Contained, inline Resources.
+     *
+     * @return the contained value.
+     */
+    @Generated
+    public List<FhirR4Resource> getContained() {
+        return this.contained;
     }
 
     /**
@@ -136,6 +116,16 @@ public class FhirR4DomainResource extends FhirR4Resource {
     }
 
     /**
+     * Get the extension property: Additional Content defined by implementations.
+     *
+     * @return the extension value.
+     */
+    @Generated
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
+    }
+
+    /**
      * Set the extension property: Additional Content defined by implementations.
      *
      * @param extension the extension value to set.
@@ -145,6 +135,16 @@ public class FhirR4DomainResource extends FhirR4Resource {
     FhirR4DomainResource setExtension(List<FhirR4Extension> extension) {
         this.extension = extension;
         return this;
+    }
+
+    /**
+     * Get the modifierExtension property: Extensions that cannot be ignored.
+     *
+     * @return the modifierExtension value.
+     */
+    @Generated
+    public List<FhirR4Extension> getModifierExtension() {
+        return this.modifierExtension;
     }
 
     /**

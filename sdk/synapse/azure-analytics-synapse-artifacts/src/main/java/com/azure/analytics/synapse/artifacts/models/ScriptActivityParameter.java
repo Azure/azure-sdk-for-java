@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,37 @@ public final class ScriptActivityParameter implements JsonSerializable<ScriptAct
     /*
      * The name of the parameter. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object name;
 
     /*
      * The type of the parameter.
      */
+    @Generated
     private ScriptActivityParameterType type;
 
     /*
      * The value of the parameter.
      */
+    @Generated
     private Object value;
 
     /*
      * The direction of the parameter.
      */
+    @Generated
     private ScriptActivityParameterDirection direction;
 
     /*
      * The size of the output direction parameter.
      */
+    @Generated
     private Integer size;
 
     /**
      * Creates an instance of ScriptActivityParameter class.
      */
+    @Generated
     public ScriptActivityParameter() {
     }
 
@@ -52,6 +59,7 @@ public final class ScriptActivityParameter implements JsonSerializable<ScriptAct
      * 
      * @return the name value.
      */
+    @Generated
     public Object getName() {
         return this.name;
     }
@@ -62,6 +70,7 @@ public final class ScriptActivityParameter implements JsonSerializable<ScriptAct
      * @param name the name value to set.
      * @return the ScriptActivityParameter object itself.
      */
+    @Generated
     public ScriptActivityParameter setName(Object name) {
         this.name = name;
         return this;
@@ -72,6 +81,7 @@ public final class ScriptActivityParameter implements JsonSerializable<ScriptAct
      * 
      * @return the type value.
      */
+    @Generated
     public ScriptActivityParameterType getType() {
         return this.type;
     }
@@ -82,6 +92,7 @@ public final class ScriptActivityParameter implements JsonSerializable<ScriptAct
      * @param type the type value to set.
      * @return the ScriptActivityParameter object itself.
      */
+    @Generated
     public ScriptActivityParameter setType(ScriptActivityParameterType type) {
         this.type = type;
         return this;
@@ -92,6 +103,7 @@ public final class ScriptActivityParameter implements JsonSerializable<ScriptAct
      * 
      * @return the value value.
      */
+    @Generated
     public Object getValue() {
         return this.value;
     }
@@ -102,6 +114,7 @@ public final class ScriptActivityParameter implements JsonSerializable<ScriptAct
      * @param value the value value to set.
      * @return the ScriptActivityParameter object itself.
      */
+    @Generated
     public ScriptActivityParameter setValue(Object value) {
         this.value = value;
         return this;
@@ -112,6 +125,7 @@ public final class ScriptActivityParameter implements JsonSerializable<ScriptAct
      * 
      * @return the direction value.
      */
+    @Generated
     public ScriptActivityParameterDirection getDirection() {
         return this.direction;
     }
@@ -122,6 +136,7 @@ public final class ScriptActivityParameter implements JsonSerializable<ScriptAct
      * @param direction the direction value to set.
      * @return the ScriptActivityParameter object itself.
      */
+    @Generated
     public ScriptActivityParameter setDirection(ScriptActivityParameterDirection direction) {
         this.direction = direction;
         return this;
@@ -132,6 +147,7 @@ public final class ScriptActivityParameter implements JsonSerializable<ScriptAct
      * 
      * @return the size value.
      */
+    @Generated
     public Integer getSize() {
         return this.size;
     }
@@ -142,6 +158,7 @@ public final class ScriptActivityParameter implements JsonSerializable<ScriptAct
      * @param size the size value to set.
      * @return the ScriptActivityParameter object itself.
      */
+    @Generated
     public ScriptActivityParameter setSize(Integer size) {
         this.size = size;
         return this;
@@ -150,12 +167,17 @@ public final class ScriptActivityParameter implements JsonSerializable<ScriptAct
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("name", this.name);
+        if (this.name != null) {
+            jsonWriter.writeUntypedField("name", this.name);
+        }
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeUntypedField("value", this.value);
+        if (this.value != null) {
+            jsonWriter.writeUntypedField("value", this.value);
+        }
         jsonWriter.writeStringField("direction", this.direction == null ? null : this.direction.toString());
         jsonWriter.writeNumberField("size", this.size);
         return jsonWriter.writeEndObject();
@@ -169,6 +191,7 @@ public final class ScriptActivityParameter implements JsonSerializable<ScriptAct
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ScriptActivityParameter.
      */
+    @Generated
     public static ScriptActivityParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ScriptActivityParameter deserializedScriptActivityParameter = new ScriptActivityParameter();

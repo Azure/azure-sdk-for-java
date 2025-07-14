@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class KeyValuePairString implements JsonSerializable<KeyValuePairSt
     /*
      * Key of the key-value pair.
      */
+    @Generated
     private String key;
 
     /*
      * Value of the key-value pair.
      */
+    @Generated
     private String value;
 
     /**
      * Creates an instance of KeyValuePairString class.
      */
+    @Generated
     public KeyValuePairString() {
     }
 
@@ -37,6 +41,7 @@ public final class KeyValuePairString implements JsonSerializable<KeyValuePairSt
      * 
      * @return the key value.
      */
+    @Generated
     public String getKey() {
         return this.key;
     }
@@ -47,6 +52,7 @@ public final class KeyValuePairString implements JsonSerializable<KeyValuePairSt
      * @param key the key value to set.
      * @return the KeyValuePairString object itself.
      */
+    @Generated
     public KeyValuePairString setKey(String key) {
         this.key = key;
         return this;
@@ -57,6 +63,7 @@ public final class KeyValuePairString implements JsonSerializable<KeyValuePairSt
      * 
      * @return the value value.
      */
+    @Generated
     public String getValue() {
         return this.value;
     }
@@ -67,6 +74,7 @@ public final class KeyValuePairString implements JsonSerializable<KeyValuePairSt
      * @param value the value value to set.
      * @return the KeyValuePairString object itself.
      */
+    @Generated
     public KeyValuePairString setValue(String value) {
         this.value = value;
         return this;
@@ -75,6 +83,7 @@ public final class KeyValuePairString implements JsonSerializable<KeyValuePairSt
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class KeyValuePairString implements JsonSerializable<KeyValuePairSt
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyValuePairString.
      */
+    @Generated
     public static KeyValuePairString fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KeyValuePairString deserializedKeyValuePairString = new KeyValuePairString();

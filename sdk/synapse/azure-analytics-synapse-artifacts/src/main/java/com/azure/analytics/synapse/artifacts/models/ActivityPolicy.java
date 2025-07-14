@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,36 +23,43 @@ public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
      * Specifies the timeout for the activity to run. The default timeout is 7 days. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
+    @Generated
     private Object timeout;
 
     /*
      * Maximum ordinary retry attempts. Default is 0. Type: integer (or Expression with resultType integer), minimum: 0.
      */
+    @Generated
     private Object retry;
 
     /*
      * Interval between each retry attempt (in seconds). The default is 30 sec.
      */
+    @Generated
     private Integer retryIntervalInSeconds;
 
     /*
      * When set to true, Input from activity is considered as secure and will not be logged to monitoring.
      */
+    @Generated
     private Boolean secureInput;
 
     /*
      * When set to true, Output from activity is considered as secure and will not be logged to monitoring.
      */
+    @Generated
     private Boolean secureOutput;
 
     /*
      * Execution policy for an activity.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of ActivityPolicy class.
      */
+    @Generated
     public ActivityPolicy() {
     }
 
@@ -61,6 +69,7 @@ public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
      * 
      * @return the timeout value.
      */
+    @Generated
     public Object getTimeout() {
         return this.timeout;
     }
@@ -72,6 +81,7 @@ public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
      * @param timeout the timeout value to set.
      * @return the ActivityPolicy object itself.
      */
+    @Generated
     public ActivityPolicy setTimeout(Object timeout) {
         this.timeout = timeout;
         return this;
@@ -83,6 +93,7 @@ public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
      * 
      * @return the retry value.
      */
+    @Generated
     public Object getRetry() {
         return this.retry;
     }
@@ -94,6 +105,7 @@ public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
      * @param retry the retry value to set.
      * @return the ActivityPolicy object itself.
      */
+    @Generated
     public ActivityPolicy setRetry(Object retry) {
         this.retry = retry;
         return this;
@@ -104,6 +116,7 @@ public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
      * 
      * @return the retryIntervalInSeconds value.
      */
+    @Generated
     public Integer getRetryIntervalInSeconds() {
         return this.retryIntervalInSeconds;
     }
@@ -114,6 +127,7 @@ public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
      * @param retryIntervalInSeconds the retryIntervalInSeconds value to set.
      * @return the ActivityPolicy object itself.
      */
+    @Generated
     public ActivityPolicy setRetryIntervalInSeconds(Integer retryIntervalInSeconds) {
         this.retryIntervalInSeconds = retryIntervalInSeconds;
         return this;
@@ -125,6 +139,7 @@ public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
      * 
      * @return the secureInput value.
      */
+    @Generated
     public Boolean isSecureInput() {
         return this.secureInput;
     }
@@ -136,6 +151,7 @@ public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
      * @param secureInput the secureInput value to set.
      * @return the ActivityPolicy object itself.
      */
+    @Generated
     public ActivityPolicy setSecureInput(Boolean secureInput) {
         this.secureInput = secureInput;
         return this;
@@ -147,6 +163,7 @@ public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
      * 
      * @return the secureOutput value.
      */
+    @Generated
     public Boolean isSecureOutput() {
         return this.secureOutput;
     }
@@ -158,6 +175,7 @@ public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
      * @param secureOutput the secureOutput value to set.
      * @return the ActivityPolicy object itself.
      */
+    @Generated
     public ActivityPolicy setSecureOutput(Boolean secureOutput) {
         this.secureOutput = secureOutput;
         return this;
@@ -168,6 +186,7 @@ public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -178,6 +197,7 @@ public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the ActivityPolicy object itself.
      */
+    @Generated
     public ActivityPolicy setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -186,11 +206,16 @@ public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("timeout", this.timeout);
-        jsonWriter.writeUntypedField("retry", this.retry);
+        if (this.timeout != null) {
+            jsonWriter.writeUntypedField("timeout", this.timeout);
+        }
+        if (this.retry != null) {
+            jsonWriter.writeUntypedField("retry", this.retry);
+        }
         jsonWriter.writeNumberField("retryIntervalInSeconds", this.retryIntervalInSeconds);
         jsonWriter.writeBooleanField("secureInput", this.secureInput);
         jsonWriter.writeBooleanField("secureOutput", this.secureOutput);
@@ -210,6 +235,7 @@ public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ActivityPolicy.
      */
+    @Generated
     public static ActivityPolicy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ActivityPolicy deserializedActivityPolicy = new ActivityPolicy();

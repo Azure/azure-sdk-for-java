@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appservice.fluent.models.AseV3NetworkingConfigu
  */
 public final class AppServiceEnvironmentsUpdateAseNetworkingConfigurationSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/
      * AppServiceEnvironments_UpdateAseNetworkingConfiguration.json
      */
     /**

@@ -82,6 +82,13 @@ public abstract class SearchTestBase extends TestProxyTestBase {
 
     protected static final String STORAGE_CONNECTION_STRING
         = Configuration.getGlobalConfiguration().get("SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
+
+    protected static final String OPENAI_API_KEY
+        = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_API_KEY", "your-api-key");
+
+    protected static final String OPENAI_API_ENDPOINT = Configuration.getGlobalConfiguration()
+        .get("AZURE_OPENAI_API_ENDPOINT", "https://your-endpoint.openai.azure.com");
+
     protected static final String BLOB_CONTAINER_NAME = "searchcontainer";
 
     protected static final TestMode TEST_MODE = initializeTestMode();

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,11 +20,13 @@ public final class CustomSetupBase implements JsonSerializable<CustomSetupBase> 
     /*
      * The type of custom setup.
      */
+    @Generated
     private String type = "CustomSetupBase";
 
     /**
      * Creates an instance of CustomSetupBase class.
      */
+    @Generated
     public CustomSetupBase() {
     }
 
@@ -32,6 +35,7 @@ public final class CustomSetupBase implements JsonSerializable<CustomSetupBase> 
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -39,6 +43,7 @@ public final class CustomSetupBase implements JsonSerializable<CustomSetupBase> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -54,6 +59,7 @@ public final class CustomSetupBase implements JsonSerializable<CustomSetupBase> 
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the CustomSetupBase.
      */
+    @Generated
     public static CustomSetupBase fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CustomSetupBase deserializedCustomSetupBase = new CustomSetupBase();

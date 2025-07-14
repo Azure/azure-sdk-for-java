@@ -43,25 +43,25 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * The service client containing this operation class.
      */
-    private final HealthDataAIServicesClientImpl client;
+    private final HealthDataAIServicesManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(HealthDataAIServicesClientImpl client) {
+    OperationsClientImpl(HealthDataAIServicesManagementClientImpl client) {
         this.service
             = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for HealthDataAIServicesClientOperations to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for HealthDataAIServicesManagementClientOperations to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "HealthDataAIServices")
+    @ServiceInterface(name = "HealthDataAIServicesManagementClientOperations")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.HealthDataAIServices/operations")

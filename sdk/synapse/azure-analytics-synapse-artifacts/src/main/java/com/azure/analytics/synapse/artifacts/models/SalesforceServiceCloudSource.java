@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,28 +21,33 @@ public final class SalesforceServiceCloudSource extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "SalesforceServiceCloudSource";
 
     /*
      * Database query. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object query;
 
     /*
      * The read behavior for the operation. Default is Query. Allowed values: Query/QueryAll. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object readBehavior;
 
     /*
      * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
      * Expression with resultType array of objects).
      */
+    @Generated
     private Object additionalColumns;
 
     /**
      * Creates an instance of SalesforceServiceCloudSource class.
      */
+    @Generated
     public SalesforceServiceCloudSource() {
     }
 
@@ -50,6 +56,7 @@ public final class SalesforceServiceCloudSource extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -60,6 +67,7 @@ public final class SalesforceServiceCloudSource extends CopySource {
      * 
      * @return the query value.
      */
+    @Generated
     public Object getQuery() {
         return this.query;
     }
@@ -70,6 +78,7 @@ public final class SalesforceServiceCloudSource extends CopySource {
      * @param query the query value to set.
      * @return the SalesforceServiceCloudSource object itself.
      */
+    @Generated
     public SalesforceServiceCloudSource setQuery(Object query) {
         this.query = query;
         return this;
@@ -81,6 +90,7 @@ public final class SalesforceServiceCloudSource extends CopySource {
      * 
      * @return the readBehavior value.
      */
+    @Generated
     public Object getReadBehavior() {
         return this.readBehavior;
     }
@@ -92,6 +102,7 @@ public final class SalesforceServiceCloudSource extends CopySource {
      * @param readBehavior the readBehavior value to set.
      * @return the SalesforceServiceCloudSource object itself.
      */
+    @Generated
     public SalesforceServiceCloudSource setReadBehavior(Object readBehavior) {
         this.readBehavior = readBehavior;
         return this;
@@ -103,6 +114,7 @@ public final class SalesforceServiceCloudSource extends CopySource {
      * 
      * @return the additionalColumns value.
      */
+    @Generated
     public Object getAdditionalColumns() {
         return this.additionalColumns;
     }
@@ -114,6 +126,7 @@ public final class SalesforceServiceCloudSource extends CopySource {
      * @param additionalColumns the additionalColumns value to set.
      * @return the SalesforceServiceCloudSource object itself.
      */
+    @Generated
     public SalesforceServiceCloudSource setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
         return this;
@@ -122,6 +135,7 @@ public final class SalesforceServiceCloudSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceServiceCloudSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -131,6 +145,7 @@ public final class SalesforceServiceCloudSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceServiceCloudSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -140,6 +155,7 @@ public final class SalesforceServiceCloudSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceServiceCloudSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -149,16 +165,29 @@ public final class SalesforceServiceCloudSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("query", this.query);
-        jsonWriter.writeUntypedField("readBehavior", this.readBehavior);
-        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (this.query != null) {
+            jsonWriter.writeUntypedField("query", this.query);
+        }
+        if (this.readBehavior != null) {
+            jsonWriter.writeUntypedField("readBehavior", this.readBehavior);
+        }
+        if (this.additionalColumns != null) {
+            jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -175,6 +204,7 @@ public final class SalesforceServiceCloudSource extends CopySource {
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SalesforceServiceCloudSource.
      */
+    @Generated
     public static SalesforceServiceCloudSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SalesforceServiceCloudSource deserializedSalesforceServiceCloudSource = new SalesforceServiceCloudSource();

@@ -4,6 +4,7 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class ConversionSettings implements JsonSerializable<ConversionSett
     /*
      * Conversion input settings describe the origin of conversion input.
      */
+    @Generated
     private final ConversionInputSettings inputLocation;
 
     /*
      * Conversion output settings describe the destination of conversion output.
      */
+    @Generated
     private final ConversionOutputSettings outputLocation;
 
     /**
@@ -34,6 +37,7 @@ public final class ConversionSettings implements JsonSerializable<ConversionSett
      * @param inputLocation the inputLocation value to set.
      * @param outputLocation the outputLocation value to set.
      */
+    @Generated
     public ConversionSettings(ConversionInputSettings inputLocation, ConversionOutputSettings outputLocation) {
         this.inputLocation = inputLocation;
         this.outputLocation = outputLocation;
@@ -44,6 +48,7 @@ public final class ConversionSettings implements JsonSerializable<ConversionSett
      * 
      * @return the inputLocation value.
      */
+    @Generated
     public ConversionInputSettings getInputLocation() {
         return this.inputLocation;
     }
@@ -53,6 +58,7 @@ public final class ConversionSettings implements JsonSerializable<ConversionSett
      * 
      * @return the outputLocation value.
      */
+    @Generated
     public ConversionOutputSettings getOutputLocation() {
         return this.outputLocation;
     }
@@ -60,6 +66,7 @@ public final class ConversionSettings implements JsonSerializable<ConversionSett
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -77,6 +84,7 @@ public final class ConversionSettings implements JsonSerializable<ConversionSett
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ConversionSettings.
      */
+    @Generated
     public static ConversionSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputLocationFound = false;

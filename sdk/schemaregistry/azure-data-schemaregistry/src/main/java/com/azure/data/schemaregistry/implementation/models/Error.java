@@ -5,6 +5,7 @@
 package com.azure.data.schemaregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class Error implements JsonSerializable<Error> {
     /*
      * Error response returned from Azure Schema Registry service.
      */
+    @Generated
     private ErrorDetail error;
 
     /**
      * Creates an instance of Error class.
      */
+    @Generated
     public Error() {
     }
 
@@ -32,6 +35,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the error value.
      */
+    @Generated
     public ErrorDetail getError() {
         return this.error;
     }
@@ -42,6 +46,7 @@ public final class Error implements JsonSerializable<Error> {
      * @param error the error value to set.
      * @return the Error object itself.
      */
+    @Generated
     public Error setError(ErrorDetail error) {
         this.error = error;
         return this;
@@ -50,6 +55,7 @@ public final class Error implements JsonSerializable<Error> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -66,6 +72,7 @@ public final class Error implements JsonSerializable<Error> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Error.
      */
+    @Generated
     public static Error fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Error deserializedError = new Error();

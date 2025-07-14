@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,17 +24,20 @@ public final class SingleVectorFieldResult implements JsonSerializable<SingleVec
      * The @search.score value that is calculated from the vector similarity score. This is the score that's visible in
      * a pure single-field single-vector query.
      */
+    @Generated
     private Double searchScore;
 
     /*
      * The vector similarity score for this document. Note this is the canonical definition of similarity metric, not
      * the 'distance' version. For example, cosine similarity instead of cosine distance.
      */
+    @Generated
     private Double vectorSimilarity;
 
     /**
      * Creates an instance of SingleVectorFieldResult class.
      */
+    @Generated
     public SingleVectorFieldResult() {
     }
 
@@ -43,6 +47,7 @@ public final class SingleVectorFieldResult implements JsonSerializable<SingleVec
      * 
      * @return the searchScore value.
      */
+    @Generated
     public Double getSearchScore() {
         return this.searchScore;
     }
@@ -54,6 +59,7 @@ public final class SingleVectorFieldResult implements JsonSerializable<SingleVec
      * 
      * @return the vectorSimilarity value.
      */
+    @Generated
     public Double getVectorSimilarity() {
         return this.vectorSimilarity;
     }
@@ -61,6 +67,7 @@ public final class SingleVectorFieldResult implements JsonSerializable<SingleVec
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,6 +82,7 @@ public final class SingleVectorFieldResult implements JsonSerializable<SingleVec
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SingleVectorFieldResult.
      */
+    @Generated
     public static SingleVectorFieldResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SingleVectorFieldResult deserializedSingleVectorFieldResult = new SingleVectorFieldResult();

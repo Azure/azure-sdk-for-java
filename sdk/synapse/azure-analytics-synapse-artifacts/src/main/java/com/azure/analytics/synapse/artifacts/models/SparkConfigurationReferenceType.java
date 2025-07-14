@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class SparkConfigurationReferenceType extends ExpandableStringEnum<
     /**
      * Static value SparkConfigurationReference for SparkConfigurationReferenceType.
      */
+    @Generated
     public static final SparkConfigurationReferenceType SPARK_CONFIGURATION_REFERENCE
         = fromString("SparkConfigurationReference");
 
@@ -22,6 +24,7 @@ public final class SparkConfigurationReferenceType extends ExpandableStringEnum<
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SparkConfigurationReferenceType() {
     }
@@ -32,6 +35,7 @@ public final class SparkConfigurationReferenceType extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding SparkConfigurationReferenceType.
      */
+    @Generated
     public static SparkConfigurationReferenceType fromString(String name) {
         return fromString(name, SparkConfigurationReferenceType.class);
     }
@@ -41,6 +45,7 @@ public final class SparkConfigurationReferenceType extends ExpandableStringEnum<
      * 
      * @return known SparkConfigurationReferenceType values.
      */
+    @Generated
     public static Collection<SparkConfigurationReferenceType> values() {
         return values(SparkConfigurationReferenceType.class);
     }

@@ -3,6 +3,7 @@
 
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.utils.CoreUtils;
@@ -45,7 +46,7 @@ public final class MockProxyServer implements Closeable {
         this.expectedAuthenticationValue
             = this.requiresAuthentication ? basicAuthenticationValue(username, password) : null;
 
-        this.proxyServer = new LocalTestServer((req, resp, requestBody) -> {
+        this.proxyServer = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, (req, resp, requestBody) -> {
             if ("CONNECT".equalsIgnoreCase(req.getMethod())) {
                 if (requiresAuthentication) {
                     if (hasRequiredAuthentication(req)) {
@@ -83,7 +84,7 @@ public final class MockProxyServer implements Closeable {
      * @return Address of the server.
      */
     public InetSocketAddress socketAddress() {
-        return new InetSocketAddress("localhost", proxyServer.getHttpPort());
+        return new InetSocketAddress("localhost", proxyServer.getPort());
     }
 
     @Override

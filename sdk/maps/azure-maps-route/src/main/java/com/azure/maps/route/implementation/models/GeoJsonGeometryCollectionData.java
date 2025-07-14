@@ -5,6 +5,7 @@
 package com.azure.maps.route.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,13 +19,16 @@ import java.util.List;
 @Fluent
 public class GeoJsonGeometryCollectionData implements JsonSerializable<GeoJsonGeometryCollectionData> {
     /*
-     * Contains a list of valid `GeoJSON` geometry objects. **Note** that coordinates in GeoJSON are in x, y order (longitude, latitude).
+     * Contains a list of valid `GeoJSON` geometry objects. **Note** that coordinates in GeoJSON are in x, y order
+     * (longitude, latitude).
      */
+    @Generated
     private List<GeoJsonGeometry> geometries;
 
     /**
      * Creates an instance of GeoJsonGeometryCollectionData class.
      */
+    @Generated
     public GeoJsonGeometryCollectionData() {
     }
 
@@ -34,6 +38,7 @@ public class GeoJsonGeometryCollectionData implements JsonSerializable<GeoJsonGe
      * 
      * @return the geometries value.
      */
+    @Generated
     public List<GeoJsonGeometry> getGeometries() {
         return this.geometries;
     }
@@ -45,6 +50,7 @@ public class GeoJsonGeometryCollectionData implements JsonSerializable<GeoJsonGe
      * @param geometries the geometries value to set.
      * @return the GeoJsonGeometryCollectionData object itself.
      */
+    @Generated
     public GeoJsonGeometryCollectionData setGeometries(List<GeoJsonGeometry> geometries) {
         this.geometries = geometries;
         return this;
@@ -53,6 +59,7 @@ public class GeoJsonGeometryCollectionData implements JsonSerializable<GeoJsonGe
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,6 +76,7 @@ public class GeoJsonGeometryCollectionData implements JsonSerializable<GeoJsonGe
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GeoJsonGeometryCollectionData.
      */
+    @Generated
     public static GeoJsonGeometryCollectionData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonGeometryCollectionData deserializedGeoJsonGeometryCollectionData

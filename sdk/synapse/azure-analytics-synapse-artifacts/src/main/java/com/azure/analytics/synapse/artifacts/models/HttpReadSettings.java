@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,50 +21,59 @@ public final class HttpReadSettings extends StoreReadSettings {
     /*
      * The read setting type.
      */
+    @Generated
     private String type = "HttpReadSettings";
 
     /*
      * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object requestMethod;
 
     /*
      * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object requestBody;
 
     /*
      * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object additionalHeaders;
 
     /*
      * Specifies the timeout for a HTTP client to get HTTP response from HTTP server.
      */
+    @Generated
     private Object requestTimeout;
 
     /*
      * Indicates whether to enable partition discovery. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object enablePartitionDiscovery;
 
     /*
      * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object partitionRootPath;
 
     /*
      * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
      * Expression with resultType array of objects).
      */
+    @Generated
     private Object additionalColumns;
 
     /**
      * Creates an instance of HttpReadSettings class.
      */
+    @Generated
     public HttpReadSettings() {
     }
 
@@ -72,6 +82,7 @@ public final class HttpReadSettings extends StoreReadSettings {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -83,6 +94,7 @@ public final class HttpReadSettings extends StoreReadSettings {
      * 
      * @return the requestMethod value.
      */
+    @Generated
     public Object getRequestMethod() {
         return this.requestMethod;
     }
@@ -94,6 +106,7 @@ public final class HttpReadSettings extends StoreReadSettings {
      * @param requestMethod the requestMethod value to set.
      * @return the HttpReadSettings object itself.
      */
+    @Generated
     public HttpReadSettings setRequestMethod(Object requestMethod) {
         this.requestMethod = requestMethod;
         return this;
@@ -105,6 +118,7 @@ public final class HttpReadSettings extends StoreReadSettings {
      * 
      * @return the requestBody value.
      */
+    @Generated
     public Object getRequestBody() {
         return this.requestBody;
     }
@@ -116,6 +130,7 @@ public final class HttpReadSettings extends StoreReadSettings {
      * @param requestBody the requestBody value to set.
      * @return the HttpReadSettings object itself.
      */
+    @Generated
     public HttpReadSettings setRequestBody(Object requestBody) {
         this.requestBody = requestBody;
         return this;
@@ -127,6 +142,7 @@ public final class HttpReadSettings extends StoreReadSettings {
      * 
      * @return the additionalHeaders value.
      */
+    @Generated
     public Object getAdditionalHeaders() {
         return this.additionalHeaders;
     }
@@ -138,6 +154,7 @@ public final class HttpReadSettings extends StoreReadSettings {
      * @param additionalHeaders the additionalHeaders value to set.
      * @return the HttpReadSettings object itself.
      */
+    @Generated
     public HttpReadSettings setAdditionalHeaders(Object additionalHeaders) {
         this.additionalHeaders = additionalHeaders;
         return this;
@@ -148,6 +165,7 @@ public final class HttpReadSettings extends StoreReadSettings {
      * 
      * @return the requestTimeout value.
      */
+    @Generated
     public Object getRequestTimeout() {
         return this.requestTimeout;
     }
@@ -158,6 +176,7 @@ public final class HttpReadSettings extends StoreReadSettings {
      * @param requestTimeout the requestTimeout value to set.
      * @return the HttpReadSettings object itself.
      */
+    @Generated
     public HttpReadSettings setRequestTimeout(Object requestTimeout) {
         this.requestTimeout = requestTimeout;
         return this;
@@ -169,6 +188,7 @@ public final class HttpReadSettings extends StoreReadSettings {
      * 
      * @return the enablePartitionDiscovery value.
      */
+    @Generated
     public Object getEnablePartitionDiscovery() {
         return this.enablePartitionDiscovery;
     }
@@ -180,6 +200,7 @@ public final class HttpReadSettings extends StoreReadSettings {
      * @param enablePartitionDiscovery the enablePartitionDiscovery value to set.
      * @return the HttpReadSettings object itself.
      */
+    @Generated
     public HttpReadSettings setEnablePartitionDiscovery(Object enablePartitionDiscovery) {
         this.enablePartitionDiscovery = enablePartitionDiscovery;
         return this;
@@ -191,6 +212,7 @@ public final class HttpReadSettings extends StoreReadSettings {
      * 
      * @return the partitionRootPath value.
      */
+    @Generated
     public Object getPartitionRootPath() {
         return this.partitionRootPath;
     }
@@ -202,6 +224,7 @@ public final class HttpReadSettings extends StoreReadSettings {
      * @param partitionRootPath the partitionRootPath value to set.
      * @return the HttpReadSettings object itself.
      */
+    @Generated
     public HttpReadSettings setPartitionRootPath(Object partitionRootPath) {
         this.partitionRootPath = partitionRootPath;
         return this;
@@ -213,6 +236,7 @@ public final class HttpReadSettings extends StoreReadSettings {
      * 
      * @return the additionalColumns value.
      */
+    @Generated
     public Object getAdditionalColumns() {
         return this.additionalColumns;
     }
@@ -224,6 +248,7 @@ public final class HttpReadSettings extends StoreReadSettings {
      * @param additionalColumns the additionalColumns value to set.
      * @return the HttpReadSettings object itself.
      */
+    @Generated
     public HttpReadSettings setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
         return this;
@@ -232,6 +257,7 @@ public final class HttpReadSettings extends StoreReadSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HttpReadSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -241,18 +267,35 @@ public final class HttpReadSettings extends StoreReadSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
-        jsonWriter.writeUntypedField("requestBody", this.requestBody);
-        jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
-        jsonWriter.writeUntypedField("requestTimeout", this.requestTimeout);
-        jsonWriter.writeUntypedField("enablePartitionDiscovery", this.enablePartitionDiscovery);
-        jsonWriter.writeUntypedField("partitionRootPath", this.partitionRootPath);
-        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (this.requestMethod != null) {
+            jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
+        }
+        if (this.requestBody != null) {
+            jsonWriter.writeUntypedField("requestBody", this.requestBody);
+        }
+        if (this.additionalHeaders != null) {
+            jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
+        }
+        if (this.requestTimeout != null) {
+            jsonWriter.writeUntypedField("requestTimeout", this.requestTimeout);
+        }
+        if (this.enablePartitionDiscovery != null) {
+            jsonWriter.writeUntypedField("enablePartitionDiscovery", this.enablePartitionDiscovery);
+        }
+        if (this.partitionRootPath != null) {
+            jsonWriter.writeUntypedField("partitionRootPath", this.partitionRootPath);
+        }
+        if (this.additionalColumns != null) {
+            jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -269,6 +312,7 @@ public final class HttpReadSettings extends StoreReadSettings {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the HttpReadSettings.
      */
+    @Generated
     public static HttpReadSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HttpReadSettings deserializedHttpReadSettings = new HttpReadSettings();

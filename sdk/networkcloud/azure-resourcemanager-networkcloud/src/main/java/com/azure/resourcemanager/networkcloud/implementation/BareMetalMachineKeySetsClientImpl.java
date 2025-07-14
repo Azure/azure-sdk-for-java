@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.BareMetalMachineKeySetsClient;
@@ -71,13 +73,22 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkCloudBareMeta")
+    @ServiceInterface(name = "NetworkCloudBareMetalMachineKeySets")
     public interface BareMetalMachineKeySetsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bareMetalMachineKeySets")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BareMetalMachineKeySetList>> listByCluster(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bareMetalMachineKeySets")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BareMetalMachineKeySetList> listByClusterSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @HeaderParam("Accept") String accept, Context context);
@@ -93,6 +104,16 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bareMetalMachineKeySets/{bareMetalMachineKeySetName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BareMetalMachineKeySetInner> getSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("bareMetalMachineKeySetName") String bareMetalMachineKeySetName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bareMetalMachineKeySets/{bareMetalMachineKeySetName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -100,6 +121,19 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("bareMetalMachineKeySetName") String bareMetalMachineKeySetName,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @BodyParam("application/json") BareMetalMachineKeySetInner bareMetalMachineKeySetParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bareMetalMachineKeySets/{bareMetalMachineKeySetName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("bareMetalMachineKeySetName") String bareMetalMachineKeySetName,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @BodyParam("application/json") BareMetalMachineKeySetInner bareMetalMachineKeySetParameters,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -111,6 +145,18 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("bareMetalMachineKeySetName") String bareMetalMachineKeySetName,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bareMetalMachineKeySets/{bareMetalMachineKeySetName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("bareMetalMachineKeySetName") String bareMetalMachineKeySetName,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -121,6 +167,19 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("bareMetalMachineKeySetName") String bareMetalMachineKeySetName,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @BodyParam("application/json") BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/bareMetalMachineKeySets/{bareMetalMachineKeySetName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("bareMetalMachineKeySetName") String bareMetalMachineKeySetName,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @BodyParam("application/json") BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -129,6 +188,14 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BareMetalMachineKeySetList>> listByClusterNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BareMetalMachineKeySetList> listByClusterNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -180,47 +247,6 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machine key sets for the provided cluster along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BareMetalMachineKeySetInner>> listByClusterSinglePageAsync(String resourceGroupName,
-        String clusterName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByCluster(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, clusterName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List bare metal machine key sets of the cluster.
-     * 
-     * Get a list of bare metal machine key sets for the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -240,18 +266,80 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of bare metal machine key sets for the provided cluster along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BareMetalMachineKeySetInner> listByClusterSinglePage(String resourceGroupName,
+        String clusterName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BareMetalMachineKeySetList> res
+            = service.listByClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List bare metal machine key sets of the cluster.
+     * 
+     * Get a list of bare metal machine key sets for the provided cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machine key sets for the provided cluster as paginated response with
-     * {@link PagedFlux}.
+     * @return a list of bare metal machine key sets for the provided cluster along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BareMetalMachineKeySetInner> listByClusterAsync(String resourceGroupName, String clusterName,
-        Context context) {
-        return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName, context),
-            nextLink -> listByClusterNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BareMetalMachineKeySetInner> listByClusterSinglePage(String resourceGroupName,
+        String clusterName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BareMetalMachineKeySetList> res
+            = service.listByClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -269,7 +357,8 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BareMetalMachineKeySetInner> listByCluster(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(listByClusterAsync(resourceGroupName, clusterName));
+        return new PagedIterable<>(() -> listByClusterSinglePage(resourceGroupName, clusterName),
+            nextLink -> listByClusterNextSinglePage(nextLink));
     }
 
     /**
@@ -289,7 +378,8 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BareMetalMachineKeySetInner> listByCluster(String resourceGroupName, String clusterName,
         Context context) {
-        return new PagedIterable<>(listByClusterAsync(resourceGroupName, clusterName, context));
+        return new PagedIterable<>(() -> listByClusterSinglePage(resourceGroupName, clusterName, context),
+            nextLink -> listByClusterNextSinglePage(nextLink, context));
     }
 
     /**
@@ -344,49 +434,6 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bare metal machine key set of the provided cluster along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BareMetalMachineKeySetInner>> getWithResponseAsync(String resourceGroupName,
-        String clusterName, String bareMetalMachineKeySetName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (bareMetalMachineKeySetName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter bareMetalMachineKeySetName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, clusterName, bareMetalMachineKeySetName, accept, context);
-    }
-
-    /**
-     * Retrieve the bare metal machine key set of the cluster.
-     * 
-     * Get bare metal machine key set of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -416,7 +463,32 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BareMetalMachineKeySetInner> getWithResponse(String resourceGroupName, String clusterName,
         String bareMetalMachineKeySetName, Context context) {
-        return getWithResponseAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (bareMetalMachineKeySetName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter bareMetalMachineKeySetName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, bareMetalMachineKeySetName, accept, context);
     }
 
     /**
@@ -447,6 +519,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
      * @param bareMetalMachineKeySetParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -456,7 +532,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String clusterName, String bareMetalMachineKeySetName,
-        BareMetalMachineKeySetInner bareMetalMachineKeySetParameters) {
+        BareMetalMachineKeySetInner bareMetalMachineKeySetParameters, String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -485,8 +561,8 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, bareMetalMachineKeySetName,
-                bareMetalMachineKeySetParameters, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch,
+                ifNoneMatch, bareMetalMachineKeySetParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -499,47 +575,53 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
      * @param bareMetalMachineKeySetParameters The request body.
-     * @param context The context to associate with this operation.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachineKeySet represents the bare metal machine key set along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return bareMetalMachineKeySet represents the bare metal machine key set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String clusterName, String bareMetalMachineKeySetName,
-        BareMetalMachineKeySetInner bareMetalMachineKeySetParameters, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName, BareMetalMachineKeySetInner bareMetalMachineKeySetParameters, String ifMatch,
+        String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (bareMetalMachineKeySetName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter bareMetalMachineKeySetName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter bareMetalMachineKeySetName is required and cannot be null."));
         }
         if (bareMetalMachineKeySetParameters == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter bareMetalMachineKeySetParameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter bareMetalMachineKeySetParameters is required and cannot be null."));
         } else {
             bareMetalMachineKeySetParameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, bareMetalMachineKeySetName,
-            bareMetalMachineKeySetParameters, accept, context);
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch,
+            ifNoneMatch, bareMetalMachineKeySetParameters, accept, Context.NONE);
     }
 
     /**
@@ -551,6 +633,69 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
      * @param bareMetalMachineKeySetParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bareMetalMachineKeySet represents the bare metal machine key set along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName, BareMetalMachineKeySetInner bareMetalMachineKeySetParameters, String ifMatch,
+        String ifNoneMatch, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (bareMetalMachineKeySetName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter bareMetalMachineKeySetName is required and cannot be null."));
+        }
+        if (bareMetalMachineKeySetParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter bareMetalMachineKeySetParameters is required and cannot be null."));
+        } else {
+            bareMetalMachineKeySetParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch,
+            ifNoneMatch, bareMetalMachineKeySetParameters, accept, context);
+    }
+
+    /**
+     * Create or update the bare metal machine key set of the cluster.
+     * 
+     * Create a new bare metal machine key set or update the existing one for the provided cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param bareMetalMachineKeySetParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -559,9 +704,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
-        BareMetalMachineKeySetInner bareMetalMachineKeySetParameters) {
+        BareMetalMachineKeySetInner bareMetalMachineKeySetParameters, String ifMatch, String ifNoneMatch) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, clusterName,
-            bareMetalMachineKeySetName, bareMetalMachineKeySetParameters);
+            bareMetalMachineKeySetName, bareMetalMachineKeySetParameters, ifMatch, ifNoneMatch);
         return this.client.<BareMetalMachineKeySetInner, BareMetalMachineKeySetInner>getLroResult(mono,
             this.client.getHttpPipeline(), BareMetalMachineKeySetInner.class, BareMetalMachineKeySetInner.class,
             this.client.getContext());
@@ -576,7 +721,6 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
      * @param bareMetalMachineKeySetParameters The request body.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -585,13 +729,42 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
-        BareMetalMachineKeySetInner bareMetalMachineKeySetParameters, Context context) {
-        context = this.client.mergeContext(context);
+        BareMetalMachineKeySetInner bareMetalMachineKeySetParameters) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, clusterName,
-            bareMetalMachineKeySetName, bareMetalMachineKeySetParameters, context);
+            bareMetalMachineKeySetName, bareMetalMachineKeySetParameters, ifMatch, ifNoneMatch);
         return this.client.<BareMetalMachineKeySetInner, BareMetalMachineKeySetInner>getLroResult(mono,
             this.client.getHttpPipeline(), BareMetalMachineKeySetInner.class, BareMetalMachineKeySetInner.class,
-            context);
+            this.client.getContext());
+    }
+
+    /**
+     * Create or update the bare metal machine key set of the cluster.
+     * 
+     * Create a new bare metal machine key set or update the existing one for the provided cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param bareMetalMachineKeySetParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of bareMetalMachineKeySet represents the bare metal machine key set.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginCreateOrUpdate(
+        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
+        BareMetalMachineKeySetInner bareMetalMachineKeySetParameters, String ifMatch, String ifNoneMatch) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, clusterName,
+            bareMetalMachineKeySetName, bareMetalMachineKeySetParameters, ifMatch, ifNoneMatch);
+        return this.client.<BareMetalMachineKeySetInner, BareMetalMachineKeySetInner>getLroResult(response,
+            BareMetalMachineKeySetInner.class, BareMetalMachineKeySetInner.class, Context.NONE);
     }
 
     /**
@@ -612,10 +785,12 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     public SyncPoller<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
         BareMetalMachineKeySetInner bareMetalMachineKeySetParameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName,
-                bareMetalMachineKeySetParameters)
-            .getSyncPoller();
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, clusterName,
+            bareMetalMachineKeySetName, bareMetalMachineKeySetParameters, ifMatch, ifNoneMatch);
+        return this.client.<BareMetalMachineKeySetInner, BareMetalMachineKeySetInner>getLroResult(response,
+            BareMetalMachineKeySetInner.class, BareMetalMachineKeySetInner.class, Context.NONE);
     }
 
     /**
@@ -627,6 +802,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
      * @param bareMetalMachineKeySetParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -636,11 +815,40 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
-        BareMetalMachineKeySetInner bareMetalMachineKeySetParameters, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName,
-                bareMetalMachineKeySetParameters, context)
-            .getSyncPoller();
+        BareMetalMachineKeySetInner bareMetalMachineKeySetParameters, String ifMatch, String ifNoneMatch,
+        Context context) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, clusterName,
+            bareMetalMachineKeySetName, bareMetalMachineKeySetParameters, ifMatch, ifNoneMatch, context);
+        return this.client.<BareMetalMachineKeySetInner, BareMetalMachineKeySetInner>getLroResult(response,
+            BareMetalMachineKeySetInner.class, BareMetalMachineKeySetInner.class, context);
+    }
+
+    /**
+     * Create or update the bare metal machine key set of the cluster.
+     * 
+     * Create a new bare metal machine key set or update the existing one for the provided cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param bareMetalMachineKeySetParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bareMetalMachineKeySet represents the bare metal machine key set on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BareMetalMachineKeySetInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName, BareMetalMachineKeySetInner bareMetalMachineKeySetParameters, String ifMatch,
+        String ifNoneMatch) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName,
+            bareMetalMachineKeySetParameters, ifMatch, ifNoneMatch).last()
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -661,32 +869,11 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BareMetalMachineKeySetInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
         String bareMetalMachineKeySetName, BareMetalMachineKeySetInner bareMetalMachineKeySetParameters) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
         return beginCreateOrUpdateAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName,
-            bareMetalMachineKeySetParameters).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update the bare metal machine key set of the cluster.
-     * 
-     * Create a new bare metal machine key set or update the existing one for the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
-     * @param bareMetalMachineKeySetParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachineKeySet represents the bare metal machine key set on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BareMetalMachineKeySetInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
-        String bareMetalMachineKeySetName, BareMetalMachineKeySetInner bareMetalMachineKeySetParameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName,
-            bareMetalMachineKeySetParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
+            bareMetalMachineKeySetParameters, ifMatch, ifNoneMatch).last()
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -706,8 +893,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BareMetalMachineKeySetInner createOrUpdate(String resourceGroupName, String clusterName,
         String bareMetalMachineKeySetName, BareMetalMachineKeySetInner bareMetalMachineKeySetParameters) {
-        return createOrUpdateAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName,
-            bareMetalMachineKeySetParameters).block();
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return beginCreateOrUpdate(resourceGroupName, clusterName, bareMetalMachineKeySetName,
+            bareMetalMachineKeySetParameters, ifMatch, ifNoneMatch).getFinalResult();
     }
 
     /**
@@ -719,6 +908,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
      * @param bareMetalMachineKeySetParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -727,10 +920,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BareMetalMachineKeySetInner createOrUpdate(String resourceGroupName, String clusterName,
-        String bareMetalMachineKeySetName, BareMetalMachineKeySetInner bareMetalMachineKeySetParameters,
-        Context context) {
-        return createOrUpdateAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName,
-            bareMetalMachineKeySetParameters, context).block();
+        String bareMetalMachineKeySetName, BareMetalMachineKeySetInner bareMetalMachineKeySetParameters, String ifMatch,
+        String ifNoneMatch, Context context) {
+        return beginCreateOrUpdate(resourceGroupName, clusterName, bareMetalMachineKeySetName,
+            bareMetalMachineKeySetParameters, ifMatch, ifNoneMatch, context).getFinalResult();
     }
 
     /**
@@ -741,6 +934,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -749,7 +946,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
-        String bareMetalMachineKeySetName) {
+        String bareMetalMachineKeySetName, String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -772,8 +969,8 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, bareMetalMachineKeySetName, accept,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch,
+                ifNoneMatch, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -785,39 +982,123 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName, String ifMatch, String ifNoneMatch) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (bareMetalMachineKeySetName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter bareMetalMachineKeySetName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch,
+            ifNoneMatch, accept, Context.NONE);
+    }
+
+    /**
+     * Delete the bare metal machine key set of the cluster.
+     * 
+     * Delete the bare metal machine key set of the provided cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the current status of an async operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
-        String bareMetalMachineKeySetName, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName, String ifMatch, String ifNoneMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (bareMetalMachineKeySetName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter bareMetalMachineKeySetName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter bareMetalMachineKeySetName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, clusterName, bareMetalMachineKeySetName, accept, context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch,
+            ifNoneMatch, accept, context);
+    }
+
+    /**
+     * Delete the bare metal machine key set of the cluster.
+     * 
+     * Delete the bare metal machine key set of the provided cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeleteAsync(
+        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName, String ifMatch,
+        String ifNoneMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch, ifNoneMatch);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -836,8 +1117,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginDeleteAsync(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName);
+            = deleteWithResponseAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch, ifNoneMatch);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
             this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
@@ -851,20 +1134,23 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
-     * @param context The context to associate with this operation.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName, context);
-        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
-            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
+        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName, String ifMatch,
+        String ifNoneMatch) {
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch, ifNoneMatch);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
     }
 
     /**
@@ -883,7 +1169,12 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginDelete(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName) {
-        return this.beginDeleteAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName).getSyncPoller();
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch, ifNoneMatch);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
     }
 
     /**
@@ -894,6 +1185,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -901,10 +1196,37 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
-        beginDelete(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName, context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
+        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName, String ifMatch,
+        String ifNoneMatch, Context context) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, bareMetalMachineKeySetName,
+            ifMatch, ifNoneMatch, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, context);
+    }
+
+    /**
+     * Delete the bare metal machine key set of the cluster.
+     * 
+     * Delete the bare metal machine key set of the provided cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName, String ifMatch, String ifNoneMatch) {
+        return beginDeleteAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch, ifNoneMatch).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -923,28 +1245,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String clusterName,
         String bareMetalMachineKeySetName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete the bare metal machine key set of the cluster.
-     * 
-     * Delete the bare metal machine key set of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String clusterName,
-        String bareMetalMachineKeySetName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName, context).last()
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return beginDeleteAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch, ifNoneMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -964,7 +1267,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner delete(String resourceGroupName, String clusterName,
         String bareMetalMachineKeySetName) {
-        return deleteAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName).block();
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return beginDelete(resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch, ifNoneMatch)
+            .getFinalResult();
     }
 
     /**
@@ -975,6 +1281,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -983,8 +1293,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner delete(String resourceGroupName, String clusterName,
-        String bareMetalMachineKeySetName, Context context) {
-        return deleteAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName, context).block();
+        String bareMetalMachineKeySetName, String ifMatch, String ifNoneMatch, Context context) {
+        return beginDelete(resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch, ifNoneMatch, context)
+            .getFinalResult();
     }
 
     /**
@@ -996,6 +1307,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param bareMetalMachineKeySetUpdateParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1005,7 +1320,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
-        String bareMetalMachineKeySetName,
+        String bareMetalMachineKeySetName, String ifMatch, String ifNoneMatch,
         BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1032,8 +1347,8 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, bareMetalMachineKeySetName,
-                bareMetalMachineKeySetUpdateParameters, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch,
+                ifNoneMatch, bareMetalMachineKeySetUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1046,45 +1361,50 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param bareMetalMachineKeySetUpdateParameters The request body.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachineKeySet represents the bare metal machine key set along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return bareMetalMachineKeySet represents the bare metal machine key set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
-        String bareMetalMachineKeySetName, BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters,
-        Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName, String ifMatch, String ifNoneMatch,
+        BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         if (bareMetalMachineKeySetName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter bareMetalMachineKeySetName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter bareMetalMachineKeySetName is required and cannot be null."));
         }
         if (bareMetalMachineKeySetUpdateParameters != null) {
             bareMetalMachineKeySetUpdateParameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, clusterName, bareMetalMachineKeySetName, bareMetalMachineKeySetUpdateParameters, accept,
-            context);
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch,
+            ifNoneMatch, bareMetalMachineKeySetUpdateParameters, accept, Context.NONE);
     }
 
     /**
@@ -1096,6 +1416,66 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @param bareMetalMachineKeySetUpdateParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bareMetalMachineKeySet represents the bare metal machine key set along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName, String ifMatch, String ifNoneMatch,
+        BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (bareMetalMachineKeySetName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter bareMetalMachineKeySetName is required and cannot be null."));
+        }
+        if (bareMetalMachineKeySetUpdateParameters != null) {
+            bareMetalMachineKeySetUpdateParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch,
+            ifNoneMatch, bareMetalMachineKeySetUpdateParameters, accept, context);
+    }
+
+    /**
+     * Patch bare metal machine key set of the cluster.
+     * 
+     * Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with it.
+     * Properties and tag updates can be done independently.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param bareMetalMachineKeySetUpdateParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1104,10 +1484,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginUpdateAsync(
-        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
-        BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters) {
+        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName, String ifMatch,
+        String ifNoneMatch, BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, clusterName,
-            bareMetalMachineKeySetName, bareMetalMachineKeySetUpdateParameters);
+            bareMetalMachineKeySetName, ifMatch, ifNoneMatch, bareMetalMachineKeySetUpdateParameters);
         return this.client.<BareMetalMachineKeySetInner, BareMetalMachineKeySetInner>getLroResult(mono,
             this.client.getHttpPipeline(), BareMetalMachineKeySetInner.class, BareMetalMachineKeySetInner.class,
             this.client.getContext());
@@ -1130,9 +1510,11 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner>
         beginUpdateAsync(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
         final BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters = null;
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, clusterName,
-            bareMetalMachineKeySetName, bareMetalMachineKeySetUpdateParameters);
+            bareMetalMachineKeySetName, ifMatch, ifNoneMatch, bareMetalMachineKeySetUpdateParameters);
         return this.client.<BareMetalMachineKeySetInner, BareMetalMachineKeySetInner>getLroResult(mono,
             this.client.getHttpPipeline(), BareMetalMachineKeySetInner.class, BareMetalMachineKeySetInner.class,
             this.client.getContext());
@@ -1147,23 +1529,24 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param bareMetalMachineKeySetUpdateParameters The request body.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of bareMetalMachineKeySet represents the bare metal machine key set.
+     * @return the {@link SyncPoller} for polling of bareMetalMachineKeySet represents the bare metal machine key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginUpdateAsync(
-        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
-        BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, clusterName,
-            bareMetalMachineKeySetName, bareMetalMachineKeySetUpdateParameters, context);
-        return this.client.<BareMetalMachineKeySetInner, BareMetalMachineKeySetInner>getLroResult(mono,
-            this.client.getHttpPipeline(), BareMetalMachineKeySetInner.class, BareMetalMachineKeySetInner.class,
-            context);
+    public SyncPoller<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginUpdate(
+        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName, String ifMatch,
+        String ifNoneMatch, BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters) {
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, bareMetalMachineKeySetName,
+            ifMatch, ifNoneMatch, bareMetalMachineKeySetUpdateParameters);
+        return this.client.<BareMetalMachineKeySetInner, BareMetalMachineKeySetInner>getLroResult(response,
+            BareMetalMachineKeySetInner.class, BareMetalMachineKeySetInner.class, Context.NONE);
     }
 
     /**
@@ -1183,11 +1566,13 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner>
         beginUpdate(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
         final BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters = null;
-        return this
-            .beginUpdateAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName,
-                bareMetalMachineKeySetUpdateParameters)
-            .getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, bareMetalMachineKeySetName,
+            ifMatch, ifNoneMatch, bareMetalMachineKeySetUpdateParameters);
+        return this.client.<BareMetalMachineKeySetInner, BareMetalMachineKeySetInner>getLroResult(response,
+            BareMetalMachineKeySetInner.class, BareMetalMachineKeySetInner.class, Context.NONE);
     }
 
     /**
@@ -1199,6 +1584,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param bareMetalMachineKeySetUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1208,12 +1597,13 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginUpdate(
-        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
-        BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters, Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName,
-                bareMetalMachineKeySetUpdateParameters, context)
-            .getSyncPoller();
+        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName, String ifMatch,
+        String ifNoneMatch, BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters,
+        Context context) {
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, bareMetalMachineKeySetName,
+            ifMatch, ifNoneMatch, bareMetalMachineKeySetUpdateParameters, context);
+        return this.client.<BareMetalMachineKeySetInner, BareMetalMachineKeySetInner>getLroResult(response,
+            BareMetalMachineKeySetInner.class, BareMetalMachineKeySetInner.class, context);
     }
 
     /**
@@ -1225,6 +1615,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param bareMetalMachineKeySetUpdateParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1234,9 +1628,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BareMetalMachineKeySetInner> updateAsync(String resourceGroupName, String clusterName,
-        String bareMetalMachineKeySetName,
+        String bareMetalMachineKeySetName, String ifMatch, String ifNoneMatch,
         BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName,
+        return beginUpdateAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch, ifNoneMatch,
             bareMetalMachineKeySetUpdateParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1258,34 +1652,11 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BareMetalMachineKeySetInner> updateAsync(String resourceGroupName, String clusterName,
         String bareMetalMachineKeySetName) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
         final BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters = null;
-        return beginUpdateAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName,
+        return beginUpdateAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch, ifNoneMatch,
             bareMetalMachineKeySetUpdateParameters).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Patch bare metal machine key set of the cluster.
-     * 
-     * Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with it.
-     * Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
-     * @param bareMetalMachineKeySetUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachineKeySet represents the bare metal machine key set on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BareMetalMachineKeySetInner> updateAsync(String resourceGroupName, String clusterName,
-        String bareMetalMachineKeySetName, BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName,
-            bareMetalMachineKeySetUpdateParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1305,9 +1676,11 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BareMetalMachineKeySetInner update(String resourceGroupName, String clusterName,
         String bareMetalMachineKeySetName) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
         final BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters = null;
-        return updateAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName,
-            bareMetalMachineKeySetUpdateParameters).block();
+        return beginUpdate(resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch, ifNoneMatch,
+            bareMetalMachineKeySetUpdateParameters).getFinalResult();
     }
 
     /**
@@ -1319,6 +1692,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param bareMetalMachineKeySetUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1328,10 +1705,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BareMetalMachineKeySetInner update(String resourceGroupName, String clusterName,
-        String bareMetalMachineKeySetName, BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters,
-        Context context) {
-        return updateAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName,
-            bareMetalMachineKeySetUpdateParameters, context).block();
+        String bareMetalMachineKeySetName, String ifMatch, String ifNoneMatch,
+        BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters, Context context) {
+        return beginUpdate(resourceGroupName, clusterName, bareMetalMachineKeySetName, ifMatch, ifNoneMatch,
+            bareMetalMachineKeySetUpdateParameters, context).getFinalResult();
     }
 
     /**
@@ -1365,27 +1742,58 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bareMetalMachineKeySetList represents a list of bare metal machine key sets along with
+     * {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BareMetalMachineKeySetInner> listByClusterNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<BareMetalMachineKeySetList> res
+            = service.listByClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bareMetalMachineKeySetList represents a list of bare metal machine key sets along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BareMetalMachineKeySetInner>> listByClusterNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<BareMetalMachineKeySetInner> listByClusterNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByClusterNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<BareMetalMachineKeySetList> res
+            = service.listByClusterNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BareMetalMachineKeySetsClientImpl.class);
 }

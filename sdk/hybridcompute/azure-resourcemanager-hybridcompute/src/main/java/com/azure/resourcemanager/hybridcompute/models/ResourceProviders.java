@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.hybridcompute.fluent.models.SetupExtensionRequestInner;
 
 /**
  * Resource collection API of ResourceProviders.
@@ -36,4 +37,33 @@ public interface ResourceProviders {
      */
     void upgradeExtensions(String resourceGroupName, String machineName,
         MachineExtensionUpgrade extensionUpgradeParameters, Context context);
+
+    /**
+     * The operation to Setup Machine Extensions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
+     * @param extensions Parameters supplied to the Setup Extensions operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    SetupExtensionRequest setupExtensions(String resourceGroupName, String machineName,
+        SetupExtensionRequestInner extensions);
+
+    /**
+     * The operation to Setup Machine Extensions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
+     * @param extensions Parameters supplied to the Setup Extensions operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    SetupExtensionRequest setupExtensions(String resourceGroupName, String machineName,
+        SetupExtensionRequestInner extensions, Context context);
 }

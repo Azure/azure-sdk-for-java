@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,21 +25,25 @@ public final class RouteMatrixResultPrivate implements JsonSerializable<RouteMat
     /*
      * Format Version property
      */
+    @Generated
     private String formatVersion;
 
     /*
      * Results as a 2 dimensional array of route summaries.
      */
+    @Generated
     private List<List<RouteMatrix>> matrix;
 
     /*
      * Summary object
      */
+    @Generated
     private RouteMatrixSummary summary;
 
     /**
      * Creates an instance of RouteMatrixResultPrivate class.
      */
+    @Generated
     public RouteMatrixResultPrivate() {
     }
 
@@ -47,6 +52,7 @@ public final class RouteMatrixResultPrivate implements JsonSerializable<RouteMat
      * 
      * @return the formatVersion value.
      */
+    @Generated
     public String getFormatVersion() {
         return this.formatVersion;
     }
@@ -56,6 +62,7 @@ public final class RouteMatrixResultPrivate implements JsonSerializable<RouteMat
      * 
      * @return the matrix value.
      */
+    @Generated
     public List<List<RouteMatrix>> getMatrix() {
         return this.matrix;
     }
@@ -65,6 +72,7 @@ public final class RouteMatrixResultPrivate implements JsonSerializable<RouteMat
      * 
      * @return the summary value.
      */
+    @Generated
     public RouteMatrixSummary getSummary() {
         return this.summary;
     }
@@ -72,6 +80,7 @@ public final class RouteMatrixResultPrivate implements JsonSerializable<RouteMat
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -86,6 +95,7 @@ public final class RouteMatrixResultPrivate implements JsonSerializable<RouteMat
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RouteMatrixResultPrivate.
      */
+    @Generated
     public static RouteMatrixResultPrivate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteMatrixResultPrivate deserializedRouteMatrixResultPrivate = new RouteMatrixResultPrivate();

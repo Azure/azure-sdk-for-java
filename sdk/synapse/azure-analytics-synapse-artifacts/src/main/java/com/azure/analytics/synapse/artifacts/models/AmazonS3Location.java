@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,21 +21,25 @@ public final class AmazonS3Location extends DatasetLocation {
     /*
      * Type of dataset storage location.
      */
+    @Generated
     private String type = "AmazonS3Location";
 
     /*
      * Specify the bucketName of amazon S3. Type: string (or Expression with resultType string)
      */
+    @Generated
     private Object bucketName;
 
     /*
      * Specify the version of amazon S3. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object version;
 
     /**
      * Creates an instance of AmazonS3Location class.
      */
+    @Generated
     public AmazonS3Location() {
     }
 
@@ -43,6 +48,7 @@ public final class AmazonS3Location extends DatasetLocation {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -54,6 +60,7 @@ public final class AmazonS3Location extends DatasetLocation {
      * 
      * @return the bucketName value.
      */
+    @Generated
     public Object getBucketName() {
         return this.bucketName;
     }
@@ -65,6 +72,7 @@ public final class AmazonS3Location extends DatasetLocation {
      * @param bucketName the bucketName value to set.
      * @return the AmazonS3Location object itself.
      */
+    @Generated
     public AmazonS3Location setBucketName(Object bucketName) {
         this.bucketName = bucketName;
         return this;
@@ -75,6 +83,7 @@ public final class AmazonS3Location extends DatasetLocation {
      * 
      * @return the version value.
      */
+    @Generated
     public Object getVersion() {
         return this.version;
     }
@@ -85,6 +94,7 @@ public final class AmazonS3Location extends DatasetLocation {
      * @param version the version value to set.
      * @return the AmazonS3Location object itself.
      */
+    @Generated
     public AmazonS3Location setVersion(Object version) {
         this.version = version;
         return this;
@@ -93,6 +103,7 @@ public final class AmazonS3Location extends DatasetLocation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonS3Location setFolderPath(Object folderPath) {
         super.setFolderPath(folderPath);
@@ -102,6 +113,7 @@ public final class AmazonS3Location extends DatasetLocation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonS3Location setFileName(Object fileName) {
         super.setFileName(fileName);
@@ -111,14 +123,23 @@ public final class AmazonS3Location extends DatasetLocation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("folderPath", getFolderPath());
-        jsonWriter.writeUntypedField("fileName", getFileName());
+        if (getFolderPath() != null) {
+            jsonWriter.writeUntypedField("folderPath", getFolderPath());
+        }
+        if (getFileName() != null) {
+            jsonWriter.writeUntypedField("fileName", getFileName());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("bucketName", this.bucketName);
-        jsonWriter.writeUntypedField("version", this.version);
+        if (this.bucketName != null) {
+            jsonWriter.writeUntypedField("bucketName", this.bucketName);
+        }
+        if (this.version != null) {
+            jsonWriter.writeUntypedField("version", this.version);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -135,6 +156,7 @@ public final class AmazonS3Location extends DatasetLocation {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AmazonS3Location.
      */
+    @Generated
     public static AmazonS3Location fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AmazonS3Location deserializedAmazonS3Location = new AmazonS3Location();

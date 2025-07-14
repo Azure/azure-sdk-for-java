@@ -242,12 +242,24 @@ public class CopySink implements JsonSerializable<CopySink> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("writeBatchSize", this.writeBatchSize);
-        jsonWriter.writeUntypedField("writeBatchTimeout", this.writeBatchTimeout);
-        jsonWriter.writeUntypedField("sinkRetryCount", this.sinkRetryCount);
-        jsonWriter.writeUntypedField("sinkRetryWait", this.sinkRetryWait);
-        jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
-        jsonWriter.writeUntypedField("disableMetricsCollection", this.disableMetricsCollection);
+        if (this.writeBatchSize != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", this.writeBatchSize);
+        }
+        if (this.writeBatchTimeout != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", this.writeBatchTimeout);
+        }
+        if (this.sinkRetryCount != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", this.sinkRetryCount);
+        }
+        if (this.sinkRetryWait != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", this.sinkRetryWait);
+        }
+        if (this.maxConcurrentConnections != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
+        }
+        if (this.disableMetricsCollection != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", this.disableMetricsCollection);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

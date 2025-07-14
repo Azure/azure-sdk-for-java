@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,6 +20,7 @@ public final class SeriesConfiguration implements JsonSerializable<SeriesConfigu
     /*
      * The series property.
      */
+    @Generated
     private SeriesIdentity series;
 
     /*
@@ -26,26 +28,31 @@ public final class SeriesConfiguration implements JsonSerializable<SeriesConfigu
      * 
      * should be specified when combining multiple detection conditions
      */
+    @Generated
     private AnomalyDetectionConfigurationLogicType conditionOperator;
 
     /*
      * The smartDetectionCondition property.
      */
+    @Generated
     private SmartDetectionCondition smartDetectionCondition;
 
     /*
      * The hardThresholdCondition property.
      */
+    @Generated
     private HardThresholdCondition hardThresholdCondition;
 
     /*
      * The changeThresholdCondition property.
      */
+    @Generated
     private ChangeThresholdCondition changeThresholdCondition;
 
     /**
      * Creates an instance of SeriesConfiguration class.
      */
+    @Generated
     public SeriesConfiguration() {
     }
 
@@ -54,6 +61,7 @@ public final class SeriesConfiguration implements JsonSerializable<SeriesConfigu
      * 
      * @return the series value.
      */
+    @Generated
     public SeriesIdentity getSeries() {
         return this.series;
     }
@@ -64,6 +72,7 @@ public final class SeriesConfiguration implements JsonSerializable<SeriesConfigu
      * @param series the series value to set.
      * @return the SeriesConfiguration object itself.
      */
+    @Generated
     public SeriesConfiguration setSeries(SeriesIdentity series) {
         this.series = series;
         return this;
@@ -76,6 +85,7 @@ public final class SeriesConfiguration implements JsonSerializable<SeriesConfigu
      * 
      * @return the conditionOperator value.
      */
+    @Generated
     public AnomalyDetectionConfigurationLogicType getConditionOperator() {
         return this.conditionOperator;
     }
@@ -88,6 +98,7 @@ public final class SeriesConfiguration implements JsonSerializable<SeriesConfigu
      * @param conditionOperator the conditionOperator value to set.
      * @return the SeriesConfiguration object itself.
      */
+    @Generated
     public SeriesConfiguration setConditionOperator(AnomalyDetectionConfigurationLogicType conditionOperator) {
         this.conditionOperator = conditionOperator;
         return this;
@@ -98,6 +109,7 @@ public final class SeriesConfiguration implements JsonSerializable<SeriesConfigu
      * 
      * @return the smartDetectionCondition value.
      */
+    @Generated
     public SmartDetectionCondition getSmartDetectionCondition() {
         return this.smartDetectionCondition;
     }
@@ -108,6 +120,7 @@ public final class SeriesConfiguration implements JsonSerializable<SeriesConfigu
      * @param smartDetectionCondition the smartDetectionCondition value to set.
      * @return the SeriesConfiguration object itself.
      */
+    @Generated
     public SeriesConfiguration setSmartDetectionCondition(SmartDetectionCondition smartDetectionCondition) {
         this.smartDetectionCondition = smartDetectionCondition;
         return this;
@@ -118,6 +131,7 @@ public final class SeriesConfiguration implements JsonSerializable<SeriesConfigu
      * 
      * @return the hardThresholdCondition value.
      */
+    @Generated
     public HardThresholdCondition getHardThresholdCondition() {
         return this.hardThresholdCondition;
     }
@@ -128,6 +142,7 @@ public final class SeriesConfiguration implements JsonSerializable<SeriesConfigu
      * @param hardThresholdCondition the hardThresholdCondition value to set.
      * @return the SeriesConfiguration object itself.
      */
+    @Generated
     public SeriesConfiguration setHardThresholdCondition(HardThresholdCondition hardThresholdCondition) {
         this.hardThresholdCondition = hardThresholdCondition;
         return this;
@@ -138,6 +153,7 @@ public final class SeriesConfiguration implements JsonSerializable<SeriesConfigu
      * 
      * @return the changeThresholdCondition value.
      */
+    @Generated
     public ChangeThresholdCondition getChangeThresholdCondition() {
         return this.changeThresholdCondition;
     }
@@ -148,6 +164,7 @@ public final class SeriesConfiguration implements JsonSerializable<SeriesConfigu
      * @param changeThresholdCondition the changeThresholdCondition value to set.
      * @return the SeriesConfiguration object itself.
      */
+    @Generated
     public SeriesConfiguration setChangeThresholdCondition(ChangeThresholdCondition changeThresholdCondition) {
         this.changeThresholdCondition = changeThresholdCondition;
         return this;
@@ -156,6 +173,7 @@ public final class SeriesConfiguration implements JsonSerializable<SeriesConfigu
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -177,6 +195,7 @@ public final class SeriesConfiguration implements JsonSerializable<SeriesConfigu
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SeriesConfiguration.
      */
+    @Generated
     public static SeriesConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SeriesConfiguration deserializedSeriesConfiguration = new SeriesConfiguration();

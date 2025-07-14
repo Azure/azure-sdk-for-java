@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,21 +24,25 @@ public final class RerunTumblingWindowTriggerActionParameters
     /*
      * The start time for the time period for which restatement is initiated. Only UTC time is currently supported.
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * The end time for the time period for which restatement is initiated. Only UTC time is currently supported.
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
      * The max number of parallel time windows (ready for execution) for which a rerun is triggered.
      */
+    @Generated
     private int maxConcurrency;
 
     /**
      * Creates an instance of RerunTumblingWindowTriggerActionParameters class.
      */
+    @Generated
     public RerunTumblingWindowTriggerActionParameters() {
     }
 
@@ -47,6 +52,7 @@ public final class RerunTumblingWindowTriggerActionParameters
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -58,6 +64,7 @@ public final class RerunTumblingWindowTriggerActionParameters
      * @param startTime the startTime value to set.
      * @return the RerunTumblingWindowTriggerActionParameters object itself.
      */
+    @Generated
     public RerunTumblingWindowTriggerActionParameters setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -69,6 +76,7 @@ public final class RerunTumblingWindowTriggerActionParameters
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -80,6 +88,7 @@ public final class RerunTumblingWindowTriggerActionParameters
      * @param endTime the endTime value to set.
      * @return the RerunTumblingWindowTriggerActionParameters object itself.
      */
+    @Generated
     public RerunTumblingWindowTriggerActionParameters setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
@@ -91,6 +100,7 @@ public final class RerunTumblingWindowTriggerActionParameters
      * 
      * @return the maxConcurrency value.
      */
+    @Generated
     public int getMaxConcurrency() {
         return this.maxConcurrency;
     }
@@ -102,6 +112,7 @@ public final class RerunTumblingWindowTriggerActionParameters
      * @param maxConcurrency the maxConcurrency value to set.
      * @return the RerunTumblingWindowTriggerActionParameters object itself.
      */
+    @Generated
     public RerunTumblingWindowTriggerActionParameters setMaxConcurrency(int maxConcurrency) {
         this.maxConcurrency = maxConcurrency;
         return this;
@@ -110,6 +121,7 @@ public final class RerunTumblingWindowTriggerActionParameters
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -130,6 +142,7 @@ public final class RerunTumblingWindowTriggerActionParameters
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RerunTumblingWindowTriggerActionParameters.
      */
+    @Generated
     public static RerunTumblingWindowTriggerActionParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RerunTumblingWindowTriggerActionParameters deserializedRerunTumblingWindowTriggerActionParameters

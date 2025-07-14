@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SalesforceV2SinkWriteBehavior extends ExpandableStringEnum<Sa
     /**
      * Static value Insert for SalesforceV2SinkWriteBehavior.
      */
+    @Generated
     public static final SalesforceV2SinkWriteBehavior INSERT = fromString("Insert");
 
     /**
      * Static value Upsert for SalesforceV2SinkWriteBehavior.
      */
+    @Generated
     public static final SalesforceV2SinkWriteBehavior UPSERT = fromString("Upsert");
 
     /**
@@ -26,6 +29,7 @@ public final class SalesforceV2SinkWriteBehavior extends ExpandableStringEnum<Sa
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SalesforceV2SinkWriteBehavior() {
     }
@@ -36,6 +40,7 @@ public final class SalesforceV2SinkWriteBehavior extends ExpandableStringEnum<Sa
      * @param name a name to look for.
      * @return the corresponding SalesforceV2SinkWriteBehavior.
      */
+    @Generated
     public static SalesforceV2SinkWriteBehavior fromString(String name) {
         return fromString(name, SalesforceV2SinkWriteBehavior.class);
     }
@@ -45,6 +50,7 @@ public final class SalesforceV2SinkWriteBehavior extends ExpandableStringEnum<Sa
      * 
      * @return known SalesforceV2SinkWriteBehavior values.
      */
+    @Generated
     public static Collection<SalesforceV2SinkWriteBehavior> values() {
         return values(SalesforceV2SinkWriteBehavior.class);
     }

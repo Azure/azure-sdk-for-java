@@ -4,6 +4,7 @@
 
 package com.azure.containers.containerregistry.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class ArtifactManifestOrder extends ExpandableStringEnum<ArtifactMa
     /**
      * Do not provide an orderby value in the request.
      */
+    @Generated
     public static final ArtifactManifestOrder NONE = fromString("none");
 
     /**
      * Order manifests by LastUpdatedOn field, from most recently updated to least recently updated.
      */
+    @Generated
     public static final ArtifactManifestOrder LAST_UPDATED_ON_DESCENDING = fromString("timedesc");
 
     /**
      * Order manifest by LastUpdatedOn field, from least recently updated to most recently updated.
      */
+    @Generated
     public static final ArtifactManifestOrder LAST_UPDATED_ON_ASCENDING = fromString("timeasc");
 
     /**
@@ -31,6 +35,7 @@ public final class ArtifactManifestOrder extends ExpandableStringEnum<ArtifactMa
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ArtifactManifestOrder() {
     }
@@ -41,6 +46,7 @@ public final class ArtifactManifestOrder extends ExpandableStringEnum<ArtifactMa
      * @param name a name to look for.
      * @return the corresponding ArtifactManifestOrder.
      */
+    @Generated
     public static ArtifactManifestOrder fromString(String name) {
         return fromString(name, ArtifactManifestOrder.class);
     }
@@ -50,6 +56,7 @@ public final class ArtifactManifestOrder extends ExpandableStringEnum<ArtifactMa
      * 
      * @return known ArtifactManifestOrder values.
      */
+    @Generated
     public static Collection<ArtifactManifestOrder> values() {
         return values(ArtifactManifestOrder.class);
     }

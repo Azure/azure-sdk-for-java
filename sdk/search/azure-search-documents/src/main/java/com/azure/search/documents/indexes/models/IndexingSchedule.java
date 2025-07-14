@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -25,11 +26,13 @@ public final class IndexingSchedule implements JsonSerializable<IndexingSchedule
     /*
      * The interval of time between indexer executions.
      */
+    @Generated
     private final Duration interval;
 
     /*
      * The time when an indexer should start running.
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /**
@@ -37,6 +40,7 @@ public final class IndexingSchedule implements JsonSerializable<IndexingSchedule
      * 
      * @param interval the interval value to set.
      */
+    @Generated
     public IndexingSchedule(Duration interval) {
         this.interval = interval;
     }
@@ -46,6 +50,7 @@ public final class IndexingSchedule implements JsonSerializable<IndexingSchedule
      * 
      * @return the interval value.
      */
+    @Generated
     public Duration getInterval() {
         return this.interval;
     }
@@ -55,6 +60,7 @@ public final class IndexingSchedule implements JsonSerializable<IndexingSchedule
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -65,6 +71,7 @@ public final class IndexingSchedule implements JsonSerializable<IndexingSchedule
      * @param startTime the startTime value to set.
      * @return the IndexingSchedule object itself.
      */
+    @Generated
     public IndexingSchedule setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -73,6 +80,7 @@ public final class IndexingSchedule implements JsonSerializable<IndexingSchedule
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +99,7 @@ public final class IndexingSchedule implements JsonSerializable<IndexingSchedule
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IndexingSchedule.
      */
+    @Generated
     public static IndexingSchedule fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean intervalFound = false;

@@ -9,13 +9,17 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.computeschedule.fluent.models.CancelOperationsResponseInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.CreateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.DeallocateResourceOperationResponseInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.DeleteResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.GetOperationErrorsResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.GetOperationStatusResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.HibernateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.StartResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteStartRequest;
 import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsRequest;
@@ -211,6 +215,68 @@ public interface ScheduledActionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     StartResourceOperationResponseInner virtualMachinesExecuteStart(String locationparameter,
         ExecuteStartRequest requestBody);
+
+    /**
+     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
+     * 
+     * @param locationparameter The location name.
+     * @param requestBody The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CreateResourceOperationResponseInner> virtualMachinesExecuteCreateWithResponse(String locationparameter,
+        ExecuteCreateRequest requestBody, Context context);
+
+    /**
+     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
+     * 
+     * @param locationparameter The location name.
+     * @param requestBody The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CreateResourceOperationResponseInner virtualMachinesExecuteCreate(String locationparameter,
+        ExecuteCreateRequest requestBody);
+
+    /**
+     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
+     * 
+     * @param locationparameter The location name.
+     * @param requestBody The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a delete request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DeleteResourceOperationResponseInner> virtualMachinesExecuteDeleteWithResponse(String locationparameter,
+        ExecuteDeleteRequest requestBody, Context context);
+
+    /**
+     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
+     * triggered as soon as Computeschedule receives it.
+     * 
+     * @param locationparameter The location name.
+     * @param requestBody The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a delete request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeleteResourceOperationResponseInner virtualMachinesExecuteDelete(String locationparameter,
+        ExecuteDeleteRequest requestBody);
 
     /**
      * VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed on virtual machines.

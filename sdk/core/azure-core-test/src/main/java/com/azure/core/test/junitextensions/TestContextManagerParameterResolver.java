@@ -27,6 +27,7 @@ import static com.azure.core.test.utils.TestUtils.toURI;
  * Used by the {@link TestBase#setupTest(TestContextManager)} method.
  */
 public final class TestContextManagerParameterResolver implements ParameterResolver {
+    private static final Pattern CLASS_ITERATION_PATTERN = Pattern.compile("class-template-invocation:#(\\d+)");
     private static final Pattern TEST_ITERATION_PATTERN = Pattern.compile("test-template-invocation:#(\\d+)");
 
     /**
@@ -71,7 +72,33 @@ public final class TestContextManagerParameterResolver implements ParameterResol
             return null;
         }
 
-        Matcher matcher = TEST_ITERATION_PATTERN.matcher(extensionContext.getUniqueId());
-        return matcher.find() ? Integer.valueOf(matcher.group(1)) : null;
+        String uniqueId = extensionContext.getUniqueId();
+
+        int classIteration = -1;
+        int methodIteration = -1;
+
+        Matcher matcher = CLASS_ITERATION_PATTERN.matcher(uniqueId);
+        if (matcher.find()) {
+            classIteration = Integer.parseInt(matcher.group(1));
+        }
+
+        matcher = TEST_ITERATION_PATTERN.matcher(uniqueId);
+        if (matcher.find()) {
+            methodIteration = Integer.parseInt(matcher.group(1));
+        }
+
+        if (classIteration == -1 && methodIteration == -1) {
+            // There was neither a parameterized class nor method, therefore there isn't an iteration number.
+            return null;
+        } else if (classIteration == -1) {
+            // There was only a method iteration, return it.
+            return methodIteration;
+        } else if (methodIteration == -1) {
+            // There was only a class iteration, return it.
+            return classIteration;
+        } else {
+            // There was both a class and method iteration, return their multiplication.
+            return methodIteration * classIteration;
+        }
     }
 }

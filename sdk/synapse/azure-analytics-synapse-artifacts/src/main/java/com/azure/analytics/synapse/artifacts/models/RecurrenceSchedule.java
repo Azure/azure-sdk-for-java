@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,36 +23,43 @@ public final class RecurrenceSchedule implements JsonSerializable<RecurrenceSche
     /*
      * The minutes.
      */
+    @Generated
     private List<Integer> minutes;
 
     /*
      * The hours.
      */
+    @Generated
     private List<Integer> hours;
 
     /*
      * The days of the week.
      */
+    @Generated
     private List<DayOfWeek> weekDays;
 
     /*
      * The month days.
      */
+    @Generated
     private List<Integer> monthDays;
 
     /*
      * The monthly occurrences.
      */
+    @Generated
     private List<RecurrenceScheduleOccurrence> monthlyOccurrences;
 
     /*
      * The recurrence schedule.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of RecurrenceSchedule class.
      */
+    @Generated
     public RecurrenceSchedule() {
     }
 
@@ -60,6 +68,7 @@ public final class RecurrenceSchedule implements JsonSerializable<RecurrenceSche
      * 
      * @return the minutes value.
      */
+    @Generated
     public List<Integer> getMinutes() {
         return this.minutes;
     }
@@ -70,6 +79,7 @@ public final class RecurrenceSchedule implements JsonSerializable<RecurrenceSche
      * @param minutes the minutes value to set.
      * @return the RecurrenceSchedule object itself.
      */
+    @Generated
     public RecurrenceSchedule setMinutes(List<Integer> minutes) {
         this.minutes = minutes;
         return this;
@@ -80,6 +90,7 @@ public final class RecurrenceSchedule implements JsonSerializable<RecurrenceSche
      * 
      * @return the hours value.
      */
+    @Generated
     public List<Integer> getHours() {
         return this.hours;
     }
@@ -90,6 +101,7 @@ public final class RecurrenceSchedule implements JsonSerializable<RecurrenceSche
      * @param hours the hours value to set.
      * @return the RecurrenceSchedule object itself.
      */
+    @Generated
     public RecurrenceSchedule setHours(List<Integer> hours) {
         this.hours = hours;
         return this;
@@ -100,6 +112,7 @@ public final class RecurrenceSchedule implements JsonSerializable<RecurrenceSche
      * 
      * @return the weekDays value.
      */
+    @Generated
     public List<DayOfWeek> getWeekDays() {
         return this.weekDays;
     }
@@ -110,6 +123,7 @@ public final class RecurrenceSchedule implements JsonSerializable<RecurrenceSche
      * @param weekDays the weekDays value to set.
      * @return the RecurrenceSchedule object itself.
      */
+    @Generated
     public RecurrenceSchedule setWeekDays(List<DayOfWeek> weekDays) {
         this.weekDays = weekDays;
         return this;
@@ -120,6 +134,7 @@ public final class RecurrenceSchedule implements JsonSerializable<RecurrenceSche
      * 
      * @return the monthDays value.
      */
+    @Generated
     public List<Integer> getMonthDays() {
         return this.monthDays;
     }
@@ -130,6 +145,7 @@ public final class RecurrenceSchedule implements JsonSerializable<RecurrenceSche
      * @param monthDays the monthDays value to set.
      * @return the RecurrenceSchedule object itself.
      */
+    @Generated
     public RecurrenceSchedule setMonthDays(List<Integer> monthDays) {
         this.monthDays = monthDays;
         return this;
@@ -140,6 +156,7 @@ public final class RecurrenceSchedule implements JsonSerializable<RecurrenceSche
      * 
      * @return the monthlyOccurrences value.
      */
+    @Generated
     public List<RecurrenceScheduleOccurrence> getMonthlyOccurrences() {
         return this.monthlyOccurrences;
     }
@@ -150,6 +167,7 @@ public final class RecurrenceSchedule implements JsonSerializable<RecurrenceSche
      * @param monthlyOccurrences the monthlyOccurrences value to set.
      * @return the RecurrenceSchedule object itself.
      */
+    @Generated
     public RecurrenceSchedule setMonthlyOccurrences(List<RecurrenceScheduleOccurrence> monthlyOccurrences) {
         this.monthlyOccurrences = monthlyOccurrences;
         return this;
@@ -160,6 +178,7 @@ public final class RecurrenceSchedule implements JsonSerializable<RecurrenceSche
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -170,6 +189,7 @@ public final class RecurrenceSchedule implements JsonSerializable<RecurrenceSche
      * @param additionalProperties the additionalProperties value to set.
      * @return the RecurrenceSchedule object itself.
      */
+    @Generated
     public RecurrenceSchedule setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -178,6 +198,7 @@ public final class RecurrenceSchedule implements JsonSerializable<RecurrenceSche
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -204,6 +225,7 @@ public final class RecurrenceSchedule implements JsonSerializable<RecurrenceSche
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RecurrenceSchedule.
      */
+    @Generated
     public static RecurrenceSchedule fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RecurrenceSchedule deserializedRecurrenceSchedule = new RecurrenceSchedule();

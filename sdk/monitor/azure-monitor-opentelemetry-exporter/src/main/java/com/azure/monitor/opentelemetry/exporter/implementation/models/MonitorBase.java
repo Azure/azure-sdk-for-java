@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class MonitorBase implements JsonSerializable<MonitorBase> {
     /*
      * Name of item (B section) if any. If telemetry data is derived straight from this, this should be null.
      */
+    @Generated
     private String baseType;
 
     /*
      * The data payload for the telemetry request
      */
+    @Generated
     private MonitorDomain baseData;
 
     /**
      * Creates an instance of MonitorBase class.
      */
+    @Generated
     public MonitorBase() {
     }
 
@@ -38,6 +42,7 @@ public final class MonitorBase implements JsonSerializable<MonitorBase> {
      * 
      * @return the baseType value.
      */
+    @Generated
     public String getBaseType() {
         return this.baseType;
     }
@@ -49,6 +54,7 @@ public final class MonitorBase implements JsonSerializable<MonitorBase> {
      * @param baseType the baseType value to set.
      * @return the MonitorBase object itself.
      */
+    @Generated
     public MonitorBase setBaseType(String baseType) {
         this.baseType = baseType;
         return this;
@@ -59,6 +65,7 @@ public final class MonitorBase implements JsonSerializable<MonitorBase> {
      * 
      * @return the baseData value.
      */
+    @Generated
     public MonitorDomain getBaseData() {
         return this.baseData;
     }
@@ -69,6 +76,7 @@ public final class MonitorBase implements JsonSerializable<MonitorBase> {
      * @param baseData the baseData value to set.
      * @return the MonitorBase object itself.
      */
+    @Generated
     public MonitorBase setBaseData(MonitorDomain baseData) {
         this.baseData = baseData;
         return this;
@@ -77,6 +85,7 @@ public final class MonitorBase implements JsonSerializable<MonitorBase> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class MonitorBase implements JsonSerializable<MonitorBase> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the MonitorBase.
      */
+    @Generated
     public static MonitorBase fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MonitorBase deserializedMonitorBase = new MonitorBase();

@@ -6,9 +6,9 @@ package com.azure.resourcemanager.dnsresolver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dnsresolver.DnsResolverManager;
 import com.azure.resourcemanager.dnsresolver.models.InboundEndpoint;
@@ -27,32 +27,32 @@ public final class InboundEndpointsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"etag\":\"ibqdxbxwakbogqx\",\"properties\":{\"ipConfigurations\":[{\"subnet\":{\"id\":\"kzgxhurip\"},\"privateIpAddress\":\"podxunkb\",\"privateIpAllocationMethod\":\"Dynamic\"},{\"subnet\":{\"id\":\"ubyyntw\"},\"privateIpAddress\":\"bqtkoievseotgqr\",\"privateIpAllocationMethod\":\"Dynamic\"},{\"subnet\":{\"id\":\"u\"},\"privateIpAddress\":\"auwzizxbmpgc\",\"privateIpAllocationMethod\":\"Dynamic\"}],\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"uvpb\"},\"location\":\"d\",\"tags\":{\"xe\":\"rp\",\"bhjpglkfgohdne\":\"mnzb\",\"phsdyhto\":\"el\",\"v\":\"fikdowwqu\"},\"id\":\"zx\",\"name\":\"lvithhqzonosgg\",\"type\":\"hcohfwdsjnk\"}";
+            = "{\"etag\":\"neuyow\",\"properties\":{\"ipConfigurations\":[{\"subnet\":{\"id\":\"wyt\"},\"privateIpAddress\":\"ib\",\"privateIpAllocationMethod\":\"Static\"}],\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"kpzi\"},\"location\":\"j\",\"tags\":{\"rjqc\":\"lfzxiavrmbzonoki\",\"frl\":\"rgz\",\"jylwbtlhflsj\":\"zszrnwoiindfpw\"},\"id\":\"dhszfjv\",\"name\":\"bgofeljag\",\"type\":\"qmqhldvriii\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DnsResolverManager manager = DnsResolverManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         InboundEndpoint response = manager.inboundEndpoints()
-            .define("qlfmmdnbb")
-            .withRegion("zdzucerscdntnevf")
-            .withExistingDnsResolver("uie", "tgccymvaolpss")
-            .withIpConfigurations(Arrays.asList(new IpConfiguration().withSubnet(new SubResource().withId("zdxss"))
-                .withPrivateIpAddress("bzmnvdfznud")
+            .define("kghv")
+            .withRegion("bibsystawfsdjpvk")
+            .withExistingDnsResolver("ibdeibq", "p")
+            .withIpConfigurations(Arrays.asList(new IpConfiguration().withSubnet(new SubResource().withId("kqnyh"))
+                .withPrivateIpAddress("ij")
                 .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)))
-            .withTags(mapOf("tmweriofzpyq", "mygtdssls", "hhszh", "emwabnet", "lvwiwubmwmbesl", "d", "pp", "nkww"))
-            .withIfMatch("v")
-            .withIfNoneMatch("gureodkwobdag")
+            .withTags(mapOf("jabudurgkakmo", "jxbkzbzkdvn", "gzrf", "zhjjklffhmouwq", "ikayuhqlbjbsybb", "eeyebi"))
+            .withIfMatch("x")
+            .withIfNoneMatch("smwutwbdsrezpd")
             .create();
 
-        Assertions.assertEquals("d", response.location());
-        Assertions.assertEquals("rp", response.tags().get("xe"));
-        Assertions.assertEquals("kzgxhurip", response.ipConfigurations().get(0).subnet().id());
-        Assertions.assertEquals("podxunkb", response.ipConfigurations().get(0).privateIpAddress());
-        Assertions.assertEquals(IpAllocationMethod.DYNAMIC,
+        Assertions.assertEquals("j", response.location());
+        Assertions.assertEquals("lfzxiavrmbzonoki", response.tags().get("rjqc"));
+        Assertions.assertEquals("wyt", response.ipConfigurations().get(0).subnet().id());
+        Assertions.assertEquals("ib", response.ipConfigurations().get(0).privateIpAddress());
+        Assertions.assertEquals(IpAllocationMethod.STATIC,
             response.ipConfigurations().get(0).privateIpAllocationMethod());
     }
 

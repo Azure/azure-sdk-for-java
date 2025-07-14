@@ -6,9 +6,9 @@ package com.azure.resourcemanager.dnsresolver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dnsresolver.DnsResolverManager;
 import com.azure.resourcemanager.dnsresolver.models.DnsForwardingRuleset;
@@ -25,29 +25,29 @@ public final class DnsForwardingRulesetsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"etag\":\"jhemms\",\"properties\":{\"dnsResolverOutboundEndpoints\":[{\"id\":\"kcrodtjinfw\"},{\"id\":\"fltkacjv\"},{\"id\":\"kdlfoa\"}],\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"fpagaowpulp\"},\"location\":\"lyls\",\"tags\":{\"xsdszuempsb\":\"qjnsjervtia\"},\"id\":\"kfzbeyvpnqicvi\",\"name\":\"v\",\"type\":\"jjxd\"}";
+            = "{\"etag\":\"sutrgjup\",\"properties\":{\"dnsResolverOutboundEndpoints\":[{\"id\":\"tpwoqhihejq\"},{\"id\":\"zpnfqntcypsxj\"},{\"id\":\"oimwkslirc\"}],\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"vydfceacvlhvygdy\"},\"location\":\"umrtwnawjsl\",\"tags\":{\"mznbaeqphch\":\"kojgcyzts\",\"ehuwrykqgaifmvik\":\"nrnrp\",\"xcv\":\"bydvkhbejdz\",\"v\":\"srhnjivo\"},\"id\":\"novqfzge\",\"name\":\"jdftuljltd\",\"type\":\"ceamtm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DnsResolverManager manager = DnsResolverManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DnsForwardingRuleset response = manager.dnsForwardingRulesets()
-            .define("gsexne")
-            .withRegion("axhexiilivp")
-            .withExistingResourceGroup("zrtuzq")
-            .withDnsResolverOutboundEndpoints(
-                Arrays.asList(new SubResource().withId("ewzsyyceuzsoib"), new SubResource().withId("dpfrxtrthzvaytdw")))
-            .withTags(mapOf("oruzfgsquyfxrxx", "irqtdqoa", "xje", "eptra"))
-            .withIfMatch("oo")
-            .withIfNoneMatch("bw")
+            .define("fezzxscyhwzdg")
+            .withRegion("wncot")
+            .withExistingResourceGroup("wxnb")
+            .withDnsResolverOutboundEndpoints(Arrays.asList(new SubResource().withId("mvzzbtdcqvp"),
+                new SubResource().withId("yujviylwdshfssn"), new SubResource().withId("gy")))
+            .withTags(mapOf("yczuhxacpq", "hirctymoxoftpipi"))
+            .withIfMatch("urisjnhnytxifqj")
+            .withIfNoneMatch("gxmrhublwp")
             .create();
 
-        Assertions.assertEquals("lyls", response.location());
-        Assertions.assertEquals("qjnsjervtia", response.tags().get("xsdszuempsb"));
-        Assertions.assertEquals("kcrodtjinfw", response.dnsResolverOutboundEndpoints().get(0).id());
+        Assertions.assertEquals("umrtwnawjsl", response.location());
+        Assertions.assertEquals("kojgcyzts", response.tags().get("mznbaeqphch"));
+        Assertions.assertEquals("tpwoqhihejq", response.dnsResolverOutboundEndpoints().get(0).id());
     }
 
     // Use "Map.of" if available

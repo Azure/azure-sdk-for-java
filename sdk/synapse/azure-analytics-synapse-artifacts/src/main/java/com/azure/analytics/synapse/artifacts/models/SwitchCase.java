@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class SwitchCase implements JsonSerializable<SwitchCase> {
     /*
      * Expected value that satisfies the expression result of the 'on' property.
      */
+    @Generated
     private String value;
 
     /*
      * List of activities to execute for satisfied case condition.
      */
+    @Generated
     private List<Activity> activities;
 
     /**
      * Creates an instance of SwitchCase class.
      */
+    @Generated
     public SwitchCase() {
     }
 
@@ -38,6 +42,7 @@ public final class SwitchCase implements JsonSerializable<SwitchCase> {
      * 
      * @return the value value.
      */
+    @Generated
     public String getValue() {
         return this.value;
     }
@@ -48,6 +53,7 @@ public final class SwitchCase implements JsonSerializable<SwitchCase> {
      * @param value the value value to set.
      * @return the SwitchCase object itself.
      */
+    @Generated
     public SwitchCase setValue(String value) {
         this.value = value;
         return this;
@@ -58,6 +64,7 @@ public final class SwitchCase implements JsonSerializable<SwitchCase> {
      * 
      * @return the activities value.
      */
+    @Generated
     public List<Activity> getActivities() {
         return this.activities;
     }
@@ -68,6 +75,7 @@ public final class SwitchCase implements JsonSerializable<SwitchCase> {
      * @param activities the activities value to set.
      * @return the SwitchCase object itself.
      */
+    @Generated
     public SwitchCase setActivities(List<Activity> activities) {
         this.activities = activities;
         return this;
@@ -76,6 +84,7 @@ public final class SwitchCase implements JsonSerializable<SwitchCase> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class SwitchCase implements JsonSerializable<SwitchCase> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the SwitchCase.
      */
+    @Generated
     public static SwitchCase fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SwitchCase deserializedSwitchCase = new SwitchCase();

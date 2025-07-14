@@ -60,7 +60,7 @@ public final class SkusClientImpl implements SkusClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DevOpsInfrastructure")
+    @ServiceInterface(name = "DevOpsInfrastructureManagementClientSkus")
     public interface SkusService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DevOpsInfrastructure/locations/{locationName}/skus")

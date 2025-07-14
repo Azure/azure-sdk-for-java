@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class PressureTendency implements JsonSerializable<PressureTendency
     /*
      * Description of the pressure tendency in specified language
      */
+    @Generated
     private String description;
 
     /*
      * Pressure tendency code regardless of language. One of F=Falling, S=Steady, R=Rising.
      */
+    @Generated
     private String code;
 
     /**
      * Set default PressureTendency constructor to private
      */
+    @Generated
     private PressureTendency() {
     }
 
@@ -37,6 +41,7 @@ public final class PressureTendency implements JsonSerializable<PressureTendency
      *
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -46,6 +51,7 @@ public final class PressureTendency implements JsonSerializable<PressureTendency
      *
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -53,6 +59,7 @@ public final class PressureTendency implements JsonSerializable<PressureTendency
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,6 +76,7 @@ public final class PressureTendency implements JsonSerializable<PressureTendency
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the PressureTendency.
      */
+    @Generated
     public static PressureTendency fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PressureTendency deserializedPressureTendency = new PressureTendency();

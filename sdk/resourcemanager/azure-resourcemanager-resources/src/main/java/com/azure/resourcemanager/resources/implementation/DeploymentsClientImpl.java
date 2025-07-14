@@ -64,25 +64,25 @@ public final class DeploymentsClientImpl implements InnerSupportsGet<DeploymentE
     /**
      * The service client containing this operation class.
      */
-    private final ResourceManagementClientImpl client;
+    private final DeploymentsManagementClientImpl client;
 
     /**
      * Initializes an instance of DeploymentsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    DeploymentsClientImpl(ResourceManagementClientImpl client) {
+    DeploymentsClientImpl(DeploymentsManagementClientImpl client) {
         this.service
             = RestProxy.create(DeploymentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ResourceManagementClientDeployments to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for DeploymentsManagementClientDeployments to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ResourceManagementCl")
+    @ServiceInterface(name = "DeploymentsManagemen")
     public interface DeploymentsService {
         @Headers({ "Content-Type: application/json" })
         @Delete("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}")

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,40 +22,47 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AzureDatabricksDeltaLake";
 
     /*
      * <REGION>.azuredatabricks.net, domain name of your Databricks deployment. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object domain;
 
     /*
      * Access token for databricks REST API. Refer to https://docs.azuredatabricks.net/api/latest/authentication.html.
      * Type: string, SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private SecretBase accessToken;
 
     /*
      * The id of an existing interactive cluster that will be used for all runs of this job. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object clusterId;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
 
     /**
      * Creates an instance of AzureDatabricksDeltaLakeLinkedService class.
      */
+    @Generated
     public AzureDatabricksDeltaLakeLinkedService() {
     }
 
@@ -63,6 +71,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -74,6 +83,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
      * 
      * @return the domain value.
      */
+    @Generated
     public Object getDomain() {
         return this.domain;
     }
@@ -85,6 +95,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
      * @param domain the domain value to set.
      * @return the AzureDatabricksDeltaLakeLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksDeltaLakeLinkedService setDomain(Object domain) {
         this.domain = domain;
         return this;
@@ -97,6 +108,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
      * 
      * @return the accessToken value.
      */
+    @Generated
     public SecretBase getAccessToken() {
         return this.accessToken;
     }
@@ -109,6 +121,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
      * @param accessToken the accessToken value to set.
      * @return the AzureDatabricksDeltaLakeLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksDeltaLakeLinkedService setAccessToken(SecretBase accessToken) {
         this.accessToken = accessToken;
         return this;
@@ -120,6 +133,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
      * 
      * @return the clusterId value.
      */
+    @Generated
     public Object getClusterId() {
         return this.clusterId;
     }
@@ -131,6 +145,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
      * @param clusterId the clusterId value to set.
      * @return the AzureDatabricksDeltaLakeLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksDeltaLakeLinkedService setClusterId(Object clusterId) {
         this.clusterId = clusterId;
         return this;
@@ -142,6 +157,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -153,6 +169,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureDatabricksDeltaLakeLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksDeltaLakeLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -163,6 +180,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -173,6 +191,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
      * @param credential the credential value to set.
      * @return the AzureDatabricksDeltaLakeLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksDeltaLakeLinkedService setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
@@ -181,6 +200,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDatabricksDeltaLakeLinkedService setVersion(String version) {
         super.setVersion(version);
@@ -190,6 +210,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDatabricksDeltaLakeLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -199,6 +220,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDatabricksDeltaLakeLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -208,6 +230,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDatabricksDeltaLakeLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -217,6 +240,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDatabricksDeltaLakeLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -226,6 +250,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -243,8 +268,12 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("domain", this.domain);
             jsonWriter.writeJsonField("accessToken", this.accessToken);
-            jsonWriter.writeUntypedField("clusterId", this.clusterId);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.clusterId != null) {
+                jsonWriter.writeUntypedField("clusterId", this.clusterId);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeJsonField("credential", this.credential);
             jsonWriter.writeEndObject();
         }
@@ -265,6 +294,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureDatabricksDeltaLakeLinkedService.
      */
+    @Generated
     public static AzureDatabricksDeltaLakeLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureDatabricksDeltaLakeLinkedService deserializedAzureDatabricksDeltaLakeLinkedService

@@ -4,17 +4,16 @@
 package io.clientcore.http.netty4;
 
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.shared.HttpClientTests;
 import io.clientcore.core.shared.HttpClientTestsServer;
+import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Timeout;
 
-import javax.net.ssl.SSLException;
+import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,19 +27,14 @@ public class NettyHttpClientHttpClientWithHttpsTests extends HttpClientTests {
     private static final HttpClient HTTP_CLIENT_INSTANCE;
 
     static {
-        try {
-            SslContext sslContext
-                = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
-
-            HTTP_CLIENT_INSTANCE = new NettyHttpClientBuilder().sslContext(sslContext).build();
-        } catch (SSLException e) {
-            throw new RuntimeException(e);
-        }
+        HTTP_CLIENT_INSTANCE = new NettyHttpClientBuilder() //.maximumHttpVersion(HttpProtocolVersion.HTTP_1_1)
+            .sslContextModifier(ssl -> ssl.trustManager(new InsecureTrustManager()).secureRandom(new SecureRandom()))
+            .build();
     }
 
     @BeforeAll
     public static void startTestServer() {
-        server = HttpClientTestsServer.getHttpClientTestsServer();
+        server = HttpClientTestsServer.getHttpClientTestsServer(HttpProtocolVersion.HTTP_1_1, true);
         server.start();
     }
 
@@ -54,12 +48,12 @@ public class NettyHttpClientHttpClientWithHttpsTests extends HttpClientTests {
     @Override
     @Deprecated
     protected int getPort() {
-        return server.getHttpsPort();
+        return server.getPort();
     }
 
     @Override
     protected String getServerUri(boolean secure) {
-        return secure ? server.getHttpsUri() : server.getHttpUri();
+        return secure ? server.getHttpsUri() : server.getUri();
     }
 
     @Override

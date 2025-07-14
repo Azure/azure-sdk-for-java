@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,117 +24,140 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
     /*
      * data source type
      */
+    @Generated
     private DataSourceType dataSourceType = DataSourceType.fromString("DataFeedDetailPatch");
 
     /*
      * data feed name
      */
+    @Generated
     private String dataFeedName;
 
     /*
      * data feed description
      */
+    @Generated
     private String dataFeedDescription;
 
     /*
      * user-defined timestamp column. if timestampColumn is null, start time of every time slice will be used as default
      * value.
      */
+    @Generated
     private String timestampColumn;
 
     /*
      * ingestion start time
      */
+    @Generated
     private OffsetDateTime dataStartFrom;
 
     /*
      * the time that the beginning of data ingestion task will delay for every data slice according to this offset.
      */
+    @Generated
     private Long startOffsetInSeconds;
 
     /*
      * the max concurrency of data ingestion queries against user data source. 0 means no limitation.
      */
+    @Generated
     private Integer maxConcurrency;
 
     /*
      * the min retry interval for failed data ingestion tasks.
      */
+    @Generated
     private Long minRetryIntervalInSeconds;
 
     /*
      * stop retry data ingestion after the data slice first schedule time in seconds.
      */
+    @Generated
     private Long stopRetryAfterInSeconds;
 
     /*
      * mark if the data feed need rollup
      */
+    @Generated
     private NeedRollupEnum needRollup;
 
     /*
      * roll up method
      */
+    @Generated
     private RollUpMethod rollUpMethod;
 
     /*
      * roll up columns
      */
+    @Generated
     private List<String> rollUpColumns;
 
     /*
      * the identification value for the row of calculated all-up value.
      */
+    @Generated
     private String allUpIdentification;
 
     /*
      * the type of fill missing point for anomaly detection
      */
+    @Generated
     private FillMissingPointType fillMissingPointType;
 
     /*
      * the value of fill missing point for anomaly detection
      */
+    @Generated
     private Double fillMissingPointValue;
 
     /*
      * data feed access mode, default is Private
      */
+    @Generated
     private ViewMode viewMode;
 
     /*
      * data feed administrator
      */
+    @Generated
     private List<String> admins;
 
     /*
      * data feed viewer
      */
+    @Generated
     private List<String> viewers;
 
     /*
      * data feed status
      */
+    @Generated
     private EntityStatus status;
 
     /*
      * action link for alert
      */
+    @Generated
     private String actionLinkTemplate;
 
     /*
      * authentication type for corresponding data source
      */
+    @Generated
     private AuthenticationTypeEnum authenticationType;
 
     /*
      * The credential entity id
      */
+    @Generated
     private String credentialId;
 
     /**
      * Creates an instance of DataFeedDetailPatch class.
      */
+    @Generated
     public DataFeedDetailPatch() {
     }
 
@@ -142,6 +166,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the dataSourceType value.
      */
+    @Generated
     public DataSourceType getDataSourceType() {
         return this.dataSourceType;
     }
@@ -151,6 +176,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the dataFeedName value.
      */
+    @Generated
     public String getDataFeedName() {
         return this.dataFeedName;
     }
@@ -161,6 +187,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param dataFeedName the dataFeedName value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setDataFeedName(String dataFeedName) {
         this.dataFeedName = dataFeedName;
         return this;
@@ -171,6 +198,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the dataFeedDescription value.
      */
+    @Generated
     public String getDataFeedDescription() {
         return this.dataFeedDescription;
     }
@@ -181,6 +209,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param dataFeedDescription the dataFeedDescription value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setDataFeedDescription(String dataFeedDescription) {
         this.dataFeedDescription = dataFeedDescription;
         return this;
@@ -192,6 +221,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the timestampColumn value.
      */
+    @Generated
     public String getTimestampColumn() {
         return this.timestampColumn;
     }
@@ -203,6 +233,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param timestampColumn the timestampColumn value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setTimestampColumn(String timestampColumn) {
         this.timestampColumn = timestampColumn;
         return this;
@@ -213,6 +244,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the dataStartFrom value.
      */
+    @Generated
     public OffsetDateTime getDataStartFrom() {
         return this.dataStartFrom;
     }
@@ -223,6 +255,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param dataStartFrom the dataStartFrom value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setDataStartFrom(OffsetDateTime dataStartFrom) {
         this.dataStartFrom = dataStartFrom;
         return this;
@@ -234,6 +267,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the startOffsetInSeconds value.
      */
+    @Generated
     public Long getStartOffsetInSeconds() {
         return this.startOffsetInSeconds;
     }
@@ -245,6 +279,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param startOffsetInSeconds the startOffsetInSeconds value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setStartOffsetInSeconds(Long startOffsetInSeconds) {
         this.startOffsetInSeconds = startOffsetInSeconds;
         return this;
@@ -256,6 +291,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the maxConcurrency value.
      */
+    @Generated
     public Integer getMaxConcurrency() {
         return this.maxConcurrency;
     }
@@ -267,6 +303,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param maxConcurrency the maxConcurrency value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setMaxConcurrency(Integer maxConcurrency) {
         this.maxConcurrency = maxConcurrency;
         return this;
@@ -277,6 +314,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the minRetryIntervalInSeconds value.
      */
+    @Generated
     public Long getMinRetryIntervalInSeconds() {
         return this.minRetryIntervalInSeconds;
     }
@@ -287,6 +325,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param minRetryIntervalInSeconds the minRetryIntervalInSeconds value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         this.minRetryIntervalInSeconds = minRetryIntervalInSeconds;
         return this;
@@ -298,6 +337,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the stopRetryAfterInSeconds value.
      */
+    @Generated
     public Long getStopRetryAfterInSeconds() {
         return this.stopRetryAfterInSeconds;
     }
@@ -309,6 +349,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param stopRetryAfterInSeconds the stopRetryAfterInSeconds value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         this.stopRetryAfterInSeconds = stopRetryAfterInSeconds;
         return this;
@@ -319,6 +360,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the needRollup value.
      */
+    @Generated
     public NeedRollupEnum getNeedRollup() {
         return this.needRollup;
     }
@@ -329,6 +371,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param needRollup the needRollup value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setNeedRollup(NeedRollupEnum needRollup) {
         this.needRollup = needRollup;
         return this;
@@ -339,6 +382,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the rollUpMethod value.
      */
+    @Generated
     public RollUpMethod getRollUpMethod() {
         return this.rollUpMethod;
     }
@@ -349,6 +393,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param rollUpMethod the rollUpMethod value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setRollUpMethod(RollUpMethod rollUpMethod) {
         this.rollUpMethod = rollUpMethod;
         return this;
@@ -359,6 +404,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the rollUpColumns value.
      */
+    @Generated
     public List<String> getRollUpColumns() {
         return this.rollUpColumns;
     }
@@ -369,6 +415,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param rollUpColumns the rollUpColumns value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setRollUpColumns(List<String> rollUpColumns) {
         this.rollUpColumns = rollUpColumns;
         return this;
@@ -379,6 +426,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the allUpIdentification value.
      */
+    @Generated
     public String getAllUpIdentification() {
         return this.allUpIdentification;
     }
@@ -389,6 +437,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param allUpIdentification the allUpIdentification value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setAllUpIdentification(String allUpIdentification) {
         this.allUpIdentification = allUpIdentification;
         return this;
@@ -399,6 +448,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the fillMissingPointType value.
      */
+    @Generated
     public FillMissingPointType getFillMissingPointType() {
         return this.fillMissingPointType;
     }
@@ -409,6 +459,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param fillMissingPointType the fillMissingPointType value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         this.fillMissingPointType = fillMissingPointType;
         return this;
@@ -419,6 +470,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the fillMissingPointValue value.
      */
+    @Generated
     public Double getFillMissingPointValue() {
         return this.fillMissingPointValue;
     }
@@ -429,6 +481,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param fillMissingPointValue the fillMissingPointValue value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setFillMissingPointValue(Double fillMissingPointValue) {
         this.fillMissingPointValue = fillMissingPointValue;
         return this;
@@ -439,6 +492,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the viewMode value.
      */
+    @Generated
     public ViewMode getViewMode() {
         return this.viewMode;
     }
@@ -449,6 +503,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param viewMode the viewMode value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setViewMode(ViewMode viewMode) {
         this.viewMode = viewMode;
         return this;
@@ -459,6 +514,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the admins value.
      */
+    @Generated
     public List<String> getAdmins() {
         return this.admins;
     }
@@ -469,6 +525,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param admins the admins value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setAdmins(List<String> admins) {
         this.admins = admins;
         return this;
@@ -479,6 +536,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the viewers value.
      */
+    @Generated
     public List<String> getViewers() {
         return this.viewers;
     }
@@ -489,6 +547,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param viewers the viewers value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setViewers(List<String> viewers) {
         this.viewers = viewers;
         return this;
@@ -499,6 +558,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the status value.
      */
+    @Generated
     public EntityStatus getStatus() {
         return this.status;
     }
@@ -509,6 +569,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param status the status value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setStatus(EntityStatus status) {
         this.status = status;
         return this;
@@ -519,6 +580,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the actionLinkTemplate value.
      */
+    @Generated
     public String getActionLinkTemplate() {
         return this.actionLinkTemplate;
     }
@@ -529,6 +591,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param actionLinkTemplate the actionLinkTemplate value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setActionLinkTemplate(String actionLinkTemplate) {
         this.actionLinkTemplate = actionLinkTemplate;
         return this;
@@ -539,6 +602,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public AuthenticationTypeEnum getAuthenticationType() {
         return this.authenticationType;
     }
@@ -549,6 +613,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param authenticationType the authenticationType value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -559,6 +624,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * 
      * @return the credentialId value.
      */
+    @Generated
     public String getCredentialId() {
         return this.credentialId;
     }
@@ -569,6 +635,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * @param credentialId the credentialId value to set.
      * @return the DataFeedDetailPatch object itself.
      */
+    @Generated
     public DataFeedDetailPatch setCredentialId(String credentialId) {
         this.credentialId = credentialId;
         return this;
@@ -577,6 +644,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -618,6 +686,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataFeedDetailPatch.
      */
+    @Generated
     public static DataFeedDetailPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -667,6 +736,7 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
         });
     }
 
+    @Generated
     static DataFeedDetailPatch fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFeedDetailPatch deserializedDataFeedDetailPatch = new DataFeedDetailPatch();

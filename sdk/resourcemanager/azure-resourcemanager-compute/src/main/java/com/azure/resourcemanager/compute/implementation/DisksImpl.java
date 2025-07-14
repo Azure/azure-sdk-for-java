@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AccessLevel;
@@ -57,15 +58,29 @@ public class DisksImpl extends TopLevelModifiableResourcesImpl<Disk, DiskImpl, D
 
     @Override
     public Accepted<Void> beginDeleteById(String id) {
-        return beginDeleteByResourceGroup(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        return beginDeleteById(id, Context.NONE);
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteById(String id, Context context) {
+        return beginDeleteByResourceGroup(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id),
+            context);
     }
 
     @Override
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
+        return beginDeleteByResourceGroup(resourceGroupName, name, Context.NONE);
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, Context context) {
         return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
-            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(), Function.identity(),
-            Void.class, null, Context.NONE);
+            () -> this.inner()
+                .deleteWithResponseAsync(resourceGroupName, name)
+                .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
+                .block(),
+            Function.identity(), Void.class, null, context);
     }
 
     @Override

@@ -4,6 +4,7 @@
 
 package com.azure.maps.render.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,91 +15,109 @@ public final class LocalizedMapView extends ExpandableStringEnum<LocalizedMapVie
     /**
      * United Arab Emirates (Arabic View).
      */
+    @Generated
     public static final LocalizedMapView AE = fromString("AE");
 
     /**
      * Argentina (Argentinian View).
      */
+    @Generated
     public static final LocalizedMapView AR = fromString("AR");
 
     /**
      * Bahrain (Arabic View).
      */
+    @Generated
     public static final LocalizedMapView BH = fromString("BH");
 
     /**
      * India (Indian View).
      */
+    @Generated
     public static final LocalizedMapView IN = fromString("IN");
 
     /**
      * Iraq (Arabic View).
      */
+    @Generated
     public static final LocalizedMapView IQ = fromString("IQ");
 
     /**
      * Jordan (Arabic View).
      */
+    @Generated
     public static final LocalizedMapView JO = fromString("JO");
 
     /**
      * Kuwait (Arabic View).
      */
+    @Generated
     public static final LocalizedMapView KW = fromString("KW");
 
     /**
      * Lebanon (Arabic View).
      */
+    @Generated
     public static final LocalizedMapView LB = fromString("LB");
 
     /**
      * Morocco (Moroccan View).
      */
+    @Generated
     public static final LocalizedMapView MA = fromString("MA");
 
     /**
      * Oman (Arabic View).
      */
+    @Generated
     public static final LocalizedMapView OM = fromString("OM");
 
     /**
      * Pakistan (Pakistani View).
      */
+    @Generated
     public static final LocalizedMapView PK = fromString("PK");
 
     /**
      * Palestinian Authority (Arabic View).
      */
+    @Generated
     public static final LocalizedMapView PS = fromString("PS");
 
     /**
      * Qatar (Arabic View).
      */
+    @Generated
     public static final LocalizedMapView QA = fromString("QA");
 
     /**
      * Saudi Arabia (Arabic View).
      */
+    @Generated
     public static final LocalizedMapView SA = fromString("SA");
 
     /**
      * Syria (Arabic View).
      */
+    @Generated
     public static final LocalizedMapView SY = fromString("SY");
 
     /**
      * Yemen (Arabic View).
      */
+    @Generated
     public static final LocalizedMapView YE = fromString("YE");
 
     /**
      * Return the map data based on the IP address of the request.
      */
+    @Generated
     public static final LocalizedMapView AUTO = fromString("Auto");
 
     /**
      * Unified View (Others).
      */
+    @Generated
     public static final LocalizedMapView UNIFIED = fromString("Unified");
 
     /**
@@ -106,6 +125,7 @@ public final class LocalizedMapView extends ExpandableStringEnum<LocalizedMapVie
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public LocalizedMapView() {
     }
@@ -116,6 +136,7 @@ public final class LocalizedMapView extends ExpandableStringEnum<LocalizedMapVie
      * @param name a name to look for.
      * @return the corresponding LocalizedMapView.
      */
+    @Generated
     public static LocalizedMapView fromString(String name) {
         return fromString(name, LocalizedMapView.class);
     }
@@ -125,6 +146,7 @@ public final class LocalizedMapView extends ExpandableStringEnum<LocalizedMapVie
      * 
      * @return known LocalizedMapView values.
      */
+    @Generated
     public static Collection<LocalizedMapView> values() {
         return values(LocalizedMapView.class);
     }

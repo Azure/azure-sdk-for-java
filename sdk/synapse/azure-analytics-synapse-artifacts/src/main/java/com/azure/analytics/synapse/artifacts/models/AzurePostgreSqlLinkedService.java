@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,116 +22,137 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AzurePostgreSql";
 
     /*
      * An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * Server name for connection. Type: string.
      */
+    @Generated
     private Object server;
 
     /*
      * The port for the connection. Type: integer.
      */
+    @Generated
     private Object port;
 
     /*
      * Username for authentication. Type: string.
      */
+    @Generated
     private Object username;
 
     /*
      * Database name for connection. Type: string.
      */
+    @Generated
     private Object database;
 
     /*
      * SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4: verify-ca, 5: verify-full.
      * Type: integer.
      */
+    @Generated
     private Object sslMode;
 
     /*
      * The time to wait (in seconds) while trying to establish a connection before terminating the attempt and
      * generating an error. Type: integer.
      */
+    @Generated
     private Object timeout;
 
     /*
      * The time to wait (in seconds) while trying to execute a command before terminating the attempt and generating an
      * error. Set to zero for infinity. Type: integer.
      */
+    @Generated
     private Object commandTimeout;
 
     /*
      * Whether to trust the server certificate without validating it. Type: boolean.
      */
+    @Generated
     private Object trustServerCertificate;
 
     /*
      * Determines the size of the internal buffer uses when reading. Increasing may improve performance if transferring
      * large values from the database. Type: integer.
      */
+    @Generated
     private Object readBufferSize;
 
     /*
      * Gets or sets the session timezone. Type: string.
      */
+    @Generated
     private Object timezone;
 
     /*
      * Gets or sets the .NET encoding that will be used to encode/decode PostgreSQL string data. Type: string
      */
+    @Generated
     private Object encoding;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
+    @Generated
     private AzureKeyVaultSecretReference password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /*
      * The ID of the service principal used to authenticate against Azure Database for PostgreSQL Flexible server. Type:
      * string (or Expression with resultType string).
      */
+    @Generated
     private Object servicePrincipalId;
 
     /*
      * The key of the service principal used to authenticate against Azure Database for PostgreSQL Flexible server.
      */
+    @Generated
     private SecretBase servicePrincipalKey;
 
     /*
      * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
      * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object servicePrincipalCredentialType;
 
     /*
      * Specify the base64 encoded certificate of your application registered in Azure Active Directory. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private SecretBase servicePrincipalEmbeddedCert;
 
     /*
      * Specify the password of your certificate if your certificate has a password and you are using AadServicePrincipal
      * authentication. Type: string (or Expression with resultType string).
      */
+    @Generated
     private SecretBase servicePrincipalEmbeddedCertPassword;
 
     /*
      * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object tenant;
 
     /*
@@ -138,16 +160,19 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object azureCloudType;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
 
     /**
      * Creates an instance of AzurePostgreSqlLinkedService class.
      */
+    @Generated
     public AzurePostgreSqlLinkedService() {
     }
 
@@ -156,6 +181,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -167,6 +193,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -178,6 +205,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param connectionString the connectionString value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -188,6 +216,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the server value.
      */
+    @Generated
     public Object getServer() {
         return this.server;
     }
@@ -198,6 +227,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param server the server value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setServer(Object server) {
         this.server = server;
         return this;
@@ -208,6 +238,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the port value.
      */
+    @Generated
     public Object getPort() {
         return this.port;
     }
@@ -218,6 +249,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param port the port value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setPort(Object port) {
         this.port = port;
         return this;
@@ -228,6 +260,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -238,6 +271,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -248,6 +282,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the database value.
      */
+    @Generated
     public Object getDatabase() {
         return this.database;
     }
@@ -258,6 +293,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param database the database value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setDatabase(Object database) {
         this.database = database;
         return this;
@@ -269,6 +305,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the sslMode value.
      */
+    @Generated
     public Object getSslMode() {
         return this.sslMode;
     }
@@ -280,6 +317,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param sslMode the sslMode value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setSslMode(Object sslMode) {
         this.sslMode = sslMode;
         return this;
@@ -291,6 +329,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the timeout value.
      */
+    @Generated
     public Object getTimeout() {
         return this.timeout;
     }
@@ -302,6 +341,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param timeout the timeout value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setTimeout(Object timeout) {
         this.timeout = timeout;
         return this;
@@ -313,6 +353,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the commandTimeout value.
      */
+    @Generated
     public Object getCommandTimeout() {
         return this.commandTimeout;
     }
@@ -324,6 +365,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param commandTimeout the commandTimeout value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setCommandTimeout(Object commandTimeout) {
         this.commandTimeout = commandTimeout;
         return this;
@@ -335,6 +377,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the trustServerCertificate value.
      */
+    @Generated
     public Object getTrustServerCertificate() {
         return this.trustServerCertificate;
     }
@@ -346,6 +389,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param trustServerCertificate the trustServerCertificate value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setTrustServerCertificate(Object trustServerCertificate) {
         this.trustServerCertificate = trustServerCertificate;
         return this;
@@ -357,6 +401,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the readBufferSize value.
      */
+    @Generated
     public Object getReadBufferSize() {
         return this.readBufferSize;
     }
@@ -368,6 +413,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param readBufferSize the readBufferSize value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setReadBufferSize(Object readBufferSize) {
         this.readBufferSize = readBufferSize;
         return this;
@@ -378,6 +424,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the timezone value.
      */
+    @Generated
     public Object getTimezone() {
         return this.timezone;
     }
@@ -388,6 +435,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param timezone the timezone value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setTimezone(Object timezone) {
         this.timezone = timezone;
         return this;
@@ -399,6 +447,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the encoding value.
      */
+    @Generated
     public Object getEncoding() {
         return this.encoding;
     }
@@ -410,6 +459,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param encoding the encoding value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setEncoding(Object encoding) {
         this.encoding = encoding;
         return this;
@@ -420,6 +470,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public AzureKeyVaultSecretReference getPassword() {
         return this.password;
     }
@@ -430,6 +481,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setPassword(AzureKeyVaultSecretReference password) {
         this.password = password;
         return this;
@@ -441,6 +493,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -452,6 +505,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -463,6 +517,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalId value.
      */
+    @Generated
     public Object getServicePrincipalId() {
         return this.servicePrincipalId;
     }
@@ -474,6 +529,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setServicePrincipalId(Object servicePrincipalId) {
         this.servicePrincipalId = servicePrincipalId;
         return this;
@@ -485,6 +541,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalKey value.
      */
+    @Generated
     public SecretBase getServicePrincipalKey() {
         return this.servicePrincipalKey;
     }
@@ -496,6 +553,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setServicePrincipalKey(SecretBase servicePrincipalKey) {
         this.servicePrincipalKey = servicePrincipalKey;
         return this;
@@ -508,6 +566,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalCredentialType value.
      */
+    @Generated
     public Object getServicePrincipalCredentialType() {
         return this.servicePrincipalCredentialType;
     }
@@ -520,6 +579,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
         this.servicePrincipalCredentialType = servicePrincipalCredentialType;
         return this;
@@ -531,6 +591,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalEmbeddedCert value.
      */
+    @Generated
     public SecretBase getServicePrincipalEmbeddedCert() {
         return this.servicePrincipalEmbeddedCert;
     }
@@ -542,6 +603,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param servicePrincipalEmbeddedCert the servicePrincipalEmbeddedCert value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setServicePrincipalEmbeddedCert(SecretBase servicePrincipalEmbeddedCert) {
         this.servicePrincipalEmbeddedCert = servicePrincipalEmbeddedCert;
         return this;
@@ -554,6 +616,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalEmbeddedCertPassword value.
      */
+    @Generated
     public SecretBase getServicePrincipalEmbeddedCertPassword() {
         return this.servicePrincipalEmbeddedCertPassword;
     }
@@ -566,6 +629,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param servicePrincipalEmbeddedCertPassword the servicePrincipalEmbeddedCertPassword value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService
         setServicePrincipalEmbeddedCertPassword(SecretBase servicePrincipalEmbeddedCertPassword) {
         this.servicePrincipalEmbeddedCertPassword = servicePrincipalEmbeddedCertPassword;
@@ -578,6 +642,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the tenant value.
      */
+    @Generated
     public Object getTenant() {
         return this.tenant;
     }
@@ -589,6 +654,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param tenant the tenant value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setTenant(Object tenant) {
         this.tenant = tenant;
         return this;
@@ -601,6 +667,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the azureCloudType value.
      */
+    @Generated
     public Object getAzureCloudType() {
         return this.azureCloudType;
     }
@@ -613,6 +680,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param azureCloudType the azureCloudType value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setAzureCloudType(Object azureCloudType) {
         this.azureCloudType = azureCloudType;
         return this;
@@ -623,6 +691,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -633,6 +702,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * @param credential the credential value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
      */
+    @Generated
     public AzurePostgreSqlLinkedService setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
@@ -641,6 +711,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzurePostgreSqlLinkedService setVersion(String version) {
         super.setVersion(version);
@@ -650,6 +721,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzurePostgreSqlLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -659,6 +731,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzurePostgreSqlLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -668,6 +741,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzurePostgreSqlLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -677,6 +751,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzurePostgreSqlLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -686,6 +761,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -718,28 +794,62 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
             || azureCloudType != null
             || credential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("connectionString", this.connectionString);
-            jsonWriter.writeUntypedField("server", this.server);
-            jsonWriter.writeUntypedField("port", this.port);
-            jsonWriter.writeUntypedField("username", this.username);
-            jsonWriter.writeUntypedField("database", this.database);
-            jsonWriter.writeUntypedField("sslMode", this.sslMode);
-            jsonWriter.writeUntypedField("timeout", this.timeout);
-            jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
-            jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
-            jsonWriter.writeUntypedField("readBufferSize", this.readBufferSize);
-            jsonWriter.writeUntypedField("timezone", this.timezone);
-            jsonWriter.writeUntypedField("encoding", this.encoding);
+            if (this.connectionString != null) {
+                jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            }
+            if (this.server != null) {
+                jsonWriter.writeUntypedField("server", this.server);
+            }
+            if (this.port != null) {
+                jsonWriter.writeUntypedField("port", this.port);
+            }
+            if (this.username != null) {
+                jsonWriter.writeUntypedField("username", this.username);
+            }
+            if (this.database != null) {
+                jsonWriter.writeUntypedField("database", this.database);
+            }
+            if (this.sslMode != null) {
+                jsonWriter.writeUntypedField("sslMode", this.sslMode);
+            }
+            if (this.timeout != null) {
+                jsonWriter.writeUntypedField("timeout", this.timeout);
+            }
+            if (this.commandTimeout != null) {
+                jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+            }
+            if (this.trustServerCertificate != null) {
+                jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
+            }
+            if (this.readBufferSize != null) {
+                jsonWriter.writeUntypedField("readBufferSize", this.readBufferSize);
+            }
+            if (this.timezone != null) {
+                jsonWriter.writeUntypedField("timezone", this.timezone);
+            }
+            if (this.encoding != null) {
+                jsonWriter.writeUntypedField("encoding", this.encoding);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
-            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
+            if (this.servicePrincipalId != null) {
+                jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            }
             jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-            jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+            if (this.servicePrincipalCredentialType != null) {
+                jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+            }
             jsonWriter.writeJsonField("servicePrincipalEmbeddedCert", this.servicePrincipalEmbeddedCert);
             jsonWriter.writeJsonField("servicePrincipalEmbeddedCertPassword",
                 this.servicePrincipalEmbeddedCertPassword);
-            jsonWriter.writeUntypedField("tenant", this.tenant);
-            jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+            if (this.tenant != null) {
+                jsonWriter.writeUntypedField("tenant", this.tenant);
+            }
+            if (this.azureCloudType != null) {
+                jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+            }
             jsonWriter.writeJsonField("credential", this.credential);
             jsonWriter.writeEndObject();
         }
@@ -759,6 +869,7 @@ public class AzurePostgreSqlLinkedService extends LinkedService {
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzurePostgreSqlLinkedService.
      */
+    @Generated
     public static AzurePostgreSqlLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzurePostgreSqlLinkedService deserializedAzurePostgreSqlLinkedService = new AzurePostgreSqlLinkedService();

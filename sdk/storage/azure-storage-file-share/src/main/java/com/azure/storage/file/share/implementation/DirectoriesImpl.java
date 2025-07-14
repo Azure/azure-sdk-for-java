@@ -77,7 +77,7 @@ public final class DirectoriesImpl {
      * perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureFileStorageDire")
+    @ServiceInterface(name = "AzureFileStorageDirectories")
     public interface DirectoriesService {
 
         @Put("/{shareName}/{directory}")

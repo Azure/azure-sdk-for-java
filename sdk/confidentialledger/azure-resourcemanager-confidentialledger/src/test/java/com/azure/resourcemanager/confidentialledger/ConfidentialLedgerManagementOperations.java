@@ -25,7 +25,7 @@ public class ConfidentialLedgerManagementOperations {
         List<CertBasedSecurityPrincipal> certBasedMembers) {
         ledgerManager.ledgers()
             .define(ledgerName)
-            //            .withRegion(location)
+            .withRegion(location)
             .withExistingResourceGroup(resourceGroupName)
             .withTags(tags)
             .withProperties(new LedgerProperties().withLedgerType(ledgerType)
@@ -37,7 +37,7 @@ public class ConfidentialLedgerManagementOperations {
     public void createLedger(String ledgerName, String resourceGroupName, String location) {
         ledgerManager.ledgers()
             .define(ledgerName)
-            //            .withRegion(location)
+            .withRegion(location)
             .withExistingResourceGroup(resourceGroupName)
             .create();
     }

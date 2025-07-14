@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpoint;
@@ -26,34 +26,34 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"dlfp\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"cygvoavyunssx\",\"actionsRequired\":\"hi\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"gvvpasek\",\"gbuxantuygdh\",\"aq\",\"pirpiwrqof\"]},\"location\":\"pmjnlexwhcb\",\"etag\":\"ibkeph\",\"id\":\"uuerctatoyi\",\"name\":\"tqpbrlcy\",\"type\":\"duczkgof\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"qztw\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"upgxyjtcdxabbujf\",\"actionsRequired\":\"benbbkl\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"cafeddw\",\"nlzafwxudgnh\"]},\"location\":\"krtalvn\",\"etag\":\"gpbemeluclvdjju\",\"id\":\"yrdnqod\",\"name\":\"ahhxhqfaqnvzoqg\",\"type\":\"ipemchgavscz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response
             = manager.privateEndpointConnections()
-                .define("z")
-                .withExistingAccount("jwfljhznamtua", "mzwcjjncqt")
-                .withRegion("r")
+                .define("pqinf")
+                .withExistingAccount("rl", "h")
+                .withRegion("s")
                 .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                        .withDescription("wggahttzlswvaj")
-                        .withActionsRequired("utlxjoqzasunwqrj"))
-                    .withGroupIds(Arrays.asList("haohcmbuo")))
+                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                        .withDescription("alcxpjbyy")
+                        .withActionsRequired("joqcjenkyhfqzvsq"))
+                    .withGroupIds(Arrays.asList("l", "cmpzqjhhhqx", "w", "vcacoyv")))
                 .create();
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("cygvoavyunssx",
+        Assertions.assertEquals("upgxyjtcdxabbujf",
             response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("hi", response.properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("gvvpasek", response.properties().groupIds().get(0));
-        Assertions.assertEquals("pmjnlexwhcb", response.location());
+        Assertions.assertEquals("benbbkl", response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("cafeddw", response.properties().groupIds().get(0));
+        Assertions.assertEquals("krtalvn", response.location());
     }
 }

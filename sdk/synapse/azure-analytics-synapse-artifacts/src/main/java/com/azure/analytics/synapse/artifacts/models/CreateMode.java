@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -25,21 +26,25 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
     /**
      * Static value Default for CreateMode.
      */
+    @Generated
     public static final CreateMode DEFAULT = fromString("Default");
 
     /**
      * Static value PointInTimeRestore for CreateMode.
      */
+    @Generated
     public static final CreateMode POINT_IN_TIME_RESTORE = fromString("PointInTimeRestore");
 
     /**
      * Static value Recovery for CreateMode.
      */
+    @Generated
     public static final CreateMode RECOVERY = fromString("Recovery");
 
     /**
      * Static value Restore for CreateMode.
      */
+    @Generated
     public static final CreateMode RESTORE = fromString("Restore");
 
     /**
@@ -47,6 +52,7 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CreateMode() {
     }
@@ -57,6 +63,7 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
      * @param name a name to look for.
      * @return the corresponding CreateMode.
      */
+    @Generated
     public static CreateMode fromString(String name) {
         return fromString(name, CreateMode.class);
     }
@@ -66,6 +73,7 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
      * 
      * @return known CreateMode values.
      */
+    @Generated
     public static Collection<CreateMode> values() {
         return values(CreateMode.class);
     }

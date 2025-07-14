@@ -177,6 +177,6 @@ public final class SchedulerImpl implements Scheduler, Scheduler.Definition, Sch
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

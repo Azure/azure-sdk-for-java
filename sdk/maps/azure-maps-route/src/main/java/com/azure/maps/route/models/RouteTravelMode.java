@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,72 +16,84 @@ public final class RouteTravelMode extends ExpandableStringEnum<RouteTravelMode>
     /**
      * The returned routes are optimized for cars.
      */
+    @Generated
     public static final RouteTravelMode CAR = fromString("car");
 
     /**
      * The returned routes are optimized for commercial vehicles, like for trucks.
      */
+    @Generated
     public static final RouteTravelMode TRUCK = fromString("truck");
 
     /**
      * The returned routes are optimized for taxis. BETA functionality.
      */
+    @Generated
     public static final RouteTravelMode TAXI = fromString("taxi");
 
     /**
      * The returned routes are optimized for buses, including the use of bus only lanes. BETA functionality.
      */
+    @Generated
     public static final RouteTravelMode BUS = fromString("bus");
 
     /**
      * The returned routes are optimized for vans. BETA functionality.
      */
+    @Generated
     public static final RouteTravelMode VAN = fromString("van");
 
     /**
      * The returned routes are optimized for motorcycles. BETA functionality.
      */
+    @Generated
     public static final RouteTravelMode MOTORCYCLE = fromString("motorcycle");
 
     /**
      * The returned routes are optimized for bicycles, including use of bicycle lanes.
      */
+    @Generated
     public static final RouteTravelMode BICYCLE = fromString("bicycle");
 
     /**
      * The returned routes are optimized for pedestrians, including the use of sidewalks.
      */
+    @Generated
     public static final RouteTravelMode PEDESTRIAN = fromString("pedestrian");
 
     /**
      * The given mode of transport is not possible in this section.
      */
+    @Generated
     public static final RouteTravelMode OTHER = fromString("other");
 
     /**
-     * Creates a new instance of ResponseTravelMode value.
+     * Creates a new instance of RouteTravelMode value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RouteTravelMode() {
     }
 
     /**
-     * Creates or finds a ResponseTravelMode from its string representation.
+     * Creates or finds a RouteTravelMode from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding ResponseTravelMode.
+     * @return the corresponding RouteTravelMode.
      */
+    @Generated
     public static RouteTravelMode fromString(String name) {
         return fromString(name, RouteTravelMode.class);
     }
 
     /**
-     * Gets known ResponseTravelMode values.
+     * Gets known RouteTravelMode values.
      * 
-     * @return known ResponseTravelMode values.
+     * @return known RouteTravelMode values.
      */
+    @Generated
     public static Collection<RouteTravelMode> values() {
         return values(RouteTravelMode.class);
     }

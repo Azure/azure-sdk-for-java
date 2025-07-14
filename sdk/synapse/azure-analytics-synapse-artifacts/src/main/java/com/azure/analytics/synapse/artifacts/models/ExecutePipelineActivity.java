@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,26 +22,31 @@ public class ExecutePipelineActivity extends ControlActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "ExecutePipeline";
 
     /*
      * Pipeline reference.
      */
+    @Generated
     private PipelineReference pipeline;
 
     /*
      * Pipeline parameters.
      */
+    @Generated
     private Map<String, Object> parameters;
 
     /*
      * Defines whether activity execution will wait for the dependent pipeline execution to finish. Default is false.
      */
+    @Generated
     private Boolean waitOnCompletion;
 
     /**
      * Creates an instance of ExecutePipelineActivity class.
      */
+    @Generated
     public ExecutePipelineActivity() {
     }
 
@@ -49,6 +55,7 @@ public class ExecutePipelineActivity extends ControlActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -59,6 +66,7 @@ public class ExecutePipelineActivity extends ControlActivity {
      * 
      * @return the pipeline value.
      */
+    @Generated
     public PipelineReference getPipeline() {
         return this.pipeline;
     }
@@ -69,6 +77,7 @@ public class ExecutePipelineActivity extends ControlActivity {
      * @param pipeline the pipeline value to set.
      * @return the ExecutePipelineActivity object itself.
      */
+    @Generated
     public ExecutePipelineActivity setPipeline(PipelineReference pipeline) {
         this.pipeline = pipeline;
         return this;
@@ -79,6 +88,7 @@ public class ExecutePipelineActivity extends ControlActivity {
      * 
      * @return the parameters value.
      */
+    @Generated
     public Map<String, Object> getParameters() {
         return this.parameters;
     }
@@ -89,6 +99,7 @@ public class ExecutePipelineActivity extends ControlActivity {
      * @param parameters the parameters value to set.
      * @return the ExecutePipelineActivity object itself.
      */
+    @Generated
     public ExecutePipelineActivity setParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
         return this;
@@ -100,6 +111,7 @@ public class ExecutePipelineActivity extends ControlActivity {
      * 
      * @return the waitOnCompletion value.
      */
+    @Generated
     public Boolean isWaitOnCompletion() {
         return this.waitOnCompletion;
     }
@@ -111,6 +123,7 @@ public class ExecutePipelineActivity extends ControlActivity {
      * @param waitOnCompletion the waitOnCompletion value to set.
      * @return the ExecutePipelineActivity object itself.
      */
+    @Generated
     public ExecutePipelineActivity setWaitOnCompletion(Boolean waitOnCompletion) {
         this.waitOnCompletion = waitOnCompletion;
         return this;
@@ -119,6 +132,7 @@ public class ExecutePipelineActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecutePipelineActivity setName(String name) {
         super.setName(name);
@@ -128,6 +142,7 @@ public class ExecutePipelineActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecutePipelineActivity setDescription(String description) {
         super.setDescription(description);
@@ -137,6 +152,7 @@ public class ExecutePipelineActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecutePipelineActivity setState(ActivityState state) {
         super.setState(state);
@@ -146,6 +162,7 @@ public class ExecutePipelineActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecutePipelineActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -155,6 +172,7 @@ public class ExecutePipelineActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecutePipelineActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -164,6 +182,7 @@ public class ExecutePipelineActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecutePipelineActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -173,6 +192,7 @@ public class ExecutePipelineActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -209,6 +229,7 @@ public class ExecutePipelineActivity extends ControlActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ExecutePipelineActivity.
      */
+    @Generated
     public static ExecutePipelineActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ExecutePipelineActivity deserializedExecutePipelineActivity = new ExecutePipelineActivity();

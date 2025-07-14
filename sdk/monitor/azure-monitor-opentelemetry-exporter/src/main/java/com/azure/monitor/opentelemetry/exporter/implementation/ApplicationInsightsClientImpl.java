@@ -121,11 +121,11 @@ public final class ApplicationInsightsClientImpl {
      * REST calls.
      */
     @Host("{Host}/v2.1")
-    @ServiceInterface(name = "ApplicationInsightsC")
+    @ServiceInterface(name = "ApplicationInsightsClient")
     public interface ApplicationInsightsClientService {
         @Post("/track")
         @ExpectedResponses({ 200, 206 })
-        @UnexpectedResponseExceptionType(value = ExportResultException.class, code = { 400, 402, 500, 429, 503 })
+        @UnexpectedResponseExceptionType(value = ExportResultException.class, code = { 400, 402, 429, 500, 503 })
         @UnexpectedResponseExceptionType(ExportResultException.class)
         Mono<Response<ExportResult>> track(@HostParam("Host") String host,
             @BodyParam("application/json") List<TelemetryItem> body, @HeaderParam("Accept") String accept,
@@ -140,7 +140,7 @@ public final class ApplicationInsightsClientImpl {
      * @param body The list of telemetry events to track.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ExportResultException thrown if the request is rejected by server.
-     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 500, 429, 503.
+     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the status of each telemetry item along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -159,7 +159,7 @@ public final class ApplicationInsightsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ExportResultException thrown if the request is rejected by server.
-     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 500, 429, 503.
+     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the status of each telemetry item along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -178,7 +178,7 @@ public final class ApplicationInsightsClientImpl {
      * @param body The list of telemetry events to track.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ExportResultException thrown if the request is rejected by server.
-     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 500, 429, 503.
+     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the status of each telemetry item on successful completion of {@link Mono}.
      */
@@ -196,7 +196,7 @@ public final class ApplicationInsightsClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ExportResultException thrown if the request is rejected by server.
-     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 500, 429, 503.
+     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the status of each telemetry item on successful completion of {@link Mono}.
      */

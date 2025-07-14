@@ -32,12 +32,14 @@ import com.azure.resourcemanager.mongocluster.implementation.OperationsImpl;
 import com.azure.resourcemanager.mongocluster.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.mongocluster.implementation.PrivateLinksImpl;
 import com.azure.resourcemanager.mongocluster.implementation.ReplicasImpl;
+import com.azure.resourcemanager.mongocluster.implementation.UsersImpl;
 import com.azure.resourcemanager.mongocluster.models.FirewallRules;
 import com.azure.resourcemanager.mongocluster.models.MongoClusters;
 import com.azure.resourcemanager.mongocluster.models.Operations;
 import com.azure.resourcemanager.mongocluster.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.mongocluster.models.PrivateLinks;
 import com.azure.resourcemanager.mongocluster.models.Replicas;
+import com.azure.resourcemanager.mongocluster.models.Users;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -63,6 +65,8 @@ public final class MongoClusterManager {
     private PrivateLinks privateLinks;
 
     private Replicas replicas;
+
+    private Users users;
 
     private final MongoClusterManagementClient clientObject;
 
@@ -350,6 +354,18 @@ public final class MongoClusterManager {
             this.replicas = new ReplicasImpl(clientObject.getReplicas(), this);
         }
         return replicas;
+    }
+
+    /**
+     * Gets the resource collection API of Users. It manages User.
+     * 
+     * @return Resource collection API of Users.
+     */
+    public Users users() {
+        if (this.users == null) {
+            this.users = new UsersImpl(clientObject.getUsers(), this);
+        }
+        return users;
     }
 
     /**

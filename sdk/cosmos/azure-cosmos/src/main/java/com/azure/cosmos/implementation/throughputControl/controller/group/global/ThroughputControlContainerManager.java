@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.throughputControl.controller.group.globa
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -56,7 +57,7 @@ public class ThroughputControlContainerManager {
 
         String encodedGroupId = Utils.encodeUrlBase64String(this.group.getId().getBytes(StandardCharsets.UTF_8));
 
-        this.clientItemId = encodedGroupId + UUID.randomUUID();
+        this.clientItemId = encodedGroupId + UUIDs.nonBlockingRandomUUID();
         this.clientItemPartitionKeyValue = this.group.getIdPrefix() + CLIENT_ITEM_PARTITION_KEY_VALUE_SUFFIX;
         this.configItemId = encodedGroupId + CONFIG_ITEM_ID_SUFFIX;
         this.configItemPartitionKeyValue = this.group.getIdPrefix() + CONFIG_ITEM_PARTITION_KEY_VALUE_SUFFIX;

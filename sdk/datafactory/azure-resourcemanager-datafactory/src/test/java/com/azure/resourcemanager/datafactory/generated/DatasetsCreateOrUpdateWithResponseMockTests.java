@@ -29,7 +29,7 @@ public final class DatasetsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Dataset\",\"description\":\"nevbkkdbhgu\",\"structure\":\"dataxqi\",\"schema\":\"datarj\",\"linkedServiceName\":{\"referenceName\":\"lieyyfqhndj\",\"parameters\":{\"fhsgpy\":\"datavuyxccraj\"}},\"parameters\":{\"nrlpsjbnnuqsz\":{\"type\":\"Int\",\"defaultValue\":\"datad\"},\"dbunxufataq\":{\"type\":\"Array\",\"defaultValue\":\"dataiufrqsmjg\"},\"unazl\":{\"type\":\"Array\",\"defaultValue\":\"datahgdwhacurmm\"},\"isuhareqyiadvv\":{\"type\":\"String\",\"defaultValue\":\"datanyzcnq\"}},\"annotations\":[\"datafyel\",\"datan\",\"datapnyyuxcjq\"],\"folder\":{\"name\":\"sdntuko\"},\"\":{\"ygecly\":\"dataflfv\",\"jbzd\":\"datatoshkzib\"}},\"name\":\"gpv\",\"type\":\"icw\",\"etag\":\"y\",\"id\":\"hglltjghdfus\"}";
+            = "{\"properties\":{\"type\":\"Dataset\",\"description\":\"nevbkkdbhgu\",\"structure\":\"dataxqi\",\"schema\":\"datarj\",\"linkedServiceName\":{\"referenceName\":\"lieyyfqhndj\",\"parameters\":{\"fhsgpy\":\"datavuyxccraj\"}},\"parameters\":{\"nrlpsjbnnuqsz\":{\"type\":\"Int\",\"defaultValue\":\"datad\"},\"dbunxufataq\":{\"type\":\"Array\",\"defaultValue\":\"dataiufrqsmjg\"},\"unazl\":{\"type\":\"Array\",\"defaultValue\":\"datahgdwhacurmm\"},\"isuhareqyiadvv\":{\"type\":\"String\",\"defaultValue\":\"datanyzcnq\"}},\"annotations\":[\"datafyel\",\"datan\",\"datapnyyuxcjq\"],\"folder\":{\"name\":\"sdntuko\"},\"ygecly\":\"dataflfv\",\"jbzd\":\"datatoshkzib\"},\"name\":\"gpv\",\"type\":\"icw\",\"etag\":\"y\",\"id\":\"hglltjghdfus\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -52,7 +52,8 @@ public final class DatasetsCreateOrUpdateWithResponseMockTests {
                         "w", new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datase")))
                 .withAnnotations(Arrays.asList("datafpoqbekkqsaby"))
                 .withFolder(new DatasetFolder().withName("rwprbzfbdsncy"))
-                .withAdditionalProperties(mapOf("type", "Dataset")))
+                .withAdditionalProperties(mapOf("irttlwuqgaaj", "dataclzrot", "qsbekmeeowdojpja", "datafkdf", "xwkkjx",
+                    "datatqrowtazq", "type", "Dataset", "jxud", "datajomnkeaiamh")))
             .withIfMatch("tbwe")
             .create();
 

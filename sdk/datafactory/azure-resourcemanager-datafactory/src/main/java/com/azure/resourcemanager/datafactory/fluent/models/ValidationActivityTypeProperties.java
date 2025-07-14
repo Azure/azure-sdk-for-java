@@ -188,10 +188,18 @@ public final class ValidationActivityTypeProperties implements JsonSerializable<
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("dataset", this.dataset);
-        jsonWriter.writeUntypedField("timeout", this.timeout);
-        jsonWriter.writeUntypedField("sleep", this.sleep);
-        jsonWriter.writeUntypedField("minimumSize", this.minimumSize);
-        jsonWriter.writeUntypedField("childItems", this.childItems);
+        if (this.timeout != null) {
+            jsonWriter.writeUntypedField("timeout", this.timeout);
+        }
+        if (this.sleep != null) {
+            jsonWriter.writeUntypedField("sleep", this.sleep);
+        }
+        if (this.minimumSize != null) {
+            jsonWriter.writeUntypedField("minimumSize", this.minimumSize);
+        }
+        if (this.childItems != null) {
+            jsonWriter.writeUntypedField("childItems", this.childItems);
+        }
         return jsonWriter.writeEndObject();
     }
 

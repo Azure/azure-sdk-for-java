@@ -4,6 +4,7 @@
 
 package com.azure.maps.render.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class CopyrightCaption implements JsonSerializable<CopyrightCaption
     /*
      * Format Version property
      */
+    @Generated
     private String formatVersion;
 
     /*
      * Copyrights Caption property
      */
+    @Generated
     private String copyrightsCaption;
 
     /**
      * Creates an instance of CopyrightCaption class.
      */
+    @Generated
     public CopyrightCaption() {
     }
 
@@ -37,6 +41,7 @@ public final class CopyrightCaption implements JsonSerializable<CopyrightCaption
      * 
      * @return the formatVersion value.
      */
+    @Generated
     public String getFormatVersion() {
         return this.formatVersion;
     }
@@ -46,6 +51,7 @@ public final class CopyrightCaption implements JsonSerializable<CopyrightCaption
      * 
      * @return the copyrightsCaption value.
      */
+    @Generated
     public String getCopyrightsCaption() {
         return this.copyrightsCaption;
     }
@@ -53,6 +59,7 @@ public final class CopyrightCaption implements JsonSerializable<CopyrightCaption
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +74,7 @@ public final class CopyrightCaption implements JsonSerializable<CopyrightCaption
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the CopyrightCaption.
      */
+    @Generated
     public static CopyrightCaption fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CopyrightCaption deserializedCopyrightCaption = new CopyrightCaption();

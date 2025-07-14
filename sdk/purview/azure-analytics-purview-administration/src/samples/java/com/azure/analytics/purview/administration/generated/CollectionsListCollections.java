@@ -17,9 +17,9 @@ public class CollectionsListCollections {
             = new CollectionsClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{endpoint}")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.administration.generated.collectionslistcollections.collectionslistcollections
+        // BEGIN:com.azure.analytics.purview.administration.generated.collections-list-collections.collections-list-collections
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = collectionsClient.listCollections(requestOptions);
-        // END:com.azure.analytics.purview.administration.generated.collectionslistcollections.collectionslistcollections
+        // END:com.azure.analytics.purview.administration.generated.collections-list-collections.collections-list-collections
     }
 }

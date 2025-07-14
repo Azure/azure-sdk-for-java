@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,11 +21,13 @@ public final class AIServicesVisionVectorizer extends VectorSearchVectorizer {
     /*
      * The name of the kind of vectorization method being configured for use with vector search.
      */
+    @Generated
     private VectorSearchVectorizerKind kind = VectorSearchVectorizerKind.AISERVICES_VISION;
 
     /*
      * Contains the parameters specific to AI Services Vision embedding vectorization.
      */
+    @Generated
     private AIServicesVisionParameters aIServicesVisionParameters;
 
     /**
@@ -32,6 +35,7 @@ public final class AIServicesVisionVectorizer extends VectorSearchVectorizer {
      * 
      * @param vectorizerName the vectorizerName value to set.
      */
+    @Generated
     public AIServicesVisionVectorizer(String vectorizerName) {
         super(vectorizerName);
     }
@@ -41,6 +45,7 @@ public final class AIServicesVisionVectorizer extends VectorSearchVectorizer {
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public VectorSearchVectorizerKind getKind() {
         return this.kind;
@@ -52,6 +57,7 @@ public final class AIServicesVisionVectorizer extends VectorSearchVectorizer {
      * 
      * @return the aIServicesVisionParameters value.
      */
+    @Generated
     public AIServicesVisionParameters getAIServicesVisionParameters() {
         return this.aIServicesVisionParameters;
     }
@@ -63,6 +69,7 @@ public final class AIServicesVisionVectorizer extends VectorSearchVectorizer {
      * @param aIServicesVisionParameters the aIServicesVisionParameters value to set.
      * @return the AIServicesVisionVectorizer object itself.
      */
+    @Generated
     public AIServicesVisionVectorizer
         setAIServicesVisionParameters(AIServicesVisionParameters aIServicesVisionParameters) {
         this.aIServicesVisionParameters = aIServicesVisionParameters;
@@ -72,6 +79,7 @@ public final class AIServicesVisionVectorizer extends VectorSearchVectorizer {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -90,6 +98,7 @@ public final class AIServicesVisionVectorizer extends VectorSearchVectorizer {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AIServicesVisionVectorizer.
      */
+    @Generated
     public static AIServicesVisionVectorizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean vectorizerNameFound = false;

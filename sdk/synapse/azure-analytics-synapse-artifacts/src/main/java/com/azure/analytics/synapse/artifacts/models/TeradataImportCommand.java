@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,6 +21,7 @@ public final class TeradataImportCommand extends ImportSettings {
     /*
      * The import setting type.
      */
+    @Generated
     private String type = "TeradataImportCommand";
 
     /*
@@ -27,11 +29,13 @@ public final class TeradataImportCommand extends ImportSettings {
      * source. Type: key value pairs (value should be string type) (or Expression with resultType object). Example:
      * "additionalFormatOptions": { "timeFormat": "HHhMImSSs" }
      */
+    @Generated
     private Object additionalFormatOptions;
 
     /**
      * Creates an instance of TeradataImportCommand class.
      */
+    @Generated
     public TeradataImportCommand() {
     }
 
@@ -40,6 +44,7 @@ public final class TeradataImportCommand extends ImportSettings {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -52,6 +57,7 @@ public final class TeradataImportCommand extends ImportSettings {
      * 
      * @return the additionalFormatOptions value.
      */
+    @Generated
     public Object getAdditionalFormatOptions() {
         return this.additionalFormatOptions;
     }
@@ -64,6 +70,7 @@ public final class TeradataImportCommand extends ImportSettings {
      * @param additionalFormatOptions the additionalFormatOptions value to set.
      * @return the TeradataImportCommand object itself.
      */
+    @Generated
     public TeradataImportCommand setAdditionalFormatOptions(Object additionalFormatOptions) {
         this.additionalFormatOptions = additionalFormatOptions;
         return this;
@@ -72,11 +79,14 @@ public final class TeradataImportCommand extends ImportSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("additionalFormatOptions", this.additionalFormatOptions);
+        if (this.additionalFormatOptions != null) {
+            jsonWriter.writeUntypedField("additionalFormatOptions", this.additionalFormatOptions);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -93,6 +103,7 @@ public final class TeradataImportCommand extends ImportSettings {
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the TeradataImportCommand.
      */
+    @Generated
     public static TeradataImportCommand fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TeradataImportCommand deserializedTeradataImportCommand = new TeradataImportCommand();

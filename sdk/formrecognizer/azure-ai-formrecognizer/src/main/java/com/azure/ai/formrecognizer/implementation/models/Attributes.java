@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class Attributes implements JsonSerializable<Attributes> {
     /*
      * Is this model composed? (default: false).
      */
+    @Generated
     private Boolean isComposed;
 
     /**
      * Creates an instance of Attributes class.
      */
+    @Generated
     public Attributes() {
     }
 
@@ -32,6 +35,7 @@ public final class Attributes implements JsonSerializable<Attributes> {
      * 
      * @return the isComposed value.
      */
+    @Generated
     public Boolean isComposed() {
         return this.isComposed;
     }
@@ -42,6 +46,7 @@ public final class Attributes implements JsonSerializable<Attributes> {
      * @param isComposed the isComposed value to set.
      * @return the Attributes object itself.
      */
+    @Generated
     public Attributes setIsComposed(Boolean isComposed) {
         this.isComposed = isComposed;
         return this;
@@ -50,6 +55,7 @@ public final class Attributes implements JsonSerializable<Attributes> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class Attributes implements JsonSerializable<Attributes> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the Attributes.
      */
+    @Generated
     public static Attributes fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Attributes deserializedAttributes = new Attributes();

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class CertificatesListSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/ListCertificates.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/ListCertificates.json
      */
     /**
      * Sample code: List Certificates for subscription.

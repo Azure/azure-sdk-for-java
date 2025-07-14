@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class UpdateLandingZoneCredential implements JsonSerializable<Updat
     /*
      * Landing zone's sas token
      */
+    @Generated
     private SecureString sasToken;
 
     /**
      * Creates an instance of UpdateLandingZoneCredential class.
      */
+    @Generated
     public UpdateLandingZoneCredential() {
     }
 
@@ -32,6 +35,7 @@ public final class UpdateLandingZoneCredential implements JsonSerializable<Updat
      * 
      * @return the sasToken value.
      */
+    @Generated
     public SecureString getSasToken() {
         return this.sasToken;
     }
@@ -42,6 +46,7 @@ public final class UpdateLandingZoneCredential implements JsonSerializable<Updat
      * @param sasToken the sasToken value to set.
      * @return the UpdateLandingZoneCredential object itself.
      */
+    @Generated
     public UpdateLandingZoneCredential setSasToken(SecureString sasToken) {
         this.sasToken = sasToken;
         return this;
@@ -50,6 +55,7 @@ public final class UpdateLandingZoneCredential implements JsonSerializable<Updat
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class UpdateLandingZoneCredential implements JsonSerializable<Updat
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the UpdateLandingZoneCredential.
      */
+    @Generated
     public static UpdateLandingZoneCredential fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             UpdateLandingZoneCredential deserializedUpdateLandingZoneCredential = new UpdateLandingZoneCredential();

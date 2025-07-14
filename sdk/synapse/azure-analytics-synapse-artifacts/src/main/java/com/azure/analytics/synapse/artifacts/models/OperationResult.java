@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,31 +21,37 @@ public class OperationResult implements JsonSerializable<OperationResult> {
     /*
      * Operation status
      */
+    @Generated
     private String status;
 
     /*
      * Error code.
      */
+    @Generated
     private String code;
 
     /*
      * Error message.
      */
+    @Generated
     private String message;
 
     /*
      * Property name/path in request associated with error.
      */
+    @Generated
     private String target;
 
     /*
      * Array with additional error details.
      */
+    @Generated
     private List<CloudError> details;
 
     /**
      * Creates an instance of OperationResult class.
      */
+    @Generated
     public OperationResult() {
     }
 
@@ -53,6 +60,7 @@ public class OperationResult implements JsonSerializable<OperationResult> {
      * 
      * @return the status value.
      */
+    @Generated
     public String getStatus() {
         return this.status;
     }
@@ -62,6 +70,7 @@ public class OperationResult implements JsonSerializable<OperationResult> {
      * 
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -72,6 +81,7 @@ public class OperationResult implements JsonSerializable<OperationResult> {
      * @param code the code value to set.
      * @return the OperationResult object itself.
      */
+    @Generated
     public OperationResult setCode(String code) {
         this.code = code;
         return this;
@@ -82,6 +92,7 @@ public class OperationResult implements JsonSerializable<OperationResult> {
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -92,6 +103,7 @@ public class OperationResult implements JsonSerializable<OperationResult> {
      * @param message the message value to set.
      * @return the OperationResult object itself.
      */
+    @Generated
     public OperationResult setMessage(String message) {
         this.message = message;
         return this;
@@ -102,6 +114,7 @@ public class OperationResult implements JsonSerializable<OperationResult> {
      * 
      * @return the target value.
      */
+    @Generated
     public String getTarget() {
         return this.target;
     }
@@ -112,6 +125,7 @@ public class OperationResult implements JsonSerializable<OperationResult> {
      * @param target the target value to set.
      * @return the OperationResult object itself.
      */
+    @Generated
     public OperationResult setTarget(String target) {
         this.target = target;
         return this;
@@ -122,6 +136,7 @@ public class OperationResult implements JsonSerializable<OperationResult> {
      * 
      * @return the details value.
      */
+    @Generated
     public List<CloudError> getDetails() {
         return this.details;
     }
@@ -132,6 +147,7 @@ public class OperationResult implements JsonSerializable<OperationResult> {
      * @param details the details value to set.
      * @return the OperationResult object itself.
      */
+    @Generated
     public OperationResult setDetails(List<CloudError> details) {
         this.details = details;
         return this;
@@ -140,6 +156,7 @@ public class OperationResult implements JsonSerializable<OperationResult> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -162,6 +179,7 @@ public class OperationResult implements JsonSerializable<OperationResult> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the OperationResult.
      */
+    @Generated
     public static OperationResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OperationResult deserializedOperationResult = new OperationResult();

@@ -12,8 +12,5 @@
     <module>azure-data-appconfiguration</module>
     <module>azure-data-appconfiguration-perf</module>
     <module>azure-resourcemanager-appconfiguration</module>
-
-    <!-- V2 libraries -->
-    <module>azure-data-appconfiguration-v2</module>
   </modules>
 </project>

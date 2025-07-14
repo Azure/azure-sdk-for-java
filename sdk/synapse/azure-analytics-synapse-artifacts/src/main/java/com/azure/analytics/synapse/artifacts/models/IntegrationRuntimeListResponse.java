@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class IntegrationRuntimeListResponse implements JsonSerializable<In
     /*
      * List of integration runtimes.
      */
+    @Generated
     private List<IntegrationRuntimeResource> value;
 
     /*
      * The link to the next page of results, if any remaining results exist.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of IntegrationRuntimeListResponse class.
      */
+    @Generated
     public IntegrationRuntimeListResponse() {
     }
 
@@ -38,6 +42,7 @@ public final class IntegrationRuntimeListResponse implements JsonSerializable<In
      * 
      * @return the value value.
      */
+    @Generated
     public List<IntegrationRuntimeResource> getValue() {
         return this.value;
     }
@@ -48,6 +53,7 @@ public final class IntegrationRuntimeListResponse implements JsonSerializable<In
      * @param value the value value to set.
      * @return the IntegrationRuntimeListResponse object itself.
      */
+    @Generated
     public IntegrationRuntimeListResponse setValue(List<IntegrationRuntimeResource> value) {
         this.value = value;
         return this;
@@ -58,6 +64,7 @@ public final class IntegrationRuntimeListResponse implements JsonSerializable<In
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -68,6 +75,7 @@ public final class IntegrationRuntimeListResponse implements JsonSerializable<In
      * @param nextLink the nextLink value to set.
      * @return the IntegrationRuntimeListResponse object itself.
      */
+    @Generated
     public IntegrationRuntimeListResponse setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -76,6 +84,7 @@ public final class IntegrationRuntimeListResponse implements JsonSerializable<In
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class IntegrationRuntimeListResponse implements JsonSerializable<In
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IntegrationRuntimeListResponse.
      */
+    @Generated
     public static IntegrationRuntimeListResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IntegrationRuntimeListResponse deserializedIntegrationRuntimeListResponse

@@ -19,12 +19,10 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.ArgumentsProvider;
-import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -188,23 +186,16 @@ public class CredentialsTests {
         SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
     }
 
-    static class InvalidInputsArgumentProvider implements ArgumentsProvider {
-
-        InvalidInputsArgumentProvider() {
-        }
-
-        @Override
-        public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
-            return Stream.of(Arguments.of(null, null, NullPointerException.class),
-                Arguments.of("", null, NullPointerException.class), Arguments.of(null, "", NullPointerException.class),
-                Arguments.of("", "", IllegalArgumentException.class),
-                Arguments.of("DummyName", "", IllegalArgumentException.class),
-                Arguments.of("", "DummyValue", IllegalArgumentException.class));
-        }
+    private static Stream<Arguments> invalidInputsArgumentsProvider() {
+        return Stream.of(Arguments.of(null, null, NullPointerException.class),
+            Arguments.of("", null, NullPointerException.class), Arguments.of(null, "", NullPointerException.class),
+            Arguments.of("", "", IllegalArgumentException.class),
+            Arguments.of("DummyName", "", IllegalArgumentException.class),
+            Arguments.of("", "DummyValue", IllegalArgumentException.class));
     }
 
     @ParameterizedTest
-    @ArgumentsSource(InvalidInputsArgumentProvider.class)
+    @MethodSource("invalidInputsArgumentsProvider")
     public void namedKeyCredentialsInvalidArgumentTest(String name, String key, Class<Exception> excepionType) {
         Assertions.assertThrows(excepionType, () -> {
             new AzureNamedKeyCredential(name, key);
@@ -212,7 +203,7 @@ public class CredentialsTests {
     }
 
     @ParameterizedTest
-    @ArgumentsSource(InvalidInputsArgumentProvider.class)
+    @MethodSource("invalidInputsArgumentsProvider")
     public void namedKeyCredentialsInvalidArgumentUpdateTest(String name, String key, Class<Exception> excepionType) {
         AzureNamedKeyCredential azureNamedKeyCredential = new AzureNamedKeyCredential(DUMMY_NAME, DUMMY_VALUE);
 

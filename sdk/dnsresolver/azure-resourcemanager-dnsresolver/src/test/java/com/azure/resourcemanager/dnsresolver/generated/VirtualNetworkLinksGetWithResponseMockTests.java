@@ -6,8 +6,8 @@ package com.azure.resourcemanager.dnsresolver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dnsresolver.DnsResolverManager;
 import com.azure.resourcemanager.dnsresolver.models.VirtualNetworkLink;
@@ -21,20 +21,20 @@ public final class VirtualNetworkLinksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"fvpdbo\",\"properties\":{\"virtualNetwork\":{\"id\":\"cizsjqlhkrribdei\"},\"metadata\":{\"kghv\":\"p\",\"pjorwkqnyhg\":\"ndzwmkrefa\",\"jivfxzsjabib\":\"ij\",\"jxbkzbzkdvn\":\"ystawfsdjpvkvp\"},\"provisioningState\":\"Succeeded\"},\"id\":\"udurgkakmokz\",\"name\":\"jjklff\",\"type\":\"mouwqlgzrfzeey\"}";
+            = "{\"etag\":\"fbkjubdyhgkfmi\",\"properties\":{\"virtualNetwork\":{\"id\":\"g\"},\"metadata\":{\"lahb\":\"fttsttk\",\"qtgqqqxhrnxr\":\"actxtgzukxitm\",\"okqdzfvaz\":\"cpjuisa\",\"ajlkatnw\":\"vjlfrqtt\"},\"provisioningState\":\"Creating\"},\"id\":\"pidkqqfkuvscxkdm\",\"name\":\"igovi\",\"type\":\"rxkpmloazuruoc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DnsResolverManager manager = DnsResolverManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VirtualNetworkLink response = manager.virtualNetworkLinks()
-            .getWithResponse("byqunyow", "wlmdjrkv", "g", com.azure.core.util.Context.NONE)
+            .getWithResponse("lqol", "xkcgxxlxsffgcvi", "qzdwlvwlyoup", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cizsjqlhkrribdei", response.virtualNetwork().id());
-        Assertions.assertEquals("p", response.metadata().get("kghv"));
+        Assertions.assertEquals("g", response.virtualNetwork().id());
+        Assertions.assertEquals("fttsttk", response.metadata().get("lahb"));
     }
 }

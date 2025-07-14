@@ -78,6 +78,12 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
      */
     private String parentDeploymentName;
 
+    /*
+     * Specifies the deployment name that should serve requests when the request would have otherwise been throttled due
+     * to reaching current deployment throughput limit.
+     */
+    private String spilloverDeploymentName;
+
     /**
      * Creates an instance of DeploymentProperties class.
      */
@@ -272,6 +278,28 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
     }
 
     /**
+     * Get the spilloverDeploymentName property: Specifies the deployment name that should serve requests when the
+     * request would have otherwise been throttled due to reaching current deployment throughput limit.
+     * 
+     * @return the spilloverDeploymentName value.
+     */
+    public String spilloverDeploymentName() {
+        return this.spilloverDeploymentName;
+    }
+
+    /**
+     * Set the spilloverDeploymentName property: Specifies the deployment name that should serve requests when the
+     * request would have otherwise been throttled due to reaching current deployment throughput limit.
+     * 
+     * @param spilloverDeploymentName the spilloverDeploymentName value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withSpilloverDeploymentName(String spilloverDeploymentName) {
+        this.spilloverDeploymentName = spilloverDeploymentName;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -308,6 +336,7 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
         jsonWriter.writeNumberField("currentCapacity", this.currentCapacity);
         jsonWriter.writeJsonField("capacitySettings", this.capacitySettings);
         jsonWriter.writeStringField("parentDeploymentName", this.parentDeploymentName);
+        jsonWriter.writeStringField("spilloverDeploymentName", this.spilloverDeploymentName);
         return jsonWriter.writeEndObject();
     }
 
@@ -355,6 +384,8 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
                     deserializedDeploymentProperties.capacitySettings = DeploymentCapacitySettings.fromJson(reader);
                 } else if ("parentDeploymentName".equals(fieldName)) {
                     deserializedDeploymentProperties.parentDeploymentName = reader.getString();
+                } else if ("spilloverDeploymentName".equals(fieldName)) {
+                    deserializedDeploymentProperties.spilloverDeploymentName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

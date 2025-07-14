@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,16 +28,6 @@ public final class DataTransferServiceResourceProperties extends ServiceResource
      * An array that contains all of the locations for the service.
      */
     private List<DataTransferRegionalServiceResource> locations;
-
-    /*
-     * Describes the status of a service.
-     */
-    private ServiceStatus status;
-
-    /*
-     * Time of the last state change (ISO-8601 format).
-     */
-    private OffsetDateTime creationTime;
 
     /**
      * Creates an instance of DataTransferServiceResourceProperties class.
@@ -63,26 +52,6 @@ public final class DataTransferServiceResourceProperties extends ServiceResource
      */
     public List<DataTransferRegionalServiceResource> locations() {
         return this.locations;
-    }
-
-    /**
-     * Get the status property: Describes the status of a service.
-     * 
-     * @return the status value.
-     */
-    @Override
-    public ServiceStatus status() {
-        return this.status;
-    }
-
-    /**
-     * Get the creationTime property: Time of the last state change (ISO-8601 format).
-     * 
-     * @return the creationTime value.
-     */
-    @Override
-    public OffsetDateTime creationTime() {
-        return this.creationTime;
     }
 
     /**
@@ -150,8 +119,8 @@ public final class DataTransferServiceResourceProperties extends ServiceResource
                 reader.nextToken();
 
                 if ("creationTime".equals(fieldName)) {
-                    deserializedDataTransferServiceResourceProperties.creationTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedDataTransferServiceResourceProperties.withCreationTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("instanceSize".equals(fieldName)) {
                     deserializedDataTransferServiceResourceProperties
                         .withInstanceSize(ServiceSize.fromString(reader.getString()));
@@ -159,8 +128,8 @@ public final class DataTransferServiceResourceProperties extends ServiceResource
                     deserializedDataTransferServiceResourceProperties
                         .withInstanceCount(reader.getNullable(JsonReader::getInt));
                 } else if ("status".equals(fieldName)) {
-                    deserializedDataTransferServiceResourceProperties.status
-                        = ServiceStatus.fromString(reader.getString());
+                    deserializedDataTransferServiceResourceProperties
+                        .withStatus(ServiceStatus.fromString(reader.getString()));
                 } else if ("serviceType".equals(fieldName)) {
                     deserializedDataTransferServiceResourceProperties.serviceType
                         = ServiceType.fromString(reader.getString());

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,31 +22,37 @@ public final class SqlConnection implements JsonSerializable<SqlConnection> {
     /*
      * The type of the connection.
      */
+    @Generated
     private SqlConnectionType type;
 
     /*
      * The identifier of the connection.
      */
+    @Generated
     private String name;
 
     /*
      * The associated SQL pool name (supported by SQL pool v3)
      */
+    @Generated
     private String poolName;
 
     /*
      * The associated database name (supported by SQL pool v3)
      */
+    @Generated
     private String databaseName;
 
     /*
      * The connection used to execute the SQL script.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of SqlConnection class.
      */
+    @Generated
     public SqlConnection() {
     }
 
@@ -54,6 +61,7 @@ public final class SqlConnection implements JsonSerializable<SqlConnection> {
      * 
      * @return the type value.
      */
+    @Generated
     public SqlConnectionType getType() {
         return this.type;
     }
@@ -64,6 +72,7 @@ public final class SqlConnection implements JsonSerializable<SqlConnection> {
      * @param type the type value to set.
      * @return the SqlConnection object itself.
      */
+    @Generated
     public SqlConnection setType(SqlConnectionType type) {
         this.type = type;
         return this;
@@ -74,6 +83,7 @@ public final class SqlConnection implements JsonSerializable<SqlConnection> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -84,6 +94,7 @@ public final class SqlConnection implements JsonSerializable<SqlConnection> {
      * @param name the name value to set.
      * @return the SqlConnection object itself.
      */
+    @Generated
     public SqlConnection setName(String name) {
         this.name = name;
         return this;
@@ -94,6 +105,7 @@ public final class SqlConnection implements JsonSerializable<SqlConnection> {
      * 
      * @return the poolName value.
      */
+    @Generated
     public String getPoolName() {
         return this.poolName;
     }
@@ -104,6 +116,7 @@ public final class SqlConnection implements JsonSerializable<SqlConnection> {
      * @param poolName the poolName value to set.
      * @return the SqlConnection object itself.
      */
+    @Generated
     public SqlConnection setPoolName(String poolName) {
         this.poolName = poolName;
         return this;
@@ -114,6 +127,7 @@ public final class SqlConnection implements JsonSerializable<SqlConnection> {
      * 
      * @return the databaseName value.
      */
+    @Generated
     public String getDatabaseName() {
         return this.databaseName;
     }
@@ -124,6 +138,7 @@ public final class SqlConnection implements JsonSerializable<SqlConnection> {
      * @param databaseName the databaseName value to set.
      * @return the SqlConnection object itself.
      */
+    @Generated
     public SqlConnection setDatabaseName(String databaseName) {
         this.databaseName = databaseName;
         return this;
@@ -134,6 +149,7 @@ public final class SqlConnection implements JsonSerializable<SqlConnection> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -144,6 +160,7 @@ public final class SqlConnection implements JsonSerializable<SqlConnection> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the SqlConnection object itself.
      */
+    @Generated
     public SqlConnection setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -152,6 +169,7 @@ public final class SqlConnection implements JsonSerializable<SqlConnection> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -175,6 +193,7 @@ public final class SqlConnection implements JsonSerializable<SqlConnection> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SqlConnection.
      */
+    @Generated
     public static SqlConnection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SqlConnection deserializedSqlConnection = new SqlConnection();

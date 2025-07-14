@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
@@ -2190,6 +2191,20 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
              * @return the accepted create operation
              */
             Accepted<VirtualMachine> beginCreate();
+
+            /**
+             * Begins creating the virtual machine resource.
+             *
+             * Virtual machine extensions can only be created after the completion of virtual machine.
+             * Therefore, the configuration of virtual machine extensions is not compatible with this operation.
+             * Please use {@link WithCreate#create(Context)} if virtual machine extensions is configured.
+             *
+             * @param context the {@link Context} of the request
+             * @return the accepted create operation
+             */
+            default Accepted<VirtualMachine> beginCreate(Context context) {
+                throw new UnsupportedOperationException("[beginCreate(Context)] is not supported in " + getClass());
+            }
         }
     }
 

@@ -25,6 +25,7 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 
 import static com.azure.core.http.okhttp.TestUtils.createQuietDispatcher;
+import static com.azure.core.validation.http.HttpClientTestsServer.ECHO_RESPONSE;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {

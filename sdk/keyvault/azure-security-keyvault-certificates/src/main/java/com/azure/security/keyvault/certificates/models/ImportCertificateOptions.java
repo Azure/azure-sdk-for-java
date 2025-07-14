@@ -13,14 +13,14 @@ import java.util.Objects;
  */
 public final class ImportCertificateOptions {
     /**
-     * The file location of the certificate.
-     */
-    private final byte[] certificate;
-
-    /**
      * The name of the certificate.
      */
     private final String name;
+
+    /**
+     * The file location of the certificate.
+     */
+    private final byte[] certificate;
 
     /**
      * If the private key in base64EncodedCertificate is encrypted, the password used for encryption.
@@ -28,7 +28,7 @@ public final class ImportCertificateOptions {
     private String password;
 
     /**
-     * Determines whether the object is enabled.
+     * Determines whether the certificate is enabled.
      */
     private Boolean enabled;
 
@@ -48,95 +48,17 @@ public final class ImportCertificateOptions {
     private Boolean certificateOrderPreserved;
 
     /**
-     * Creates instance of {@link  ImportCertificateOptions}.
+     * Creates an instance of {@link ImportCertificateOptions}.
      *
      * @param name The name of the key.
      * @param certificate The PFX or PEM formatted value of the certificate containing both the x509 certificates and
      * the private key.
      */
     public ImportCertificateOptions(String name, byte[] certificate) {
-        Objects.requireNonNull(certificate, "The certificate parameter cannot be null.");
+        Objects.requireNonNull(certificate, "'certificate' cannot be null.");
+
         this.name = name;
         this.certificate = CoreUtils.clone(certificate);
-    }
-
-    /**
-     * Set a value indicating whether the certificate is enabled.
-     *
-     * @param enabled The enabled status to set.
-     * @return The updated {@link ImportCertificateOptions} object.
-     */
-    public ImportCertificateOptions setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-        return this;
-    }
-
-    /**
-     * Get a value indicating whether the certificate is enabled.
-     *
-     * @return The enabled status.
-     */
-    public Boolean isEnabled() {
-        return this.enabled;
-    }
-
-    /**
-     * Get the management policy for the certificate.
-     *
-     * @return The management policy.
-     */
-    public CertificatePolicy getPolicy() {
-        return this.policy;
-    }
-
-    /**
-     * Set the management policy for the certificate.
-     *
-     * @param policy the management policy for the certificate
-     * @return The updated {@link ImportCertificateOptions} object.
-     */
-    public ImportCertificateOptions setPolicy(CertificatePolicy policy) {
-        this.policy = policy;
-        return this;
-    }
-
-    /**
-     * Set the application specific metadata.
-     *
-     * @param tags The metadata to set.
-     * @return The updated {@link ImportCertificateOptions} object.
-     */
-    public ImportCertificateOptions setTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the tags associated with the secret.
-     *
-     * @return The value of the tags.
-     */
-    public Map<String, String> getTags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the password for encrypting the certificate, if its encrypted.
-     *
-     * @param password The password used to encrypt the certificate.
-     * @return The updated {@link ImportCertificateOptions} object.
-     */
-    public ImportCertificateOptions setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the password for encrypting the certificate, if its encrypted.
-     * @return The password.
-     */
-    public String getPassword() {
-        return this.password;
     }
 
     /**
@@ -158,6 +80,99 @@ public final class ImportCertificateOptions {
     }
 
     /**
+     * Get a value indicating whether the certificate is enabled.
+     *
+     * @return The enabled status.
+     */
+    public Boolean isEnabled() {
+        return this.enabled;
+    }
+
+    /**
+     * Set a value indicating whether the certificate is enabled.
+     *
+     * @param enabled The enabled status to set.
+     * @return The updated {@link ImportCertificateOptions} object.
+     */
+    public ImportCertificateOptions setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+
+        return this;
+    }
+
+    /**
+     * Get the management policy for the certificate.
+     *
+     * @return The management policy.
+     */
+    public CertificatePolicy getPolicy() {
+        return this.policy;
+    }
+
+    /**
+     * Set the management policy for the certificate.
+     *
+     * @param policy the management policy for the certificate
+     * @return The updated {@link ImportCertificateOptions} object.
+     */
+    public ImportCertificateOptions setPolicy(CertificatePolicy policy) {
+        this.policy = policy;
+
+        return this;
+    }
+
+    /**
+     * Get the tags associated with the certificate.
+     *
+     * @return The tags associated with the certificate.
+     */
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags associated with the certificate.
+     *
+     * @param tags The tags to associate with the certificate.
+     * @return The updated {@link ImportCertificateOptions} object.
+     */
+    public ImportCertificateOptions setTags(Map<String, String> tags) {
+        this.tags = tags;
+
+        return this;
+    }
+
+    /**
+     * Get the password for decrypting the certificate, if it's encrypted.
+     * @return The password.
+     */
+    public String getPassword() {
+        return this.password;
+    }
+
+    /**
+     * Set the password for decrypting the certificate, if it's encrypted.
+     *
+     * @param password The password used to encrypt the certificate.
+     * @return The updated {@link ImportCertificateOptions} object.
+     */
+    public ImportCertificateOptions setPassword(String password) {
+        this.password = password;
+
+        return this;
+    }
+
+    /**
+     * Get a value indicating the certificate order in the vault is to be preserved. If true, the certificate chain
+     * will be preserved in its original order. If false (default), the leaf certificate will be placed at index 0.
+     *
+     * @return The certificate order preserved status.
+     */
+    public Boolean isCertificateOrderPreserved() {
+        return this.certificateOrderPreserved;
+    }
+
+    /**
      * Set a value indicating whether the order of the certificates in the certificate chain is preserved.
      *
      * @param certificateOrderPreserved The certificate order preserved status to set.
@@ -167,14 +182,5 @@ public final class ImportCertificateOptions {
         this.certificateOrderPreserved = certificateOrderPreserved;
 
         return this;
-    }
-
-    /**
-     * Get a value indicating whether the order of the certificates in the certificate chain is preserved.
-     *
-     * @return The certificate order preserved status.
-     */
-    public Boolean isCertificateOrderPreserved() {
-        return this.certificateOrderPreserved;
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,17 +22,20 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AmazonRdsForSqlServer";
 
     /*
      * The name or network address of the instance of SQL Server to which to connect, used by recommended version. Type:
      * string (or Expression with resultType string).
      */
+    @Generated
     private Object server;
 
     /*
      * The name of the database, used by recommended version. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object database;
 
     /*
@@ -39,12 +43,14 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * version. Possible values are true/yes/mandatory, false/no/optional and strict. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object encrypt;
 
     /*
      * Indicate whether the channel will be encrypted while bypassing walking the certificate chain to validate trust,
      * used by recommended version. Type: Boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object trustServerCertificate;
 
     /*
@@ -52,18 +58,21 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * name from the Data Source is used for certificate validation, used by recommended version. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object hostNameInCertificate;
 
     /*
      * The application workload type when connecting to a server, used by recommended version. Possible values are
      * ReadOnly and ReadWrite. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object applicationIntent;
 
     /*
      * The length of time (in seconds) to wait for a connection to the server before terminating the attempt and
      * generating an error, used by recommended version. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object connectTimeout;
 
     /*
@@ -71,6 +80,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * recommended version. This must be an integer between 0 and 255. Type: integer (or Expression with resultType
      * integer).
      */
+    @Generated
     private Object connectRetryCount;
 
     /*
@@ -78,18 +88,21 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * connection failure, used by recommended version. This must be an integer between 1 and 60. Type: integer (or
      * Expression with resultType integer).
      */
+    @Generated
     private Object connectRetryInterval;
 
     /*
      * The minimum time, in seconds, for the connection to live in the connection pool before being destroyed, used by
      * recommended version. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object loadBalanceTimeout;
 
     /*
      * The default wait time (in seconds) before terminating the attempt to execute a command and generating an error,
      * used by recommended version. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object commandTimeout;
 
     /*
@@ -97,24 +110,28 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * account credentials are used for authentication (when true), used by recommended version. Type: Boolean (or
      * Expression with resultType boolean).
      */
+    @Generated
     private Object integratedSecurity;
 
     /*
      * The name or address of the partner server to connect to if the primary server is down, used by recommended
      * version. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object failoverPartner;
 
     /*
      * The maximum number of connections allowed in the connection pool for this specific connection string, used by
      * recommended version. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object maxPoolSize;
 
     /*
      * The minimum number of connections allowed in the connection pool for this specific connection string, used by
      * recommended version. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object minPoolSize;
 
     /*
@@ -122,6 +139,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * process or cancel all result sets from one batch before it can execute any other batch on that connection. Type:
      * Boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object multipleActiveResultSets;
 
     /*
@@ -129,54 +147,64 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * MultiSubnetFailover=true provides faster detection of and connection to the (currently) active server, used by
      * recommended version. Type: Boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object multiSubnetFailover;
 
     /*
      * The size in bytes of the network packets used to communicate with an instance of server, used by recommended
      * version. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object packetSize;
 
     /*
      * Indicate whether the connection will be pooled or explicitly opened every time that the connection is requested,
      * used by recommended version. Type: Boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object pooling;
 
     /*
      * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * The type used for authentication. Type: string.
      */
+    @Generated
     private AmazonRdsForSqlServerAuthenticationType authenticationType;
 
     /*
      * The on-premises Windows authentication user name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object userName;
 
     /*
      * The on-premises Windows authentication password.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /*
      * Sql always encrypted properties.
      */
+    @Generated
     private SqlAlwaysEncryptedProperties alwaysEncryptedSettings;
 
     /**
      * Creates an instance of AmazonRdsForSqlServerLinkedService class.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService() {
     }
 
@@ -185,6 +213,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -196,6 +225,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the server value.
      */
+    @Generated
     public Object getServer() {
         return this.server;
     }
@@ -207,6 +237,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param server the server value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setServer(Object server) {
         this.server = server;
         return this;
@@ -218,6 +249,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the database value.
      */
+    @Generated
     public Object getDatabase() {
         return this.database;
     }
@@ -229,6 +261,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param database the database value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setDatabase(Object database) {
         this.database = database;
         return this;
@@ -241,6 +274,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the encrypt value.
      */
+    @Generated
     public Object getEncrypt() {
         return this.encrypt;
     }
@@ -253,6 +287,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param encrypt the encrypt value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setEncrypt(Object encrypt) {
         this.encrypt = encrypt;
         return this;
@@ -265,6 +300,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the trustServerCertificate value.
      */
+    @Generated
     public Object getTrustServerCertificate() {
         return this.trustServerCertificate;
     }
@@ -277,6 +313,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param trustServerCertificate the trustServerCertificate value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setTrustServerCertificate(Object trustServerCertificate) {
         this.trustServerCertificate = trustServerCertificate;
         return this;
@@ -289,6 +326,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the hostNameInCertificate value.
      */
+    @Generated
     public Object getHostNameInCertificate() {
         return this.hostNameInCertificate;
     }
@@ -301,6 +339,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param hostNameInCertificate the hostNameInCertificate value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setHostNameInCertificate(Object hostNameInCertificate) {
         this.hostNameInCertificate = hostNameInCertificate;
         return this;
@@ -313,6 +352,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the applicationIntent value.
      */
+    @Generated
     public Object getApplicationIntent() {
         return this.applicationIntent;
     }
@@ -325,6 +365,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param applicationIntent the applicationIntent value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setApplicationIntent(Object applicationIntent) {
         this.applicationIntent = applicationIntent;
         return this;
@@ -337,6 +378,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the connectTimeout value.
      */
+    @Generated
     public Object getConnectTimeout() {
         return this.connectTimeout;
     }
@@ -349,6 +391,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param connectTimeout the connectTimeout value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setConnectTimeout(Object connectTimeout) {
         this.connectTimeout = connectTimeout;
         return this;
@@ -361,6 +404,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the connectRetryCount value.
      */
+    @Generated
     public Object getConnectRetryCount() {
         return this.connectRetryCount;
     }
@@ -373,6 +417,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param connectRetryCount the connectRetryCount value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setConnectRetryCount(Object connectRetryCount) {
         this.connectRetryCount = connectRetryCount;
         return this;
@@ -385,6 +430,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the connectRetryInterval value.
      */
+    @Generated
     public Object getConnectRetryInterval() {
         return this.connectRetryInterval;
     }
@@ -397,6 +443,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param connectRetryInterval the connectRetryInterval value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setConnectRetryInterval(Object connectRetryInterval) {
         this.connectRetryInterval = connectRetryInterval;
         return this;
@@ -408,6 +455,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the loadBalanceTimeout value.
      */
+    @Generated
     public Object getLoadBalanceTimeout() {
         return this.loadBalanceTimeout;
     }
@@ -419,6 +467,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param loadBalanceTimeout the loadBalanceTimeout value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setLoadBalanceTimeout(Object loadBalanceTimeout) {
         this.loadBalanceTimeout = loadBalanceTimeout;
         return this;
@@ -431,6 +480,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the commandTimeout value.
      */
+    @Generated
     public Object getCommandTimeout() {
         return this.commandTimeout;
     }
@@ -443,6 +493,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param commandTimeout the commandTimeout value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setCommandTimeout(Object commandTimeout) {
         this.commandTimeout = commandTimeout;
         return this;
@@ -455,6 +506,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the integratedSecurity value.
      */
+    @Generated
     public Object getIntegratedSecurity() {
         return this.integratedSecurity;
     }
@@ -467,6 +519,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param integratedSecurity the integratedSecurity value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setIntegratedSecurity(Object integratedSecurity) {
         this.integratedSecurity = integratedSecurity;
         return this;
@@ -478,6 +531,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the failoverPartner value.
      */
+    @Generated
     public Object getFailoverPartner() {
         return this.failoverPartner;
     }
@@ -489,6 +543,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param failoverPartner the failoverPartner value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setFailoverPartner(Object failoverPartner) {
         this.failoverPartner = failoverPartner;
         return this;
@@ -500,6 +555,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the maxPoolSize value.
      */
+    @Generated
     public Object getMaxPoolSize() {
         return this.maxPoolSize;
     }
@@ -511,6 +567,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param maxPoolSize the maxPoolSize value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setMaxPoolSize(Object maxPoolSize) {
         this.maxPoolSize = maxPoolSize;
         return this;
@@ -522,6 +579,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the minPoolSize value.
      */
+    @Generated
     public Object getMinPoolSize() {
         return this.minPoolSize;
     }
@@ -533,6 +591,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param minPoolSize the minPoolSize value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setMinPoolSize(Object minPoolSize) {
         this.minPoolSize = minPoolSize;
         return this;
@@ -545,6 +604,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the multipleActiveResultSets value.
      */
+    @Generated
     public Object getMultipleActiveResultSets() {
         return this.multipleActiveResultSets;
     }
@@ -557,6 +617,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param multipleActiveResultSets the multipleActiveResultSets value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setMultipleActiveResultSets(Object multipleActiveResultSets) {
         this.multipleActiveResultSets = multipleActiveResultSets;
         return this;
@@ -569,6 +630,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the multiSubnetFailover value.
      */
+    @Generated
     public Object getMultiSubnetFailover() {
         return this.multiSubnetFailover;
     }
@@ -581,6 +643,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param multiSubnetFailover the multiSubnetFailover value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setMultiSubnetFailover(Object multiSubnetFailover) {
         this.multiSubnetFailover = multiSubnetFailover;
         return this;
@@ -592,6 +655,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the packetSize value.
      */
+    @Generated
     public Object getPacketSize() {
         return this.packetSize;
     }
@@ -603,6 +667,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param packetSize the packetSize value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setPacketSize(Object packetSize) {
         this.packetSize = packetSize;
         return this;
@@ -614,6 +679,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the pooling value.
      */
+    @Generated
     public Object getPooling() {
         return this.pooling;
     }
@@ -625,6 +691,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param pooling the pooling value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setPooling(Object pooling) {
         this.pooling = pooling;
         return this;
@@ -636,6 +703,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -647,6 +715,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param connectionString the connectionString value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -657,6 +726,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public AmazonRdsForSqlServerAuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -667,6 +737,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService
         setAuthenticationType(AmazonRdsForSqlServerAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
@@ -679,6 +750,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the userName value.
      */
+    @Generated
     public Object getUserName() {
         return this.userName;
     }
@@ -690,6 +762,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param userName the userName value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setUserName(Object userName) {
         this.userName = userName;
         return this;
@@ -700,6 +773,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -710,6 +784,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -721,6 +796,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -732,6 +808,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -742,6 +819,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the alwaysEncryptedSettings value.
      */
+    @Generated
     public SqlAlwaysEncryptedProperties getAlwaysEncryptedSettings() {
         return this.alwaysEncryptedSettings;
     }
@@ -752,6 +830,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * @param alwaysEncryptedSettings the alwaysEncryptedSettings value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedService
         setAlwaysEncryptedSettings(SqlAlwaysEncryptedProperties alwaysEncryptedSettings) {
         this.alwaysEncryptedSettings = alwaysEncryptedSettings;
@@ -761,6 +840,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedService setVersion(String version) {
         super.setVersion(version);
@@ -770,6 +850,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -779,6 +860,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -788,6 +870,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -797,6 +880,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -806,6 +890,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -841,31 +926,75 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
             || encryptedCredential != null
             || alwaysEncryptedSettings != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("server", this.server);
-            jsonWriter.writeUntypedField("database", this.database);
-            jsonWriter.writeUntypedField("encrypt", this.encrypt);
-            jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
-            jsonWriter.writeUntypedField("hostNameInCertificate", this.hostNameInCertificate);
-            jsonWriter.writeUntypedField("applicationIntent", this.applicationIntent);
-            jsonWriter.writeUntypedField("connectTimeout", this.connectTimeout);
-            jsonWriter.writeUntypedField("connectRetryCount", this.connectRetryCount);
-            jsonWriter.writeUntypedField("connectRetryInterval", this.connectRetryInterval);
-            jsonWriter.writeUntypedField("loadBalanceTimeout", this.loadBalanceTimeout);
-            jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
-            jsonWriter.writeUntypedField("integratedSecurity", this.integratedSecurity);
-            jsonWriter.writeUntypedField("failoverPartner", this.failoverPartner);
-            jsonWriter.writeUntypedField("maxPoolSize", this.maxPoolSize);
-            jsonWriter.writeUntypedField("minPoolSize", this.minPoolSize);
-            jsonWriter.writeUntypedField("multipleActiveResultSets", this.multipleActiveResultSets);
-            jsonWriter.writeUntypedField("multiSubnetFailover", this.multiSubnetFailover);
-            jsonWriter.writeUntypedField("packetSize", this.packetSize);
-            jsonWriter.writeUntypedField("pooling", this.pooling);
-            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            if (this.server != null) {
+                jsonWriter.writeUntypedField("server", this.server);
+            }
+            if (this.database != null) {
+                jsonWriter.writeUntypedField("database", this.database);
+            }
+            if (this.encrypt != null) {
+                jsonWriter.writeUntypedField("encrypt", this.encrypt);
+            }
+            if (this.trustServerCertificate != null) {
+                jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
+            }
+            if (this.hostNameInCertificate != null) {
+                jsonWriter.writeUntypedField("hostNameInCertificate", this.hostNameInCertificate);
+            }
+            if (this.applicationIntent != null) {
+                jsonWriter.writeUntypedField("applicationIntent", this.applicationIntent);
+            }
+            if (this.connectTimeout != null) {
+                jsonWriter.writeUntypedField("connectTimeout", this.connectTimeout);
+            }
+            if (this.connectRetryCount != null) {
+                jsonWriter.writeUntypedField("connectRetryCount", this.connectRetryCount);
+            }
+            if (this.connectRetryInterval != null) {
+                jsonWriter.writeUntypedField("connectRetryInterval", this.connectRetryInterval);
+            }
+            if (this.loadBalanceTimeout != null) {
+                jsonWriter.writeUntypedField("loadBalanceTimeout", this.loadBalanceTimeout);
+            }
+            if (this.commandTimeout != null) {
+                jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+            }
+            if (this.integratedSecurity != null) {
+                jsonWriter.writeUntypedField("integratedSecurity", this.integratedSecurity);
+            }
+            if (this.failoverPartner != null) {
+                jsonWriter.writeUntypedField("failoverPartner", this.failoverPartner);
+            }
+            if (this.maxPoolSize != null) {
+                jsonWriter.writeUntypedField("maxPoolSize", this.maxPoolSize);
+            }
+            if (this.minPoolSize != null) {
+                jsonWriter.writeUntypedField("minPoolSize", this.minPoolSize);
+            }
+            if (this.multipleActiveResultSets != null) {
+                jsonWriter.writeUntypedField("multipleActiveResultSets", this.multipleActiveResultSets);
+            }
+            if (this.multiSubnetFailover != null) {
+                jsonWriter.writeUntypedField("multiSubnetFailover", this.multiSubnetFailover);
+            }
+            if (this.packetSize != null) {
+                jsonWriter.writeUntypedField("packetSize", this.packetSize);
+            }
+            if (this.pooling != null) {
+                jsonWriter.writeUntypedField("pooling", this.pooling);
+            }
+            if (this.connectionString != null) {
+                jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            }
             jsonWriter.writeStringField("authenticationType",
                 this.authenticationType == null ? null : this.authenticationType.toString());
-            jsonWriter.writeUntypedField("userName", this.userName);
+            if (this.userName != null) {
+                jsonWriter.writeUntypedField("userName", this.userName);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeJsonField("alwaysEncryptedSettings", this.alwaysEncryptedSettings);
             jsonWriter.writeEndObject();
         }
@@ -885,6 +1014,7 @@ public class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AmazonRdsForSqlServerLinkedService.
      */
+    @Generated
     public static AmazonRdsForSqlServerLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AmazonRdsForSqlServerLinkedService deserializedAmazonRdsForSqlServerLinkedService

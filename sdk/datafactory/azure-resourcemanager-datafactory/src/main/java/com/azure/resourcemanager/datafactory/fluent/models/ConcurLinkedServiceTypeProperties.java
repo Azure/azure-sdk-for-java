@@ -268,11 +268,19 @@ public final class ConcurLinkedServiceTypeProperties implements JsonSerializable
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("clientId", this.clientId);
         jsonWriter.writeUntypedField("username", this.username);
-        jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+        if (this.connectionProperties != null) {
+            jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
-        jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
-        jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        if (this.useEncryptedEndpoints != null) {
+            jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        }
+        if (this.useHostVerification != null) {
+            jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+        }
+        if (this.usePeerVerification != null) {
+            jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

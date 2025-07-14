@@ -65,6 +65,7 @@ public class JdkHttpClientBuilder {
     private Configuration configuration;
     private Executor executor;
     private SSLContext sslContext;
+    private HttpProtocolVersion maximumHttpVersion = HttpProtocolVersion.HTTP_2;
 
     private Duration connectionTimeout;
     private Duration writeTimeout;
@@ -224,6 +225,27 @@ public class JdkHttpClientBuilder {
     }
 
     /**
+     * Sets the maximum {@link HttpProtocolVersion HTTP protocol version} that the HTTP client will support.
+     * <p>
+     * By default, the maximum HTTP protocol version is set to {@link HttpProtocolVersion#HTTP_2 HTTP_2}.
+     * <p>
+     * If {@code httpVersion} is null, it will reset the maximum HTTP protocol version to
+     * {@link HttpProtocolVersion#HTTP_2 HTTP_2}.
+     *
+     * @param httpVersion The maximum HTTP protocol version that the HTTP client will support.
+     * @return The updated {@link JdkHttpClientBuilder} object.
+     */
+    public JdkHttpClientBuilder setMaximumHttpVersion(HttpProtocolVersion httpVersion) {
+        if (httpVersion != null) {
+            this.maximumHttpVersion = httpVersion;
+        } else {
+            this.maximumHttpVersion = HttpProtocolVersion.HTTP_2;
+        }
+
+        return this;
+    }
+
+    /**
      * Sets the configuration store that is used during construction of the HTTP client.
      *
      * @param configuration The configuration store used to
@@ -241,9 +263,6 @@ public class JdkHttpClientBuilder {
      */
     public HttpClient build() {
         java.net.http.HttpClient.Builder httpClientBuilder = java.net.http.HttpClient.newBuilder();
-
-        // Client Core JDK http client supports HTTP 1.1 by default.
-        httpClientBuilder.version(java.net.http.HttpClient.Version.HTTP_1_1);
 
         httpClientBuilder = httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECTION_TIMEOUT));
 
@@ -263,6 +282,12 @@ public class JdkHttpClientBuilder {
 
         if (sslContext != null) {
             httpClientBuilder.sslContext(sslContext);
+        }
+
+        if (maximumHttpVersion == HttpProtocolVersion.HTTP_1_1) {
+            httpClientBuilder.version(java.net.http.HttpClient.Version.HTTP_1_1);
+        } else if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
+            httpClientBuilder.version(java.net.http.HttpClient.Version.HTTP_2);
         }
 
         if (buildProxyOptions != null) {

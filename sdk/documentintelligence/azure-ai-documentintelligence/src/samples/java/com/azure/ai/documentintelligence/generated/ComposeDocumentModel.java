@@ -22,7 +22,7 @@ public class ComposeDocumentModel {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.composemodel.composedocumentmodel
+        // BEGIN:com.azure.ai.documentintelligence.generated.compose-model.compose-document-model
         SyncPoller<DocumentModelComposeOperationDetails, DocumentModelDetails> response
             = documentIntelligenceAdministrationClient
                 .beginComposeModel(
@@ -30,7 +30,7 @@ public class ComposeDocumentModel {
                         mapOf("formA", new DocumentTypeDetails().setModelId("model1"), "formB",
                             new DocumentTypeDetails().setModelId("model2")))
                                 .setDescription("Composed model description"));
-        // END:com.azure.ai.documentintelligence.generated.composemodel.composedocumentmodel
+        // END:com.azure.ai.documentintelligence.generated.compose-model.compose-document-model
     }
 
     // Use "Map.of" if available

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.ReissueCertificateOrderReques
 public final class AppServiceCertificateOrdersReissueSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-04-01/examples/
+     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/
      * ReissueAppServiceCertificateOrder.json
      */
     /**

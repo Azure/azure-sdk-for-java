@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class SqlPoolReference implements JsonSerializable<SqlPoolReference
     /*
      * SQL pool reference type.
      */
+    @Generated
     private SqlPoolReferenceType type;
 
     /*
      * Reference SQL pool name.
      */
+    @Generated
     private String referenceName;
 
     /**
      * Creates an instance of SqlPoolReference class.
      */
+    @Generated
     public SqlPoolReference() {
     }
 
@@ -37,6 +41,7 @@ public final class SqlPoolReference implements JsonSerializable<SqlPoolReference
      * 
      * @return the type value.
      */
+    @Generated
     public SqlPoolReferenceType getType() {
         return this.type;
     }
@@ -47,6 +52,7 @@ public final class SqlPoolReference implements JsonSerializable<SqlPoolReference
      * @param type the type value to set.
      * @return the SqlPoolReference object itself.
      */
+    @Generated
     public SqlPoolReference setType(SqlPoolReferenceType type) {
         this.type = type;
         return this;
@@ -57,6 +63,7 @@ public final class SqlPoolReference implements JsonSerializable<SqlPoolReference
      * 
      * @return the referenceName value.
      */
+    @Generated
     public String getReferenceName() {
         return this.referenceName;
     }
@@ -67,6 +74,7 @@ public final class SqlPoolReference implements JsonSerializable<SqlPoolReference
      * @param referenceName the referenceName value to set.
      * @return the SqlPoolReference object itself.
      */
+    @Generated
     public SqlPoolReference setReferenceName(String referenceName) {
         this.referenceName = referenceName;
         return this;
@@ -75,6 +83,7 @@ public final class SqlPoolReference implements JsonSerializable<SqlPoolReference
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class SqlPoolReference implements JsonSerializable<SqlPoolReference
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SqlPoolReference.
      */
+    @Generated
     public static SqlPoolReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SqlPoolReference deserializedSqlPoolReference = new SqlPoolReference();

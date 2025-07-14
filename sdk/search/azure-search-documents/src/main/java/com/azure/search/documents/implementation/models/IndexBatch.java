@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,6 +23,7 @@ public final class IndexBatch implements JsonSerializable<IndexBatch> {
     /*
      * The actions in the batch.
      */
+    @Generated
     private final List<IndexAction> actions;
 
     /**
@@ -29,6 +31,7 @@ public final class IndexBatch implements JsonSerializable<IndexBatch> {
      * 
      * @param actions the actions value to set.
      */
+    @Generated
     public IndexBatch(List<IndexAction> actions) {
         this.actions = actions;
     }
@@ -38,6 +41,7 @@ public final class IndexBatch implements JsonSerializable<IndexBatch> {
      * 
      * @return the actions value.
      */
+    @Generated
     public List<IndexAction> getActions() {
         return this.actions;
     }
@@ -45,6 +49,7 @@ public final class IndexBatch implements JsonSerializable<IndexBatch> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -61,6 +66,7 @@ public final class IndexBatch implements JsonSerializable<IndexBatch> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IndexBatch.
      */
+    @Generated
     public static IndexBatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean actionsFound = false;

@@ -63,7 +63,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         return getCryptographyClientBuilder(
             buildSyncAssertingClient(
                 interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
-            serviceVersion).keyIdentifier(keyId).buildClient();
+            serviceVersion).keyIdentifier(keyId).disableKeyCaching().buildClient();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

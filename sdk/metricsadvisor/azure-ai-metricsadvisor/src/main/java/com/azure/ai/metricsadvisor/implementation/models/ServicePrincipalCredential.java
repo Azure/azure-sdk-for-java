@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,21 +20,19 @@ public final class ServicePrincipalCredential extends DataSourceCredential {
     /*
      * Type of data source credential
      */
+    @Generated
     private DataSourceCredentialType dataSourceCredentialType = DataSourceCredentialType.SERVICE_PRINCIPAL;
 
     /*
      * The parameters property.
      */
+    @Generated
     private ServicePrincipalParam parameters;
-
-    /*
-     * Unique id of data source credential
-     */
-    private UUID dataSourceCredentialId;
 
     /**
      * Creates an instance of ServicePrincipalCredential class.
      */
+    @Generated
     public ServicePrincipalCredential() {
     }
 
@@ -42,6 +41,7 @@ public final class ServicePrincipalCredential extends DataSourceCredential {
      * 
      * @return the dataSourceCredentialType value.
      */
+    @Generated
     @Override
     public DataSourceCredentialType getDataSourceCredentialType() {
         return this.dataSourceCredentialType;
@@ -52,6 +52,7 @@ public final class ServicePrincipalCredential extends DataSourceCredential {
      * 
      * @return the parameters value.
      */
+    @Generated
     public ServicePrincipalParam getParameters() {
         return this.parameters;
     }
@@ -62,24 +63,16 @@ public final class ServicePrincipalCredential extends DataSourceCredential {
      * @param parameters the parameters value to set.
      * @return the ServicePrincipalCredential object itself.
      */
+    @Generated
     public ServicePrincipalCredential setParameters(ServicePrincipalParam parameters) {
         this.parameters = parameters;
         return this;
     }
 
     /**
-     * Get the dataSourceCredentialId property: Unique id of data source credential.
-     * 
-     * @return the dataSourceCredentialId value.
-     */
-    @Override
-    public UUID getDataSourceCredentialId() {
-        return this.dataSourceCredentialId;
-    }
-
-    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ServicePrincipalCredential setDataSourceCredentialName(String dataSourceCredentialName) {
         super.setDataSourceCredentialName(dataSourceCredentialName);
@@ -89,6 +82,7 @@ public final class ServicePrincipalCredential extends DataSourceCredential {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ServicePrincipalCredential setDataSourceCredentialDescription(String dataSourceCredentialDescription) {
         super.setDataSourceCredentialDescription(dataSourceCredentialDescription);
@@ -98,6 +92,7 @@ public final class ServicePrincipalCredential extends DataSourceCredential {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +113,7 @@ public final class ServicePrincipalCredential extends DataSourceCredential {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ServicePrincipalCredential.
      */
+    @Generated
     public static ServicePrincipalCredential fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ServicePrincipalCredential deserializedServicePrincipalCredential = new ServicePrincipalCredential();
@@ -128,8 +124,8 @@ public final class ServicePrincipalCredential extends DataSourceCredential {
                 if ("dataSourceCredentialName".equals(fieldName)) {
                     deserializedServicePrincipalCredential.setDataSourceCredentialName(reader.getString());
                 } else if ("dataSourceCredentialId".equals(fieldName)) {
-                    deserializedServicePrincipalCredential.dataSourceCredentialId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedServicePrincipalCredential.setDataSourceCredentialId(
+                        reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("dataSourceCredentialDescription".equals(fieldName)) {
                     deserializedServicePrincipalCredential.setDataSourceCredentialDescription(reader.getString());
                 } else if ("parameters".equals(fieldName)) {

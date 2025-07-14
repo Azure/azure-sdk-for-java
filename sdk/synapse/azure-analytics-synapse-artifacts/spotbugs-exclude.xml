@@ -3,6 +3,48 @@
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" />
+    <Or>
+      <Class name="com.azure.analytics.synapse.artifacts.models.AmazonMWSObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.AzureDataExplorerTableDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.AzureMariaDBTableDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.CommonDataServiceForAppsEntityDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.ConcurObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.CouchbaseTableDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.DynamicsCrmEntityDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.DynamicsEntityDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.EloquaObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.GoogleAdWordsObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.HBaseObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.HubspotObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.InformixTableDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.JiraObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.MagentoObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.MariaDBTableDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.MarketoObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.MicrosoftAccessTableDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.MySqlTableDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.ODataResourceDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.OdbcTableDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.OracleServiceCloudObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.PaypalObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.QuickBooksObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.RelationalTableDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.ResponsysObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.SalesforceMarketingCloudObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.SalesforceObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.SalesforceServiceCloudObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.ServiceNowObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.ServiceNowV2ObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.SharePointOnlineListResourceDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.ShopifyObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.SquareObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.SybaseTableDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.XeroObjectDataset" />
+      <Class name="com.azure.analytics.synapse.artifacts.models.ZohoObjectDataset" />
+    </Or>
+  </Match>
+  <Match>
     <Bug pattern="SS_SHOULD_BE_STATIC" />
     <Or>
       <Class name="com.azure.analytics.synapse.artifacts.models.ManagedVirtualNetworkReference" />

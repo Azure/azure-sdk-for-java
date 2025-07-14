@@ -7,8 +7,8 @@ package com.azure.resourcemanager.dnsresolver.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dnsresolver.DnsResolverManager;
 import com.azure.resourcemanager.dnsresolver.models.DnsForwardingRuleset;
@@ -22,20 +22,20 @@ public final class DnsForwardingRulesetsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"skfc\",\"properties\":{\"dnsResolverOutboundEndpoints\":[{\"id\":\"umiekkezzi\"}],\"provisioningState\":\"Canceled\",\"resourceGuid\":\"fjhdg\"},\"location\":\"gebdunygaeq\",\"tags\":{\"a\":\"qfatpxllrxcyjm\",\"arm\":\"su\",\"rw\":\"wdmjsjqbjhhyx\",\"duhpk\":\"yc\"},\"id\":\"kgymareqnajxqug\",\"name\":\"hky\",\"type\":\"ubeddg\"}]}";
+            = "{\"value\":[{\"etag\":\"kkgthr\",\"properties\":{\"dnsResolverOutboundEndpoints\":[{\"id\":\"xjb\"}],\"provisioningState\":\"Updating\",\"resourceGuid\":\"vcxgfrpdsofbshr\"},\"location\":\"vbuswd\",\"tags\":{\"rtkfawnopq\":\"ybycnunvj\",\"x\":\"ikyzirtxdy\"},\"id\":\"ejnt\",\"name\":\"sewgioilqukr\",\"type\":\"dxtqmieoxo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DnsResolverManager manager = DnsResolverManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DnsForwardingRuleset> response
-            = manager.dnsForwardingRulesets().list(802895356, com.azure.core.util.Context.NONE);
+            = manager.dnsForwardingRulesets().list(1331454733, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gebdunygaeq", response.iterator().next().location());
-        Assertions.assertEquals("qfatpxllrxcyjm", response.iterator().next().tags().get("a"));
-        Assertions.assertEquals("umiekkezzi", response.iterator().next().dnsResolverOutboundEndpoints().get(0).id());
+        Assertions.assertEquals("vbuswd", response.iterator().next().location());
+        Assertions.assertEquals("ybycnunvj", response.iterator().next().tags().get("rtkfawnopq"));
+        Assertions.assertEquals("xjb", response.iterator().next().dnsResolverOutboundEndpoints().get(0).id());
     }
 }

@@ -40,6 +40,11 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
     private Object identifiers;
 
     /*
+     * The extension the resource was deployed with.
+     */
+    private DeploymentExtensionDefinition extension;
+
+    /*
      * Type of change that will be made to the resource when the deployment is executed.
      */
     private ChangeType changeType;
@@ -153,6 +158,26 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
     }
 
     /**
+     * Get the extension property: The extension the resource was deployed with.
+     * 
+     * @return the extension value.
+     */
+    public DeploymentExtensionDefinition extension() {
+        return this.extension;
+    }
+
+    /**
+     * Set the extension property: The extension the resource was deployed with.
+     * 
+     * @param extension the extension value to set.
+     * @return the WhatIfChange object itself.
+     */
+    public WhatIfChange withExtension(DeploymentExtensionDefinition extension) {
+        this.extension = extension;
+        return this;
+    }
+
+    /**
      * Get the changeType property: Type of change that will be made to the resource when the deployment is executed.
      * 
      * @return the changeType value.
@@ -258,6 +283,9 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extension() != null) {
+            extension().validate();
+        }
         if (changeType() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property changeType in model WhatIfChange"));
@@ -279,10 +307,17 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
         jsonWriter.writeStringField("resourceId", this.resourceId);
         jsonWriter.writeStringField("deploymentId", this.deploymentId);
         jsonWriter.writeStringField("symbolicName", this.symbolicName);
-        jsonWriter.writeUntypedField("identifiers", this.identifiers);
+        if (this.identifiers != null) {
+            jsonWriter.writeUntypedField("identifiers", this.identifiers);
+        }
+        jsonWriter.writeJsonField("extension", this.extension);
         jsonWriter.writeStringField("unsupportedReason", this.unsupportedReason);
-        jsonWriter.writeUntypedField("before", this.before);
-        jsonWriter.writeUntypedField("after", this.after);
+        if (this.before != null) {
+            jsonWriter.writeUntypedField("before", this.before);
+        }
+        if (this.after != null) {
+            jsonWriter.writeUntypedField("after", this.after);
+        }
         jsonWriter.writeArrayField("delta", this.delta, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -313,6 +348,8 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
                     deserializedWhatIfChange.symbolicName = reader.getString();
                 } else if ("identifiers".equals(fieldName)) {
                     deserializedWhatIfChange.identifiers = reader.readUntyped();
+                } else if ("extension".equals(fieldName)) {
+                    deserializedWhatIfChange.extension = DeploymentExtensionDefinition.fromJson(reader);
                 } else if ("unsupportedReason".equals(fieldName)) {
                     deserializedWhatIfChange.unsupportedReason = reader.getString();
                 } else if ("before".equals(fieldName)) {

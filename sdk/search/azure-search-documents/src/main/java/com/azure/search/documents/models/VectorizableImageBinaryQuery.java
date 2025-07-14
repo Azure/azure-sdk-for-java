@@ -6,6 +6,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
     /*
      * The kind of vector query being performed.
      */
+    @Generated
     private VectorQueryKind kind = VectorQueryKind.IMAGE_BINARY;
 
     /*
      * The base 64 encoded binary of an image to be vectorized to perform a vector search query.
      */
+    @Generated
     private String base64Image;
 
     /**
      * Creates an instance of VectorizableImageBinaryQuery class.
      */
+    @Generated
     public VectorizableImageBinaryQuery() {
     }
 
@@ -39,6 +43,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
      *
      * @return the kind value.
      */
+    @Generated
     @Override
     public VectorQueryKind getKind() {
         return this.kind;
@@ -50,6 +55,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
      *
      * @return the base64Image value.
      */
+    @Generated
     public String getBase64Image() {
         return this.base64Image;
     }
@@ -61,6 +67,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
      * @param base64Image the base64Image value to set.
      * @return the VectorizableImageBinaryQuery object itself.
      */
+    @Generated
     public VectorizableImageBinaryQuery setBase64Image(String base64Image) {
         this.base64Image = base64Image;
         return this;
@@ -69,6 +76,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableImageBinaryQuery setKNearestNeighborsCount(Integer kNearestNeighborsCount) {
         super.setKNearestNeighborsCount(kNearestNeighborsCount);
@@ -78,6 +86,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableImageBinaryQuery setFields(String... fields) {
         super.setFields(fields);
@@ -87,6 +96,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableImageBinaryQuery setExhaustive(Boolean exhaustive) {
         super.setExhaustive(exhaustive);
@@ -96,6 +106,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableImageBinaryQuery setOversampling(Double oversampling) {
         super.setOversampling(oversampling);
@@ -105,6 +116,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableImageBinaryQuery setWeight(Float weight) {
         super.setWeight(weight);
@@ -114,6 +126,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableImageBinaryQuery setThreshold(VectorThreshold threshold) {
         super.setThreshold(threshold);
@@ -123,6 +136,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VectorizableImageBinaryQuery setFilterOverride(String filterOverride) {
         super.setFilterOverride(filterOverride);
@@ -132,6 +146,17 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public VectorizableImageBinaryQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
+        super.setPerDocumentVectorLimit(perDocumentVectorLimit);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -142,6 +167,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
         jsonWriter.writeNumberField("weight", getWeight());
         jsonWriter.writeJsonField("threshold", getThreshold());
         jsonWriter.writeStringField("filterOverride", getFilterOverride());
+        jsonWriter.writeNumberField("perDocumentVectorLimit", getPerDocumentVectorLimit());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("base64Image", this.base64Image);
         return jsonWriter.writeEndObject();
@@ -155,6 +181,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the VectorizableImageBinaryQuery.
      */
+    @Generated
     public static VectorizableImageBinaryQuery fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             VectorizableImageBinaryQuery deserializedVectorizableImageBinaryQuery = new VectorizableImageBinaryQuery();
@@ -176,6 +203,9 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
                     deserializedVectorizableImageBinaryQuery.setThreshold(VectorThreshold.fromJson(reader));
                 } else if ("filterOverride".equals(fieldName)) {
                     deserializedVectorizableImageBinaryQuery.setFilterOverride(reader.getString());
+                } else if ("perDocumentVectorLimit".equals(fieldName)) {
+                    deserializedVectorizableImageBinaryQuery
+                        .setPerDocumentVectorLimit(reader.getNullable(JsonReader::getInt));
                 } else if ("kind".equals(fieldName)) {
                     deserializedVectorizableImageBinaryQuery.kind = VectorQueryKind.fromString(reader.getString());
                 } else if ("base64Image".equals(fieldName)) {

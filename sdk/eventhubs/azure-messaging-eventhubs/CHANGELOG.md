@@ -8,6 +8,12 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 5.20.3 (2025-04-16)
+
+### Bugs Fixed
+
 - Fixes issue where `EventHubBufferedProducerClient` and `EventHubBufferedProducerAsyncClient` are unable to `flush`. ([#44904](https://github.com/Azure/azure-sdk-for-java/pull/44904))
 
 ## 5.20.2 (2025-03-24)

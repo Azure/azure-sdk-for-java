@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeader;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -22,91 +22,109 @@ public final class DirectoriesGetPropertiesHeaders {
     /*
      * The x-ms-group property.
      */
+    @Generated
     private String xMsGroup;
 
     /*
      * The x-ms-version property.
      */
+    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-file-permission-key property.
      */
+    @Generated
     private String xMsFilePermissionKey;
 
     /*
      * The x-ms-file-id property.
      */
+    @Generated
     private String xMsFileId;
 
     /*
      * The x-ms-file-creation-time property.
      */
+    @Generated
     private OffsetDateTime xMsFileCreationTime;
 
     /*
      * The x-ms-file-file-type property.
      */
+    @Generated
     private NfsFileType xMsFileFileType;
 
     /*
      * The Last-Modified property.
      */
+    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-meta- property.
      */
+    @Generated
     private Map<String, String> xMsMeta;
 
     /*
      * The Date property.
      */
+    @Generated
     private DateTimeRfc1123 date;
 
     /*
      * The x-ms-mode property.
      */
+    @Generated
     private String xMsMode;
 
     /*
      * The x-ms-server-encrypted property.
      */
+    @Generated
     private Boolean xMsServerEncrypted;
 
     /*
      * The ETag property.
      */
+    @Generated
     private String eTag;
 
     /*
      * The x-ms-file-attributes property.
      */
+    @Generated
     private String xMsFileAttributes;
 
     /*
      * The x-ms-file-change-time property.
      */
+    @Generated
     private OffsetDateTime xMsFileChangeTime;
 
     /*
      * The x-ms-file-parent-id property.
      */
+    @Generated
     private String xMsFileParentId;
 
     /*
      * The x-ms-request-id property.
      */
+    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-file-last-write-time property.
      */
+    @Generated
     private OffsetDateTime xMsFileLastWriteTime;
 
     /*
      * The x-ms-owner property.
      */
+    @Generated
     private String xMsOwner;
 
     private static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
@@ -151,46 +169,59 @@ public final class DirectoriesGetPropertiesHeaders {
         String xMsFileCreationTime = rawHeaders.getValue(X_MS_FILE_CREATION_TIME);
         if (xMsFileCreationTime != null) {
             this.xMsFileCreationTime = OffsetDateTime.parse(xMsFileCreationTime);
+        } else {
+            this.xMsFileCreationTime = null;
         }
         String xMsFileFileType = rawHeaders.getValue(X_MS_FILE_FILE_TYPE);
         if (xMsFileFileType != null) {
             this.xMsFileFileType = NfsFileType.fromString(xMsFileFileType);
+        } else {
+            this.xMsFileFileType = null;
         }
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
+        } else {
+            this.lastModified = null;
         }
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
         this.xMsMode = rawHeaders.getValue(X_MS_MODE);
         String xMsServerEncrypted = rawHeaders.getValue(X_MS_SERVER_ENCRYPTED);
         if (xMsServerEncrypted != null) {
             this.xMsServerEncrypted = Boolean.parseBoolean(xMsServerEncrypted);
+        } else {
+            this.xMsServerEncrypted = null;
         }
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         this.xMsFileAttributes = rawHeaders.getValue(X_MS_FILE_ATTRIBUTES);
         String xMsFileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);
         if (xMsFileChangeTime != null) {
             this.xMsFileChangeTime = OffsetDateTime.parse(xMsFileChangeTime);
+        } else {
+            this.xMsFileChangeTime = null;
         }
         this.xMsFileParentId = rawHeaders.getValue(X_MS_FILE_PARENT_ID);
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
         if (xMsFileLastWriteTime != null) {
             this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
+        } else {
+            this.xMsFileLastWriteTime = null;
         }
         this.xMsOwner = rawHeaders.getValue(X_MS_OWNER);
         Map<String, String> xMsMetaHeaderCollection = new LinkedHashMap<>();
 
-        for (HttpHeader header : rawHeaders) {
+        rawHeaders.stream().forEach(header -> {
             String headerName = header.getName();
             if (headerName.startsWith("x-ms-meta-")) {
                 xMsMetaHeaderCollection.put(headerName.substring(10), header.getValue());
             }
-        }
-
+        });
         this.xMsMeta = xMsMetaHeaderCollection;
     }
 
@@ -199,6 +230,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the xMsGroup value.
      */
+    @Generated
     public String getXMsGroup() {
         return this.xMsGroup;
     }
@@ -209,6 +241,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param xMsGroup the xMsGroup value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setXMsGroup(String xMsGroup) {
         this.xMsGroup = xMsGroup;
         return this;
@@ -219,6 +252,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the xMsVersion value.
      */
+    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -229,6 +263,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -239,6 +274,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the xMsFilePermissionKey value.
      */
+    @Generated
     public String getXMsFilePermissionKey() {
         return this.xMsFilePermissionKey;
     }
@@ -249,6 +285,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param xMsFilePermissionKey the xMsFilePermissionKey value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setXMsFilePermissionKey(String xMsFilePermissionKey) {
         this.xMsFilePermissionKey = xMsFilePermissionKey;
         return this;
@@ -259,6 +296,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the xMsFileId value.
      */
+    @Generated
     public String getXMsFileId() {
         return this.xMsFileId;
     }
@@ -269,6 +307,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param xMsFileId the xMsFileId value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setXMsFileId(String xMsFileId) {
         this.xMsFileId = xMsFileId;
         return this;
@@ -279,6 +318,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the xMsFileCreationTime value.
      */
+    @Generated
     public OffsetDateTime getXMsFileCreationTime() {
         return this.xMsFileCreationTime;
     }
@@ -289,6 +329,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param xMsFileCreationTime the xMsFileCreationTime value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setXMsFileCreationTime(OffsetDateTime xMsFileCreationTime) {
         this.xMsFileCreationTime = xMsFileCreationTime;
         return this;
@@ -299,6 +340,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the xMsFileFileType value.
      */
+    @Generated
     public NfsFileType getXMsFileFileType() {
         return this.xMsFileFileType;
     }
@@ -309,6 +351,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param xMsFileFileType the xMsFileFileType value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setXMsFileFileType(NfsFileType xMsFileFileType) {
         this.xMsFileFileType = xMsFileFileType;
         return this;
@@ -319,6 +362,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the lastModified value.
      */
+    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -332,6 +376,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param lastModified the lastModified value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -346,6 +391,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the xMsMeta value.
      */
+    @Generated
     public Map<String, String> getXMsMeta() {
         return this.xMsMeta;
     }
@@ -356,6 +402,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param xMsMeta the xMsMeta value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setXMsMeta(Map<String, String> xMsMeta) {
         this.xMsMeta = xMsMeta;
         return this;
@@ -366,6 +413,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the date value.
      */
+    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -379,6 +427,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param date the date value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
@@ -393,6 +442,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the xMsMode value.
      */
+    @Generated
     public String getXMsMode() {
         return this.xMsMode;
     }
@@ -403,6 +453,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param xMsMode the xMsMode value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setXMsMode(String xMsMode) {
         this.xMsMode = xMsMode;
         return this;
@@ -413,6 +464,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the xMsServerEncrypted value.
      */
+    @Generated
     public Boolean isXMsServerEncrypted() {
         return this.xMsServerEncrypted;
     }
@@ -423,6 +475,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param xMsServerEncrypted the xMsServerEncrypted value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setXMsServerEncrypted(Boolean xMsServerEncrypted) {
         this.xMsServerEncrypted = xMsServerEncrypted;
         return this;
@@ -433,6 +486,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -443,6 +497,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param eTag the eTag value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -453,6 +508,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the xMsFileAttributes value.
      */
+    @Generated
     public String getXMsFileAttributes() {
         return this.xMsFileAttributes;
     }
@@ -463,6 +519,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param xMsFileAttributes the xMsFileAttributes value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setXMsFileAttributes(String xMsFileAttributes) {
         this.xMsFileAttributes = xMsFileAttributes;
         return this;
@@ -473,6 +530,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the xMsFileChangeTime value.
      */
+    @Generated
     public OffsetDateTime getXMsFileChangeTime() {
         return this.xMsFileChangeTime;
     }
@@ -483,6 +541,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param xMsFileChangeTime the xMsFileChangeTime value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setXMsFileChangeTime(OffsetDateTime xMsFileChangeTime) {
         this.xMsFileChangeTime = xMsFileChangeTime;
         return this;
@@ -493,6 +552,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the xMsFileParentId value.
      */
+    @Generated
     public String getXMsFileParentId() {
         return this.xMsFileParentId;
     }
@@ -503,6 +563,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param xMsFileParentId the xMsFileParentId value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setXMsFileParentId(String xMsFileParentId) {
         this.xMsFileParentId = xMsFileParentId;
         return this;
@@ -513,6 +574,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the xMsRequestId value.
      */
+    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -523,6 +585,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -533,6 +596,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the xMsFileLastWriteTime value.
      */
+    @Generated
     public OffsetDateTime getXMsFileLastWriteTime() {
         return this.xMsFileLastWriteTime;
     }
@@ -543,6 +607,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param xMsFileLastWriteTime the xMsFileLastWriteTime value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setXMsFileLastWriteTime(OffsetDateTime xMsFileLastWriteTime) {
         this.xMsFileLastWriteTime = xMsFileLastWriteTime;
         return this;
@@ -553,6 +618,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * 
      * @return the xMsOwner value.
      */
+    @Generated
     public String getXMsOwner() {
         return this.xMsOwner;
     }
@@ -563,6 +629,7 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param xMsOwner the xMsOwner value to set.
      * @return the DirectoriesGetPropertiesHeaders object itself.
      */
+    @Generated
     public DirectoriesGetPropertiesHeaders setXMsOwner(String xMsOwner) {
         this.xMsOwner = xMsOwner;
         return this;

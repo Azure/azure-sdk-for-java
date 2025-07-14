@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class HDInsightActivityDebugInfoOption extends ExpandableStringEnum
     /**
      * Static value None for HDInsightActivityDebugInfoOption.
      */
+    @Generated
     public static final HDInsightActivityDebugInfoOption NONE = fromString("None");
 
     /**
      * Static value Always for HDInsightActivityDebugInfoOption.
      */
+    @Generated
     public static final HDInsightActivityDebugInfoOption ALWAYS = fromString("Always");
 
     /**
      * Static value Failure for HDInsightActivityDebugInfoOption.
      */
+    @Generated
     public static final HDInsightActivityDebugInfoOption FAILURE = fromString("Failure");
 
     /**
@@ -31,6 +35,7 @@ public final class HDInsightActivityDebugInfoOption extends ExpandableStringEnum
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public HDInsightActivityDebugInfoOption() {
     }
@@ -41,6 +46,7 @@ public final class HDInsightActivityDebugInfoOption extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding HDInsightActivityDebugInfoOption.
      */
+    @Generated
     public static HDInsightActivityDebugInfoOption fromString(String name) {
         return fromString(name, HDInsightActivityDebugInfoOption.class);
     }
@@ -50,6 +56,7 @@ public final class HDInsightActivityDebugInfoOption extends ExpandableStringEnum
      * 
      * @return known HDInsightActivityDebugInfoOption values.
      */
+    @Generated
     public static Collection<HDInsightActivityDebugInfoOption> values() {
         return values(HDInsightActivityDebugInfoOption.class);
     }

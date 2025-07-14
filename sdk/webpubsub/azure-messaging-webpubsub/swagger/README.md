@@ -31,7 +31,7 @@ autorest
 ``` yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/webpubsub/data-plane/WebPubSub/stable/2024-01-01/webpubsub.json
 java: true
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.52'
 output-folder: ..
 namespace: com.azure.messaging.webpubsub
 sync-methods: all

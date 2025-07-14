@@ -5,6 +5,7 @@
 package com.azure.data.schemaregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class SchemaGroups implements JsonSerializable<SchemaGroups> {
     /*
      * Array of schema groups.
      */
+    @Generated
     private List<String> groups;
 
     /*
      * URl to next batch of schema groups
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of SchemaGroups class.
      */
+    @Generated
     public SchemaGroups() {
     }
 
@@ -38,6 +42,7 @@ public final class SchemaGroups implements JsonSerializable<SchemaGroups> {
      * 
      * @return the groups value.
      */
+    @Generated
     public List<String> getGroups() {
         return this.groups;
     }
@@ -48,6 +53,7 @@ public final class SchemaGroups implements JsonSerializable<SchemaGroups> {
      * @param groups the groups value to set.
      * @return the SchemaGroups object itself.
      */
+    @Generated
     public SchemaGroups setGroups(List<String> groups) {
         this.groups = groups;
         return this;
@@ -58,6 +64,7 @@ public final class SchemaGroups implements JsonSerializable<SchemaGroups> {
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -68,6 +75,7 @@ public final class SchemaGroups implements JsonSerializable<SchemaGroups> {
      * @param nextLink the nextLink value to set.
      * @return the SchemaGroups object itself.
      */
+    @Generated
     public SchemaGroups setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -76,6 +84,7 @@ public final class SchemaGroups implements JsonSerializable<SchemaGroups> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class SchemaGroups implements JsonSerializable<SchemaGroups> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SchemaGroups.
      */
+    @Generated
     public static SchemaGroups fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SchemaGroups deserializedSchemaGroups = new SchemaGroups();

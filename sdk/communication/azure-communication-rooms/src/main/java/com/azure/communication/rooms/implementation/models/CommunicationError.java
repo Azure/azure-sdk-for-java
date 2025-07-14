@@ -5,6 +5,7 @@
 package com.azure.communication.rooms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,31 +21,37 @@ public final class CommunicationError implements JsonSerializable<CommunicationE
     /*
      * The error code.
      */
+    @Generated
     private String code;
 
     /*
      * The error message.
      */
+    @Generated
     private String message;
 
     /*
      * The error target.
      */
+    @Generated
     private String target;
 
     /*
      * Further details about specific errors that led to this error.
      */
+    @Generated
     private List<CommunicationError> details;
 
     /*
      * The inner error if any.
      */
+    @Generated
     private CommunicationError innerError;
 
     /**
      * Creates an instance of CommunicationError class.
      */
+    @Generated
     public CommunicationError() {
     }
 
@@ -53,6 +60,7 @@ public final class CommunicationError implements JsonSerializable<CommunicationE
      * 
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -63,6 +71,7 @@ public final class CommunicationError implements JsonSerializable<CommunicationE
      * @param code the code value to set.
      * @return the CommunicationError object itself.
      */
+    @Generated
     public CommunicationError setCode(String code) {
         this.code = code;
         return this;
@@ -73,6 +82,7 @@ public final class CommunicationError implements JsonSerializable<CommunicationE
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -83,6 +93,7 @@ public final class CommunicationError implements JsonSerializable<CommunicationE
      * @param message the message value to set.
      * @return the CommunicationError object itself.
      */
+    @Generated
     public CommunicationError setMessage(String message) {
         this.message = message;
         return this;
@@ -93,6 +104,7 @@ public final class CommunicationError implements JsonSerializable<CommunicationE
      * 
      * @return the target value.
      */
+    @Generated
     public String getTarget() {
         return this.target;
     }
@@ -102,6 +114,7 @@ public final class CommunicationError implements JsonSerializable<CommunicationE
      * 
      * @return the details value.
      */
+    @Generated
     public List<CommunicationError> getDetails() {
         return this.details;
     }
@@ -111,10 +124,15 @@ public final class CommunicationError implements JsonSerializable<CommunicationE
      * 
      * @return the innerError value.
      */
+    @Generated
     public CommunicationError getInnerError() {
         return this.innerError;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -132,6 +150,7 @@ public final class CommunicationError implements JsonSerializable<CommunicationE
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CommunicationError.
      */
+    @Generated
     public static CommunicationError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CommunicationError deserializedCommunicationError = new CommunicationError();

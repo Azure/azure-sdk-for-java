@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,46 +22,55 @@ public class AzureBlobDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "AzureBlob";
 
     /*
      * The path of the Azure Blob storage. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object folderPath;
 
     /*
      * The root of blob path. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object tableRootLocation;
 
     /*
      * The name of the Azure Blob. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object fileName;
 
     /*
      * The start of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object modifiedDatetimeStart;
 
     /*
      * The end of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object modifiedDatetimeEnd;
 
     /*
      * The format of the Azure Blob storage.
      */
+    @Generated
     private DatasetStorageFormat format;
 
     /*
      * The data compression method used for the blob storage.
      */
+    @Generated
     private DatasetCompression compression;
 
     /**
      * Creates an instance of AzureBlobDataset class.
      */
+    @Generated
     public AzureBlobDataset() {
     }
 
@@ -69,6 +79,7 @@ public class AzureBlobDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -80,6 +91,7 @@ public class AzureBlobDataset extends Dataset {
      * 
      * @return the folderPath value.
      */
+    @Generated
     public Object getFolderPath() {
         return this.folderPath;
     }
@@ -91,6 +103,7 @@ public class AzureBlobDataset extends Dataset {
      * @param folderPath the folderPath value to set.
      * @return the AzureBlobDataset object itself.
      */
+    @Generated
     public AzureBlobDataset setFolderPath(Object folderPath) {
         this.folderPath = folderPath;
         return this;
@@ -101,6 +114,7 @@ public class AzureBlobDataset extends Dataset {
      * 
      * @return the tableRootLocation value.
      */
+    @Generated
     public Object getTableRootLocation() {
         return this.tableRootLocation;
     }
@@ -111,6 +125,7 @@ public class AzureBlobDataset extends Dataset {
      * @param tableRootLocation the tableRootLocation value to set.
      * @return the AzureBlobDataset object itself.
      */
+    @Generated
     public AzureBlobDataset setTableRootLocation(Object tableRootLocation) {
         this.tableRootLocation = tableRootLocation;
         return this;
@@ -121,6 +136,7 @@ public class AzureBlobDataset extends Dataset {
      * 
      * @return the fileName value.
      */
+    @Generated
     public Object getFileName() {
         return this.fileName;
     }
@@ -131,6 +147,7 @@ public class AzureBlobDataset extends Dataset {
      * @param fileName the fileName value to set.
      * @return the AzureBlobDataset object itself.
      */
+    @Generated
     public AzureBlobDataset setFileName(Object fileName) {
         this.fileName = fileName;
         return this;
@@ -142,6 +159,7 @@ public class AzureBlobDataset extends Dataset {
      * 
      * @return the modifiedDatetimeStart value.
      */
+    @Generated
     public Object getModifiedDatetimeStart() {
         return this.modifiedDatetimeStart;
     }
@@ -153,6 +171,7 @@ public class AzureBlobDataset extends Dataset {
      * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
      * @return the AzureBlobDataset object itself.
      */
+    @Generated
     public AzureBlobDataset setModifiedDatetimeStart(Object modifiedDatetimeStart) {
         this.modifiedDatetimeStart = modifiedDatetimeStart;
         return this;
@@ -164,6 +183,7 @@ public class AzureBlobDataset extends Dataset {
      * 
      * @return the modifiedDatetimeEnd value.
      */
+    @Generated
     public Object getModifiedDatetimeEnd() {
         return this.modifiedDatetimeEnd;
     }
@@ -175,6 +195,7 @@ public class AzureBlobDataset extends Dataset {
      * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
      * @return the AzureBlobDataset object itself.
      */
+    @Generated
     public AzureBlobDataset setModifiedDatetimeEnd(Object modifiedDatetimeEnd) {
         this.modifiedDatetimeEnd = modifiedDatetimeEnd;
         return this;
@@ -185,6 +206,7 @@ public class AzureBlobDataset extends Dataset {
      * 
      * @return the format value.
      */
+    @Generated
     public DatasetStorageFormat getFormat() {
         return this.format;
     }
@@ -195,6 +217,7 @@ public class AzureBlobDataset extends Dataset {
      * @param format the format value to set.
      * @return the AzureBlobDataset object itself.
      */
+    @Generated
     public AzureBlobDataset setFormat(DatasetStorageFormat format) {
         this.format = format;
         return this;
@@ -205,6 +228,7 @@ public class AzureBlobDataset extends Dataset {
      * 
      * @return the compression value.
      */
+    @Generated
     public DatasetCompression getCompression() {
         return this.compression;
     }
@@ -215,6 +239,7 @@ public class AzureBlobDataset extends Dataset {
      * @param compression the compression value to set.
      * @return the AzureBlobDataset object itself.
      */
+    @Generated
     public AzureBlobDataset setCompression(DatasetCompression compression) {
         this.compression = compression;
         return this;
@@ -223,6 +248,7 @@ public class AzureBlobDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataset setDescription(String description) {
         super.setDescription(description);
@@ -232,6 +258,7 @@ public class AzureBlobDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -241,6 +268,7 @@ public class AzureBlobDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -250,6 +278,7 @@ public class AzureBlobDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -259,6 +288,7 @@ public class AzureBlobDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -268,6 +298,7 @@ public class AzureBlobDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -277,6 +308,7 @@ public class AzureBlobDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -286,13 +318,18 @@ public class AzureBlobDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -305,11 +342,21 @@ public class AzureBlobDataset extends Dataset {
             || format != null
             || compression != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("folderPath", this.folderPath);
-            jsonWriter.writeUntypedField("tableRootLocation", this.tableRootLocation);
-            jsonWriter.writeUntypedField("fileName", this.fileName);
-            jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
-            jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+            if (this.folderPath != null) {
+                jsonWriter.writeUntypedField("folderPath", this.folderPath);
+            }
+            if (this.tableRootLocation != null) {
+                jsonWriter.writeUntypedField("tableRootLocation", this.tableRootLocation);
+            }
+            if (this.fileName != null) {
+                jsonWriter.writeUntypedField("fileName", this.fileName);
+            }
+            if (this.modifiedDatetimeStart != null) {
+                jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+            }
+            if (this.modifiedDatetimeEnd != null) {
+                jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+            }
             jsonWriter.writeJsonField("format", this.format);
             jsonWriter.writeJsonField("compression", this.compression);
             jsonWriter.writeEndObject();
@@ -331,6 +378,7 @@ public class AzureBlobDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureBlobDataset.
      */
+    @Generated
     public static AzureBlobDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureBlobDataset deserializedAzureBlobDataset = new AzureBlobDataset();

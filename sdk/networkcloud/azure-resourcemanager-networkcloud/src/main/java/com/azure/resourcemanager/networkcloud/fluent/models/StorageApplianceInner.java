@@ -28,6 +28,11 @@ import java.util.Map;
 @Fluent
 public final class StorageApplianceInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The extended location of the cluster associated with the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -61,6 +66,15 @@ public final class StorageApplianceInner extends Resource {
      * Creates an instance of StorageApplianceInner class.
      */
     public StorageApplianceInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -454,6 +468,8 @@ public final class StorageApplianceInner extends Resource {
                     deserializedStorageApplianceInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedStorageApplianceInner.innerProperties = StorageApplianceProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedStorageApplianceInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedStorageApplianceInner.systemData = SystemData.fromJson(reader);
                 } else {

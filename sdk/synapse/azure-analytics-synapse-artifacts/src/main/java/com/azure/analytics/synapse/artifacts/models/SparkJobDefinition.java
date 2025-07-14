@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,47 +22,56 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
     /*
      * The description of the Spark job definition.
      */
+    @Generated
     private String description;
 
     /*
      * Big data pool reference.
      */
+    @Generated
     private BigDataPoolReference targetBigDataPool;
 
     /*
      * The spark configuration of the spark job.
      */
+    @Generated
     private SparkConfigurationReference targetSparkConfiguration;
 
     /*
      * The required Spark version of the application.
      */
+    @Generated
     private String requiredSparkVersion;
 
     /*
      * The language of the Spark application.
      */
+    @Generated
     private String language;
 
     /*
      * The properties of the Spark job.
      */
+    @Generated
     private SparkJobProperties jobProperties;
 
     /*
      * The folder that this Spark job definition is in. If not specified, this Spark job definition will appear at the
      * root level.
      */
+    @Generated
     private SparkJobDefinitionFolder folder;
 
     /*
      * Spark job definition.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of SparkJobDefinition class.
      */
+    @Generated
     public SparkJobDefinition() {
     }
 
@@ -70,6 +80,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -80,6 +91,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
      * @param description the description value to set.
      * @return the SparkJobDefinition object itself.
      */
+    @Generated
     public SparkJobDefinition setDescription(String description) {
         this.description = description;
         return this;
@@ -90,6 +102,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
      * 
      * @return the targetBigDataPool value.
      */
+    @Generated
     public BigDataPoolReference getTargetBigDataPool() {
         return this.targetBigDataPool;
     }
@@ -100,6 +113,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
      * @param targetBigDataPool the targetBigDataPool value to set.
      * @return the SparkJobDefinition object itself.
      */
+    @Generated
     public SparkJobDefinition setTargetBigDataPool(BigDataPoolReference targetBigDataPool) {
         this.targetBigDataPool = targetBigDataPool;
         return this;
@@ -110,6 +124,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
      * 
      * @return the targetSparkConfiguration value.
      */
+    @Generated
     public SparkConfigurationReference getTargetSparkConfiguration() {
         return this.targetSparkConfiguration;
     }
@@ -120,6 +135,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
      * @param targetSparkConfiguration the targetSparkConfiguration value to set.
      * @return the SparkJobDefinition object itself.
      */
+    @Generated
     public SparkJobDefinition setTargetSparkConfiguration(SparkConfigurationReference targetSparkConfiguration) {
         this.targetSparkConfiguration = targetSparkConfiguration;
         return this;
@@ -130,6 +146,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
      * 
      * @return the requiredSparkVersion value.
      */
+    @Generated
     public String getRequiredSparkVersion() {
         return this.requiredSparkVersion;
     }
@@ -140,6 +157,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
      * @param requiredSparkVersion the requiredSparkVersion value to set.
      * @return the SparkJobDefinition object itself.
      */
+    @Generated
     public SparkJobDefinition setRequiredSparkVersion(String requiredSparkVersion) {
         this.requiredSparkVersion = requiredSparkVersion;
         return this;
@@ -150,6 +168,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
      * 
      * @return the language value.
      */
+    @Generated
     public String getLanguage() {
         return this.language;
     }
@@ -160,6 +179,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
      * @param language the language value to set.
      * @return the SparkJobDefinition object itself.
      */
+    @Generated
     public SparkJobDefinition setLanguage(String language) {
         this.language = language;
         return this;
@@ -170,6 +190,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
      * 
      * @return the jobProperties value.
      */
+    @Generated
     public SparkJobProperties getJobProperties() {
         return this.jobProperties;
     }
@@ -180,6 +201,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
      * @param jobProperties the jobProperties value to set.
      * @return the SparkJobDefinition object itself.
      */
+    @Generated
     public SparkJobDefinition setJobProperties(SparkJobProperties jobProperties) {
         this.jobProperties = jobProperties;
         return this;
@@ -191,6 +213,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
      * 
      * @return the folder value.
      */
+    @Generated
     public SparkJobDefinitionFolder getFolder() {
         return this.folder;
     }
@@ -202,6 +225,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
      * @param folder the folder value to set.
      * @return the SparkJobDefinition object itself.
      */
+    @Generated
     public SparkJobDefinition setFolder(SparkJobDefinitionFolder folder) {
         this.folder = folder;
         return this;
@@ -212,6 +236,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -222,6 +247,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
      * @param additionalProperties the additionalProperties value to set.
      * @return the SparkJobDefinition object itself.
      */
+    @Generated
     public SparkJobDefinition setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -230,6 +256,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -257,6 +284,7 @@ public final class SparkJobDefinition implements JsonSerializable<SparkJobDefini
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SparkJobDefinition.
      */
+    @Generated
     public static SparkJobDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkJobDefinition deserializedSparkJobDefinition = new SparkJobDefinition();

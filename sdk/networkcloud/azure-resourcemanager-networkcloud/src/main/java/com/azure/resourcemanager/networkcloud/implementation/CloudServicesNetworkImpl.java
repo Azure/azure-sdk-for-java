@@ -50,6 +50,10 @@ public final class CloudServicesNetworkImpl
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
     }
@@ -151,6 +155,14 @@ public final class CloudServicesNetworkImpl
 
     private String cloudServicesNetworkName;
 
+    private String createIfMatch;
+
+    private String createIfNoneMatch;
+
+    private String updateIfMatch;
+
+    private String updateIfNoneMatch;
+
     private CloudServicesNetworkPatchParameters updateCloudServicesNetworkUpdateParameters;
 
     public CloudServicesNetworkImpl withExistingResourceGroup(String resourceGroupName) {
@@ -161,14 +173,16 @@ public final class CloudServicesNetworkImpl
     public CloudServicesNetwork create() {
         this.innerObject = serviceManager.serviceClient()
             .getCloudServicesNetworks()
-            .createOrUpdate(resourceGroupName, cloudServicesNetworkName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, cloudServicesNetworkName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE);
         return this;
     }
 
     public CloudServicesNetwork create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getCloudServicesNetworks()
-            .createOrUpdate(resourceGroupName, cloudServicesNetworkName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, cloudServicesNetworkName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context);
         return this;
     }
 
@@ -176,9 +190,13 @@ public final class CloudServicesNetworkImpl
         this.innerObject = new CloudServicesNetworkInner();
         this.serviceManager = serviceManager;
         this.cloudServicesNetworkName = name;
+        this.createIfMatch = null;
+        this.createIfNoneMatch = null;
     }
 
     public CloudServicesNetworkImpl update() {
+        this.updateIfMatch = null;
+        this.updateIfNoneMatch = null;
         this.updateCloudServicesNetworkUpdateParameters = new CloudServicesNetworkPatchParameters();
         return this;
     }
@@ -186,15 +204,16 @@ public final class CloudServicesNetworkImpl
     public CloudServicesNetwork apply() {
         this.innerObject = serviceManager.serviceClient()
             .getCloudServicesNetworks()
-            .update(resourceGroupName, cloudServicesNetworkName, updateCloudServicesNetworkUpdateParameters,
-                Context.NONE);
+            .update(resourceGroupName, cloudServicesNetworkName, updateIfMatch, updateIfNoneMatch,
+                updateCloudServicesNetworkUpdateParameters, Context.NONE);
         return this;
     }
 
     public CloudServicesNetwork apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getCloudServicesNetworks()
-            .update(resourceGroupName, cloudServicesNetworkName, updateCloudServicesNetworkUpdateParameters, context);
+            .update(resourceGroupName, cloudServicesNetworkName, updateIfMatch, updateIfNoneMatch,
+                updateCloudServicesNetworkUpdateParameters, context);
         return this;
     }
 
@@ -270,7 +289,27 @@ public final class CloudServicesNetworkImpl
         }
     }
 
+    public CloudServicesNetworkImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    public CloudServicesNetworkImpl withIfNoneMatch(String ifNoneMatch) {
+        if (isInCreateMode()) {
+            this.createIfNoneMatch = ifNoneMatch;
+            return this;
+        } else {
+            this.updateIfNoneMatch = ifNoneMatch;
+            return this;
+        }
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,42 +22,50 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
      * In case exception is nested (outer exception contains inner one), the id and outerId properties are used to
      * represent the nesting.
      */
+    @Generated
     private Integer id;
 
     /*
      * The value of outerId is a reference to an element in ExceptionDetails that represents the outer exception
      */
+    @Generated
     private Integer outerId;
 
     /*
      * Exception type name.
      */
+    @Generated
     private String typeName;
 
     /*
      * Exception message.
      */
+    @Generated
     private String message;
 
     /*
      * Indicates if full exception stack is provided in the exception. The stack may be trimmed, such as in the case of
      * a StackOverflow exception.
      */
+    @Generated
     private Boolean hasFullStack;
 
     /*
      * Text describing the stack. Either stack or parsedStack should have a value.
      */
+    @Generated
     private String stack;
 
     /*
      * List of stack frames. Either stack or parsedStack should have a value.
      */
+    @Generated
     private List<StackFrame> parsedStack;
 
     /**
      * Creates an instance of TelemetryExceptionDetails class.
      */
+    @Generated
     public TelemetryExceptionDetails() {
     }
 
@@ -66,6 +75,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
      * 
      * @return the id value.
      */
+    @Generated
     public Integer getId() {
         return this.id;
     }
@@ -77,6 +87,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
      * @param id the id value to set.
      * @return the TelemetryExceptionDetails object itself.
      */
+    @Generated
     public TelemetryExceptionDetails setId(Integer id) {
         this.id = id;
         return this;
@@ -88,6 +99,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
      * 
      * @return the outerId value.
      */
+    @Generated
     public Integer getOuterId() {
         return this.outerId;
     }
@@ -99,6 +111,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
      * @param outerId the outerId value to set.
      * @return the TelemetryExceptionDetails object itself.
      */
+    @Generated
     public TelemetryExceptionDetails setOuterId(Integer outerId) {
         this.outerId = outerId;
         return this;
@@ -109,6 +122,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
      * 
      * @return the typeName value.
      */
+    @Generated
     public String getTypeName() {
         return this.typeName;
     }
@@ -119,6 +133,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
      * @param typeName the typeName value to set.
      * @return the TelemetryExceptionDetails object itself.
      */
+    @Generated
     public TelemetryExceptionDetails setTypeName(String typeName) {
         this.typeName = typeName;
         return this;
@@ -129,6 +144,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -139,6 +155,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
      * @param message the message value to set.
      * @return the TelemetryExceptionDetails object itself.
      */
+    @Generated
     public TelemetryExceptionDetails setMessage(String message) {
         this.message = message;
         return this;
@@ -150,6 +167,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
      * 
      * @return the hasFullStack value.
      */
+    @Generated
     public Boolean isHasFullStack() {
         return this.hasFullStack;
     }
@@ -161,6 +179,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
      * @param hasFullStack the hasFullStack value to set.
      * @return the TelemetryExceptionDetails object itself.
      */
+    @Generated
     public TelemetryExceptionDetails setHasFullStack(Boolean hasFullStack) {
         this.hasFullStack = hasFullStack;
         return this;
@@ -171,6 +190,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
      * 
      * @return the stack value.
      */
+    @Generated
     public String getStack() {
         return this.stack;
     }
@@ -181,6 +201,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
      * @param stack the stack value to set.
      * @return the TelemetryExceptionDetails object itself.
      */
+    @Generated
     public TelemetryExceptionDetails setStack(String stack) {
         this.stack = stack;
         return this;
@@ -191,6 +212,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
      * 
      * @return the parsedStack value.
      */
+    @Generated
     public List<StackFrame> getParsedStack() {
         return this.parsedStack;
     }
@@ -201,6 +223,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
      * @param parsedStack the parsedStack value to set.
      * @return the TelemetryExceptionDetails object itself.
      */
+    @Generated
     public TelemetryExceptionDetails setParsedStack(List<StackFrame> parsedStack) {
         this.parsedStack = parsedStack;
         return this;
@@ -209,6 +232,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -231,6 +255,7 @@ public final class TelemetryExceptionDetails implements JsonSerializable<Telemet
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TelemetryExceptionDetails.
      */
+    @Generated
     public static TelemetryExceptionDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TelemetryExceptionDetails deserializedTelemetryExceptionDetails = new TelemetryExceptionDetails();

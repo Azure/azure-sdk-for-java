@@ -82,7 +82,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Timeout(value = 1, unit = TimeUnit.MINUTES)
 public class NettyHttpClientTests {
-    private static final String SERVER_HTTP_URI = NettyHttpClientLocalTestServer.getServer().getHttpUri();
+    private static final String SERVER_HTTP_URI = NettyHttpClientLocalTestServer.getServer().getUri();
 
     @Test
     public void testConcurrentRequestsSync() throws InterruptedException, ExecutionException {

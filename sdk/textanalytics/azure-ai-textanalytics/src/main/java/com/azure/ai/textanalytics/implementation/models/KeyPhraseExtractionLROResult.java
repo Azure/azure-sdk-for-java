@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class KeyPhraseExtractionLROResult extends AnalyzeTextLROResult {
     /*
      * Enumeration of supported Text Analysis long-running operation task results.
      */
+    @Generated
     private AnalyzeTextLROResultsKind kind = AnalyzeTextLROResultsKind.KEY_PHRASE_EXTRACTION_LRORESULTS;
 
     /*
      * The results property.
      */
+    @Generated
     private KeyPhraseResult results;
 
     /**
      * Creates an instance of KeyPhraseExtractionLROResult class.
      */
+    @Generated
     public KeyPhraseExtractionLROResult() {
     }
 
@@ -39,6 +43,7 @@ public final class KeyPhraseExtractionLROResult extends AnalyzeTextLROResult {
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public AnalyzeTextLROResultsKind getKind() {
         return this.kind;
@@ -49,6 +54,7 @@ public final class KeyPhraseExtractionLROResult extends AnalyzeTextLROResult {
      * 
      * @return the results value.
      */
+    @Generated
     public KeyPhraseResult getResults() {
         return this.results;
     }
@@ -59,6 +65,7 @@ public final class KeyPhraseExtractionLROResult extends AnalyzeTextLROResult {
      * @param results the results value to set.
      * @return the KeyPhraseExtractionLROResult object itself.
      */
+    @Generated
     public KeyPhraseExtractionLROResult setResults(KeyPhraseResult results) {
         this.results = results;
         return this;
@@ -67,6 +74,7 @@ public final class KeyPhraseExtractionLROResult extends AnalyzeTextLROResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public KeyPhraseExtractionLROResult setTaskName(String taskName) {
         super.setTaskName(taskName);
@@ -76,6 +84,7 @@ public final class KeyPhraseExtractionLROResult extends AnalyzeTextLROResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public KeyPhraseExtractionLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
         super.setLastUpdateDateTime(lastUpdateDateTime);
@@ -85,6 +94,7 @@ public final class KeyPhraseExtractionLROResult extends AnalyzeTextLROResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public KeyPhraseExtractionLROResult setStatus(State status) {
         super.setStatus(status);
@@ -94,6 +104,7 @@ public final class KeyPhraseExtractionLROResult extends AnalyzeTextLROResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,6 +128,7 @@ public final class KeyPhraseExtractionLROResult extends AnalyzeTextLROResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyPhraseExtractionLROResult.
      */
+    @Generated
     public static KeyPhraseExtractionLROResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KeyPhraseExtractionLROResult deserializedKeyPhraseExtractionLROResult = new KeyPhraseExtractionLROResult();

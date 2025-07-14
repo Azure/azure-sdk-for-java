@@ -59,7 +59,7 @@ public final class MessageIdsImpl {
      * perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureQueueStorageMes")
+    @ServiceInterface(name = "AzureQueueStorageMessageIds")
     public interface MessageIdsService {
 
         @Put("/{queueName}/messages/{messageid}")

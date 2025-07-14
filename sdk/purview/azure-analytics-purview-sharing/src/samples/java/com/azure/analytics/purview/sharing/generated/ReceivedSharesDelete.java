@@ -17,10 +17,10 @@ public class ReceivedSharesDelete {
             = new ReceivedSharesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("accountName.purview.azure.com/share")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.sharing.generated.receivedsharesdeletereceivedshare.receivedsharesdelete
+        // BEGIN:com.azure.analytics.purview.sharing.generated.received-shares-delete-received-share.received-shares-delete
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, Void> response
             = receivedSharesClient.beginDeleteReceivedShare("0D67B9C8-A6C6-4990-9EDE-12EA059D3002", requestOptions);
-        // END:com.azure.analytics.purview.sharing.generated.receivedsharesdeletereceivedshare.receivedsharesdelete
+        // END:com.azure.analytics.purview.sharing.generated.received-shares-delete-received-share.received-shares-delete
     }
 }

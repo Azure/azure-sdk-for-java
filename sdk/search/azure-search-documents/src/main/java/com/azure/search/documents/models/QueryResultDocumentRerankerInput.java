@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,21 +22,25 @@ public final class QueryResultDocumentRerankerInput implements JsonSerializable<
     /*
      * The raw string for the title field that was used for semantic enrichment.
      */
+    @Generated
     private String title;
 
     /*
      * The raw concatenated strings for the content fields that were used for semantic enrichment.
      */
+    @Generated
     private String content;
 
     /*
      * The raw concatenated strings for the keyword fields that were used for semantic enrichment.
      */
+    @Generated
     private String keywords;
 
     /**
      * Creates an instance of QueryResultDocumentRerankerInput class.
      */
+    @Generated
     public QueryResultDocumentRerankerInput() {
     }
 
@@ -44,6 +49,7 @@ public final class QueryResultDocumentRerankerInput implements JsonSerializable<
      * 
      * @return the title value.
      */
+    @Generated
     public String getTitle() {
         return this.title;
     }
@@ -54,6 +60,7 @@ public final class QueryResultDocumentRerankerInput implements JsonSerializable<
      * 
      * @return the content value.
      */
+    @Generated
     public String getContent() {
         return this.content;
     }
@@ -64,6 +71,7 @@ public final class QueryResultDocumentRerankerInput implements JsonSerializable<
      * 
      * @return the keywords value.
      */
+    @Generated
     public String getKeywords() {
         return this.keywords;
     }
@@ -71,6 +79,7 @@ public final class QueryResultDocumentRerankerInput implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -85,6 +94,7 @@ public final class QueryResultDocumentRerankerInput implements JsonSerializable<
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the QueryResultDocumentRerankerInput.
      */
+    @Generated
     public static QueryResultDocumentRerankerInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             QueryResultDocumentRerankerInput deserializedQueryResultDocumentRerankerInput

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class WorkspaceUpdateParameters implements JsonSerializable<Workspa
     /*
      * The resource tags.
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * Managed service identity of the workspace.
      */
+    @Generated
     private WorkspaceIdentity identity;
 
     /**
      * Creates an instance of WorkspaceUpdateParameters class.
      */
+    @Generated
     public WorkspaceUpdateParameters() {
     }
 
@@ -38,6 +42,7 @@ public final class WorkspaceUpdateParameters implements JsonSerializable<Workspa
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> getTags() {
         return this.tags;
     }
@@ -48,6 +53,7 @@ public final class WorkspaceUpdateParameters implements JsonSerializable<Workspa
      * @param tags the tags value to set.
      * @return the WorkspaceUpdateParameters object itself.
      */
+    @Generated
     public WorkspaceUpdateParameters setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -58,6 +64,7 @@ public final class WorkspaceUpdateParameters implements JsonSerializable<Workspa
      * 
      * @return the identity value.
      */
+    @Generated
     public WorkspaceIdentity getIdentity() {
         return this.identity;
     }
@@ -68,6 +75,7 @@ public final class WorkspaceUpdateParameters implements JsonSerializable<Workspa
      * @param identity the identity value to set.
      * @return the WorkspaceUpdateParameters object itself.
      */
+    @Generated
     public WorkspaceUpdateParameters setIdentity(WorkspaceIdentity identity) {
         this.identity = identity;
         return this;
@@ -76,6 +84,7 @@ public final class WorkspaceUpdateParameters implements JsonSerializable<Workspa
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class WorkspaceUpdateParameters implements JsonSerializable<Workspa
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the WorkspaceUpdateParameters.
      */
+    @Generated
     public static WorkspaceUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WorkspaceUpdateParameters deserializedWorkspaceUpdateParameters = new WorkspaceUpdateParameters();

@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class DataSourceCredentialType extends ExpandableStringEnum<DataSou
     /**
      * Static value AzureSQLConnectionString for DataSourceCredentialType.
      */
+    @Generated
     public static final DataSourceCredentialType AZURE_SQLCONNECTION_STRING = fromString("AzureSQLConnectionString");
 
     /**
      * Static value DataLakeGen2SharedKey for DataSourceCredentialType.
      */
+    @Generated
     public static final DataSourceCredentialType DATA_LAKE_GEN2SHARED_KEY = fromString("DataLakeGen2SharedKey");
 
     /**
      * Static value ServicePrincipal for DataSourceCredentialType.
      */
+    @Generated
     public static final DataSourceCredentialType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
 
     /**
      * Static value ServicePrincipalInKV for DataSourceCredentialType.
      */
+    @Generated
     public static final DataSourceCredentialType SERVICE_PRINCIPAL_IN_KV = fromString("ServicePrincipalInKV");
 
     /**
@@ -36,6 +41,7 @@ public final class DataSourceCredentialType extends ExpandableStringEnum<DataSou
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataSourceCredentialType() {
     }
@@ -46,6 +52,7 @@ public final class DataSourceCredentialType extends ExpandableStringEnum<DataSou
      * @param name a name to look for.
      * @return the corresponding DataSourceCredentialType.
      */
+    @Generated
     public static DataSourceCredentialType fromString(String name) {
         return fromString(name, DataSourceCredentialType.class);
     }
@@ -55,6 +62,7 @@ public final class DataSourceCredentialType extends ExpandableStringEnum<DataSou
      * 
      * @return known DataSourceCredentialType values.
      */
+    @Generated
     public static Collection<DataSourceCredentialType> values() {
         return values(DataSourceCredentialType.class);
     }

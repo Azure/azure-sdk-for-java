@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SftpAuthenticationType extends ExpandableStringEnum<SftpAuthe
     /**
      * Static value Basic for SftpAuthenticationType.
      */
+    @Generated
     public static final SftpAuthenticationType BASIC = fromString("Basic");
 
     /**
      * Static value SshPublicKey for SftpAuthenticationType.
      */
+    @Generated
     public static final SftpAuthenticationType SSH_PUBLIC_KEY = fromString("SshPublicKey");
 
     /**
@@ -26,6 +29,7 @@ public final class SftpAuthenticationType extends ExpandableStringEnum<SftpAuthe
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SftpAuthenticationType() {
     }
@@ -36,6 +40,7 @@ public final class SftpAuthenticationType extends ExpandableStringEnum<SftpAuthe
      * @param name a name to look for.
      * @return the corresponding SftpAuthenticationType.
      */
+    @Generated
     public static SftpAuthenticationType fromString(String name) {
         return fromString(name, SftpAuthenticationType.class);
     }
@@ -45,6 +50,7 @@ public final class SftpAuthenticationType extends ExpandableStringEnum<SftpAuthe
      * 
      * @return known SftpAuthenticationType values.
      */
+    @Generated
     public static Collection<SftpAuthenticationType> values() {
         return values(SftpAuthenticationType.class);
     }

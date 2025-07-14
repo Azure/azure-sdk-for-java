@@ -8,6 +8,7 @@ import com.azure.analytics.synapse.artifacts.implementation.RunNotebooksImpl;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.RunNotebookRequest;
 import com.azure.analytics.synapse.artifacts.models.RunNotebookResponse;
+import com.azure.analytics.synapse.artifacts.models.RunNotebookResponseException;
 import com.azure.analytics.synapse.artifacts.models.RunNotebookSnapshotResponse;
 import com.azure.analytics.synapse.artifacts.models.RunNotebooksCreateRunHeaders;
 import com.azure.core.annotation.Generated;
@@ -128,6 +129,7 @@ public final class RunNotebookAsyncClient {
      * this is the same ID used in Create Run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RunNotebookResponseException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run notebook response along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -144,6 +146,7 @@ public final class RunNotebookAsyncClient {
      * this is the same ID used in Create Run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RunNotebookResponseException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run notebook response on successful completion of {@link Mono}.
      */

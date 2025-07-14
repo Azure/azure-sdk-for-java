@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class JsonFormatFilePattern extends ExpandableStringEnum<JsonFormat
     /**
      * Static value setOfObjects for JsonFormatFilePattern.
      */
+    @Generated
     public static final JsonFormatFilePattern SET_OF_OBJECTS = fromString("setOfObjects");
 
     /**
      * Static value arrayOfObjects for JsonFormatFilePattern.
      */
+    @Generated
     public static final JsonFormatFilePattern ARRAY_OF_OBJECTS = fromString("arrayOfObjects");
 
     /**
@@ -26,6 +29,7 @@ public final class JsonFormatFilePattern extends ExpandableStringEnum<JsonFormat
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public JsonFormatFilePattern() {
     }
@@ -36,6 +40,7 @@ public final class JsonFormatFilePattern extends ExpandableStringEnum<JsonFormat
      * @param name a name to look for.
      * @return the corresponding JsonFormatFilePattern.
      */
+    @Generated
     public static JsonFormatFilePattern fromString(String name) {
         return fromString(name, JsonFormatFilePattern.class);
     }
@@ -45,6 +50,7 @@ public final class JsonFormatFilePattern extends ExpandableStringEnum<JsonFormat
      * 
      * @return known JsonFormatFilePattern values.
      */
+    @Generated
     public static Collection<JsonFormatFilePattern> values() {
         return values(JsonFormatFilePattern.class);
     }

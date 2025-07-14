@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,37 @@ public final class AzureDataLakeStorageGen2Parameter implements JsonSerializable
     /*
      * The account name of this Azure Data Lake
      */
+    @Generated
     private String accountName;
 
     /*
      * The account key that can access this Azure Data Lake
      */
+    @Generated
     private String accountKey;
 
     /*
      * The file system (container) name in this Azure Data Lake
      */
+    @Generated
     private String fileSystemName;
 
     /*
      * The directory template under this file system
      */
+    @Generated
     private String directoryTemplate;
 
     /*
      * The file template
      */
+    @Generated
     private String fileTemplate;
 
     /**
      * Creates an instance of AzureDataLakeStorageGen2Parameter class.
      */
+    @Generated
     public AzureDataLakeStorageGen2Parameter() {
     }
 
@@ -52,6 +59,7 @@ public final class AzureDataLakeStorageGen2Parameter implements JsonSerializable
      * 
      * @return the accountName value.
      */
+    @Generated
     public String getAccountName() {
         return this.accountName;
     }
@@ -62,6 +70,7 @@ public final class AzureDataLakeStorageGen2Parameter implements JsonSerializable
      * @param accountName the accountName value to set.
      * @return the AzureDataLakeStorageGen2Parameter object itself.
      */
+    @Generated
     public AzureDataLakeStorageGen2Parameter setAccountName(String accountName) {
         this.accountName = accountName;
         return this;
@@ -72,6 +81,7 @@ public final class AzureDataLakeStorageGen2Parameter implements JsonSerializable
      * 
      * @return the accountKey value.
      */
+    @Generated
     public String getAccountKey() {
         return this.accountKey;
     }
@@ -82,6 +92,7 @@ public final class AzureDataLakeStorageGen2Parameter implements JsonSerializable
      * @param accountKey the accountKey value to set.
      * @return the AzureDataLakeStorageGen2Parameter object itself.
      */
+    @Generated
     public AzureDataLakeStorageGen2Parameter setAccountKey(String accountKey) {
         this.accountKey = accountKey;
         return this;
@@ -92,6 +103,7 @@ public final class AzureDataLakeStorageGen2Parameter implements JsonSerializable
      * 
      * @return the fileSystemName value.
      */
+    @Generated
     public String getFileSystemName() {
         return this.fileSystemName;
     }
@@ -102,6 +114,7 @@ public final class AzureDataLakeStorageGen2Parameter implements JsonSerializable
      * @param fileSystemName the fileSystemName value to set.
      * @return the AzureDataLakeStorageGen2Parameter object itself.
      */
+    @Generated
     public AzureDataLakeStorageGen2Parameter setFileSystemName(String fileSystemName) {
         this.fileSystemName = fileSystemName;
         return this;
@@ -112,6 +125,7 @@ public final class AzureDataLakeStorageGen2Parameter implements JsonSerializable
      * 
      * @return the directoryTemplate value.
      */
+    @Generated
     public String getDirectoryTemplate() {
         return this.directoryTemplate;
     }
@@ -122,6 +136,7 @@ public final class AzureDataLakeStorageGen2Parameter implements JsonSerializable
      * @param directoryTemplate the directoryTemplate value to set.
      * @return the AzureDataLakeStorageGen2Parameter object itself.
      */
+    @Generated
     public AzureDataLakeStorageGen2Parameter setDirectoryTemplate(String directoryTemplate) {
         this.directoryTemplate = directoryTemplate;
         return this;
@@ -132,6 +147,7 @@ public final class AzureDataLakeStorageGen2Parameter implements JsonSerializable
      * 
      * @return the fileTemplate value.
      */
+    @Generated
     public String getFileTemplate() {
         return this.fileTemplate;
     }
@@ -142,6 +158,7 @@ public final class AzureDataLakeStorageGen2Parameter implements JsonSerializable
      * @param fileTemplate the fileTemplate value to set.
      * @return the AzureDataLakeStorageGen2Parameter object itself.
      */
+    @Generated
     public AzureDataLakeStorageGen2Parameter setFileTemplate(String fileTemplate) {
         this.fileTemplate = fileTemplate;
         return this;
@@ -150,6 +167,7 @@ public final class AzureDataLakeStorageGen2Parameter implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -170,6 +188,7 @@ public final class AzureDataLakeStorageGen2Parameter implements JsonSerializable
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureDataLakeStorageGen2Parameter.
      */
+    @Generated
     public static AzureDataLakeStorageGen2Parameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureDataLakeStorageGen2Parameter deserializedAzureDataLakeStorageGen2Parameter

@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,16 +17,19 @@ public final class ContainerRegistryBlobsStartUploadHeaders {
     /*
      * The Docker-Upload-UUID property.
      */
+    @Generated
     private String dockerUploadUUID;
 
     /*
      * The Range property.
      */
+    @Generated
     private String range;
 
     /*
      * The Location property.
      */
+    @Generated
     private String location;
 
     private static final HttpHeaderName DOCKER_UPLOAD_UUID = HttpHeaderName.fromString("Docker-Upload-UUID");
@@ -47,6 +51,7 @@ public final class ContainerRegistryBlobsStartUploadHeaders {
      * 
      * @return the dockerUploadUUID value.
      */
+    @Generated
     public String getDockerUploadUUID() {
         return this.dockerUploadUUID;
     }
@@ -57,6 +62,7 @@ public final class ContainerRegistryBlobsStartUploadHeaders {
      * @param dockerUploadUUID the dockerUploadUUID value to set.
      * @return the ContainerRegistryBlobsStartUploadHeaders object itself.
      */
+    @Generated
     public ContainerRegistryBlobsStartUploadHeaders setDockerUploadUUID(String dockerUploadUUID) {
         this.dockerUploadUUID = dockerUploadUUID;
         return this;
@@ -67,6 +73,7 @@ public final class ContainerRegistryBlobsStartUploadHeaders {
      * 
      * @return the range value.
      */
+    @Generated
     public String getRange() {
         return this.range;
     }
@@ -77,6 +84,7 @@ public final class ContainerRegistryBlobsStartUploadHeaders {
      * @param range the range value to set.
      * @return the ContainerRegistryBlobsStartUploadHeaders object itself.
      */
+    @Generated
     public ContainerRegistryBlobsStartUploadHeaders setRange(String range) {
         this.range = range;
         return this;
@@ -87,6 +95,7 @@ public final class ContainerRegistryBlobsStartUploadHeaders {
      * 
      * @return the location value.
      */
+    @Generated
     public String getLocation() {
         return this.location;
     }
@@ -97,6 +106,7 @@ public final class ContainerRegistryBlobsStartUploadHeaders {
      * @param location the location value to set.
      * @return the ContainerRegistryBlobsStartUploadHeaders object itself.
      */
+    @Generated
     public ContainerRegistryBlobsStartUploadHeaders setLocation(String location) {
         this.location = location;
         return this;

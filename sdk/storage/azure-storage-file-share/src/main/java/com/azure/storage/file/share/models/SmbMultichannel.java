@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,11 +21,13 @@ public final class SmbMultichannel implements XmlSerializable<SmbMultichannel> {
     /*
      * If SMB multichannel is enabled.
      */
+    @Generated
     private Boolean enabled;
 
     /**
      * Creates an instance of SmbMultichannel class.
      */
+    @Generated
     public SmbMultichannel() {
     }
 
@@ -34,6 +36,7 @@ public final class SmbMultichannel implements XmlSerializable<SmbMultichannel> {
      * 
      * @return the enabled value.
      */
+    @Generated
     public Boolean isEnabled() {
         return this.enabled;
     }
@@ -44,19 +47,22 @@ public final class SmbMultichannel implements XmlSerializable<SmbMultichannel> {
      * @param enabled the enabled value to set.
      * @return the SmbMultichannel object itself.
      */
+    @Generated
     public SmbMultichannel setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Multichannel" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Multichannel" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeBooleanElement("Enabled", this.enabled);
         return xmlWriter.writeEndElement();
@@ -70,6 +76,7 @@ public final class SmbMultichannel implements XmlSerializable<SmbMultichannel> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the SmbMultichannel.
      */
+    @Generated
     public static SmbMultichannel fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -84,8 +91,10 @@ public final class SmbMultichannel implements XmlSerializable<SmbMultichannel> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the SmbMultichannel.
      */
+    @Generated
     public static SmbMultichannel fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Multichannel" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "Multichannel" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             SmbMultichannel deserializedSmbMultichannel = new SmbMultichannel();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

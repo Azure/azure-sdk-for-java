@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.keys.cryptography.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
@@ -98,30 +97,30 @@ public final class EncryptionAlgorithm extends ExpandableStringEnum<EncryptionAl
 
     /**
      * 128-bit AES key wrap.
+     *
+     * @deprecated This value is not supported for encrypt/decrypt operations. For key wrapping/unwrapping, use
+     * {@link KeyWrapAlgorithm#A128KW} in {@link KeyWrapAlgorithm} instead.
      */
+    @Deprecated
     public static final EncryptionAlgorithm A128KW = fromString("A128KW");
 
     /**
      * 192-bit AES key wrap.
+     *
+     * @deprecated This value is not supported for encrypt/decrypt operations. For key wrapping/unwrapping, use
+     * {@link KeyWrapAlgorithm#A192KW} in {@link KeyWrapAlgorithm} instead.
      */
+    @Deprecated
     public static final EncryptionAlgorithm A192KW = fromString("A192KW");
 
     /**
      * 256-bit AES key wrap.
+     *
+     * @deprecated This value is not supported for encrypt/decrypt operations. For key wrapping/unwrapping, use
+     * {@link KeyWrapAlgorithm#A256KW} in {@link KeyWrapAlgorithm} instead.
      */
+    @Deprecated
     public static final EncryptionAlgorithm A256KW = fromString("A256KW");
-
-    /**
-     * CKM AES key wrap.
-     */
-    @Generated
-    public static final EncryptionAlgorithm CKM_AES_KEY_WRAP = fromString("CKM_AES_KEY_WRAP");
-
-    /**
-     * CKM AES key wrap with padding.
-     */
-    @Generated
-    public static final EncryptionAlgorithm CKM_AES_KEY_WRAP_PAD = fromString("CKM_AES_KEY_WRAP_PAD");
 
     /**
      * Creates a new instance of {@link EncryptionAlgorithm} without a {@link #toString()} value.

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,11 +19,13 @@ public final class DataFlowDebugResource extends SubResourceDebugResource {
     /*
      * Data flow properties.
      */
+    @Generated
     private DataFlow properties;
 
     /**
      * Creates an instance of DataFlowDebugResource class.
      */
+    @Generated
     public DataFlowDebugResource() {
     }
 
@@ -31,6 +34,7 @@ public final class DataFlowDebugResource extends SubResourceDebugResource {
      * 
      * @return the properties value.
      */
+    @Generated
     public DataFlow getProperties() {
         return this.properties;
     }
@@ -41,6 +45,7 @@ public final class DataFlowDebugResource extends SubResourceDebugResource {
      * @param properties the properties value to set.
      * @return the DataFlowDebugResource object itself.
      */
+    @Generated
     public DataFlowDebugResource setProperties(DataFlow properties) {
         this.properties = properties;
         return this;
@@ -49,6 +54,7 @@ public final class DataFlowDebugResource extends SubResourceDebugResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DataFlowDebugResource setName(String name) {
         super.setName(name);
@@ -58,6 +64,7 @@ public final class DataFlowDebugResource extends SubResourceDebugResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,6 +82,7 @@ public final class DataFlowDebugResource extends SubResourceDebugResource {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataFlowDebugResource.
      */
+    @Generated
     public static DataFlowDebugResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowDebugResource deserializedDataFlowDebugResource = new DataFlowDebugResource();

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class ScriptType extends ExpandableStringEnum<ScriptType> {
     /**
      * Static value Query for ScriptType.
      */
+    @Generated
     public static final ScriptType QUERY = fromString("Query");
 
     /**
      * Static value NonQuery for ScriptType.
      */
+    @Generated
     public static final ScriptType NON_QUERY = fromString("NonQuery");
 
     /**
@@ -26,6 +29,7 @@ public final class ScriptType extends ExpandableStringEnum<ScriptType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ScriptType() {
     }
@@ -36,6 +40,7 @@ public final class ScriptType extends ExpandableStringEnum<ScriptType> {
      * @param name a name to look for.
      * @return the corresponding ScriptType.
      */
+    @Generated
     public static ScriptType fromString(String name) {
         return fromString(name, ScriptType.class);
     }
@@ -45,6 +50,7 @@ public final class ScriptType extends ExpandableStringEnum<ScriptType> {
      * 
      * @return known ScriptType values.
      */
+    @Generated
     public static Collection<ScriptType> values() {
         return values(ScriptType.class);
     }

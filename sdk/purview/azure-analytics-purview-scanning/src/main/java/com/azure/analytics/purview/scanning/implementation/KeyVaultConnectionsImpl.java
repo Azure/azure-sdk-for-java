@@ -77,7 +77,7 @@ public final class KeyVaultConnectionsImpl {
      * service to perform REST calls.
      */
     @Host("{Endpoint}")
-    @ServiceInterface(name = "PurviewScanningClien")
+    @ServiceInterface(name = "PurviewScanningClientKeyVaultConnections")
     public interface KeyVaultConnectionsService {
         @Get("/azureKeyVaults/{keyVaultName}")
         @ExpectedResponses({ 200 })

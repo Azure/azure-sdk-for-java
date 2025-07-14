@@ -471,19 +471,31 @@ public final class CopyActivityTypeProperties implements JsonSerializable<CopyAc
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("source", this.source);
         jsonWriter.writeJsonField("sink", this.sink);
-        jsonWriter.writeUntypedField("translator", this.translator);
-        jsonWriter.writeUntypedField("enableStaging", this.enableStaging);
+        if (this.translator != null) {
+            jsonWriter.writeUntypedField("translator", this.translator);
+        }
+        if (this.enableStaging != null) {
+            jsonWriter.writeUntypedField("enableStaging", this.enableStaging);
+        }
         jsonWriter.writeJsonField("stagingSettings", this.stagingSettings);
-        jsonWriter.writeUntypedField("parallelCopies", this.parallelCopies);
-        jsonWriter.writeUntypedField("dataIntegrationUnits", this.dataIntegrationUnits);
-        jsonWriter.writeUntypedField("enableSkipIncompatibleRow", this.enableSkipIncompatibleRow);
+        if (this.parallelCopies != null) {
+            jsonWriter.writeUntypedField("parallelCopies", this.parallelCopies);
+        }
+        if (this.dataIntegrationUnits != null) {
+            jsonWriter.writeUntypedField("dataIntegrationUnits", this.dataIntegrationUnits);
+        }
+        if (this.enableSkipIncompatibleRow != null) {
+            jsonWriter.writeUntypedField("enableSkipIncompatibleRow", this.enableSkipIncompatibleRow);
+        }
         jsonWriter.writeJsonField("redirectIncompatibleRowSettings", this.redirectIncompatibleRowSettings);
         jsonWriter.writeJsonField("logStorageSettings", this.logStorageSettings);
         jsonWriter.writeJsonField("logSettings", this.logSettings);
         jsonWriter.writeArrayField("preserveRules", this.preserveRules,
             (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeArrayField("preserve", this.preserve, (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeUntypedField("validateDataConsistency", this.validateDataConsistency);
+        if (this.validateDataConsistency != null) {
+            jsonWriter.writeUntypedField("validateDataConsistency", this.validateDataConsistency);
+        }
         jsonWriter.writeJsonField("skipErrorFile", this.skipErrorFile);
         return jsonWriter.writeEndObject();
     }

@@ -72,7 +72,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "TrafficControllerMan")
+    @ServiceInterface(name = "TrafficControllerManagementClientAssociationsInterfaces")
     public interface AssociationsInterfacesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}")

@@ -135,7 +135,9 @@ public final class DistcpSettings implements JsonSerializable<DistcpSettings> {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("resourceManagerEndpoint", this.resourceManagerEndpoint);
         jsonWriter.writeUntypedField("tempScriptPath", this.tempScriptPath);
-        jsonWriter.writeUntypedField("distcpOptions", this.distcpOptions);
+        if (this.distcpOptions != null) {
+            jsonWriter.writeUntypedField("distcpOptions", this.distcpOptions);
+        }
         return jsonWriter.writeEndObject();
     }
 

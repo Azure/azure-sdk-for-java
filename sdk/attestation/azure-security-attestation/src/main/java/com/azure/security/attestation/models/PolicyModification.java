@@ -4,6 +4,7 @@
 
 package com.azure.security.attestation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class PolicyModification extends ExpandableStringEnum<PolicyModific
     /**
      * The specified policy object was updated.
      */
+    @Generated
     public static final PolicyModification UPDATED = fromString("Updated");
 
     /**
      * The specified policy object was removed.
      */
+    @Generated
     public static final PolicyModification REMOVED = fromString("Removed");
 
     /**
@@ -26,6 +29,7 @@ public final class PolicyModification extends ExpandableStringEnum<PolicyModific
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PolicyModification() {
     }
@@ -36,6 +40,7 @@ public final class PolicyModification extends ExpandableStringEnum<PolicyModific
      * @param name a name to look for.
      * @return the corresponding PolicyModification.
      */
+    @Generated
     public static PolicyModification fromString(String name) {
         return fromString(name, PolicyModification.class);
     }
@@ -45,6 +50,7 @@ public final class PolicyModification extends ExpandableStringEnum<PolicyModific
      * 
      * @return known PolicyModification values.
      */
+    @Generated
     public static Collection<PolicyModification> values() {
         return values(PolicyModification.class);
     }

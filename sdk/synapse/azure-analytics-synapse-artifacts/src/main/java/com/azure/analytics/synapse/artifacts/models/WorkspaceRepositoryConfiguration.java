@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,61 +22,73 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
     /*
      * Type of workspace repositoryID configuration. Example WorkspaceVSTSConfiguration, WorkspaceGitHubConfiguration
      */
+    @Generated
     private String type;
 
     /*
      * GitHub Enterprise host name. For example: https://github.mydomain.com
      */
+    @Generated
     private String hostName;
 
     /*
      * Account name
      */
+    @Generated
     private String accountName;
 
     /*
      * VSTS project name
      */
+    @Generated
     private String projectName;
 
     /*
      * Repository name
      */
+    @Generated
     private String repositoryName;
 
     /*
      * Collaboration branch
      */
+    @Generated
     private String collaborationBranch;
 
     /*
      * Root folder to use in the repository
      */
+    @Generated
     private String rootFolder;
 
     /*
      * The last commit ID
      */
+    @Generated
     private String lastCommitId;
 
     /*
      * The VSTS tenant ID
      */
+    @Generated
     private UUID tenantId;
 
     /*
      * GitHub bring your own app client id
      */
+    @Generated
     private String clientId;
 
     /*
      * GitHub bring your own app client secret information.
      */
+    @Generated
     private GitHubClientSecret clientSecret;
 
     /**
      * Creates an instance of WorkspaceRepositoryConfiguration class.
      */
+    @Generated
     public WorkspaceRepositoryConfiguration() {
     }
 
@@ -85,6 +98,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -96,6 +110,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * @param type the type value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
+    @Generated
     public WorkspaceRepositoryConfiguration setType(String type) {
         this.type = type;
         return this;
@@ -106,6 +121,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * 
      * @return the hostName value.
      */
+    @Generated
     public String getHostName() {
         return this.hostName;
     }
@@ -116,6 +132,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * @param hostName the hostName value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
+    @Generated
     public WorkspaceRepositoryConfiguration setHostName(String hostName) {
         this.hostName = hostName;
         return this;
@@ -126,6 +143,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * 
      * @return the accountName value.
      */
+    @Generated
     public String getAccountName() {
         return this.accountName;
     }
@@ -136,6 +154,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * @param accountName the accountName value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
+    @Generated
     public WorkspaceRepositoryConfiguration setAccountName(String accountName) {
         this.accountName = accountName;
         return this;
@@ -146,6 +165,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * 
      * @return the projectName value.
      */
+    @Generated
     public String getProjectName() {
         return this.projectName;
     }
@@ -156,6 +176,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * @param projectName the projectName value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
+    @Generated
     public WorkspaceRepositoryConfiguration setProjectName(String projectName) {
         this.projectName = projectName;
         return this;
@@ -166,6 +187,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * 
      * @return the repositoryName value.
      */
+    @Generated
     public String getRepositoryName() {
         return this.repositoryName;
     }
@@ -176,6 +198,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * @param repositoryName the repositoryName value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
+    @Generated
     public WorkspaceRepositoryConfiguration setRepositoryName(String repositoryName) {
         this.repositoryName = repositoryName;
         return this;
@@ -186,6 +209,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * 
      * @return the collaborationBranch value.
      */
+    @Generated
     public String getCollaborationBranch() {
         return this.collaborationBranch;
     }
@@ -196,6 +220,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * @param collaborationBranch the collaborationBranch value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
+    @Generated
     public WorkspaceRepositoryConfiguration setCollaborationBranch(String collaborationBranch) {
         this.collaborationBranch = collaborationBranch;
         return this;
@@ -206,6 +231,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * 
      * @return the rootFolder value.
      */
+    @Generated
     public String getRootFolder() {
         return this.rootFolder;
     }
@@ -216,6 +242,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * @param rootFolder the rootFolder value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
+    @Generated
     public WorkspaceRepositoryConfiguration setRootFolder(String rootFolder) {
         this.rootFolder = rootFolder;
         return this;
@@ -226,6 +253,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * 
      * @return the lastCommitId value.
      */
+    @Generated
     public String getLastCommitId() {
         return this.lastCommitId;
     }
@@ -236,6 +264,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * @param lastCommitId the lastCommitId value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
+    @Generated
     public WorkspaceRepositoryConfiguration setLastCommitId(String lastCommitId) {
         this.lastCommitId = lastCommitId;
         return this;
@@ -246,6 +275,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * 
      * @return the tenantId value.
      */
+    @Generated
     public UUID getTenantId() {
         return this.tenantId;
     }
@@ -256,6 +286,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * @param tenantId the tenantId value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
+    @Generated
     public WorkspaceRepositoryConfiguration setTenantId(UUID tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -266,6 +297,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * 
      * @return the clientId value.
      */
+    @Generated
     public String getClientId() {
         return this.clientId;
     }
@@ -276,6 +308,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * @param clientId the clientId value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
+    @Generated
     public WorkspaceRepositoryConfiguration setClientId(String clientId) {
         this.clientId = clientId;
         return this;
@@ -286,6 +319,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * 
      * @return the clientSecret value.
      */
+    @Generated
     public GitHubClientSecret getClientSecret() {
         return this.clientSecret;
     }
@@ -296,6 +330,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * @param clientSecret the clientSecret value to set.
      * @return the WorkspaceRepositoryConfiguration object itself.
      */
+    @Generated
     public WorkspaceRepositoryConfiguration setClientSecret(GitHubClientSecret clientSecret) {
         this.clientSecret = clientSecret;
         return this;
@@ -304,6 +339,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -329,6 +365,7 @@ public final class WorkspaceRepositoryConfiguration implements JsonSerializable<
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the WorkspaceRepositoryConfiguration.
      */
+    @Generated
     public static WorkspaceRepositoryConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WorkspaceRepositoryConfiguration deserializedWorkspaceRepositoryConfiguration

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,23 +22,27 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "AzureDataExplorerCommand";
 
     /*
      * A control command, according to the Azure Data Explorer command syntax. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object command;
 
     /*
      * Control command timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..)
      */
+    @Generated
     private Object commandTimeout;
 
     /**
      * Creates an instance of AzureDataExplorerCommandActivity class.
      */
+    @Generated
     public AzureDataExplorerCommandActivity() {
     }
 
@@ -46,6 +51,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -57,6 +63,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
      * 
      * @return the command value.
      */
+    @Generated
     public Object getCommand() {
         return this.command;
     }
@@ -68,6 +75,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
      * @param command the command value to set.
      * @return the AzureDataExplorerCommandActivity object itself.
      */
+    @Generated
     public AzureDataExplorerCommandActivity setCommand(Object command) {
         this.command = command;
         return this;
@@ -79,6 +87,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
      * 
      * @return the commandTimeout value.
      */
+    @Generated
     public Object getCommandTimeout() {
         return this.commandTimeout;
     }
@@ -90,6 +99,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
      * @param commandTimeout the commandTimeout value to set.
      * @return the AzureDataExplorerCommandActivity object itself.
      */
+    @Generated
     public AzureDataExplorerCommandActivity setCommandTimeout(Object commandTimeout) {
         this.commandTimeout = commandTimeout;
         return this;
@@ -98,6 +108,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerCommandActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -107,6 +118,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerCommandActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -116,6 +128,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerCommandActivity setName(String name) {
         super.setName(name);
@@ -125,6 +138,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerCommandActivity setDescription(String description) {
         super.setDescription(description);
@@ -134,6 +148,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerCommandActivity setState(ActivityState state) {
         super.setState(state);
@@ -143,6 +158,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerCommandActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -152,6 +168,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerCommandActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -161,6 +178,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerCommandActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -170,6 +188,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -187,7 +206,9 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
         if (command != null || commandTimeout != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("command", this.command);
-            jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+            if (this.commandTimeout != null) {
+                jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -207,6 +228,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureDataExplorerCommandActivity.
      */
+    @Generated
     public static AzureDataExplorerCommandActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureDataExplorerCommandActivity deserializedAzureDataExplorerCommandActivity

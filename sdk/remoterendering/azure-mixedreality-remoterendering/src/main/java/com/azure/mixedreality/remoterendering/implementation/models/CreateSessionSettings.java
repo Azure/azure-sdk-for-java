@@ -4,6 +4,7 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,12 +22,14 @@ public final class CreateSessionSettings implements JsonSerializable<CreateSessi
     /*
      * The time in minutes the session will run after reaching the 'Ready' state. It has to be between 0 and 1440.
      */
+    @Generated
     private final int maxLeaseTimeMinutes;
 
     /*
      * The size of the server used for the rendering session. The size impacts the number of polygons the server can
      * render. Refer to https://docs.microsoft.com/azure/remote-rendering/reference/vm-sizes for details.
      */
+    @Generated
     private final SessionSize size;
 
     /**
@@ -35,6 +38,7 @@ public final class CreateSessionSettings implements JsonSerializable<CreateSessi
      * @param maxLeaseTimeMinutes the maxLeaseTimeMinutes value to set.
      * @param size the size value to set.
      */
+    @Generated
     public CreateSessionSettings(int maxLeaseTimeMinutes, SessionSize size) {
         this.maxLeaseTimeMinutes = maxLeaseTimeMinutes;
         this.size = size;
@@ -46,6 +50,7 @@ public final class CreateSessionSettings implements JsonSerializable<CreateSessi
      * 
      * @return the maxLeaseTimeMinutes value.
      */
+    @Generated
     public int getMaxLeaseTimeMinutes() {
         return this.maxLeaseTimeMinutes;
     }
@@ -57,6 +62,7 @@ public final class CreateSessionSettings implements JsonSerializable<CreateSessi
      * 
      * @return the size value.
      */
+    @Generated
     public SessionSize getSize() {
         return this.size;
     }
@@ -64,6 +70,7 @@ public final class CreateSessionSettings implements JsonSerializable<CreateSessi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -81,6 +88,7 @@ public final class CreateSessionSettings implements JsonSerializable<CreateSessi
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CreateSessionSettings.
      */
+    @Generated
     public static CreateSessionSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean maxLeaseTimeMinutesFound = false;

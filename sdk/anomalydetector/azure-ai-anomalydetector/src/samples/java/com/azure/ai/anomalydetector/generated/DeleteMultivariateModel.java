@@ -15,8 +15,8 @@ public class DeleteMultivariateModel {
             .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
             .endpoint("{Endpoint}")
             .buildMultivariateClient();
-        // BEGIN:com.azure.ai.anomalydetector.generated.multivariatedeletemultivariatemodel.deletemultivariatemodel
+        // BEGIN:com.azure.ai.anomalydetector.generated.multivariate-delete-multivariate-model.delete-multivariate-model
         multivariateClient.deleteMultivariateModel("45aad126-aafd-11ea-b8fb-d89ef3400c5f");
-        // END:com.azure.ai.anomalydetector.generated.multivariatedeletemultivariatemodel.deletemultivariatemodel
+        // END:com.azure.ai.anomalydetector.generated.multivariate-delete-multivariate-model.delete-multivariate-model
     }
 }

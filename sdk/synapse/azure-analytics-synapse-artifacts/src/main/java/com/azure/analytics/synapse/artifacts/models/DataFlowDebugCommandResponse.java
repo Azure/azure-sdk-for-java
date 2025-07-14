@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class DataFlowDebugCommandResponse implements JsonSerializable<Data
     /*
      * The run status of data preview, statistics or expression preview.
      */
+    @Generated
     private String status;
 
     /*
      * The result data of data preview, statistics or expression preview.
      */
+    @Generated
     private String data;
 
     /**
      * Creates an instance of DataFlowDebugCommandResponse class.
      */
+    @Generated
     public DataFlowDebugCommandResponse() {
     }
 
@@ -37,6 +41,7 @@ public final class DataFlowDebugCommandResponse implements JsonSerializable<Data
      * 
      * @return the status value.
      */
+    @Generated
     public String getStatus() {
         return this.status;
     }
@@ -47,6 +52,7 @@ public final class DataFlowDebugCommandResponse implements JsonSerializable<Data
      * @param status the status value to set.
      * @return the DataFlowDebugCommandResponse object itself.
      */
+    @Generated
     public DataFlowDebugCommandResponse setStatus(String status) {
         this.status = status;
         return this;
@@ -57,6 +63,7 @@ public final class DataFlowDebugCommandResponse implements JsonSerializable<Data
      * 
      * @return the data value.
      */
+    @Generated
     public String getData() {
         return this.data;
     }
@@ -67,6 +74,7 @@ public final class DataFlowDebugCommandResponse implements JsonSerializable<Data
      * @param data the data value to set.
      * @return the DataFlowDebugCommandResponse object itself.
      */
+    @Generated
     public DataFlowDebugCommandResponse setData(String data) {
         this.data = data;
         return this;
@@ -75,6 +83,7 @@ public final class DataFlowDebugCommandResponse implements JsonSerializable<Data
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class DataFlowDebugCommandResponse implements JsonSerializable<Data
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataFlowDebugCommandResponse.
      */
+    @Generated
     public static DataFlowDebugCommandResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowDebugCommandResponse deserializedDataFlowDebugCommandResponse = new DataFlowDebugCommandResponse();

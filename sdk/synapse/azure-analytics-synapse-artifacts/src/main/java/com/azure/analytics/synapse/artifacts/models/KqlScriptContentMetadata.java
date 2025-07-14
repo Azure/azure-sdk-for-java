@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class KqlScriptContentMetadata implements JsonSerializable<KqlScrip
     /*
      * The language property.
      */
+    @Generated
     private String language;
 
     /**
      * Creates an instance of KqlScriptContentMetadata class.
      */
+    @Generated
     public KqlScriptContentMetadata() {
     }
 
@@ -32,6 +35,7 @@ public final class KqlScriptContentMetadata implements JsonSerializable<KqlScrip
      * 
      * @return the language value.
      */
+    @Generated
     public String getLanguage() {
         return this.language;
     }
@@ -42,6 +46,7 @@ public final class KqlScriptContentMetadata implements JsonSerializable<KqlScrip
      * @param language the language value to set.
      * @return the KqlScriptContentMetadata object itself.
      */
+    @Generated
     public KqlScriptContentMetadata setLanguage(String language) {
         this.language = language;
         return this;
@@ -50,6 +55,7 @@ public final class KqlScriptContentMetadata implements JsonSerializable<KqlScrip
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class KqlScriptContentMetadata implements JsonSerializable<KqlScrip
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the KqlScriptContentMetadata.
      */
+    @Generated
     public static KqlScriptContentMetadata fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KqlScriptContentMetadata deserializedKqlScriptContentMetadata = new KqlScriptContentMetadata();

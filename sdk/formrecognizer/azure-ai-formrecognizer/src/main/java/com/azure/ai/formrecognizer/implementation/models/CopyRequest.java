@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class CopyRequest implements JsonSerializable<CopyRequest> {
     /*
      * Azure Resource Id of the target Form Recognizer resource where the model is copied to.
      */
+    @Generated
     private String targetResourceId;
 
     /*
      * Location of the target Azure resource. A valid Azure region name supported by Cognitive Services.
      */
+    @Generated
     private String targetResourceRegion;
 
     /*
      * Entity that encodes claims to authorize the copy request.
      */
+    @Generated
     private CopyAuthorizationResult copyAuthorization;
 
     /**
      * Creates an instance of CopyRequest class.
      */
+    @Generated
     public CopyRequest() {
     }
 
@@ -44,6 +49,7 @@ public final class CopyRequest implements JsonSerializable<CopyRequest> {
      * 
      * @return the targetResourceId value.
      */
+    @Generated
     public String getTargetResourceId() {
         return this.targetResourceId;
     }
@@ -55,6 +61,7 @@ public final class CopyRequest implements JsonSerializable<CopyRequest> {
      * @param targetResourceId the targetResourceId value to set.
      * @return the CopyRequest object itself.
      */
+    @Generated
     public CopyRequest setTargetResourceId(String targetResourceId) {
         this.targetResourceId = targetResourceId;
         return this;
@@ -66,6 +73,7 @@ public final class CopyRequest implements JsonSerializable<CopyRequest> {
      * 
      * @return the targetResourceRegion value.
      */
+    @Generated
     public String getTargetResourceRegion() {
         return this.targetResourceRegion;
     }
@@ -77,6 +85,7 @@ public final class CopyRequest implements JsonSerializable<CopyRequest> {
      * @param targetResourceRegion the targetResourceRegion value to set.
      * @return the CopyRequest object itself.
      */
+    @Generated
     public CopyRequest setTargetResourceRegion(String targetResourceRegion) {
         this.targetResourceRegion = targetResourceRegion;
         return this;
@@ -87,6 +96,7 @@ public final class CopyRequest implements JsonSerializable<CopyRequest> {
      * 
      * @return the copyAuthorization value.
      */
+    @Generated
     public CopyAuthorizationResult getCopyAuthorization() {
         return this.copyAuthorization;
     }
@@ -97,6 +107,7 @@ public final class CopyRequest implements JsonSerializable<CopyRequest> {
      * @param copyAuthorization the copyAuthorization value to set.
      * @return the CopyRequest object itself.
      */
+    @Generated
     public CopyRequest setCopyAuthorization(CopyAuthorizationResult copyAuthorization) {
         this.copyAuthorization = copyAuthorization;
         return this;
@@ -105,6 +116,7 @@ public final class CopyRequest implements JsonSerializable<CopyRequest> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -123,6 +135,7 @@ public final class CopyRequest implements JsonSerializable<CopyRequest> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CopyRequest.
      */
+    @Generated
     public static CopyRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CopyRequest deserializedCopyRequest = new CopyRequest();

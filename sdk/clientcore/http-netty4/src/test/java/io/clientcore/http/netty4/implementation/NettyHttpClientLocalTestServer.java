@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.shared.LocalTestServer;
 import org.eclipse.jetty.util.Callback;
@@ -65,7 +66,7 @@ public final class NettyHttpClientLocalTestServer {
     }
 
     private static LocalTestServer initializeServer() {
-        LocalTestServer server = new LocalTestServer((req, resp, requestBody) -> {
+        LocalTestServer server = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, (req, resp, requestBody) -> {
             String path = req.getServletPath();
             boolean get = "GET".equalsIgnoreCase(req.getMethod());
             boolean post = "POST".equalsIgnoreCase(req.getMethod());

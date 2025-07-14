@@ -303,7 +303,9 @@ public final class PolicyExemptionProperties implements JsonSerializable<PolicyE
             this.expiresOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiresOn));
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeUntypedField("metadata", this.metadata);
+        if (this.metadata != null) {
+            jsonWriter.writeUntypedField("metadata", this.metadata);
+        }
         jsonWriter.writeArrayField("resourceSelectors", this.resourceSelectors,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("assignmentScopeValidation",

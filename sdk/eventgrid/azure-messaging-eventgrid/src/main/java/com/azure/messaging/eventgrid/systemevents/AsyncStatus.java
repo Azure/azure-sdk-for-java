@@ -4,6 +4,7 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class AsyncStatus extends ExpandableStringEnum<AsyncStatus> {
     /**
      * Async operation has started.
      */
+    @Generated
     public static final AsyncStatus STARTED = fromString("Started");
 
     /**
      * Async operation has completed.
      */
+    @Generated
     public static final AsyncStatus COMPLETED = fromString("Completed");
 
     /**
      * Async operation failed to complete.
      */
+    @Generated
     public static final AsyncStatus FAILED = fromString("Failed");
 
     /**
@@ -31,6 +35,7 @@ public final class AsyncStatus extends ExpandableStringEnum<AsyncStatus> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AsyncStatus() {
     }
@@ -41,6 +46,7 @@ public final class AsyncStatus extends ExpandableStringEnum<AsyncStatus> {
      * @param name a name to look for.
      * @return the corresponding AsyncStatus.
      */
+    @Generated
     public static AsyncStatus fromString(String name) {
         return fromString(name, AsyncStatus.class);
     }
@@ -50,6 +56,7 @@ public final class AsyncStatus extends ExpandableStringEnum<AsyncStatus> {
      * 
      * @return known AsyncStatus values.
      */
+    @Generated
     public static Collection<AsyncStatus> values() {
         return values(AsyncStatus.class);
     }

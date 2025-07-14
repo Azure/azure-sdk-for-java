@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AccessLevel;
@@ -35,6 +36,7 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import reactor.core.publisher.Flux;
@@ -68,6 +70,17 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public String virtualMachineId() {
         return this.innerModel().managedBy();
+    }
+
+    @Override
+    public List<String> virtualMachineIds() {
+        if (innerModel().managedByExtended() != null) {
+            return Collections.unmodifiableList(innerModel().managedByExtended());
+        } else if (this.virtualMachineId() != null) {
+            return Collections.singletonList(this.virtualMachineId());
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     @Override
@@ -156,6 +169,31 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public PublicNetworkAccess publicNetworkAccess() {
         return this.innerModel().publicNetworkAccess();
+    }
+
+    @Override
+    public Long diskIopsReadWrite() {
+        return innerModel().diskIopsReadWrite();
+    }
+
+    @Override
+    public Long diskMBpsReadWrite() {
+        return innerModel().diskMBpsReadWrite();
+    }
+
+    @Override
+    public Long diskIopsReadOnly() {
+        return innerModel().diskIopsReadOnly();
+    }
+
+    @Override
+    public Long diskMBpsReadOnly() {
+        return innerModel().diskMBpsReadOnly();
+    }
+
+    @Override
+    public int maximumShares() {
+        return innerModel().maxShares() == null ? 1 : innerModel().maxShares();
     }
 
     @Override
@@ -426,18 +464,25 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
 
     @Override
     public Accepted<Disk> beginCreate() {
+        return beginCreate(Context.NONE);
+    }
+
+    @Override
+    public Accepted<Disk> beginCreate(Context context) {
         return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.manager()
                 .serviceClient()
                 .getDisks()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.innerModel())
+                .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
                 .block(),
             inner -> new DiskImpl(inner.name(), inner, this.manager()), DiskInner.class, () -> {
                 Flux<Indexable> dependencyTasksAsync
-                    = taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                    = taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext())
+                        .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()));
                 dependencyTasksAsync.blockLast();
-            }, this::setInner, Context.NONE);
+            }, this::setInner, context);
     }
 
     private DiskSkuTypes fromSnapshotSkuType(SnapshotSkuType skuType) {
@@ -462,6 +507,36 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public DiskImpl disablePublicNetworkAccess() {
         this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withIopsReadWrite(long diskIopsReadWrite) {
+        this.innerModel().withDiskIopsReadWrite(diskIopsReadWrite);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withMBpsReadWrite(long diskMBpsReadWrite) {
+        this.innerModel().withDiskMBpsReadWrite(diskMBpsReadWrite);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withIopsReadOnly(long diskIopsReadOnly) {
+        this.innerModel().withDiskIopsReadOnly(diskIopsReadOnly);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withMBpsReadOnly(long diskMBpsReadOnly) {
+        this.innerModel().withDiskMBpsReadOnly(diskMBpsReadOnly);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withMaximumShares(int maximumShares) {
+        this.innerModel().withMaxShares(maximumShares);
         return this;
     }
 }

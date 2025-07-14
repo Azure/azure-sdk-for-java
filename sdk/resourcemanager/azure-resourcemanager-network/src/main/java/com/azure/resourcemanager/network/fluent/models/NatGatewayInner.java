@@ -202,7 +202,7 @@ public final class NatGatewayInner extends Resource {
     }
 
     /**
-     * Get the publicIpAddresses property: An array of public ip addresses associated with the nat gateway resource.
+     * Get the publicIpAddresses property: An array of public ip addresses V4 associated with the nat gateway resource.
      * 
      * @return the publicIpAddresses value.
      */
@@ -211,7 +211,7 @@ public final class NatGatewayInner extends Resource {
     }
 
     /**
-     * Set the publicIpAddresses property: An array of public ip addresses associated with the nat gateway resource.
+     * Set the publicIpAddresses property: An array of public ip addresses V4 associated with the nat gateway resource.
      * 
      * @param publicIpAddresses the publicIpAddresses value to set.
      * @return the NatGatewayInner object itself.
@@ -225,7 +225,32 @@ public final class NatGatewayInner extends Resource {
     }
 
     /**
-     * Get the publicIpPrefixes property: An array of public ip prefixes associated with the nat gateway resource.
+     * Get the publicIpAddressesV6 property: An array of public ip addresses V6 associated with the nat gateway
+     * resource.
+     * 
+     * @return the publicIpAddressesV6 value.
+     */
+    public List<SubResource> publicIpAddressesV6() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpAddressesV6();
+    }
+
+    /**
+     * Set the publicIpAddressesV6 property: An array of public ip addresses V6 associated with the nat gateway
+     * resource.
+     * 
+     * @param publicIpAddressesV6 the publicIpAddressesV6 value to set.
+     * @return the NatGatewayInner object itself.
+     */
+    public NatGatewayInner withPublicIpAddressesV6(List<SubResource> publicIpAddressesV6) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NatGatewayPropertiesFormat();
+        }
+        this.innerProperties().withPublicIpAddressesV6(publicIpAddressesV6);
+        return this;
+    }
+
+    /**
+     * Get the publicIpPrefixes property: An array of public ip prefixes V4 associated with the nat gateway resource.
      * 
      * @return the publicIpPrefixes value.
      */
@@ -234,7 +259,7 @@ public final class NatGatewayInner extends Resource {
     }
 
     /**
-     * Set the publicIpPrefixes property: An array of public ip prefixes associated with the nat gateway resource.
+     * Set the publicIpPrefixes property: An array of public ip prefixes V4 associated with the nat gateway resource.
      * 
      * @param publicIpPrefixes the publicIpPrefixes value to set.
      * @return the NatGatewayInner object itself.
@@ -248,12 +273,58 @@ public final class NatGatewayInner extends Resource {
     }
 
     /**
+     * Get the publicIpPrefixesV6 property: An array of public ip prefixes V6 associated with the nat gateway resource.
+     * 
+     * @return the publicIpPrefixesV6 value.
+     */
+    public List<SubResource> publicIpPrefixesV6() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpPrefixesV6();
+    }
+
+    /**
+     * Set the publicIpPrefixesV6 property: An array of public ip prefixes V6 associated with the nat gateway resource.
+     * 
+     * @param publicIpPrefixesV6 the publicIpPrefixesV6 value to set.
+     * @return the NatGatewayInner object itself.
+     */
+    public NatGatewayInner withPublicIpPrefixesV6(List<SubResource> publicIpPrefixesV6) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NatGatewayPropertiesFormat();
+        }
+        this.innerProperties().withPublicIpPrefixesV6(publicIpPrefixesV6);
+        return this;
+    }
+
+    /**
      * Get the subnets property: An array of references to the subnets using this nat gateway resource.
      * 
      * @return the subnets value.
      */
     public List<SubResource> subnets() {
         return this.innerProperties() == null ? null : this.innerProperties().subnets();
+    }
+
+    /**
+     * Get the sourceVirtualNetwork property: A reference to the source virtual network using this nat gateway resource.
+     * 
+     * @return the sourceVirtualNetwork value.
+     */
+    public SubResource sourceVirtualNetwork() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceVirtualNetwork();
+    }
+
+    /**
+     * Set the sourceVirtualNetwork property: A reference to the source virtual network using this nat gateway resource.
+     * 
+     * @param sourceVirtualNetwork the sourceVirtualNetwork value to set.
+     * @return the NatGatewayInner object itself.
+     */
+    public NatGatewayInner withSourceVirtualNetwork(SubResource sourceVirtualNetwork) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NatGatewayPropertiesFormat();
+        }
+        this.innerProperties().withSourceVirtualNetwork(sourceVirtualNetwork);
+        return this;
     }
 
     /**

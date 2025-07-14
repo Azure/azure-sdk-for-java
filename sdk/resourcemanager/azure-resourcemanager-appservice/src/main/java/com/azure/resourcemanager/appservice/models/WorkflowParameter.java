@@ -137,8 +137,12 @@ public class WorkflowParameter implements JsonSerializable<WorkflowParameter> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeUntypedField("value", this.value);
-        jsonWriter.writeUntypedField("metadata", this.metadata);
+        if (this.value != null) {
+            jsonWriter.writeUntypedField("value", this.value);
+        }
+        if (this.metadata != null) {
+            jsonWriter.writeUntypedField("metadata", this.metadata);
+        }
         jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }

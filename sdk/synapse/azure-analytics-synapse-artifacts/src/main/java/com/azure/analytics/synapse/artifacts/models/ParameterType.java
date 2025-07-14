@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class ParameterType extends ExpandableStringEnum<ParameterType> {
     /**
      * Static value Object for ParameterType.
      */
+    @Generated
     public static final ParameterType OBJECT = fromString("Object");
 
     /**
      * Static value String for ParameterType.
      */
+    @Generated
     public static final ParameterType STRING = fromString("String");
 
     /**
      * Static value Int for ParameterType.
      */
+    @Generated
     public static final ParameterType INT = fromString("Int");
 
     /**
      * Static value Float for ParameterType.
      */
+    @Generated
     public static final ParameterType FLOAT = fromString("Float");
 
     /**
      * Static value Bool for ParameterType.
      */
+    @Generated
     public static final ParameterType BOOL = fromString("Bool");
 
     /**
      * Static value Array for ParameterType.
      */
+    @Generated
     public static final ParameterType ARRAY = fromString("Array");
 
     /**
      * Static value SecureString for ParameterType.
      */
+    @Generated
     public static final ParameterType SECURE_STRING = fromString("SecureString");
 
     /**
@@ -51,6 +59,7 @@ public final class ParameterType extends ExpandableStringEnum<ParameterType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ParameterType() {
     }
@@ -61,6 +70,7 @@ public final class ParameterType extends ExpandableStringEnum<ParameterType> {
      * @param name a name to look for.
      * @return the corresponding ParameterType.
      */
+    @Generated
     public static ParameterType fromString(String name) {
         return fromString(name, ParameterType.class);
     }
@@ -70,6 +80,7 @@ public final class ParameterType extends ExpandableStringEnum<ParameterType> {
      * 
      * @return known ParameterType values.
      */
+    @Generated
     public static Collection<ParameterType> values() {
         return values(ParameterType.class);
     }

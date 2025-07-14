@@ -48,7 +48,7 @@ public final class EffectiveSecurityAdminRule extends EffectiveBaseSecurityAdmin
      * 
      * @return the innerProperties value.
      */
-    private AdminPropertiesFormat innerProperties() {
+    AdminPropertiesFormat innerProperties() {
         return this.innerProperties;
     }
 

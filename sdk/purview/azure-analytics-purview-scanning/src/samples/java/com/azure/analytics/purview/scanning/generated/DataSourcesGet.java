@@ -17,9 +17,9 @@ public class DataSourcesGet {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildDataSourcesClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.datasourcesget.datasourcesget
+        // BEGIN:com.azure.analytics.purview.scanning.generated.data-sources-get.data-sources-get
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = dataSourcesClient.getWithResponse("myDataSource", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.datasourcesget.datasourcesget
+        // END:com.azure.analytics.purview.scanning.generated.data-sources-get.data-sources-get
     }
 }

@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -25,12 +26,14 @@ public class TokenFilter implements JsonSerializable<TokenFilter> {
     /*
      * A URI fragment specifying the type of token filter.
      */
+    @Generated
     private String odataType = "TokenFilter";
 
     /*
      * The name of the token filter. It must only contain letters, digits, spaces, dashes or underscores, can only start
      * and end with alphanumeric characters, and is limited to 128 characters.
      */
+    @Generated
     private final String name;
 
     /**
@@ -38,6 +41,7 @@ public class TokenFilter implements JsonSerializable<TokenFilter> {
      * 
      * @param name the name value to set.
      */
+    @Generated
     public TokenFilter(String name) {
         this.name = name;
     }
@@ -47,6 +51,7 @@ public class TokenFilter implements JsonSerializable<TokenFilter> {
      * 
      * @return the odataType value.
      */
+    @Generated
     public String getOdataType() {
         return this.odataType;
     }
@@ -57,6 +62,7 @@ public class TokenFilter implements JsonSerializable<TokenFilter> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -64,6 +70,7 @@ public class TokenFilter implements JsonSerializable<TokenFilter> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -81,6 +88,7 @@ public class TokenFilter implements JsonSerializable<TokenFilter> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TokenFilter.
      */
+    @Generated
     public static TokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -154,6 +162,7 @@ public class TokenFilter implements JsonSerializable<TokenFilter> {
         });
     }
 
+    @Generated
     static TokenFilter fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

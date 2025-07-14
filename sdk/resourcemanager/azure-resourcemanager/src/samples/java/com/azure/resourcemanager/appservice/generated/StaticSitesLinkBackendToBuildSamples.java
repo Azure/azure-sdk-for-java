@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.fluent.models.StaticSiteLinkedBacken
 public final class StaticSitesLinkBackendToBuildSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/LinkBackendToStaticSiteBuild.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/LinkBackendToStaticSiteBuild.json
      */
     /**
      * Sample code: Link a backend to a static site build.

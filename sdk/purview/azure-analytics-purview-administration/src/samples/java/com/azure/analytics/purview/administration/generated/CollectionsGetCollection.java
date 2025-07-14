@@ -17,9 +17,9 @@ public class CollectionsGetCollection {
             = new CollectionsClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{endpoint}")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.administration.generated.collectionsgetcollection.collectionsgetcollection
+        // BEGIN:com.azure.analytics.purview.administration.generated.collections-get-collection.collections-get-collection
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = collectionsClient.getCollectionWithResponse("myCollection1", requestOptions);
-        // END:com.azure.analytics.purview.administration.generated.collectionsgetcollection.collectionsgetcollection
+        // END:com.azure.analytics.purview.administration.generated.collections-get-collection.collections-get-collection
     }
 }

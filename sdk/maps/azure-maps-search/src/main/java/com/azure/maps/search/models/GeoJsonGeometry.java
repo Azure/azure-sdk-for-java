@@ -5,6 +5,7 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -26,13 +27,16 @@ import java.util.List;
 @Fluent
 public class GeoJsonGeometry extends GeoJsonObject {
     /*
-     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString,
+     * MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
-    private GeoJsonObjectType type = GeoJsonObjectType.fromString("GeoJsonGeometry");
+    @Generated
+    private GeoJsonObjectType type;
 
     /**
      * Creates an instance of GeoJsonGeometry class.
      */
+    @Generated
     public GeoJsonGeometry() {
     }
 
@@ -43,6 +47,7 @@ public class GeoJsonGeometry extends GeoJsonObject {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public GeoJsonObjectType getType() {
         return this.type;
@@ -51,6 +56,7 @@ public class GeoJsonGeometry extends GeoJsonObject {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GeoJsonGeometry setBbox(List<Double> bbox) {
         super.setBbox(bbox);
@@ -60,6 +66,7 @@ public class GeoJsonGeometry extends GeoJsonObject {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -76,6 +83,7 @@ public class GeoJsonGeometry extends GeoJsonObject {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the GeoJsonGeometry.
      */
+    @Generated
     public static GeoJsonGeometry fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -113,6 +121,7 @@ public class GeoJsonGeometry extends GeoJsonObject {
         });
     }
 
+    @Generated
     static GeoJsonGeometry fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonGeometry deserializedGeoJsonGeometry = new GeoJsonGeometry();

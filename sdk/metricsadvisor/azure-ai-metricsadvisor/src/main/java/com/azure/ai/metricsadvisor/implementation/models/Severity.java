@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class Severity extends ExpandableStringEnum<Severity> {
     /**
      * Static value Low for Severity.
      */
+    @Generated
     public static final Severity LOW = fromString("Low");
 
     /**
      * Static value Medium for Severity.
      */
+    @Generated
     public static final Severity MEDIUM = fromString("Medium");
 
     /**
      * Static value High for Severity.
      */
+    @Generated
     public static final Severity HIGH = fromString("High");
 
     /**
@@ -31,6 +35,7 @@ public final class Severity extends ExpandableStringEnum<Severity> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public Severity() {
     }
@@ -41,6 +46,7 @@ public final class Severity extends ExpandableStringEnum<Severity> {
      * @param name a name to look for.
      * @return the corresponding Severity.
      */
+    @Generated
     public static Severity fromString(String name) {
         return fromString(name, Severity.class);
     }
@@ -50,6 +56,7 @@ public final class Severity extends ExpandableStringEnum<Severity> {
      * 
      * @return known Severity values.
      */
+    @Generated
     public static Collection<Severity> values() {
         return values(Severity.class);
     }

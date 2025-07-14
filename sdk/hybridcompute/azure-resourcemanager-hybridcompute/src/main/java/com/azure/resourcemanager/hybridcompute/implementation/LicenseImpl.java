@@ -229,6 +229,6 @@ public final class LicenseImpl implements License, License.Definition, License.U
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

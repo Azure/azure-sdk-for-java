@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,6 +21,7 @@ public final class SnowflakeExportCopyCommand extends ExportSettings {
     /*
      * The export setting type.
      */
+    @Generated
     private String type = "SnowflakeExportCopyCommand";
 
     /*
@@ -27,6 +29,7 @@ public final class SnowflakeExportCopyCommand extends ExportSettings {
      * type) (or Expression with resultType object). Example: "additionalCopyOptions": { "DATE_FORMAT": "MM/DD/YYYY",
      * "TIME_FORMAT": "'HH24:MI:SS.FF'" }
      */
+    @Generated
     private Map<String, Object> additionalCopyOptions;
 
     /*
@@ -34,11 +37,13 @@ public final class SnowflakeExportCopyCommand extends ExportSettings {
      * string type) (or Expression with resultType object). Example: "additionalFormatOptions": { "OVERWRITE": "TRUE",
      * "MAX_FILE_SIZE": "'FALSE'" }
      */
+    @Generated
     private Map<String, Object> additionalFormatOptions;
 
     /**
      * Creates an instance of SnowflakeExportCopyCommand class.
      */
+    @Generated
     public SnowflakeExportCopyCommand() {
     }
 
@@ -47,6 +52,7 @@ public final class SnowflakeExportCopyCommand extends ExportSettings {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -59,6 +65,7 @@ public final class SnowflakeExportCopyCommand extends ExportSettings {
      * 
      * @return the additionalCopyOptions value.
      */
+    @Generated
     public Map<String, Object> getAdditionalCopyOptions() {
         return this.additionalCopyOptions;
     }
@@ -71,6 +78,7 @@ public final class SnowflakeExportCopyCommand extends ExportSettings {
      * @param additionalCopyOptions the additionalCopyOptions value to set.
      * @return the SnowflakeExportCopyCommand object itself.
      */
+    @Generated
     public SnowflakeExportCopyCommand setAdditionalCopyOptions(Map<String, Object> additionalCopyOptions) {
         this.additionalCopyOptions = additionalCopyOptions;
         return this;
@@ -83,6 +91,7 @@ public final class SnowflakeExportCopyCommand extends ExportSettings {
      * 
      * @return the additionalFormatOptions value.
      */
+    @Generated
     public Map<String, Object> getAdditionalFormatOptions() {
         return this.additionalFormatOptions;
     }
@@ -95,6 +104,7 @@ public final class SnowflakeExportCopyCommand extends ExportSettings {
      * @param additionalFormatOptions the additionalFormatOptions value to set.
      * @return the SnowflakeExportCopyCommand object itself.
      */
+    @Generated
     public SnowflakeExportCopyCommand setAdditionalFormatOptions(Map<String, Object> additionalFormatOptions) {
         this.additionalFormatOptions = additionalFormatOptions;
         return this;
@@ -103,6 +113,7 @@ public final class SnowflakeExportCopyCommand extends ExportSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -127,6 +138,7 @@ public final class SnowflakeExportCopyCommand extends ExportSettings {
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SnowflakeExportCopyCommand.
      */
+    @Generated
     public static SnowflakeExportCopyCommand fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SnowflakeExportCopyCommand deserializedSnowflakeExportCopyCommand = new SnowflakeExportCopyCommand();

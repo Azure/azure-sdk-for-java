@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,17 +21,20 @@ public final class SkipErrorFile implements JsonSerializable<SkipErrorFile> {
      * Skip if file is deleted by other client during copy. Default is true. Type: boolean (or Expression with
      * resultType boolean).
      */
+    @Generated
     private Object fileMissing;
 
     /*
      * Skip if source/sink file changed by other concurrent write. Default is false. Type: boolean (or Expression with
      * resultType boolean).
      */
+    @Generated
     private Object dataInconsistency;
 
     /**
      * Creates an instance of SkipErrorFile class.
      */
+    @Generated
     public SkipErrorFile() {
     }
 
@@ -40,6 +44,7 @@ public final class SkipErrorFile implements JsonSerializable<SkipErrorFile> {
      * 
      * @return the fileMissing value.
      */
+    @Generated
     public Object getFileMissing() {
         return this.fileMissing;
     }
@@ -51,6 +56,7 @@ public final class SkipErrorFile implements JsonSerializable<SkipErrorFile> {
      * @param fileMissing the fileMissing value to set.
      * @return the SkipErrorFile object itself.
      */
+    @Generated
     public SkipErrorFile setFileMissing(Object fileMissing) {
         this.fileMissing = fileMissing;
         return this;
@@ -62,6 +68,7 @@ public final class SkipErrorFile implements JsonSerializable<SkipErrorFile> {
      * 
      * @return the dataInconsistency value.
      */
+    @Generated
     public Object getDataInconsistency() {
         return this.dataInconsistency;
     }
@@ -73,6 +80,7 @@ public final class SkipErrorFile implements JsonSerializable<SkipErrorFile> {
      * @param dataInconsistency the dataInconsistency value to set.
      * @return the SkipErrorFile object itself.
      */
+    @Generated
     public SkipErrorFile setDataInconsistency(Object dataInconsistency) {
         this.dataInconsistency = dataInconsistency;
         return this;
@@ -81,11 +89,16 @@ public final class SkipErrorFile implements JsonSerializable<SkipErrorFile> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("fileMissing", this.fileMissing);
-        jsonWriter.writeUntypedField("dataInconsistency", this.dataInconsistency);
+        if (this.fileMissing != null) {
+            jsonWriter.writeUntypedField("fileMissing", this.fileMissing);
+        }
+        if (this.dataInconsistency != null) {
+            jsonWriter.writeUntypedField("dataInconsistency", this.dataInconsistency);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -97,6 +110,7 @@ public final class SkipErrorFile implements JsonSerializable<SkipErrorFile> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SkipErrorFile.
      */
+    @Generated
     public static SkipErrorFile fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SkipErrorFile deserializedSkipErrorFile = new SkipErrorFile();

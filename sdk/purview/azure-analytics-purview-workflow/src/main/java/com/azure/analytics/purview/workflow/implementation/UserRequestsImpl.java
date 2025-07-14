@@ -67,7 +67,7 @@ public final class UserRequestsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}/workflow")
-    @ServiceInterface(name = "PurviewWorkflowUserR")
+    @ServiceInterface(name = "PurviewWorkflowUserRequests")
     public interface UserRequestsService {
         @Post("/userrequests")
         @ExpectedResponses({ 200 })

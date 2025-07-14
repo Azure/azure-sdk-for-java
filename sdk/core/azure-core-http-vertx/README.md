@@ -17,7 +17,7 @@ Azure Core Vert.x HTTP client is a plugin for the `azure-core` HTTP client API.
   <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-vertx</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
   </dependency>
 </dependencies>
 ```
@@ -53,6 +53,25 @@ Create a Vert.x client that is using a proxy.
 ```java readme-sample-createProxyClient
 HttpClient client = new VertxHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
+    .build();
+```
+
+### Create an HttpClient with custom maxHeaderSize
+
+Create a Vert.x HttpClient that uses a custom maxHeaderSize. Use this sample if you're seeing an error such as
+
+```
+io.netty.handler.codec.http.TooLongHttpHeaderException: HTTP header is larger than 8192 bytes.
+```
+
+(This is a Netty exception as maxHeaderSize is flowed through to Netty.)
+
+```java readme-sample-customMaxHeaderSize
+// Constructs an HttpClient with a modified max header size.
+// This creates a Vert.x HttpClient with a max headers size of 256 KB.
+// NOTE: If httpClientOptions is set, all other options set in the VertxHttpClientBuilder will be ignored.
+HttpClient httpClient = new VertxHttpClientBuilder()
+    .httpClientOptions(new HttpClientOptions().setMaxHeaderSize(256 * 1024))
     .build();
 ```
 

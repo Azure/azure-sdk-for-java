@@ -17,9 +17,9 @@ public class FiltersGet {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildFiltersClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.filtersget.filtersget
+        // BEGIN:com.azure.analytics.purview.scanning.generated.filters-get.filters-get
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = filtersClient.getWithResponse("myDataSource", "myScanName", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.filtersget.filtersget
+        // END:com.azure.analytics.purview.scanning.generated.filters-get.filters-get
     }
 }

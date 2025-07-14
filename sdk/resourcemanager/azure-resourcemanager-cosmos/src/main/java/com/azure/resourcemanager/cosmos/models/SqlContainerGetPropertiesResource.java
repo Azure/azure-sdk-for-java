@@ -176,6 +176,15 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlContainerGetPropertiesResource withFullTextPolicy(FullTextPolicy fullTextPolicy) {
+        super.withFullTextPolicy(fullTextPolicy);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -211,6 +220,9 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
         if (vectorEmbeddingPolicy() != null) {
             vectorEmbeddingPolicy().validate();
         }
+        if (fullTextPolicy() != null) {
+            fullTextPolicy().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlContainerGetPropertiesResource.class);
@@ -234,6 +246,7 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
         jsonWriter.writeArrayField("computedProperties", computedProperties(),
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("vectorEmbeddingPolicy", vectorEmbeddingPolicy());
+        jsonWriter.writeJsonField("fullTextPolicy", fullTextPolicy());
         return jsonWriter.writeEndObject();
     }
 
@@ -288,6 +301,8 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
                 } else if ("vectorEmbeddingPolicy".equals(fieldName)) {
                     deserializedSqlContainerGetPropertiesResource
                         .withVectorEmbeddingPolicy(VectorEmbeddingPolicy.fromJson(reader));
+                } else if ("fullTextPolicy".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource.withFullTextPolicy(FullTextPolicy.fromJson(reader));
                 } else if ("_rid".equals(fieldName)) {
                     deserializedSqlContainerGetPropertiesResource.rid = reader.getString();
                 } else if ("_ts".equals(fieldName)) {

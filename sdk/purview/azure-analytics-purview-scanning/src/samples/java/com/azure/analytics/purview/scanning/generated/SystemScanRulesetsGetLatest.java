@@ -17,9 +17,9 @@ public class SystemScanRulesetsGetLatest {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildSystemScanRulesetsClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.systemscanrulesetsgetlatest.systemscanrulesetsgetlatest
+        // BEGIN:com.azure.analytics.purview.scanning.generated.system-scan-rulesets-get-latest.system-scan-rulesets-get-latest
         RequestOptions requestOptions = new RequestOptions().addQueryParam("dataSourceType", "AzureStorage");
         Response<BinaryData> response = systemScanRulesetsClient.getLatestWithResponse(requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.systemscanrulesetsgetlatest.systemscanrulesetsgetlatest
+        // END:com.azure.analytics.purview.scanning.generated.system-scan-rulesets-get-latest.system-scan-rulesets-get-latest
     }
 }

@@ -4,6 +4,7 @@
 
 package com.azure.monitor.query.implementation.metricsdefinitions.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,31 +15,37 @@ public final class MetricAggregationType extends ExpandableStringEnum<MetricAggr
     /**
      * Static value None for MetricAggregationType.
      */
+    @Generated
     public static final MetricAggregationType NONE = fromString("None");
 
     /**
      * Static value Average for MetricAggregationType.
      */
+    @Generated
     public static final MetricAggregationType AVERAGE = fromString("Average");
 
     /**
      * Static value Count for MetricAggregationType.
      */
+    @Generated
     public static final MetricAggregationType COUNT = fromString("Count");
 
     /**
      * Static value Minimum for MetricAggregationType.
      */
+    @Generated
     public static final MetricAggregationType MINIMUM = fromString("Minimum");
 
     /**
      * Static value Maximum for MetricAggregationType.
      */
+    @Generated
     public static final MetricAggregationType MAXIMUM = fromString("Maximum");
 
     /**
      * Static value Total for MetricAggregationType.
      */
+    @Generated
     public static final MetricAggregationType TOTAL = fromString("Total");
 
     /**
@@ -46,6 +53,7 @@ public final class MetricAggregationType extends ExpandableStringEnum<MetricAggr
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MetricAggregationType() {
     }
@@ -56,6 +64,7 @@ public final class MetricAggregationType extends ExpandableStringEnum<MetricAggr
      * @param name a name to look for.
      * @return the corresponding MetricAggregationType.
      */
+    @Generated
     public static MetricAggregationType fromString(String name) {
         return fromString(name, MetricAggregationType.class);
     }
@@ -65,6 +74,7 @@ public final class MetricAggregationType extends ExpandableStringEnum<MetricAggr
      * 
      * @return known MetricAggregationType values.
      */
+    @Generated
     public static Collection<MetricAggregationType> values() {
         return values(MetricAggregationType.class);
     }

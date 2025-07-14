@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class RepositoryTags implements JsonSerializable<RepositoryTags> {
     /*
      * Name of the image
      */
+    @Generated
     private String name;
 
     /*
      * List of tags
      */
+    @Generated
     private List<String> tags;
 
     /**
      * Creates an instance of RepositoryTags class.
      */
+    @Generated
     public RepositoryTags() {
     }
 
@@ -38,6 +42,7 @@ public final class RepositoryTags implements JsonSerializable<RepositoryTags> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -48,6 +53,7 @@ public final class RepositoryTags implements JsonSerializable<RepositoryTags> {
      * @param name the name value to set.
      * @return the RepositoryTags object itself.
      */
+    @Generated
     public RepositoryTags setName(String name) {
         this.name = name;
         return this;
@@ -58,6 +64,7 @@ public final class RepositoryTags implements JsonSerializable<RepositoryTags> {
      * 
      * @return the tags value.
      */
+    @Generated
     public List<String> getTags() {
         return this.tags;
     }
@@ -68,6 +75,7 @@ public final class RepositoryTags implements JsonSerializable<RepositoryTags> {
      * @param tags the tags value to set.
      * @return the RepositoryTags object itself.
      */
+    @Generated
     public RepositoryTags setTags(List<String> tags) {
         this.tags = tags;
         return this;
@@ -76,6 +84,7 @@ public final class RepositoryTags implements JsonSerializable<RepositoryTags> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class RepositoryTags implements JsonSerializable<RepositoryTags> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RepositoryTags.
      */
+    @Generated
     public static RepositoryTags fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RepositoryTags deserializedRepositoryTags = new RepositoryTags();

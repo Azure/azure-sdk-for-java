@@ -30,7 +30,7 @@ autorest
 ``` yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/applicationinsights/data-plane/Monitor.Exporters/preview/v2.1/swagger.json
 java: true
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.52'
 output-folder: ../
 models-subpackage: implementation.models
 namespace: com.azure.monitor.opentelemetry.exporter

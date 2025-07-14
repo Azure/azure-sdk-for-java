@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,12 +16,14 @@ public final class IntegrationRuntimeEntityReferenceType
     /**
      * Static value IntegrationRuntimeReference for IntegrationRuntimeEntityReferenceType.
      */
+    @Generated
     public static final IntegrationRuntimeEntityReferenceType INTEGRATION_RUNTIME_REFERENCE
         = fromString("IntegrationRuntimeReference");
 
     /**
      * Static value LinkedServiceReference for IntegrationRuntimeEntityReferenceType.
      */
+    @Generated
     public static final IntegrationRuntimeEntityReferenceType LINKED_SERVICE_REFERENCE
         = fromString("LinkedServiceReference");
 
@@ -29,6 +32,7 @@ public final class IntegrationRuntimeEntityReferenceType
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IntegrationRuntimeEntityReferenceType() {
     }
@@ -39,6 +43,7 @@ public final class IntegrationRuntimeEntityReferenceType
      * @param name a name to look for.
      * @return the corresponding IntegrationRuntimeEntityReferenceType.
      */
+    @Generated
     public static IntegrationRuntimeEntityReferenceType fromString(String name) {
         return fromString(name, IntegrationRuntimeEntityReferenceType.class);
     }
@@ -48,6 +53,7 @@ public final class IntegrationRuntimeEntityReferenceType
      * 
      * @return known IntegrationRuntimeEntityReferenceType values.
      */
+    @Generated
     public static Collection<IntegrationRuntimeEntityReferenceType> values() {
         return values(IntegrationRuntimeEntityReferenceType.class);
     }

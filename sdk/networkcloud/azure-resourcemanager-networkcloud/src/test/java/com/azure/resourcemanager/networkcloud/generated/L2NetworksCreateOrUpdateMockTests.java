@@ -25,7 +25,7 @@ public final class L2NetworksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"extendedLocation\":{\"name\":\"ldrlefgnaavua\",\"type\":\"n\"},\"properties\":{\"associatedResourceIds\":[\"aou\",\"n\",\"dc\"],\"clusterId\":\"hspfefyihd\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"yldphm\",\"hybridAksClustersAssociatedIds\":[\"kcgsuthhl\",\"nmwynefxexl\",\"ciatxtjrrl\",\"mdskjhhxdlajfoxc\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"slxlhu\",\"l2IsolationDomainId\":\"vkrmukmyjmkx\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"lojfkqidnqto\",\"xjhqxcsqhtkb\",\"nqlrng\"]},\"location\":\"mbiipsnawwlqk\",\"tags\":{\"xricctkwmuqq\":\"hhl\",\"rwvaexhdc\":\"ajxeiygle\",\"hdmljz\":\"rceqnkbrupob\"},\"id\":\"cvumepjpbi\",\"name\":\"nzpphepife\",\"type\":\"leqirccjclykcgxv\"}";
+            = "{\"etag\":\"knxkvccxetyvkunm\",\"extendedLocation\":{\"name\":\"gno\",\"type\":\"ikkgqo\"},\"properties\":{\"associatedResourceIds\":[\"pinde\"],\"clusterId\":\"abbxbhmedeil\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"fcfxzirzzihvwy\",\"hybridAksClustersAssociatedIds\":[\"u\",\"jslczwciidj\"],\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"r\",\"l2IsolationDomainId\":\"vdmvxadqa\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"awba\"]},\"location\":\"fbktyjmfczlf\",\"tags\":{\"cxn\":\"kfrbzgowoxqmjea\",\"hlusrvxisi\":\"qg\",\"qvlsumywzas\":\"jceagb\",\"oyjfqipu\":\"xgo\"},\"id\":\"yznclkfkee\",\"name\":\"gv\",\"type\":\"pemtuoqu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,23 +35,26 @@ public final class L2NetworksCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         L2Network response = manager.l2Networks()
-            .define("ilkfbnrqqxv")
-            .withRegion("nkjjwgcwnphbkgf")
-            .withExistingResourceGroup("mhmpty")
-            .withExtendedLocation(new ExtendedLocation().withName("tpbnfnqtxjtoma").withType("swbnfddepldwqjns"))
-            .withL2IsolationDomainId("fbfunun")
-            .withTags(mapOf("cdf", "ogmhmjpj", "ev", "dqwty", "x", "wmseharxifvqn", "sidqpxlbtpakft", "mbpjptnvwjh"))
-            .withHybridAksPluginType(HybridAksPluginType.DPDK)
-            .withInterfaceName("ulubefgybp")
+            .define("zlehgcvkbcknjolg")
+            .withRegion("qqa")
+            .withExistingResourceGroup("s")
+            .withExtendedLocation(new ExtendedLocation().withName("xoqeintxwalj").withType("lzoblqwaafr"))
+            .withL2IsolationDomainId("lzdcduwjoedxng")
+            .withTags(mapOf("iqch", "kxwxdcvjwcyziake", "dsiwdfmmp", "rtui", "grpxncakiqaondjr", "hzzwvywrgyngy",
+                "ykglt", "clamgglvlmfejdoq"))
+            .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
+            .withInterfaceName("vpyigdaqq")
+            .withIfMatch("lijjjrtvam")
+            .withIfNoneMatch("a")
             .create();
 
-        Assertions.assertEquals("mbiipsnawwlqk", response.location());
-        Assertions.assertEquals("hhl", response.tags().get("xricctkwmuqq"));
-        Assertions.assertEquals("ldrlefgnaavua", response.extendedLocation().name());
-        Assertions.assertEquals("n", response.extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, response.hybridAksPluginType());
-        Assertions.assertEquals("slxlhu", response.interfaceName());
-        Assertions.assertEquals("vkrmukmyjmkx", response.l2IsolationDomainId());
+        Assertions.assertEquals("fbktyjmfczlf", response.location());
+        Assertions.assertEquals("kfrbzgowoxqmjea", response.tags().get("cxn"));
+        Assertions.assertEquals("gno", response.extendedLocation().name());
+        Assertions.assertEquals("ikkgqo", response.extendedLocation().type());
+        Assertions.assertEquals(HybridAksPluginType.SRIOV, response.hybridAksPluginType());
+        Assertions.assertEquals("r", response.interfaceName());
+        Assertions.assertEquals("vdmvxadqa", response.l2IsolationDomainId());
     }
 
     // Use "Map.of" if available

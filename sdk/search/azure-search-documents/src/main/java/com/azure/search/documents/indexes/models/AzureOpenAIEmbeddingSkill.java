@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,37 +23,44 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
+    @Generated
     private String odataType = "#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill";
 
     /*
      * The number of dimensions the resulting output embeddings should have. Only supported in text-embedding-3 and
      * later models.
      */
+    @Generated
     private Integer dimensions;
 
     /*
      * The resource URI of the Azure OpenAI resource.
      */
+    @Generated
     private String resourceUrl;
 
     /*
      * ID of the Azure OpenAI model deployment on the designated resource.
      */
+    @Generated
     private String deploymentName;
 
     /*
      * API key of the designated Azure OpenAI resource.
      */
+    @Generated
     private String apiKey;
 
     /*
      * The user-assigned managed identity used for outbound connections.
      */
+    @Generated
     private SearchIndexerDataIdentity authIdentity;
 
     /*
      * The name of the embedding model that is deployed at the provided deploymentId path.
      */
+    @Generated
     private AzureOpenAIModelName modelName;
 
     /**
@@ -61,6 +69,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
+    @Generated
     public AzureOpenAIEmbeddingSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
@@ -70,6 +79,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -81,6 +91,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
      * 
      * @return the dimensions value.
      */
+    @Generated
     public Integer getDimensions() {
         return this.dimensions;
     }
@@ -92,6 +103,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
      * @param dimensions the dimensions value to set.
      * @return the AzureOpenAIEmbeddingSkill object itself.
      */
+    @Generated
     public AzureOpenAIEmbeddingSkill setDimensions(Integer dimensions) {
         this.dimensions = dimensions;
         return this;
@@ -102,6 +114,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
      * 
      * @return the resourceUrl value.
      */
+    @Generated
     public String getResourceUrl() {
         return this.resourceUrl;
     }
@@ -112,6 +125,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
      * @param resourceUrl the resourceUrl value to set.
      * @return the AzureOpenAIEmbeddingSkill object itself.
      */
+    @Generated
     public AzureOpenAIEmbeddingSkill setResourceUrl(String resourceUrl) {
         this.resourceUrl = resourceUrl;
         return this;
@@ -122,6 +136,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
      * 
      * @return the deploymentName value.
      */
+    @Generated
     public String getDeploymentName() {
         return this.deploymentName;
     }
@@ -132,6 +147,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
      * @param deploymentName the deploymentName value to set.
      * @return the AzureOpenAIEmbeddingSkill object itself.
      */
+    @Generated
     public AzureOpenAIEmbeddingSkill setDeploymentName(String deploymentName) {
         this.deploymentName = deploymentName;
         return this;
@@ -142,6 +158,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
      * 
      * @return the apiKey value.
      */
+    @Generated
     public String getApiKey() {
         return this.apiKey;
     }
@@ -152,6 +169,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
      * @param apiKey the apiKey value to set.
      * @return the AzureOpenAIEmbeddingSkill object itself.
      */
+    @Generated
     public AzureOpenAIEmbeddingSkill setApiKey(String apiKey) {
         this.apiKey = apiKey;
         return this;
@@ -162,6 +180,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
      * 
      * @return the authIdentity value.
      */
+    @Generated
     public SearchIndexerDataIdentity getAuthIdentity() {
         return this.authIdentity;
     }
@@ -172,6 +191,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
      * @param authIdentity the authIdentity value to set.
      * @return the AzureOpenAIEmbeddingSkill object itself.
      */
+    @Generated
     public AzureOpenAIEmbeddingSkill setAuthIdentity(SearchIndexerDataIdentity authIdentity) {
         this.authIdentity = authIdentity;
         return this;
@@ -182,6 +202,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
      * 
      * @return the modelName value.
      */
+    @Generated
     public AzureOpenAIModelName getModelName() {
         return this.modelName;
     }
@@ -192,6 +213,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
      * @param modelName the modelName value to set.
      * @return the AzureOpenAIEmbeddingSkill object itself.
      */
+    @Generated
     public AzureOpenAIEmbeddingSkill setModelName(AzureOpenAIModelName modelName) {
         this.modelName = modelName;
         return this;
@@ -200,6 +222,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureOpenAIEmbeddingSkill setName(String name) {
         super.setName(name);
@@ -209,6 +232,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureOpenAIEmbeddingSkill setDescription(String description) {
         super.setDescription(description);
@@ -218,6 +242,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureOpenAIEmbeddingSkill setContext(String context) {
         super.setContext(context);
@@ -227,6 +252,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -254,6 +280,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureOpenAIEmbeddingSkill.
      */
+    @Generated
     public static AzureOpenAIEmbeddingSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

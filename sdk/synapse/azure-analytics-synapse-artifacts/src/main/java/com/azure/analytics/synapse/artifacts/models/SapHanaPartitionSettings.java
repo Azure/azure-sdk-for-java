@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class SapHanaPartitionSettings implements JsonSerializable<SapHanaP
      * The name of the column that will be used for proceeding range partitioning. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object partitionColumnName;
 
     /**
      * Creates an instance of SapHanaPartitionSettings class.
      */
+    @Generated
     public SapHanaPartitionSettings() {
     }
 
@@ -34,6 +37,7 @@ public final class SapHanaPartitionSettings implements JsonSerializable<SapHanaP
      * 
      * @return the partitionColumnName value.
      */
+    @Generated
     public Object getPartitionColumnName() {
         return this.partitionColumnName;
     }
@@ -45,6 +49,7 @@ public final class SapHanaPartitionSettings implements JsonSerializable<SapHanaP
      * @param partitionColumnName the partitionColumnName value to set.
      * @return the SapHanaPartitionSettings object itself.
      */
+    @Generated
     public SapHanaPartitionSettings setPartitionColumnName(Object partitionColumnName) {
         this.partitionColumnName = partitionColumnName;
         return this;
@@ -53,10 +58,13 @@ public final class SapHanaPartitionSettings implements JsonSerializable<SapHanaP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
+        if (this.partitionColumnName != null) {
+            jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -68,6 +76,7 @@ public final class SapHanaPartitionSettings implements JsonSerializable<SapHanaP
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SapHanaPartitionSettings.
      */
+    @Generated
     public static SapHanaPartitionSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SapHanaPartitionSettings deserializedSapHanaPartitionSettings = new SapHanaPartitionSettings();

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.utils.IOExceptionCheckedConsumer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufHolder;
 import io.netty.channel.ChannelHandlerContext;
@@ -10,6 +11,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.util.ReferenceCountUtil;
 
+import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 
@@ -19,9 +21,10 @@ import java.util.function.Consumer;
  */
 public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandlerAdapter {
     private final CountDownLatch latch;
-    private final Consumer<ByteBuf> byteBufConsumer;
+    private final IOExceptionCheckedConsumer<ByteBuf> byteBufConsumer;
 
     private boolean lastRead;
+    private Throwable exception;
 
     /**
      * Creates a new instance of {@link Netty4EagerConsumeChannelHandler}.
@@ -29,14 +32,9 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
      * @param latch The latch to count down when the response is fully read, or an exception occurs.
      * @param byteBufConsumer The consumer to process the {@link ByteBuf ByteBufs} as they are read.
      */
-    public Netty4EagerConsumeChannelHandler(CountDownLatch latch, Consumer<ByteBuf> byteBufConsumer) {
+    public Netty4EagerConsumeChannelHandler(CountDownLatch latch, IOExceptionCheckedConsumer<ByteBuf> byteBufConsumer) {
         this.latch = latch;
         this.byteBufConsumer = byteBufConsumer;
-    }
-
-    @Override
-    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        ctx.channel().config().setAutoRead(true);
     }
 
     @Override
@@ -51,7 +49,7 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
         if (buf != null && buf.isReadable()) {
             try {
                 byteBufConsumer.accept(buf);
-            } catch (RuntimeException ex) {
+            } catch (IOException | RuntimeException ex) {
                 ReferenceCountUtil.release(buf);
                 ctx.close();
                 return;
@@ -73,8 +71,13 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        this.exception = cause;
         latch.countDown();
-        ctx.fireExceptionCaught(cause);
+        ctx.close();
+    }
+
+    Throwable channelException() {
+        return exception;
     }
 
     // TODO (alzimmer): Are the latch countdowns needed for unregistering and inactivity?

@@ -209,7 +209,7 @@ public final class AzureAppConfigurationImpl {
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureAppConfiguratio")
+    @ServiceInterface(name = "AzureAppConfiguration")
     public interface AzureAppConfigurationService {
         @Get("/keys")
         @ExpectedResponses({ 200 })
@@ -1349,7 +1349,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Key> getKeys(String name, String after, String acceptDatetime) {
-        return new PagedIterable<>(() -> getKeysSinglePage(name, after, acceptDatetime, Context.NONE),
+        return new PagedIterable<>(() -> getKeysSinglePage(name, after, acceptDatetime),
             nextLink -> getKeysNextSinglePage(nextLink, acceptDatetime));
     }
 
@@ -1430,7 +1430,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Key> getKeysNoCustomHeaders(String name, String after, String acceptDatetime) {
-        return new PagedIterable<>(() -> getKeysNoCustomHeadersSinglePage(name, after, acceptDatetime, Context.NONE),
+        return new PagedIterable<>(() -> getKeysNoCustomHeadersSinglePage(name, after, acceptDatetime),
             nextLink -> getKeysNextSinglePage(nextLink, acceptDatetime));
     }
 
@@ -2009,9 +2009,8 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyValue> getKeyValues(String key, String label, String after, String acceptDatetime,
         List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch, List<String> tags) {
-        return new PagedIterable<>(
-            () -> getKeyValuesSinglePage(key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch,
-                tags, Context.NONE),
+        return new PagedIterable<>(() -> getKeyValuesSinglePage(key, label, after, acceptDatetime, select, snapshot,
+            ifMatch, ifNoneMatch, tags),
             nextLink -> getKeyValuesNextSinglePage(nextLink, acceptDatetime, ifMatch, ifNoneMatch));
     }
 
@@ -2153,7 +2152,7 @@ public final class AzureAppConfigurationImpl {
         List<String> tags) {
         return new PagedIterable<>(
             () -> getKeyValuesNoCustomHeadersSinglePage(key, label, after, acceptDatetime, select, snapshot, ifMatch,
-                ifNoneMatch, tags, Context.NONE),
+                ifNoneMatch, tags),
             nextLink -> getKeyValuesNextSinglePage(nextLink, acceptDatetime, ifMatch, ifNoneMatch));
     }
 
@@ -3579,7 +3578,7 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSnapshot> getSnapshots(String name, String after, List<SnapshotFields> select,
         List<ConfigurationSnapshotStatus> status) {
-        return new PagedIterable<>(() -> getSnapshotsSinglePage(name, after, select, status, Context.NONE),
+        return new PagedIterable<>(() -> getSnapshotsSinglePage(name, after, select, status),
             nextLink -> getSnapshotsNextSinglePage(nextLink));
     }
 
@@ -3687,8 +3686,7 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSnapshot> getSnapshotsNoCustomHeaders(String name, String after,
         List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status) {
-        return new PagedIterable<>(
-            () -> getSnapshotsNoCustomHeadersSinglePage(name, after, select, status, Context.NONE),
+        return new PagedIterable<>(() -> getSnapshotsNoCustomHeadersSinglePage(name, after, select, status),
             nextLink -> getSnapshotsNextSinglePage(nextLink));
     }
 
@@ -4848,7 +4846,7 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SettingLabel> getLabels(String name, String after, String acceptDatetime,
         List<SettingLabelFields> select) {
-        return new PagedIterable<>(() -> getLabelsSinglePage(name, after, acceptDatetime, select, Context.NONE),
+        return new PagedIterable<>(() -> getLabelsSinglePage(name, after, acceptDatetime, select),
             nextLink -> getLabelsNextSinglePage(nextLink, acceptDatetime));
     }
 
@@ -4946,8 +4944,7 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SettingLabel> getLabelsNoCustomHeaders(String name, String after, String acceptDatetime,
         List<SettingLabelFields> select) {
-        return new PagedIterable<>(
-            () -> getLabelsNoCustomHeadersSinglePage(name, after, acceptDatetime, select, Context.NONE),
+        return new PagedIterable<>(() -> getLabelsNoCustomHeadersSinglePage(name, after, acceptDatetime, select),
             nextLink -> getLabelsNextSinglePage(nextLink, acceptDatetime));
     }
 
@@ -5862,8 +5859,7 @@ public final class AzureAppConfigurationImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyValue> getRevisions(String key, String label, String after, String acceptDatetime,
         List<SettingFields> select, List<String> tags) {
-        return new PagedIterable<>(
-            () -> getRevisionsSinglePage(key, label, after, acceptDatetime, select, tags, Context.NONE),
+        return new PagedIterable<>(() -> getRevisionsSinglePage(key, label, after, acceptDatetime, select, tags),
             nextLink -> getRevisionsNextSinglePage(nextLink, acceptDatetime));
     }
 
@@ -5979,7 +5975,7 @@ public final class AzureAppConfigurationImpl {
     public PagedIterable<KeyValue> getRevisionsNoCustomHeaders(String key, String label, String after,
         String acceptDatetime, List<SettingFields> select, List<String> tags) {
         return new PagedIterable<>(
-            () -> getRevisionsNoCustomHeadersSinglePage(key, label, after, acceptDatetime, select, tags, Context.NONE),
+            () -> getRevisionsNoCustomHeadersSinglePage(key, label, after, acceptDatetime, select, tags),
             nextLink -> getRevisionsNextSinglePage(nextLink, acceptDatetime));
     }
 

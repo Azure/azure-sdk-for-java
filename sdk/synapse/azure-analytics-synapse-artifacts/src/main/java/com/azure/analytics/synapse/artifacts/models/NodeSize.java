@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class NodeSize extends ExpandableStringEnum<NodeSize> {
     /**
      * Static value None for NodeSize.
      */
+    @Generated
     public static final NodeSize NONE = fromString("None");
 
     /**
      * Static value Small for NodeSize.
      */
+    @Generated
     public static final NodeSize SMALL = fromString("Small");
 
     /**
      * Static value Medium for NodeSize.
      */
+    @Generated
     public static final NodeSize MEDIUM = fromString("Medium");
 
     /**
      * Static value Large for NodeSize.
      */
+    @Generated
     public static final NodeSize LARGE = fromString("Large");
 
     /**
      * Static value XLarge for NodeSize.
      */
+    @Generated
     public static final NodeSize XLARGE = fromString("XLarge");
 
     /**
      * Static value XXLarge for NodeSize.
      */
+    @Generated
     public static final NodeSize XXLARGE = fromString("XXLarge");
 
     /**
      * Static value XXXLarge for NodeSize.
      */
+    @Generated
     public static final NodeSize XXXLARGE = fromString("XXXLarge");
 
     /**
@@ -51,6 +59,7 @@ public final class NodeSize extends ExpandableStringEnum<NodeSize> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public NodeSize() {
     }
@@ -61,6 +70,7 @@ public final class NodeSize extends ExpandableStringEnum<NodeSize> {
      * @param name a name to look for.
      * @return the corresponding NodeSize.
      */
+    @Generated
     public static NodeSize fromString(String name) {
         return fromString(name, NodeSize.class);
     }
@@ -70,6 +80,7 @@ public final class NodeSize extends ExpandableStringEnum<NodeSize> {
      * 
      * @return known NodeSize values.
      */
+    @Generated
     public static Collection<NodeSize> values() {
         return values(NodeSize.class);
     }

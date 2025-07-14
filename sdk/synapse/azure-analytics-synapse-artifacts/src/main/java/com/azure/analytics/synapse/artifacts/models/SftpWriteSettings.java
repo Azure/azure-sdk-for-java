@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,23 +22,27 @@ public final class SftpWriteSettings extends StoreWriteSettings {
     /*
      * The write setting type.
      */
+    @Generated
     private String type = "SftpWriteSettings";
 
     /*
      * Specifies the timeout for writing each chunk to SFTP server. Default value: 01:00:00 (one hour). Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object operationTimeout;
 
     /*
      * Upload to temporary file(s) and rename. Disable this option if your SFTP server doesn't support rename operation.
      * Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object useTempFileRename;
 
     /**
      * Creates an instance of SftpWriteSettings class.
      */
+    @Generated
     public SftpWriteSettings() {
     }
 
@@ -46,6 +51,7 @@ public final class SftpWriteSettings extends StoreWriteSettings {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -57,6 +63,7 @@ public final class SftpWriteSettings extends StoreWriteSettings {
      * 
      * @return the operationTimeout value.
      */
+    @Generated
     public Object getOperationTimeout() {
         return this.operationTimeout;
     }
@@ -68,6 +75,7 @@ public final class SftpWriteSettings extends StoreWriteSettings {
      * @param operationTimeout the operationTimeout value to set.
      * @return the SftpWriteSettings object itself.
      */
+    @Generated
     public SftpWriteSettings setOperationTimeout(Object operationTimeout) {
         this.operationTimeout = operationTimeout;
         return this;
@@ -79,6 +87,7 @@ public final class SftpWriteSettings extends StoreWriteSettings {
      * 
      * @return the useTempFileRename value.
      */
+    @Generated
     public Object getUseTempFileRename() {
         return this.useTempFileRename;
     }
@@ -90,6 +99,7 @@ public final class SftpWriteSettings extends StoreWriteSettings {
      * @param useTempFileRename the useTempFileRename value to set.
      * @return the SftpWriteSettings object itself.
      */
+    @Generated
     public SftpWriteSettings setUseTempFileRename(Object useTempFileRename) {
         this.useTempFileRename = useTempFileRename;
         return this;
@@ -98,6 +108,7 @@ public final class SftpWriteSettings extends StoreWriteSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SftpWriteSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -107,6 +118,7 @@ public final class SftpWriteSettings extends StoreWriteSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SftpWriteSettings setCopyBehavior(Object copyBehavior) {
         super.setCopyBehavior(copyBehavior);
@@ -116,6 +128,7 @@ public final class SftpWriteSettings extends StoreWriteSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SftpWriteSettings setMetadata(List<MetadataItem> metadata) {
         super.setMetadata(metadata);
@@ -125,15 +138,24 @@ public final class SftpWriteSettings extends StoreWriteSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
-        jsonWriter.writeUntypedField("copyBehavior", getCopyBehavior());
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
+        if (getCopyBehavior() != null) {
+            jsonWriter.writeUntypedField("copyBehavior", getCopyBehavior());
+        }
         jsonWriter.writeArrayField("metadata", getMetadata(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("operationTimeout", this.operationTimeout);
-        jsonWriter.writeUntypedField("useTempFileRename", this.useTempFileRename);
+        if (this.operationTimeout != null) {
+            jsonWriter.writeUntypedField("operationTimeout", this.operationTimeout);
+        }
+        if (this.useTempFileRename != null) {
+            jsonWriter.writeUntypedField("useTempFileRename", this.useTempFileRename);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -150,6 +172,7 @@ public final class SftpWriteSettings extends StoreWriteSettings {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SftpWriteSettings.
      */
+    @Generated
     public static SftpWriteSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SftpWriteSettings deserializedSftpWriteSettings = new SftpWriteSettings();

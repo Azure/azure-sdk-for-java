@@ -6,22 +6,32 @@ import io.clientcore.http.netty4.mocking.MockChannel;
 import io.clientcore.http.netty4.mocking.MockChannelHandlerContext;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelException;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.DefaultChannelPromise;
+import io.netty.channel.DefaultEventLoop;
+import io.netty.channel.EventLoop;
 import io.netty.handler.codec.http.LastHttpContent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 import static io.clientcore.http.netty4.TestUtils.assertArraysEqual;
 import static io.clientcore.http.netty4.TestUtils.createChannelWithReadHandling;
 import static io.netty.buffer.Unpooled.wrappedBuffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests {@link Netty4ChannelInputStream}.
@@ -69,7 +79,7 @@ public class Netty4ChannelInputStreamTests {
     }
 
     @Test
-    public void readConsumesCurrentBufferAndRequestsMoreData() {
+    public void readConsumesCurrentBufferAndRequestsMoreData() throws IOException {
         byte[] expected = new byte[32];
         ThreadLocalRandom.current().nextBytes(expected);
 
@@ -125,7 +135,7 @@ public class Netty4ChannelInputStreamTests {
      * will have reads triggered in an attempt to satisfy the read buffer.
      */
     @Test
-    public void largeReadTriggersMultipleChannelReads() {
+    public void largeReadTriggersMultipleChannelReads() throws IOException {
         byte[] expected = new byte[8192];
         ThreadLocalRandom.current().nextBytes(expected);
 
@@ -146,7 +156,7 @@ public class Netty4ChannelInputStreamTests {
      * will have reads triggered in an attempt to satisfy the skip amount.
      */
     @Test
-    public void largeSkipTriggersMultipleChannelReads() {
+    public void largeSkipTriggersMultipleChannelReads() throws IOException {
         byte[] expected = new byte[8192];
         ThreadLocalRandom.current().nextBytes(expected);
 
@@ -163,10 +173,41 @@ public class Netty4ChannelInputStreamTests {
     @Test
     public void closingStreamClosesChannel() {
         AtomicInteger closeCount = new AtomicInteger();
+        AtomicInteger disconnectCount = new AtomicInteger();
 
-        new Netty4ChannelInputStream(null, createCloseableChannel(closeCount::incrementAndGet)).close();
+        new Netty4ChannelInputStream(null,
+            createCloseableChannel(closeCount::incrementAndGet, disconnectCount::incrementAndGet)).close();
 
         assertEquals(1, closeCount.get());
+    }
+
+    @ParameterizedTest
+    @MethodSource("errorSupplier")
+    public void streamPropagatesErrorFiredInChannel(Throwable expected) {
+        InputStream inputStream = new Netty4ChannelInputStream(null, createPartialReadThenErrorChannel(expected));
+
+        Throwable actual = assertThrows(Throwable.class, () -> inputStream.read(new byte[8192]));
+
+        if (expected instanceof Error) {
+            assertInstanceOf(Error.class, actual);
+            assertEquals(expected.getMessage(), actual.getMessage());
+        } else if (expected instanceof IOException) {
+            assertInstanceOf(IOException.class, actual);
+            assertEquals(expected.getMessage(), actual.getMessage());
+        } else {
+            assertInstanceOf(IOException.class, actual);
+            assertInstanceOf(expected.getClass(), actual.getCause());
+            assertEquals(expected.getMessage(), actual.getCause().getMessage());
+        }
+
+    }
+
+    private static Stream<Throwable> errorSupplier() {
+        // The type of error thrown by the InputStream should be consistent even if the underlying error thrown by the
+        // channel changes. Unless it is an Error type, those should be thrown as-is.
+        return Stream.of(new IOException("Error in response stream."),
+            new ChannelException("Remote host closed connection."), new IllegalStateException("Invalid count."),
+            new OutOfMemoryError());
     }
 
     private static Channel createChannelThatReads8Kb(byte[] eightKbOfBytes) {
@@ -194,16 +235,63 @@ public class Netty4ChannelInputStreamTests {
 
     private static Channel createCloseableChannel() {
         return createCloseableChannel(() -> {
+        }, () -> {
         });
     }
 
-    private static Channel createCloseableChannel(Runnable onClose) {
+    private static Channel createCloseableChannel(Runnable onClose, Runnable onDisconnect) {
         return new MockChannel() {
             @Override
             public ChannelFuture close() {
                 onClose.run();
                 return new DefaultChannelPromise(this);
             }
+
+            @Override
+            public ChannelFuture disconnect() {
+                onDisconnect.run();
+                return new DefaultChannelPromise(this);
+            }
         };
+    }
+
+    private static Channel createPartialReadThenErrorChannel(Throwable throwable) {
+        EventLoop eventLoop = new DefaultEventLoop() {
+            @Override
+            public boolean inEventLoop(Thread thread) {
+                return true;
+            }
+        };
+
+        AtomicBoolean hasRead = new AtomicBoolean();
+        Channel channel = new MockChannel() {
+            @Override
+            public Channel read() {
+                Netty4InitiateOneReadHandler handler = this.pipeline().get(Netty4InitiateOneReadHandler.class);
+                MockChannelHandlerContext ctx = new MockChannelHandlerContext(this);
+                if (hasRead.compareAndSet(false, true)) {
+                    byte[] fourKb = new byte[4096];
+                    ThreadLocalRandom.current().nextBytes(fourKb);
+                    handler.channelRead(ctx, wrappedBuffer(fourKb, 0, 2048));
+                    handler.channelRead(ctx, wrappedBuffer(fourKb, 2048, 2048));
+                    handler.channelReadComplete(ctx);
+                } else {
+                    handler.exceptionCaught(ctx, throwable);
+                }
+                return this;
+            }
+
+            @Override
+            public boolean isActive() {
+                return true;
+            }
+        };
+
+        try {
+            eventLoop.register(channel).sync();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return channel;
     }
 }

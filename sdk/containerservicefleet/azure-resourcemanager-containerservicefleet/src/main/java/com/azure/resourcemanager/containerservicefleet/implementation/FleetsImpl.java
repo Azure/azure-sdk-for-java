@@ -49,7 +49,7 @@ public final class FleetsImpl implements Fleets {
         }
     }
 
-    public void delete(String resourceGroupName, String fleetName) {
+    public void deleteByResourceGroup(String resourceGroupName, String fleetName) {
         this.serviceClient().delete(resourceGroupName, fleetName);
     }
 

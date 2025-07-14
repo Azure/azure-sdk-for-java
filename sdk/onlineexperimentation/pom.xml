@@ -11,5 +11,6 @@
 
   <modules>
     <module>azure-resourcemanager-onlineexperimentation</module>
+    <module>azure-analytics-onlineexperimentation</module>
   </modules>
 </project>

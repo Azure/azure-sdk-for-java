@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,16 +23,19 @@ public final class EnrichmentStatusQueryOption implements JsonSerializable<Enric
     /*
      * the start point of time range to query anomaly detection status.
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * the end point of time range to query anomaly detection status.
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /**
      * Creates an instance of EnrichmentStatusQueryOption class.
      */
+    @Generated
     public EnrichmentStatusQueryOption() {
     }
 
@@ -40,6 +44,7 @@ public final class EnrichmentStatusQueryOption implements JsonSerializable<Enric
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -50,6 +55,7 @@ public final class EnrichmentStatusQueryOption implements JsonSerializable<Enric
      * @param startTime the startTime value to set.
      * @return the EnrichmentStatusQueryOption object itself.
      */
+    @Generated
     public EnrichmentStatusQueryOption setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -60,6 +66,7 @@ public final class EnrichmentStatusQueryOption implements JsonSerializable<Enric
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -70,6 +77,7 @@ public final class EnrichmentStatusQueryOption implements JsonSerializable<Enric
      * @param endTime the endTime value to set.
      * @return the EnrichmentStatusQueryOption object itself.
      */
+    @Generated
     public EnrichmentStatusQueryOption setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
@@ -78,6 +86,7 @@ public final class EnrichmentStatusQueryOption implements JsonSerializable<Enric
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -97,6 +106,7 @@ public final class EnrichmentStatusQueryOption implements JsonSerializable<Enric
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EnrichmentStatusQueryOption.
      */
+    @Generated
     public static EnrichmentStatusQueryOption fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EnrichmentStatusQueryOption deserializedEnrichmentStatusQueryOption = new EnrichmentStatusQueryOption();

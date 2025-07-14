@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     /*
      * Custom calling context VoiP headers
      */
+    @Generated
     private Map<String, String> voipHeaders;
 
     /*
      * Custom calling context SIP headers
      */
+    @Generated
     private Map<String, String> sipHeaders;
 
     /**
      * Creates an instance of CustomCallingContext class.
      */
+    @Generated
     public CustomCallingContext() {
     }
 
@@ -38,6 +42,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
      * 
      * @return the voipHeaders value.
      */
+    @Generated
     public Map<String, String> getVoipHeaders() {
         return this.voipHeaders;
     }
@@ -48,6 +53,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
      * @param voipHeaders the voipHeaders value to set.
      * @return the CustomCallingContext object itself.
      */
+    @Generated
     public CustomCallingContext setVoipHeaders(Map<String, String> voipHeaders) {
         this.voipHeaders = voipHeaders;
         return this;
@@ -58,6 +64,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
      * 
      * @return the sipHeaders value.
      */
+    @Generated
     public Map<String, String> getSipHeaders() {
         return this.sipHeaders;
     }
@@ -68,6 +75,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
      * @param sipHeaders the sipHeaders value to set.
      * @return the CustomCallingContext object itself.
      */
+    @Generated
     public CustomCallingContext setSipHeaders(Map<String, String> sipHeaders) {
         this.sipHeaders = sipHeaders;
         return this;
@@ -76,6 +84,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CustomCallingContext.
      */
+    @Generated
     public static CustomCallingContext fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CustomCallingContext deserializedCustomCallingContext = new CustomCallingContext();

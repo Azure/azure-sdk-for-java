@@ -70,7 +70,7 @@ public final class RelationshipsImpl {
      * REST calls.
      */
     @Host("{endpoint}/datamap/api")
-    @ServiceInterface(name = "DataMapClientRelatio")
+    @ServiceInterface(name = "DataMapClientRelationships")
     public interface RelationshipsService {
         @Post("/atlas/v2/relationship")
         @ExpectedResponses({ 200 })

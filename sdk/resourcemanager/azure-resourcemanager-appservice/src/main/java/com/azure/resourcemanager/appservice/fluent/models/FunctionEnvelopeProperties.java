@@ -369,7 +369,9 @@ public final class FunctionEnvelopeProperties implements JsonSerializable<Functi
         jsonWriter.writeStringField("test_data_href", this.testDataHref);
         jsonWriter.writeStringField("secrets_file_href", this.secretsFileHref);
         jsonWriter.writeStringField("href", this.href);
-        jsonWriter.writeUntypedField("config", this.config);
+        if (this.config != null) {
+            jsonWriter.writeUntypedField("config", this.config);
+        }
         jsonWriter.writeMapField("files", this.files, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("test_data", this.testData);
         jsonWriter.writeStringField("invoke_url_template", this.invokeUrlTemplate);

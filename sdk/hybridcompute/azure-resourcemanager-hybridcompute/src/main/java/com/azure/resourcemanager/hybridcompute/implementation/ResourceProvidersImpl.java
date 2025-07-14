@@ -7,8 +7,10 @@ package com.azure.resourcemanager.hybridcompute.implementation;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridcompute.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.hybridcompute.fluent.models.SetupExtensionRequestInner;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionUpgrade;
 import com.azure.resourcemanager.hybridcompute.models.ResourceProviders;
+import com.azure.resourcemanager.hybridcompute.models.SetupExtensionRequest;
 
 public final class ResourceProvidersImpl implements ResourceProviders {
     private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersImpl.class);
@@ -31,6 +33,28 @@ public final class ResourceProvidersImpl implements ResourceProviders {
     public void upgradeExtensions(String resourceGroupName, String machineName,
         MachineExtensionUpgrade extensionUpgradeParameters, Context context) {
         this.serviceClient().upgradeExtensions(resourceGroupName, machineName, extensionUpgradeParameters, context);
+    }
+
+    public SetupExtensionRequest setupExtensions(String resourceGroupName, String machineName,
+        SetupExtensionRequestInner extensions) {
+        SetupExtensionRequestInner inner
+            = this.serviceClient().setupExtensions(resourceGroupName, machineName, extensions);
+        if (inner != null) {
+            return new SetupExtensionRequestImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public SetupExtensionRequest setupExtensions(String resourceGroupName, String machineName,
+        SetupExtensionRequestInner extensions, Context context) {
+        SetupExtensionRequestInner inner
+            = this.serviceClient().setupExtensions(resourceGroupName, machineName, extensions, context);
+        if (inner != null) {
+            return new SetupExtensionRequestImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     private ResourceProvidersClient serviceClient() {

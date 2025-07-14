@@ -4,6 +4,8 @@
 package io.clientcore.http.okhttp3;
 
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.client.HttpProtocolVersion;
+import io.clientcore.core.http.client.JdkHttpClientBuilder;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.SharedExecutorService;
@@ -15,12 +17,15 @@ import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,6 +54,7 @@ public class OkHttpHttpClientBuilder {
     private SSLSocketFactory sslSocketFactory;
     private X509TrustManager trustManager;
     private HostnameVerifier hostnameVerifier;
+    private HttpProtocolVersion maximumHttpVersion = HttpProtocolVersion.HTTP_2;
 
     /**
      * Creates OkHttpHttpClientBuilder.
@@ -299,6 +305,27 @@ public class OkHttpHttpClientBuilder {
     }
 
     /**
+     * Sets the maximum {@link HttpProtocolVersion HTTP protocol version} that the HTTP client will support.
+     * <p>
+     * By default, the maximum HTTP protocol version is set to {@link HttpProtocolVersion#HTTP_2 HTTP_2}.
+     * <p>
+     * If {@code httpVersion} is null, it will reset the maximum HTTP protocol version to
+     * {@link HttpProtocolVersion#HTTP_2 HTTP_2}.
+     *
+     * @param httpVersion The maximum HTTP protocol version that the HTTP client will support.
+     * @return The updated {@link JdkHttpClientBuilder} object.
+     */
+    public OkHttpHttpClientBuilder setMaximumHttpVersion(HttpProtocolVersion httpVersion) {
+        if (httpVersion != null) {
+            this.maximumHttpVersion = httpVersion;
+        } else {
+            this.maximumHttpVersion = HttpProtocolVersion.HTTP_2;
+        }
+
+        return this;
+    }
+
+    /**
      * Creates a new OkHttp-backed {@link HttpClient} instance on every call, using the configuration set in this
      * builder at the time of the {@code build()} method call.
      *
@@ -310,11 +337,11 @@ public class OkHttpHttpClientBuilder {
 
         // Add each interceptor that has been added.
         for (Interceptor interceptor : this.networkInterceptors) {
-            httpClientBuilder = httpClientBuilder.addNetworkInterceptor(interceptor);
+            httpClientBuilder.addNetworkInterceptor(interceptor);
         }
 
         // Configure operation timeouts.
-        httpClientBuilder = httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT))
+        httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT))
             .writeTimeout(getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT))
             .readTimeout(getTimeout(readTimeout, DEFAULT_READ_TIMEOUT));
 
@@ -325,20 +352,26 @@ public class OkHttpHttpClientBuilder {
 
         // If set use the configured connection pool.
         if (this.connectionPool != null) {
-            httpClientBuilder = httpClientBuilder.connectionPool(connectionPool);
+            httpClientBuilder.connectionPool(connectionPool);
         }
 
         // If set use the configured dispatcher.
         if (this.dispatcher != null) {
-            httpClientBuilder = httpClientBuilder.dispatcher(dispatcher);
+            httpClientBuilder.dispatcher(dispatcher);
         }
 
         if (this.sslSocketFactory != null) {
-            httpClientBuilder = httpClientBuilder.sslSocketFactory(sslSocketFactory, trustManager);
+            httpClientBuilder.sslSocketFactory(sslSocketFactory, trustManager);
         }
 
         if (this.hostnameVerifier != null) {
-            httpClientBuilder = httpClientBuilder.hostnameVerifier(hostnameVerifier);
+            httpClientBuilder.hostnameVerifier(hostnameVerifier);
+        }
+
+        if (this.maximumHttpVersion == HttpProtocolVersion.HTTP_1_1) {
+            httpClientBuilder.protocols(Collections.singletonList(Protocol.HTTP_1_1));
+        } else if (this.maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
+            httpClientBuilder.protocols(Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1));
         }
 
         Configuration buildConfiguration
@@ -348,15 +381,14 @@ public class OkHttpHttpClientBuilder {
             = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
         if (buildProxyOptions != null) {
-            httpClientBuilder
-                = httpClientBuilder.proxySelector(new OkHttpProxySelector(buildProxyOptions.getType().toProxyType(),
-                    buildProxyOptions::getAddress, buildProxyOptions.getNonProxyHosts()));
+            httpClientBuilder.proxySelector(new OkHttpProxySelector(buildProxyOptions.getType().toProxyType(),
+                buildProxyOptions::getAddress, buildProxyOptions.getNonProxyHosts()));
             ChallengeHandler challengeHandler = buildProxyOptions.getChallengeHandler();
 
             if (buildProxyOptions.getUsername() != null) {
                 ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(challengeHandler);
 
-                httpClientBuilder = httpClientBuilder.proxyAuthenticator(proxyAuthenticator)
+                httpClientBuilder.proxyAuthenticator(proxyAuthenticator)
                     .addInterceptor(proxyAuthenticator.getProxyAuthenticationInfoInterceptor());
             }
         }

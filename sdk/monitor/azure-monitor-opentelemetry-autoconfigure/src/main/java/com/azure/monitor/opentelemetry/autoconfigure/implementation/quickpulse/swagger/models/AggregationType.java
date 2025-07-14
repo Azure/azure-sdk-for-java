@@ -4,6 +4,7 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class AggregationType extends ExpandableStringEnum<AggregationType>
     /**
      * Average.
      */
+    @Generated
     public static final AggregationType AVG = fromString("Avg");
 
     /**
      * Sum.
      */
+    @Generated
     public static final AggregationType SUM = fromString("Sum");
 
     /**
      * Minimum.
      */
+    @Generated
     public static final AggregationType MIN = fromString("Min");
 
     /**
      * Maximum.
      */
+    @Generated
     public static final AggregationType MAX = fromString("Max");
 
     /**
@@ -36,6 +41,7 @@ public final class AggregationType extends ExpandableStringEnum<AggregationType>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AggregationType() {
     }
@@ -46,6 +52,7 @@ public final class AggregationType extends ExpandableStringEnum<AggregationType>
      * @param name a name to look for.
      * @return the corresponding AggregationType.
      */
+    @Generated
     public static AggregationType fromString(String name) {
         return fromString(name, AggregationType.class);
     }
@@ -55,6 +62,7 @@ public final class AggregationType extends ExpandableStringEnum<AggregationType>
      * 
      * @return known AggregationType values.
      */
+    @Generated
     public static Collection<AggregationType> values() {
         return values(AggregationType.class);
     }

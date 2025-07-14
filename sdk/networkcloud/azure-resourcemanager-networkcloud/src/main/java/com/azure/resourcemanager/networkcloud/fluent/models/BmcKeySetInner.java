@@ -28,6 +28,11 @@ import java.util.Map;
 @Fluent
 public final class BmcKeySetInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The extended location of the cluster associated with the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -61,6 +66,15 @@ public final class BmcKeySetInner extends Resource {
      * Creates an instance of BmcKeySetInner class.
      */
     public BmcKeySetInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -357,6 +371,8 @@ public final class BmcKeySetInner extends Resource {
                     deserializedBmcKeySetInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedBmcKeySetInner.innerProperties = BmcKeySetProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedBmcKeySetInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedBmcKeySetInner.systemData = SystemData.fromJson(reader);
                 } else {

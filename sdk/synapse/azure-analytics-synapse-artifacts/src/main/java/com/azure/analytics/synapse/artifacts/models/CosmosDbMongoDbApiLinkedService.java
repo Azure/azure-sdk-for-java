@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,23 +22,27 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "CosmosDbMongoDbApi";
 
     /*
      * The CosmosDB (MongoDB API) connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type:
      * string, SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * The name of the CosmosDB (MongoDB API) database that you want to access. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object database;
 
     /**
      * Creates an instance of CosmosDbMongoDbApiLinkedService class.
      */
+    @Generated
     public CosmosDbMongoDbApiLinkedService() {
     }
 
@@ -46,6 +51,7 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -57,6 +63,7 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -68,6 +75,7 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
      * @param connectionString the connectionString value to set.
      * @return the CosmosDbMongoDbApiLinkedService object itself.
      */
+    @Generated
     public CosmosDbMongoDbApiLinkedService setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -79,6 +87,7 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
      * 
      * @return the database value.
      */
+    @Generated
     public Object getDatabase() {
         return this.database;
     }
@@ -90,6 +99,7 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
      * @param database the database value to set.
      * @return the CosmosDbMongoDbApiLinkedService object itself.
      */
+    @Generated
     public CosmosDbMongoDbApiLinkedService setDatabase(Object database) {
         this.database = database;
         return this;
@@ -98,6 +108,7 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CosmosDbMongoDbApiLinkedService setVersion(String version) {
         super.setVersion(version);
@@ -107,6 +118,7 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CosmosDbMongoDbApiLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -116,6 +128,7 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CosmosDbMongoDbApiLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -125,6 +138,7 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CosmosDbMongoDbApiLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -134,6 +148,7 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CosmosDbMongoDbApiLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -143,6 +158,7 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -175,6 +191,7 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CosmosDbMongoDbApiLinkedService.
      */
+    @Generated
     public static CosmosDbMongoDbApiLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CosmosDbMongoDbApiLinkedService deserializedCosmosDbMongoDbApiLinkedService

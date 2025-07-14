@@ -5,6 +5,7 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class AttestationCertificateManagementBody
     /*
      * RFC 7517 Json Web Key describing the certificate.
      */
+    @Generated
     private JsonWebKey policyCertificate;
 
     /**
      * Creates an instance of AttestationCertificateManagementBody class.
      */
+    @Generated
     public AttestationCertificateManagementBody() {
     }
 
@@ -33,6 +36,7 @@ public final class AttestationCertificateManagementBody
      * 
      * @return the policyCertificate value.
      */
+    @Generated
     public JsonWebKey getPolicyCertificate() {
         return this.policyCertificate;
     }
@@ -43,6 +47,7 @@ public final class AttestationCertificateManagementBody
      * @param policyCertificate the policyCertificate value to set.
      * @return the AttestationCertificateManagementBody object itself.
      */
+    @Generated
     public AttestationCertificateManagementBody setPolicyCertificate(JsonWebKey policyCertificate) {
         this.policyCertificate = policyCertificate;
         return this;
@@ -62,6 +67,7 @@ public final class AttestationCertificateManagementBody
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -77,6 +83,7 @@ public final class AttestationCertificateManagementBody
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AttestationCertificateManagementBody.
      */
+    @Generated
     public static AttestationCertificateManagementBody fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AttestationCertificateManagementBody deserializedAttestationCertificateManagementBody

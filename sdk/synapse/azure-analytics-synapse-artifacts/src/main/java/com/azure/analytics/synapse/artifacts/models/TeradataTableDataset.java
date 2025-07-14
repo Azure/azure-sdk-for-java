@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,25 @@ public class TeradataTableDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "TeradataTable";
 
     /*
      * The database name of Teradata. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object database;
 
     /*
      * The table name of Teradata. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object table;
 
     /**
      * Creates an instance of TeradataTableDataset class.
      */
+    @Generated
     public TeradataTableDataset() {
     }
 
@@ -44,6 +49,7 @@ public class TeradataTableDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -54,6 +60,7 @@ public class TeradataTableDataset extends Dataset {
      * 
      * @return the database value.
      */
+    @Generated
     public Object getDatabase() {
         return this.database;
     }
@@ -64,6 +71,7 @@ public class TeradataTableDataset extends Dataset {
      * @param database the database value to set.
      * @return the TeradataTableDataset object itself.
      */
+    @Generated
     public TeradataTableDataset setDatabase(Object database) {
         this.database = database;
         return this;
@@ -74,6 +82,7 @@ public class TeradataTableDataset extends Dataset {
      * 
      * @return the table value.
      */
+    @Generated
     public Object getTable() {
         return this.table;
     }
@@ -84,6 +93,7 @@ public class TeradataTableDataset extends Dataset {
      * @param table the table value to set.
      * @return the TeradataTableDataset object itself.
      */
+    @Generated
     public TeradataTableDataset setTable(Object table) {
         this.table = table;
         return this;
@@ -92,6 +102,7 @@ public class TeradataTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TeradataTableDataset setDescription(String description) {
         super.setDescription(description);
@@ -101,6 +112,7 @@ public class TeradataTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TeradataTableDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -110,6 +122,7 @@ public class TeradataTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TeradataTableDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -119,6 +132,7 @@ public class TeradataTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TeradataTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -128,6 +142,7 @@ public class TeradataTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TeradataTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -137,6 +152,7 @@ public class TeradataTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TeradataTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -146,6 +162,7 @@ public class TeradataTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TeradataTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -155,21 +172,30 @@ public class TeradataTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
         jsonWriter.writeStringField("type", this.type);
         if (database != null || table != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("database", this.database);
-            jsonWriter.writeUntypedField("table", this.table);
+            if (this.database != null) {
+                jsonWriter.writeUntypedField("database", this.database);
+            }
+            if (this.table != null) {
+                jsonWriter.writeUntypedField("table", this.table);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -189,6 +215,7 @@ public class TeradataTableDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TeradataTableDataset.
      */
+    @Generated
     public static TeradataTableDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TeradataTableDataset deserializedTeradataTableDataset = new TeradataTableDataset();

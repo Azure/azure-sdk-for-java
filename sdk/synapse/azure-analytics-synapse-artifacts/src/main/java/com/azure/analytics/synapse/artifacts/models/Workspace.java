@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public class Workspace extends TrackedResource {
     /*
      * Identity of the workspace
      */
+    @Generated
     private ManagedIdentity identity;
 
     /*
      * Workspace default data lake storage account details
      */
+    @Generated
     private DataLakeStorageAccountDetails defaultDataLakeStorage;
 
     /*
      * SQL administrator login password
      */
+    @Generated
     private String sqlAdministratorLoginPassword;
 
     /*
@@ -38,82 +42,98 @@ public class Workspace extends TrackedResource {
      * subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric
      * characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with '.'
      */
+    @Generated
     private String managedResourceGroupName;
 
     /*
      * Resource provisioning state
      */
+    @Generated
     private String provisioningState;
 
     /*
      * Login for workspace SQL active directory administrator
      */
+    @Generated
     private String sqlAdministratorLogin;
 
     /*
      * Virtual Network profile
      */
+    @Generated
     private VirtualNetworkProfile virtualNetworkProfile;
 
     /*
      * Connectivity endpoints
      */
+    @Generated
     private Map<String, String> connectivityEndpoints;
 
     /*
      * Setting this to 'default' will ensure that all compute for this workspace is in a virtual network managed on
      * behalf of the user.
      */
+    @Generated
     private String managedVirtualNetwork;
 
     /*
      * Private endpoint connections to the workspace
      */
+    @Generated
     private List<PrivateEndpointConnection> privateEndpointConnections;
 
     /*
      * The encryption details of the workspace
      */
+    @Generated
     private EncryptionDetails encryption;
 
     /*
      * The workspace unique identifier
      */
+    @Generated
     private UUID workspaceUID;
 
     /*
      * Workspace level configs and feature flags
      */
+    @Generated
     private Map<String, Object> extraProperties;
 
     /*
      * Managed Virtual Network Settings
      */
+    @Generated
     private ManagedVirtualNetworkSettings managedVirtualNetworkSettings;
 
     /*
      * Git integration settings
      */
+    @Generated
     private WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration;
 
     /*
      * Purview Configuration
      */
+    @Generated
     private PurviewConfiguration purviewConfiguration;
 
     /*
      * The ADLA resource ID.
      */
+    @Generated
     private String adlaResourceId;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource
      */
+    @Generated
     private String name;
 
     /*
@@ -121,11 +141,13 @@ public class Workspace extends TrackedResource {
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
      * resourceType}/{resourceName}
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of Workspace class.
      */
+    @Generated
     public Workspace() {
     }
 
@@ -134,6 +156,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the identity value.
      */
+    @Generated
     public ManagedIdentity getIdentity() {
         return this.identity;
     }
@@ -144,6 +167,7 @@ public class Workspace extends TrackedResource {
      * @param identity the identity value to set.
      * @return the Workspace object itself.
      */
+    @Generated
     public Workspace setIdentity(ManagedIdentity identity) {
         this.identity = identity;
         return this;
@@ -154,6 +178,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the defaultDataLakeStorage value.
      */
+    @Generated
     public DataLakeStorageAccountDetails getDefaultDataLakeStorage() {
         return this.defaultDataLakeStorage;
     }
@@ -164,6 +189,7 @@ public class Workspace extends TrackedResource {
      * @param defaultDataLakeStorage the defaultDataLakeStorage value to set.
      * @return the Workspace object itself.
      */
+    @Generated
     public Workspace setDefaultDataLakeStorage(DataLakeStorageAccountDetails defaultDataLakeStorage) {
         this.defaultDataLakeStorage = defaultDataLakeStorage;
         return this;
@@ -174,6 +200,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the sqlAdministratorLoginPassword value.
      */
+    @Generated
     public String getSqlAdministratorLoginPassword() {
         return this.sqlAdministratorLoginPassword;
     }
@@ -184,6 +211,7 @@ public class Workspace extends TrackedResource {
      * @param sqlAdministratorLoginPassword the sqlAdministratorLoginPassword value to set.
      * @return the Workspace object itself.
      */
+    @Generated
     public Workspace setSqlAdministratorLoginPassword(String sqlAdministratorLoginPassword) {
         this.sqlAdministratorLoginPassword = sqlAdministratorLoginPassword;
         return this;
@@ -197,6 +225,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the managedResourceGroupName value.
      */
+    @Generated
     public String getManagedResourceGroupName() {
         return this.managedResourceGroupName;
     }
@@ -210,6 +239,7 @@ public class Workspace extends TrackedResource {
      * @param managedResourceGroupName the managedResourceGroupName value to set.
      * @return the Workspace object itself.
      */
+    @Generated
     public Workspace setManagedResourceGroupName(String managedResourceGroupName) {
         this.managedResourceGroupName = managedResourceGroupName;
         return this;
@@ -220,6 +250,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public String getProvisioningState() {
         return this.provisioningState;
     }
@@ -229,6 +260,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the sqlAdministratorLogin value.
      */
+    @Generated
     public String getSqlAdministratorLogin() {
         return this.sqlAdministratorLogin;
     }
@@ -239,6 +271,7 @@ public class Workspace extends TrackedResource {
      * @param sqlAdministratorLogin the sqlAdministratorLogin value to set.
      * @return the Workspace object itself.
      */
+    @Generated
     public Workspace setSqlAdministratorLogin(String sqlAdministratorLogin) {
         this.sqlAdministratorLogin = sqlAdministratorLogin;
         return this;
@@ -249,6 +282,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the virtualNetworkProfile value.
      */
+    @Generated
     public VirtualNetworkProfile getVirtualNetworkProfile() {
         return this.virtualNetworkProfile;
     }
@@ -259,6 +293,7 @@ public class Workspace extends TrackedResource {
      * @param virtualNetworkProfile the virtualNetworkProfile value to set.
      * @return the Workspace object itself.
      */
+    @Generated
     public Workspace setVirtualNetworkProfile(VirtualNetworkProfile virtualNetworkProfile) {
         this.virtualNetworkProfile = virtualNetworkProfile;
         return this;
@@ -269,6 +304,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the connectivityEndpoints value.
      */
+    @Generated
     public Map<String, String> getConnectivityEndpoints() {
         return this.connectivityEndpoints;
     }
@@ -279,6 +315,7 @@ public class Workspace extends TrackedResource {
      * @param connectivityEndpoints the connectivityEndpoints value to set.
      * @return the Workspace object itself.
      */
+    @Generated
     public Workspace setConnectivityEndpoints(Map<String, String> connectivityEndpoints) {
         this.connectivityEndpoints = connectivityEndpoints;
         return this;
@@ -290,6 +327,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the managedVirtualNetwork value.
      */
+    @Generated
     public String getManagedVirtualNetwork() {
         return this.managedVirtualNetwork;
     }
@@ -301,6 +339,7 @@ public class Workspace extends TrackedResource {
      * @param managedVirtualNetwork the managedVirtualNetwork value to set.
      * @return the Workspace object itself.
      */
+    @Generated
     public Workspace setManagedVirtualNetwork(String managedVirtualNetwork) {
         this.managedVirtualNetwork = managedVirtualNetwork;
         return this;
@@ -311,6 +350,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the privateEndpointConnections value.
      */
+    @Generated
     public List<PrivateEndpointConnection> getPrivateEndpointConnections() {
         return this.privateEndpointConnections;
     }
@@ -321,6 +361,7 @@ public class Workspace extends TrackedResource {
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the Workspace object itself.
      */
+    @Generated
     public Workspace setPrivateEndpointConnections(List<PrivateEndpointConnection> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
@@ -331,6 +372,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the encryption value.
      */
+    @Generated
     public EncryptionDetails getEncryption() {
         return this.encryption;
     }
@@ -341,6 +383,7 @@ public class Workspace extends TrackedResource {
      * @param encryption the encryption value to set.
      * @return the Workspace object itself.
      */
+    @Generated
     public Workspace setEncryption(EncryptionDetails encryption) {
         this.encryption = encryption;
         return this;
@@ -351,6 +394,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the workspaceUID value.
      */
+    @Generated
     public UUID getWorkspaceUID() {
         return this.workspaceUID;
     }
@@ -360,6 +404,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the extraProperties value.
      */
+    @Generated
     public Map<String, Object> getExtraProperties() {
         return this.extraProperties;
     }
@@ -369,6 +414,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the managedVirtualNetworkSettings value.
      */
+    @Generated
     public ManagedVirtualNetworkSettings getManagedVirtualNetworkSettings() {
         return this.managedVirtualNetworkSettings;
     }
@@ -379,6 +425,7 @@ public class Workspace extends TrackedResource {
      * @param managedVirtualNetworkSettings the managedVirtualNetworkSettings value to set.
      * @return the Workspace object itself.
      */
+    @Generated
     public Workspace setManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
         this.managedVirtualNetworkSettings = managedVirtualNetworkSettings;
         return this;
@@ -389,6 +436,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the workspaceRepositoryConfiguration value.
      */
+    @Generated
     public WorkspaceRepositoryConfiguration getWorkspaceRepositoryConfiguration() {
         return this.workspaceRepositoryConfiguration;
     }
@@ -399,6 +447,7 @@ public class Workspace extends TrackedResource {
      * @param workspaceRepositoryConfiguration the workspaceRepositoryConfiguration value to set.
      * @return the Workspace object itself.
      */
+    @Generated
     public Workspace
         setWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
         this.workspaceRepositoryConfiguration = workspaceRepositoryConfiguration;
@@ -410,6 +459,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the purviewConfiguration value.
      */
+    @Generated
     public PurviewConfiguration getPurviewConfiguration() {
         return this.purviewConfiguration;
     }
@@ -420,6 +470,7 @@ public class Workspace extends TrackedResource {
      * @param purviewConfiguration the purviewConfiguration value to set.
      * @return the Workspace object itself.
      */
+    @Generated
     public Workspace setPurviewConfiguration(PurviewConfiguration purviewConfiguration) {
         this.purviewConfiguration = purviewConfiguration;
         return this;
@@ -430,6 +481,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the adlaResourceId value.
      */
+    @Generated
     public String getAdlaResourceId() {
         return this.adlaResourceId;
     }
@@ -440,6 +492,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -450,6 +503,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String getName() {
         return this.name;
@@ -461,6 +515,7 @@ public class Workspace extends TrackedResource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String getId() {
         return this.id;
@@ -469,6 +524,7 @@ public class Workspace extends TrackedResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Workspace setTags(Map<String, String> tags) {
         super.setTags(tags);
@@ -478,6 +534,7 @@ public class Workspace extends TrackedResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Workspace setLocation(String location) {
         super.setLocation(location);
@@ -487,6 +544,7 @@ public class Workspace extends TrackedResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -538,6 +596,7 @@ public class Workspace extends TrackedResource {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Workspace.
      */
+    @Generated
     public static Workspace fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Workspace deserializedWorkspace = new Workspace();

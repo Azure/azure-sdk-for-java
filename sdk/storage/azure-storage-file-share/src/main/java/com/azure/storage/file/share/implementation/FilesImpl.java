@@ -100,7 +100,7 @@ public final class FilesImpl {
      * calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureFileStorageFile")
+    @ServiceInterface(name = "AzureFileStorageFiles")
     public interface FilesService {
 
         @Put("/{shareName}/{fileName}")

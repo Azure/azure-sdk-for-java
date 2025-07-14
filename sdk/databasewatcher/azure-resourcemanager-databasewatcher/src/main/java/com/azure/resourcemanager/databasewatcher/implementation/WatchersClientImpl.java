@@ -72,7 +72,7 @@ public final class WatchersClientImpl implements WatchersClient {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DatabaseWatcherManag")
+    @ServiceInterface(name = "DatabaseWatcherManagementClientWatchers")
     public interface WatchersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}")

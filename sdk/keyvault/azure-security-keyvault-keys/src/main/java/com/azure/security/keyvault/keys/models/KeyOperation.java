@@ -58,7 +58,7 @@ public final class KeyOperation extends ExpandableStringEnum<KeyOperation> {
      * Indicates that the private component of the key can be exported.
      */
     @Generated
-    public static final KeyOperation EXPORT = fromString("export");
+    private static final KeyOperation EXPORT = fromString("export");
 
     /**
      * Creates a new instance of KeyOperation value.

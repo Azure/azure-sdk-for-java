@@ -10,7 +10,7 @@ package com.azure.resourcemanager.dnsresolver.generated;
 public final class OutboundEndpointsListSamples {
     /*
      * x-ms-original-file:
-     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_List.
+     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/OutboundEndpoint_List.
      * json
      */
     /**

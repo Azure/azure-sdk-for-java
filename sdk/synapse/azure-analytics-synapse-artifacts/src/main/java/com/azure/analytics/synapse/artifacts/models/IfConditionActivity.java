@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,29 +23,34 @@ public class IfConditionActivity extends ControlActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "IfCondition";
 
     /*
      * An expression that would evaluate to Boolean. This is used to determine the block of activities (ifTrueActivities
      * or ifFalseActivities) that will be executed.
      */
+    @Generated
     private Expression expression;
 
     /*
      * List of activities to execute if expression is evaluated to true. This is an optional property and if not
      * provided, the activity will exit without any action.
      */
+    @Generated
     private List<Activity> ifTrueActivities;
 
     /*
      * List of activities to execute if expression is evaluated to false. This is an optional property and if not
      * provided, the activity will exit without any action.
      */
+    @Generated
     private List<Activity> ifFalseActivities;
 
     /**
      * Creates an instance of IfConditionActivity class.
      */
+    @Generated
     public IfConditionActivity() {
     }
 
@@ -53,6 +59,7 @@ public class IfConditionActivity extends ControlActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -64,6 +71,7 @@ public class IfConditionActivity extends ControlActivity {
      * 
      * @return the expression value.
      */
+    @Generated
     public Expression getExpression() {
         return this.expression;
     }
@@ -75,6 +83,7 @@ public class IfConditionActivity extends ControlActivity {
      * @param expression the expression value to set.
      * @return the IfConditionActivity object itself.
      */
+    @Generated
     public IfConditionActivity setExpression(Expression expression) {
         this.expression = expression;
         return this;
@@ -86,6 +95,7 @@ public class IfConditionActivity extends ControlActivity {
      * 
      * @return the ifTrueActivities value.
      */
+    @Generated
     public List<Activity> getIfTrueActivities() {
         return this.ifTrueActivities;
     }
@@ -97,6 +107,7 @@ public class IfConditionActivity extends ControlActivity {
      * @param ifTrueActivities the ifTrueActivities value to set.
      * @return the IfConditionActivity object itself.
      */
+    @Generated
     public IfConditionActivity setIfTrueActivities(List<Activity> ifTrueActivities) {
         this.ifTrueActivities = ifTrueActivities;
         return this;
@@ -108,6 +119,7 @@ public class IfConditionActivity extends ControlActivity {
      * 
      * @return the ifFalseActivities value.
      */
+    @Generated
     public List<Activity> getIfFalseActivities() {
         return this.ifFalseActivities;
     }
@@ -119,6 +131,7 @@ public class IfConditionActivity extends ControlActivity {
      * @param ifFalseActivities the ifFalseActivities value to set.
      * @return the IfConditionActivity object itself.
      */
+    @Generated
     public IfConditionActivity setIfFalseActivities(List<Activity> ifFalseActivities) {
         this.ifFalseActivities = ifFalseActivities;
         return this;
@@ -127,6 +140,7 @@ public class IfConditionActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public IfConditionActivity setName(String name) {
         super.setName(name);
@@ -136,6 +150,7 @@ public class IfConditionActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public IfConditionActivity setDescription(String description) {
         super.setDescription(description);
@@ -145,6 +160,7 @@ public class IfConditionActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public IfConditionActivity setState(ActivityState state) {
         super.setState(state);
@@ -154,6 +170,7 @@ public class IfConditionActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public IfConditionActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -163,6 +180,7 @@ public class IfConditionActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public IfConditionActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -172,6 +190,7 @@ public class IfConditionActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public IfConditionActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -181,6 +200,7 @@ public class IfConditionActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -219,6 +239,7 @@ public class IfConditionActivity extends ControlActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IfConditionActivity.
      */
+    @Generated
     public static IfConditionActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IfConditionActivity deserializedIfConditionActivity = new IfConditionActivity();

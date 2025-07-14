@@ -104,7 +104,7 @@ public final class BlobsImpl {
      * calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureBlobStorageBlob")
+    @ServiceInterface(name = "AzureBlobStorageBlobs")
     public interface BlobsService {
 
         @Get("/{containerName}/{blob}")

@@ -68,7 +68,7 @@ public final class LinkConnectionsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientLinkC")
+    @ServiceInterface(name = "ArtifactsClientLinkConnections")
     public interface LinkConnectionsService {
         @Get("/linkconnections")
         @ExpectedResponses({ 200 })

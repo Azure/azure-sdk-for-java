@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,22 +24,26 @@ public final class DetectionSeriesQuery implements JsonSerializable<DetectionSer
     /*
      * This is inclusive. The maximum number of data points (series number * time range) is 10000.
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * This is exclusive. The maximum number of data points (series number * time range) is 10000.
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
      * The series to be queried. The identity must be able to define one single time series instead of a group of time
      * series. The maximum number of series is 100.
      */
+    @Generated
     private List<SeriesIdentity> series;
 
     /**
      * Creates an instance of DetectionSeriesQuery class.
      */
+    @Generated
     public DetectionSeriesQuery() {
     }
 
@@ -48,6 +53,7 @@ public final class DetectionSeriesQuery implements JsonSerializable<DetectionSer
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -59,6 +65,7 @@ public final class DetectionSeriesQuery implements JsonSerializable<DetectionSer
      * @param startTime the startTime value to set.
      * @return the DetectionSeriesQuery object itself.
      */
+    @Generated
     public DetectionSeriesQuery setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -70,6 +77,7 @@ public final class DetectionSeriesQuery implements JsonSerializable<DetectionSer
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -81,6 +89,7 @@ public final class DetectionSeriesQuery implements JsonSerializable<DetectionSer
      * @param endTime the endTime value to set.
      * @return the DetectionSeriesQuery object itself.
      */
+    @Generated
     public DetectionSeriesQuery setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
@@ -92,6 +101,7 @@ public final class DetectionSeriesQuery implements JsonSerializable<DetectionSer
      * 
      * @return the series value.
      */
+    @Generated
     public List<SeriesIdentity> getSeries() {
         return this.series;
     }
@@ -103,6 +113,7 @@ public final class DetectionSeriesQuery implements JsonSerializable<DetectionSer
      * @param series the series value to set.
      * @return the DetectionSeriesQuery object itself.
      */
+    @Generated
     public DetectionSeriesQuery setSeries(List<SeriesIdentity> series) {
         this.series = series;
         return this;
@@ -111,6 +122,7 @@ public final class DetectionSeriesQuery implements JsonSerializable<DetectionSer
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -131,6 +143,7 @@ public final class DetectionSeriesQuery implements JsonSerializable<DetectionSer
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DetectionSeriesQuery.
      */
+    @Generated
     public static DetectionSeriesQuery fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DetectionSeriesQuery deserializedDetectionSeriesQuery = new DetectionSeriesQuery();

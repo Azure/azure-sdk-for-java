@@ -238,6 +238,6 @@ public final class VaultImpl implements Vault, Vault.Definition, Vault.Update {
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

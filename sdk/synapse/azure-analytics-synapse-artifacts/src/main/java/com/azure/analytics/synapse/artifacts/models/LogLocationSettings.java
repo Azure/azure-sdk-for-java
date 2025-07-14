@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,17 +20,20 @@ public final class LogLocationSettings implements JsonSerializable<LogLocationSe
     /*
      * Log storage linked service reference.
      */
+    @Generated
     private LinkedServiceReference linkedServiceName;
 
     /*
      * The path to storage for storing detailed logs of activity execution. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object path;
 
     /**
      * Creates an instance of LogLocationSettings class.
      */
+    @Generated
     public LogLocationSettings() {
     }
 
@@ -38,6 +42,7 @@ public final class LogLocationSettings implements JsonSerializable<LogLocationSe
      * 
      * @return the linkedServiceName value.
      */
+    @Generated
     public LinkedServiceReference getLinkedServiceName() {
         return this.linkedServiceName;
     }
@@ -48,6 +53,7 @@ public final class LogLocationSettings implements JsonSerializable<LogLocationSe
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the LogLocationSettings object itself.
      */
+    @Generated
     public LogLocationSettings setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         this.linkedServiceName = linkedServiceName;
         return this;
@@ -59,6 +65,7 @@ public final class LogLocationSettings implements JsonSerializable<LogLocationSe
      * 
      * @return the path value.
      */
+    @Generated
     public Object getPath() {
         return this.path;
     }
@@ -70,6 +77,7 @@ public final class LogLocationSettings implements JsonSerializable<LogLocationSe
      * @param path the path value to set.
      * @return the LogLocationSettings object itself.
      */
+    @Generated
     public LogLocationSettings setPath(Object path) {
         this.path = path;
         return this;
@@ -78,11 +86,14 @@ public final class LogLocationSettings implements JsonSerializable<LogLocationSe
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
-        jsonWriter.writeUntypedField("path", this.path);
+        if (this.path != null) {
+            jsonWriter.writeUntypedField("path", this.path);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -95,6 +106,7 @@ public final class LogLocationSettings implements JsonSerializable<LogLocationSe
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LogLocationSettings.
      */
+    @Generated
     public static LogLocationSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LogLocationSettings deserializedLogLocationSettings = new LogLocationSettings();

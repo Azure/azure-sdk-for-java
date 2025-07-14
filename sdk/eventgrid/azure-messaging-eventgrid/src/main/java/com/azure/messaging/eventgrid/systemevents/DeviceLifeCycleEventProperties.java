@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +22,25 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
      * ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $
      * '.
      */
+    @Generated
     private String deviceId;
 
     /*
      * Name of the IoT Hub where the device was created or deleted.
      */
+    @Generated
     private String hubName;
 
     /*
      * Information about the device twin, which is the cloud representation of application device metadata.
      */
+    @Generated
     private DeviceTwinInfo twin;
 
     /**
      * Creates an instance of DeviceLifeCycleEventProperties class.
      */
+    @Generated
     public DeviceLifeCycleEventProperties() {
     }
 
@@ -46,6 +51,7 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
      * 
      * @return the deviceId value.
      */
+    @Generated
     public String getDeviceId() {
         return this.deviceId;
     }
@@ -58,6 +64,7 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
      * @param deviceId the deviceId value to set.
      * @return the DeviceLifeCycleEventProperties object itself.
      */
+    @Generated
     public DeviceLifeCycleEventProperties setDeviceId(String deviceId) {
         this.deviceId = deviceId;
         return this;
@@ -68,6 +75,7 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
      * 
      * @return the hubName value.
      */
+    @Generated
     public String getHubName() {
         return this.hubName;
     }
@@ -78,6 +86,7 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
      * @param hubName the hubName value to set.
      * @return the DeviceLifeCycleEventProperties object itself.
      */
+    @Generated
     public DeviceLifeCycleEventProperties setHubName(String hubName) {
         this.hubName = hubName;
         return this;
@@ -89,6 +98,7 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
      * 
      * @return the twin value.
      */
+    @Generated
     public DeviceTwinInfo getTwin() {
         return this.twin;
     }
@@ -100,6 +110,7 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
      * @param twin the twin value to set.
      * @return the DeviceLifeCycleEventProperties object itself.
      */
+    @Generated
     public DeviceLifeCycleEventProperties setTwin(DeviceTwinInfo twin) {
         this.twin = twin;
         return this;
@@ -108,6 +119,7 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -125,6 +137,7 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeviceLifeCycleEventProperties.
      */
+    @Generated
     public static DeviceLifeCycleEventProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DeviceLifeCycleEventProperties deserializedDeviceLifeCycleEventProperties

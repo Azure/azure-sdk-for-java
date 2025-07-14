@@ -6,6 +6,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,36 +24,43 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
     /*
      * The name of the skillset.
      */
+    @Generated
     private final String name;
 
     /*
      * The description of the skillset.
      */
+    @Generated
     private String description;
 
     /*
      * A list of skills in the skillset.
      */
+    @Generated
     private List<SearchIndexerSkill> skills;
 
     /*
      * Details about the Azure AI service to be used when running skills.
      */
+    @Generated
     private CognitiveServicesAccount cognitiveServicesAccount;
 
     /*
      * Definition of additional projections to Azure blob, table, or files, of enriched data.
      */
+    @Generated
     private SearchIndexerKnowledgeStore knowledgeStore;
 
     /*
      * Definition of additional projections to secondary search index(es).
      */
+    @Generated
     private SearchIndexerIndexProjection indexProjection;
 
     /*
      * The ETag of the skillset.
      */
+    @Generated
     private String eTag;
 
     /*
@@ -64,6 +72,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      * Encryption with customer-managed keys is not available for free search services, and is only available for paid
      * services created on or after January 1, 2019.
      */
+    @Generated
     private SearchResourceEncryptionKey encryptionKey;
 
     /**
@@ -71,6 +80,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      *
      * @param name the name value to set.
      */
+    @Generated
     public SearchIndexerSkillset(String name) {
         this.name = name;
     }
@@ -80,6 +90,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -89,6 +100,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      *
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -99,6 +111,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      * @param description the description value to set.
      * @return the SearchIndexerSkillset object itself.
      */
+    @Generated
     public SearchIndexerSkillset setDescription(String description) {
         this.description = description;
         return this;
@@ -109,6 +122,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      *
      * @return the skills value.
      */
+    @Generated
     public List<SearchIndexerSkill> getSkills() {
         return this.skills;
     }
@@ -119,6 +133,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      * @param skills the skills value to set.
      * @return the SearchIndexerSkillset object itself.
      */
+    @Generated
     public SearchIndexerSkillset setSkills(List<SearchIndexerSkill> skills) {
         this.skills = skills;
         return this;
@@ -129,6 +144,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      *
      * @return the cognitiveServicesAccount value.
      */
+    @Generated
     public CognitiveServicesAccount getCognitiveServicesAccount() {
         return this.cognitiveServicesAccount;
     }
@@ -139,6 +155,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      * @param cognitiveServicesAccount the cognitiveServicesAccount value to set.
      * @return the SearchIndexerSkillset object itself.
      */
+    @Generated
     public SearchIndexerSkillset setCognitiveServicesAccount(CognitiveServicesAccount cognitiveServicesAccount) {
         this.cognitiveServicesAccount = cognitiveServicesAccount;
         return this;
@@ -150,6 +167,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      *
      * @return the knowledgeStore value.
      */
+    @Generated
     public SearchIndexerKnowledgeStore getKnowledgeStore() {
         return this.knowledgeStore;
     }
@@ -161,6 +179,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      * @param knowledgeStore the knowledgeStore value to set.
      * @return the SearchIndexerSkillset object itself.
      */
+    @Generated
     public SearchIndexerSkillset setKnowledgeStore(SearchIndexerKnowledgeStore knowledgeStore) {
         this.knowledgeStore = knowledgeStore;
         return this;
@@ -171,6 +190,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      *
      * @return the indexProjection value.
      */
+    @Generated
     public SearchIndexerIndexProjection getIndexProjection() {
         return this.indexProjection;
     }
@@ -181,6 +201,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      * @param indexProjection the indexProjection value to set.
      * @return the SearchIndexerSkillset object itself.
      */
+    @Generated
     public SearchIndexerSkillset setIndexProjection(SearchIndexerIndexProjection indexProjection) {
         this.indexProjection = indexProjection;
         return this;
@@ -191,6 +212,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      *
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -201,6 +223,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      * @param eTag the eTag value to set.
      * @return the SearchIndexerSkillset object itself.
      */
+    @Generated
     public SearchIndexerSkillset setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -217,6 +240,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      *
      * @return the encryptionKey value.
      */
+    @Generated
     public SearchResourceEncryptionKey getEncryptionKey() {
         return this.encryptionKey;
     }
@@ -233,6 +257,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      * @param encryptionKey the encryptionKey value to set.
      * @return the SearchIndexerSkillset object itself.
      */
+    @Generated
     public SearchIndexerSkillset setEncryptionKey(SearchResourceEncryptionKey encryptionKey) {
         this.encryptionKey = encryptionKey;
         return this;
@@ -241,6 +266,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -264,6 +290,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerSkillset.
      */
+    @Generated
     public static SearchIndexerSkillset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;
@@ -315,12 +342,10 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
     }
 
     /**
-     * /**
      * Creates an instance of SearchIndexerSkillset class.
      *
      * @param name The name of the skillset.
      * @param skills The skills in the skillset.
-     * /
      */
     public SearchIndexerSkillset(String name, List<SearchIndexerSkill> skills) {
         this(name);

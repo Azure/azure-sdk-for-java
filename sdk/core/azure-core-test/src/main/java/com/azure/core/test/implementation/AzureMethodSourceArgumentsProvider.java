@@ -73,6 +73,7 @@ public final class AzureMethodSourceArgumentsProvider
         this.useHttpClientPermutation = annotation.useHttpClientPermutation();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
         // If the TEST_MODE is PLAYBACK or HttpClients are being ignored don't use HttpClients.

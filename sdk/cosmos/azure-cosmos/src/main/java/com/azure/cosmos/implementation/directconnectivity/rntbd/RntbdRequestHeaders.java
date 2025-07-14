@@ -91,7 +91,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.addCollectionRemoteStorageSecurityIdentifier(headers);
         this.addConsistencyLevelHeader(headers);
         this.addContentSerializationFormat(headers);
-        this.addContinuationToken(request);
+        this.addContinuationToken(request, headers);
         this.addDateHeader(headers);
         this.addDisableRUPerMinuteUsage(headers);
         this.addEmitVerboseTracesInQuery(headers);
@@ -751,8 +751,12 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         }
     }
 
-    private void addContinuationToken(final RxDocumentServiceRequest request) {
-        final String value = request.getContinuation();
+    private void addContinuationToken(final RxDocumentServiceRequest request, final Map<String, String> headers) {
+        String value = request.getContinuation();
+        if (StringUtils.isEmpty(value)) {
+            value = headers.get(HttpHeaders.CONTINUATION);
+        }
+
         if (StringUtils.isNotEmpty(value)) {
             this.getContinuationToken().setValue(value);
         }

@@ -70,7 +70,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ContainerOrchestrato")
+    @ServiceInterface(name = "ContainerOrchestratorRuntimeMgmtClientLoadBalancers")
     public interface LoadBalancersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.KubernetesRuntime/loadBalancers/{loadBalancerName}")

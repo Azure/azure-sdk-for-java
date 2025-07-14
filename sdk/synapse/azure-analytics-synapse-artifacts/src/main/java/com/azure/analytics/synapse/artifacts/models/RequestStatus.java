@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class RequestStatus extends ExpandableStringEnum<RequestStatus> {
     /**
      * Static value Running for RequestStatus.
      */
+    @Generated
     public static final RequestStatus RUNNING = fromString("Running");
 
     /**
      * Static value Completed for RequestStatus.
      */
+    @Generated
     public static final RequestStatus COMPLETED = fromString("Completed");
 
     /**
      * Static value Failed for RequestStatus.
      */
+    @Generated
     public static final RequestStatus FAILED = fromString("Failed");
 
     /**
@@ -31,6 +35,7 @@ public final class RequestStatus extends ExpandableStringEnum<RequestStatus> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RequestStatus() {
     }
@@ -41,6 +46,7 @@ public final class RequestStatus extends ExpandableStringEnum<RequestStatus> {
      * @param name a name to look for.
      * @return the corresponding RequestStatus.
      */
+    @Generated
     public static RequestStatus fromString(String name) {
         return fromString(name, RequestStatus.class);
     }
@@ -50,6 +56,7 @@ public final class RequestStatus extends ExpandableStringEnum<RequestStatus> {
      * 
      * @return known RequestStatus values.
      */
+    @Generated
     public static Collection<RequestStatus> values() {
         return values(RequestStatus.class);
     }

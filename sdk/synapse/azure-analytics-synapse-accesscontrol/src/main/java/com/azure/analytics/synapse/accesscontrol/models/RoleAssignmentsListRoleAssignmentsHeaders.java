@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.accesscontrol.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,6 +17,7 @@ public final class RoleAssignmentsListRoleAssignmentsHeaders {
     /*
      * The x-ms-continuation property.
      */
+    @Generated
     private String xMsContinuation;
 
     private static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
@@ -35,6 +37,7 @@ public final class RoleAssignmentsListRoleAssignmentsHeaders {
      * 
      * @return the xMsContinuation value.
      */
+    @Generated
     public String getXMsContinuation() {
         return this.xMsContinuation;
     }
@@ -45,6 +48,7 @@ public final class RoleAssignmentsListRoleAssignmentsHeaders {
      * @param xMsContinuation the xMsContinuation value to set.
      * @return the RoleAssignmentsListRoleAssignmentsHeaders object itself.
      */
+    @Generated
     public RoleAssignmentsListRoleAssignmentsHeaders setXMsContinuation(String xMsContinuation) {
         this.xMsContinuation = xMsContinuation;
         return this;

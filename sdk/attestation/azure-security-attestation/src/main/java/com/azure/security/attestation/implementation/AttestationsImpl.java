@@ -57,7 +57,7 @@ public final class AttestationsImpl {
      * perform REST calls.
      */
     @Host("{instanceUrl}")
-    @ServiceInterface(name = "AttestationClientAtt")
+    @ServiceInterface(name = "AttestationClientAttestations")
     public interface AttestationsService {
         @Post("/attest/OpenEnclave")
         @ExpectedResponses({ 200 })

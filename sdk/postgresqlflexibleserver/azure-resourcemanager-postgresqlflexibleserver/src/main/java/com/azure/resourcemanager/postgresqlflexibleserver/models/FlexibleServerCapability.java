@@ -47,8 +47,16 @@ public interface FlexibleServerCapability {
     List<ServerVersionCapability> supportedServerVersions();
 
     /**
+     * Gets the supportedFeatures property: The supported features.
+     * 
+     * @return the supportedFeatures value.
+     */
+    List<SupportedFeature> supportedFeatures();
+
+    /**
      * Gets the fastProvisioningSupported property: Gets a value indicating whether fast provisioning is supported.
-     * "Enabled" means fast provisioning is supported. "Disabled" stands for fast provisioning is not supported.
+     * "Enabled" means fast provisioning is supported. "Disabled" stands for fast provisioning is not supported. Will be
+     * deprecated in future, please look to Supported Features for "FastProvisioning".
      * 
      * @return the fastProvisioningSupported value.
      */
@@ -63,7 +71,8 @@ public interface FlexibleServerCapability {
 
     /**
      * Gets the geoBackupSupported property: Determines if geo-backup is supported in this region. "Enabled" means
-     * geo-backup is supported. "Disabled" stands for geo-back is not supported.
+     * geo-backup is supported. "Disabled" stands for geo-back is not supported. Will be deprecated in future, please
+     * look to Supported Features for "GeoBackup".
      * 
      * @return the geoBackupSupported value.
      */
@@ -72,6 +81,7 @@ public interface FlexibleServerCapability {
     /**
      * Gets the zoneRedundantHaSupported property: A value indicating whether Zone Redundant HA is supported in this
      * region. "Enabled" means zone redundant HA is supported. "Disabled" stands for zone redundant HA is not supported.
+     * Will be deprecated in future, please look to Supported Features for "ZoneRedundantHa".
      * 
      * @return the zoneRedundantHaSupported value.
      */
@@ -80,7 +90,8 @@ public interface FlexibleServerCapability {
     /**
      * Gets the zoneRedundantHaAndGeoBackupSupported property: A value indicating whether Zone Redundant HA and
      * Geo-backup is supported in this region. "Enabled" means zone redundant HA and geo-backup is supported. "Disabled"
-     * stands for zone redundant HA and geo-backup is not supported.
+     * stands for zone redundant HA and geo-backup is not supported. Will be deprecated in future, please look to
+     * Supported Features for "ZoneRedundantHaAndGeoBackup".
      * 
      * @return the zoneRedundantHaAndGeoBackupSupported value.
      */
@@ -89,6 +100,7 @@ public interface FlexibleServerCapability {
     /**
      * Gets the storageAutoGrowthSupported property: A value indicating whether storage auto-grow is supported in this
      * region. "Enabled" means storage auto-grow is supported. "Disabled" stands for storage auto-grow is not supported.
+     * Will be deprecated in future, please look to Supported Features for "StorageAutoGrowth".
      * 
      * @return the storageAutoGrowthSupported value.
      */
@@ -97,7 +109,7 @@ public interface FlexibleServerCapability {
     /**
      * Gets the onlineResizeSupported property: A value indicating whether online resize is supported in this region for
      * the given subscription. "Enabled" means storage online resize is supported. "Disabled" means storage online
-     * resize is not supported.
+     * resize is not supported. Will be deprecated in future, please look to Supported Features for "OnlineResize".
      * 
      * @return the onlineResizeSupported value.
      */
@@ -105,7 +117,8 @@ public interface FlexibleServerCapability {
 
     /**
      * Gets the restricted property: A value indicating whether this region is restricted. "Enabled" means region is
-     * restricted. "Disabled" stands for region is not restricted.
+     * restricted. "Disabled" stands for region is not restricted. Will be deprecated in future, please look to
+     * Supported Features for "Restricted".
      * 
      * @return the restricted value.
      */

@@ -4,6 +4,7 @@
 
 package com.azure.ai.personalizer.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class PersonalizerErrorCode extends ExpandableStringEnum<Personaliz
     /**
      * Request could not be understood by the server.
      */
+    @Generated
     public static final PersonalizerErrorCode BAD_REQUEST = fromString("BadRequest");
 
     /**
      * Invalid service configuration.
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_SERVICE_CONFIGURATION = fromString("InvalidServiceConfiguration");
 
     /**
@@ -26,201 +29,240 @@ public final class PersonalizerErrorCode extends ExpandableStringEnum<Personaliz
      * Apprentice mode and vice versa is not allowed. Make the mode change and then change the additional settings with
      * an additional API call.
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_LEARNING_MODE_SERVICE_CONFIGURATION
         = fromString("InvalidLearningModeServiceConfiguration");
 
     /**
      * Invalid policy configuration.
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_POLICY_CONFIGURATION = fromString("InvalidPolicyConfiguration");
 
     /**
      * Invalid policy contract.
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_POLICY_CONTRACT = fromString("InvalidPolicyContract");
 
     /**
      * Invalid evaluation contract.
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_EVALUATION_CONTRACT = fromString("InvalidEvaluationContract");
 
     /**
      * Custom policy names should be unique.
      */
+    @Generated
     public static final PersonalizerErrorCode DUPLICATE_CUSTOM_POLICY_NAMES = fromString("DuplicateCustomPolicyNames");
 
     /**
      * No logs exist in date range.
      */
+    @Generated
     public static final PersonalizerErrorCode NO_LOGS_EXIST_IN_DATE_RANGE = fromString("NoLogsExistInDateRange");
 
     /**
      * Total size of logs exceed allowed limit.
      */
+    @Generated
     public static final PersonalizerErrorCode LOGS_SIZE_EXCEED_ALLOWED_LIMIT = fromString("LogsSizeExceedAllowedLimit");
 
     /**
      * Invalid reward request.
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_REWARD_REQUEST = fromString("InvalidRewardRequest");
 
     /**
      * Invalid activate event request.
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_EVENT_ID_TO_ACTIVATE = fromString("InvalidEventIdToActivate");
 
     /**
      * Invalid request.
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_RANK_REQUEST = fromString("InvalidRankRequest");
 
     /**
      * Invalid request.
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_EXPORT_LOGS_REQUEST = fromString("InvalidExportLogsRequest");
 
     /**
      * Invalid request.
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_REQUEST = fromString("InvalidRequest");
 
     /**
      * SAS Uri must be the Uri to a container that has write permissions.
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_CONTAINER = fromString("InvalidContainer");
 
     /**
      * Invalid model metadata.
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_MODEL_METADATA = fromString("InvalidModelMetadata");
 
     /**
      * Apprentice mode never turned on.
      */
+    @Generated
     public static final PersonalizerErrorCode APPRENTICE_MODE_NEVER_TURNED_ON
         = fromString("ApprenticeModeNeverTurnedOn");
 
     /**
      * AppId is missing in the header.
      */
+    @Generated
     public static final PersonalizerErrorCode MISSING_APP_ID = fromString("MissingAppId");
 
     /**
      * Reward wait time should be either 10 minutes or 4 hours or 12 hours or 24 hours.
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_REWARD_WAIT_TIME = fromString("InvalidRewardWaitTime");
 
     /**
      * Log Retention Days must be -1 to store indefinitely or must be at least reward wait time plus 1 day (rounded up).
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_LOG_RETENTION_DAYS = fromString("InvalidLogRetentionDays");
 
     /**
      * Multi-slot feature is currently disabled. Please follow multi-slot Personalizer documentation to update your loop
      * settings to enable multi-slot functionality.
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_MULTI_SLOT_API_ACCESS = fromString("InvalidMultiSlotApiAccess");
 
     /**
      * Exceeds maximum allowed payload size.
      */
+    @Generated
     public static final PersonalizerErrorCode PAYLOAD_SIZE_EXCEEDED = fromString("PayloadSizeExceeded");
 
     /**
      * Given model file is not signed or does not have a valid signature.
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_MODEL_IMPORT_SIGNATURE
         = fromString("InvalidModelImportSignature");
 
     /**
      * Given model file format is invalid.
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_MODEL_IMPORT_FORMAT = fromString("InvalidModelImportFormat");
 
     /**
      * Api is currently disabled for the instance.
      */
+    @Generated
     public static final PersonalizerErrorCode INVALID_API_ACCESS = fromString("InvalidApiAccess");
 
     /**
      * Key vault Key used for customer managed key cannot be accessed.
      */
+    @Generated
     public static final PersonalizerErrorCode MODEL_FILE_ACCESS_DENIED = fromString("ModelFileAccessDenied");
 
     /**
      * Auto-optimization is not compatible with multi-slot personalization.
      */
+    @Generated
     public static final PersonalizerErrorCode PROBLEM_TYPE_INCOMPATIBLE_WITH_AUTO_OPTIMIZATION
         = fromString("ProblemTypeIncompatibleWithAutoOptimization");
 
     /**
      * Requested resource does not exist on the server.
      */
+    @Generated
     public static final PersonalizerErrorCode RESOURCE_NOT_FOUND = fromString("ResourceNotFound");
 
     /**
      * Front end not found.
      */
+    @Generated
     public static final PersonalizerErrorCode FRONT_END_NOT_FOUND = fromString("FrontEndNotFound");
 
     /**
      * Offline Evaluation not found.
      */
+    @Generated
     public static final PersonalizerErrorCode EVALUATION_NOT_FOUND = fromString("EvaluationNotFound");
 
     /**
      * Learning Settings not found in evaluation.
      */
+    @Generated
     public static final PersonalizerErrorCode LEARNING_SETTINGS_NOT_FOUND = fromString("LearningSettingsNotFound");
 
     /**
      * Model not found in evaluation.
      */
+    @Generated
     public static final PersonalizerErrorCode EVALUATION_MODEL_NOT_FOUND = fromString("EvaluationModelNotFound");
 
     /**
      * Log properties not found.
      */
+    @Generated
     public static final PersonalizerErrorCode LOGS_PROPERTIES_NOT_FOUND = fromString("LogsPropertiesNotFound");
 
     /**
      * Error while ranking actions using model. Please verify the learning settings are valid.
      */
+    @Generated
     public static final PersonalizerErrorCode MODEL_RANKING_ERROR = fromString("ModelRankingError");
 
     /**
      * A generic error has occurred on the server.
      */
+    @Generated
     public static final PersonalizerErrorCode INTERNAL_SERVER_ERROR = fromString("InternalServerError");
 
     /**
      * Rank call returned null response.
      */
+    @Generated
     public static final PersonalizerErrorCode RANK_NULL_RESPONSE = fromString("RankNullResponse");
 
     /**
      * Failed to update configuration.
      */
+    @Generated
     public static final PersonalizerErrorCode UPDATE_CONFIGURATION_FAILED = fromString("UpdateConfigurationFailed");
 
     /**
      * Model reset failed.
      */
+    @Generated
     public static final PersonalizerErrorCode MODEL_RESET_FAILED = fromString("ModelResetFailed");
 
     /**
      * Model publish failed.
      */
+    @Generated
     public static final PersonalizerErrorCode MODEL_PUBLISH_FAILED = fromString("ModelPublishFailed");
 
     /**
      * Model metadata update failed.
      */
+    @Generated
     public static final PersonalizerErrorCode MODEL_METADATA_UPDATE_FAILED = fromString("ModelMetadataUpdateFailed");
 
     /**
      * This operation is not allowed at this time.
      */
+    @Generated
     public static final PersonalizerErrorCode OPERATION_NOT_ALLOWED = fromString("OperationNotAllowed");
 
     /**
@@ -228,6 +270,7 @@ public final class PersonalizerErrorCode extends ExpandableStringEnum<Personaliz
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PersonalizerErrorCode() {
     }
@@ -238,6 +281,7 @@ public final class PersonalizerErrorCode extends ExpandableStringEnum<Personaliz
      * @param name a name to look for.
      * @return the corresponding PersonalizerErrorCode.
      */
+    @Generated
     public static PersonalizerErrorCode fromString(String name) {
         return fromString(name, PersonalizerErrorCode.class);
     }
@@ -247,6 +291,7 @@ public final class PersonalizerErrorCode extends ExpandableStringEnum<Personaliz
      * 
      * @return known PersonalizerErrorCode values.
      */
+    @Generated
     public static Collection<PersonalizerErrorCode> values() {
         return values(PersonalizerErrorCode.class);
     }

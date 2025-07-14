@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,96 +22,115 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
     /*
      * The livyInfo property.
      */
+    @Generated
     private SparkSessionState livyInfo;
 
     /*
      * The name property.
      */
+    @Generated
     private String name;
 
     /*
      * The workspaceName property.
      */
+    @Generated
     private String workspaceName;
 
     /*
      * The sparkPoolName property.
      */
+    @Generated
     private String sparkPoolName;
 
     /*
      * The submitterName property.
      */
+    @Generated
     private String submitterName;
 
     /*
      * The submitterId property.
      */
+    @Generated
     private String submitterId;
 
     /*
      * The artifactId property.
      */
+    @Generated
     private String artifactId;
 
     /*
      * The job type.
      */
+    @Generated
     private SparkJobType jobType;
 
     /*
      * The result property.
      */
+    @Generated
     private SparkSessionResultType result;
 
     /*
      * The schedulerInfo property.
      */
+    @Generated
     private SparkScheduler scheduler;
 
     /*
      * The pluginInfo property.
      */
+    @Generated
     private SparkServicePlugin plugin;
 
     /*
      * The errorInfo property.
      */
+    @Generated
     private List<SparkServiceError> errors;
 
     /*
      * Dictionary of <string>
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * The id property.
      */
+    @Generated
     private int id;
 
     /*
      * The appId property.
      */
+    @Generated
     private String appId;
 
     /*
      * Dictionary of <string>
      */
+    @Generated
     private Map<String, String> appInfo;
 
     /*
      * The session state.
      */
+    @Generated
     private LivyStates state;
 
     /*
      * The log property.
      */
+    @Generated
     private List<String> logLines;
 
     /**
      * Creates an instance of SparkSession class.
      */
+    @Generated
     public SparkSession() {
     }
 
@@ -119,6 +139,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the livyInfo value.
      */
+    @Generated
     public SparkSessionState getLivyInfo() {
         return this.livyInfo;
     }
@@ -129,6 +150,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param livyInfo the livyInfo value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setLivyInfo(SparkSessionState livyInfo) {
         this.livyInfo = livyInfo;
         return this;
@@ -139,6 +161,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -149,6 +172,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param name the name value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setName(String name) {
         this.name = name;
         return this;
@@ -159,6 +183,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the workspaceName value.
      */
+    @Generated
     public String getWorkspaceName() {
         return this.workspaceName;
     }
@@ -169,6 +194,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param workspaceName the workspaceName value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setWorkspaceName(String workspaceName) {
         this.workspaceName = workspaceName;
         return this;
@@ -179,6 +205,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the sparkPoolName value.
      */
+    @Generated
     public String getSparkPoolName() {
         return this.sparkPoolName;
     }
@@ -189,6 +216,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param sparkPoolName the sparkPoolName value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setSparkPoolName(String sparkPoolName) {
         this.sparkPoolName = sparkPoolName;
         return this;
@@ -199,6 +227,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the submitterName value.
      */
+    @Generated
     public String getSubmitterName() {
         return this.submitterName;
     }
@@ -209,6 +238,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param submitterName the submitterName value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setSubmitterName(String submitterName) {
         this.submitterName = submitterName;
         return this;
@@ -219,6 +249,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the submitterId value.
      */
+    @Generated
     public String getSubmitterId() {
         return this.submitterId;
     }
@@ -229,6 +260,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param submitterId the submitterId value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setSubmitterId(String submitterId) {
         this.submitterId = submitterId;
         return this;
@@ -239,6 +271,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the artifactId value.
      */
+    @Generated
     public String getArtifactId() {
         return this.artifactId;
     }
@@ -249,6 +282,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param artifactId the artifactId value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setArtifactId(String artifactId) {
         this.artifactId = artifactId;
         return this;
@@ -259,6 +293,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the jobType value.
      */
+    @Generated
     public SparkJobType getJobType() {
         return this.jobType;
     }
@@ -269,6 +304,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param jobType the jobType value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setJobType(SparkJobType jobType) {
         this.jobType = jobType;
         return this;
@@ -279,6 +315,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the result value.
      */
+    @Generated
     public SparkSessionResultType getResult() {
         return this.result;
     }
@@ -289,6 +326,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param result the result value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setResult(SparkSessionResultType result) {
         this.result = result;
         return this;
@@ -299,6 +337,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the scheduler value.
      */
+    @Generated
     public SparkScheduler getScheduler() {
         return this.scheduler;
     }
@@ -309,6 +348,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param scheduler the scheduler value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setScheduler(SparkScheduler scheduler) {
         this.scheduler = scheduler;
         return this;
@@ -319,6 +359,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the plugin value.
      */
+    @Generated
     public SparkServicePlugin getPlugin() {
         return this.plugin;
     }
@@ -329,6 +370,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param plugin the plugin value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setPlugin(SparkServicePlugin plugin) {
         this.plugin = plugin;
         return this;
@@ -339,6 +381,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the errors value.
      */
+    @Generated
     public List<SparkServiceError> getErrors() {
         return this.errors;
     }
@@ -349,6 +392,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param errors the errors value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setErrors(List<SparkServiceError> errors) {
         this.errors = errors;
         return this;
@@ -359,6 +403,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> getTags() {
         return this.tags;
     }
@@ -369,6 +414,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param tags the tags value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -379,6 +425,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the id value.
      */
+    @Generated
     public int getId() {
         return this.id;
     }
@@ -389,6 +436,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param id the id value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setId(int id) {
         this.id = id;
         return this;
@@ -399,6 +447,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the appId value.
      */
+    @Generated
     public String getAppId() {
         return this.appId;
     }
@@ -409,6 +458,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param appId the appId value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setAppId(String appId) {
         this.appId = appId;
         return this;
@@ -419,6 +469,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the appInfo value.
      */
+    @Generated
     public Map<String, String> getAppInfo() {
         return this.appInfo;
     }
@@ -429,6 +480,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param appInfo the appInfo value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setAppInfo(Map<String, String> appInfo) {
         this.appInfo = appInfo;
         return this;
@@ -439,6 +491,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the state value.
      */
+    @Generated
     public LivyStates getState() {
         return this.state;
     }
@@ -449,6 +502,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param state the state value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setState(LivyStates state) {
         this.state = state;
         return this;
@@ -459,6 +513,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * 
      * @return the logLines value.
      */
+    @Generated
     public List<String> getLogLines() {
         return this.logLines;
     }
@@ -469,6 +524,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @param logLines the logLines value to set.
      * @return the SparkSession object itself.
      */
+    @Generated
     public SparkSession setLogLines(List<String> logLines) {
         this.logLines = logLines;
         return this;
@@ -477,6 +533,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -510,6 +567,7 @@ public final class SparkSession implements JsonSerializable<SparkSession> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SparkSession.
      */
+    @Generated
     public static SparkSession fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkSession deserializedSparkSession = new SparkSession();

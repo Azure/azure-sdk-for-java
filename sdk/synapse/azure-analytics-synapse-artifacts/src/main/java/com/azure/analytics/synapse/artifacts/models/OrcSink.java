@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,21 +21,25 @@ public final class OrcSink extends CopySink {
     /*
      * Copy sink type.
      */
+    @Generated
     private String type = "OrcSink";
 
     /*
      * ORC store settings.
      */
+    @Generated
     private StoreWriteSettings storeSettings;
 
     /*
      * ORC format settings.
      */
+    @Generated
     private OrcWriteSettings formatSettings;
 
     /**
      * Creates an instance of OrcSink class.
      */
+    @Generated
     public OrcSink() {
     }
 
@@ -43,6 +48,7 @@ public final class OrcSink extends CopySink {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -53,6 +59,7 @@ public final class OrcSink extends CopySink {
      * 
      * @return the storeSettings value.
      */
+    @Generated
     public StoreWriteSettings getStoreSettings() {
         return this.storeSettings;
     }
@@ -63,6 +70,7 @@ public final class OrcSink extends CopySink {
      * @param storeSettings the storeSettings value to set.
      * @return the OrcSink object itself.
      */
+    @Generated
     public OrcSink setStoreSettings(StoreWriteSettings storeSettings) {
         this.storeSettings = storeSettings;
         return this;
@@ -73,6 +81,7 @@ public final class OrcSink extends CopySink {
      * 
      * @return the formatSettings value.
      */
+    @Generated
     public OrcWriteSettings getFormatSettings() {
         return this.formatSettings;
     }
@@ -83,6 +92,7 @@ public final class OrcSink extends CopySink {
      * @param formatSettings the formatSettings value to set.
      * @return the OrcSink object itself.
      */
+    @Generated
     public OrcSink setFormatSettings(OrcWriteSettings formatSettings) {
         this.formatSettings = formatSettings;
         return this;
@@ -91,6 +101,7 @@ public final class OrcSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OrcSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
@@ -100,6 +111,7 @@ public final class OrcSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OrcSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
@@ -109,6 +121,7 @@ public final class OrcSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OrcSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
@@ -118,6 +131,7 @@ public final class OrcSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OrcSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
@@ -127,6 +141,7 @@ public final class OrcSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OrcSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -136,14 +151,25 @@ public final class OrcSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getWriteBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        }
+        if (getWriteBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        }
+        if (getSinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        }
+        if (getSinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("storeSettings", this.storeSettings);
         jsonWriter.writeJsonField("formatSettings", this.formatSettings);
@@ -163,6 +189,7 @@ public final class OrcSink extends CopySink {
      * JSON null.
      * @throws IOException If an error occurs while reading the OrcSink.
      */
+    @Generated
     public static OrcSink fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OrcSink deserializedOrcSink = new OrcSink();

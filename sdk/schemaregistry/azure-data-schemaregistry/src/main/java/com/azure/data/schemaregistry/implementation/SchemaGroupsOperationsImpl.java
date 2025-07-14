@@ -57,7 +57,7 @@ public final class SchemaGroupsOperationsImpl {
      * service to perform REST calls.
      */
     @Host("https://{endpoint}")
-    @ServiceInterface(name = "AzureSchemaRegistryS")
+    @ServiceInterface(name = "AzureSchemaRegistrySchemaGroupsOperations")
     public interface SchemaGroupsService {
         @Get("/$schemaGroups")
         @ExpectedResponses({ 200 })
@@ -204,7 +204,7 @@ public final class SchemaGroupsOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> list() {
-        return new PagedIterable<>(() -> listSinglePage(Context.NONE), nextLink -> listNextSinglePage(nextLink));
+        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
     }
 
     /**

@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography.implementation;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -11,7 +12,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.CryptographyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
@@ -92,7 +92,10 @@ public final class CryptographyClientImpl {
 
     public Mono<Response<KeyVaultKey>> getKeyAsync() {
         return keyClient.getKeyWithResponseAsync(keyName, keyVersion, EMPTY_OPTIONS)
-            .onErrorMap(HttpResponseException.class, KeyAsyncClient::mapGetKeyException)
+            .onErrorMap(HttpResponseException.class,
+                e -> e.getResponse().getStatusCode() == 403
+                    ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
+                    : e)
             .map(response -> new SimpleResponse<>(response,
                 createKeyVaultKey(response.getValue().toObject(KeyBundle.class))));
     }

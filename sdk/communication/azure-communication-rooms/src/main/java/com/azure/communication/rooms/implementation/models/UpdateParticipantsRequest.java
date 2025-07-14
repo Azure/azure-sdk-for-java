@@ -5,6 +5,7 @@
 package com.azure.communication.rooms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class UpdateParticipantsRequest implements JsonSerializable<UpdateP
     /*
      * Participants to be updated.
      */
+    @Generated
     private Map<String, ParticipantProperties> participants;
 
     /**
      * Creates an instance of UpdateParticipantsRequest class.
      */
+    @Generated
     public UpdateParticipantsRequest() {
     }
 
@@ -33,6 +36,7 @@ public final class UpdateParticipantsRequest implements JsonSerializable<UpdateP
      * 
      * @return the participants value.
      */
+    @Generated
     public Map<String, ParticipantProperties> getParticipants() {
         return this.participants;
     }
@@ -43,11 +47,16 @@ public final class UpdateParticipantsRequest implements JsonSerializable<UpdateP
      * @param participants the participants value to set.
      * @return the UpdateParticipantsRequest object itself.
      */
+    @Generated
     public UpdateParticipantsRequest setParticipants(Map<String, ParticipantProperties> participants) {
         this.participants = participants;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -63,6 +72,7 @@ public final class UpdateParticipantsRequest implements JsonSerializable<UpdateP
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the UpdateParticipantsRequest.
      */
+    @Generated
     public static UpdateParticipantsRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             UpdateParticipantsRequest deserializedUpdateParticipantsRequest = new UpdateParticipantsRequest();

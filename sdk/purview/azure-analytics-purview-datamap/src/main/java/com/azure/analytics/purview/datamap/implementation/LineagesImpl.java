@@ -66,7 +66,7 @@ public final class LineagesImpl {
      * calls.
      */
     @Host("{endpoint}/datamap/api")
-    @ServiceInterface(name = "DataMapClientLineage")
+    @ServiceInterface(name = "DataMapClientLineages")
     public interface LineagesService {
         @Get("/atlas/v2/lineage/{guid}")
         @ExpectedResponses({ 200 })

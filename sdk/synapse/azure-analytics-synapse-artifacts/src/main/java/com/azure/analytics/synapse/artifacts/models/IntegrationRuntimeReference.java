@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class IntegrationRuntimeReference implements JsonSerializable<Integ
     /*
      * Type of integration runtime.
      */
+    @Generated
     private IntegrationRuntimeReferenceType type;
 
     /*
      * Reference integration runtime name.
      */
+    @Generated
     private String referenceName;
 
     /*
      * Arguments for integration runtime.
      */
+    @Generated
     private Map<String, Object> parameters;
 
     /**
      * Creates an instance of IntegrationRuntimeReference class.
      */
+    @Generated
     public IntegrationRuntimeReference() {
     }
 
@@ -43,6 +48,7 @@ public final class IntegrationRuntimeReference implements JsonSerializable<Integ
      * 
      * @return the type value.
      */
+    @Generated
     public IntegrationRuntimeReferenceType getType() {
         return this.type;
     }
@@ -53,6 +59,7 @@ public final class IntegrationRuntimeReference implements JsonSerializable<Integ
      * @param type the type value to set.
      * @return the IntegrationRuntimeReference object itself.
      */
+    @Generated
     public IntegrationRuntimeReference setType(IntegrationRuntimeReferenceType type) {
         this.type = type;
         return this;
@@ -63,6 +70,7 @@ public final class IntegrationRuntimeReference implements JsonSerializable<Integ
      * 
      * @return the referenceName value.
      */
+    @Generated
     public String getReferenceName() {
         return this.referenceName;
     }
@@ -73,6 +81,7 @@ public final class IntegrationRuntimeReference implements JsonSerializable<Integ
      * @param referenceName the referenceName value to set.
      * @return the IntegrationRuntimeReference object itself.
      */
+    @Generated
     public IntegrationRuntimeReference setReferenceName(String referenceName) {
         this.referenceName = referenceName;
         return this;
@@ -83,6 +92,7 @@ public final class IntegrationRuntimeReference implements JsonSerializable<Integ
      * 
      * @return the parameters value.
      */
+    @Generated
     public Map<String, Object> getParameters() {
         return this.parameters;
     }
@@ -93,6 +103,7 @@ public final class IntegrationRuntimeReference implements JsonSerializable<Integ
      * @param parameters the parameters value to set.
      * @return the IntegrationRuntimeReference object itself.
      */
+    @Generated
     public IntegrationRuntimeReference setParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
         return this;
@@ -101,6 +112,7 @@ public final class IntegrationRuntimeReference implements JsonSerializable<Integ
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -119,6 +131,7 @@ public final class IntegrationRuntimeReference implements JsonSerializable<Integ
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IntegrationRuntimeReference.
      */
+    @Generated
     public static IntegrationRuntimeReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IntegrationRuntimeReference deserializedIntegrationRuntimeReference = new IntegrationRuntimeReference();

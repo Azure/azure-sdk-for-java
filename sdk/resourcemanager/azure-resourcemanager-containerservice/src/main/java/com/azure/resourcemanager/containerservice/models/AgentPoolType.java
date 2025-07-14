@@ -22,6 +22,11 @@ public final class AgentPoolType extends ExpandableStringEnum<AgentPoolType> {
     public static final AgentPoolType AVAILABILITY_SET = fromString("AvailabilitySet");
 
     /**
+     * Static value VirtualMachines for AgentPoolType.
+     */
+    public static final AgentPoolType VIRTUAL_MACHINES = fromString("VirtualMachines");
+
+    /**
      * Creates a new instance of AgentPoolType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

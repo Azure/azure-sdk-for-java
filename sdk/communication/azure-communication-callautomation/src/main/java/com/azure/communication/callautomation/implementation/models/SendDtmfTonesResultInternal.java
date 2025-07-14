@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class SendDtmfTonesResultInternal implements JsonSerializable<SendD
     /*
      * The operation context provided by client.
      */
+    @Generated
     private String operationContext;
 
     /**
      * Creates an instance of SendDtmfTonesResultInternal class.
      */
+    @Generated
     public SendDtmfTonesResultInternal() {
     }
 
@@ -32,6 +35,7 @@ public final class SendDtmfTonesResultInternal implements JsonSerializable<SendD
      * 
      * @return the operationContext value.
      */
+    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -42,6 +46,7 @@ public final class SendDtmfTonesResultInternal implements JsonSerializable<SendD
      * @param operationContext the operationContext value to set.
      * @return the SendDtmfTonesResultInternal object itself.
      */
+    @Generated
     public SendDtmfTonesResultInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -50,6 +55,7 @@ public final class SendDtmfTonesResultInternal implements JsonSerializable<SendD
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class SendDtmfTonesResultInternal implements JsonSerializable<SendD
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SendDtmfTonesResultInternal.
      */
+    @Generated
     public static SendDtmfTonesResultInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SendDtmfTonesResultInternal deserializedSendDtmfTonesResultInternal = new SendDtmfTonesResultInternal();

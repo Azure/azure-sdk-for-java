@@ -399,15 +399,29 @@ public final class GoogleBigQueryLinkedServiceTypeProperties
         jsonWriter.writeUntypedField("project", this.project);
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("additionalProjects", this.additionalProjects);
-        jsonWriter.writeUntypedField("requestGoogleDriveScope", this.requestGoogleDriveScope);
+        if (this.additionalProjects != null) {
+            jsonWriter.writeUntypedField("additionalProjects", this.additionalProjects);
+        }
+        if (this.requestGoogleDriveScope != null) {
+            jsonWriter.writeUntypedField("requestGoogleDriveScope", this.requestGoogleDriveScope);
+        }
         jsonWriter.writeJsonField("refreshToken", this.refreshToken);
-        jsonWriter.writeUntypedField("clientId", this.clientId);
+        if (this.clientId != null) {
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+        }
         jsonWriter.writeJsonField("clientSecret", this.clientSecret);
-        jsonWriter.writeUntypedField("email", this.email);
-        jsonWriter.writeUntypedField("keyFilePath", this.keyFilePath);
-        jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
-        jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
+        if (this.email != null) {
+            jsonWriter.writeUntypedField("email", this.email);
+        }
+        if (this.keyFilePath != null) {
+            jsonWriter.writeUntypedField("keyFilePath", this.keyFilePath);
+        }
+        if (this.trustedCertPath != null) {
+            jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
+        }
+        if (this.useSystemTrustStore != null) {
+            jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

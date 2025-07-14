@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +22,25 @@ public final class NotebookMetadata implements JsonSerializable<NotebookMetadata
     /*
      * Kernel information.
      */
+    @Generated
     private NotebookKernelSpec kernelspec;
 
     /*
      * Language info.
      */
+    @Generated
     private NotebookLanguageInfo languageInfo;
 
     /*
      * Notebook root-level metadata.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of NotebookMetadata class.
      */
+    @Generated
     public NotebookMetadata() {
     }
 
@@ -44,6 +49,7 @@ public final class NotebookMetadata implements JsonSerializable<NotebookMetadata
      * 
      * @return the kernelspec value.
      */
+    @Generated
     public NotebookKernelSpec getKernelspec() {
         return this.kernelspec;
     }
@@ -54,6 +60,7 @@ public final class NotebookMetadata implements JsonSerializable<NotebookMetadata
      * @param kernelspec the kernelspec value to set.
      * @return the NotebookMetadata object itself.
      */
+    @Generated
     public NotebookMetadata setKernelspec(NotebookKernelSpec kernelspec) {
         this.kernelspec = kernelspec;
         return this;
@@ -64,6 +71,7 @@ public final class NotebookMetadata implements JsonSerializable<NotebookMetadata
      * 
      * @return the languageInfo value.
      */
+    @Generated
     public NotebookLanguageInfo getLanguageInfo() {
         return this.languageInfo;
     }
@@ -74,6 +82,7 @@ public final class NotebookMetadata implements JsonSerializable<NotebookMetadata
      * @param languageInfo the languageInfo value to set.
      * @return the NotebookMetadata object itself.
      */
+    @Generated
     public NotebookMetadata setLanguageInfo(NotebookLanguageInfo languageInfo) {
         this.languageInfo = languageInfo;
         return this;
@@ -84,6 +93,7 @@ public final class NotebookMetadata implements JsonSerializable<NotebookMetadata
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -94,6 +104,7 @@ public final class NotebookMetadata implements JsonSerializable<NotebookMetadata
      * @param additionalProperties the additionalProperties value to set.
      * @return the NotebookMetadata object itself.
      */
+    @Generated
     public NotebookMetadata setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -102,6 +113,7 @@ public final class NotebookMetadata implements JsonSerializable<NotebookMetadata
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -123,6 +135,7 @@ public final class NotebookMetadata implements JsonSerializable<NotebookMetadata
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the NotebookMetadata.
      */
+    @Generated
     public static NotebookMetadata fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             NotebookMetadata deserializedNotebookMetadata = new NotebookMetadata();

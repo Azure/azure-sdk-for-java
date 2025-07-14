@@ -8,6 +8,8 @@ import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properti
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.Isolated;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.boot.ssl.SslBundleRegistry;
@@ -108,6 +110,42 @@ class AzureKeyVaultSslBundleRegistrarTests {
             String keystoreLog = "The keystore parameter of Key Vault SSL bundle 'testBundle' is null.";
             String registerLog = "Registered Azure Key Vault SSL bundle '" + bundleName + "'.";
             assertTrue(allOutput.contains(keystoreLog) || allOutput.contains(registerLog));
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "", "test-client-id" })
+    void registerKeyVaultSslBundleUsingManagedIdentity(String clientId, CapturedOutput capturedOutput) {
+        AzureKeyVaultJcaProperties jcaProperties = new AzureKeyVaultJcaProperties();
+        AzureKeyVaultSslBundleProperties sslBundleProperties = new AzureKeyVaultSslBundleProperties();
+        AzureKeyVaultSslBundleRegistrar registrar = new AzureKeyVaultSslBundleRegistrar(jcaProperties, sslBundleProperties);
+        registrar.setResourceLoader(new DefaultResourceLoader());
+        SslBundleRegistry registry = Mockito.mock(SslBundleRegistry.class);
+
+        try (MockedStatic<KeyStore> keyStoreMockedStatic = mockStatic(KeyStore.class)) {
+            String bundleName = "tlsServerBundle";
+            KeyStore keyStore = Mockito.mock(KeyStore.class);
+            keyStoreMockedStatic.when(() -> KeyStore.getInstance("AzureKeyVault")).thenReturn(keyStore);
+
+            String keyvaultName = "keyvault1";
+            AzureKeyVaultJcaProperties.JcaVaultProperties jcaVaultProperties = new AzureKeyVaultJcaProperties.JcaVaultProperties();
+            jcaVaultProperties.setEndpoint("https://test.vault.azure.net/");
+
+            jcaVaultProperties.getCredential().setManagedIdentityEnabled(true);
+            jcaVaultProperties.getCredential().setClientId(clientId);
+
+            jcaProperties.getVaults().put(keyvaultName, jcaVaultProperties);
+            AzureKeyVaultSslBundleProperties.KeyVaultSslBundleProperties bundleProperties = new AzureKeyVaultSslBundleProperties.KeyVaultSslBundleProperties();
+            bundleProperties.getKey().setAlias("server");
+            bundleProperties.getKeystore().setKeyvaultRef(keyvaultName);
+            bundleProperties.getTruststore().setKeyvaultRef(keyvaultName);
+
+            sslBundleProperties.getKeyvault().put(bundleName, bundleProperties);
+            registrar.registerBundles(registry);
+            then(registry).should(times(1)).registerBundle(eq(bundleName), any());
+            String allOutput = capturedOutput.getAll();
+            String registerLog = "Registered Azure Key Vault SSL bundle '" + bundleName + "'.";
+            assertTrue(allOutput.contains(registerLog));
         }
     }
 

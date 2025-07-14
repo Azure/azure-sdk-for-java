@@ -50,6 +50,17 @@ public final class MachineUpdateProperties implements JsonSerializable<MachineUp
      */
     private String privateLinkScopeResourceId;
 
+    /*
+     * Identity key store type of the machine
+     */
+    private String identityKeyStore;
+
+    /*
+     * Endorsement Key Certificate of the Trusted Platform Module (TPM) that the client provides to be used during
+     * initial resource onboarding.
+     */
+    private String tpmEkCertificate;
+
     /**
      * Creates an instance of MachineUpdateProperties class.
      */
@@ -181,6 +192,48 @@ public final class MachineUpdateProperties implements JsonSerializable<MachineUp
     }
 
     /**
+     * Get the identityKeyStore property: Identity key store type of the machine.
+     * 
+     * @return the identityKeyStore value.
+     */
+    public String identityKeyStore() {
+        return this.identityKeyStore;
+    }
+
+    /**
+     * Set the identityKeyStore property: Identity key store type of the machine.
+     * 
+     * @param identityKeyStore the identityKeyStore value to set.
+     * @return the MachineUpdateProperties object itself.
+     */
+    public MachineUpdateProperties withIdentityKeyStore(String identityKeyStore) {
+        this.identityKeyStore = identityKeyStore;
+        return this;
+    }
+
+    /**
+     * Get the tpmEkCertificate property: Endorsement Key Certificate of the Trusted Platform Module (TPM) that the
+     * client provides to be used during initial resource onboarding.
+     * 
+     * @return the tpmEkCertificate value.
+     */
+    public String tpmEkCertificate() {
+        return this.tpmEkCertificate;
+    }
+
+    /**
+     * Set the tpmEkCertificate property: Endorsement Key Certificate of the Trusted Platform Module (TPM) that the
+     * client provides to be used during initial resource onboarding.
+     * 
+     * @param tpmEkCertificate the tpmEkCertificate value to set.
+     * @return the MachineUpdateProperties object itself.
+     */
+    public MachineUpdateProperties withTpmEkCertificate(String tpmEkCertificate) {
+        this.tpmEkCertificate = tpmEkCertificate;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -212,6 +265,8 @@ public final class MachineUpdateProperties implements JsonSerializable<MachineUp
         jsonWriter.writeJsonField("agentUpgrade", this.agentUpgrade);
         jsonWriter.writeStringField("parentClusterResourceId", this.parentClusterResourceId);
         jsonWriter.writeStringField("privateLinkScopeResourceId", this.privateLinkScopeResourceId);
+        jsonWriter.writeStringField("identityKeyStore", this.identityKeyStore);
+        jsonWriter.writeStringField("tpmEkCertificate", this.tpmEkCertificate);
         return jsonWriter.writeEndObject();
     }
 
@@ -242,6 +297,10 @@ public final class MachineUpdateProperties implements JsonSerializable<MachineUp
                     deserializedMachineUpdateProperties.parentClusterResourceId = reader.getString();
                 } else if ("privateLinkScopeResourceId".equals(fieldName)) {
                     deserializedMachineUpdateProperties.privateLinkScopeResourceId = reader.getString();
+                } else if ("identityKeyStore".equals(fieldName)) {
+                    deserializedMachineUpdateProperties.identityKeyStore = reader.getString();
+                } else if ("tpmEkCertificate".equals(fieldName)) {
+                    deserializedMachineUpdateProperties.tpmEkCertificate = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

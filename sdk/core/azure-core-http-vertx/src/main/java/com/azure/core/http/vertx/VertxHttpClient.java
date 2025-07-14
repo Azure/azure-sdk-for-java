@@ -24,10 +24,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
-import io.netty.buffer.Unpooled;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.HttpMethod;
@@ -50,6 +50,7 @@ class VertxHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(VertxHttpClient.class);
 
     final io.vertx.core.http.HttpClient client;
+    final HttpClientOptions buildOptions;
     private final Duration responseTimeout;
 
     /**
@@ -57,8 +58,9 @@ class VertxHttpClient implements HttpClient {
      *
      * @param client The Vert.x {@link io.vertx.core.http.HttpClient}
      */
-    VertxHttpClient(io.vertx.core.http.HttpClient client, Duration responseTimeout) {
+    VertxHttpClient(io.vertx.core.http.HttpClient client, HttpClientOptions buildOptions, Duration responseTimeout) {
         this.client = Objects.requireNonNull(client, "client cannot be null");
+        this.buildOptions = buildOptions;
         this.responseTimeout = responseTimeout;
     }
 
@@ -117,7 +119,7 @@ class VertxHttpClient implements HttpClient {
 
         // Create the Promise that will be returned. Promise.promise() is an uncompleted Promise.
         Promise<HttpResponse> promise = Promise.promise();
-        client.request(options, requestResult -> {
+        client.request(options).andThen(requestResult -> {
             if (requestResult.failed()) {
                 promise.fail(requestResult.cause());
                 return;
@@ -175,7 +177,6 @@ class VertxHttpClient implements HttpClient {
         return promise.future().toCompletionStage().toCompletableFuture();
     }
 
-    @SuppressWarnings("deprecation")
     private void sendBody(ContextView contextView, HttpRequest azureRequest, ProgressReporter progressReporter,
         HttpClientRequest vertxRequest, Promise<HttpResponse> promise) {
         BinaryData body = azureRequest.getBodyAsBinaryData();
@@ -188,14 +189,18 @@ class VertxHttpClient implements HttpClient {
                 || bodyContent instanceof ByteBufferContent
                 || bodyContent instanceof StringContent
                 || bodyContent instanceof SerializableContent) {
+                // This cannot produce a NullPointerException for the BinaryDataContent types that trigger this as they
+                // are in-memory and have a length.
                 long contentLength = bodyContent.getLength();
-                vertxRequest.send(Buffer.buffer(Unpooled.wrappedBuffer(bodyContent.toByteBuffer())))
+                vertxRequest.send(Buffer.buffer(bodyContent.toBytes()))
                     .onSuccess(ignored -> reportProgress(contentLength, progressReporter))
                     .onFailure(promise::fail);
             } else {
                 // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
                 azureRequest.getBody()
-                    .subscribe(new VertxRequestWriteSubscriber(vertxRequest, promise, progressReporter, contextView));
+                    .subscribe(new VertxRequestWriteSubscriber(vertxRequest::exceptionHandler,
+                        vertxRequest::drainHandler, vertxRequest::write, vertxRequest::writeQueueFull,
+                        vertxRequest::reset, vertxRequest::end, promise, progressReporter, contextView));
             }
         }
     }

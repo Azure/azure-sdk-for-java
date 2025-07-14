@@ -4,7 +4,9 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackend;
@@ -171,13 +173,20 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
 
     @Override
     public List<ApplicationSecurityGroup> listAssociatedApplicationSecurityGroups() {
+        return listAssociatedApplicationSecurityGroups(Context.NONE);
+    }
+
+    @Override
+    public List<ApplicationSecurityGroup> listAssociatedApplicationSecurityGroups(Context context) {
         if (CoreUtils.isNullOrEmpty(this.innerModel().applicationSecurityGroups())) {
             return Collections.emptyList();
         }
 
         List<ApplicationSecurityGroup> applicationSecurityGroups = Flux
             .fromStream(this.innerModel().applicationSecurityGroups().stream().map(ApplicationSecurityGroupInner::id))
-            .flatMapSequential(id -> this.networkManager.applicationSecurityGroups().getByIdAsync(id))
+            .flatMapSequential(id -> this.networkManager.applicationSecurityGroups()
+                .getByIdAsync(id)
+                .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly())))
             .collectList()
             .block();
         return applicationSecurityGroups == null

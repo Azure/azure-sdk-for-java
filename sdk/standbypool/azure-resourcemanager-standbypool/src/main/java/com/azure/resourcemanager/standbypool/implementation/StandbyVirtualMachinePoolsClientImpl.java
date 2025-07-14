@@ -72,7 +72,7 @@ public final class StandbyVirtualMachinePoolsClientImpl implements StandbyVirtua
      * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "StandbyPoolManagemen")
+    @ServiceInterface(name = "StandbyPoolManagementClientStandbyVirtualMachinePools")
     public interface StandbyVirtualMachinePoolsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}")

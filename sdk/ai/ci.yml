@@ -10,9 +10,13 @@ trigger:
     include:
       - sdk/ai/ci.yml
       - sdk/ai/azure-ai-inference/
+      - sdk/ai/azure-ai-projects/
+      - sdk/ai/azure-ai-agents-persistent/
     exclude:
       - sdk/ai/pom.xml
       - sdk/ai/azure-ai-inference/pom.xml
+      - sdk/ai/azure-ai-projects/pom.xml
+      - sdk/ai/azure-ai-agents-persistent/pom.xml
 
 pr:
   branches:
@@ -25,13 +29,25 @@ pr:
     include:
       - sdk/ai/ci.yml
       - sdk/ai/azure-ai-inference/
+      - sdk/ai/azure-ai-projects/
+      - sdk/ai/azure-ai-agents-persistent/
     exclude:
       - sdk/ai/pom.xml
       - sdk/ai/azure-ai-inference/pom.xml
+      - sdk/ai/azure-ai-projects/pom.xml
+      - sdk/ai/azure-ai-agents-persistent/pom.xml
 
 parameters:
   - name: release_azureaiinference
     displayName: 'azure-ai-inference'
+    type: boolean
+    default: true
+  - name: release_azureaiprojects
+    displayName: 'azure-ai-projects'
+    type: boolean
+    default: true
+  - name: release_azureaiagentspersistent
+    displayName: 'azure-ai-agents-persistent'
     type: boolean
     default: true
 
@@ -44,3 +60,11 @@ extends:
         groupId: com.azure
         safeName: azureaiinference
         releaseInBatch: ${{ parameters.release_azureaiinference }}
+      - name: azure-ai-projects
+        groupId: com.azure
+        safeName: azureaiprojects
+        releaseInBatch: ${{ parameters.release_azureaiprojects }}
+      - name: azure-ai-agents-persistent
+        groupId: com.azure
+        safeName: azureaiagentspersistent
+        releaseInBatch: ${{ parameters.release_azureaiagentspersistent }}

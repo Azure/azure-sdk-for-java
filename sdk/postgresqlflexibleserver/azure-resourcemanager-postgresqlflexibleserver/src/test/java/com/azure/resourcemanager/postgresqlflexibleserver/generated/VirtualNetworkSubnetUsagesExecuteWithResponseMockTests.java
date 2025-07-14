@@ -6,8 +6,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsageParameter;
@@ -21,18 +21,18 @@ public final class VirtualNetworkSubnetUsagesExecuteWithResponseMockTests {
     @Test
     public void testExecuteWithResponse() throws Exception {
         String responseStr
-            = "{\"delegatedSubnetsUsage\":[{\"subnetName\":\"leziunjxdfzant\",\"usage\":7973738400365966100},{\"subnetName\":\"yamlbnse\",\"usage\":6409376933110730693},{\"subnetName\":\"vpilg\",\"usage\":2023691682107427976}],\"location\":\"agmdit\",\"subscriptionId\":\"eiookjbsah\"}";
+            = "{\"delegatedSubnetsUsage\":[{\"subnetName\":\"dswys\",\"usage\":1520186438026533179},{\"subnetName\":\"fgllukkutvlx\",\"usage\":8876141444455718154}],\"location\":\"vmblcouqe\",\"subscriptionId\":\"hbcdsziry\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VirtualNetworkSubnetUsageResult response = manager.virtualNetworkSubnetUsages()
-            .executeWithResponse("qbctqha",
-                new VirtualNetworkSubnetUsageParameter().withVirtualNetworkArmResourceId("jrwdkqz"),
+            .executeWithResponse("ttxpnrupza",
+                new VirtualNetworkSubnetUsageParameter().withVirtualNetworkArmResourceId("rdixt"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

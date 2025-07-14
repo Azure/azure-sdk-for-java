@@ -5,6 +5,7 @@
 package com.azure.communication.sms.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class SmsSendOptions implements JsonSerializable<SmsSendOptions> {
     /*
      * Enable this flag to receive a delivery report for this message on the Azure Resource EventGrid.
      */
+    @Generated
     private boolean deliveryReportEnabled;
 
     /*
      * Use this field to provide metadata that will then be sent back in the corresponding Delivery Report.
      */
+    @Generated
     private String tag;
 
     /**
      * Creates an instance of SmsSendOptions class.
      */
+    @Generated
     public SmsSendOptions() {
     }
 
@@ -38,6 +42,7 @@ public final class SmsSendOptions implements JsonSerializable<SmsSendOptions> {
      * 
      * @return the deliveryReportEnabled value.
      */
+    @Generated
     public boolean isDeliveryReportEnabled() {
         return this.deliveryReportEnabled;
     }
@@ -49,6 +54,7 @@ public final class SmsSendOptions implements JsonSerializable<SmsSendOptions> {
      * @param deliveryReportEnabled the deliveryReportEnabled value to set.
      * @return the SmsSendOptions object itself.
      */
+    @Generated
     public SmsSendOptions setDeliveryReportEnabled(boolean deliveryReportEnabled) {
         this.deliveryReportEnabled = deliveryReportEnabled;
         return this;
@@ -60,6 +66,7 @@ public final class SmsSendOptions implements JsonSerializable<SmsSendOptions> {
      * 
      * @return the tag value.
      */
+    @Generated
     public String getTag() {
         return this.tag;
     }
@@ -71,6 +78,7 @@ public final class SmsSendOptions implements JsonSerializable<SmsSendOptions> {
      * @param tag the tag value to set.
      * @return the SmsSendOptions object itself.
      */
+    @Generated
     public SmsSendOptions setTag(String tag) {
         this.tag = tag;
         return this;
@@ -79,6 +87,7 @@ public final class SmsSendOptions implements JsonSerializable<SmsSendOptions> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,6 +105,7 @@ public final class SmsSendOptions implements JsonSerializable<SmsSendOptions> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SmsSendOptions.
      */
+    @Generated
     public static SmsSendOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SmsSendOptions deserializedSmsSendOptions = new SmsSendOptions();

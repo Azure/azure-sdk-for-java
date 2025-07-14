@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,51 +15,61 @@ public final class IntegrationRuntimeState extends ExpandableStringEnum<Integrat
     /**
      * Static value Initial for IntegrationRuntimeState.
      */
+    @Generated
     public static final IntegrationRuntimeState INITIAL = fromString("Initial");
 
     /**
      * Static value Stopped for IntegrationRuntimeState.
      */
+    @Generated
     public static final IntegrationRuntimeState STOPPED = fromString("Stopped");
 
     /**
      * Static value Started for IntegrationRuntimeState.
      */
+    @Generated
     public static final IntegrationRuntimeState STARTED = fromString("Started");
 
     /**
      * Static value Starting for IntegrationRuntimeState.
      */
+    @Generated
     public static final IntegrationRuntimeState STARTING = fromString("Starting");
 
     /**
      * Static value Stopping for IntegrationRuntimeState.
      */
+    @Generated
     public static final IntegrationRuntimeState STOPPING = fromString("Stopping");
 
     /**
      * Static value NeedRegistration for IntegrationRuntimeState.
      */
+    @Generated
     public static final IntegrationRuntimeState NEED_REGISTRATION = fromString("NeedRegistration");
 
     /**
      * Static value Online for IntegrationRuntimeState.
      */
+    @Generated
     public static final IntegrationRuntimeState ONLINE = fromString("Online");
 
     /**
      * Static value Limited for IntegrationRuntimeState.
      */
+    @Generated
     public static final IntegrationRuntimeState LIMITED = fromString("Limited");
 
     /**
      * Static value Offline for IntegrationRuntimeState.
      */
+    @Generated
     public static final IntegrationRuntimeState OFFLINE = fromString("Offline");
 
     /**
      * Static value AccessDenied for IntegrationRuntimeState.
      */
+    @Generated
     public static final IntegrationRuntimeState ACCESS_DENIED = fromString("AccessDenied");
 
     /**
@@ -66,6 +77,7 @@ public final class IntegrationRuntimeState extends ExpandableStringEnum<Integrat
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IntegrationRuntimeState() {
     }
@@ -76,6 +88,7 @@ public final class IntegrationRuntimeState extends ExpandableStringEnum<Integrat
      * @param name a name to look for.
      * @return the corresponding IntegrationRuntimeState.
      */
+    @Generated
     public static IntegrationRuntimeState fromString(String name) {
         return fromString(name, IntegrationRuntimeState.class);
     }
@@ -85,6 +98,7 @@ public final class IntegrationRuntimeState extends ExpandableStringEnum<Integrat
      * 
      * @return known IntegrationRuntimeState values.
      */
+    @Generated
     public static Collection<IntegrationRuntimeState> values() {
         return values(IntegrationRuntimeState.class);
     }

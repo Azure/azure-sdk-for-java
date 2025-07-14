@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class AzureBlobFileListContentSource implements JsonSerializable<Az
     /*
      * Azure Blob Storage container URL.
      */
+    @Generated
     private final String containerUrl;
 
     /*
      * Path to a JSONL file within the container specifying a subset of documents for training.
      */
+    @Generated
     private final String fileList;
 
     /**
@@ -34,6 +37,7 @@ public final class AzureBlobFileListContentSource implements JsonSerializable<Az
      * @param containerUrl the containerUrl value to set.
      * @param fileList the fileList value to set.
      */
+    @Generated
     public AzureBlobFileListContentSource(String containerUrl, String fileList) {
         this.containerUrl = containerUrl;
         this.fileList = fileList;
@@ -44,6 +48,7 @@ public final class AzureBlobFileListContentSource implements JsonSerializable<Az
      * 
      * @return the containerUrl value.
      */
+    @Generated
     public String getContainerUrl() {
         return this.containerUrl;
     }
@@ -54,6 +59,7 @@ public final class AzureBlobFileListContentSource implements JsonSerializable<Az
      * 
      * @return the fileList value.
      */
+    @Generated
     public String getFileList() {
         return this.fileList;
     }
@@ -61,6 +67,7 @@ public final class AzureBlobFileListContentSource implements JsonSerializable<Az
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -78,6 +85,7 @@ public final class AzureBlobFileListContentSource implements JsonSerializable<Az
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureBlobFileListContentSource.
      */
+    @Generated
     public static AzureBlobFileListContentSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean containerUrlFound = false;

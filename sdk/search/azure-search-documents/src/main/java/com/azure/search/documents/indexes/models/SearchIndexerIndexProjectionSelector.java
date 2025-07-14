@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,23 +25,27 @@ public final class SearchIndexerIndexProjectionSelector
     /*
      * Name of the search index to project to. Must have a key field with the 'keyword' analyzer set.
      */
+    @Generated
     private final String targetIndexName;
 
     /*
      * Name of the field in the search index to map the parent document's key value to. Must be a string field that is
      * filterable and not the key field.
      */
+    @Generated
     private final String parentKeyFieldName;
 
     /*
      * Source context for the projections. Represents the cardinality at which the document will be split into multiple
      * sub documents.
      */
+    @Generated
     private final String sourceContext;
 
     /*
      * Mappings for the projection, or which source should be mapped to which field in the target index.
      */
+    @Generated
     private final List<InputFieldMappingEntry> mappings;
 
     /**
@@ -51,6 +56,7 @@ public final class SearchIndexerIndexProjectionSelector
      * @param sourceContext the sourceContext value to set.
      * @param mappings the mappings value to set.
      */
+    @Generated
     public SearchIndexerIndexProjectionSelector(String targetIndexName, String parentKeyFieldName, String sourceContext,
         List<InputFieldMappingEntry> mappings) {
         this.targetIndexName = targetIndexName;
@@ -65,6 +71,7 @@ public final class SearchIndexerIndexProjectionSelector
      * 
      * @return the targetIndexName value.
      */
+    @Generated
     public String getTargetIndexName() {
         return this.targetIndexName;
     }
@@ -75,6 +82,7 @@ public final class SearchIndexerIndexProjectionSelector
      * 
      * @return the parentKeyFieldName value.
      */
+    @Generated
     public String getParentKeyFieldName() {
         return this.parentKeyFieldName;
     }
@@ -85,6 +93,7 @@ public final class SearchIndexerIndexProjectionSelector
      * 
      * @return the sourceContext value.
      */
+    @Generated
     public String getSourceContext() {
         return this.sourceContext;
     }
@@ -95,6 +104,7 @@ public final class SearchIndexerIndexProjectionSelector
      * 
      * @return the mappings value.
      */
+    @Generated
     public List<InputFieldMappingEntry> getMappings() {
         return this.mappings;
     }
@@ -102,6 +112,7 @@ public final class SearchIndexerIndexProjectionSelector
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -121,6 +132,7 @@ public final class SearchIndexerIndexProjectionSelector
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerIndexProjectionSelector.
      */
+    @Generated
     public static SearchIndexerIndexProjectionSelector fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean targetIndexNameFound = false;

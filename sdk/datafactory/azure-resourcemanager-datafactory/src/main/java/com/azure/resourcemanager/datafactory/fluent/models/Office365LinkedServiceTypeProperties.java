@@ -300,7 +300,9 @@ public final class Office365LinkedServiceTypeProperties
         jsonWriter.writeUntypedField("servicePrincipalTenantId", this.servicePrincipalTenantId);
         jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-        jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        if (this.servicePrincipalCredentialType != null) {
+            jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        }
         jsonWriter.writeJsonField("servicePrincipalEmbeddedCert", this.servicePrincipalEmbeddedCert);
         jsonWriter.writeJsonField("servicePrincipalEmbeddedCertPassword", this.servicePrincipalEmbeddedCertPassword);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);

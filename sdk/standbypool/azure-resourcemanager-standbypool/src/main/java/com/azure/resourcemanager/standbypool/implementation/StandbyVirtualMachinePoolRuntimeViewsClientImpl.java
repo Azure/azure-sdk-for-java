@@ -63,7 +63,7 @@ public final class StandbyVirtualMachinePoolRuntimeViewsClientImpl
      * be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "StandbyPoolManagemen")
+    @ServiceInterface(name = "StandbyPoolManagementClientStandbyVirtualMachinePoolRuntimeViews")
     public interface StandbyVirtualMachinePoolRuntimeViewsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}/runtimeViews/{runtimeView}")

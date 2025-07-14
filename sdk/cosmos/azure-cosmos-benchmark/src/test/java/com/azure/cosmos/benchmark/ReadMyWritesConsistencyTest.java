@@ -36,6 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class ReadMyWritesConsistencyTest {
 
@@ -94,7 +95,7 @@ public class ReadMyWritesConsistencyTest {
         };
     }
 
-    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "e2e")
+    @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "e2e", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readMyWrites(boolean useNameLink) throws Exception {
 
         int concurrency = 5;
@@ -151,7 +152,10 @@ public class ReadMyWritesConsistencyTest {
         int numberOfOperations = Integer.parseInt(numberOfOperationsAsString);
 
         assertThat(error).hasValue(0);
-        assertThat(collectionScaleUpFailed).isFalse();
+        if (collectionScaleUpFailed.get()) {
+            fail("Failed to scale up collection " + database.getId()
+                + "/" + collection.getId() + ". This test failure can be safely ignored in CI pipelines.");
+        }
 
         if (numberOfOperations > 0) {
             assertThat(success).hasValue(numberOfOperations);

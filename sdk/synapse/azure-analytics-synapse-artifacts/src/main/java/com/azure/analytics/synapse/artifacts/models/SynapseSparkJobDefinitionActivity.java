@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,22 +22,26 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "SparkJob";
 
     /*
      * Synapse spark job reference.
      */
+    @Generated
     private SynapseSparkJobReference sparkJob;
 
     /*
      * User specified arguments to SynapseSparkJobDefinitionActivity.
      */
+    @Generated
     private List<Object> arguments;
 
     /*
      * The main file used for the job, which will override the 'file' of the spark job definition you provide. Type:
      * string (or Expression with resultType string).
      */
+    @Generated
     private Object file;
 
     /*
@@ -44,36 +49,42 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * files. The folders named 'jars', 'pyFiles', 'files' or 'archives' will be scanned, and the folders name are case
      * sensitive. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object scanFolder;
 
     /*
      * The fully-qualified identifier or the main class that is in the main definition file, which will override the
      * 'className' of the spark job definition you provide. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object className;
 
     /*
      * (Deprecated. Please use pythonCodeReference and filesV2) Additional files used for reference in the main
      * definition file, which will override the 'files' of the spark job definition you provide.
      */
+    @Generated
     private List<Object> files;
 
     /*
      * Additional python code files used for reference in the main definition file, which will override the 'pyFiles' of
      * the spark job definition you provide.
      */
+    @Generated
     private List<Object> pythonCodeReference;
 
     /*
      * Additional files used for reference in the main definition file, which will override the 'jars' and 'files' of
      * the spark job definition you provide.
      */
+    @Generated
     private List<Object> filesV2;
 
     /*
      * The name of the big data pool which will be used to execute the spark batch job, which will override the
      * 'targetBigDataPool' of the spark job definition you provide.
      */
+    @Generated
     private BigDataPoolParametrizationReference targetBigDataPool;
 
     /*
@@ -81,11 +92,13 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * be used for overriding 'executorCores' and 'executorMemory' of the spark job definition you provide. Type: string
      * (or Expression with resultType string).
      */
+    @Generated
     private Object executorSize;
 
     /*
      * Spark configuration properties, which will override the 'conf' of the spark job definition you provide.
      */
+    @Generated
     private Object conf;
 
     /*
@@ -93,37 +106,44 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * used for overriding 'driverCores' and 'driverMemory' of the spark job definition you provide. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object driverSize;
 
     /*
      * Number of executors to launch for this job, which will override the 'numExecutors' of the spark job definition
      * you provide. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object numExecutors;
 
     /*
      * The type of the spark config.
      */
+    @Generated
     private ConfigurationType configurationType;
 
     /*
      * The spark configuration of the spark job.
      */
+    @Generated
     private SparkConfigurationParametrizationReference targetSparkConfiguration;
 
     /*
      * Spark configuration property.
      */
+    @Generated
     private Map<String, Object> sparkConfig;
 
     /*
      * Authentication method used for executing the Spark job definition.
      */
+    @Generated
     private SynapseActivityAuthentication authentication;
 
     /**
      * Creates an instance of SynapseSparkJobDefinitionActivity class.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity() {
     }
 
@@ -132,6 +152,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -142,6 +163,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the sparkJob value.
      */
+    @Generated
     public SynapseSparkJobReference getSparkJob() {
         return this.sparkJob;
     }
@@ -152,6 +174,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @param sparkJob the sparkJob value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity setSparkJob(SynapseSparkJobReference sparkJob) {
         this.sparkJob = sparkJob;
         return this;
@@ -162,6 +185,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the arguments value.
      */
+    @Generated
     public List<Object> getArguments() {
         return this.arguments;
     }
@@ -172,6 +196,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @param arguments the arguments value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity setArguments(List<Object> arguments) {
         this.arguments = arguments;
         return this;
@@ -183,6 +208,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the file value.
      */
+    @Generated
     public Object getFile() {
         return this.file;
     }
@@ -194,6 +220,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @param file the file value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity setFile(Object file) {
         this.file = file;
         return this;
@@ -206,6 +233,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the scanFolder value.
      */
+    @Generated
     public Object getScanFolder() {
         return this.scanFolder;
     }
@@ -218,6 +246,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @param scanFolder the scanFolder value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity setScanFolder(Object scanFolder) {
         this.scanFolder = scanFolder;
         return this;
@@ -230,6 +259,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the className value.
      */
+    @Generated
     public Object getClassName() {
         return this.className;
     }
@@ -242,6 +272,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @param className the className value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity setClassName(Object className) {
         this.className = className;
         return this;
@@ -253,6 +284,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the files value.
      */
+    @Generated
     public List<Object> getFiles() {
         return this.files;
     }
@@ -264,6 +296,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @param files the files value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity setFiles(List<Object> files) {
         this.files = files;
         return this;
@@ -275,6 +308,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the pythonCodeReference value.
      */
+    @Generated
     public List<Object> getPythonCodeReference() {
         return this.pythonCodeReference;
     }
@@ -286,6 +320,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @param pythonCodeReference the pythonCodeReference value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity setPythonCodeReference(List<Object> pythonCodeReference) {
         this.pythonCodeReference = pythonCodeReference;
         return this;
@@ -297,6 +332,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the filesV2 value.
      */
+    @Generated
     public List<Object> getFilesV2() {
         return this.filesV2;
     }
@@ -308,6 +344,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @param filesV2 the filesV2 value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity setFilesV2(List<Object> filesV2) {
         this.filesV2 = filesV2;
         return this;
@@ -319,6 +356,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the targetBigDataPool value.
      */
+    @Generated
     public BigDataPoolParametrizationReference getTargetBigDataPool() {
         return this.targetBigDataPool;
     }
@@ -330,6 +368,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @param targetBigDataPool the targetBigDataPool value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity
         setTargetBigDataPool(BigDataPoolParametrizationReference targetBigDataPool) {
         this.targetBigDataPool = targetBigDataPool;
@@ -343,6 +382,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the executorSize value.
      */
+    @Generated
     public Object getExecutorSize() {
         return this.executorSize;
     }
@@ -355,6 +395,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @param executorSize the executorSize value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity setExecutorSize(Object executorSize) {
         this.executorSize = executorSize;
         return this;
@@ -366,6 +407,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the conf value.
      */
+    @Generated
     public Object getConf() {
         return this.conf;
     }
@@ -377,6 +419,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @param conf the conf value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity setConf(Object conf) {
         this.conf = conf;
         return this;
@@ -389,6 +432,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the driverSize value.
      */
+    @Generated
     public Object getDriverSize() {
         return this.driverSize;
     }
@@ -401,6 +445,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @param driverSize the driverSize value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity setDriverSize(Object driverSize) {
         this.driverSize = driverSize;
         return this;
@@ -412,6 +457,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the numExecutors value.
      */
+    @Generated
     public Object getNumExecutors() {
         return this.numExecutors;
     }
@@ -423,6 +469,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @param numExecutors the numExecutors value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity setNumExecutors(Object numExecutors) {
         this.numExecutors = numExecutors;
         return this;
@@ -433,6 +480,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the configurationType value.
      */
+    @Generated
     public ConfigurationType getConfigurationType() {
         return this.configurationType;
     }
@@ -443,6 +491,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @param configurationType the configurationType value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity setConfigurationType(ConfigurationType configurationType) {
         this.configurationType = configurationType;
         return this;
@@ -453,6 +502,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the targetSparkConfiguration value.
      */
+    @Generated
     public SparkConfigurationParametrizationReference getTargetSparkConfiguration() {
         return this.targetSparkConfiguration;
     }
@@ -463,6 +513,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @param targetSparkConfiguration the targetSparkConfiguration value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity
         setTargetSparkConfiguration(SparkConfigurationParametrizationReference targetSparkConfiguration) {
         this.targetSparkConfiguration = targetSparkConfiguration;
@@ -474,6 +525,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the sparkConfig value.
      */
+    @Generated
     public Map<String, Object> getSparkConfig() {
         return this.sparkConfig;
     }
@@ -484,6 +536,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @param sparkConfig the sparkConfig value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity setSparkConfig(Map<String, Object> sparkConfig) {
         this.sparkConfig = sparkConfig;
         return this;
@@ -494,6 +547,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * 
      * @return the authentication value.
      */
+    @Generated
     public SynapseActivityAuthentication getAuthentication() {
         return this.authentication;
     }
@@ -504,6 +558,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @param authentication the authentication value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
+    @Generated
     public SynapseSparkJobDefinitionActivity setAuthentication(SynapseActivityAuthentication authentication) {
         this.authentication = authentication;
         return this;
@@ -512,6 +567,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SynapseSparkJobDefinitionActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -521,6 +577,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SynapseSparkJobDefinitionActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -530,6 +587,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SynapseSparkJobDefinitionActivity setName(String name) {
         super.setName(name);
@@ -539,6 +597,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SynapseSparkJobDefinitionActivity setDescription(String description) {
         super.setDescription(description);
@@ -548,6 +607,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SynapseSparkJobDefinitionActivity setState(ActivityState state) {
         super.setState(state);
@@ -557,6 +617,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SynapseSparkJobDefinitionActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -566,6 +627,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SynapseSparkJobDefinitionActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -575,6 +637,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SynapseSparkJobDefinitionActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -584,6 +647,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -618,18 +682,32 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeJsonField("sparkJob", this.sparkJob);
             jsonWriter.writeArrayField("args", this.arguments, (writer, element) -> writer.writeUntyped(element));
-            jsonWriter.writeUntypedField("file", this.file);
-            jsonWriter.writeUntypedField("scanFolder", this.scanFolder);
-            jsonWriter.writeUntypedField("className", this.className);
+            if (this.file != null) {
+                jsonWriter.writeUntypedField("file", this.file);
+            }
+            if (this.scanFolder != null) {
+                jsonWriter.writeUntypedField("scanFolder", this.scanFolder);
+            }
+            if (this.className != null) {
+                jsonWriter.writeUntypedField("className", this.className);
+            }
             jsonWriter.writeArrayField("files", this.files, (writer, element) -> writer.writeUntyped(element));
             jsonWriter.writeArrayField("pythonCodeReference", this.pythonCodeReference,
                 (writer, element) -> writer.writeUntyped(element));
             jsonWriter.writeArrayField("filesV2", this.filesV2, (writer, element) -> writer.writeUntyped(element));
             jsonWriter.writeJsonField("targetBigDataPool", this.targetBigDataPool);
-            jsonWriter.writeUntypedField("executorSize", this.executorSize);
-            jsonWriter.writeUntypedField("conf", this.conf);
-            jsonWriter.writeUntypedField("driverSize", this.driverSize);
-            jsonWriter.writeUntypedField("numExecutors", this.numExecutors);
+            if (this.executorSize != null) {
+                jsonWriter.writeUntypedField("executorSize", this.executorSize);
+            }
+            if (this.conf != null) {
+                jsonWriter.writeUntypedField("conf", this.conf);
+            }
+            if (this.driverSize != null) {
+                jsonWriter.writeUntypedField("driverSize", this.driverSize);
+            }
+            if (this.numExecutors != null) {
+                jsonWriter.writeUntypedField("numExecutors", this.numExecutors);
+            }
             jsonWriter.writeStringField("configurationType",
                 this.configurationType == null ? null : this.configurationType.toString());
             jsonWriter.writeJsonField("targetSparkConfiguration", this.targetSparkConfiguration);
@@ -655,6 +733,7 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SynapseSparkJobDefinitionActivity.
      */
+    @Generated
     public static SynapseSparkJobDefinitionActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SynapseSparkJobDefinitionActivity deserializedSynapseSparkJobDefinitionActivity

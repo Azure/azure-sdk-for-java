@@ -43,25 +43,25 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * The service client containing this operation class.
      */
-    private final AzureTerraformClientImpl client;
+    private final AzureTerraformManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(AzureTerraformClientImpl client) {
+    OperationsClientImpl(AzureTerraformManagementClientImpl client) {
         this.service
             = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureTerraformClientOperations to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for AzureTerraformManagementClientOperations to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureTerraformClient")
+    @ServiceInterface(name = "AzureTerraformManagementClientOperations")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.AzureTerraform/operations")

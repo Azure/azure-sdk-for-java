@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
     /*
      * Error code
      */
+    @Generated
     private String code;
 
     /*
      * Error message
      */
+    @Generated
     private String message;
 
     /*
      * Error details
      */
+    @Generated
     private Object detail;
 
     /**
      * Creates an instance of AcrErrorInfo class.
      */
+    @Generated
     public AcrErrorInfo() {
     }
 
@@ -42,6 +47,7 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
      * 
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -52,6 +58,7 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
      * @param code the code value to set.
      * @return the AcrErrorInfo object itself.
      */
+    @Generated
     public AcrErrorInfo setCode(String code) {
         this.code = code;
         return this;
@@ -62,6 +69,7 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -72,6 +80,7 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
      * @param message the message value to set.
      * @return the AcrErrorInfo object itself.
      */
+    @Generated
     public AcrErrorInfo setMessage(String message) {
         this.message = message;
         return this;
@@ -82,6 +91,7 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
      * 
      * @return the detail value.
      */
+    @Generated
     public Object getDetail() {
         return this.detail;
     }
@@ -92,6 +102,7 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
      * @param detail the detail value to set.
      * @return the AcrErrorInfo object itself.
      */
+    @Generated
     public AcrErrorInfo setDetail(Object detail) {
         this.detail = detail;
         return this;
@@ -100,12 +111,15 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("code", this.code);
         jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeUntypedField("detail", this.detail);
+        if (this.detail != null) {
+            jsonWriter.writeUntypedField("detail", this.detail);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -117,6 +131,7 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcrErrorInfo.
      */
+    @Generated
     public static AcrErrorInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcrErrorInfo deserializedAcrErrorInfo = new AcrErrorInfo();

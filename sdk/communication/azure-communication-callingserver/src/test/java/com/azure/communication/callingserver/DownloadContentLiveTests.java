@@ -5,6 +5,7 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
@@ -21,11 +22,10 @@ import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.doThrow;
 
@@ -64,7 +64,8 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             callRecording.downloadTo(METADATA_URL, byteArrayOutputStream);
             String metadata = byteArrayOutputStream.toString(StandardCharsets.UTF_8.name());
-            assertThat(metadata.contains("0-eus-d2-3cca2175891f21c6c9a5975a12c0141c"), is(true));
+            assertTrue(metadata.contains("0-eus-d2-3cca2175891f21c6c9a5975a12c0141c"),
+                "Expected " + metadata + " to contain '0-eus-d2-3cca2175891f21c6c9a5975a12c0141c'.");
         } catch (Exception e) {
             fail("Unexpected exception received", e);
         }
@@ -85,10 +86,10 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             Response<Void> response = conversationClient.getCallRecording()
                 .downloadToWithResponse(VIDEO_URL, byteArrayOutputStream, null, Context.NONE);
-            assertThat(response, is(notNullValue()));
-            assertThat(response.getHeaders().getValue("Content-Type"), is(equalTo("application/octet-stream")));
-            assertThat(Integer.parseInt(response.getHeaders().getValue("Content-Length")),
-                is(equalTo(byteArrayOutputStream.size())));
+            assertNotNull(response);
+            assertEquals("application/octet-stream", response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+            assertEquals(byteArrayOutputStream.size(),
+                Integer.parseInt(response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH)));
         } catch (Exception e) {
             fail("Unexpected exception received", e);
         }
@@ -120,7 +121,7 @@ public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
             () -> conversationClient.getCallRecording().downloadTo("wrongurl", byteArrayOutputStream));
-        assertThat(ex, is(notNullValue()));
+        assertNotNull(ex);
     }
 
     @ParameterizedTest

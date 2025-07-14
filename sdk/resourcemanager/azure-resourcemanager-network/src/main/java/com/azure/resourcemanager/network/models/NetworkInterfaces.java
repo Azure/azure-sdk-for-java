@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -101,6 +102,17 @@ public interface NetworkInterfaces
     Accepted<Void> beginDeleteById(String id);
 
     /**
+     * Begins deleting a virtual machine from Azure, identifying it by its resource ID.
+     *
+     * @param id the resource ID of the virtual machine to delete
+     * @param context the {@link Context} of the request
+     * @return the accepted deleting operation
+     */
+    default Accepted<Void> beginDeleteById(String id, Context context) {
+        throw new UnsupportedOperationException("[beginDeleteById(String, Context)] is not supported in " + getClass());
+    }
+
+    /**
      * Begins deleting a virtual machine from Azure, identifying it by its name and its resource group.
      *
      * @param resourceGroupName the resource group the resource is part of
@@ -108,4 +120,29 @@ public interface NetworkInterfaces
      * @return the accepted deleting operation
      */
     Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name);
+
+    /**
+     * Begins deleting a virtual machine from Azure, identifying it by its name and its resource group.
+     *
+     * @param resourceGroupName the resource group the resource is part of
+     * @param name the virtual machine name
+     * @param context the {@link Context} of the request
+     * @return the accepted deleting operation
+     */
+    default Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, Context context) {
+        throw new UnsupportedOperationException(
+            "[beginDeleteByResourceGroup(String, String, Context)] is not supported in " + getClass());
+    }
+
+    /**
+     * Lists resources of the specified type in the specified resource group.
+     *
+     * @param resourceGroupName the name of the resource group to list the resources from
+     * @param context the {@link Context} of the request
+     * @return the list of resources
+     */
+    default PagedIterable<NetworkInterface> listByResourceGroup(String resourceGroupName, Context context) {
+        throw new UnsupportedOperationException(
+            "[listByResourceGroup(String, Context)] is not supported in " + getClass());
+    }
 }

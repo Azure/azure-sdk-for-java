@@ -72,7 +72,7 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SiteManagerManagemen")
+    @ServiceInterface(name = "SiteManagerManagementClientSitesByServiceGroups")
     public interface SitesByServiceGroupsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Management/serviceGroups/{servicegroupName}/providers/Microsoft.Edge/sites")

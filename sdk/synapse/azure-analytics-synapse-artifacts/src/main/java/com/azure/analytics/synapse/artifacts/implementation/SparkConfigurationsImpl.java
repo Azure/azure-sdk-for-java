@@ -63,7 +63,7 @@ public final class SparkConfigurationsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientSpark")
+    @ServiceInterface(name = "ArtifactsClientSparkConfigurations")
     public interface SparkConfigurationsService {
         @Get("/sparkconfigurations")
         @ExpectedResponses({ 200 })

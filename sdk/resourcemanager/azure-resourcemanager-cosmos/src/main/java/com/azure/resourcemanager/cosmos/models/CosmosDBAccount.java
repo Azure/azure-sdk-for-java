@@ -299,6 +299,25 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
      */
     Mono<Void> regenerateKeyAsync(KeyKind keyKind);
 
+    /**
+     * Checks whether local auth is disabled.
+     *
+     * @return whether local auth is disabled or not.
+     */
+    boolean localAuthDisabled();
+
+    /**
+     * Checks whether automatic failover is enabled.
+     * Enables automatic failover of the write region in the rare event that the region is unavailable due to an outage.
+     * Automatic failover will result in a new write region for the account and is chosen based on the failover
+     * priorities configured for the account.
+     *
+     * @return whether automatic failover is enabled
+     */
+    default boolean automaticFailoverEnabled() {
+        throw new UnsupportedOperationException("[automaticFailoverEnabled] is not supported in " + getClass());
+    }
+
     /** Grouping of cosmos db definition stages. */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithKind,
         DefinitionStages.WithWriteReplication, DefinitionStages.WithReadReplication, DefinitionStages.WithCreate {
@@ -527,13 +546,38 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
             WithCreate disablePublicNetworkAccess();
         }
 
+        /** The stage of CosmosDB account definition allowing to configure local auth settings. */
+        interface WithLocalAuth {
+            /**
+             * Disables local auth for the CosmosDB account.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disableLocalAuth();
+        }
+
+        /**
+         * The stage of CosmosDB account definition allowing to enable automatic failover.
+         */
+        interface WithAutomaticFailover {
+            /**
+             * Disables automatic failover.
+             *
+             * @return the next stage of the definition
+             */
+            default WithCreate disableAutomaticFailover() {
+                throw new UnsupportedOperationException("[disableAutomaticFailover] is not supported in " + getClass());
+            }
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
         interface WithCreate extends Creatable<CosmosDBAccount>, WithConsistencyPolicy, WithReadReplication,
             WithIpRules, WithVirtualNetworkRule, WithMultipleLocations, WithConnector, WithKeyBasedMetadataWriteAccess,
-            WithPrivateEndpointConnection, DefinitionWithTags<WithCreate>, WithPublicNetworkAccess {
+            WithPrivateEndpointConnection, DefinitionWithTags<WithCreate>, WithPublicNetworkAccess, WithLocalAuth,
+            WithAutomaticFailover {
         }
     }
 
@@ -547,7 +591,8 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
         interface WithOptionals extends Resource.UpdateWithTags<WithOptionals>, Appliable<CosmosDBAccount>,
             UpdateStages.WithConsistencyPolicy, UpdateStages.WithVirtualNetworkRule, UpdateStages.WithMultipleLocations,
             UpdateStages.WithConnector, UpdateStages.WithKeyBasedMetadataWriteAccess,
-            UpdateStages.WithPrivateEndpointConnection, UpdateStages.WithIpRules, UpdateStages.WithPublicNetworkAccess {
+            UpdateStages.WithPrivateEndpointConnection, UpdateStages.WithIpRules, UpdateStages.WithPublicNetworkAccess,
+            UpdateStages.WithAutomaticFailover {
         }
 
         /** The stage of the cosmos db definition allowing the definition of a write location. */
@@ -745,6 +790,31 @@ public interface CosmosDBAccount extends GroupableResource<CosmosManager, Databa
              * @return the next stage of the update
              */
             Update disablePublicNetworkAccess();
+        }
+
+        /**
+         * The stage of CosmosDB account update allowing to toggle automatic failover.
+         */
+        interface WithAutomaticFailover {
+            /**
+             * Enables automatic failover of the write region in the rare event that the region is unavailable due to an outage.
+             * Automatic failover will result in a new write region for the account and is chosen based on the failover
+             * priorities configured for the account.
+             *
+             * @return the next stage of the update
+             */
+            default Update enableAutomaticFailover() {
+                throw new UnsupportedOperationException("[enableAutomaticFailover] is not supported in " + getClass());
+            }
+
+            /**
+             * Disables automatic failover.
+             *
+             * @return the next stage of the update
+             */
+            default Update disableAutomaticFailover() {
+                throw new UnsupportedOperationException("[disableAutomaticFailover] is not supported in " + getClass());
+            }
         }
     }
 }

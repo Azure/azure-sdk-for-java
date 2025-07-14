@@ -22,7 +22,7 @@ public final class FirewallRulesListByMongoClusterMockTests {
     @Test
     public void testListByMongoCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"startIpAddress\":\"ttxfvjr\",\"endIpAddress\":\"i\"},\"id\":\"hxepcyvahfnlj\",\"name\":\"yq\",\"type\":\"j\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Dropping\",\"startIpAddress\":\"ttmrywnuzoqf\",\"endIpAddress\":\"iyqzrnk\"},\"id\":\"vyxlwhzlsicohoqq\",\"name\":\"wvl\",\"type\":\"yav\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class FirewallRulesListByMongoClusterMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<FirewallRule> response
-            = manager.firewallRules().listByMongoCluster("nkymuctqhjfbebrj", "xerf", com.azure.core.util.Context.NONE);
+            = manager.firewallRules().listByMongoCluster("kix", "bin", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ttxfvjr", response.iterator().next().properties().startIpAddress());
-        Assertions.assertEquals("i", response.iterator().next().properties().endIpAddress());
+        Assertions.assertEquals("ttmrywnuzoqf", response.iterator().next().properties().startIpAddress());
+        Assertions.assertEquals("iyqzrnk", response.iterator().next().properties().endIpAddress());
     }
 }

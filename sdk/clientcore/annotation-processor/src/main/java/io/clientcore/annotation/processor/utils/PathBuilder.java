@@ -60,7 +60,18 @@ public final class PathBuilder {
             if (substitution != null) {
                 String substitutionValue
                     = serialize(JsonSerializer.getInstance(), substitution.getParameterVariableName());
-
+                // Special case: if the path is for "{nextLink}", use the variable
+                if (rawPath.contains("{nextLink}")) {
+                    Substitution nextLinkSubstitution = method.getSubstitution("nextLink");
+                    if (nextLinkSubstitution != null) {
+                        // No escaping or concatenation, use the variable name
+                        method.setIsUriNextLink(true);
+                        return nextLinkSubstitution.getParameterVariableName();
+                    } else {
+                        throw new MissingSubstitutionException(
+                            "Could not find substitution for 'nextLink' in method '" + method.getMethodName() + "'");
+                    }
+                }
                 String replacementValue;
                 Optional<HttpRequestContext.MethodParameter> paramOpt = method.getParameters()
                     .stream()

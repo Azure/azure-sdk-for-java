@@ -47,6 +47,11 @@ public final class ExpressRouteCircuitPeeringConfig implements JsonSerializable<
      */
     private String routingRegistryName;
 
+    /*
+     * List of Prefix information required to perform validation.
+     */
+    private List<AdvertisedPublicPrefixProperties> advertisedPublicPrefixInfo;
+
     /**
      * Creates an instance of ExpressRouteCircuitPeeringConfig class.
      */
@@ -163,11 +168,35 @@ public final class ExpressRouteCircuitPeeringConfig implements JsonSerializable<
     }
 
     /**
+     * Get the advertisedPublicPrefixInfo property: List of Prefix information required to perform validation.
+     * 
+     * @return the advertisedPublicPrefixInfo value.
+     */
+    public List<AdvertisedPublicPrefixProperties> advertisedPublicPrefixInfo() {
+        return this.advertisedPublicPrefixInfo;
+    }
+
+    /**
+     * Set the advertisedPublicPrefixInfo property: List of Prefix information required to perform validation.
+     * 
+     * @param advertisedPublicPrefixInfo the advertisedPublicPrefixInfo value to set.
+     * @return the ExpressRouteCircuitPeeringConfig object itself.
+     */
+    public ExpressRouteCircuitPeeringConfig
+        withAdvertisedPublicPrefixInfo(List<AdvertisedPublicPrefixProperties> advertisedPublicPrefixInfo) {
+        this.advertisedPublicPrefixInfo = advertisedPublicPrefixInfo;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (advertisedPublicPrefixInfo() != null) {
+            advertisedPublicPrefixInfo().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -183,6 +212,8 @@ public final class ExpressRouteCircuitPeeringConfig implements JsonSerializable<
         jsonWriter.writeNumberField("legacyMode", this.legacyMode);
         jsonWriter.writeNumberField("customerASN", this.customerAsn);
         jsonWriter.writeStringField("routingRegistryName", this.routingRegistryName);
+        jsonWriter.writeArrayField("advertisedPublicPrefixInfo", this.advertisedPublicPrefixInfo,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -217,6 +248,11 @@ public final class ExpressRouteCircuitPeeringConfig implements JsonSerializable<
                     deserializedExpressRouteCircuitPeeringConfig.customerAsn = reader.getNullable(JsonReader::getInt);
                 } else if ("routingRegistryName".equals(fieldName)) {
                     deserializedExpressRouteCircuitPeeringConfig.routingRegistryName = reader.getString();
+                } else if ("advertisedPublicPrefixInfo".equals(fieldName)) {
+                    List<AdvertisedPublicPrefixProperties> advertisedPublicPrefixInfo
+                        = reader.readArray(reader1 -> AdvertisedPublicPrefixProperties.fromJson(reader1));
+                    deserializedExpressRouteCircuitPeeringConfig.advertisedPublicPrefixInfo
+                        = advertisedPublicPrefixInfo;
                 } else {
                     reader.skipChildren();
                 }

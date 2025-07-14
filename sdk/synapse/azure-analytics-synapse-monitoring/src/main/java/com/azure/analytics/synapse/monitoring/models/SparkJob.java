@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.monitoring.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,81 +24,97 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
     /*
      * The state property.
      */
+    @Generated
     private String state;
 
     /*
      * The name property.
      */
+    @Generated
     private String name;
 
     /*
      * The submitter property.
      */
+    @Generated
     private String submitter;
 
     /*
      * The compute property.
      */
+    @Generated
     private String compute;
 
     /*
      * The sparkApplicationId property.
      */
+    @Generated
     private String sparkApplicationId;
 
     /*
      * The livyId property.
      */
+    @Generated
     private String livyId;
 
     /*
      * The timing property.
      */
+    @Generated
     private List<String> timing;
 
     /*
      * The sparkJobDefinition property.
      */
+    @Generated
     private String sparkJobDefinition;
 
     /*
      * The pipeline property.
      */
+    @Generated
     private List<SparkJob> pipeline;
 
     /*
      * The jobType property.
      */
+    @Generated
     private String jobType;
 
     /*
      * The submitTime property.
      */
+    @Generated
     private OffsetDateTime submitTime;
 
     /*
      * The endTime property.
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
      * The queuedDuration property.
      */
+    @Generated
     private String queuedDuration;
 
     /*
      * The runningDuration property.
      */
+    @Generated
     private String runningDuration;
 
     /*
      * The totalDuration property.
      */
+    @Generated
     private String totalDuration;
 
     /**
      * Creates an instance of SparkJob class.
      */
+    @Generated
     public SparkJob() {
     }
 
@@ -106,6 +123,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * 
      * @return the state value.
      */
+    @Generated
     public String getState() {
         return this.state;
     }
@@ -116,6 +134,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * @param state the state value to set.
      * @return the SparkJob object itself.
      */
+    @Generated
     public SparkJob setState(String state) {
         this.state = state;
         return this;
@@ -126,6 +145,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -136,6 +156,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * @param name the name value to set.
      * @return the SparkJob object itself.
      */
+    @Generated
     public SparkJob setName(String name) {
         this.name = name;
         return this;
@@ -146,6 +167,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * 
      * @return the submitter value.
      */
+    @Generated
     public String getSubmitter() {
         return this.submitter;
     }
@@ -156,6 +178,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * @param submitter the submitter value to set.
      * @return the SparkJob object itself.
      */
+    @Generated
     public SparkJob setSubmitter(String submitter) {
         this.submitter = submitter;
         return this;
@@ -166,6 +189,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * 
      * @return the compute value.
      */
+    @Generated
     public String getCompute() {
         return this.compute;
     }
@@ -176,6 +200,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * @param compute the compute value to set.
      * @return the SparkJob object itself.
      */
+    @Generated
     public SparkJob setCompute(String compute) {
         this.compute = compute;
         return this;
@@ -186,6 +211,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * 
      * @return the sparkApplicationId value.
      */
+    @Generated
     public String getSparkApplicationId() {
         return this.sparkApplicationId;
     }
@@ -196,6 +222,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * @param sparkApplicationId the sparkApplicationId value to set.
      * @return the SparkJob object itself.
      */
+    @Generated
     public SparkJob setSparkApplicationId(String sparkApplicationId) {
         this.sparkApplicationId = sparkApplicationId;
         return this;
@@ -206,6 +233,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * 
      * @return the livyId value.
      */
+    @Generated
     public String getLivyId() {
         return this.livyId;
     }
@@ -216,6 +244,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * @param livyId the livyId value to set.
      * @return the SparkJob object itself.
      */
+    @Generated
     public SparkJob setLivyId(String livyId) {
         this.livyId = livyId;
         return this;
@@ -226,6 +255,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * 
      * @return the timing value.
      */
+    @Generated
     public List<String> getTiming() {
         return this.timing;
     }
@@ -236,6 +266,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * @param timing the timing value to set.
      * @return the SparkJob object itself.
      */
+    @Generated
     public SparkJob setTiming(List<String> timing) {
         this.timing = timing;
         return this;
@@ -246,6 +277,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * 
      * @return the sparkJobDefinition value.
      */
+    @Generated
     public String getSparkJobDefinition() {
         return this.sparkJobDefinition;
     }
@@ -256,6 +288,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * @param sparkJobDefinition the sparkJobDefinition value to set.
      * @return the SparkJob object itself.
      */
+    @Generated
     public SparkJob setSparkJobDefinition(String sparkJobDefinition) {
         this.sparkJobDefinition = sparkJobDefinition;
         return this;
@@ -266,6 +299,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * 
      * @return the pipeline value.
      */
+    @Generated
     public List<SparkJob> getPipeline() {
         return this.pipeline;
     }
@@ -276,6 +310,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * @param pipeline the pipeline value to set.
      * @return the SparkJob object itself.
      */
+    @Generated
     public SparkJob setPipeline(List<SparkJob> pipeline) {
         this.pipeline = pipeline;
         return this;
@@ -286,6 +321,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * 
      * @return the jobType value.
      */
+    @Generated
     public String getJobType() {
         return this.jobType;
     }
@@ -296,6 +332,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * @param jobType the jobType value to set.
      * @return the SparkJob object itself.
      */
+    @Generated
     public SparkJob setJobType(String jobType) {
         this.jobType = jobType;
         return this;
@@ -306,6 +343,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * 
      * @return the submitTime value.
      */
+    @Generated
     public OffsetDateTime getSubmitTime() {
         return this.submitTime;
     }
@@ -316,6 +354,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * @param submitTime the submitTime value to set.
      * @return the SparkJob object itself.
      */
+    @Generated
     public SparkJob setSubmitTime(OffsetDateTime submitTime) {
         this.submitTime = submitTime;
         return this;
@@ -326,6 +365,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -336,6 +376,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * @param endTime the endTime value to set.
      * @return the SparkJob object itself.
      */
+    @Generated
     public SparkJob setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
@@ -346,6 +387,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * 
      * @return the queuedDuration value.
      */
+    @Generated
     public String getQueuedDuration() {
         return this.queuedDuration;
     }
@@ -356,6 +398,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * @param queuedDuration the queuedDuration value to set.
      * @return the SparkJob object itself.
      */
+    @Generated
     public SparkJob setQueuedDuration(String queuedDuration) {
         this.queuedDuration = queuedDuration;
         return this;
@@ -366,6 +409,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * 
      * @return the runningDuration value.
      */
+    @Generated
     public String getRunningDuration() {
         return this.runningDuration;
     }
@@ -376,6 +420,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * @param runningDuration the runningDuration value to set.
      * @return the SparkJob object itself.
      */
+    @Generated
     public SparkJob setRunningDuration(String runningDuration) {
         this.runningDuration = runningDuration;
         return this;
@@ -386,6 +431,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * 
      * @return the totalDuration value.
      */
+    @Generated
     public String getTotalDuration() {
         return this.totalDuration;
     }
@@ -396,6 +442,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * @param totalDuration the totalDuration value to set.
      * @return the SparkJob object itself.
      */
+    @Generated
     public SparkJob setTotalDuration(String totalDuration) {
         this.totalDuration = totalDuration;
         return this;
@@ -404,6 +451,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -435,6 +483,7 @@ public final class SparkJob implements JsonSerializable<SparkJob> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the SparkJob.
      */
+    @Generated
     public static SparkJob fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkJob deserializedSparkJob = new SparkJob();

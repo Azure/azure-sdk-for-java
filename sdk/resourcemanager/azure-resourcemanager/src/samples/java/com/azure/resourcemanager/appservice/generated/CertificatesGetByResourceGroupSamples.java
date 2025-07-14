@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class CertificatesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/GetCertificate.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/GetCertificate.json
      */
     /**
      * Sample code: Get Certificate.

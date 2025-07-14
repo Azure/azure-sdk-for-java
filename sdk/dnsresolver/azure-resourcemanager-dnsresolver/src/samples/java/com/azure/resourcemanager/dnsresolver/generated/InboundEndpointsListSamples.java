@@ -10,7 +10,7 @@ package com.azure.resourcemanager.dnsresolver.generated;
 public final class InboundEndpointsListSamples {
     /*
      * x-ms-original-file:
-     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_List.json
+     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/InboundEndpoint_List.json
      */
     /**
      * Sample code: List inbound endpoints by DNS resolver.

@@ -61,7 +61,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DellStorageMgmtClien")
+    @ServiceInterface(name = "DellStorageMgmtClientOperations")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Dell.Storage/operations")

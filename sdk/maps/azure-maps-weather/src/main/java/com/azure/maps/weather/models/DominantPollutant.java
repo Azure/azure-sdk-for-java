@@ -4,6 +4,7 @@
 
 package com.azure.maps.weather.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,31 +15,37 @@ public final class DominantPollutant extends ExpandableStringEnum<DominantPollut
     /**
      * Carbon monoxide ("CO").
      */
+    @Generated
     public static final DominantPollutant CARBON_MONOXIDE = fromString("Carbon Monoxide");
 
     /**
      * Nitrogen dioxide ("NO2").
      */
+    @Generated
     public static final DominantPollutant NITROGEN_DIOXIDE = fromString("Nitrogen Dioxide");
 
     /**
      * Ozone ("O3").
      */
+    @Generated
     public static final DominantPollutant OZONE = fromString("Ozone");
 
     /**
      * Particulate matter 2.5 ("PM2.5").
      */
+    @Generated
     public static final DominantPollutant PARTICULATE_MATTER25 = fromString("Particulate Matter 2.5");
 
     /**
      * Particulate matter 10 ("PM10").
      */
+    @Generated
     public static final DominantPollutant PARTICULATE_MATTER10 = fromString("Particulate Matter 10");
 
     /**
      * Sulfur dioxide ("SO2").
      */
+    @Generated
     public static final DominantPollutant SULFUR_DIOXIDE = fromString("Sulfur Dioxide");
 
     /**
@@ -46,6 +53,7 @@ public final class DominantPollutant extends ExpandableStringEnum<DominantPollut
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DominantPollutant() {
     }
@@ -56,6 +64,7 @@ public final class DominantPollutant extends ExpandableStringEnum<DominantPollut
      * @param name a name to look for.
      * @return the corresponding DominantPollutant.
      */
+    @Generated
     public static DominantPollutant fromString(String name) {
         return fromString(name, DominantPollutant.class);
     }
@@ -65,6 +74,7 @@ public final class DominantPollutant extends ExpandableStringEnum<DominantPollut
      * 
      * @return known DominantPollutant values.
      */
+    @Generated
     public static Collection<DominantPollutant> values() {
         return values(DominantPollutant.class);
     }

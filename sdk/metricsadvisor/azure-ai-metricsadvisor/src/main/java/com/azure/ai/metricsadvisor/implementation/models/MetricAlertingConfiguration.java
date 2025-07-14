@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,46 +22,55 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
     /*
      * Anomaly detection configuration unique id
      */
+    @Generated
     private UUID anomalyDetectionConfigurationId;
 
     /*
      * Anomaly scope
      */
+    @Generated
     private AnomalyScope anomalyScopeType;
 
     /*
      * Negation operation
      */
+    @Generated
     private Boolean negationOperation;
 
     /*
      * The dimensionAnomalyScope property.
      */
+    @Generated
     private DimensionGroupIdentity dimensionAnomalyScope;
 
     /*
      * The topNAnomalyScope property.
      */
+    @Generated
     private TopNGroupScope topNAnomalyScope;
 
     /*
      * The severityFilter property.
      */
+    @Generated
     private SeverityCondition severityFilter;
 
     /*
      * The snoozeFilter property.
      */
+    @Generated
     private MetricAnomalyAlertSnoozeCondition snoozeFilter;
 
     /*
      * The valueFilter property.
      */
+    @Generated
     private ValueCondition valueFilter;
 
     /**
      * Creates an instance of MetricAlertingConfiguration class.
      */
+    @Generated
     public MetricAlertingConfiguration() {
     }
 
@@ -69,6 +79,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
      * 
      * @return the anomalyDetectionConfigurationId value.
      */
+    @Generated
     public UUID getAnomalyDetectionConfigurationId() {
         return this.anomalyDetectionConfigurationId;
     }
@@ -79,6 +90,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
      * @param anomalyDetectionConfigurationId the anomalyDetectionConfigurationId value to set.
      * @return the MetricAlertingConfiguration object itself.
      */
+    @Generated
     public MetricAlertingConfiguration setAnomalyDetectionConfigurationId(UUID anomalyDetectionConfigurationId) {
         this.anomalyDetectionConfigurationId = anomalyDetectionConfigurationId;
         return this;
@@ -89,6 +101,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
      * 
      * @return the anomalyScopeType value.
      */
+    @Generated
     public AnomalyScope getAnomalyScopeType() {
         return this.anomalyScopeType;
     }
@@ -99,6 +112,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
      * @param anomalyScopeType the anomalyScopeType value to set.
      * @return the MetricAlertingConfiguration object itself.
      */
+    @Generated
     public MetricAlertingConfiguration setAnomalyScopeType(AnomalyScope anomalyScopeType) {
         this.anomalyScopeType = anomalyScopeType;
         return this;
@@ -109,6 +123,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
      * 
      * @return the negationOperation value.
      */
+    @Generated
     public Boolean isNegationOperation() {
         return this.negationOperation;
     }
@@ -119,6 +134,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
      * @param negationOperation the negationOperation value to set.
      * @return the MetricAlertingConfiguration object itself.
      */
+    @Generated
     public MetricAlertingConfiguration setNegationOperation(Boolean negationOperation) {
         this.negationOperation = negationOperation;
         return this;
@@ -129,6 +145,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
      * 
      * @return the dimensionAnomalyScope value.
      */
+    @Generated
     public DimensionGroupIdentity getDimensionAnomalyScope() {
         return this.dimensionAnomalyScope;
     }
@@ -139,6 +156,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
      * @param dimensionAnomalyScope the dimensionAnomalyScope value to set.
      * @return the MetricAlertingConfiguration object itself.
      */
+    @Generated
     public MetricAlertingConfiguration setDimensionAnomalyScope(DimensionGroupIdentity dimensionAnomalyScope) {
         this.dimensionAnomalyScope = dimensionAnomalyScope;
         return this;
@@ -149,6 +167,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
      * 
      * @return the topNAnomalyScope value.
      */
+    @Generated
     public TopNGroupScope getTopNAnomalyScope() {
         return this.topNAnomalyScope;
     }
@@ -159,6 +178,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
      * @param topNAnomalyScope the topNAnomalyScope value to set.
      * @return the MetricAlertingConfiguration object itself.
      */
+    @Generated
     public MetricAlertingConfiguration setTopNAnomalyScope(TopNGroupScope topNAnomalyScope) {
         this.topNAnomalyScope = topNAnomalyScope;
         return this;
@@ -169,6 +189,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
      * 
      * @return the severityFilter value.
      */
+    @Generated
     public SeverityCondition getSeverityFilter() {
         return this.severityFilter;
     }
@@ -179,6 +200,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
      * @param severityFilter the severityFilter value to set.
      * @return the MetricAlertingConfiguration object itself.
      */
+    @Generated
     public MetricAlertingConfiguration setSeverityFilter(SeverityCondition severityFilter) {
         this.severityFilter = severityFilter;
         return this;
@@ -189,6 +211,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
      * 
      * @return the snoozeFilter value.
      */
+    @Generated
     public MetricAnomalyAlertSnoozeCondition getSnoozeFilter() {
         return this.snoozeFilter;
     }
@@ -199,6 +222,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
      * @param snoozeFilter the snoozeFilter value to set.
      * @return the MetricAlertingConfiguration object itself.
      */
+    @Generated
     public MetricAlertingConfiguration setSnoozeFilter(MetricAnomalyAlertSnoozeCondition snoozeFilter) {
         this.snoozeFilter = snoozeFilter;
         return this;
@@ -209,6 +233,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
      * 
      * @return the valueFilter value.
      */
+    @Generated
     public ValueCondition getValueFilter() {
         return this.valueFilter;
     }
@@ -219,6 +244,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
      * @param valueFilter the valueFilter value to set.
      * @return the MetricAlertingConfiguration object itself.
      */
+    @Generated
     public MetricAlertingConfiguration setValueFilter(ValueCondition valueFilter) {
         this.valueFilter = valueFilter;
         return this;
@@ -227,6 +253,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -252,6 +279,7 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetricAlertingConfiguration.
      */
+    @Generated
     public static MetricAlertingConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetricAlertingConfiguration deserializedMetricAlertingConfiguration = new MetricAlertingConfiguration();

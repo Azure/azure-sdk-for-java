@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class DataFlowDebugQueryResponse implements JsonSerializable<DataFl
     /*
      * The run ID of data flow debug session.
      */
+    @Generated
     private String runId;
 
     /**
      * Creates an instance of DataFlowDebugQueryResponse class.
      */
+    @Generated
     public DataFlowDebugQueryResponse() {
     }
 
@@ -32,6 +35,7 @@ public final class DataFlowDebugQueryResponse implements JsonSerializable<DataFl
      * 
      * @return the runId value.
      */
+    @Generated
     public String getRunId() {
         return this.runId;
     }
@@ -42,6 +46,7 @@ public final class DataFlowDebugQueryResponse implements JsonSerializable<DataFl
      * @param runId the runId value to set.
      * @return the DataFlowDebugQueryResponse object itself.
      */
+    @Generated
     public DataFlowDebugQueryResponse setRunId(String runId) {
         this.runId = runId;
         return this;
@@ -50,6 +55,7 @@ public final class DataFlowDebugQueryResponse implements JsonSerializable<DataFl
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class DataFlowDebugQueryResponse implements JsonSerializable<DataFl
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataFlowDebugQueryResponse.
      */
+    @Generated
     public static DataFlowDebugQueryResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowDebugQueryResponse deserializedDataFlowDebugQueryResponse = new DataFlowDebugQueryResponse();

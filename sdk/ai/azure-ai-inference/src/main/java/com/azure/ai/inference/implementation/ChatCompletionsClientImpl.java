@@ -145,7 +145,7 @@ public final class ChatCompletionsClientImpl {
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ChatCompletionsClien")
+    @ServiceInterface(name = "ChatCompletionsClient")
     public interface ChatCompletionsClientService {
         @Post("/chat/completions")
         @ExpectedResponses({ 200 })

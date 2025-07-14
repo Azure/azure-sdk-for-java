@@ -47,6 +47,18 @@ public final class ManagedClusterApiServerAccessProfile
      */
     private Boolean disableRunCommand;
 
+    /*
+     * Whether to enable apiserver vnet integration for the cluster or not. See aka.ms/AksVnetIntegration for more
+     * details.
+     */
+    private Boolean enableVnetIntegration;
+
+    /*
+     * It is required when creating a new cluster with BYO Vnet, or when updating an existing cluster to enable
+     * apiserver vnet integration.
+     */
+    private String subnetId;
+
     /**
      * Creates an instance of ManagedClusterApiServerAccessProfile class.
      */
@@ -169,6 +181,50 @@ public final class ManagedClusterApiServerAccessProfile
     }
 
     /**
+     * Get the enableVnetIntegration property: Whether to enable apiserver vnet integration for the cluster or not. See
+     * aka.ms/AksVnetIntegration for more details.
+     * 
+     * @return the enableVnetIntegration value.
+     */
+    public Boolean enableVnetIntegration() {
+        return this.enableVnetIntegration;
+    }
+
+    /**
+     * Set the enableVnetIntegration property: Whether to enable apiserver vnet integration for the cluster or not. See
+     * aka.ms/AksVnetIntegration for more details.
+     * 
+     * @param enableVnetIntegration the enableVnetIntegration value to set.
+     * @return the ManagedClusterApiServerAccessProfile object itself.
+     */
+    public ManagedClusterApiServerAccessProfile withEnableVnetIntegration(Boolean enableVnetIntegration) {
+        this.enableVnetIntegration = enableVnetIntegration;
+        return this;
+    }
+
+    /**
+     * Get the subnetId property: It is required when creating a new cluster with BYO Vnet, or when updating an existing
+     * cluster to enable apiserver vnet integration.
+     * 
+     * @return the subnetId value.
+     */
+    public String subnetId() {
+        return this.subnetId;
+    }
+
+    /**
+     * Set the subnetId property: It is required when creating a new cluster with BYO Vnet, or when updating an existing
+     * cluster to enable apiserver vnet integration.
+     * 
+     * @param subnetId the subnetId value to set.
+     * @return the ManagedClusterApiServerAccessProfile object itself.
+     */
+    public ManagedClusterApiServerAccessProfile withSubnetId(String subnetId) {
+        this.subnetId = subnetId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -188,6 +244,8 @@ public final class ManagedClusterApiServerAccessProfile
         jsonWriter.writeStringField("privateDNSZone", this.privateDnsZone);
         jsonWriter.writeBooleanField("enablePrivateClusterPublicFQDN", this.enablePrivateClusterPublicFqdn);
         jsonWriter.writeBooleanField("disableRunCommand", this.disableRunCommand);
+        jsonWriter.writeBooleanField("enableVnetIntegration", this.enableVnetIntegration);
+        jsonWriter.writeStringField("subnetId", this.subnetId);
         return jsonWriter.writeEndObject();
     }
 
@@ -221,6 +279,11 @@ public final class ManagedClusterApiServerAccessProfile
                 } else if ("disableRunCommand".equals(fieldName)) {
                     deserializedManagedClusterApiServerAccessProfile.disableRunCommand
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableVnetIntegration".equals(fieldName)) {
+                    deserializedManagedClusterApiServerAccessProfile.enableVnetIntegration
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedManagedClusterApiServerAccessProfile.subnetId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

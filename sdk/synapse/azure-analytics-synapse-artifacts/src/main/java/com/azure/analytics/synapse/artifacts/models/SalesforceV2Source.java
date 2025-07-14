@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,11 +21,13 @@ public final class SalesforceV2Source extends TabularSource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "SalesforceV2Source";
 
     /*
      * Deprecating, please use 'query' property instead. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object soqlQuery;
 
     /*
@@ -34,23 +37,27 @@ public final class SalesforceV2Source extends TabularSource {
      * If query is not specified, all the data of the Salesforce object specified in ObjectApiName/reportId in dataset
      * will be retrieved. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object query;
 
     /*
      * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or
      * Expression with resultType boolean).
      */
+    @Generated
     private Object includeDeletedObjects;
 
     /*
      * Page size for each http request, too large pageSize will caused timeout, default 300,000. Type: integer (or
      * Expression with resultType integer).
      */
+    @Generated
     private Object pageSize;
 
     /**
      * Creates an instance of SalesforceV2Source class.
      */
+    @Generated
     public SalesforceV2Source() {
     }
 
@@ -59,6 +66,7 @@ public final class SalesforceV2Source extends TabularSource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -70,6 +78,7 @@ public final class SalesforceV2Source extends TabularSource {
      * 
      * @return the soqlQuery value.
      */
+    @Generated
     public Object getSoqlQuery() {
         return this.soqlQuery;
     }
@@ -81,6 +90,7 @@ public final class SalesforceV2Source extends TabularSource {
      * @param soqlQuery the soqlQuery value to set.
      * @return the SalesforceV2Source object itself.
      */
+    @Generated
     public SalesforceV2Source setSoqlQuery(Object soqlQuery) {
         this.soqlQuery = soqlQuery;
         return this;
@@ -95,6 +105,7 @@ public final class SalesforceV2Source extends TabularSource {
      * 
      * @return the query value.
      */
+    @Generated
     public Object getQuery() {
         return this.query;
     }
@@ -109,6 +120,7 @@ public final class SalesforceV2Source extends TabularSource {
      * @param query the query value to set.
      * @return the SalesforceV2Source object itself.
      */
+    @Generated
     public SalesforceV2Source setQuery(Object query) {
         this.query = query;
         return this;
@@ -120,6 +132,7 @@ public final class SalesforceV2Source extends TabularSource {
      * 
      * @return the includeDeletedObjects value.
      */
+    @Generated
     public Object getIncludeDeletedObjects() {
         return this.includeDeletedObjects;
     }
@@ -131,6 +144,7 @@ public final class SalesforceV2Source extends TabularSource {
      * @param includeDeletedObjects the includeDeletedObjects value to set.
      * @return the SalesforceV2Source object itself.
      */
+    @Generated
     public SalesforceV2Source setIncludeDeletedObjects(Object includeDeletedObjects) {
         this.includeDeletedObjects = includeDeletedObjects;
         return this;
@@ -142,6 +156,7 @@ public final class SalesforceV2Source extends TabularSource {
      * 
      * @return the pageSize value.
      */
+    @Generated
     public Object getPageSize() {
         return this.pageSize;
     }
@@ -153,6 +168,7 @@ public final class SalesforceV2Source extends TabularSource {
      * @param pageSize the pageSize value to set.
      * @return the SalesforceV2Source object itself.
      */
+    @Generated
     public SalesforceV2Source setPageSize(Object pageSize) {
         this.pageSize = pageSize;
         return this;
@@ -161,6 +177,7 @@ public final class SalesforceV2Source extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceV2Source setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
@@ -170,6 +187,7 @@ public final class SalesforceV2Source extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceV2Source setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
@@ -179,6 +197,7 @@ public final class SalesforceV2Source extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceV2Source setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -188,6 +207,7 @@ public final class SalesforceV2Source extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceV2Source setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -197,6 +217,7 @@ public final class SalesforceV2Source extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceV2Source setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -206,19 +227,38 @@ public final class SalesforceV2Source extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
-        jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
-        jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
+        if (getQueryTimeout() != null) {
+            jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
+        }
+        if (getAdditionalColumns() != null) {
+            jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("SOQLQuery", this.soqlQuery);
-        jsonWriter.writeUntypedField("query", this.query);
-        jsonWriter.writeUntypedField("includeDeletedObjects", this.includeDeletedObjects);
-        jsonWriter.writeUntypedField("pageSize", this.pageSize);
+        if (this.soqlQuery != null) {
+            jsonWriter.writeUntypedField("SOQLQuery", this.soqlQuery);
+        }
+        if (this.query != null) {
+            jsonWriter.writeUntypedField("query", this.query);
+        }
+        if (this.includeDeletedObjects != null) {
+            jsonWriter.writeUntypedField("includeDeletedObjects", this.includeDeletedObjects);
+        }
+        if (this.pageSize != null) {
+            jsonWriter.writeUntypedField("pageSize", this.pageSize);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -235,6 +275,7 @@ public final class SalesforceV2Source extends TabularSource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SalesforceV2Source.
      */
+    @Generated
     public static SalesforceV2Source fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SalesforceV2Source deserializedSalesforceV2Source = new SalesforceV2Source();

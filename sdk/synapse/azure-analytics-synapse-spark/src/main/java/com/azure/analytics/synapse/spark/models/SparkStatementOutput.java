@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,36 +21,43 @@ public final class SparkStatementOutput implements JsonSerializable<SparkStateme
     /*
      * The status property.
      */
+    @Generated
     private String status;
 
     /*
      * The execution_count property.
      */
+    @Generated
     private int executionCount;
 
     /*
      * Any object
      */
+    @Generated
     private Object data;
 
     /*
      * The ename property.
      */
+    @Generated
     private String errorName;
 
     /*
      * The evalue property.
      */
+    @Generated
     private String errorValue;
 
     /*
      * The traceback property.
      */
+    @Generated
     private List<String> traceback;
 
     /**
      * Creates an instance of SparkStatementOutput class.
      */
+    @Generated
     public SparkStatementOutput() {
     }
 
@@ -58,6 +66,7 @@ public final class SparkStatementOutput implements JsonSerializable<SparkStateme
      * 
      * @return the status value.
      */
+    @Generated
     public String getStatus() {
         return this.status;
     }
@@ -68,6 +77,7 @@ public final class SparkStatementOutput implements JsonSerializable<SparkStateme
      * @param status the status value to set.
      * @return the SparkStatementOutput object itself.
      */
+    @Generated
     public SparkStatementOutput setStatus(String status) {
         this.status = status;
         return this;
@@ -78,6 +88,7 @@ public final class SparkStatementOutput implements JsonSerializable<SparkStateme
      * 
      * @return the executionCount value.
      */
+    @Generated
     public int getExecutionCount() {
         return this.executionCount;
     }
@@ -88,6 +99,7 @@ public final class SparkStatementOutput implements JsonSerializable<SparkStateme
      * @param executionCount the executionCount value to set.
      * @return the SparkStatementOutput object itself.
      */
+    @Generated
     public SparkStatementOutput setExecutionCount(int executionCount) {
         this.executionCount = executionCount;
         return this;
@@ -98,6 +110,7 @@ public final class SparkStatementOutput implements JsonSerializable<SparkStateme
      * 
      * @return the data value.
      */
+    @Generated
     public Object getData() {
         return this.data;
     }
@@ -108,6 +121,7 @@ public final class SparkStatementOutput implements JsonSerializable<SparkStateme
      * @param data the data value to set.
      * @return the SparkStatementOutput object itself.
      */
+    @Generated
     public SparkStatementOutput setData(Object data) {
         this.data = data;
         return this;
@@ -118,6 +132,7 @@ public final class SparkStatementOutput implements JsonSerializable<SparkStateme
      * 
      * @return the errorName value.
      */
+    @Generated
     public String getErrorName() {
         return this.errorName;
     }
@@ -128,6 +143,7 @@ public final class SparkStatementOutput implements JsonSerializable<SparkStateme
      * @param errorName the errorName value to set.
      * @return the SparkStatementOutput object itself.
      */
+    @Generated
     public SparkStatementOutput setErrorName(String errorName) {
         this.errorName = errorName;
         return this;
@@ -138,6 +154,7 @@ public final class SparkStatementOutput implements JsonSerializable<SparkStateme
      * 
      * @return the errorValue value.
      */
+    @Generated
     public String getErrorValue() {
         return this.errorValue;
     }
@@ -148,6 +165,7 @@ public final class SparkStatementOutput implements JsonSerializable<SparkStateme
      * @param errorValue the errorValue value to set.
      * @return the SparkStatementOutput object itself.
      */
+    @Generated
     public SparkStatementOutput setErrorValue(String errorValue) {
         this.errorValue = errorValue;
         return this;
@@ -158,6 +176,7 @@ public final class SparkStatementOutput implements JsonSerializable<SparkStateme
      * 
      * @return the traceback value.
      */
+    @Generated
     public List<String> getTraceback() {
         return this.traceback;
     }
@@ -168,6 +187,7 @@ public final class SparkStatementOutput implements JsonSerializable<SparkStateme
      * @param traceback the traceback value to set.
      * @return the SparkStatementOutput object itself.
      */
+    @Generated
     public SparkStatementOutput setTraceback(List<String> traceback) {
         this.traceback = traceback;
         return this;
@@ -176,12 +196,15 @@ public final class SparkStatementOutput implements JsonSerializable<SparkStateme
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("execution_count", this.executionCount);
         jsonWriter.writeStringField("status", this.status);
-        jsonWriter.writeUntypedField("data", this.data);
+        if (this.data != null) {
+            jsonWriter.writeUntypedField("data", this.data);
+        }
         jsonWriter.writeStringField("ename", this.errorName);
         jsonWriter.writeStringField("evalue", this.errorValue);
         jsonWriter.writeArrayField("traceback", this.traceback, (writer, element) -> writer.writeString(element));
@@ -197,6 +220,7 @@ public final class SparkStatementOutput implements JsonSerializable<SparkStateme
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SparkStatementOutput.
      */
+    @Generated
     public static SparkStatementOutput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkStatementOutput deserializedSparkStatementOutput = new SparkStatementOutput();

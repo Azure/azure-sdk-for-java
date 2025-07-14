@@ -465,15 +465,31 @@ public final class DynamicsLinkedServiceTypeProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("deploymentType", this.deploymentType);
         jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
-        jsonWriter.writeUntypedField("hostName", this.hostname);
-        jsonWriter.writeUntypedField("port", this.port);
-        jsonWriter.writeUntypedField("serviceUri", this.serviceUri);
-        jsonWriter.writeUntypedField("organizationName", this.organizationName);
-        jsonWriter.writeUntypedField("domain", this.domain);
-        jsonWriter.writeUntypedField("username", this.username);
+        if (this.hostname != null) {
+            jsonWriter.writeUntypedField("hostName", this.hostname);
+        }
+        if (this.port != null) {
+            jsonWriter.writeUntypedField("port", this.port);
+        }
+        if (this.serviceUri != null) {
+            jsonWriter.writeUntypedField("serviceUri", this.serviceUri);
+        }
+        if (this.organizationName != null) {
+            jsonWriter.writeUntypedField("organizationName", this.organizationName);
+        }
+        if (this.domain != null) {
+            jsonWriter.writeUntypedField("domain", this.domain);
+        }
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
-        jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
+        if (this.servicePrincipalCredentialType != null) {
+            jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        }
         jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         jsonWriter.writeJsonField("credential", this.credential);

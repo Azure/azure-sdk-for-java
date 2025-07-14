@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class ImpalaAuthenticationType extends ExpandableStringEnum<ImpalaA
     /**
      * Static value Anonymous for ImpalaAuthenticationType.
      */
+    @Generated
     public static final ImpalaAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /**
      * Static value SASLUsername for ImpalaAuthenticationType.
      */
+    @Generated
     public static final ImpalaAuthenticationType SASL_USERNAME = fromString("SASLUsername");
 
     /**
      * Static value UsernameAndPassword for ImpalaAuthenticationType.
      */
+    @Generated
     public static final ImpalaAuthenticationType USERNAME_AND_PASSWORD = fromString("UsernameAndPassword");
 
     /**
@@ -31,6 +35,7 @@ public final class ImpalaAuthenticationType extends ExpandableStringEnum<ImpalaA
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ImpalaAuthenticationType() {
     }
@@ -41,6 +46,7 @@ public final class ImpalaAuthenticationType extends ExpandableStringEnum<ImpalaA
      * @param name a name to look for.
      * @return the corresponding ImpalaAuthenticationType.
      */
+    @Generated
     public static ImpalaAuthenticationType fromString(String name) {
         return fromString(name, ImpalaAuthenticationType.class);
     }
@@ -50,6 +56,7 @@ public final class ImpalaAuthenticationType extends ExpandableStringEnum<ImpalaA
      * 
      * @return known ImpalaAuthenticationType values.
      */
+    @Generated
     public static Collection<ImpalaAuthenticationType> values() {
         return values(ImpalaAuthenticationType.class);
     }

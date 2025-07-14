@@ -17,11 +17,11 @@ public class KeyVaultConnectionsCreate {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildKeyVaultConnectionsClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.keyvaultconnectionscreate.keyvaultconnectionscreate
+        // BEGIN:com.azure.analytics.purview.scanning.generated.key-vault-connections-create.key-vault-connections-create
         BinaryData body = BinaryData.fromString(
             "{\"properties\":{\"description\":\"This is a Key Vault\",\"baseUrl\":\"https://babylon-sample-kv.vault.azure.net/\"}}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = keyVaultConnectionsClient.createWithResponse("KeyVault1", body, requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.keyvaultconnectionscreate.keyvaultconnectionscreate
+        // END:com.azure.analytics.purview.scanning.generated.key-vault-connections-create.key-vault-connections-create
     }
 }

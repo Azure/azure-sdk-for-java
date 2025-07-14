@@ -52,7 +52,7 @@ public final class NotebookOperationResultsImpl {
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientNoteb")
+    @ServiceInterface(name = "ArtifactsClientNotebookOperationResults")
     public interface NotebookOperationResultsService {
         @Get("/notebookOperationResults/{operationId}")
         @ExpectedResponses({ 200, 201, 202, 204 })

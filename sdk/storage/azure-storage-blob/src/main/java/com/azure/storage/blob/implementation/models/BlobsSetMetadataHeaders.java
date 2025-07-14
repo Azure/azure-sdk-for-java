@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -18,51 +19,61 @@ public final class BlobsSetMetadataHeaders {
     /*
      * The x-ms-version property.
      */
+    @Generated
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
+    @Generated
     private String eTag;
 
     /*
      * The Last-Modified property.
      */
+    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-version-id property.
      */
+    @Generated
     private String xMsVersionId;
 
     /*
      * The x-ms-encryption-key-sha256 property.
      */
+    @Generated
     private String xMsEncryptionKeySha256;
 
     /*
      * The x-ms-request-id property.
      */
+    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-request-server-encrypted property.
      */
+    @Generated
     private Boolean xMsRequestServerEncrypted;
 
     /*
      * The x-ms-client-request-id property.
      */
+    @Generated
     private String xMsClientRequestId;
 
     /*
      * The Date property.
      */
+    @Generated
     private DateTimeRfc1123 date;
 
     /*
      * The x-ms-encryption-scope property.
      */
+    @Generated
     private String xMsEncryptionScope;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -89,6 +100,8 @@ public final class BlobsSetMetadataHeaders {
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
+        } else {
+            this.lastModified = null;
         }
         this.xMsVersionId = rawHeaders.getValue(X_MS_VERSION_ID);
         this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
@@ -96,11 +109,15 @@ public final class BlobsSetMetadataHeaders {
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
+        } else {
+            this.xMsRequestServerEncrypted = null;
         }
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
         this.xMsEncryptionScope = rawHeaders.getValue(X_MS_ENCRYPTION_SCOPE);
     }
@@ -110,6 +127,7 @@ public final class BlobsSetMetadataHeaders {
      * 
      * @return the xMsVersion value.
      */
+    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -120,6 +138,7 @@ public final class BlobsSetMetadataHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the BlobsSetMetadataHeaders object itself.
      */
+    @Generated
     public BlobsSetMetadataHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -130,6 +149,7 @@ public final class BlobsSetMetadataHeaders {
      * 
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -140,6 +160,7 @@ public final class BlobsSetMetadataHeaders {
      * @param eTag the eTag value to set.
      * @return the BlobsSetMetadataHeaders object itself.
      */
+    @Generated
     public BlobsSetMetadataHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -150,6 +171,7 @@ public final class BlobsSetMetadataHeaders {
      * 
      * @return the lastModified value.
      */
+    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -163,6 +185,7 @@ public final class BlobsSetMetadataHeaders {
      * @param lastModified the lastModified value to set.
      * @return the BlobsSetMetadataHeaders object itself.
      */
+    @Generated
     public BlobsSetMetadataHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -177,6 +200,7 @@ public final class BlobsSetMetadataHeaders {
      * 
      * @return the xMsVersionId value.
      */
+    @Generated
     public String getXMsVersionId() {
         return this.xMsVersionId;
     }
@@ -187,6 +211,7 @@ public final class BlobsSetMetadataHeaders {
      * @param xMsVersionId the xMsVersionId value to set.
      * @return the BlobsSetMetadataHeaders object itself.
      */
+    @Generated
     public BlobsSetMetadataHeaders setXMsVersionId(String xMsVersionId) {
         this.xMsVersionId = xMsVersionId;
         return this;
@@ -197,6 +222,7 @@ public final class BlobsSetMetadataHeaders {
      * 
      * @return the xMsEncryptionKeySha256 value.
      */
+    @Generated
     public String getXMsEncryptionKeySha256() {
         return this.xMsEncryptionKeySha256;
     }
@@ -207,6 +233,7 @@ public final class BlobsSetMetadataHeaders {
      * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
      * @return the BlobsSetMetadataHeaders object itself.
      */
+    @Generated
     public BlobsSetMetadataHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
         this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
         return this;
@@ -217,6 +244,7 @@ public final class BlobsSetMetadataHeaders {
      * 
      * @return the xMsRequestId value.
      */
+    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -227,6 +255,7 @@ public final class BlobsSetMetadataHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the BlobsSetMetadataHeaders object itself.
      */
+    @Generated
     public BlobsSetMetadataHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -237,6 +266,7 @@ public final class BlobsSetMetadataHeaders {
      * 
      * @return the xMsRequestServerEncrypted value.
      */
+    @Generated
     public Boolean isXMsRequestServerEncrypted() {
         return this.xMsRequestServerEncrypted;
     }
@@ -247,6 +277,7 @@ public final class BlobsSetMetadataHeaders {
      * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
      * @return the BlobsSetMetadataHeaders object itself.
      */
+    @Generated
     public BlobsSetMetadataHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
         this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
         return this;
@@ -257,6 +288,7 @@ public final class BlobsSetMetadataHeaders {
      * 
      * @return the xMsClientRequestId value.
      */
+    @Generated
     public String getXMsClientRequestId() {
         return this.xMsClientRequestId;
     }
@@ -267,6 +299,7 @@ public final class BlobsSetMetadataHeaders {
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the BlobsSetMetadataHeaders object itself.
      */
+    @Generated
     public BlobsSetMetadataHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
@@ -277,6 +310,7 @@ public final class BlobsSetMetadataHeaders {
      * 
      * @return the date value.
      */
+    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -290,6 +324,7 @@ public final class BlobsSetMetadataHeaders {
      * @param date the date value to set.
      * @return the BlobsSetMetadataHeaders object itself.
      */
+    @Generated
     public BlobsSetMetadataHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
@@ -304,6 +339,7 @@ public final class BlobsSetMetadataHeaders {
      * 
      * @return the xMsEncryptionScope value.
      */
+    @Generated
     public String getXMsEncryptionScope() {
         return this.xMsEncryptionScope;
     }
@@ -314,6 +350,7 @@ public final class BlobsSetMetadataHeaders {
      * @param xMsEncryptionScope the xMsEncryptionScope value to set.
      * @return the BlobsSetMetadataHeaders object itself.
      */
+    @Generated
     public BlobsSetMetadataHeaders setXMsEncryptionScope(String xMsEncryptionScope) {
         this.xMsEncryptionScope = xMsEncryptionScope;
         return this;

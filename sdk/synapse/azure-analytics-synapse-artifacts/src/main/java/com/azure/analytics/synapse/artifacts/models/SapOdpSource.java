@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,34 +21,40 @@ public final class SapOdpSource extends TabularSource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "SapOdpSource";
 
     /*
      * The extraction mode. Allowed value include: Full, Delta and Recovery. The default value is Full. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object extractionMode;
 
     /*
      * The subscriber process to manage the delta process. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object subscriberProcess;
 
     /*
      * Specifies the selection conditions from source data. Type: array of objects(selection) (or Expression with
      * resultType array of objects).
      */
+    @Generated
     private Object selection;
 
     /*
      * Specifies the columns to be selected from source data. Type: array of objects(projection) (or Expression with
      * resultType array of objects).
      */
+    @Generated
     private Object projection;
 
     /**
      * Creates an instance of SapOdpSource class.
      */
+    @Generated
     public SapOdpSource() {
     }
 
@@ -56,6 +63,7 @@ public final class SapOdpSource extends TabularSource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -67,6 +75,7 @@ public final class SapOdpSource extends TabularSource {
      * 
      * @return the extractionMode value.
      */
+    @Generated
     public Object getExtractionMode() {
         return this.extractionMode;
     }
@@ -78,6 +87,7 @@ public final class SapOdpSource extends TabularSource {
      * @param extractionMode the extractionMode value to set.
      * @return the SapOdpSource object itself.
      */
+    @Generated
     public SapOdpSource setExtractionMode(Object extractionMode) {
         this.extractionMode = extractionMode;
         return this;
@@ -89,6 +99,7 @@ public final class SapOdpSource extends TabularSource {
      * 
      * @return the subscriberProcess value.
      */
+    @Generated
     public Object getSubscriberProcess() {
         return this.subscriberProcess;
     }
@@ -100,6 +111,7 @@ public final class SapOdpSource extends TabularSource {
      * @param subscriberProcess the subscriberProcess value to set.
      * @return the SapOdpSource object itself.
      */
+    @Generated
     public SapOdpSource setSubscriberProcess(Object subscriberProcess) {
         this.subscriberProcess = subscriberProcess;
         return this;
@@ -111,6 +123,7 @@ public final class SapOdpSource extends TabularSource {
      * 
      * @return the selection value.
      */
+    @Generated
     public Object getSelection() {
         return this.selection;
     }
@@ -122,6 +135,7 @@ public final class SapOdpSource extends TabularSource {
      * @param selection the selection value to set.
      * @return the SapOdpSource object itself.
      */
+    @Generated
     public SapOdpSource setSelection(Object selection) {
         this.selection = selection;
         return this;
@@ -133,6 +147,7 @@ public final class SapOdpSource extends TabularSource {
      * 
      * @return the projection value.
      */
+    @Generated
     public Object getProjection() {
         return this.projection;
     }
@@ -144,6 +159,7 @@ public final class SapOdpSource extends TabularSource {
      * @param projection the projection value to set.
      * @return the SapOdpSource object itself.
      */
+    @Generated
     public SapOdpSource setProjection(Object projection) {
         this.projection = projection;
         return this;
@@ -152,6 +168,7 @@ public final class SapOdpSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOdpSource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
@@ -161,6 +178,7 @@ public final class SapOdpSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOdpSource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
@@ -170,6 +188,7 @@ public final class SapOdpSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOdpSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -179,6 +198,7 @@ public final class SapOdpSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOdpSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -188,6 +208,7 @@ public final class SapOdpSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOdpSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -197,19 +218,38 @@ public final class SapOdpSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
-        jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
-        jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
+        if (getQueryTimeout() != null) {
+            jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
+        }
+        if (getAdditionalColumns() != null) {
+            jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("extractionMode", this.extractionMode);
-        jsonWriter.writeUntypedField("subscriberProcess", this.subscriberProcess);
-        jsonWriter.writeUntypedField("selection", this.selection);
-        jsonWriter.writeUntypedField("projection", this.projection);
+        if (this.extractionMode != null) {
+            jsonWriter.writeUntypedField("extractionMode", this.extractionMode);
+        }
+        if (this.subscriberProcess != null) {
+            jsonWriter.writeUntypedField("subscriberProcess", this.subscriberProcess);
+        }
+        if (this.selection != null) {
+            jsonWriter.writeUntypedField("selection", this.selection);
+        }
+        if (this.projection != null) {
+            jsonWriter.writeUntypedField("projection", this.projection);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -226,6 +266,7 @@ public final class SapOdpSource extends TabularSource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SapOdpSource.
      */
+    @Generated
     public static SapOdpSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SapOdpSource deserializedSapOdpSource = new SapOdpSource();

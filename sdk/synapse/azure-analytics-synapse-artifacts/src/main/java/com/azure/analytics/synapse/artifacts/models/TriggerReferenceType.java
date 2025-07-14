@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class TriggerReferenceType extends ExpandableStringEnum<TriggerRefe
     /**
      * Static value TriggerReference for TriggerReferenceType.
      */
+    @Generated
     public static final TriggerReferenceType TRIGGER_REFERENCE = fromString("TriggerReference");
 
     /**
@@ -21,6 +23,7 @@ public final class TriggerReferenceType extends ExpandableStringEnum<TriggerRefe
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TriggerReferenceType() {
     }
@@ -31,6 +34,7 @@ public final class TriggerReferenceType extends ExpandableStringEnum<TriggerRefe
      * @param name a name to look for.
      * @return the corresponding TriggerReferenceType.
      */
+    @Generated
     public static TriggerReferenceType fromString(String name) {
         return fromString(name, TriggerReferenceType.class);
     }
@@ -40,6 +44,7 @@ public final class TriggerReferenceType extends ExpandableStringEnum<TriggerRefe
      * 
      * @return known TriggerReferenceType values.
      */
+    @Generated
     public static Collection<TriggerReferenceType> values() {
         return values(TriggerReferenceType.class);
     }

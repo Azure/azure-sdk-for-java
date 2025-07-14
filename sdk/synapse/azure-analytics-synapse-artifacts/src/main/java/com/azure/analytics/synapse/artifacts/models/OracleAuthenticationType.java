@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class OracleAuthenticationType extends ExpandableStringEnum<OracleA
     /**
      * Static value Basic for OracleAuthenticationType.
      */
+    @Generated
     public static final OracleAuthenticationType BASIC = fromString("Basic");
 
     /**
@@ -21,6 +23,7 @@ public final class OracleAuthenticationType extends ExpandableStringEnum<OracleA
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OracleAuthenticationType() {
     }
@@ -31,6 +34,7 @@ public final class OracleAuthenticationType extends ExpandableStringEnum<OracleA
      * @param name a name to look for.
      * @return the corresponding OracleAuthenticationType.
      */
+    @Generated
     public static OracleAuthenticationType fromString(String name) {
         return fromString(name, OracleAuthenticationType.class);
     }
@@ -40,6 +44,7 @@ public final class OracleAuthenticationType extends ExpandableStringEnum<OracleA
      * 
      * @return known OracleAuthenticationType values.
      */
+    @Generated
     public static Collection<OracleAuthenticationType> values() {
         return values(OracleAuthenticationType.class);
     }

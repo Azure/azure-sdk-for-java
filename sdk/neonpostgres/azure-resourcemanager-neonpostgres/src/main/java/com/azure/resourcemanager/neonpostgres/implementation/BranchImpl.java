@@ -90,14 +90,15 @@ public final class BranchImpl implements Branch, Branch.Definition, Branch.Updat
     public Branch apply() {
         this.innerObject = serviceManager.serviceClient()
             .getBranches()
-            .update(resourceGroupName, organizationName, projectName, branchName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public Branch apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getBranches()
-            .update(resourceGroupName, organizationName, projectName, branchName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, this.innerModel(), context);
         return this;
     }
 

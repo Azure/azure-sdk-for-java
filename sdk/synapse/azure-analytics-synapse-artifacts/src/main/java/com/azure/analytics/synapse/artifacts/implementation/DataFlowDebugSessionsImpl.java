@@ -70,7 +70,7 @@ public final class DataFlowDebugSessionsImpl {
      * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientDataF")
+    @ServiceInterface(name = "ArtifactsClientDataFlowDebugSessions")
     public interface DataFlowDebugSessionsService {
         @Post("/createDataFlowDebugSession")
         @ExpectedResponses({ 200, 202 })

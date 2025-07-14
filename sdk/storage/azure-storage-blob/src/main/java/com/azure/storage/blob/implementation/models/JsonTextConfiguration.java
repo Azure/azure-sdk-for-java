@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,11 +21,13 @@ public final class JsonTextConfiguration implements XmlSerializable<JsonTextConf
     /*
      * The string used to separate records.
      */
+    @Generated
     private String recordSeparator;
 
     /**
      * Creates an instance of JsonTextConfiguration class.
      */
+    @Generated
     public JsonTextConfiguration() {
     }
 
@@ -34,6 +36,7 @@ public final class JsonTextConfiguration implements XmlSerializable<JsonTextConf
      * 
      * @return the recordSeparator value.
      */
+    @Generated
     public String getRecordSeparator() {
         return this.recordSeparator;
     }
@@ -44,19 +47,23 @@ public final class JsonTextConfiguration implements XmlSerializable<JsonTextConf
      * @param recordSeparator the recordSeparator value to set.
      * @return the JsonTextConfiguration object itself.
      */
+    @Generated
     public JsonTextConfiguration setRecordSeparator(String recordSeparator) {
         this.recordSeparator = recordSeparator;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "JsonTextConfiguration" : rootElementName;
+        rootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "JsonTextConfiguration" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("RecordSeparator", this.recordSeparator);
         return xmlWriter.writeEndElement();
@@ -70,6 +77,7 @@ public final class JsonTextConfiguration implements XmlSerializable<JsonTextConf
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the JsonTextConfiguration.
      */
+    @Generated
     public static JsonTextConfiguration fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -84,9 +92,10 @@ public final class JsonTextConfiguration implements XmlSerializable<JsonTextConf
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the JsonTextConfiguration.
      */
+    @Generated
     public static JsonTextConfiguration fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName
-            = CoreUtils.isNullOrEmpty(rootElementName) ? "JsonTextConfiguration" : rootElementName;
+            = rootElementName == null || rootElementName.isEmpty() ? "JsonTextConfiguration" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             JsonTextConfiguration deserializedJsonTextConfiguration = new JsonTextConfiguration();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

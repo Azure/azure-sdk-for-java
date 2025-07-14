@@ -228,12 +228,22 @@ public final class ZohoLinkedServiceTypeProperties implements JsonSerializable<Z
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
-        jsonWriter.writeUntypedField("endpoint", this.endpoint);
+        if (this.connectionProperties != null) {
+            jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+        }
+        if (this.endpoint != null) {
+            jsonWriter.writeUntypedField("endpoint", this.endpoint);
+        }
         jsonWriter.writeJsonField("accessToken", this.accessToken);
-        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
-        jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
-        jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        if (this.useEncryptedEndpoints != null) {
+            jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        }
+        if (this.useHostVerification != null) {
+            jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+        }
+        if (this.usePeerVerification != null) {
+            jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

@@ -4,6 +4,7 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,21 +23,25 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
     /*
      * Timestamp of the aggregation.
      */
+    @Generated
     private OffsetDateTime timeStamp;
 
     /*
      * Numerator for IPS estimator.
      */
+    @Generated
     private Float ipsEstimatorNumerator;
 
     /*
      * Denominator for IPS estimator.
      */
+    @Generated
     private Float ipsEstimatorDenominator;
 
     /*
      * Denominator for SNIPS estimator.
      */
+    @Generated
     private Float snipsEstimatorDenominator;
 
     /*
@@ -44,31 +49,37 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      * For example, PT5M (5 mins). For information about the time format,
      * see http://en.wikipedia.org/wiki/ISO_8601#Durations
      */
+    @Generated
     private Duration aggregateTimeWindow;
 
     /*
      * Probability of non-zero values for the Policy evaluation.
      */
+    @Generated
     private Float nonZeroProbability;
 
     /*
      * Sum of Squares for the Policy evaluation results.
      */
+    @Generated
     private Float sumOfSquares;
 
     /*
      * Gaussian confidence interval for the Policy evaluation.
      */
+    @Generated
     private Float confidenceInterval;
 
     /*
      * Average reward.
      */
+    @Generated
     private Float averageReward;
 
     /**
      * Creates an instance of PersonalizerPolicyResultSummary class.
      */
+    @Generated
     public PersonalizerPolicyResultSummary() {
     }
 
@@ -77,6 +88,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      *
      * @return the timeStamp value.
      */
+    @Generated
     public OffsetDateTime getTimeStamp() {
         return this.timeStamp;
     }
@@ -87,6 +99,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      * @param timeStamp the timeStamp value to set.
      * @return the PersonalizerPolicyResultSummary object itself.
      */
+    @Generated
     PersonalizerPolicyResultSummary setTimeStamp(OffsetDateTime timeStamp) {
         this.timeStamp = timeStamp;
         return this;
@@ -97,6 +110,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      *
      * @return the ipsEstimatorNumerator value.
      */
+    @Generated
     public Float getIpsEstimatorNumerator() {
         return this.ipsEstimatorNumerator;
     }
@@ -107,6 +121,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      * @param ipsEstimatorNumerator the ipsEstimatorNumerator value to set.
      * @return the PersonalizerPolicyResultSummary object itself.
      */
+    @Generated
     PersonalizerPolicyResultSummary setIpsEstimatorNumerator(Float ipsEstimatorNumerator) {
         this.ipsEstimatorNumerator = ipsEstimatorNumerator;
         return this;
@@ -117,6 +132,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      *
      * @return the ipsEstimatorDenominator value.
      */
+    @Generated
     public Float getIpsEstimatorDenominator() {
         return this.ipsEstimatorDenominator;
     }
@@ -127,6 +143,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      * @param ipsEstimatorDenominator the ipsEstimatorDenominator value to set.
      * @return the PersonalizerPolicyResultSummary object itself.
      */
+    @Generated
     PersonalizerPolicyResultSummary setIpsEstimatorDenominator(Float ipsEstimatorDenominator) {
         this.ipsEstimatorDenominator = ipsEstimatorDenominator;
         return this;
@@ -137,6 +154,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      *
      * @return the snipsEstimatorDenominator value.
      */
+    @Generated
     public Float getSnipsEstimatorDenominator() {
         return this.snipsEstimatorDenominator;
     }
@@ -147,6 +165,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      * @param snipsEstimatorDenominator the snipsEstimatorDenominator value to set.
      * @return the PersonalizerPolicyResultSummary object itself.
      */
+    @Generated
     PersonalizerPolicyResultSummary setSnipsEstimatorDenominator(Float snipsEstimatorDenominator) {
         this.snipsEstimatorDenominator = snipsEstimatorDenominator;
         return this;
@@ -159,6 +178,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      *
      * @return the aggregateTimeWindow value.
      */
+    @Generated
     public Duration getAggregateTimeWindow() {
         return this.aggregateTimeWindow;
     }
@@ -171,6 +191,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      * @param aggregateTimeWindow the aggregateTimeWindow value to set.
      * @return the PersonalizerPolicyResultSummary object itself.
      */
+    @Generated
     PersonalizerPolicyResultSummary setAggregateTimeWindow(Duration aggregateTimeWindow) {
         this.aggregateTimeWindow = aggregateTimeWindow;
         return this;
@@ -181,6 +202,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      *
      * @return the nonZeroProbability value.
      */
+    @Generated
     public Float getNonZeroProbability() {
         return this.nonZeroProbability;
     }
@@ -191,6 +213,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      * @param nonZeroProbability the nonZeroProbability value to set.
      * @return the PersonalizerPolicyResultSummary object itself.
      */
+    @Generated
     PersonalizerPolicyResultSummary setNonZeroProbability(Float nonZeroProbability) {
         this.nonZeroProbability = nonZeroProbability;
         return this;
@@ -201,6 +224,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      *
      * @return the sumOfSquares value.
      */
+    @Generated
     public Float getSumOfSquares() {
         return this.sumOfSquares;
     }
@@ -211,6 +235,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      * @param sumOfSquares the sumOfSquares value to set.
      * @return the PersonalizerPolicyResultSummary object itself.
      */
+    @Generated
     PersonalizerPolicyResultSummary setSumOfSquares(Float sumOfSquares) {
         this.sumOfSquares = sumOfSquares;
         return this;
@@ -221,6 +246,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      *
      * @return the confidenceInterval value.
      */
+    @Generated
     public Float getConfidenceInterval() {
         return this.confidenceInterval;
     }
@@ -231,6 +257,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      * @param confidenceInterval the confidenceInterval value to set.
      * @return the PersonalizerPolicyResultSummary object itself.
      */
+    @Generated
     PersonalizerPolicyResultSummary setConfidenceInterval(Float confidenceInterval) {
         this.confidenceInterval = confidenceInterval;
         return this;
@@ -241,6 +268,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      *
      * @return the averageReward value.
      */
+    @Generated
     public Float getAverageReward() {
         return this.averageReward;
     }
@@ -251,6 +279,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      * @param averageReward the averageReward value to set.
      * @return the PersonalizerPolicyResultSummary object itself.
      */
+    @Generated
     PersonalizerPolicyResultSummary setAverageReward(Float averageReward) {
         this.averageReward = averageReward;
         return this;
@@ -259,6 +288,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -274,6 +304,7 @@ public class PersonalizerPolicyResultSummary implements JsonSerializable<Persona
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PersonalizerPolicyResultSummary.
      */
+    @Generated
     public static PersonalizerPolicyResultSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerPolicyResultSummary deserializedPersonalizerPolicyResultSummary

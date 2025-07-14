@@ -21,7 +21,7 @@ public final class TriggersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"jjrhvdxfs\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datailsrxc\",\"datayk\",\"datavksvflurrfnlhlfv\"],\"\":{\"cblvpwuqq\":\"datahy\",\"rcxamgvi\":\"datamfuuhmftshg\",\"y\":\"datazvvrfplkemvvlge\",\"plhwplyvqofpemc\":\"datash\"}},\"name\":\"xkifjvil\",\"type\":\"opw\",\"etag\":\"bewbxaufo\",\"id\":\"mdpgg\"}";
+            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"jjrhvdxfs\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datailsrxc\",\"datayk\",\"datavksvflurrfnlhlfv\"],\"cblvpwuqq\":\"datahy\",\"rcxamgvi\":\"datamfuuhmftshg\",\"y\":\"datazvvrfplkemvvlge\",\"plhwplyvqofpemc\":\"datash\"},\"name\":\"xkifjvil\",\"type\":\"opw\",\"etag\":\"bewbxaufo\",\"id\":\"mdpgg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

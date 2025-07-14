@@ -9,8 +9,6 @@ import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.InitializerDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
@@ -27,7 +25,6 @@ import java.time.Duration;
 /**
  * This class contains the customization code to customize the AutoRest generated code for App Configuration.
  */
-@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class JobRouterSdkCustomization extends Customization {
 
     @Override
@@ -53,10 +50,8 @@ public class JobRouterSdkCustomization extends Customization {
 
         logger.info("Customizing the ScoringRuleOptions class");
         PackageCustomization models = customization.getPackage("com.azure.communication.jobrouter.models");
-        ClassCustomization classCustomizationForScoringRuleOptions = models.getClass("ScoringRuleOptions");
-        classCustomizationForScoringRuleOptions
-            .getMethod("setIsBatchScoringEnabled")
-            .rename("setBatchScoringEnabled");
+        models.getClass("ScoringRuleOptions").customizeAst(ast -> ast.getClassByName("ScoringRuleOptions").ifPresent(
+            clazz -> clazz.getMethodsByName("setIsBatchScoringEnabled").forEach(m -> m.setName("setBatchScoringEnabled"))));
 
         customizeRouterWorkerSelector(models.getClass("RouterWorkerSelector"));
         customizeReclassifyExceptionAction(models.getClass("ReclassifyExceptionAction"));
@@ -99,8 +94,7 @@ public class JobRouterSdkCustomization extends Customization {
             "workerSelectors");
 
         // Add setter for DistributionPolicy.id in JsonMergePatchHelper.
-        customization.getPackage("com.azure.communication.jobrouter.implementation")
-            .getClass("JsonMergePatchHelper")
+        customization.getClass("com.azure.communication.jobrouter.implementation", "JsonMergePatchHelper")
             .customizeAst(ast -> ast.getClassByName("JsonMergePatchHelper")
                 .flatMap(clazz -> clazz.getMembers()
                     .stream()
@@ -151,13 +145,11 @@ public class JobRouterSdkCustomization extends Customization {
         clazz.addMethod("connectionString", Modifier.Keyword.PUBLIC)
             .setType(methodReturnType)
             .addParameter(String.class, "AzureKeyCredential")
-            .setBody(StaticJavaParser.parseBlock(String.join("\n",
-                "{",
-                "CommunicationConnectionString connection = new CommunicationConnectionString(connectionString);",
-                "this.credential(new AzureKeyCredential(connection.getAccessKey()));",
-                "this.endpoint(connection.getEndpoint());",
-                "return this;",
-                "}")))
+            .setBody(StaticJavaParser.parseBlock("{"
+                + "CommunicationConnectionString connection = new CommunicationConnectionString(connectionString);"
+                + "this.credential(new AzureKeyCredential(connection.getAccessKey()));"
+                + "this.endpoint(connection.getEndpoint());"
+                + "return this; }"))
             .setJavadocComment(new Javadoc(JavadocDescription.parseText("Set a connection string for authorization."))
                 .addBlockTag("param", "connectionString", "valid connectionString as a string.")
                 .addBlockTag("return", "the updated " + methodReturnType + " object."));
@@ -169,17 +161,13 @@ public class JobRouterSdkCustomization extends Customization {
 
         clazz.addMethod("createHttpPipelineAuthPolicy", Modifier.Keyword.PRIVATE)
             .setType("HttpPipelinePolicy")
-            .setBody(StaticJavaParser.parseBlock(String.join("\n",
-                "{",
-                "if (this.tokenCredential != null) {",
-                "    return new BearerTokenAuthenticationPolicy(this.tokenCredential, \"https://communication.azure.com/.default\");",
-                "} else if (this.keyCredential != null) {",
-                "    return new HmacAuthenticationPolicy(new AzureKeyCredential(this.keyCredential.getKey()));",
-                "} else {",
-                "    throw LOGGER.logExceptionAsError(",
-                "        new IllegalStateException(\"Missing credential information while building a client.\"));",
-                "}",
-                "}")));
+            .setBody(StaticJavaParser.parseBlock("{ if (this.tokenCredential != null) {"
+                + "    return new BearerTokenAuthenticationPolicy(this.tokenCredential, \"https://communication.azure.com/.default\");"
+                + "} else if (this.keyCredential != null) {"
+                + "    return new HmacAuthenticationPolicy(new AzureKeyCredential(this.keyCredential.getKey()));"
+                + "} else {"
+                + "    throw LOGGER.logExceptionAsError(new IllegalStateException(\"Missing credential information while building a client.\"));"
+                + "}}"));
     }
 
     private void updateHttpPipelineMethod(ClassOrInterfaceDeclaration clazz) {
@@ -223,21 +211,21 @@ public class JobRouterSdkCustomization extends Customization {
             ast.addImport("com.azure.communication.jobrouter.models.RouterValue");
             ast.addImport("com.azure.communication.jobrouter.implementation.utils.CustomizationHelper");
 
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+            ast.getClassByName(classCustomization.getClassName()).ifPresent(clazz -> {
+                addConstructor(clazz, "String", "key", "LabelOperator", "labelOperator", "RouterValue", "value");
 
-            addConstructor(clazz, "String", "key", "LabelOperator", "labelOperator", "RouterValue", "value");
+                changeFieldGetterAndSetterType(clazz, "value", "RouterValue", null);
+                updateToJsonAndFromJson(clazz, "jsonWriter.writeUntypedField(\"value\", this.value);",
+                    "jsonWriter.writeJsonField(\"value\", this.value);",
+                    "deserializedRouterWorkerSelector.value = reader.readUntyped();",
+                    "deserializedRouterWorkerSelector.value = RouterValue.fromJson(reader);");
 
-            changeFieldGetterAndSetterType(clazz, "value", "RouterValue", null);
-            updateToJsonAndFromJson(clazz, "jsonWriter.writeUntypedField(\"value\", this.value);",
-                "jsonWriter.writeJsonField(\"value\", this.value);",
-                "deserializedRouterWorkerSelector.value = reader.readUntyped();",
-                "deserializedRouterWorkerSelector.value = RouterValue.fromJson(reader);");
-
-            changeFieldGetterAndSetterType(clazz, "expiresAfterSeconds", "Duration", "ExpiresAfter");
-            updateToJsonAndFromJson(clazz, "jsonWriter.writeNumberField(\"expiresAfterSeconds\", this.expiresAfterSeconds);",
-                "CustomizationHelper.serializeDurationToSeconds(jsonWriter, \"expiresAfterSeconds\", this.expiresAfterSeconds);",
-                "= reader.getNullable(JsonReader::getDouble);",
-                "= reader.getNullable(CustomizationHelper::deserializeDurationFromSeconds);");
+                changeFieldGetterAndSetterType(clazz, "expiresAfterSeconds", "Duration", "ExpiresAfter");
+                updateToJsonAndFromJson(clazz, "jsonWriter.writeNumberField(\"expiresAfterSeconds\", this.expiresAfterSeconds);",
+                    "CustomizationHelper.serializeDurationToSeconds(jsonWriter, \"expiresAfterSeconds\", this.expiresAfterSeconds);",
+                    "= reader.getNullable(JsonReader::getDouble);",
+                    "= reader.getNullable(CustomizationHelper::deserializeDurationFromSeconds);");
+            });
         });
     }
 
@@ -245,13 +233,13 @@ public class JobRouterSdkCustomization extends Customization {
         classCustomization.customizeAst(ast -> {
             ast.addImport("com.azure.communication.jobrouter.models.RouterValue");
 
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
-
-            changeFieldGetterAndSetterType(clazz, "labelsToUpsert", "Map<String, RouterValue>", null);
-            updateToJsonAndFromJson(clazz, "(writer, element) -> writer.writeUntyped(element));",
-                "(writer, element) -> writer.writeJson(element));",
-                "Map<String, Object> labelsToUpsert = reader.readMap(reader1 -> reader1.readUntyped());",
-                "Map<String, RouterValue> labelsToUpsert = reader.readMap(reader1 -> RouterValue.fromJson(reader1));");
+            ast.getClassByName(classCustomization.getClassName()).ifPresent(clazz -> {
+                changeFieldGetterAndSetterType(clazz, "labelsToUpsert", "Map<String, RouterValue>", null);
+                updateToJsonAndFromJson(clazz, "(writer, element) -> writer.writeUntyped(element));",
+                    "(writer, element) -> writer.writeJson(element));",
+                    "Map<String, Object> labelsToUpsert = reader.readMap(reader1 -> reader1.readUntyped());",
+                    "Map<String, RouterValue> labelsToUpsert = reader.readMap(reader1 -> RouterValue.fromJson(reader1));");
+            });
         });
     }
 
@@ -260,15 +248,15 @@ public class JobRouterSdkCustomization extends Customization {
             ast.addImport(Duration.class);
             ast.addImport("com.azure.communication.jobrouter.implementation.utils.CustomizationHelper");
 
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+            ast.getClassByName(classCustomization.getClassName()).ifPresent(clazz -> {
+                addConstructor(clazz, "Duration", "thresholdSeconds");
 
-            addConstructor(clazz, "Duration", "thresholdSeconds");
-
-            changeFieldGetterAndSetterType(clazz, "thresholdSeconds", "Duration", "Threshold");
-            updateToJsonAndFromJson(clazz, "jsonWriter.writeDoubleField(\"thresholdSeconds\", this.thresholdSeconds);",
-                "CustomizationHelper.serializeDurationToSeconds(jsonWriter, \"thresholdSeconds\", this.thresholdSeconds);",
-                "deserializedWaitTimeExceptionTrigger.thresholdSeconds = reader.getDouble();",
-                "deserializedWaitTimeExceptionTrigger.thresholdSeconds = CustomizationHelper.deserializeDurationFromSeconds(reader);");
+                changeFieldGetterAndSetterType(clazz, "thresholdSeconds", "Duration", "Threshold");
+                updateToJsonAndFromJson(clazz, "jsonWriter.writeDoubleField(\"thresholdSeconds\", this.thresholdSeconds);",
+                    "CustomizationHelper.serializeDurationToSeconds(jsonWriter, \"thresholdSeconds\", this.thresholdSeconds);",
+                    "deserializedWaitTimeExceptionTrigger.thresholdSeconds = reader.getDouble();",
+                    "deserializedWaitTimeExceptionTrigger.thresholdSeconds = CustomizationHelper.deserializeDurationFromSeconds(reader);");
+            });
         });
     }
 
@@ -276,13 +264,13 @@ public class JobRouterSdkCustomization extends Customization {
         classCustomization.customizeAst(ast -> {
             ast.addImport("com.azure.communication.jobrouter.models.RouterValue");
 
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
-
-            changeFieldGetterAndSetterType(clazz, "value", "RouterValue", null);
-            updateToJsonAndFromJson(clazz, "jsonWriter.writeUntypedField(\"value\", this.value);",
-                "jsonWriter.writeJsonField(\"value\", this.value);",
-                "deserializedStaticRouterRule.value = reader.readUntyped();",
-                "deserializedStaticRouterRule.value = RouterValue.fromJson(reader);");
+            ast.getClassByName(classCustomization.getClassName()).ifPresent(clazz -> {
+                changeFieldGetterAndSetterType(clazz, "value", "RouterValue", null);
+                updateToJsonAndFromJson(clazz, "jsonWriter.writeUntypedField(\"value\", this.value);",
+                    "jsonWriter.writeJsonField(\"value\", this.value);",
+                    "deserializedStaticRouterRule.value = reader.readUntyped();",
+                    "deserializedStaticRouterRule.value = RouterValue.fromJson(reader);");
+            });
         });
     }
 
@@ -290,21 +278,21 @@ public class JobRouterSdkCustomization extends Customization {
         classCustomization.customizeAst(ast -> {
             ast.addImport("com.azure.communication.jobrouter.models.RouterValue");
 
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+            ast.getClassByName(classCustomization.getClassName()).ifPresent(clazz -> {
+                changeFieldGetterAndSetterType(clazz, "labels", "Map<String, RouterValue>", null);
+                updateToJsonAndFromJson(clazz,
+                    "jsonWriter.writeMapField(\"labels\", this.labels, (writer, element) -> writer.writeUntyped(element));",
+                    "jsonWriter.writeMapField(\"labels\", this.labels, (writer, element) -> writer.writeJson(element));",
+                    "Map<String, Object> labels = reader.readMap(reader1 -> reader1.readUntyped());",
+                    "Map<String, RouterValue> labels = reader.readMap(reader1 -> RouterValue.fromJson(reader1));");
 
-            changeFieldGetterAndSetterType(clazz, "labels", "Map<String, RouterValue>", null);
-            updateToJsonAndFromJson(clazz,
-                "jsonWriter.writeMapField(\"labels\", this.labels, (writer, element) -> writer.writeUntyped(element));",
-                "jsonWriter.writeMapField(\"labels\", this.labels, (writer, element) -> writer.writeJson(element));",
-                "Map<String, Object> labels = reader.readMap(reader1 -> reader1.readUntyped());",
-                "Map<String, RouterValue> labels = reader.readMap(reader1 -> RouterValue.fromJson(reader1));");
-
-            changeFieldGetterAndSetterType(clazz, "tags", "Map<String, RouterValue>", null);
-            updateToJsonAndFromJson(clazz,
-                "jsonWriter.writeMapField(\"tags\", this.tags, (writer, element) -> writer.writeUntyped(element));",
-                "jsonWriter.writeMapField(\"tags\", this.tags, (writer, element) -> writer.writeJson(element));",
-                "Map<String, Object> tags = reader.readMap(reader1 -> reader1.readUntyped());",
-                "Map<String, RouterValue> tags = reader.readMap(reader1 -> RouterValue.fromJson(reader1));");
+                changeFieldGetterAndSetterType(clazz, "tags", "Map<String, RouterValue>", null);
+                updateToJsonAndFromJson(clazz,
+                    "jsonWriter.writeMapField(\"tags\", this.tags, (writer, element) -> writer.writeUntyped(element));",
+                    "jsonWriter.writeMapField(\"tags\", this.tags, (writer, element) -> writer.writeJson(element));",
+                    "Map<String, Object> tags = reader.readMap(reader1 -> reader1.readUntyped());",
+                    "Map<String, RouterValue> tags = reader.readMap(reader1 -> RouterValue.fromJson(reader1));");
+            });
         });
     }
 
@@ -312,15 +300,15 @@ public class JobRouterSdkCustomization extends Customization {
         classCustomization.customizeAst(ast -> {
             ast.addImport("com.azure.communication.jobrouter.models.RouterValue");
 
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+            ast.getClassByName(classCustomization.getClassName()).ifPresent(clazz -> {
+                addConstructor(clazz, "String", "key", "LabelOperator", "labelOperator", "RouterValue", "value");
 
-            addConstructor(clazz, "String", "key", "LabelOperator", "labelOperator", "RouterValue", "value");
-
-            changeFieldGetterAndSetterType(clazz, "value", "RouterValue", null);
-            updateToJsonAndFromJson(clazz, "jsonWriter.writeUntypedField(\"value\", this.value);",
-                "jsonWriter.writeJsonField(\"value\", this.value);",
-                "deserializedRouterQueueSelector.value = reader.readUntyped();",
-                "deserializedRouterQueueSelector.value = RouterValue.fromJson(reader);");
+                changeFieldGetterAndSetterType(clazz, "value", "RouterValue", null);
+                updateToJsonAndFromJson(clazz, "jsonWriter.writeUntypedField(\"value\", this.value);",
+                    "jsonWriter.writeJsonField(\"value\", this.value);",
+                    "deserializedRouterQueueSelector.value = reader.readUntyped();",
+                    "deserializedRouterQueueSelector.value = RouterValue.fromJson(reader);");
+            });
         });
     }
 
@@ -329,15 +317,15 @@ public class JobRouterSdkCustomization extends Customization {
             ast.addImport(Duration.class);
             ast.addImport("com.azure.communication.jobrouter.implementation.utils.CustomizationHelper");
 
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+            ast.getClassByName(classCustomization.getClassName()).ifPresent(clazz -> {
+                addConstructor(clazz, "String", "key", "LabelOperator", "labelOperator");
 
-            addConstructor(clazz, "String", "key", "LabelOperator", "labelOperator");
-
-            changeFieldGetterAndSetterType(clazz, "expiresAfterSeconds", "Duration", "ExpiresAfter");
-            updateToJsonAndFromJson(clazz, "jsonWriter.writeNumberField(\"expiresAfterSeconds\", this.expiresAfterSeconds);",
-                "CustomizationHelper.serializeDurationToSeconds(jsonWriter, \"expiresAfterSeconds\", this.expiresAfterSeconds);",
-                "= reader.getNullable(JsonReader::getDouble);",
-                "= reader.getNullable(CustomizationHelper::deserializeDurationFromSeconds);");
+                changeFieldGetterAndSetterType(clazz, "expiresAfterSeconds", "Duration", "ExpiresAfter");
+                updateToJsonAndFromJson(clazz, "jsonWriter.writeNumberField(\"expiresAfterSeconds\", this.expiresAfterSeconds);",
+                    "CustomizationHelper.serializeDurationToSeconds(jsonWriter, \"expiresAfterSeconds\", this.expiresAfterSeconds);",
+                    "= reader.getNullable(JsonReader::getDouble);",
+                    "= reader.getNullable(CustomizationHelper::deserializeDurationFromSeconds);");
+            });
         });
     }
 
@@ -346,29 +334,29 @@ public class JobRouterSdkCustomization extends Customization {
             ast.addImport(Duration.class);
             ast.addImport("com.azure.communication.jobrouter.implementation.utils.CustomizationHelper");
 
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+            ast.getClassByName(classCustomization.getClassName()).ifPresent(clazz -> {
+                clazz.getMembers().stream()
+                    .filter(BodyDeclaration::isInitializerDeclaration)
+                    .map(BodyDeclaration::asInitializerDeclaration)
+                    .filter(InitializerDeclaration::isStatic)
+                    .findFirst()
+                    .ifPresent(staticInitializer -> {
+                        ExpressionStmt setAccessor = (ExpressionStmt) staticInitializer.getBody().getStatement(0);
+                        MethodCallExpr setAccessorCall = (MethodCallExpr) setAccessor.getExpression();
+                        ObjectCreationExpr anonymousAccessorCreation = (ObjectCreationExpr) setAccessorCall.getArgument(0);
+                        anonymousAccessorCreation.addAnonymousClassBody(StaticJavaParser.parseMethodDeclaration(String.join("\n",
+                            "@Override",
+                            "public void setId(DistributionPolicy policy, String id) {",
+                            "    policy.id = id;",
+                            "}")));
+                    });
 
-            clazz.getMembers().stream()
-                .filter(BodyDeclaration::isInitializerDeclaration)
-                .map(BodyDeclaration::asInitializerDeclaration)
-                .filter(InitializerDeclaration::isStatic)
-                .findFirst()
-                .ifPresent(staticInitializer -> {
-                    ExpressionStmt setAccessor = (ExpressionStmt) staticInitializer.getBody().getStatement(0);
-                    MethodCallExpr setAccessorCall = (MethodCallExpr) setAccessor.getExpression();
-                    ObjectCreationExpr anonymousAccessorCreation = (ObjectCreationExpr) setAccessorCall.getArgument(0);
-                    anonymousAccessorCreation.addAnonymousClassBody(StaticJavaParser.parseMethodDeclaration(String.join("\n",
-                        "@Override",
-                        "public void setId(DistributionPolicy policy, String id) {",
-                        "    policy.id = id;",
-                        "}")));
-                });
-
-            changeFieldGetterAndSetterType(clazz, "offerExpiresAfterSeconds", "Duration", "OfferExpiresAfter");
-            updateToJsonAndFromJson(clazz, "jsonWriter.writeNumberField(\"offerExpiresAfterSeconds\", this.offerExpiresAfterSeconds);",
-                "CustomizationHelper.serializeDurationToSeconds(jsonWriter, \"offerExpiresAfterSeconds\", this.offerExpiresAfterSeconds);",
-                "= reader.getNullable(JsonReader::getDouble);",
-                "= reader.getNullable(CustomizationHelper::deserializeDurationFromSeconds);");
+                changeFieldGetterAndSetterType(clazz, "offerExpiresAfterSeconds", "Duration", "OfferExpiresAfter");
+                updateToJsonAndFromJson(clazz, "jsonWriter.writeNumberField(\"offerExpiresAfterSeconds\", this.offerExpiresAfterSeconds);",
+                    "CustomizationHelper.serializeDurationToSeconds(jsonWriter, \"offerExpiresAfterSeconds\", this.offerExpiresAfterSeconds);",
+                    "= reader.getNullable(JsonReader::getDouble);",
+                    "= reader.getNullable(CustomizationHelper::deserializeDurationFromSeconds);");
+            });
         });
     }
 
@@ -376,21 +364,21 @@ public class JobRouterSdkCustomization extends Customization {
         classCustomization.customizeAst(ast -> {
             ast.addImport("com.azure.communication.jobrouter.models.RouterValue");
 
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+            ast.getClassByName(classCustomization.getClassName()).ifPresent(clazz -> {
+                changeFieldGetterAndSetterType(clazz, "labels", "Map<String, RouterValue>", null);
+                updateToJsonAndFromJson(clazz,
+                    "jsonWriter.writeMapField(\"labels\", this.labels, (writer, element) -> writer.writeUntyped(element));",
+                    "jsonWriter.writeMapField(\"labels\", this.labels, (writer, element) -> writer.writeJson(element));",
+                    "Map<String, Object> labels = reader.readMap(reader1 -> reader1.readUntyped());",
+                    "Map<String, RouterValue> labels = reader.readMap(reader1 -> RouterValue.fromJson(reader1));");
 
-            changeFieldGetterAndSetterType(clazz, "labels", "Map<String, RouterValue>", null);
-            updateToJsonAndFromJson(clazz,
-                "jsonWriter.writeMapField(\"labels\", this.labels, (writer, element) -> writer.writeUntyped(element));",
-                "jsonWriter.writeMapField(\"labels\", this.labels, (writer, element) -> writer.writeJson(element));",
-                "Map<String, Object> labels = reader.readMap(reader1 -> reader1.readUntyped());",
-                "Map<String, RouterValue> labels = reader.readMap(reader1 -> RouterValue.fromJson(reader1));");
-
-            changeFieldGetterAndSetterType(clazz, "tags", "Map<String, RouterValue>", null);
-            updateToJsonAndFromJson(clazz,
-                "jsonWriter.writeMapField(\"tags\", this.tags, (writer, element) -> writer.writeUntyped(element));",
-                "jsonWriter.writeMapField(\"tags\", this.tags, (writer, element) -> writer.writeJson(element));",
-                "Map<String, Object> tags = reader.readMap(reader1 -> reader1.readUntyped());",
-                "Map<String, RouterValue> tags = reader.readMap(reader1 -> RouterValue.fromJson(reader1));");
+                changeFieldGetterAndSetterType(clazz, "tags", "Map<String, RouterValue>", null);
+                updateToJsonAndFromJson(clazz,
+                    "jsonWriter.writeMapField(\"tags\", this.tags, (writer, element) -> writer.writeUntyped(element));",
+                    "jsonWriter.writeMapField(\"tags\", this.tags, (writer, element) -> writer.writeJson(element));",
+                    "Map<String, Object> tags = reader.readMap(reader1 -> reader1.readUntyped());",
+                    "Map<String, RouterValue> tags = reader.readMap(reader1 -> RouterValue.fromJson(reader1));");
+            });
         });
     }
 
@@ -398,14 +386,14 @@ public class JobRouterSdkCustomization extends Customization {
         classCustomization.customizeAst(ast -> {
             ast.addImport("com.azure.communication.jobrouter.models.RouterValue");
 
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
-
-            changeFieldGetterAndSetterType(clazz, "labels", "Map<String, RouterValue>", null);
-            updateToJsonAndFromJson(clazz,
-                "jsonWriter.writeMapField(\"labels\", this.labels, (writer, element) -> writer.writeUntyped(element));",
-                "jsonWriter.writeMapField(\"labels\", this.labels, (writer, element) -> writer.writeJson(element));",
-                "Map<String, Object> labels = reader.readMap(reader1 -> reader1.readUntyped());",
-                "Map<String, RouterValue> labels = reader.readMap(reader1 -> RouterValue.fromJson(reader1));");
+            ast.getClassByName(classCustomization.getClassName()).ifPresent(clazz -> {
+                changeFieldGetterAndSetterType(clazz, "labels", "Map<String, RouterValue>", null);
+                updateToJsonAndFromJson(clazz,
+                    "jsonWriter.writeMapField(\"labels\", this.labels, (writer, element) -> writer.writeUntyped(element));",
+                    "jsonWriter.writeMapField(\"labels\", this.labels, (writer, element) -> writer.writeJson(element));",
+                    "Map<String, Object> labels = reader.readMap(reader1 -> reader1.readUntyped());",
+                    "Map<String, RouterValue> labels = reader.readMap(reader1 -> RouterValue.fromJson(reader1));");
+            });
         });
     }
 
@@ -414,65 +402,65 @@ public class JobRouterSdkCustomization extends Customization {
             ast.addImport(Duration.class);
             ast.addImport("com.azure.communication.jobrouter.implementation.utils.CustomizationHelper");
 
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+            ast.getClassByName(classCustomization.getClassName()).ifPresent(clazz -> {
+                clazz.getFieldByName("estimatedWaitTimeMinutes")
+                    .ifPresent(field -> field.getVariable(0).setType("Map<Integer, Duration>"));
+                clazz.getMethodsByName("getEstimatedWaitTimeMinutes").get(0)
+                    .setType("Map<Integer, Duration>")
+                    .setName("getEstimatedWaitTime");
 
-            clazz.getFieldByName("estimatedWaitTimeMinutes").get().getVariable(0).setType("Map<Integer, Duration>");
-            clazz.getMethodsByName("getEstimatedWaitTimeMinutes").get(0)
-                .setType("Map<Integer, Duration>")
-                .setName("getEstimatedWaitTime");
+                clazz.getMethodsByName("toJson").forEach(method -> method.getBody().ifPresent(body -> {
+                    String bodyStr = body.toString().replace("jsonWriter.writeMapField(\"estimatedWaitTimeMinutes\", this.estimatedWaitTimeMinutes,",
+                            "CustomizationHelper.serializeDurationToMinutesMap(jsonWriter, \"estimatedWaitTimeMinutes\", this.estimatedWaitTimeMinutes);")
+                        .replace("(writer, element) -> writer.writeDouble(element));", "");
+                    method.setBody(StaticJavaParser.parseBlock(bodyStr));
+                }));
 
-            MethodDeclaration toJson = clazz.getMethodsByName("toJson").get(0);
-            String body = toJson.getBody().get().toString()
-                .replace("jsonWriter.writeMapField(\"estimatedWaitTimeMinutes\", this.estimatedWaitTimeMinutes,",
-                    "CustomizationHelper.serializeDurationToMinutesMap(jsonWriter, \"estimatedWaitTimeMinutes\", this.estimatedWaitTimeMinutes);")
-                .replace("(writer, element) -> writer.writeDouble(element));", "");
-            toJson.setBody(StaticJavaParser.parseBlock(body));
-
-            MethodDeclaration fromJson = clazz.getMethodsByName("fromJson").get(0);
-            body = fromJson.getBody().get().toString()
-                .replace("Map<String, Double> estimatedWaitTimeMinutes = null;",
-                    "Map<Integer, Duration> estimatedWaitTimeMinutes = null;")
-                .replace("estimatedWaitTimeMinutes = reader.readMap(reader1 -> reader1.getDouble());",
-                    "estimatedWaitTimeMinutes = CustomizationHelper.deserializeDurationFromMinutesMap(reader);");
-            fromJson.setBody(StaticJavaParser.parseBlock(body));
+                clazz.getMethodsByName("fromJson").forEach(method -> method.getBody().ifPresent(body -> {
+                    String bodyStr = body.toString().replace("Map<String, Double> estimatedWaitTimeMinutes = null;",
+                        "Map<Integer, Duration> estimatedWaitTimeMinutes = null;")
+                        .replace("estimatedWaitTimeMinutes = reader.readMap(reader1 -> reader1.getDouble());",
+                            "estimatedWaitTimeMinutes = CustomizationHelper.deserializeDurationFromMinutesMap(reader);");
+                    method.setBody(StaticJavaParser.parseBlock(bodyStr));
+                }));
+            });
         });
     }
 
     private static void changeFieldGetterAndSetterType(ClassOrInterfaceDeclaration clazz, String fieldName, String type,
         String getterAndSetterRename) {
         // Replace the field type.
-        VariableDeclarator field = clazz.getFieldByName(fieldName).get().getVariable(0);
-        field.setType(type);
+        clazz.getFieldByName(fieldName).ifPresent(field -> field.getVariable(0).setType(type));
 
         fieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-        MethodDeclaration getter = clazz.getMethodsByName("get" + fieldName).get(0);
-        // Replace the getter type.
-        getter.setType(type);
 
-        MethodDeclaration setter = clazz.getMethodsByName("set" + fieldName).get(0);
-        // Replace the setter type.
-        setter.getParameter(0).setType(type);
+        // Update the getter.
+        clazz.getMethodsByName("get" + fieldName).forEach(m -> {
+            m.setType(type);
+            if (getterAndSetterRename != null) {
+                m.setName("get" + getterAndSetterRename);
+            }
+        });
 
-        if (getterAndSetterRename != null) {
-            // Rename the getter and setter.
-            getter.setName("get" + getterAndSetterRename);
-            setter.setName("set" + getterAndSetterRename);
-        }
+        // Update the setter.
+        clazz.getMethodsByName("set" + fieldName).forEach(m -> {
+            m.getParameter(0).setType(type);
+            if (getterAndSetterRename != null) {
+                m.setName("set" + getterAndSetterRename);
+            }
+        });
     }
 
     private static void updateToJsonAndFromJson(ClassOrInterfaceDeclaration clazz, String toJsonFind,
         String toJsonReplace, String fromJsonFind, String fromJsonReplace) {
-        MethodDeclaration toJson = clazz.getMethodsByName("toJson").get(0);
-        String body = toJson.getBody().get().toString().replace(toJsonFind, toJsonReplace);
-        toJson.setBody(StaticJavaParser.parseBlock(body));
+        clazz.getMethodsByName("toJson").forEach(m -> m.getBody().ifPresent(body ->
+            m.setBody(StaticJavaParser.parseBlock(body.toString().replace(toJsonFind, toJsonReplace)))));
 
-        MethodDeclaration toJsonMergePatch = clazz.getMethodsByName("toJsonMergePatch").get(0);
-        body = toJsonMergePatch.getBody().get().toString().replace(toJsonFind, toJsonReplace);
-        toJsonMergePatch.setBody(StaticJavaParser.parseBlock(body));
+        clazz.getMethodsByName("toJsonMergePatch").forEach(m -> m.getBody().ifPresent(body ->
+            m.setBody(StaticJavaParser.parseBlock(body.toString().replace(toJsonFind, toJsonReplace)))));
 
-        MethodDeclaration fromJson = clazz.getMethodsByName("fromJson").get(0);
-        body = fromJson.getBody().get().toString().replace(fromJsonFind, fromJsonReplace);
-        fromJson.setBody(StaticJavaParser.parseBlock(body));
+        clazz.getMethodsByName("fromJson").forEach(m -> m.getBody().ifPresent(body ->
+            m.setBody(StaticJavaParser.parseBlock(body.toString().replace(fromJsonFind, fromJsonReplace)))));
     }
 
     private static void addConstructor(ClassCustomization classCustomization, String... typeAndParamNames) {
@@ -480,8 +468,8 @@ public class JobRouterSdkCustomization extends Customization {
             throw new IllegalStateException("The number of type and param names must be even.");
         }
 
-        classCustomization.customizeAst(ast ->
-            addConstructor(ast.getClassByName(classCustomization.getClassName()).get(), typeAndParamNames));
+        classCustomization.customizeAst(ast -> ast.getClassByName(classCustomization.getClassName())
+            .ifPresent(clazz -> addConstructor(clazz, typeAndParamNames)));
     }
 
     private static void addConstructor(ClassOrInterfaceDeclaration clazz, String... typeAndParamNames) {

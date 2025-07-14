@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.accesscontrol.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class CheckAccessDecision implements JsonSerializable<CheckAccessDe
     /*
      * Access Decision.
      */
+    @Generated
     private String accessDecision;
 
     /*
      * Action Id.
      */
+    @Generated
     private String actionId;
 
     /*
      * Role Assignment response details
      */
+    @Generated
     private RoleAssignmentDetails roleAssignment;
 
     /**
      * Creates an instance of CheckAccessDecision class.
      */
+    @Generated
     public CheckAccessDecision() {
     }
 
@@ -42,6 +47,7 @@ public final class CheckAccessDecision implements JsonSerializable<CheckAccessDe
      * 
      * @return the accessDecision value.
      */
+    @Generated
     public String getAccessDecision() {
         return this.accessDecision;
     }
@@ -52,6 +58,7 @@ public final class CheckAccessDecision implements JsonSerializable<CheckAccessDe
      * @param accessDecision the accessDecision value to set.
      * @return the CheckAccessDecision object itself.
      */
+    @Generated
     public CheckAccessDecision setAccessDecision(String accessDecision) {
         this.accessDecision = accessDecision;
         return this;
@@ -62,6 +69,7 @@ public final class CheckAccessDecision implements JsonSerializable<CheckAccessDe
      * 
      * @return the actionId value.
      */
+    @Generated
     public String getActionId() {
         return this.actionId;
     }
@@ -72,6 +80,7 @@ public final class CheckAccessDecision implements JsonSerializable<CheckAccessDe
      * @param actionId the actionId value to set.
      * @return the CheckAccessDecision object itself.
      */
+    @Generated
     public CheckAccessDecision setActionId(String actionId) {
         this.actionId = actionId;
         return this;
@@ -82,6 +91,7 @@ public final class CheckAccessDecision implements JsonSerializable<CheckAccessDe
      * 
      * @return the roleAssignment value.
      */
+    @Generated
     public RoleAssignmentDetails getRoleAssignment() {
         return this.roleAssignment;
     }
@@ -92,6 +102,7 @@ public final class CheckAccessDecision implements JsonSerializable<CheckAccessDe
      * @param roleAssignment the roleAssignment value to set.
      * @return the CheckAccessDecision object itself.
      */
+    @Generated
     public CheckAccessDecision setRoleAssignment(RoleAssignmentDetails roleAssignment) {
         this.roleAssignment = roleAssignment;
         return this;
@@ -100,6 +111,7 @@ public final class CheckAccessDecision implements JsonSerializable<CheckAccessDe
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,6 +129,7 @@ public final class CheckAccessDecision implements JsonSerializable<CheckAccessDe
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the CheckAccessDecision.
      */
+    @Generated
     public static CheckAccessDecision fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CheckAccessDecision deserializedCheckAccessDecision = new CheckAccessDecision();

@@ -5,6 +5,7 @@
 package com.azure.communication.rooms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class CommunicationErrorResponse implements JsonSerializable<Commun
     /*
      * The Communication Services error.
      */
+    @Generated
     private CommunicationError error;
 
     /**
      * Creates an instance of CommunicationErrorResponse class.
      */
+    @Generated
     public CommunicationErrorResponse() {
     }
 
@@ -32,6 +35,7 @@ public final class CommunicationErrorResponse implements JsonSerializable<Commun
      * 
      * @return the error value.
      */
+    @Generated
     public CommunicationError getError() {
         return this.error;
     }
@@ -42,11 +46,16 @@ public final class CommunicationErrorResponse implements JsonSerializable<Commun
      * @param error the error value to set.
      * @return the CommunicationErrorResponse object itself.
      */
+    @Generated
     public CommunicationErrorResponse setError(CommunicationError error) {
         this.error = error;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -63,6 +72,7 @@ public final class CommunicationErrorResponse implements JsonSerializable<Commun
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CommunicationErrorResponse.
      */
+    @Generated
     public static CommunicationErrorResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CommunicationErrorResponse deserializedCommunicationErrorResponse = new CommunicationErrorResponse();

@@ -6,6 +6,7 @@ package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,11 +22,13 @@ public final class ManifestAttributesManifest implements JsonSerializable<Manife
     /*
      * List of manifest attributes details
      */
+    @Generated
     private List<ArtifactManifestPlatform> references;
 
     /**
      * Creates an instance of ManifestAttributesManifest class.
      */
+    @Generated
     public ManifestAttributesManifest() {
     }
 
@@ -34,6 +37,7 @@ public final class ManifestAttributesManifest implements JsonSerializable<Manife
      * 
      * @return the references value.
      */
+    @Generated
     public List<ArtifactManifestPlatform> getReferences() {
         return this.references;
     }
@@ -44,6 +48,7 @@ public final class ManifestAttributesManifest implements JsonSerializable<Manife
      * @param references the references value to set.
      * @return the ManifestAttributesManifest object itself.
      */
+    @Generated
     public ManifestAttributesManifest setReferences(List<ArtifactManifestPlatform> references) {
         this.references = references;
         return this;
@@ -52,6 +57,7 @@ public final class ManifestAttributesManifest implements JsonSerializable<Manife
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +73,7 @@ public final class ManifestAttributesManifest implements JsonSerializable<Manife
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ManifestAttributesManifest.
      */
+    @Generated
     public static ManifestAttributesManifest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ManifestAttributesManifest deserializedManifestAttributesManifest = new ManifestAttributesManifest();

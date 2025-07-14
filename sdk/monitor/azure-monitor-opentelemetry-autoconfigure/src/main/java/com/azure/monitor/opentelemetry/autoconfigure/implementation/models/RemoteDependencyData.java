@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,58 +23,69 @@ public final class RemoteDependencyData extends MonitorDomain {
      * Identifier of a dependency call instance. Used for correlation with the request telemetry item corresponding to
      * this dependency call.
      */
+    @Generated
     private String id;
 
     /*
      * Name of the command initiated with this dependency call. Low cardinality value. Examples are stored procedure
      * name and URL path template.
      */
+    @Generated
     private String name;
 
     /*
      * Result code of a dependency call. Examples are SQL error code and HTTP status code.
      */
+    @Generated
     private String resultCode;
 
     /*
      * Command initiated by this dependency call. Examples are SQL statement and HTTP URL with all query parameters.
      */
+    @Generated
     private String data;
 
     /*
      * Dependency type name. Very low cardinality value for logical grouping of dependencies and interpretation of other
      * fields like commandName and resultCode. Examples are SQL, Azure table, and HTTP.
      */
+    @Generated
     private String type;
 
     /*
      * Target site of a dependency call. Examples are server name, host address.
      */
+    @Generated
     private String target;
 
     /*
      * Request duration in format: DD.HH:MM:SS.MMMMMM. Must be less than 1000 days.
      */
+    @Generated
     private String duration;
 
     /*
      * Indication of successful or unsuccessful call.
      */
+    @Generated
     private Boolean success;
 
     /*
      * Collection of custom properties.
      */
+    @Generated
     private Map<String, String> properties;
 
     /*
      * Collection of custom measurements.
      */
+    @Generated
     private Map<String, Double> measurements;
 
     /**
      * Creates an instance of RemoteDependencyData class.
      */
+    @Generated
     public RemoteDependencyData() {
     }
 
@@ -83,6 +95,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -94,6 +107,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * @param id the id value to set.
      * @return the RemoteDependencyData object itself.
      */
+    @Generated
     public RemoteDependencyData setId(String id) {
         this.id = id;
         return this;
@@ -105,6 +119,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -116,6 +131,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * @param name the name value to set.
      * @return the RemoteDependencyData object itself.
      */
+    @Generated
     public RemoteDependencyData setName(String name) {
         this.name = name;
         return this;
@@ -126,6 +142,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * 
      * @return the resultCode value.
      */
+    @Generated
     public String getResultCode() {
         return this.resultCode;
     }
@@ -136,6 +153,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * @param resultCode the resultCode value to set.
      * @return the RemoteDependencyData object itself.
      */
+    @Generated
     public RemoteDependencyData setResultCode(String resultCode) {
         this.resultCode = resultCode;
         return this;
@@ -147,6 +165,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * 
      * @return the data value.
      */
+    @Generated
     public String getData() {
         return this.data;
     }
@@ -158,6 +177,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * @param data the data value to set.
      * @return the RemoteDependencyData object itself.
      */
+    @Generated
     public RemoteDependencyData setData(String data) {
         this.data = data;
         return this;
@@ -169,6 +189,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -180,6 +201,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * @param type the type value to set.
      * @return the RemoteDependencyData object itself.
      */
+    @Generated
     public RemoteDependencyData setType(String type) {
         this.type = type;
         return this;
@@ -190,6 +212,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * 
      * @return the target value.
      */
+    @Generated
     public String getTarget() {
         return this.target;
     }
@@ -200,6 +223,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * @param target the target value to set.
      * @return the RemoteDependencyData object itself.
      */
+    @Generated
     public RemoteDependencyData setTarget(String target) {
         this.target = target;
         return this;
@@ -210,6 +234,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * 
      * @return the duration value.
      */
+    @Generated
     public String getDuration() {
         return this.duration;
     }
@@ -220,6 +245,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * @param duration the duration value to set.
      * @return the RemoteDependencyData object itself.
      */
+    @Generated
     public RemoteDependencyData setDuration(String duration) {
         this.duration = duration;
         return this;
@@ -230,6 +256,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * 
      * @return the success value.
      */
+    @Generated
     public Boolean isSuccess() {
         return this.success;
     }
@@ -240,6 +267,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * @param success the success value to set.
      * @return the RemoteDependencyData object itself.
      */
+    @Generated
     public RemoteDependencyData setSuccess(Boolean success) {
         this.success = success;
         return this;
@@ -250,6 +278,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * 
      * @return the properties value.
      */
+    @Generated
     public Map<String, String> getProperties() {
         return this.properties;
     }
@@ -260,6 +289,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * @param properties the properties value to set.
      * @return the RemoteDependencyData object itself.
      */
+    @Generated
     public RemoteDependencyData setProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
@@ -270,6 +300,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * 
      * @return the measurements value.
      */
+    @Generated
     public Map<String, Double> getMeasurements() {
         return this.measurements;
     }
@@ -280,6 +311,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * @param measurements the measurements value to set.
      * @return the RemoteDependencyData object itself.
      */
+    @Generated
     public RemoteDependencyData setMeasurements(Map<String, Double> measurements) {
         this.measurements = measurements;
         return this;
@@ -288,6 +320,7 @@ public final class RemoteDependencyData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RemoteDependencyData setVersion(int version) {
         super.setVersion(version);
@@ -297,6 +330,7 @@ public final class RemoteDependencyData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -328,6 +362,7 @@ public final class RemoteDependencyData extends MonitorDomain {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RemoteDependencyData.
      */
+    @Generated
     public static RemoteDependencyData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RemoteDependencyData deserializedRemoteDependencyData = new RemoteDependencyData();

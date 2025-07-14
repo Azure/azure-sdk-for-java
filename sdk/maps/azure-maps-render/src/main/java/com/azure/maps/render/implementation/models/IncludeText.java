@@ -4,6 +4,7 @@
 
 package com.azure.maps.render.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class IncludeText extends ExpandableStringEnum<IncludeText> {
     /**
      * Include all textual data in response.
      */
+    @Generated
     public static final IncludeText YES = fromString("yes");
 
     /**
      * Exclude textual data from response. Only images and country/region names will be in response.
      */
+    @Generated
     public static final IncludeText NO = fromString("no");
 
     /**
@@ -26,6 +29,7 @@ public final class IncludeText extends ExpandableStringEnum<IncludeText> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IncludeText() {
     }
@@ -36,6 +40,7 @@ public final class IncludeText extends ExpandableStringEnum<IncludeText> {
      * @param name a name to look for.
      * @return the corresponding IncludeText.
      */
+    @Generated
     public static IncludeText fromString(String name) {
         return fromString(name, IncludeText.class);
     }
@@ -45,6 +50,7 @@ public final class IncludeText extends ExpandableStringEnum<IncludeText> {
      * 
      * @return known IncludeText values.
      */
+    @Generated
     public static Collection<IncludeText> values() {
         return values(IncludeText.class);
     }

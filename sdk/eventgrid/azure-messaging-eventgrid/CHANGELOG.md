@@ -1,6 +1,6 @@
 # Release History
 
-## 4.30.0-beta.1 (Unreleased)
+## 4.31.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,11 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.30.0 (2025-05-16)
+
+### Features Added
+- Added new values to `SystemEventNames` related to Azure Communication Services and Azure Edge.
 
 ## 4.29.1 (2025-03-24)
 

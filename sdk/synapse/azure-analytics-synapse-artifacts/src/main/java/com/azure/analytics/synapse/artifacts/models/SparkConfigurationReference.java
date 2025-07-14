@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class SparkConfigurationReference implements JsonSerializable<Spark
     /*
      * Spark configuration reference type.
      */
+    @Generated
     private SparkConfigurationReferenceType type;
 
     /*
      * Reference spark configuration name.
      */
+    @Generated
     private String referenceName;
 
     /**
      * Creates an instance of SparkConfigurationReference class.
      */
+    @Generated
     public SparkConfigurationReference() {
     }
 
@@ -37,6 +41,7 @@ public final class SparkConfigurationReference implements JsonSerializable<Spark
      * 
      * @return the type value.
      */
+    @Generated
     public SparkConfigurationReferenceType getType() {
         return this.type;
     }
@@ -47,6 +52,7 @@ public final class SparkConfigurationReference implements JsonSerializable<Spark
      * @param type the type value to set.
      * @return the SparkConfigurationReference object itself.
      */
+    @Generated
     public SparkConfigurationReference setType(SparkConfigurationReferenceType type) {
         this.type = type;
         return this;
@@ -57,6 +63,7 @@ public final class SparkConfigurationReference implements JsonSerializable<Spark
      * 
      * @return the referenceName value.
      */
+    @Generated
     public String getReferenceName() {
         return this.referenceName;
     }
@@ -67,6 +74,7 @@ public final class SparkConfigurationReference implements JsonSerializable<Spark
      * @param referenceName the referenceName value to set.
      * @return the SparkConfigurationReference object itself.
      */
+    @Generated
     public SparkConfigurationReference setReferenceName(String referenceName) {
         this.referenceName = referenceName;
         return this;
@@ -75,6 +83,7 @@ public final class SparkConfigurationReference implements JsonSerializable<Spark
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class SparkConfigurationReference implements JsonSerializable<Spark
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SparkConfigurationReference.
      */
+    @Generated
     public static SparkConfigurationReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkConfigurationReference deserializedSparkConfigurationReference = new SparkConfigurationReference();

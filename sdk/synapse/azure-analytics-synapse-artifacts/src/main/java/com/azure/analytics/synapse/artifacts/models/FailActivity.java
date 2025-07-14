@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -24,23 +25,27 @@ public class FailActivity extends ControlActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "Fail";
 
     /*
      * The error message that surfaced in the Fail activity. It can be dynamic content that's evaluated to a non
      * empty/blank string at runtime. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object message;
 
     /*
      * The error code that categorizes the error type of the Fail activity. It can be dynamic content that's evaluated
      * to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object errorCode;
 
     /**
      * Creates an instance of FailActivity class.
      */
+    @Generated
     public FailActivity() {
     }
 
@@ -49,6 +54,7 @@ public class FailActivity extends ControlActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -60,6 +66,7 @@ public class FailActivity extends ControlActivity {
      * 
      * @return the message value.
      */
+    @Generated
     public Object getMessage() {
         return this.message;
     }
@@ -71,6 +78,7 @@ public class FailActivity extends ControlActivity {
      * @param message the message value to set.
      * @return the FailActivity object itself.
      */
+    @Generated
     public FailActivity setMessage(Object message) {
         this.message = message;
         return this;
@@ -83,6 +91,7 @@ public class FailActivity extends ControlActivity {
      * 
      * @return the errorCode value.
      */
+    @Generated
     public Object getErrorCode() {
         return this.errorCode;
     }
@@ -95,6 +104,7 @@ public class FailActivity extends ControlActivity {
      * @param errorCode the errorCode value to set.
      * @return the FailActivity object itself.
      */
+    @Generated
     public FailActivity setErrorCode(Object errorCode) {
         this.errorCode = errorCode;
         return this;
@@ -103,6 +113,7 @@ public class FailActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FailActivity setName(String name) {
         super.setName(name);
@@ -112,6 +123,7 @@ public class FailActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FailActivity setDescription(String description) {
         super.setDescription(description);
@@ -121,6 +133,7 @@ public class FailActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FailActivity setState(ActivityState state) {
         super.setState(state);
@@ -130,6 +143,7 @@ public class FailActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FailActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -139,6 +153,7 @@ public class FailActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FailActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -148,6 +163,7 @@ public class FailActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FailActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -157,6 +173,7 @@ public class FailActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -192,6 +209,7 @@ public class FailActivity extends ControlActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FailActivity.
      */
+    @Generated
     public static FailActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FailActivity deserializedFailActivity = new FailActivity();

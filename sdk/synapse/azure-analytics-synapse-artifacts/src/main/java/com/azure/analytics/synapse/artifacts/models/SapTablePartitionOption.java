@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,31 +15,37 @@ public final class SapTablePartitionOption extends ExpandableStringEnum<SapTable
     /**
      * Static value None for SapTablePartitionOption.
      */
+    @Generated
     public static final SapTablePartitionOption NONE = fromString("None");
 
     /**
      * Static value PartitionOnInt for SapTablePartitionOption.
      */
+    @Generated
     public static final SapTablePartitionOption PARTITION_ON_INT = fromString("PartitionOnInt");
 
     /**
      * Static value PartitionOnCalendarYear for SapTablePartitionOption.
      */
+    @Generated
     public static final SapTablePartitionOption PARTITION_ON_CALENDAR_YEAR = fromString("PartitionOnCalendarYear");
 
     /**
      * Static value PartitionOnCalendarMonth for SapTablePartitionOption.
      */
+    @Generated
     public static final SapTablePartitionOption PARTITION_ON_CALENDAR_MONTH = fromString("PartitionOnCalendarMonth");
 
     /**
      * Static value PartitionOnCalendarDate for SapTablePartitionOption.
      */
+    @Generated
     public static final SapTablePartitionOption PARTITION_ON_CALENDAR_DATE = fromString("PartitionOnCalendarDate");
 
     /**
      * Static value PartitionOnTime for SapTablePartitionOption.
      */
+    @Generated
     public static final SapTablePartitionOption PARTITION_ON_TIME = fromString("PartitionOnTime");
 
     /**
@@ -46,6 +53,7 @@ public final class SapTablePartitionOption extends ExpandableStringEnum<SapTable
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SapTablePartitionOption() {
     }
@@ -56,6 +64,7 @@ public final class SapTablePartitionOption extends ExpandableStringEnum<SapTable
      * @param name a name to look for.
      * @return the corresponding SapTablePartitionOption.
      */
+    @Generated
     public static SapTablePartitionOption fromString(String name) {
         return fromString(name, SapTablePartitionOption.class);
     }
@@ -65,6 +74,7 @@ public final class SapTablePartitionOption extends ExpandableStringEnum<SapTable
      * 
      * @return known SapTablePartitionOption values.
      */
+    @Generated
     public static Collection<SapTablePartitionOption> values() {
         return values(SapTablePartitionOption.class);
     }

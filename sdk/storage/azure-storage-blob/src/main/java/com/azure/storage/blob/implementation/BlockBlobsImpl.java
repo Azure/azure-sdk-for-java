@@ -80,7 +80,7 @@ public final class BlockBlobsImpl {
      * REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureBlobStorageBloc")
+    @ServiceInterface(name = "AzureBlobStorageBlockBlobs")
     public interface BlockBlobsService {
 
         @Put("/{containerName}/{blob}")

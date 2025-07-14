@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class SqlPoolReferenceType extends ExpandableStringEnum<SqlPoolRefe
     /**
      * Static value SqlPoolReference for SqlPoolReferenceType.
      */
+    @Generated
     public static final SqlPoolReferenceType SQL_POOL_REFERENCE = fromString("SqlPoolReference");
 
     /**
@@ -21,6 +23,7 @@ public final class SqlPoolReferenceType extends ExpandableStringEnum<SqlPoolRefe
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SqlPoolReferenceType() {
     }
@@ -31,6 +34,7 @@ public final class SqlPoolReferenceType extends ExpandableStringEnum<SqlPoolRefe
      * @param name a name to look for.
      * @return the corresponding SqlPoolReferenceType.
      */
+    @Generated
     public static SqlPoolReferenceType fromString(String name) {
         return fromString(name, SqlPoolReferenceType.class);
     }
@@ -40,6 +44,7 @@ public final class SqlPoolReferenceType extends ExpandableStringEnum<SqlPoolRefe
      * 
      * @return known SqlPoolReferenceType values.
      */
+    @Generated
     public static Collection<SqlPoolReferenceType> values() {
         return values(SqlPoolReferenceType.class);
     }

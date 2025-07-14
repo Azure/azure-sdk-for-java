@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,41 +23,49 @@ public final class IntegrationRuntimeSsisProperties implements JsonSerializable<
     /*
      * Catalog information for managed dedicated integration runtime.
      */
+    @Generated
     private IntegrationRuntimeSsisCatalogInfo catalogInfo;
 
     /*
      * License type for bringing your own license scenario.
      */
+    @Generated
     private IntegrationRuntimeLicenseType licenseType;
 
     /*
      * Custom setup script properties for a managed dedicated integration runtime.
      */
+    @Generated
     private IntegrationRuntimeCustomSetupScriptProperties customSetupScriptProperties;
 
     /*
      * Data proxy properties for a managed dedicated integration runtime.
      */
+    @Generated
     private IntegrationRuntimeDataProxyProperties dataProxyProperties;
 
     /*
      * The edition for the SSIS Integration Runtime
      */
+    @Generated
     private IntegrationRuntimeEdition edition;
 
     /*
      * Custom setup without script properties for a SSIS integration runtime.
      */
+    @Generated
     private List<CustomSetupBase> expressCustomSetupProperties;
 
     /*
      * SSIS properties for managed integration runtime.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of IntegrationRuntimeSsisProperties class.
      */
+    @Generated
     public IntegrationRuntimeSsisProperties() {
     }
 
@@ -65,6 +74,7 @@ public final class IntegrationRuntimeSsisProperties implements JsonSerializable<
      * 
      * @return the catalogInfo value.
      */
+    @Generated
     public IntegrationRuntimeSsisCatalogInfo getCatalogInfo() {
         return this.catalogInfo;
     }
@@ -75,6 +85,7 @@ public final class IntegrationRuntimeSsisProperties implements JsonSerializable<
      * @param catalogInfo the catalogInfo value to set.
      * @return the IntegrationRuntimeSsisProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeSsisProperties setCatalogInfo(IntegrationRuntimeSsisCatalogInfo catalogInfo) {
         this.catalogInfo = catalogInfo;
         return this;
@@ -85,6 +96,7 @@ public final class IntegrationRuntimeSsisProperties implements JsonSerializable<
      * 
      * @return the licenseType value.
      */
+    @Generated
     public IntegrationRuntimeLicenseType getLicenseType() {
         return this.licenseType;
     }
@@ -95,6 +107,7 @@ public final class IntegrationRuntimeSsisProperties implements JsonSerializable<
      * @param licenseType the licenseType value to set.
      * @return the IntegrationRuntimeSsisProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeSsisProperties setLicenseType(IntegrationRuntimeLicenseType licenseType) {
         this.licenseType = licenseType;
         return this;
@@ -106,6 +119,7 @@ public final class IntegrationRuntimeSsisProperties implements JsonSerializable<
      * 
      * @return the customSetupScriptProperties value.
      */
+    @Generated
     public IntegrationRuntimeCustomSetupScriptProperties getCustomSetupScriptProperties() {
         return this.customSetupScriptProperties;
     }
@@ -117,6 +131,7 @@ public final class IntegrationRuntimeSsisProperties implements JsonSerializable<
      * @param customSetupScriptProperties the customSetupScriptProperties value to set.
      * @return the IntegrationRuntimeSsisProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeSsisProperties
         setCustomSetupScriptProperties(IntegrationRuntimeCustomSetupScriptProperties customSetupScriptProperties) {
         this.customSetupScriptProperties = customSetupScriptProperties;
@@ -128,6 +143,7 @@ public final class IntegrationRuntimeSsisProperties implements JsonSerializable<
      * 
      * @return the dataProxyProperties value.
      */
+    @Generated
     public IntegrationRuntimeDataProxyProperties getDataProxyProperties() {
         return this.dataProxyProperties;
     }
@@ -138,6 +154,7 @@ public final class IntegrationRuntimeSsisProperties implements JsonSerializable<
      * @param dataProxyProperties the dataProxyProperties value to set.
      * @return the IntegrationRuntimeSsisProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeSsisProperties
         setDataProxyProperties(IntegrationRuntimeDataProxyProperties dataProxyProperties) {
         this.dataProxyProperties = dataProxyProperties;
@@ -149,6 +166,7 @@ public final class IntegrationRuntimeSsisProperties implements JsonSerializable<
      * 
      * @return the edition value.
      */
+    @Generated
     public IntegrationRuntimeEdition getEdition() {
         return this.edition;
     }
@@ -159,6 +177,7 @@ public final class IntegrationRuntimeSsisProperties implements JsonSerializable<
      * @param edition the edition value to set.
      * @return the IntegrationRuntimeSsisProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeSsisProperties setEdition(IntegrationRuntimeEdition edition) {
         this.edition = edition;
         return this;
@@ -170,6 +189,7 @@ public final class IntegrationRuntimeSsisProperties implements JsonSerializable<
      * 
      * @return the expressCustomSetupProperties value.
      */
+    @Generated
     public List<CustomSetupBase> getExpressCustomSetupProperties() {
         return this.expressCustomSetupProperties;
     }
@@ -181,6 +201,7 @@ public final class IntegrationRuntimeSsisProperties implements JsonSerializable<
      * @param expressCustomSetupProperties the expressCustomSetupProperties value to set.
      * @return the IntegrationRuntimeSsisProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeSsisProperties
         setExpressCustomSetupProperties(List<CustomSetupBase> expressCustomSetupProperties) {
         this.expressCustomSetupProperties = expressCustomSetupProperties;
@@ -192,6 +213,7 @@ public final class IntegrationRuntimeSsisProperties implements JsonSerializable<
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -202,6 +224,7 @@ public final class IntegrationRuntimeSsisProperties implements JsonSerializable<
      * @param additionalProperties the additionalProperties value to set.
      * @return the IntegrationRuntimeSsisProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeSsisProperties setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -210,6 +233,7 @@ public final class IntegrationRuntimeSsisProperties implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -236,6 +260,7 @@ public final class IntegrationRuntimeSsisProperties implements JsonSerializable<
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the IntegrationRuntimeSsisProperties.
      */
+    @Generated
     public static IntegrationRuntimeSsisProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IntegrationRuntimeSsisProperties deserializedIntegrationRuntimeSsisProperties

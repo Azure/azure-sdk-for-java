@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import java.nio.charset.StandardCharsets;
@@ -25,9 +25,9 @@ public final class DeploymentsDeleteMockTests {
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.deployments().delete("ids", "yskbruff", "l", com.azure.core.util.Context.NONE);
+        manager.deployments().delete("wjh", "kbiwetpozyc", "qiqyhgfsetzlexbs", com.azure.core.util.Context.NONE);
 
     }
 }

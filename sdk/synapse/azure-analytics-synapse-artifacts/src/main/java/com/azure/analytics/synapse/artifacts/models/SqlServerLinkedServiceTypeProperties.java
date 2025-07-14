@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,42 +19,50 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /*
      * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * The type used for authentication. Type: string.
      */
+    @Generated
     private SqlServerAuthenticationType authenticationType;
 
     /*
      * The on-premises Windows authentication user name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object userName;
 
     /*
      * The on-premises Windows authentication password.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /*
      * Sql always encrypted properties.
      */
+    @Generated
     private SqlAlwaysEncryptedProperties alwaysEncryptedSettings;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
 
     /**
      * Creates an instance of SqlServerLinkedServiceTypeProperties class.
      */
+    @Generated
     public SqlServerLinkedServiceTypeProperties() {
     }
 
@@ -63,6 +72,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -74,6 +84,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
      * @param connectionString the connectionString value to set.
      * @return the SqlServerLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public SqlServerLinkedServiceTypeProperties setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -84,6 +95,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public SqlServerAuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -94,6 +106,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
      * @param authenticationType the authenticationType value to set.
      * @return the SqlServerLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public SqlServerLinkedServiceTypeProperties setAuthenticationType(SqlServerAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -105,6 +118,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
      * 
      * @return the userName value.
      */
+    @Generated
     public Object getUserName() {
         return this.userName;
     }
@@ -116,6 +130,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
      * @param userName the userName value to set.
      * @return the SqlServerLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public SqlServerLinkedServiceTypeProperties setUserName(Object userName) {
         this.userName = userName;
         return this;
@@ -126,6 +141,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -136,6 +152,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
      * @param password the password value to set.
      * @return the SqlServerLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public SqlServerLinkedServiceTypeProperties setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -147,6 +164,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -158,6 +176,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SqlServerLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public SqlServerLinkedServiceTypeProperties setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -168,6 +187,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
      * 
      * @return the alwaysEncryptedSettings value.
      */
+    @Generated
     public SqlAlwaysEncryptedProperties getAlwaysEncryptedSettings() {
         return this.alwaysEncryptedSettings;
     }
@@ -178,6 +198,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
      * @param alwaysEncryptedSettings the alwaysEncryptedSettings value to set.
      * @return the SqlServerLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public SqlServerLinkedServiceTypeProperties
         setAlwaysEncryptedSettings(SqlAlwaysEncryptedProperties alwaysEncryptedSettings) {
         this.alwaysEncryptedSettings = alwaysEncryptedSettings;
@@ -189,6 +210,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -199,6 +221,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
      * @param credential the credential value to set.
      * @return the SqlServerLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public SqlServerLinkedServiceTypeProperties setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
@@ -207,6 +230,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setServer(Object server) {
         super.setServer(server);
@@ -216,6 +240,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setDatabase(Object database) {
         super.setDatabase(database);
@@ -225,6 +250,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setEncrypt(Object encrypt) {
         super.setEncrypt(encrypt);
@@ -234,6 +260,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setTrustServerCertificate(Object trustServerCertificate) {
         super.setTrustServerCertificate(trustServerCertificate);
@@ -243,6 +270,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setHostNameInCertificate(Object hostNameInCertificate) {
         super.setHostNameInCertificate(hostNameInCertificate);
@@ -252,6 +280,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setApplicationIntent(Object applicationIntent) {
         super.setApplicationIntent(applicationIntent);
@@ -261,6 +290,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setConnectTimeout(Object connectTimeout) {
         super.setConnectTimeout(connectTimeout);
@@ -270,6 +300,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setConnectRetryCount(Object connectRetryCount) {
         super.setConnectRetryCount(connectRetryCount);
@@ -279,6 +310,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setConnectRetryInterval(Object connectRetryInterval) {
         super.setConnectRetryInterval(connectRetryInterval);
@@ -288,6 +320,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setLoadBalanceTimeout(Object loadBalanceTimeout) {
         super.setLoadBalanceTimeout(loadBalanceTimeout);
@@ -297,6 +330,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setCommandTimeout(Object commandTimeout) {
         super.setCommandTimeout(commandTimeout);
@@ -306,6 +340,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setIntegratedSecurity(Object integratedSecurity) {
         super.setIntegratedSecurity(integratedSecurity);
@@ -315,6 +350,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setFailoverPartner(Object failoverPartner) {
         super.setFailoverPartner(failoverPartner);
@@ -324,6 +360,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setMaxPoolSize(Object maxPoolSize) {
         super.setMaxPoolSize(maxPoolSize);
@@ -333,6 +370,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setMinPoolSize(Object minPoolSize) {
         super.setMinPoolSize(minPoolSize);
@@ -342,6 +380,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setMultipleActiveResultSets(Object multipleActiveResultSets) {
         super.setMultipleActiveResultSets(multipleActiveResultSets);
@@ -351,6 +390,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setMultiSubnetFailover(Object multiSubnetFailover) {
         super.setMultiSubnetFailover(multiSubnetFailover);
@@ -360,6 +400,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setPacketSize(Object packetSize) {
         super.setPacketSize(packetSize);
@@ -369,6 +410,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerLinkedServiceTypeProperties setPooling(Object pooling) {
         super.setPooling(pooling);
@@ -378,34 +420,79 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("server", getServer());
-        jsonWriter.writeUntypedField("database", getDatabase());
-        jsonWriter.writeUntypedField("encrypt", getEncrypt());
-        jsonWriter.writeUntypedField("trustServerCertificate", getTrustServerCertificate());
-        jsonWriter.writeUntypedField("hostNameInCertificate", getHostNameInCertificate());
-        jsonWriter.writeUntypedField("applicationIntent", getApplicationIntent());
-        jsonWriter.writeUntypedField("connectTimeout", getConnectTimeout());
-        jsonWriter.writeUntypedField("connectRetryCount", getConnectRetryCount());
-        jsonWriter.writeUntypedField("connectRetryInterval", getConnectRetryInterval());
-        jsonWriter.writeUntypedField("loadBalanceTimeout", getLoadBalanceTimeout());
-        jsonWriter.writeUntypedField("commandTimeout", getCommandTimeout());
-        jsonWriter.writeUntypedField("integratedSecurity", getIntegratedSecurity());
-        jsonWriter.writeUntypedField("failoverPartner", getFailoverPartner());
-        jsonWriter.writeUntypedField("maxPoolSize", getMaxPoolSize());
-        jsonWriter.writeUntypedField("minPoolSize", getMinPoolSize());
-        jsonWriter.writeUntypedField("multipleActiveResultSets", getMultipleActiveResultSets());
-        jsonWriter.writeUntypedField("multiSubnetFailover", getMultiSubnetFailover());
-        jsonWriter.writeUntypedField("packetSize", getPacketSize());
-        jsonWriter.writeUntypedField("pooling", getPooling());
-        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        if (getServer() != null) {
+            jsonWriter.writeUntypedField("server", getServer());
+        }
+        if (getDatabase() != null) {
+            jsonWriter.writeUntypedField("database", getDatabase());
+        }
+        if (getEncrypt() != null) {
+            jsonWriter.writeUntypedField("encrypt", getEncrypt());
+        }
+        if (getTrustServerCertificate() != null) {
+            jsonWriter.writeUntypedField("trustServerCertificate", getTrustServerCertificate());
+        }
+        if (getHostNameInCertificate() != null) {
+            jsonWriter.writeUntypedField("hostNameInCertificate", getHostNameInCertificate());
+        }
+        if (getApplicationIntent() != null) {
+            jsonWriter.writeUntypedField("applicationIntent", getApplicationIntent());
+        }
+        if (getConnectTimeout() != null) {
+            jsonWriter.writeUntypedField("connectTimeout", getConnectTimeout());
+        }
+        if (getConnectRetryCount() != null) {
+            jsonWriter.writeUntypedField("connectRetryCount", getConnectRetryCount());
+        }
+        if (getConnectRetryInterval() != null) {
+            jsonWriter.writeUntypedField("connectRetryInterval", getConnectRetryInterval());
+        }
+        if (getLoadBalanceTimeout() != null) {
+            jsonWriter.writeUntypedField("loadBalanceTimeout", getLoadBalanceTimeout());
+        }
+        if (getCommandTimeout() != null) {
+            jsonWriter.writeUntypedField("commandTimeout", getCommandTimeout());
+        }
+        if (getIntegratedSecurity() != null) {
+            jsonWriter.writeUntypedField("integratedSecurity", getIntegratedSecurity());
+        }
+        if (getFailoverPartner() != null) {
+            jsonWriter.writeUntypedField("failoverPartner", getFailoverPartner());
+        }
+        if (getMaxPoolSize() != null) {
+            jsonWriter.writeUntypedField("maxPoolSize", getMaxPoolSize());
+        }
+        if (getMinPoolSize() != null) {
+            jsonWriter.writeUntypedField("minPoolSize", getMinPoolSize());
+        }
+        if (getMultipleActiveResultSets() != null) {
+            jsonWriter.writeUntypedField("multipleActiveResultSets", getMultipleActiveResultSets());
+        }
+        if (getMultiSubnetFailover() != null) {
+            jsonWriter.writeUntypedField("multiSubnetFailover", getMultiSubnetFailover());
+        }
+        if (getPacketSize() != null) {
+            jsonWriter.writeUntypedField("packetSize", getPacketSize());
+        }
+        if (getPooling() != null) {
+            jsonWriter.writeUntypedField("pooling", getPooling());
+        }
+        if (this.connectionString != null) {
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        }
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("userName", this.userName);
+        if (this.userName != null) {
+            jsonWriter.writeUntypedField("userName", this.userName);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+        if (this.encryptedCredential != null) {
+            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+        }
         jsonWriter.writeJsonField("alwaysEncryptedSettings", this.alwaysEncryptedSettings);
         jsonWriter.writeJsonField("credential", this.credential);
         return jsonWriter.writeEndObject();
@@ -419,6 +506,7 @@ public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLin
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SqlServerLinkedServiceTypeProperties.
      */
+    @Generated
     public static SqlServerLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SqlServerLinkedServiceTypeProperties deserializedSqlServerLinkedServiceTypeProperties

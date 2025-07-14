@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,6 +24,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
     /*
      * The name of the semantic configuration.
      */
+    @Generated
     private final String name;
 
     /*
@@ -30,11 +32,19 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      * answers. At least one of the three sub properties (titleField, prioritizedKeywordsFields and
      * prioritizedContentFields) need to be set.
      */
+    @Generated
     private final SemanticPrioritizedFields prioritizedFields;
 
     /*
-     * Determines how which semantic or query rewrite models to use during model flighting/upgrades.
+     * Specifies the score type to be used for the sort order of the search results.
      */
+    @Generated
+    private RankingOrder rankingOrder;
+
+    /*
+     * Determines which semantic or query rewrite models to use during model flighting/upgrades.
+     */
+    @Generated
     private Boolean flightingOptIn;
 
     /**
@@ -43,6 +53,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      * @param name the name value to set.
      * @param prioritizedFields the prioritizedFields value to set.
      */
+    @Generated
     public SemanticConfiguration(String name, SemanticPrioritizedFields prioritizedFields) {
         this.name = name;
         this.prioritizedFields = prioritizedFields;
@@ -53,6 +64,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -64,27 +76,52 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      * 
      * @return the prioritizedFields value.
      */
+    @Generated
     public SemanticPrioritizedFields getPrioritizedFields() {
         return this.prioritizedFields;
     }
 
     /**
-     * Get the flightingOptIn property: Determines how which semantic or query rewrite models to use during model
+     * Get the rankingOrder property: Specifies the score type to be used for the sort order of the search results.
+     * 
+     * @return the rankingOrder value.
+     */
+    @Generated
+    public RankingOrder getRankingOrder() {
+        return this.rankingOrder;
+    }
+
+    /**
+     * Set the rankingOrder property: Specifies the score type to be used for the sort order of the search results.
+     * 
+     * @param rankingOrder the rankingOrder value to set.
+     * @return the SemanticConfiguration object itself.
+     */
+    @Generated
+    public SemanticConfiguration setRankingOrder(RankingOrder rankingOrder) {
+        this.rankingOrder = rankingOrder;
+        return this;
+    }
+
+    /**
+     * Get the flightingOptIn property: Determines which semantic or query rewrite models to use during model
      * flighting/upgrades.
      * 
      * @return the flightingOptIn value.
      */
+    @Generated
     public Boolean isFlightingOptIn() {
         return this.flightingOptIn;
     }
 
     /**
-     * Set the flightingOptIn property: Determines how which semantic or query rewrite models to use during model
+     * Set the flightingOptIn property: Determines which semantic or query rewrite models to use during model
      * flighting/upgrades.
      * 
      * @param flightingOptIn the flightingOptIn value to set.
      * @return the SemanticConfiguration object itself.
      */
+    @Generated
     public SemanticConfiguration setFlightingOptIn(Boolean flightingOptIn) {
         this.flightingOptIn = flightingOptIn;
         return this;
@@ -93,11 +130,13 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("prioritizedFields", this.prioritizedFields);
+        jsonWriter.writeStringField("rankingOrder", this.rankingOrder == null ? null : this.rankingOrder.toString());
         jsonWriter.writeBooleanField("flightingOptIn", this.flightingOptIn);
         return jsonWriter.writeEndObject();
     }
@@ -111,12 +150,14 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SemanticConfiguration.
      */
+    @Generated
     public static SemanticConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;
             String name = null;
             boolean prioritizedFieldsFound = false;
             SemanticPrioritizedFields prioritizedFields = null;
+            RankingOrder rankingOrder = null;
             Boolean flightingOptIn = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -128,6 +169,8 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
                 } else if ("prioritizedFields".equals(fieldName)) {
                     prioritizedFields = SemanticPrioritizedFields.fromJson(reader);
                     prioritizedFieldsFound = true;
+                } else if ("rankingOrder".equals(fieldName)) {
+                    rankingOrder = RankingOrder.fromString(reader.getString());
                 } else if ("flightingOptIn".equals(fieldName)) {
                     flightingOptIn = reader.getNullable(JsonReader::getBoolean);
                 } else {
@@ -137,6 +180,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
             if (nameFound && prioritizedFieldsFound) {
                 SemanticConfiguration deserializedSemanticConfiguration
                     = new SemanticConfiguration(name, prioritizedFields);
+                deserializedSemanticConfiguration.rankingOrder = rankingOrder;
                 deserializedSemanticConfiguration.flightingOptIn = flightingOptIn;
 
                 return deserializedSemanticConfiguration;

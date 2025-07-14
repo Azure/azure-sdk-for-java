@@ -4,6 +4,7 @@
 
 package com.azure.maps.render.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,12 +15,14 @@ public final class TrafficTilesetId extends ExpandableStringEnum<TrafficTilesetI
     /**
      * Supported traffic related tilesetId.
      */
+    @Generated
     public static final TrafficTilesetId MICROSOFT_TRAFFIC_RELATIVE_MAIN
         = fromString("microsoft.traffic.relative.main");
 
     /**
      * Default value, no traffic flow overlay.
      */
+    @Generated
     public static final TrafficTilesetId NONE = fromString("none");
 
     /**
@@ -27,6 +30,7 @@ public final class TrafficTilesetId extends ExpandableStringEnum<TrafficTilesetI
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TrafficTilesetId() {
     }
@@ -37,6 +41,7 @@ public final class TrafficTilesetId extends ExpandableStringEnum<TrafficTilesetI
      * @param name a name to look for.
      * @return the corresponding TrafficTilesetId.
      */
+    @Generated
     public static TrafficTilesetId fromString(String name) {
         return fromString(name, TrafficTilesetId.class);
     }
@@ -46,6 +51,7 @@ public final class TrafficTilesetId extends ExpandableStringEnum<TrafficTilesetI
      * 
      * @return known TrafficTilesetId values.
      */
+    @Generated
     public static Collection<TrafficTilesetId> values() {
         return values(TrafficTilesetId.class);
     }

@@ -18,6 +18,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -44,6 +45,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     private final Scheduler scheduler = Schedulers.newSingle(theadFactory);
     private volatile boolean isClosed;
     private volatile DatabaseAccount latestDatabaseAccount;
+    private final AtomicBoolean hasThinClientReadLocations = new AtomicBoolean(false);
 
     private final ReentrantReadWriteLock.WriteLock databaseAccountWriteLock;
 
@@ -354,6 +356,10 @@ public class GlobalEndpointManager implements AutoCloseable {
                 }).subscribeOn(scheduler);
     }
 
+    public boolean hasThinClientReadLocations() {
+        return this.hasThinClientReadLocations.get();
+    }
+
     private Mono<DatabaseAccount> getDatabaseAccountAsync(URI serviceEndpoint) {
         return this.owner.getDatabaseAccountFromEndpoint(serviceEndpoint)
             .doOnNext(databaseAccount -> {
@@ -363,6 +369,10 @@ public class GlobalEndpointManager implements AutoCloseable {
 
                     try {
                         this.latestDatabaseAccount = databaseAccount;
+                        Collection<DatabaseAccountLocation> thinClientReadLocations =
+                                databaseAccount.getThinClientReadableLocations();
+                        this.hasThinClientReadLocations.set(thinClientReadLocations != null && !thinClientReadLocations.isEmpty());
+
                         this.setLatestDatabaseRefreshError(null);
                     } finally {
                         this.databaseAccountWriteLock.unlock();

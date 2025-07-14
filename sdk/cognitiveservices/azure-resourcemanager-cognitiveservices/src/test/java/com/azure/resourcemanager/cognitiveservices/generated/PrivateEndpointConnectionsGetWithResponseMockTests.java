@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointConnection;
@@ -22,25 +22,25 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"eakxcptsoqfyi\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"chkrttzr\",\"actionsRequired\":\"isgykiuemvanbwz\"},\"provisioningState\":\"Deleting\",\"groupIds\":[\"xxbsojklinhmd\"]},\"location\":\"sprqsgnzxojpslsv\",\"etag\":\"pli\",\"id\":\"fiqwoy\",\"name\":\"qvapcohhoucq\",\"type\":\"q\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"nbm\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ijkgqxnhm\",\"actionsRequired\":\"eznjaujv\"},\"provisioningState\":\"Failed\",\"groupIds\":[\"giycwkdtaawxwfek\",\"umrrqmbzm\",\"kratbnxwbj\",\"idbirkfpkso\"]},\"location\":\"ogewij\",\"etag\":\"rhbguzozkyewnfn\",\"id\":\"hhhqosm\",\"name\":\"fjkutycyarnroo\",\"type\":\"g\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("laqacigele", "hdbvqvwzkjop", "beonrlkwzdq", com.azure.core.util.Context.NONE)
+            .getWithResponse("lsygaol", "jpnnbmjksibjgsj", "xxahmrnadzyqegxy", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("chkrttzr", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("isgykiuemvanbwz",
+        Assertions.assertEquals("ijkgqxnhm", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("eznjaujv",
             response.properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("xxbsojklinhmd", response.properties().groupIds().get(0));
-        Assertions.assertEquals("sprqsgnzxojpslsv", response.location());
+        Assertions.assertEquals("giycwkdtaawxwfek", response.properties().groupIds().get(0));
+        Assertions.assertEquals("ogewij", response.location());
     }
 }

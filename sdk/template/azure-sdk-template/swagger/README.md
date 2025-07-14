@@ -65,7 +65,7 @@ either required or considered best practices by Azure SDKs for Java:
 _Anything inside `<>` should be removed as it's an explanation._
 
 ``` yaml
-use: '@autorest/java@4.1.16' <latest version of Autorest Java at the time of creation or update>
+use: '@autorest/java@4.1.52' <latest version of Autorest Java at the time of creation or update>
 input-file: <required, can either be a local file or URL with URL preferred>
 java: true <required, indicates this is Java code generation>
 output-folder: ../ <required, where code will be generated>

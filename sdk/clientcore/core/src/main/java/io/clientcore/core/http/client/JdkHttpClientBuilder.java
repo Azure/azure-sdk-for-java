@@ -174,6 +174,21 @@ public class JdkHttpClientBuilder {
     }
 
     /**
+     * Sets the maximum {@link HttpProtocolVersion HTTP protocol version} that the HTTP client will support.
+     * <p>
+     * By default, the maximum HTTP protocol version is set to {@link HttpProtocolVersion#HTTP_2 HTTP_2}.
+     * <p>
+     * If {@code httpVersion} is null, it will reset the maximum HTTP protocol version to
+     * {@link HttpProtocolVersion#HTTP_2 HTTP_2}.
+     *
+     * @param httpVersion The maximum HTTP protocol version that the HTTP client will support.
+     * @return The updated {@link JdkHttpClientBuilder} object.
+     */
+    public JdkHttpClientBuilder setMaximumHttpVersion(HttpProtocolVersion httpVersion) {
+        throw LOGGER.throwableAtError().log(ERROR_MESSAGE, UnsupportedOperationException::new);
+    }
+
+    /**
      * Sets the configuration store that is used during construction of the HTTP client.
      *
      * @param configuration The configuration store used to

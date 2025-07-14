@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,11 +21,13 @@ public final class OrcFormat extends DatasetStorageFormat {
     /*
      * Type of dataset storage format.
      */
+    @Generated
     private String type = "OrcFormat";
 
     /**
      * Creates an instance of OrcFormat class.
      */
+    @Generated
     public OrcFormat() {
     }
 
@@ -33,6 +36,7 @@ public final class OrcFormat extends DatasetStorageFormat {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -41,6 +45,7 @@ public final class OrcFormat extends DatasetStorageFormat {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OrcFormat setSerializer(Object serializer) {
         super.setSerializer(serializer);
@@ -50,6 +55,7 @@ public final class OrcFormat extends DatasetStorageFormat {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OrcFormat setDeserializer(Object deserializer) {
         super.setDeserializer(deserializer);
@@ -59,11 +65,16 @@ public final class OrcFormat extends DatasetStorageFormat {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("serializer", getSerializer());
-        jsonWriter.writeUntypedField("deserializer", getDeserializer());
+        if (getSerializer() != null) {
+            jsonWriter.writeUntypedField("serializer", getSerializer());
+        }
+        if (getDeserializer() != null) {
+            jsonWriter.writeUntypedField("deserializer", getDeserializer());
+        }
         jsonWriter.writeStringField("type", this.type);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
@@ -81,6 +92,7 @@ public final class OrcFormat extends DatasetStorageFormat {
      * to JSON null.
      * @throws IOException If an error occurs while reading the OrcFormat.
      */
+    @Generated
     public static OrcFormat fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OrcFormat deserializedOrcFormat = new OrcFormat();

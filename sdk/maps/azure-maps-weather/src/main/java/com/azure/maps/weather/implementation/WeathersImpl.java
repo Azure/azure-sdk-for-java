@@ -77,7 +77,7 @@ public final class WeathersImpl {
      * calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WeatherClientWeather")
+    @ServiceInterface(name = "WeatherClientWeathers")
     public interface WeathersService {
         @Get("/weather/forecast/hourly/{format}")
         @ExpectedResponses({ 200 })

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class SsisPropertyOverride implements JsonSerializable<SsisProperty
     /*
      * SSIS package property override value. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object value;
 
     /*
      * Whether SSIS package property override value is sensitive data. Value will be encrypted in SSISDB if it is true
      */
+    @Generated
     private Boolean isSensitive;
 
     /**
      * Creates an instance of SsisPropertyOverride class.
      */
+    @Generated
     public SsisPropertyOverride() {
     }
 
@@ -38,6 +42,7 @@ public final class SsisPropertyOverride implements JsonSerializable<SsisProperty
      * 
      * @return the value value.
      */
+    @Generated
     public Object getValue() {
         return this.value;
     }
@@ -49,6 +54,7 @@ public final class SsisPropertyOverride implements JsonSerializable<SsisProperty
      * @param value the value value to set.
      * @return the SsisPropertyOverride object itself.
      */
+    @Generated
     public SsisPropertyOverride setValue(Object value) {
         this.value = value;
         return this;
@@ -60,6 +66,7 @@ public final class SsisPropertyOverride implements JsonSerializable<SsisProperty
      * 
      * @return the isSensitive value.
      */
+    @Generated
     public Boolean isSensitive() {
         return this.isSensitive;
     }
@@ -71,6 +78,7 @@ public final class SsisPropertyOverride implements JsonSerializable<SsisProperty
      * @param isSensitive the isSensitive value to set.
      * @return the SsisPropertyOverride object itself.
      */
+    @Generated
     public SsisPropertyOverride setIsSensitive(Boolean isSensitive) {
         this.isSensitive = isSensitive;
         return this;
@@ -79,6 +87,7 @@ public final class SsisPropertyOverride implements JsonSerializable<SsisProperty
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,6 +105,7 @@ public final class SsisPropertyOverride implements JsonSerializable<SsisProperty
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SsisPropertyOverride.
      */
+    @Generated
     public static SsisPropertyOverride fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SsisPropertyOverride deserializedSsisPropertyOverride = new SsisPropertyOverride();

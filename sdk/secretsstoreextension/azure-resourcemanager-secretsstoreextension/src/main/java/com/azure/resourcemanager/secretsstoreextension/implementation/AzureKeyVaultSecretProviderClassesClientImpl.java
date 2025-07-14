@@ -72,7 +72,7 @@ public final class AzureKeyVaultSecretProviderClassesClientImpl implements Azure
      * be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SecretsStoreExtensio")
+    @ServiceInterface(name = "SecretsStoreExtensionMgmtClientAzureKeyVaultSecretProviderClasses")
     public interface AzureKeyVaultSecretProviderClassesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}")

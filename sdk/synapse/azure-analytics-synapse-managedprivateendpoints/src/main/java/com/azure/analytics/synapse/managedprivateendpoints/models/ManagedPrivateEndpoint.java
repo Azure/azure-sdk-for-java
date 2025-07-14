@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.managedprivateendpoints.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,26 +22,31 @@ public final class ManagedPrivateEndpoint implements JsonSerializable<ManagedPri
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
      * resourceType}/{resourceName}
      */
+    @Generated
     private String id;
 
     /*
      * The name of the resource
      */
+    @Generated
     private String name;
 
     /*
      * The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
      */
+    @Generated
     private String type;
 
     /*
      * Managed private endpoint properties
      */
+    @Generated
     private ManagedPrivateEndpointProperties properties;
 
     /**
      * Creates an instance of ManagedPrivateEndpoint class.
      */
+    @Generated
     public ManagedPrivateEndpoint() {
     }
 
@@ -50,6 +56,7 @@ public final class ManagedPrivateEndpoint implements JsonSerializable<ManagedPri
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -59,6 +66,7 @@ public final class ManagedPrivateEndpoint implements JsonSerializable<ManagedPri
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -69,6 +77,7 @@ public final class ManagedPrivateEndpoint implements JsonSerializable<ManagedPri
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -78,6 +87,7 @@ public final class ManagedPrivateEndpoint implements JsonSerializable<ManagedPri
      * 
      * @return the properties value.
      */
+    @Generated
     public ManagedPrivateEndpointProperties getProperties() {
         return this.properties;
     }
@@ -88,6 +98,7 @@ public final class ManagedPrivateEndpoint implements JsonSerializable<ManagedPri
      * @param properties the properties value to set.
      * @return the ManagedPrivateEndpoint object itself.
      */
+    @Generated
     public ManagedPrivateEndpoint setProperties(ManagedPrivateEndpointProperties properties) {
         this.properties = properties;
         return this;
@@ -96,6 +107,7 @@ public final class ManagedPrivateEndpoint implements JsonSerializable<ManagedPri
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -111,6 +123,7 @@ public final class ManagedPrivateEndpoint implements JsonSerializable<ManagedPri
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ManagedPrivateEndpoint.
      */
+    @Generated
     public static ManagedPrivateEndpoint fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ManagedPrivateEndpoint deserializedManagedPrivateEndpoint = new ManagedPrivateEndpoint();

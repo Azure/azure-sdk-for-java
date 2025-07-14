@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,41 +24,49 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
     /*
      * The ID of the query.
      */
+    @Generated
     private final String id;
 
     /*
      * The display name of the query.
      */
+    @Generated
     private String displayName;
 
     /*
      * The description of the query.
      */
+    @Generated
     private String description;
 
     /*
      * The KQL body of the query.
      */
+    @Generated
     private final String body;
 
     /*
      * The user defined labels associated with the query.
      */
+    @Generated
     private List<String> labels;
 
     /*
      * The tags associated with the query.
      */
+    @Generated
     private Object tags;
 
     /*
      * The properties of the query.
      */
+    @Generated
     private Object properties;
 
     /*
      * The related metadata items for the query.
      */
+    @Generated
     private MetadataQueryRelated related;
 
     /**
@@ -66,6 +75,7 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
      * @param id the id value to set.
      * @param body the body value to set.
      */
+    @Generated
     public MetadataQuery(String id, String body) {
         this.id = id;
         this.body = body;
@@ -76,6 +86,7 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -85,6 +96,7 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
      * 
      * @return the displayName value.
      */
+    @Generated
     public String getDisplayName() {
         return this.displayName;
     }
@@ -95,6 +107,7 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
      * @param displayName the displayName value to set.
      * @return the MetadataQuery object itself.
      */
+    @Generated
     public MetadataQuery setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
@@ -105,6 +118,7 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -115,6 +129,7 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
      * @param description the description value to set.
      * @return the MetadataQuery object itself.
      */
+    @Generated
     public MetadataQuery setDescription(String description) {
         this.description = description;
         return this;
@@ -125,6 +140,7 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
      * 
      * @return the body value.
      */
+    @Generated
     public String getBody() {
         return this.body;
     }
@@ -134,6 +150,7 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
      * 
      * @return the labels value.
      */
+    @Generated
     public List<String> getLabels() {
         return this.labels;
     }
@@ -144,6 +161,7 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
      * @param labels the labels value to set.
      * @return the MetadataQuery object itself.
      */
+    @Generated
     public MetadataQuery setLabels(List<String> labels) {
         this.labels = labels;
         return this;
@@ -154,6 +172,7 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
      * 
      * @return the tags value.
      */
+    @Generated
     public Object getTags() {
         return this.tags;
     }
@@ -164,6 +183,7 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
      * @param tags the tags value to set.
      * @return the MetadataQuery object itself.
      */
+    @Generated
     public MetadataQuery setTags(Object tags) {
         this.tags = tags;
         return this;
@@ -174,6 +194,7 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
      * 
      * @return the properties value.
      */
+    @Generated
     public Object getProperties() {
         return this.properties;
     }
@@ -184,6 +205,7 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
      * @param properties the properties value to set.
      * @return the MetadataQuery object itself.
      */
+    @Generated
     public MetadataQuery setProperties(Object properties) {
         this.properties = properties;
         return this;
@@ -194,6 +216,7 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
      * 
      * @return the related value.
      */
+    @Generated
     public MetadataQueryRelated getRelated() {
         return this.related;
     }
@@ -204,6 +227,7 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
      * @param related the related value to set.
      * @return the MetadataQuery object itself.
      */
+    @Generated
     public MetadataQuery setRelated(MetadataQueryRelated related) {
         this.related = related;
         return this;
@@ -212,6 +236,7 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -220,8 +245,12 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("labels", this.labels, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeUntypedField("tags", this.tags);
-        jsonWriter.writeUntypedField("properties", this.properties);
+        if (this.tags != null) {
+            jsonWriter.writeUntypedField("tags", this.tags);
+        }
+        if (this.properties != null) {
+            jsonWriter.writeUntypedField("properties", this.properties);
+        }
         jsonWriter.writeJsonField("related", this.related);
         return jsonWriter.writeEndObject();
     }
@@ -235,6 +264,7 @@ public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetadataQuery.
      */
+    @Generated
     public static MetadataQuery fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

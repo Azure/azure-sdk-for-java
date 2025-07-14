@@ -5,6 +5,7 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class SnapshotUpdateParameters implements JsonSerializable<Snapshot
     /*
      * The desired status of the snapshot.
      */
+    @Generated
     private ConfigurationSnapshotStatus status;
 
     /**
      * Creates an instance of SnapshotUpdateParameters class.
      */
+    @Generated
     public SnapshotUpdateParameters() {
     }
 
@@ -33,6 +36,7 @@ public final class SnapshotUpdateParameters implements JsonSerializable<Snapshot
      * 
      * @return the status value.
      */
+    @Generated
     public ConfigurationSnapshotStatus getStatus() {
         return this.status;
     }
@@ -43,6 +47,7 @@ public final class SnapshotUpdateParameters implements JsonSerializable<Snapshot
      * @param status the status value to set.
      * @return the SnapshotUpdateParameters object itself.
      */
+    @Generated
     public SnapshotUpdateParameters setStatus(ConfigurationSnapshotStatus status) {
         this.status = status;
         return this;
@@ -51,6 +56,7 @@ public final class SnapshotUpdateParameters implements JsonSerializable<Snapshot
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -66,6 +72,7 @@ public final class SnapshotUpdateParameters implements JsonSerializable<Snapshot
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SnapshotUpdateParameters.
      */
+    @Generated
     public static SnapshotUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SnapshotUpdateParameters deserializedSnapshotUpdateParameters = new SnapshotUpdateParameters();

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public class ProxyResource extends Resource {
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource
      */
+    @Generated
     private String name;
 
     /*
@@ -32,11 +35,13 @@ public class ProxyResource extends Resource {
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
      * resourceType}/{resourceName}
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of ProxyResource class.
      */
+    @Generated
     public ProxyResource() {
     }
 
@@ -46,6 +51,7 @@ public class ProxyResource extends Resource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -56,6 +62,7 @@ public class ProxyResource extends Resource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String getName() {
         return this.name;
@@ -67,6 +74,7 @@ public class ProxyResource extends Resource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String getId() {
         return this.id;
@@ -75,6 +83,7 @@ public class ProxyResource extends Resource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -89,6 +98,7 @@ public class ProxyResource extends Resource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ProxyResource.
      */
+    @Generated
     public static ProxyResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ProxyResource deserializedProxyResource = new ProxyResource();

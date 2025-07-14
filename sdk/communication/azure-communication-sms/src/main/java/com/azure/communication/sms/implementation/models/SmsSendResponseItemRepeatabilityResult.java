@@ -4,6 +4,7 @@
 
 package com.azure.communication.sms.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,11 +16,13 @@ public final class SmsSendResponseItemRepeatabilityResult
     /**
      * Static value accepted for SmsSendResponseItemRepeatabilityResult.
      */
+    @Generated
     public static final SmsSendResponseItemRepeatabilityResult ACCEPTED = fromString("accepted");
 
     /**
      * Static value rejected for SmsSendResponseItemRepeatabilityResult.
      */
+    @Generated
     public static final SmsSendResponseItemRepeatabilityResult REJECTED = fromString("rejected");
 
     /**
@@ -27,6 +30,7 @@ public final class SmsSendResponseItemRepeatabilityResult
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SmsSendResponseItemRepeatabilityResult() {
     }
@@ -37,6 +41,7 @@ public final class SmsSendResponseItemRepeatabilityResult
      * @param name a name to look for.
      * @return the corresponding SmsSendResponseItemRepeatabilityResult.
      */
+    @Generated
     public static SmsSendResponseItemRepeatabilityResult fromString(String name) {
         return fromString(name, SmsSendResponseItemRepeatabilityResult.class);
     }
@@ -46,6 +51,7 @@ public final class SmsSendResponseItemRepeatabilityResult
      * 
      * @return known SmsSendResponseItemRepeatabilityResult values.
      */
+    @Generated
     public static Collection<SmsSendResponseItemRepeatabilityResult> values() {
         return values(SmsSendResponseItemRepeatabilityResult.class);
     }

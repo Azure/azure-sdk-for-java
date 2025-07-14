@@ -6,8 +6,8 @@ package com.azure.resourcemanager.dnsresolver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dnsresolver.DnsResolverManager;
 import com.azure.resourcemanager.dnsresolver.models.ForwardingRule;
@@ -22,23 +22,23 @@ public final class ForwardingRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"rjaltolmncw\",\"properties\":{\"domainName\":\"obqwcsdbnwdcfh\",\"targetDnsServers\":[{\"ipAddress\":\"qdpfuvglsbjjca\",\"port\":1995846414},{\"ipAddress\":\"bvtvudutncormr\",\"port\":1360670450}],\"metadata\":{\"dknnqvsazn\":\"cofudflvkgjub\",\"orudsgsa\":\"n\"},\"forwardingRuleState\":\"Disabled\",\"provisioningState\":\"Creating\"},\"id\":\"rauwjuetaebu\",\"name\":\"u\",\"type\":\"dmovsm\"}";
+            = "{\"etag\":\"x\",\"properties\":{\"domainName\":\"tczheydbsdshmkx\",\"targetDnsServers\":[{\"ipAddress\":\"ehvbbxurip\",\"port\":1041302406},{\"ipAddress\":\"n\",\"port\":895803414},{\"ipAddress\":\"axkgx\",\"port\":338199100}],\"metadata\":{\"dlgzibthostgkt\":\"pyklyhpluodpvru\",\"vh\":\"tvdxeclzedqb\"},\"forwardingRuleState\":\"Enabled\",\"provisioningState\":\"Updating\"},\"id\":\"dqkdlwwqfbu\",\"name\":\"lkxt\",\"type\":\"qjfsmlmbtxhw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DnsResolverManager manager = DnsResolverManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ForwardingRule response = manager.forwardingRules()
-            .getWithResponse("fz", "whxxbuyqax", "feqztppriol", com.azure.core.util.Context.NONE)
+            .getWithResponse("jpr", "kwcf", "ql", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("obqwcsdbnwdcfh", response.domainName());
-        Assertions.assertEquals("qdpfuvglsbjjca", response.targetDnsServers().get(0).ipAddress());
-        Assertions.assertEquals(1995846414, response.targetDnsServers().get(0).port());
-        Assertions.assertEquals("cofudflvkgjub", response.metadata().get("dknnqvsazn"));
-        Assertions.assertEquals(ForwardingRuleState.DISABLED, response.forwardingRuleState());
+        Assertions.assertEquals("tczheydbsdshmkx", response.domainName());
+        Assertions.assertEquals("ehvbbxurip", response.targetDnsServers().get(0).ipAddress());
+        Assertions.assertEquals(1041302406, response.targetDnsServers().get(0).port());
+        Assertions.assertEquals("pyklyhpluodpvru", response.metadata().get("dlgzibthostgkt"));
+        Assertions.assertEquals(ForwardingRuleState.ENABLED, response.forwardingRuleState());
     }
 }

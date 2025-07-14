@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/purestorageblock/ci.yml
+      - sdk/purestorageblock/azure-resourcemanager-purestorageblock/
+    exclude:
+      - sdk/purestorageblock/pom.xml
+      - sdk/purestorageblock/azure-resourcemanager-purestorageblock/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/purestorageblock/ci.yml
+      - sdk/purestorageblock/azure-resourcemanager-purestorageblock/
+    exclude:
+      - sdk/purestorageblock/pom.xml
+      - sdk/purestorageblock/azure-resourcemanager-purestorageblock/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerpurestorageblock
+    displayName: azure-resourcemanager-purestorageblock
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: purestorageblock
+    Artifacts:
+      - name: azure-resourcemanager-purestorageblock
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerpurestorageblock
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerpurestorageblock }}

@@ -81,7 +81,7 @@ public final class PageBlobsImpl {
      * REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureBlobStoragePage")
+    @ServiceInterface(name = "AzureBlobStoragePageBlobs")
     public interface PageBlobsService {
 
         @Put("/{containerName}/{blob}")

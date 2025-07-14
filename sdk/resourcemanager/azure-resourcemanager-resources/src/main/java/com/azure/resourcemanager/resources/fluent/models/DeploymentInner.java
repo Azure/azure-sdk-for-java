@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.resources.models.DeploymentIdentity;
 import com.azure.resourcemanager.resources.models.DeploymentProperties;
 import java.io.IOException;
 import java.util.Map;
@@ -33,6 +34,11 @@ public final class DeploymentInner implements JsonSerializable<DeploymentInner> 
      * Deployment tags
      */
     private Map<String, String> tags;
+
+    /*
+     * The Managed Identity configuration for a deployment.
+     */
+    private DeploymentIdentity identity;
 
     /**
      * Creates an instance of DeploymentInner class.
@@ -101,6 +107,26 @@ public final class DeploymentInner implements JsonSerializable<DeploymentInner> 
     }
 
     /**
+     * Get the identity property: The Managed Identity configuration for a deployment.
+     * 
+     * @return the identity value.
+     */
+    public DeploymentIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The Managed Identity configuration for a deployment.
+     * 
+     * @param identity the identity value to set.
+     * @return the DeploymentInner object itself.
+     */
+    public DeploymentInner withIdentity(DeploymentIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -111,6 +137,9 @@ public final class DeploymentInner implements JsonSerializable<DeploymentInner> 
                 .log(new IllegalArgumentException("Missing required property properties in model DeploymentInner"));
         } else {
             properties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 
@@ -125,6 +154,7 @@ public final class DeploymentInner implements JsonSerializable<DeploymentInner> 
         jsonWriter.writeJsonField("properties", this.properties);
         jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -151,6 +181,8 @@ public final class DeploymentInner implements JsonSerializable<DeploymentInner> 
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedDeploymentInner.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedDeploymentInner.identity = DeploymentIdentity.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

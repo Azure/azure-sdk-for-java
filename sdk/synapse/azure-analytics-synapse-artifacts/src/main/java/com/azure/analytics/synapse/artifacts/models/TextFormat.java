@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,31 +21,37 @@ public final class TextFormat extends DatasetStorageFormat {
     /*
      * Type of dataset storage format.
      */
+    @Generated
     private String type = "TextFormat";
 
     /*
      * The column delimiter. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object columnDelimiter;
 
     /*
      * The row delimiter. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object rowDelimiter;
 
     /*
      * The escape character. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object escapeChar;
 
     /*
      * The quote character. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object quoteChar;
 
     /*
      * The null value string. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object nullValue;
 
     /*
@@ -53,29 +60,34 @@ public final class TextFormat extends DatasetStorageFormat {
      * values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object encodingName;
 
     /*
      * Treat empty column values in the text file as null. The default value is true. Type: boolean (or Expression with
      * resultType boolean).
      */
+    @Generated
     private Object treatEmptyAsNull;
 
     /*
      * The number of lines/rows to be skipped when parsing text files. The default value is 0. Type: integer (or
      * Expression with resultType integer).
      */
+    @Generated
     private Object skipLineCount;
 
     /*
      * When used as input, treat the first row of data as headers. When used as output,write the headers into the output
      * as the first row of data. The default value is false. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object firstRowAsHeader;
 
     /**
      * Creates an instance of TextFormat class.
      */
+    @Generated
     public TextFormat() {
     }
 
@@ -84,6 +96,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -94,6 +107,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * 
      * @return the columnDelimiter value.
      */
+    @Generated
     public Object getColumnDelimiter() {
         return this.columnDelimiter;
     }
@@ -104,6 +118,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * @param columnDelimiter the columnDelimiter value to set.
      * @return the TextFormat object itself.
      */
+    @Generated
     public TextFormat setColumnDelimiter(Object columnDelimiter) {
         this.columnDelimiter = columnDelimiter;
         return this;
@@ -114,6 +129,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * 
      * @return the rowDelimiter value.
      */
+    @Generated
     public Object getRowDelimiter() {
         return this.rowDelimiter;
     }
@@ -124,6 +140,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * @param rowDelimiter the rowDelimiter value to set.
      * @return the TextFormat object itself.
      */
+    @Generated
     public TextFormat setRowDelimiter(Object rowDelimiter) {
         this.rowDelimiter = rowDelimiter;
         return this;
@@ -134,6 +151,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * 
      * @return the escapeChar value.
      */
+    @Generated
     public Object getEscapeChar() {
         return this.escapeChar;
     }
@@ -144,6 +162,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * @param escapeChar the escapeChar value to set.
      * @return the TextFormat object itself.
      */
+    @Generated
     public TextFormat setEscapeChar(Object escapeChar) {
         this.escapeChar = escapeChar;
         return this;
@@ -154,6 +173,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * 
      * @return the quoteChar value.
      */
+    @Generated
     public Object getQuoteChar() {
         return this.quoteChar;
     }
@@ -164,6 +184,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * @param quoteChar the quoteChar value to set.
      * @return the TextFormat object itself.
      */
+    @Generated
     public TextFormat setQuoteChar(Object quoteChar) {
         this.quoteChar = quoteChar;
         return this;
@@ -174,6 +195,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * 
      * @return the nullValue value.
      */
+    @Generated
     public Object getNullValue() {
         return this.nullValue;
     }
@@ -184,6 +206,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * @param nullValue the nullValue value to set.
      * @return the TextFormat object itself.
      */
+    @Generated
     public TextFormat setNullValue(Object nullValue) {
         this.nullValue = nullValue;
         return this;
@@ -197,6 +220,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * 
      * @return the encodingName value.
      */
+    @Generated
     public Object getEncodingName() {
         return this.encodingName;
     }
@@ -210,6 +234,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * @param encodingName the encodingName value to set.
      * @return the TextFormat object itself.
      */
+    @Generated
     public TextFormat setEncodingName(Object encodingName) {
         this.encodingName = encodingName;
         return this;
@@ -221,6 +246,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * 
      * @return the treatEmptyAsNull value.
      */
+    @Generated
     public Object getTreatEmptyAsNull() {
         return this.treatEmptyAsNull;
     }
@@ -232,6 +258,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * @param treatEmptyAsNull the treatEmptyAsNull value to set.
      * @return the TextFormat object itself.
      */
+    @Generated
     public TextFormat setTreatEmptyAsNull(Object treatEmptyAsNull) {
         this.treatEmptyAsNull = treatEmptyAsNull;
         return this;
@@ -243,6 +270,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * 
      * @return the skipLineCount value.
      */
+    @Generated
     public Object getSkipLineCount() {
         return this.skipLineCount;
     }
@@ -254,6 +282,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * @param skipLineCount the skipLineCount value to set.
      * @return the TextFormat object itself.
      */
+    @Generated
     public TextFormat setSkipLineCount(Object skipLineCount) {
         this.skipLineCount = skipLineCount;
         return this;
@@ -266,6 +295,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * 
      * @return the firstRowAsHeader value.
      */
+    @Generated
     public Object getFirstRowAsHeader() {
         return this.firstRowAsHeader;
     }
@@ -278,6 +308,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * @param firstRowAsHeader the firstRowAsHeader value to set.
      * @return the TextFormat object itself.
      */
+    @Generated
     public TextFormat setFirstRowAsHeader(Object firstRowAsHeader) {
         this.firstRowAsHeader = firstRowAsHeader;
         return this;
@@ -286,6 +317,7 @@ public final class TextFormat extends DatasetStorageFormat {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TextFormat setSerializer(Object serializer) {
         super.setSerializer(serializer);
@@ -295,6 +327,7 @@ public final class TextFormat extends DatasetStorageFormat {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TextFormat setDeserializer(Object deserializer) {
         super.setDeserializer(deserializer);
@@ -304,21 +337,44 @@ public final class TextFormat extends DatasetStorageFormat {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("serializer", getSerializer());
-        jsonWriter.writeUntypedField("deserializer", getDeserializer());
+        if (getSerializer() != null) {
+            jsonWriter.writeUntypedField("serializer", getSerializer());
+        }
+        if (getDeserializer() != null) {
+            jsonWriter.writeUntypedField("deserializer", getDeserializer());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("columnDelimiter", this.columnDelimiter);
-        jsonWriter.writeUntypedField("rowDelimiter", this.rowDelimiter);
-        jsonWriter.writeUntypedField("escapeChar", this.escapeChar);
-        jsonWriter.writeUntypedField("quoteChar", this.quoteChar);
-        jsonWriter.writeUntypedField("nullValue", this.nullValue);
-        jsonWriter.writeUntypedField("encodingName", this.encodingName);
-        jsonWriter.writeUntypedField("treatEmptyAsNull", this.treatEmptyAsNull);
-        jsonWriter.writeUntypedField("skipLineCount", this.skipLineCount);
-        jsonWriter.writeUntypedField("firstRowAsHeader", this.firstRowAsHeader);
+        if (this.columnDelimiter != null) {
+            jsonWriter.writeUntypedField("columnDelimiter", this.columnDelimiter);
+        }
+        if (this.rowDelimiter != null) {
+            jsonWriter.writeUntypedField("rowDelimiter", this.rowDelimiter);
+        }
+        if (this.escapeChar != null) {
+            jsonWriter.writeUntypedField("escapeChar", this.escapeChar);
+        }
+        if (this.quoteChar != null) {
+            jsonWriter.writeUntypedField("quoteChar", this.quoteChar);
+        }
+        if (this.nullValue != null) {
+            jsonWriter.writeUntypedField("nullValue", this.nullValue);
+        }
+        if (this.encodingName != null) {
+            jsonWriter.writeUntypedField("encodingName", this.encodingName);
+        }
+        if (this.treatEmptyAsNull != null) {
+            jsonWriter.writeUntypedField("treatEmptyAsNull", this.treatEmptyAsNull);
+        }
+        if (this.skipLineCount != null) {
+            jsonWriter.writeUntypedField("skipLineCount", this.skipLineCount);
+        }
+        if (this.firstRowAsHeader != null) {
+            jsonWriter.writeUntypedField("firstRowAsHeader", this.firstRowAsHeader);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -335,6 +391,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * to JSON null.
      * @throws IOException If an error occurs while reading the TextFormat.
      */
+    @Generated
     public static TextFormat fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TextFormat deserializedTextFormat = new TextFormat();

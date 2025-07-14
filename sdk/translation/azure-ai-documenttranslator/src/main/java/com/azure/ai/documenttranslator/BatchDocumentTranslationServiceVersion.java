@@ -6,9 +6,13 @@ package com.azure.ai.documenttranslator;
 
 import com.azure.core.util.ServiceVersion;
 
-/** Service version of BatchDocumentTranslationClient. */
+/**
+ * Service version of BatchDocumentTranslationClient.
+ */
 public enum BatchDocumentTranslationServiceVersion implements ServiceVersion {
-    /** Enum value v1.0. */
+    /**
+     * Enum value v1.0.
+     */
     V1_0("v1.0");
 
     private final String version;
@@ -17,7 +21,9 @@ public enum BatchDocumentTranslationServiceVersion implements ServiceVersion {
         this.version = version;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getVersion() {
         return this.version;
@@ -25,7 +31,7 @@ public enum BatchDocumentTranslationServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     *
+     * 
      * @return The latest {@link BatchDocumentTranslationServiceVersion}.
      */
     public static BatchDocumentTranslationServiceVersion getLatest() {

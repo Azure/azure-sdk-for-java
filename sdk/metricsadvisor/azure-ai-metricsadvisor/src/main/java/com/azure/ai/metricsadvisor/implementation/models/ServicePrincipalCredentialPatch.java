@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +19,19 @@ public final class ServicePrincipalCredentialPatch extends DataSourceCredentialP
     /*
      * Type of data source credential
      */
+    @Generated
     private DataSourceCredentialType dataSourceCredentialType = DataSourceCredentialType.SERVICE_PRINCIPAL;
 
     /*
      * The parameters property.
      */
+    @Generated
     private ServicePrincipalParamPatch parameters;
 
     /**
      * Creates an instance of ServicePrincipalCredentialPatch class.
      */
+    @Generated
     public ServicePrincipalCredentialPatch() {
     }
 
@@ -36,6 +40,7 @@ public final class ServicePrincipalCredentialPatch extends DataSourceCredentialP
      * 
      * @return the dataSourceCredentialType value.
      */
+    @Generated
     @Override
     public DataSourceCredentialType getDataSourceCredentialType() {
         return this.dataSourceCredentialType;
@@ -46,6 +51,7 @@ public final class ServicePrincipalCredentialPatch extends DataSourceCredentialP
      * 
      * @return the parameters value.
      */
+    @Generated
     public ServicePrincipalParamPatch getParameters() {
         return this.parameters;
     }
@@ -56,6 +62,7 @@ public final class ServicePrincipalCredentialPatch extends DataSourceCredentialP
      * @param parameters the parameters value to set.
      * @return the ServicePrincipalCredentialPatch object itself.
      */
+    @Generated
     public ServicePrincipalCredentialPatch setParameters(ServicePrincipalParamPatch parameters) {
         this.parameters = parameters;
         return this;
@@ -64,6 +71,7 @@ public final class ServicePrincipalCredentialPatch extends DataSourceCredentialP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ServicePrincipalCredentialPatch setDataSourceCredentialName(String dataSourceCredentialName) {
         super.setDataSourceCredentialName(dataSourceCredentialName);
@@ -73,6 +81,7 @@ public final class ServicePrincipalCredentialPatch extends DataSourceCredentialP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ServicePrincipalCredentialPatch setDataSourceCredentialDescription(String dataSourceCredentialDescription) {
         super.setDataSourceCredentialDescription(dataSourceCredentialDescription);
@@ -82,6 +91,7 @@ public final class ServicePrincipalCredentialPatch extends DataSourceCredentialP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -101,6 +111,7 @@ public final class ServicePrincipalCredentialPatch extends DataSourceCredentialP
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ServicePrincipalCredentialPatch.
      */
+    @Generated
     public static ServicePrincipalCredentialPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ServicePrincipalCredentialPatch deserializedServicePrincipalCredentialPatch

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,30 +22,35 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "DynamicsCrm";
 
     /*
      * The deployment type of the Dynamics CRM instance. 'Online' for Dynamics CRM Online and 'OnPremisesWithIfd' for
      * Dynamics CRM on-premises with Ifd. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object deploymentType;
 
     /*
      * The host name of the on-premises Dynamics CRM server. The property is required for on-prem and not allowed for
      * online. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object hostName;
 
     /*
      * The port of on-premises Dynamics CRM server. The property is required for on-prem and not allowed for online.
      * Default is 443. Type: integer (or Expression with resultType integer), minimum: 0.
      */
+    @Generated
     private Object port;
 
     /*
      * The URL to the Microsoft Dynamics CRM server. The property is required for on-line and not allowed for on-prem.
      * Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object serviceUri;
 
     /*
@@ -52,6 +58,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * when there are more than one Dynamics CRM instances associated with the user. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object organizationName;
 
     /*
@@ -59,33 +66,39 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * with Ifd scenario, 'AADServicePrincipal' for Server-To-Server authentication in online scenario, 'Active
      * Directory' for Dynamics on-premises with IFD. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object authenticationType;
 
     /*
      * The Active Directory domain that will verify user credentials. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object domain;
 
     /*
      * User name to access the Dynamics CRM instance. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object username;
 
     /*
      * Password to access the Dynamics CRM instance.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * The client ID of the application in Azure Active Directory used for Server-To-Server authentication. Type: string
      * (or Expression with resultType string).
      */
+    @Generated
     private Object servicePrincipalId;
 
     /*
      * A string from ServicePrincipalCredentialEnum or an expression
      */
+    @Generated
     private Object servicePrincipalCredentialType;
 
     /*
@@ -94,22 +107,26 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
      * AzureKeyVaultSecretReference.
      */
+    @Generated
     private SecretBase servicePrincipalCredential;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private SecretBase credential;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of DynamicsCrmLinkedService class.
      */
+    @Generated
     public DynamicsCrmLinkedService() {
     }
 
@@ -118,6 +135,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -130,6 +148,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * 
      * @return the deploymentType value.
      */
+    @Generated
     public Object getDeploymentType() {
         return this.deploymentType;
     }
@@ -142,6 +161,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param deploymentType the deploymentType value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
+    @Generated
     public DynamicsCrmLinkedService setDeploymentType(Object deploymentType) {
         this.deploymentType = deploymentType;
         return this;
@@ -153,6 +173,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * 
      * @return the hostName value.
      */
+    @Generated
     public Object getHostName() {
         return this.hostName;
     }
@@ -164,6 +185,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param hostName the hostName value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
+    @Generated
     public DynamicsCrmLinkedService setHostName(Object hostName) {
         this.hostName = hostName;
         return this;
@@ -175,6 +197,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * 
      * @return the port value.
      */
+    @Generated
     public Object getPort() {
         return this.port;
     }
@@ -186,6 +209,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param port the port value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
+    @Generated
     public DynamicsCrmLinkedService setPort(Object port) {
         this.port = port;
         return this;
@@ -197,6 +221,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * 
      * @return the serviceUri value.
      */
+    @Generated
     public Object getServiceUri() {
         return this.serviceUri;
     }
@@ -208,6 +233,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param serviceUri the serviceUri value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
+    @Generated
     public DynamicsCrmLinkedService setServiceUri(Object serviceUri) {
         this.serviceUri = serviceUri;
         return this;
@@ -220,6 +246,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * 
      * @return the organizationName value.
      */
+    @Generated
     public Object getOrganizationName() {
         return this.organizationName;
     }
@@ -232,6 +259,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param organizationName the organizationName value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
+    @Generated
     public DynamicsCrmLinkedService setOrganizationName(Object organizationName) {
         this.organizationName = organizationName;
         return this;
@@ -245,6 +273,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public Object getAuthenticationType() {
         return this.authenticationType;
     }
@@ -258,6 +287,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
+    @Generated
     public DynamicsCrmLinkedService setAuthenticationType(Object authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -269,6 +299,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * 
      * @return the domain value.
      */
+    @Generated
     public Object getDomain() {
         return this.domain;
     }
@@ -280,6 +311,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param domain the domain value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
+    @Generated
     public DynamicsCrmLinkedService setDomain(Object domain) {
         this.domain = domain;
         return this;
@@ -291,6 +323,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -302,6 +335,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
+    @Generated
     public DynamicsCrmLinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -312,6 +346,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -322,6 +357,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
+    @Generated
     public DynamicsCrmLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -333,6 +369,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalId value.
      */
+    @Generated
     public Object getServicePrincipalId() {
         return this.servicePrincipalId;
     }
@@ -344,6 +381,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
+    @Generated
     public DynamicsCrmLinkedService setServicePrincipalId(Object servicePrincipalId) {
         this.servicePrincipalId = servicePrincipalId;
         return this;
@@ -354,6 +392,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalCredentialType value.
      */
+    @Generated
     public Object getServicePrincipalCredentialType() {
         return this.servicePrincipalCredentialType;
     }
@@ -364,6 +403,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
+    @Generated
     public DynamicsCrmLinkedService setServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
         this.servicePrincipalCredentialType = servicePrincipalCredentialType;
         return this;
@@ -377,6 +417,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalCredential value.
      */
+    @Generated
     public SecretBase getServicePrincipalCredential() {
         return this.servicePrincipalCredential;
     }
@@ -390,6 +431,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param servicePrincipalCredential the servicePrincipalCredential value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
+    @Generated
     public DynamicsCrmLinkedService setServicePrincipalCredential(SecretBase servicePrincipalCredential) {
         this.servicePrincipalCredential = servicePrincipalCredential;
         return this;
@@ -400,6 +442,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * 
      * @return the credential value.
      */
+    @Generated
     public SecretBase getCredential() {
         return this.credential;
     }
@@ -410,6 +453,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param credential the credential value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
+    @Generated
     public DynamicsCrmLinkedService setCredential(SecretBase credential) {
         this.credential = credential;
         return this;
@@ -421,6 +465,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -432,6 +477,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
+    @Generated
     public DynamicsCrmLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -440,6 +486,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsCrmLinkedService setVersion(String version) {
         super.setVersion(version);
@@ -449,6 +496,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsCrmLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -458,6 +506,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsCrmLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -467,6 +516,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsCrmLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -476,6 +526,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsCrmLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -485,6 +536,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -510,19 +562,37 @@ public class DynamicsCrmLinkedService extends LinkedService {
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("deploymentType", this.deploymentType);
-            jsonWriter.writeUntypedField("hostName", this.hostName);
-            jsonWriter.writeUntypedField("port", this.port);
-            jsonWriter.writeUntypedField("serviceUri", this.serviceUri);
-            jsonWriter.writeUntypedField("organizationName", this.organizationName);
+            if (this.hostName != null) {
+                jsonWriter.writeUntypedField("hostName", this.hostName);
+            }
+            if (this.port != null) {
+                jsonWriter.writeUntypedField("port", this.port);
+            }
+            if (this.serviceUri != null) {
+                jsonWriter.writeUntypedField("serviceUri", this.serviceUri);
+            }
+            if (this.organizationName != null) {
+                jsonWriter.writeUntypedField("organizationName", this.organizationName);
+            }
             jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
-            jsonWriter.writeUntypedField("domain", this.domain);
-            jsonWriter.writeUntypedField("username", this.username);
+            if (this.domain != null) {
+                jsonWriter.writeUntypedField("domain", this.domain);
+            }
+            if (this.username != null) {
+                jsonWriter.writeUntypedField("username", this.username);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
-            jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+            if (this.servicePrincipalId != null) {
+                jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            }
+            if (this.servicePrincipalCredentialType != null) {
+                jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+            }
             jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
             jsonWriter.writeJsonField("credential", this.credential);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -542,6 +612,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DynamicsCrmLinkedService.
      */
+    @Generated
     public static DynamicsCrmLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DynamicsCrmLinkedService deserializedDynamicsCrmLinkedService = new DynamicsCrmLinkedService();

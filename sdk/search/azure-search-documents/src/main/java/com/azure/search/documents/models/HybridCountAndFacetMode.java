@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -18,12 +19,14 @@ public final class HybridCountAndFacetMode extends ExpandableStringEnum<HybridCo
      * Only include documents that were matched within the 'maxTextRecallSize' retrieval window when computing 'count'
      * and 'facets'.
      */
+    @Generated
     public static final HybridCountAndFacetMode COUNT_RETRIEVABLE_RESULTS = fromString("countRetrievableResults");
 
     /**
      * Include all documents that were matched by the search query when computing 'count' and 'facets', regardless of
      * whether or not those documents are within the 'maxTextRecallSize' retrieval window.
      */
+    @Generated
     public static final HybridCountAndFacetMode COUNT_ALL_RESULTS = fromString("countAllResults");
 
     /**
@@ -31,6 +34,7 @@ public final class HybridCountAndFacetMode extends ExpandableStringEnum<HybridCo
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public HybridCountAndFacetMode() {
     }
@@ -41,6 +45,7 @@ public final class HybridCountAndFacetMode extends ExpandableStringEnum<HybridCo
      * @param name a name to look for.
      * @return the corresponding HybridCountAndFacetMode.
      */
+    @Generated
     public static HybridCountAndFacetMode fromString(String name) {
         return fromString(name, HybridCountAndFacetMode.class);
     }
@@ -50,6 +55,7 @@ public final class HybridCountAndFacetMode extends ExpandableStringEnum<HybridCo
      * 
      * @return known HybridCountAndFacetMode values.
      */
+    @Generated
     public static Collection<HybridCountAndFacetMode> values() {
         return values(HybridCountAndFacetMode.class);
     }

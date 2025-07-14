@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class NotebookParameter implements JsonSerializable<NotebookParamet
     /*
      * Notebook parameter value. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object value;
 
     /*
      * Notebook parameter type.
      */
+    @Generated
     private NotebookParameterType type;
 
     /**
      * Creates an instance of NotebookParameter class.
      */
+    @Generated
     public NotebookParameter() {
     }
 
@@ -37,6 +41,7 @@ public final class NotebookParameter implements JsonSerializable<NotebookParamet
      * 
      * @return the value value.
      */
+    @Generated
     public Object getValue() {
         return this.value;
     }
@@ -47,6 +52,7 @@ public final class NotebookParameter implements JsonSerializable<NotebookParamet
      * @param value the value value to set.
      * @return the NotebookParameter object itself.
      */
+    @Generated
     public NotebookParameter setValue(Object value) {
         this.value = value;
         return this;
@@ -57,6 +63,7 @@ public final class NotebookParameter implements JsonSerializable<NotebookParamet
      * 
      * @return the type value.
      */
+    @Generated
     public NotebookParameterType getType() {
         return this.type;
     }
@@ -67,6 +74,7 @@ public final class NotebookParameter implements JsonSerializable<NotebookParamet
      * @param type the type value to set.
      * @return the NotebookParameter object itself.
      */
+    @Generated
     public NotebookParameter setType(NotebookParameterType type) {
         this.type = type;
         return this;
@@ -75,10 +83,13 @@ public final class NotebookParameter implements JsonSerializable<NotebookParamet
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("value", this.value);
+        if (this.value != null) {
+            jsonWriter.writeUntypedField("value", this.value);
+        }
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
@@ -91,6 +102,7 @@ public final class NotebookParameter implements JsonSerializable<NotebookParamet
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the NotebookParameter.
      */
+    @Generated
     public static NotebookParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             NotebookParameter deserializedNotebookParameter = new NotebookParameter();

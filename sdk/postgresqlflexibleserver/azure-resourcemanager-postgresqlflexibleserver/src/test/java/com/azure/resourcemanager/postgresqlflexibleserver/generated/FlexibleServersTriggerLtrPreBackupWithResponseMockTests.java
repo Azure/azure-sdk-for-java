@@ -6,8 +6,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.BackupSettings;
@@ -22,21 +22,23 @@ import reactor.core.publisher.Mono;
 public final class FlexibleServersTriggerLtrPreBackupWithResponseMockTests {
     @Test
     public void testTriggerLtrPreBackupWithResponse() throws Exception {
-        String responseStr = "{\"properties\":{\"numberOfContainers\":1318617256}}";
+        String responseStr = "{\"properties\":{\"numberOfContainers\":64736512}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        LtrPreBackupResponse response = manager.flexibleServers()
-            .triggerLtrPreBackupWithResponse("mqspkcdqzhlctdd", "nqndyfpchrqbn",
-                new LtrPreBackupRequest().withBackupSettings(new BackupSettings().withBackupName("jrcg")),
-                com.azure.core.util.Context.NONE)
-            .getValue();
+        LtrPreBackupResponse response
+            = manager.flexibleServers()
+                .triggerLtrPreBackupWithResponse("bsre", "rfqkfuar",
+                    new LtrPreBackupRequest().withBackupSettings(
+                        new BackupSettings().withBackupName("nlvhhtklnvnafvv")),
+                    com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals(1318617256, response.numberOfContainers());
+        Assertions.assertEquals(64736512, response.numberOfContainers());
     }
 }

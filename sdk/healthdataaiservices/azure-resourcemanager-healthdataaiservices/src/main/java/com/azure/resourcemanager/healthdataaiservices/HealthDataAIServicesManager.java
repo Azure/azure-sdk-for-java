@@ -24,9 +24,9 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.healthdataaiservices.fluent.HealthDataAIServicesClient;
+import com.azure.resourcemanager.healthdataaiservices.fluent.HealthDataAIServicesManagementClient;
 import com.azure.resourcemanager.healthdataaiservices.implementation.DeidServicesImpl;
-import com.azure.resourcemanager.healthdataaiservices.implementation.HealthDataAIServicesClientBuilder;
+import com.azure.resourcemanager.healthdataaiservices.implementation.HealthDataAIServicesManagementClientBuilder;
 import com.azure.resourcemanager.healthdataaiservices.implementation.OperationsImpl;
 import com.azure.resourcemanager.healthdataaiservices.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.healthdataaiservices.implementation.PrivateLinksImpl;
@@ -54,12 +54,12 @@ public final class HealthDataAIServicesManager {
 
     private PrivateLinks privateLinks;
 
-    private final HealthDataAIServicesClient clientObject;
+    private final HealthDataAIServicesManagementClient clientObject;
 
     private HealthDataAIServicesManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new HealthDataAIServicesClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new HealthDataAIServicesManagementClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -319,12 +319,12 @@ public final class HealthDataAIServicesManager {
     }
 
     /**
-     * Gets wrapped service client HealthDataAIServicesClient providing direct access to the underlying auto-generated
-     * API implementation, based on Azure REST API.
+     * Gets wrapped service client HealthDataAIServicesManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client HealthDataAIServicesClient.
+     * @return Wrapped service client HealthDataAIServicesManagementClient.
      */
-    public HealthDataAIServicesClient serviceClient() {
+    public HealthDataAIServicesManagementClient serviceClient() {
         return this.clientObject;
     }
 }

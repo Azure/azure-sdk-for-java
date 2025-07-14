@@ -22,7 +22,7 @@ public final class ComputesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"entityId\":\"rnminzqplgtkih\",\"entityName\":\"ikzsrzfffji\",\"createdAt\":\"fbpntogke\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"bmcarmo\",\"value\":\"fxxkwykuqdndxl\"},{\"name\":\"kh\",\"value\":\"gga\"},{\"name\":\"vdgtfpeer\",\"value\":\"cd\"},{\"name\":\"rnrnjrcufmbgacnr\",\"value\":\"fdtncmspsanma\"}],\"region\":\"ubkqiq\",\"cpuCores\":294672999,\"memory\":694637518,\"status\":\"qcs\"},\"id\":\"qjmxpt\",\"name\":\"eipuugkwdrqmrpa\",\"type\":\"uuonjkkxukguehvv\"}]}";
+            = "{\"value\":[{\"properties\":{\"entityId\":\"atlzmg\",\"entityName\":\"hnzrsbkkzovlzdm\",\"createdAt\":\"mfwsxafofu\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"movzwde\",\"value\":\"kkmvhzfovanyrva\"},{\"name\":\"rtgelg\",\"value\":\"ewikfyaqandmym\"}],\"region\":\"oqjum\",\"cpuCores\":238006618,\"memory\":544073075,\"status\":\"bvzo\"},\"id\":\"x\",\"name\":\"fmvsmcwoxfaxdt\",\"type\":\"qi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class ComputesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Compute> response
-            = manager.computes().list("bdxmd", "esbrujbjpppktl", "dibfmthi", "at", com.azure.core.util.Context.NONE);
+            = manager.computes().list("ecuyr", "wimbzayspzvr", "etv", "phmdzxplgtp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ikzsrzfffji", response.iterator().next().properties().entityName());
-        Assertions.assertEquals("bmcarmo", response.iterator().next().properties().attributes().get(0).name());
-        Assertions.assertEquals("fxxkwykuqdndxl", response.iterator().next().properties().attributes().get(0).value());
-        Assertions.assertEquals("ubkqiq", response.iterator().next().properties().region());
-        Assertions.assertEquals(294672999, response.iterator().next().properties().cpuCores());
-        Assertions.assertEquals(694637518, response.iterator().next().properties().memory());
-        Assertions.assertEquals("qcs", response.iterator().next().properties().status());
+        Assertions.assertEquals("hnzrsbkkzovlzdm", response.iterator().next().properties().entityName());
+        Assertions.assertEquals("movzwde", response.iterator().next().properties().attributes().get(0).name());
+        Assertions.assertEquals("kkmvhzfovanyrva", response.iterator().next().properties().attributes().get(0).value());
+        Assertions.assertEquals("oqjum", response.iterator().next().properties().region());
+        Assertions.assertEquals(238006618, response.iterator().next().properties().cpuCores());
+        Assertions.assertEquals(544073075, response.iterator().next().properties().memory());
+        Assertions.assertEquals("bvzo", response.iterator().next().properties().status());
     }
 }

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservices.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.models.PrivateLinkResource;
@@ -21,17 +21,17 @@ public final class PrivateLinkResourcesOperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"bbtdzumvee\",\"requiredMembers\":[\"wozuhkf\"],\"requiredZoneNames\":[\"jyofdxluusdtto\",\"waboe\"]},\"id\":\"v\",\"name\":\"lns\",\"type\":\"bxwyjsflhhcaa\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"peilpjzuaejxdu\",\"requiredMembers\":[\"kzbbtd\",\"umveekgpwozuhkf\"],\"requiredZoneNames\":[\"jyofdxluusdtto\",\"waboe\"]},\"id\":\"v\",\"name\":\"lns\",\"type\":\"bxwyjsflhhcaa\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesManager manager = RecoveryServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateLinkResource> response
-            = manager.privateLinkResourcesOperations().list("e", "xdult", com.azure.core.util.Context.NONE);
+            = manager.privateLinkResourcesOperations().list("vawjvzunlu", "hnnpr", com.azure.core.util.Context.NONE);
 
     }
 }

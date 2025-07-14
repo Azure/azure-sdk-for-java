@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,31 +22,37 @@ public class AzureBlobFSDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "AzureBlobFSFile";
 
     /*
      * The path of the Azure Data Lake Storage Gen2 storage. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object folderPath;
 
     /*
      * The name of the Azure Data Lake Storage Gen2. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object fileName;
 
     /*
      * The format of the Azure Data Lake Storage Gen2 storage.
      */
+    @Generated
     private DatasetStorageFormat format;
 
     /*
      * The data compression method used for the blob storage.
      */
+    @Generated
     private DatasetCompression compression;
 
     /**
      * Creates an instance of AzureBlobFSDataset class.
      */
+    @Generated
     public AzureBlobFSDataset() {
     }
 
@@ -54,6 +61,7 @@ public class AzureBlobFSDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -65,6 +73,7 @@ public class AzureBlobFSDataset extends Dataset {
      * 
      * @return the folderPath value.
      */
+    @Generated
     public Object getFolderPath() {
         return this.folderPath;
     }
@@ -76,6 +85,7 @@ public class AzureBlobFSDataset extends Dataset {
      * @param folderPath the folderPath value to set.
      * @return the AzureBlobFSDataset object itself.
      */
+    @Generated
     public AzureBlobFSDataset setFolderPath(Object folderPath) {
         this.folderPath = folderPath;
         return this;
@@ -87,6 +97,7 @@ public class AzureBlobFSDataset extends Dataset {
      * 
      * @return the fileName value.
      */
+    @Generated
     public Object getFileName() {
         return this.fileName;
     }
@@ -98,6 +109,7 @@ public class AzureBlobFSDataset extends Dataset {
      * @param fileName the fileName value to set.
      * @return the AzureBlobFSDataset object itself.
      */
+    @Generated
     public AzureBlobFSDataset setFileName(Object fileName) {
         this.fileName = fileName;
         return this;
@@ -108,6 +120,7 @@ public class AzureBlobFSDataset extends Dataset {
      * 
      * @return the format value.
      */
+    @Generated
     public DatasetStorageFormat getFormat() {
         return this.format;
     }
@@ -118,6 +131,7 @@ public class AzureBlobFSDataset extends Dataset {
      * @param format the format value to set.
      * @return the AzureBlobFSDataset object itself.
      */
+    @Generated
     public AzureBlobFSDataset setFormat(DatasetStorageFormat format) {
         this.format = format;
         return this;
@@ -128,6 +142,7 @@ public class AzureBlobFSDataset extends Dataset {
      * 
      * @return the compression value.
      */
+    @Generated
     public DatasetCompression getCompression() {
         return this.compression;
     }
@@ -138,6 +153,7 @@ public class AzureBlobFSDataset extends Dataset {
      * @param compression the compression value to set.
      * @return the AzureBlobFSDataset object itself.
      */
+    @Generated
     public AzureBlobFSDataset setCompression(DatasetCompression compression) {
         this.compression = compression;
         return this;
@@ -146,6 +162,7 @@ public class AzureBlobFSDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobFSDataset setDescription(String description) {
         super.setDescription(description);
@@ -155,6 +172,7 @@ public class AzureBlobFSDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobFSDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -164,6 +182,7 @@ public class AzureBlobFSDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobFSDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -173,6 +192,7 @@ public class AzureBlobFSDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobFSDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -182,6 +202,7 @@ public class AzureBlobFSDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobFSDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -191,6 +212,7 @@ public class AzureBlobFSDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobFSDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -200,6 +222,7 @@ public class AzureBlobFSDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobFSDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -209,21 +232,30 @@ public class AzureBlobFSDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
         jsonWriter.writeStringField("type", this.type);
         if (folderPath != null || fileName != null || format != null || compression != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("folderPath", this.folderPath);
-            jsonWriter.writeUntypedField("fileName", this.fileName);
+            if (this.folderPath != null) {
+                jsonWriter.writeUntypedField("folderPath", this.folderPath);
+            }
+            if (this.fileName != null) {
+                jsonWriter.writeUntypedField("fileName", this.fileName);
+            }
             jsonWriter.writeJsonField("format", this.format);
             jsonWriter.writeJsonField("compression", this.compression);
             jsonWriter.writeEndObject();
@@ -245,6 +277,7 @@ public class AzureBlobFSDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureBlobFSDataset.
      */
+    @Generated
     public static AzureBlobFSDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureBlobFSDataset deserializedAzureBlobFSDataset = new AzureBlobFSDataset();

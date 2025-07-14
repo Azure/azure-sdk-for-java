@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class GreenplumAuthenticationType extends ExpandableStringEnum<Gree
     /**
      * Static value Basic for GreenplumAuthenticationType.
      */
+    @Generated
     public static final GreenplumAuthenticationType BASIC = fromString("Basic");
 
     /**
@@ -21,6 +23,7 @@ public final class GreenplumAuthenticationType extends ExpandableStringEnum<Gree
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public GreenplumAuthenticationType() {
     }
@@ -31,6 +34,7 @@ public final class GreenplumAuthenticationType extends ExpandableStringEnum<Gree
      * @param name a name to look for.
      * @return the corresponding GreenplumAuthenticationType.
      */
+    @Generated
     public static GreenplumAuthenticationType fromString(String name) {
         return fromString(name, GreenplumAuthenticationType.class);
     }
@@ -40,6 +44,7 @@ public final class GreenplumAuthenticationType extends ExpandableStringEnum<Gree
      * 
      * @return known GreenplumAuthenticationType values.
      */
+    @Generated
     public static Collection<GreenplumAuthenticationType> values() {
         return values(GreenplumAuthenticationType.class);
     }

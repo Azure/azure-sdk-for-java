@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class MongoDbAuthenticationType extends ExpandableStringEnum<MongoD
     /**
      * Static value Basic for MongoDbAuthenticationType.
      */
+    @Generated
     public static final MongoDbAuthenticationType BASIC = fromString("Basic");
 
     /**
      * Static value Anonymous for MongoDbAuthenticationType.
      */
+    @Generated
     public static final MongoDbAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /**
@@ -26,6 +29,7 @@ public final class MongoDbAuthenticationType extends ExpandableStringEnum<MongoD
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MongoDbAuthenticationType() {
     }
@@ -36,6 +40,7 @@ public final class MongoDbAuthenticationType extends ExpandableStringEnum<MongoD
      * @param name a name to look for.
      * @return the corresponding MongoDbAuthenticationType.
      */
+    @Generated
     public static MongoDbAuthenticationType fromString(String name) {
         return fromString(name, MongoDbAuthenticationType.class);
     }
@@ -45,6 +50,7 @@ public final class MongoDbAuthenticationType extends ExpandableStringEnum<MongoD
      * 
      * @return known MongoDbAuthenticationType values.
      */
+    @Generated
     public static Collection<MongoDbAuthenticationType> values() {
         return values(MongoDbAuthenticationType.class);
     }

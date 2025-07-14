@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class CredentialReferenceType extends ExpandableStringEnum<Credenti
     /**
      * Static value CredentialReference for CredentialReferenceType.
      */
+    @Generated
     public static final CredentialReferenceType CREDENTIAL_REFERENCE = fromString("CredentialReference");
 
     /**
@@ -21,6 +23,7 @@ public final class CredentialReferenceType extends ExpandableStringEnum<Credenti
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CredentialReferenceType() {
     }
@@ -31,6 +34,7 @@ public final class CredentialReferenceType extends ExpandableStringEnum<Credenti
      * @param name a name to look for.
      * @return the corresponding CredentialReferenceType.
      */
+    @Generated
     public static CredentialReferenceType fromString(String name) {
         return fromString(name, CredentialReferenceType.class);
     }
@@ -40,6 +44,7 @@ public final class CredentialReferenceType extends ExpandableStringEnum<Credenti
      * 
      * @return known CredentialReferenceType values.
      */
+    @Generated
     public static Collection<CredentialReferenceType> values() {
         return values(CredentialReferenceType.class);
     }

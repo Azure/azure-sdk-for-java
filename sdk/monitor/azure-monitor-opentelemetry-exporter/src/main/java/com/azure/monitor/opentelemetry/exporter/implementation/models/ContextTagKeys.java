@@ -4,6 +4,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,141 +15,169 @@ public final class ContextTagKeys extends ExpandableStringEnum<ContextTagKeys> {
     /**
      * Static value ai.application.ver for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_APPLICATION_VER = fromString("ai.application.ver");
 
     /**
      * Static value ai.device.id for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_DEVICE_ID = fromString("ai.device.id");
 
     /**
      * Static value ai.device.locale for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_DEVICE_LOCALE = fromString("ai.device.locale");
 
     /**
      * Static value ai.device.model for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_DEVICE_MODEL = fromString("ai.device.model");
 
     /**
      * Static value ai.device.oemName for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_DEVICE_OEM_NAME = fromString("ai.device.oemName");
 
     /**
      * Static value ai.device.osVersion for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_DEVICE_OS_VERSION = fromString("ai.device.osVersion");
 
     /**
      * Static value ai.device.type for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_DEVICE_TYPE = fromString("ai.device.type");
 
     /**
      * Static value ai.location.ip for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_LOCATION_IP = fromString("ai.location.ip");
 
     /**
      * Static value ai.location.country for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_LOCATION_COUNTRY = fromString("ai.location.country");
 
     /**
      * Static value ai.location.province for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_LOCATION_PROVINCE = fromString("ai.location.province");
 
     /**
      * Static value ai.location.city for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_LOCATION_CITY = fromString("ai.location.city");
 
     /**
      * Static value ai.operation.id for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_OPERATION_ID = fromString("ai.operation.id");
 
     /**
      * Static value ai.operation.name for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_OPERATION_NAME = fromString("ai.operation.name");
 
     /**
      * Static value ai.operation.parentId for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_OPERATION_PARENT_ID = fromString("ai.operation.parentId");
 
     /**
      * Static value ai.operation.syntheticSource for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_OPERATION_SYNTHETIC_SOURCE = fromString("ai.operation.syntheticSource");
 
     /**
      * Static value ai.operation.correlationVector for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_OPERATION_CORRELATION_VECTOR = fromString("ai.operation.correlationVector");
 
     /**
      * Static value ai.session.id for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_SESSION_ID = fromString("ai.session.id");
 
     /**
      * Static value ai.session.isFirst for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_SESSION_IS_FIRST = fromString("ai.session.isFirst");
 
     /**
      * Static value ai.user.accountId for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_USER_ACCOUNT_ID = fromString("ai.user.accountId");
 
     /**
      * Static value ai.user.id for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_USER_ID = fromString("ai.user.id");
 
     /**
      * Static value ai.user.authUserId for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_USER_AUTH_USER_ID = fromString("ai.user.authUserId");
 
     /**
      * Static value ai.cloud.role for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_CLOUD_ROLE = fromString("ai.cloud.role");
 
     /**
      * Static value ai.cloud.roleVer for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_CLOUD_ROLE_VER = fromString("ai.cloud.roleVer");
 
     /**
      * Static value ai.cloud.roleInstance for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_CLOUD_ROLE_INSTANCE = fromString("ai.cloud.roleInstance");
 
     /**
      * Static value ai.cloud.location for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_CLOUD_LOCATION = fromString("ai.cloud.location");
 
     /**
      * Static value ai.internal.sdkVersion for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_INTERNAL_SDK_VERSION = fromString("ai.internal.sdkVersion");
 
     /**
      * Static value ai.internal.agentVersion for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_INTERNAL_AGENT_VERSION = fromString("ai.internal.agentVersion");
 
     /**
      * Static value ai.internal.nodeName for ContextTagKeys.
      */
+    @Generated
     public static final ContextTagKeys AI_INTERNAL_NODE_NAME = fromString("ai.internal.nodeName");
 
     /**
@@ -156,6 +185,7 @@ public final class ContextTagKeys extends ExpandableStringEnum<ContextTagKeys> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ContextTagKeys() {
     }
@@ -166,6 +196,7 @@ public final class ContextTagKeys extends ExpandableStringEnum<ContextTagKeys> {
      * @param name a name to look for.
      * @return the corresponding ContextTagKeys.
      */
+    @Generated
     public static ContextTagKeys fromString(String name) {
         return fromString(name, ContextTagKeys.class);
     }
@@ -175,6 +206,7 @@ public final class ContextTagKeys extends ExpandableStringEnum<ContextTagKeys> {
      * 
      * @return known ContextTagKeys values.
      */
+    @Generated
     public static Collection<ContextTagKeys> values() {
         return values(ContextTagKeys.class);
     }

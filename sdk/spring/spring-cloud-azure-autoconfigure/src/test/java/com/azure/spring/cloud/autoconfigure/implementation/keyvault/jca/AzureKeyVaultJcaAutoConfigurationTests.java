@@ -75,4 +75,33 @@ class AzureKeyVaultJcaAutoConfigurationTests {
                 assertThat(sslBundlesProperties.getKeyvault().get("testBundle3").getKeystore().getKeyvaultRef()).isEqualTo("kv2");
             });
     }
+
+    @Test
+    void useSystemManagedIdentity() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.keyvault.jca.vaults.keyvault1.endpoint=" + String.format(ENDPOINT, "test1"),
+                "spring.cloud.azure.keyvault.jca.vaults.kv1.credential.managed-identity-enabled=true",
+                "spring.cloud.azure.keyvault.jca.vaults.kv1.profile.tenant-id=test-tenant-id",
+                "spring.ssl.bundle.keyvault.tlsServerBundle.key.alias=server",
+                "spring.ssl.bundle.keyvault.tlsServerBundle.keystore.keyvault-ref=kv1",
+                "spring.ssl.bundle.keyvault.tlsClientBundle.truststore.keyvault-ref=kv1"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureKeyVaultJcaAutoConfiguration.class);
+                assertThat(context).hasSingleBean(AzureKeyVaultJcaProperties.class);
+                assertThat(context).hasSingleBean(AzureKeyVaultSslBundleProperties.class);
+                assertThat(context).hasSingleBean(AzureKeyVaultSslBundleRegistrar.class);
+
+                AzureKeyVaultJcaProperties jcaProperties = context.getBean(AzureKeyVaultJcaProperties.class);
+                assertThat(jcaProperties.getVaults()).hasSize(2);
+                assertThat(jcaProperties.getVaults().get("keyvault1").getEndpoint()).isEqualTo(String.format(ENDPOINT, "test1"));
+                assertThat(jcaProperties.getVaults().get("kv1").getCredential().isManagedIdentityEnabled()).isTrue();
+
+                AzureKeyVaultSslBundleProperties sslBundlesProperties = context.getBean(AzureKeyVaultSslBundleProperties.class);
+                assertThat(sslBundlesProperties.getKeyvault()).hasSize(2);
+                assertThat(sslBundlesProperties.getKeyvault().get("tlsServerBundle").getKeystore().getKeyvaultRef()).isEqualTo("kv1");
+                assertThat(sslBundlesProperties.getKeyvault().get("tlsClientBundle").getTruststore().getKeyvaultRef()).isEqualTo("kv1");
+            });
+    }
 }

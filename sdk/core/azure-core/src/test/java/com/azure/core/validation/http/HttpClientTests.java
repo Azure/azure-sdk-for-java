@@ -31,11 +31,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.validation.http.models.HttpBinFormDataJson;
-import com.azure.core.validation.http.models.HttpBinHeaders;
-import com.azure.core.validation.http.models.HttpBinJson;
-import com.azure.core.validation.http.models.MyRestException;
-import com.azure.core.validation.http.models.PizzaSize;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -55,6 +50,11 @@ import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.core.validation.http.models.HttpBinFormDataJson;
+import com.azure.core.validation.http.models.HttpBinHeaders;
+import com.azure.core.validation.http.models.HttpBinJson;
+import com.azure.core.validation.http.models.MyRestException;
+import com.azure.core.validation.http.models.PizzaSize;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Named;
@@ -97,13 +97,29 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static com.azure.core.validation.http.HttpClientTestsServer.BOM_WITH_DIFFERENT_HEADER;
+import static com.azure.core.validation.http.HttpClientTestsServer.BOM_WITH_SAME_HEADER;
+import static com.azure.core.validation.http.HttpClientTestsServer.ECHO_RESPONSE;
+import static com.azure.core.validation.http.HttpClientTestsServer.HEADER_RESPONSE;
+import static com.azure.core.validation.http.HttpClientTestsServer.HUGE_HEADER_NAME;
+import static com.azure.core.validation.http.HttpClientTestsServer.HUGE_HEADER_RESPONSE;
+import static com.azure.core.validation.http.HttpClientTestsServer.HUGE_HEADER_VALUE;
+import static com.azure.core.validation.http.HttpClientTestsServer.INVALID_HEADER_RESPONSE;
+import static com.azure.core.validation.http.HttpClientTestsServer.PLAIN_RESPONSE;
+import static com.azure.core.validation.http.HttpClientTestsServer.RETURN_BYTES;
+import static com.azure.core.validation.http.HttpClientTestsServer.UTF_16BE_BOM_RESPONSE;
+import static com.azure.core.validation.http.HttpClientTestsServer.UTF_16LE_BOM_RESPONSE;
+import static com.azure.core.validation.http.HttpClientTestsServer.UTF_32BE_BOM_RESPONSE;
+import static com.azure.core.validation.http.HttpClientTestsServer.UTF_32LE_BOM_RESPONSE;
+import static com.azure.core.validation.http.HttpClientTestsServer.UTF_8_BOM_RESPONSE;
 import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
 import static com.azure.core.validation.http.HttpValidatonUtils.md5;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -124,24 +140,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 @Execution(ExecutionMode.SAME_THREAD)
 public abstract class HttpClientTests {
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientTests.class);
-
-    private static final String PLAIN_RESPONSE = "plainBytesNoHeader";
-    private static final String HEADER_RESPONSE = "plainBytesWithHeader";
-    private static final String INVALID_HEADER_RESPONSE = "plainBytesInvalidHeader";
-    private static final String UTF_8_BOM_RESPONSE = "utf8BomBytes";
-    private static final String UTF_16BE_BOM_RESPONSE = "utf16BeBomBytes";
-    private static final String UTF_16LE_BOM_RESPONSE = "utf16LeBomBytes";
-    private static final String UTF_32BE_BOM_RESPONSE = "utf32BeBomBytes";
-    private static final String UTF_32LE_BOM_RESPONSE = "utf32LeBomBytes";
-    private static final String BOM_WITH_SAME_HEADER = "bomBytesWithSameHeader";
-    private static final String BOM_WITH_DIFFERENT_HEADER = "bomBytesWithDifferentHeader";
-
-    /**
-     * The endpoint that the server will echo back the request body.
-     */
-    protected static final String ECHO_RESPONSE = "echo";
-
-    private static final byte[] EXPECTED_RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
 
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
@@ -197,7 +195,7 @@ public abstract class HttpClientTests {
      */
     @SyncAsyncTest
     public void plainResponse() {
-        String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
+        String expected = new String(RETURN_BYTES, StandardCharsets.UTF_8);
 
         String actual
             = SyncAsyncExtension.execute(() -> sendRequestSync(PLAIN_RESPONSE), () -> sendRequest(PLAIN_RESPONSE));
@@ -210,7 +208,7 @@ public abstract class HttpClientTests {
      */
     @SyncAsyncTest
     public void headerResponse() {
-        String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
+        String expected = new String(RETURN_BYTES, StandardCharsets.UTF_16BE);
 
         String actual
             = SyncAsyncExtension.execute(() -> sendRequestSync(HEADER_RESPONSE), () -> sendRequest(HEADER_RESPONSE));
@@ -223,7 +221,7 @@ public abstract class HttpClientTests {
      */
     @SyncAsyncTest
     public void invalidHeaderResponse() {
-        String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
+        String expected = new String(RETURN_BYTES, StandardCharsets.UTF_8);
 
         String actual = SyncAsyncExtension.execute(() -> sendRequestSync(INVALID_HEADER_RESPONSE),
             () -> sendRequest(INVALID_HEADER_RESPONSE));
@@ -236,7 +234,7 @@ public abstract class HttpClientTests {
      */
     @SyncAsyncTest
     public void utf8BomResponse() {
-        String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
+        String expected = new String(RETURN_BYTES, StandardCharsets.UTF_8);
 
         String actual = SyncAsyncExtension.execute(() -> sendRequestSync(UTF_8_BOM_RESPONSE),
             () -> sendRequest(UTF_8_BOM_RESPONSE));
@@ -249,7 +247,7 @@ public abstract class HttpClientTests {
      */
     @SyncAsyncTest
     public void utf16BeBomResponse() {
-        String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
+        String expected = new String(RETURN_BYTES, StandardCharsets.UTF_16BE);
 
         String actual = SyncAsyncExtension.execute(() -> sendRequestSync(UTF_16BE_BOM_RESPONSE),
             () -> sendRequest(UTF_16BE_BOM_RESPONSE));
@@ -262,7 +260,7 @@ public abstract class HttpClientTests {
      */
     @SyncAsyncTest
     public void utf16LeBomResponse() {
-        String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16LE);
+        String expected = new String(RETURN_BYTES, StandardCharsets.UTF_16LE);
 
         String actual = SyncAsyncExtension.execute(() -> sendRequestSync(UTF_16LE_BOM_RESPONSE),
             () -> sendRequest(UTF_16LE_BOM_RESPONSE));
@@ -275,7 +273,7 @@ public abstract class HttpClientTests {
      */
     @SyncAsyncTest
     public void utf32BeBomResponse() {
-        String expected = new String(EXPECTED_RETURN_BYTES, Charset.forName("UTF-32BE"));
+        String expected = new String(RETURN_BYTES, Charset.forName("UTF-32BE"));
 
         String actual = SyncAsyncExtension.execute(() -> sendRequestSync(UTF_32BE_BOM_RESPONSE),
             () -> sendRequest(UTF_32BE_BOM_RESPONSE));
@@ -288,7 +286,7 @@ public abstract class HttpClientTests {
      */
     @SyncAsyncTest
     public void utf32LeBomResponse() {
-        String expected = new String(EXPECTED_RETURN_BYTES, Charset.forName("UTF-32LE"));
+        String expected = new String(RETURN_BYTES, Charset.forName("UTF-32LE"));
 
         String actual = SyncAsyncExtension.execute(() -> sendRequestSync(UTF_32LE_BOM_RESPONSE),
             () -> sendRequest(UTF_32LE_BOM_RESPONSE));
@@ -301,7 +299,7 @@ public abstract class HttpClientTests {
      */
     @SyncAsyncTest
     public void bomWithSameHeader() {
-        String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
+        String expected = new String(RETURN_BYTES, StandardCharsets.UTF_8);
 
         String actual = SyncAsyncExtension.execute(() -> sendRequestSync(BOM_WITH_SAME_HEADER),
             () -> sendRequest(BOM_WITH_SAME_HEADER));
@@ -314,12 +312,34 @@ public abstract class HttpClientTests {
      */
     @SyncAsyncTest
     public void bomWithDifferentHeader() {
-        String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
+        String expected = new String(RETURN_BYTES, StandardCharsets.UTF_8);
 
         String actual = SyncAsyncExtension.execute(() -> sendRequestSync(BOM_WITH_DIFFERENT_HEADER),
             () -> sendRequest(BOM_WITH_DIFFERENT_HEADER));
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testHugeHeaderSync() {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, getRequestUrl(HUGE_HEADER_RESPONSE));
+        try (HttpResponse response = createHttpClient().sendSync(request, Context.NONE)) {
+            String hugeHeaderValue = response.getHeaders().getValue(HUGE_HEADER_NAME);
+            assertNotNull(hugeHeaderValue, "Huge header value is null.");
+            assertEquals(HUGE_HEADER_VALUE, hugeHeaderValue, () -> "Huge header value didn't match what was expected. "
+                + "Actual length: " + hugeHeaderValue.length() + " Expected length: " + HUGE_HEADER_VALUE.length());
+        }
+    }
+
+    @Test
+    public void testHugeHeaderAsync() {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, getRequestUrl(HUGE_HEADER_RESPONSE));
+        StepVerifier.create(createHttpClient().send(request)).assertNext(response -> {
+            String hugeHeaderValue = response.getHeaders().getValue(HUGE_HEADER_NAME);
+            assertNotNull(hugeHeaderValue, "Huge header value is null.");
+            assertEquals(HUGE_HEADER_VALUE, hugeHeaderValue, "Huge header value didn't match what was expected. "
+                + "Actual length: " + hugeHeaderValue.length() + " Expected length: " + HUGE_HEADER_VALUE.length());
+        }).verifyComplete();
     }
 
     /**
@@ -604,31 +624,46 @@ public abstract class HttpClientTests {
         HttpClient httpClient, byte[] expectedResponseBody) {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, requestUrl, new HttpHeaders(), requestBody);
 
-        AtomicLong progress = new AtomicLong();
+        BlockingQueue<Long> progress = new LinkedBlockingQueue<>();
         Context context = Contexts.empty()
-            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::set))
+            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::add))
             .getContext();
 
         StepVerifier.create(httpClient.send(request, context).flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(responseBytes -> assertArraysEqual(expectedResponseBody, responseBytes))
             .verifyComplete();
 
-        assertEquals(expectedResponseBody.length, progress.intValue());
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(expectedResponseBody.length, progress.stream().reduce(Long::max).orElse(0L).intValue(),
+            () -> "Received the following progress updates: "
+                + Arrays.toString(progress.stream().mapToLong(Long::longValue).toArray()));
     }
 
     private static void canSendBinaryDataSyncWithProgressReporter(URL requestUrl, BinaryData requestBody,
         HttpClient httpClient, byte[] expectedResponseBody) {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, requestUrl, new HttpHeaders(), requestBody);
 
-        AtomicLong progress = new AtomicLong();
+        BlockingQueue<Long> progress = new LinkedBlockingQueue<>();
         Context context = Contexts.empty()
-            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::set))
+            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::add))
             .getContext();
 
         try (HttpResponse httpResponse = httpClient.sendSync(request, context)) {
             byte[] responseBytes = httpResponse.getBodyAsBinaryData().toBytes();
             assertArraysEqual(expectedResponseBody, responseBytes);
-            assertEquals(expectedResponseBody.length, progress.intValue());
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            assertEquals(expectedResponseBody.length, progress.stream().reduce(Long::max).orElse(0L).intValue(),
+                () -> "Received the following progress updates: "
+                    + Arrays.toString(progress.stream().mapToLong(Long::longValue).toArray()));
         }
     }
 

@@ -63,7 +63,7 @@ public final class NotebooksImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientNoteb")
+    @ServiceInterface(name = "ArtifactsClientNotebooks")
     public interface NotebooksService {
         @Get("/notebooks")
         @ExpectedResponses({ 200 })

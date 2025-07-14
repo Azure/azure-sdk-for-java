@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,16 +16,19 @@ public final class JunctionType extends ExpandableStringEnum<JunctionType> {
     /**
      * regular.
      */
+    @Generated
     public static final JunctionType REGULAR = fromString("REGULAR");
 
     /**
      * roundabout.
      */
+    @Generated
     public static final JunctionType ROUNDABOUT = fromString("ROUNDABOUT");
 
     /**
      * bifurcation.
      */
+    @Generated
     public static final JunctionType BIFURCATION = fromString("BIFURCATION");
 
     /**
@@ -32,6 +36,7 @@ public final class JunctionType extends ExpandableStringEnum<JunctionType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public JunctionType() {
     }
@@ -42,6 +47,7 @@ public final class JunctionType extends ExpandableStringEnum<JunctionType> {
      * @param name a name to look for.
      * @return the corresponding JunctionType.
      */
+    @Generated
     public static JunctionType fromString(String name) {
         return fromString(name, JunctionType.class);
     }
@@ -51,6 +57,7 @@ public final class JunctionType extends ExpandableStringEnum<JunctionType> {
      * 
      * @return known JunctionType values.
      */
+    @Generated
     public static Collection<JunctionType> values() {
         return values(JunctionType.class);
     }

@@ -62,7 +62,7 @@ public final class TriggersImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientTrigg")
+    @ServiceInterface(name = "ArtifactsClientTriggers")
     public interface TriggersService {
         @Get("/triggers")
         @ExpectedResponses({ 200 })

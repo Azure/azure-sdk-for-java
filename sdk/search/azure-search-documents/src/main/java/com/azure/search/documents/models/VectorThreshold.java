@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public class VectorThreshold implements JsonSerializable<VectorThreshold> {
     /*
      * The kind of threshold used to filter vector queries
      */
+    @Generated
     private VectorThresholdKind kind = VectorThresholdKind.fromString("VectorThreshold");
 
     /**
      * Creates an instance of VectorThreshold class.
      */
+    @Generated
     public VectorThreshold() {
     }
 
@@ -34,6 +37,7 @@ public class VectorThreshold implements JsonSerializable<VectorThreshold> {
      * 
      * @return the kind value.
      */
+    @Generated
     public VectorThresholdKind getKind() {
         return this.kind;
     }
@@ -41,6 +45,7 @@ public class VectorThreshold implements JsonSerializable<VectorThreshold> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -56,6 +61,7 @@ public class VectorThreshold implements JsonSerializable<VectorThreshold> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the VectorThreshold.
      */
+    @Generated
     public static VectorThreshold fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -83,6 +89,7 @@ public class VectorThreshold implements JsonSerializable<VectorThreshold> {
         });
     }
 
+    @Generated
     static VectorThreshold fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             VectorThreshold deserializedVectorThreshold = new VectorThreshold();

@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
     /*
      * The Azure cloud that this Azure Application Insights in
      */
+    @Generated
     private String azureCloud;
 
     /*
      * The application id of this Azure Application Insights
      */
+    @Generated
     private String applicationId;
 
     /*
      * The API Key that can access this Azure Application Insights
      */
+    @Generated
     private String apiKey;
 
     /*
      * The statement to query this Azure Application Insights
      */
+    @Generated
     private String query;
 
     /**
      * Creates an instance of AzureApplicationInsightsParameter class.
      */
+    @Generated
     public AzureApplicationInsightsParameter() {
     }
 
@@ -47,6 +53,7 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
      * 
      * @return the azureCloud value.
      */
+    @Generated
     public String getAzureCloud() {
         return this.azureCloud;
     }
@@ -57,6 +64,7 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
      * @param azureCloud the azureCloud value to set.
      * @return the AzureApplicationInsightsParameter object itself.
      */
+    @Generated
     public AzureApplicationInsightsParameter setAzureCloud(String azureCloud) {
         this.azureCloud = azureCloud;
         return this;
@@ -67,6 +75,7 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
      * 
      * @return the applicationId value.
      */
+    @Generated
     public String getApplicationId() {
         return this.applicationId;
     }
@@ -77,6 +86,7 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
      * @param applicationId the applicationId value to set.
      * @return the AzureApplicationInsightsParameter object itself.
      */
+    @Generated
     public AzureApplicationInsightsParameter setApplicationId(String applicationId) {
         this.applicationId = applicationId;
         return this;
@@ -87,6 +97,7 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
      * 
      * @return the apiKey value.
      */
+    @Generated
     public String getApiKey() {
         return this.apiKey;
     }
@@ -97,6 +108,7 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
      * @param apiKey the apiKey value to set.
      * @return the AzureApplicationInsightsParameter object itself.
      */
+    @Generated
     public AzureApplicationInsightsParameter setApiKey(String apiKey) {
         this.apiKey = apiKey;
         return this;
@@ -107,6 +119,7 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
      * 
      * @return the query value.
      */
+    @Generated
     public String getQuery() {
         return this.query;
     }
@@ -117,6 +130,7 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
      * @param query the query value to set.
      * @return the AzureApplicationInsightsParameter object itself.
      */
+    @Generated
     public AzureApplicationInsightsParameter setQuery(String query) {
         this.query = query;
         return this;
@@ -125,6 +139,7 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -144,6 +159,7 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureApplicationInsightsParameter.
      */
+    @Generated
     public static AzureApplicationInsightsParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureApplicationInsightsParameter deserializedAzureApplicationInsightsParameter

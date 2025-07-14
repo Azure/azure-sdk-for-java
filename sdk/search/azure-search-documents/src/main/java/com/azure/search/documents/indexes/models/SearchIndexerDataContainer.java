@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,12 +23,14 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
      * The name of the table or view (for Azure SQL data source) or collection (for CosmosDB data source) that will be
      * indexed.
      */
+    @Generated
     private final String name;
 
     /*
      * A query that is applied to this data container. The syntax and meaning of this parameter is datasource-specific.
      * Not supported by Azure SQL datasources.
      */
+    @Generated
     private String query;
 
     /**
@@ -35,6 +38,7 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
      * 
      * @param name the name value to set.
      */
+    @Generated
     public SearchIndexerDataContainer(String name) {
         this.name = name;
     }
@@ -45,6 +49,7 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -55,6 +60,7 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
      * 
      * @return the query value.
      */
+    @Generated
     public String getQuery() {
         return this.query;
     }
@@ -66,6 +72,7 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
      * @param query the query value to set.
      * @return the SearchIndexerDataContainer object itself.
      */
+    @Generated
     public SearchIndexerDataContainer setQuery(String query) {
         this.query = query;
         return this;
@@ -74,6 +81,7 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +99,7 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerDataContainer.
      */
+    @Generated
     public static SearchIndexerDataContainer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

@@ -12,5 +12,6 @@
     <module>azure-sdk-archetype</module>
     <module>azure-sdk-build-tool</module>
     <module>azure-openrewrite</module>
+    <module>azure-openrewrite-compiler-maven-plugin</module>
   </modules>
 </project>

@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
     /*
      * Document model description.
      */
+    @Generated
     private String description;
 
     /*
      * Custom document model build mode.
      */
+    @Generated
     private DocumentBuildMode buildMode;
 
     /*
      * Description of the document semantic schema using a JSON Schema style syntax.
      */
+    @Generated
     private final Map<String, DocumentFieldSchema> fieldSchema;
 
     /*
      * Estimated confidence for each field.
      */
+    @Generated
     private Map<String, Float> fieldConfidence;
 
     /**
@@ -42,6 +47,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
      * 
      * @param fieldSchema the fieldSchema value to set.
      */
+    @Generated
     public DocumentTypeDetails(Map<String, DocumentFieldSchema> fieldSchema) {
         this.fieldSchema = fieldSchema;
     }
@@ -51,6 +57,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -61,6 +68,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
      * @param description the description value to set.
      * @return the DocumentTypeDetails object itself.
      */
+    @Generated
     public DocumentTypeDetails setDescription(String description) {
         this.description = description;
         return this;
@@ -71,6 +79,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
      * 
      * @return the buildMode value.
      */
+    @Generated
     public DocumentBuildMode getBuildMode() {
         return this.buildMode;
     }
@@ -81,6 +90,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
      * @param buildMode the buildMode value to set.
      * @return the DocumentTypeDetails object itself.
      */
+    @Generated
     public DocumentTypeDetails setBuildMode(DocumentBuildMode buildMode) {
         this.buildMode = buildMode;
         return this;
@@ -91,6 +101,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
      * 
      * @return the fieldSchema value.
      */
+    @Generated
     public Map<String, DocumentFieldSchema> getFieldSchema() {
         return this.fieldSchema;
     }
@@ -100,6 +111,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
      * 
      * @return the fieldConfidence value.
      */
+    @Generated
     public Map<String, Float> getFieldConfidence() {
         return this.fieldConfidence;
     }
@@ -110,6 +122,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
      * @param fieldConfidence the fieldConfidence value to set.
      * @return the DocumentTypeDetails object itself.
      */
+    @Generated
     public DocumentTypeDetails setFieldConfidence(Map<String, Float> fieldConfidence) {
         this.fieldConfidence = fieldConfidence;
         return this;
@@ -118,6 +131,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -138,6 +152,7 @@ public final class DocumentTypeDetails implements JsonSerializable<DocumentTypeD
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentTypeDetails.
      */
+    @Generated
     public static DocumentTypeDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean fieldSchemaFound = false;

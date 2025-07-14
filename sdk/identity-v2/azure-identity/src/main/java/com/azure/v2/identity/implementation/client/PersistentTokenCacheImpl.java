@@ -12,6 +12,7 @@ import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
 import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessException;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -60,9 +61,10 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
             PersistenceSettings persistenceSettings = getPersistenceSettings();
             cacheAccessAspect = new PersistenceTokenCacheAccessAspect(persistenceSettings);
             return true;
-        } catch (Throwable t) {
-            throw LOGGER.logThrowableAsError(
-                new CredentialAuthenticationException("Shared token cache is unavailable in this environment.", t));
+        } catch (IOException | RuntimeException t) {
+            throw LOGGER.throwableAtError()
+                .log("Shared token cache is unavailable in this environment.", t,
+                    CredentialAuthenticationException::new);
         }
     }
 
@@ -89,7 +91,8 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
                 return persistenceSettingsBuilder.build();
             } catch (KeyRingAccessException e) {
                 if (!allowUnencryptedStorage) {
-                    throw LOGGER.logThrowableAsError(e);
+                    // not logging here, caller is logging everything
+                    throw e;
                 }
                 persistenceSettingsBuilder.setLinuxUseUnprotectedFileAsCacheStorage(true);
                 return persistenceSettingsBuilder.build();

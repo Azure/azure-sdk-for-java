@@ -19,6 +19,7 @@ import com.azure.resourcemanager.network.models.TunnelConnectionHealth;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionMode;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionStatus;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionTunnelProperties;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionType;
 import java.io.IOException;
 import java.util.List;
@@ -83,6 +84,11 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
      * The connection mode for this connection.
      */
     private VirtualNetworkGatewayConnectionMode connectionMode;
+
+    /*
+     * Tunnel properties for virtual network gateway connection
+     */
+    private List<VirtualNetworkGatewayConnectionTunnelProperties> tunnelProperties;
 
     /*
      * The IPSec shared key.
@@ -398,6 +404,27 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
     }
 
     /**
+     * Get the tunnelProperties property: Tunnel properties for virtual network gateway connection.
+     * 
+     * @return the tunnelProperties value.
+     */
+    public List<VirtualNetworkGatewayConnectionTunnelProperties> tunnelProperties() {
+        return this.tunnelProperties;
+    }
+
+    /**
+     * Set the tunnelProperties property: Tunnel properties for virtual network gateway connection.
+     * 
+     * @param tunnelProperties the tunnelProperties value to set.
+     * @return the VirtualNetworkGatewayConnectionPropertiesFormatInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionPropertiesFormatInner
+        withTunnelProperties(List<VirtualNetworkGatewayConnectionTunnelProperties> tunnelProperties) {
+        this.tunnelProperties = tunnelProperties;
+        return this;
+    }
+
+    /**
      * Get the sharedKey property: The IPSec shared key.
      * 
      * @return the sharedKey value.
@@ -685,6 +712,9 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
                 .log(new IllegalArgumentException(
                     "Missing required property connectionType in model VirtualNetworkGatewayConnectionPropertiesFormatInner"));
         }
+        if (tunnelProperties() != null) {
+            tunnelProperties().forEach(e -> e.validate());
+        }
         if (tunnelConnectionStatus() != null) {
             tunnelConnectionStatus().forEach(e -> e.validate());
         }
@@ -724,6 +754,8 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
         jsonWriter.writeNumberField("dpdTimeoutSeconds", this.dpdTimeoutSeconds);
         jsonWriter.writeStringField("connectionMode",
             this.connectionMode == null ? null : this.connectionMode.toString());
+        jsonWriter.writeArrayField("tunnelProperties", this.tunnelProperties,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("sharedKey", this.sharedKey);
         jsonWriter.writeJsonField("peer", this.peer);
         jsonWriter.writeBooleanField("enableBgp", this.enableBgp);
@@ -790,6 +822,11 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
                 } else if ("connectionMode".equals(fieldName)) {
                     deserializedVirtualNetworkGatewayConnectionPropertiesFormatInner.connectionMode
                         = VirtualNetworkGatewayConnectionMode.fromString(reader.getString());
+                } else if ("tunnelProperties".equals(fieldName)) {
+                    List<VirtualNetworkGatewayConnectionTunnelProperties> tunnelProperties = reader
+                        .readArray(reader1 -> VirtualNetworkGatewayConnectionTunnelProperties.fromJson(reader1));
+                    deserializedVirtualNetworkGatewayConnectionPropertiesFormatInner.tunnelProperties
+                        = tunnelProperties;
                 } else if ("sharedKey".equals(fieldName)) {
                     deserializedVirtualNetworkGatewayConnectionPropertiesFormatInner.sharedKey = reader.getString();
                 } else if ("connectionStatus".equals(fieldName)) {

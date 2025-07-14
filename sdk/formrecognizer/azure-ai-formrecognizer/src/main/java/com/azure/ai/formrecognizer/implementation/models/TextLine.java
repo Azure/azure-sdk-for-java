@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class TextLine implements JsonSerializable<TextLine> {
     /*
      * The text content of the line.
      */
+    @Generated
     private String text;
 
     /*
      * Bounding box of an extracted line.
      */
+    @Generated
     private List<Float> boundingBox;
 
     /*
      * List of words in the text line.
      */
+    @Generated
     private List<TextWord> words;
 
     /*
      * Text appearance properties.
      */
+    @Generated
     private Appearance appearance;
 
     /**
      * Creates an instance of TextLine class.
      */
+    @Generated
     public TextLine() {
     }
 
@@ -48,6 +54,7 @@ public final class TextLine implements JsonSerializable<TextLine> {
      * 
      * @return the text value.
      */
+    @Generated
     public String getText() {
         return this.text;
     }
@@ -58,6 +65,7 @@ public final class TextLine implements JsonSerializable<TextLine> {
      * @param text the text value to set.
      * @return the TextLine object itself.
      */
+    @Generated
     public TextLine setText(String text) {
         this.text = text;
         return this;
@@ -68,6 +76,7 @@ public final class TextLine implements JsonSerializable<TextLine> {
      * 
      * @return the boundingBox value.
      */
+    @Generated
     public List<Float> getBoundingBox() {
         return this.boundingBox;
     }
@@ -78,6 +87,7 @@ public final class TextLine implements JsonSerializable<TextLine> {
      * @param boundingBox the boundingBox value to set.
      * @return the TextLine object itself.
      */
+    @Generated
     public TextLine setBoundingBox(List<Float> boundingBox) {
         this.boundingBox = boundingBox;
         return this;
@@ -88,6 +98,7 @@ public final class TextLine implements JsonSerializable<TextLine> {
      * 
      * @return the words value.
      */
+    @Generated
     public List<TextWord> getWords() {
         return this.words;
     }
@@ -98,6 +109,7 @@ public final class TextLine implements JsonSerializable<TextLine> {
      * @param words the words value to set.
      * @return the TextLine object itself.
      */
+    @Generated
     public TextLine setWords(List<TextWord> words) {
         this.words = words;
         return this;
@@ -108,6 +120,7 @@ public final class TextLine implements JsonSerializable<TextLine> {
      * 
      * @return the appearance value.
      */
+    @Generated
     public Appearance getAppearance() {
         return this.appearance;
     }
@@ -118,6 +131,7 @@ public final class TextLine implements JsonSerializable<TextLine> {
      * @param appearance the appearance value to set.
      * @return the TextLine object itself.
      */
+    @Generated
     public TextLine setAppearance(Appearance appearance) {
         this.appearance = appearance;
         return this;
@@ -126,6 +140,7 @@ public final class TextLine implements JsonSerializable<TextLine> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -145,6 +160,7 @@ public final class TextLine implements JsonSerializable<TextLine> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TextLine.
      */
+    @Generated
     public static TextLine fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TextLine deserializedTextLine = new TextLine();

@@ -43,6 +43,7 @@
     <!-- Skip all linting in performance tests. -->
     <codesnippet.skip>true</codesnippet.skip>
     <checkstyle.skip>true</checkstyle.skip>
+    <jacoco.skip>true</jacoco.skip>
     <spotbugs.skip>true</spotbugs.skip>
     <revapi.skip>true</revapi.skip>
 

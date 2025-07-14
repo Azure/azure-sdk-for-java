@@ -4,6 +4,7 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,11 +16,13 @@ public final class StorageTaskAssignmentCompletedStatus
     /**
      * Static value Succeeded for StorageTaskAssignmentCompletedStatus.
      */
+    @Generated
     public static final StorageTaskAssignmentCompletedStatus SUCCEEDED = fromString("Succeeded");
 
     /**
      * Static value Failed for StorageTaskAssignmentCompletedStatus.
      */
+    @Generated
     public static final StorageTaskAssignmentCompletedStatus FAILED = fromString("Failed");
 
     /**
@@ -27,6 +30,7 @@ public final class StorageTaskAssignmentCompletedStatus
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public StorageTaskAssignmentCompletedStatus() {
     }
@@ -37,6 +41,7 @@ public final class StorageTaskAssignmentCompletedStatus
      * @param name a name to look for.
      * @return the corresponding StorageTaskAssignmentCompletedStatus.
      */
+    @Generated
     public static StorageTaskAssignmentCompletedStatus fromString(String name) {
         return fromString(name, StorageTaskAssignmentCompletedStatus.class);
     }
@@ -46,6 +51,7 @@ public final class StorageTaskAssignmentCompletedStatus
      * 
      * @return known StorageTaskAssignmentCompletedStatus values.
      */
+    @Generated
     public static Collection<StorageTaskAssignmentCompletedStatus> values() {
         return values(StorageTaskAssignmentCompletedStatus.class);
     }

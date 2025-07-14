@@ -4,6 +4,7 @@
 
 package com.azure.maps.search.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class MatchCodesEnum extends ExpandableStringEnum<MatchCodesEnum> {
     /**
      * Static value Good for MatchCodesEnum.
      */
+    @Generated
     public static final MatchCodesEnum GOOD = fromString("Good");
 
     /**
      * Static value Ambiguous for MatchCodesEnum.
      */
+    @Generated
     public static final MatchCodesEnum AMBIGUOUS = fromString("Ambiguous");
 
     /**
      * Static value UpHierarchy for MatchCodesEnum.
      */
+    @Generated
     public static final MatchCodesEnum UP_HIERARCHY = fromString("UpHierarchy");
 
     /**
@@ -31,6 +35,7 @@ public final class MatchCodesEnum extends ExpandableStringEnum<MatchCodesEnum> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MatchCodesEnum() {
     }
@@ -41,6 +46,7 @@ public final class MatchCodesEnum extends ExpandableStringEnum<MatchCodesEnum> {
      * @param name a name to look for.
      * @return the corresponding MatchCodesEnum.
      */
+    @Generated
     public static MatchCodesEnum fromString(String name) {
         return fromString(name, MatchCodesEnum.class);
     }
@@ -50,6 +56,7 @@ public final class MatchCodesEnum extends ExpandableStringEnum<MatchCodesEnum> {
      * 
      * @return known MatchCodesEnum values.
      */
+    @Generated
     public static Collection<MatchCodesEnum> values() {
         return values(MatchCodesEnum.class);
     }

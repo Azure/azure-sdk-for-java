@@ -17,9 +17,9 @@ public class KeyVaultConnectionsDelete {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildKeyVaultConnectionsClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.keyvaultconnectionsdelete.keyvaultconnectionsdelete
+        // BEGIN:com.azure.analytics.purview.scanning.generated.key-vault-connections-delete.key-vault-connections-delete
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = keyVaultConnectionsClient.deleteWithResponse("KeyVault1", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.keyvaultconnectionsdelete.keyvaultconnectionsdelete
+        // END:com.azure.analytics.purview.scanning.generated.key-vault-connections-delete.key-vault-connections-delete
     }
 }

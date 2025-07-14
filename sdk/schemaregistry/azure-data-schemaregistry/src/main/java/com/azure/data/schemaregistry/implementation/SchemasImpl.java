@@ -69,7 +69,7 @@ public final class SchemasImpl {
      * REST calls.
      */
     @Host("https://{endpoint}")
-    @ServiceInterface(name = "AzureSchemaRegistryS")
+    @ServiceInterface(name = "AzureSchemaRegistrySchemas")
     public interface SchemasService {
         @Get("/$schemaGroups/$schemas/{id}")
         @ExpectedResponses({ 200, 200 })
@@ -586,7 +586,7 @@ public final class SchemasImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Integer> getVersions(String groupName, String schemaName) {
-        return new PagedIterable<>(() -> getVersionsSinglePage(groupName, schemaName, Context.NONE),
+        return new PagedIterable<>(() -> getVersionsSinglePage(groupName, schemaName),
             nextLink -> getVersionsNextSinglePage(nextLink));
     }
 

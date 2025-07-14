@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,37 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
     /*
      * The level property.
      */
+    @Generated
     private int level;
 
     /*
      * Method name.
      */
+    @Generated
     private String method;
 
     /*
      * Name of the assembly (dll, jar, etc.) containing this function.
      */
+    @Generated
     private String assembly;
 
     /*
      * File name or URL of the method implementation.
      */
+    @Generated
     private String fileName;
 
     /*
      * Line number of the code implementation.
      */
+    @Generated
     private Integer line;
 
     /**
      * Creates an instance of StackFrame class.
      */
+    @Generated
     public StackFrame() {
     }
 
@@ -52,6 +59,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
      * 
      * @return the level value.
      */
+    @Generated
     public int getLevel() {
         return this.level;
     }
@@ -62,6 +70,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
      * @param level the level value to set.
      * @return the StackFrame object itself.
      */
+    @Generated
     public StackFrame setLevel(int level) {
         this.level = level;
         return this;
@@ -72,6 +81,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
      * 
      * @return the method value.
      */
+    @Generated
     public String getMethod() {
         return this.method;
     }
@@ -82,6 +92,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
      * @param method the method value to set.
      * @return the StackFrame object itself.
      */
+    @Generated
     public StackFrame setMethod(String method) {
         this.method = method;
         return this;
@@ -92,6 +103,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
      * 
      * @return the assembly value.
      */
+    @Generated
     public String getAssembly() {
         return this.assembly;
     }
@@ -102,6 +114,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
      * @param assembly the assembly value to set.
      * @return the StackFrame object itself.
      */
+    @Generated
     public StackFrame setAssembly(String assembly) {
         this.assembly = assembly;
         return this;
@@ -112,6 +125,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
      * 
      * @return the fileName value.
      */
+    @Generated
     public String getFileName() {
         return this.fileName;
     }
@@ -122,6 +136,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
      * @param fileName the fileName value to set.
      * @return the StackFrame object itself.
      */
+    @Generated
     public StackFrame setFileName(String fileName) {
         this.fileName = fileName;
         return this;
@@ -132,6 +147,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
      * 
      * @return the line value.
      */
+    @Generated
     public Integer getLine() {
         return this.line;
     }
@@ -142,6 +158,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
      * @param line the line value to set.
      * @return the StackFrame object itself.
      */
+    @Generated
     public StackFrame setLine(Integer line) {
         this.line = line;
         return this;
@@ -150,6 +167,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -170,6 +188,7 @@ public final class StackFrame implements JsonSerializable<StackFrame> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StackFrame.
      */
+    @Generated
     public static StackFrame fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StackFrame deserializedStackFrame = new StackFrame();

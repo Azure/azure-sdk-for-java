@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +19,19 @@ public final class AbstractiveSummarizationLROTask extends AnalyzeTextLROTask {
     /*
      * Enumeration of supported long-running Text Analysis tasks.
      */
+    @Generated
     private AnalyzeTextLROTaskKind kind = AnalyzeTextLROTaskKind.ABSTRACTIVE_SUMMARIZATION;
 
     /*
      * Supported parameters for the pre-build Abstractive Summarization task.
      */
+    @Generated
     private AbstractiveSummarizationTaskParameters parameters;
 
     /**
      * Creates an instance of AbstractiveSummarizationLROTask class.
      */
+    @Generated
     public AbstractiveSummarizationLROTask() {
     }
 
@@ -36,6 +40,7 @@ public final class AbstractiveSummarizationLROTask extends AnalyzeTextLROTask {
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public AnalyzeTextLROTaskKind getKind() {
         return this.kind;
@@ -46,6 +51,7 @@ public final class AbstractiveSummarizationLROTask extends AnalyzeTextLROTask {
      * 
      * @return the parameters value.
      */
+    @Generated
     public AbstractiveSummarizationTaskParameters getParameters() {
         return this.parameters;
     }
@@ -56,6 +62,7 @@ public final class AbstractiveSummarizationLROTask extends AnalyzeTextLROTask {
      * @param parameters the parameters value to set.
      * @return the AbstractiveSummarizationLROTask object itself.
      */
+    @Generated
     public AbstractiveSummarizationLROTask setParameters(AbstractiveSummarizationTaskParameters parameters) {
         this.parameters = parameters;
         return this;
@@ -64,6 +71,7 @@ public final class AbstractiveSummarizationLROTask extends AnalyzeTextLROTask {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AbstractiveSummarizationLROTask setTaskName(String taskName) {
         super.setTaskName(taskName);
@@ -73,6 +81,7 @@ public final class AbstractiveSummarizationLROTask extends AnalyzeTextLROTask {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class AbstractiveSummarizationLROTask extends AnalyzeTextLROTask {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AbstractiveSummarizationLROTask.
      */
+    @Generated
     public static AbstractiveSummarizationLROTask fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AbstractiveSummarizationLROTask deserializedAbstractiveSummarizationLROTask

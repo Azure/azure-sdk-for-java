@@ -271,37 +271,4 @@ public class ClientLogger {
     public ExceptionLoggingEvent throwableAtWarning() {
         return new ExceptionLoggingEvent(new LoggingEvent(logger, LogLevel.WARNING, globalContext, true));
     }
-
-    /**
-     * Logs the {@link Throwable} at the warning level and returns it to be thrown.
-     * <p>
-     * This API covers the cases where a checked exception type needs to be thrown and logged.
-     *
-     * @param throwable Throwable to be logged and returned.
-     * @param <T> Type of the Throwable being logged.
-     * @return The passed {@link Throwable}.
-     * @throws NullPointerException If {@code throwable} is {@code null}.
-     * @deprecated Deprecated in favor of context-aware {@link #throwableAtWarning()}
-     */
-    @Deprecated
-    public <T extends Throwable> T logThrowableAsWarning(T throwable) {
-        LoggingEvent.create(logger, LogLevel.WARNING, globalContext).setThrowable(throwable).log();
-        return throwable;
-    }
-
-    /**
-     * Logs the {@link Throwable} at the error level and returns it to be thrown.
-     * <p>
-     * This API covers the cases where a checked exception type needs to be thrown and logged.
-     *
-     * @param throwable Throwable to be logged and returned.
-     * @param <T> Type of the Throwable being logged.
-     * @return The passed {@link Throwable}.
-     * @deprecated Deprecated in favor of context-aware {@link #throwableAtError()}
-     */
-    @Deprecated
-    public <T extends Throwable> T logThrowableAsError(T throwable) {
-        LoggingEvent.create(logger, LogLevel.ERROR, globalContext).setThrowable(throwable).log();
-        return throwable;
-    }
 }

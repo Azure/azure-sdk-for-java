@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,34 +22,40 @@ public final class PolybaseSettings implements JsonSerializable<PolybaseSettings
     /*
      * Reject type.
      */
+    @Generated
     private PolybaseSettingsRejectType rejectType;
 
     /*
      * Specifies the value or the percentage of rows that can be rejected before the query fails. Type: number (or
      * Expression with resultType number), minimum: 0.
      */
+    @Generated
     private Object rejectValue;
 
     /*
      * Determines the number of rows to attempt to retrieve before the PolyBase recalculates the percentage of rejected
      * rows. Type: integer (or Expression with resultType integer), minimum: 0.
      */
+    @Generated
     private Object rejectSampleValue;
 
     /*
      * Specifies how to handle missing values in delimited text files when PolyBase retrieves data from the text file.
      * Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object useTypeDefault;
 
     /*
      * PolyBase settings.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of PolybaseSettings class.
      */
+    @Generated
     public PolybaseSettings() {
     }
 
@@ -57,6 +64,7 @@ public final class PolybaseSettings implements JsonSerializable<PolybaseSettings
      * 
      * @return the rejectType value.
      */
+    @Generated
     public PolybaseSettingsRejectType getRejectType() {
         return this.rejectType;
     }
@@ -67,6 +75,7 @@ public final class PolybaseSettings implements JsonSerializable<PolybaseSettings
      * @param rejectType the rejectType value to set.
      * @return the PolybaseSettings object itself.
      */
+    @Generated
     public PolybaseSettings setRejectType(PolybaseSettingsRejectType rejectType) {
         this.rejectType = rejectType;
         return this;
@@ -78,6 +87,7 @@ public final class PolybaseSettings implements JsonSerializable<PolybaseSettings
      * 
      * @return the rejectValue value.
      */
+    @Generated
     public Object getRejectValue() {
         return this.rejectValue;
     }
@@ -89,6 +99,7 @@ public final class PolybaseSettings implements JsonSerializable<PolybaseSettings
      * @param rejectValue the rejectValue value to set.
      * @return the PolybaseSettings object itself.
      */
+    @Generated
     public PolybaseSettings setRejectValue(Object rejectValue) {
         this.rejectValue = rejectValue;
         return this;
@@ -100,6 +111,7 @@ public final class PolybaseSettings implements JsonSerializable<PolybaseSettings
      * 
      * @return the rejectSampleValue value.
      */
+    @Generated
     public Object getRejectSampleValue() {
         return this.rejectSampleValue;
     }
@@ -111,6 +123,7 @@ public final class PolybaseSettings implements JsonSerializable<PolybaseSettings
      * @param rejectSampleValue the rejectSampleValue value to set.
      * @return the PolybaseSettings object itself.
      */
+    @Generated
     public PolybaseSettings setRejectSampleValue(Object rejectSampleValue) {
         this.rejectSampleValue = rejectSampleValue;
         return this;
@@ -122,6 +135,7 @@ public final class PolybaseSettings implements JsonSerializable<PolybaseSettings
      * 
      * @return the useTypeDefault value.
      */
+    @Generated
     public Object getUseTypeDefault() {
         return this.useTypeDefault;
     }
@@ -133,6 +147,7 @@ public final class PolybaseSettings implements JsonSerializable<PolybaseSettings
      * @param useTypeDefault the useTypeDefault value to set.
      * @return the PolybaseSettings object itself.
      */
+    @Generated
     public PolybaseSettings setUseTypeDefault(Object useTypeDefault) {
         this.useTypeDefault = useTypeDefault;
         return this;
@@ -143,6 +158,7 @@ public final class PolybaseSettings implements JsonSerializable<PolybaseSettings
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -153,6 +169,7 @@ public final class PolybaseSettings implements JsonSerializable<PolybaseSettings
      * @param additionalProperties the additionalProperties value to set.
      * @return the PolybaseSettings object itself.
      */
+    @Generated
     public PolybaseSettings setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -161,13 +178,20 @@ public final class PolybaseSettings implements JsonSerializable<PolybaseSettings
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("rejectType", this.rejectType == null ? null : this.rejectType.toString());
-        jsonWriter.writeUntypedField("rejectValue", this.rejectValue);
-        jsonWriter.writeUntypedField("rejectSampleValue", this.rejectSampleValue);
-        jsonWriter.writeUntypedField("useTypeDefault", this.useTypeDefault);
+        if (this.rejectValue != null) {
+            jsonWriter.writeUntypedField("rejectValue", this.rejectValue);
+        }
+        if (this.rejectSampleValue != null) {
+            jsonWriter.writeUntypedField("rejectSampleValue", this.rejectSampleValue);
+        }
+        if (this.useTypeDefault != null) {
+            jsonWriter.writeUntypedField("useTypeDefault", this.useTypeDefault);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -184,6 +208,7 @@ public final class PolybaseSettings implements JsonSerializable<PolybaseSettings
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the PolybaseSettings.
      */
+    @Generated
     public static PolybaseSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PolybaseSettings deserializedPolybaseSettings = new PolybaseSettings();

@@ -1,0 +1,62 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/storage-v2/ci.yml
+      - sdk/storage-v2/azure-storage-blob/
+      - sdk/storage-v2/azure-storage-perf/
+    exclude:
+      - sdk/storage-v2/pom.xml
+      - sdk/storage-v2/azure-storage-blob/pom.xml
+      - sdk/storage-v2/azure-storage-perf/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/storage-v2/ci.yml
+      - sdk/storage-v2/azure-storage-blob/
+      - sdk/storage-v2/azure-storage-perf/
+    exclude:
+      - sdk/storage-v2/pom.xml
+      - sdk/storage-v2/azure-storage-blob/pom.xml
+      - sdk/storage-v2/azure-storage-perf/pom.xml
+
+parameters:
+  - name: release_azurestorageblob
+    displayName: 'azure-storage-blob'
+    type: boolean
+    default: true
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: storage-v2
+    Artifacts:
+      - name: azure-storage-blob
+        groupId: com.azure.v2
+        safeName: azurestorageblob
+        releaseInBatch: ${{ parameters.release_azurestorageblob }}
+    AdditionalModules:
+      - name: azure-storage-perf
+        groupId: com.azure.v2
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure
+    MatrixConfigs:
+      - Name: Storage_ci
+        Path: sdk/storage-v2/platform-matrix-ci.json
+        Selection: sparse
+        NonSparseParameters: Agent
+        GenerateVMJobs: true

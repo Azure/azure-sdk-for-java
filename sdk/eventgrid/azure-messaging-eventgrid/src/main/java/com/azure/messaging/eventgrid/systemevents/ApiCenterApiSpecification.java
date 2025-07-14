@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class ApiCenterApiSpecification implements JsonSerializable<ApiCent
     /*
      * Specification name.
      */
+    @Generated
     private String name;
 
     /*
      * Specification version.
      */
+    @Generated
     private String version;
 
     /**
      * Creates an instance of ApiCenterApiSpecification class.
      */
+    @Generated
     public ApiCenterApiSpecification() {
     }
 
@@ -37,6 +41,7 @@ public final class ApiCenterApiSpecification implements JsonSerializable<ApiCent
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -47,6 +52,7 @@ public final class ApiCenterApiSpecification implements JsonSerializable<ApiCent
      * @param name the name value to set.
      * @return the ApiCenterApiSpecification object itself.
      */
+    @Generated
     public ApiCenterApiSpecification setName(String name) {
         this.name = name;
         return this;
@@ -57,6 +63,7 @@ public final class ApiCenterApiSpecification implements JsonSerializable<ApiCent
      * 
      * @return the version value.
      */
+    @Generated
     public String getVersion() {
         return this.version;
     }
@@ -67,6 +74,7 @@ public final class ApiCenterApiSpecification implements JsonSerializable<ApiCent
      * @param version the version value to set.
      * @return the ApiCenterApiSpecification object itself.
      */
+    @Generated
     public ApiCenterApiSpecification setVersion(String version) {
         this.version = version;
         return this;
@@ -75,6 +83,7 @@ public final class ApiCenterApiSpecification implements JsonSerializable<ApiCent
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class ApiCenterApiSpecification implements JsonSerializable<ApiCent
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ApiCenterApiSpecification.
      */
+    @Generated
     public static ApiCenterApiSpecification fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ApiCenterApiSpecification deserializedApiCenterApiSpecification = new ApiCenterApiSpecification();

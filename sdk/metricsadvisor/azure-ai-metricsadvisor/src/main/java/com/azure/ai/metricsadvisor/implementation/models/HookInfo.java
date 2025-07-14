@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,36 +22,43 @@ public class HookInfo implements JsonSerializable<HookInfo> {
     /*
      * hook type
      */
+    @Generated
     private HookType hookType = HookType.fromString("HookInfo");
 
     /*
      * Hook unique id
      */
+    @Generated
     private UUID hookId;
 
     /*
      * hook unique name
      */
+    @Generated
     private String hookName;
 
     /*
      * hook description
      */
+    @Generated
     private String description;
 
     /*
      * hook external link
      */
+    @Generated
     private String externalLink;
 
     /*
      * hook administrators
      */
+    @Generated
     private List<String> admins;
 
     /**
      * Creates an instance of HookInfo class.
      */
+    @Generated
     public HookInfo() {
     }
 
@@ -59,6 +67,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * 
      * @return the hookType value.
      */
+    @Generated
     public HookType getHookType() {
         return this.hookType;
     }
@@ -68,6 +77,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * 
      * @return the hookId value.
      */
+    @Generated
     public UUID getHookId() {
         return this.hookId;
     }
@@ -78,6 +88,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * @param hookId the hookId value to set.
      * @return the HookInfo object itself.
      */
+    @Generated
     HookInfo setHookId(UUID hookId) {
         this.hookId = hookId;
         return this;
@@ -88,6 +99,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * 
      * @return the hookName value.
      */
+    @Generated
     public String getHookName() {
         return this.hookName;
     }
@@ -98,6 +110,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * @param hookName the hookName value to set.
      * @return the HookInfo object itself.
      */
+    @Generated
     public HookInfo setHookName(String hookName) {
         this.hookName = hookName;
         return this;
@@ -108,6 +121,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -118,6 +132,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * @param description the description value to set.
      * @return the HookInfo object itself.
      */
+    @Generated
     public HookInfo setDescription(String description) {
         this.description = description;
         return this;
@@ -128,6 +143,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * 
      * @return the externalLink value.
      */
+    @Generated
     public String getExternalLink() {
         return this.externalLink;
     }
@@ -138,6 +154,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * @param externalLink the externalLink value to set.
      * @return the HookInfo object itself.
      */
+    @Generated
     public HookInfo setExternalLink(String externalLink) {
         this.externalLink = externalLink;
         return this;
@@ -148,6 +165,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * 
      * @return the admins value.
      */
+    @Generated
     public List<String> getAdmins() {
         return this.admins;
     }
@@ -158,6 +176,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * @param admins the admins value to set.
      * @return the HookInfo object itself.
      */
+    @Generated
     public HookInfo setAdmins(List<String> admins) {
         this.admins = admins;
         return this;
@@ -166,6 +185,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -186,6 +206,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HookInfo.
      */
+    @Generated
     public static HookInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -213,6 +234,7 @@ public class HookInfo implements JsonSerializable<HookInfo> {
         });
     }
 
+    @Generated
     static HookInfo fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HookInfo deserializedHookInfo = new HookInfo();

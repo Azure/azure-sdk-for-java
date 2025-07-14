@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class AcsMessageInteractiveButtonReplyContent
     /*
      * The ID of the button
      */
+    @Generated
     private String buttonId;
 
     /*
      * The title of the button
      */
+    @Generated
     private String title;
 
     /**
      * Creates an instance of AcsMessageInteractiveButtonReplyContent class.
      */
+    @Generated
     public AcsMessageInteractiveButtonReplyContent() {
     }
 
@@ -38,6 +42,7 @@ public final class AcsMessageInteractiveButtonReplyContent
      * 
      * @return the buttonId value.
      */
+    @Generated
     public String getButtonId() {
         return this.buttonId;
     }
@@ -48,6 +53,7 @@ public final class AcsMessageInteractiveButtonReplyContent
      * @param buttonId the buttonId value to set.
      * @return the AcsMessageInteractiveButtonReplyContent object itself.
      */
+    @Generated
     public AcsMessageInteractiveButtonReplyContent setButtonId(String buttonId) {
         this.buttonId = buttonId;
         return this;
@@ -58,6 +64,7 @@ public final class AcsMessageInteractiveButtonReplyContent
      * 
      * @return the title value.
      */
+    @Generated
     public String getTitle() {
         return this.title;
     }
@@ -68,6 +75,7 @@ public final class AcsMessageInteractiveButtonReplyContent
      * @param title the title value to set.
      * @return the AcsMessageInteractiveButtonReplyContent object itself.
      */
+    @Generated
     public AcsMessageInteractiveButtonReplyContent setTitle(String title) {
         this.title = title;
         return this;
@@ -76,6 +84,7 @@ public final class AcsMessageInteractiveButtonReplyContent
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class AcsMessageInteractiveButtonReplyContent
      * it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcsMessageInteractiveButtonReplyContent.
      */
+    @Generated
     public static AcsMessageInteractiveButtonReplyContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsMessageInteractiveButtonReplyContent deserializedAcsMessageInteractiveButtonReplyContent

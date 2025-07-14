@@ -192,6 +192,32 @@ public class EffectiveConnectivityConfiguration implements JsonSerializable<Effe
     }
 
     /**
+     * Get the connectivityCapabilities property: Collection of additional settings to enhance specific topology
+     * behaviors of the connectivity configuration resource.
+     * 
+     * @return the connectivityCapabilities value.
+     */
+    public ConnectivityConfigurationPropertiesConnectivityCapabilities connectivityCapabilities() {
+        return this.innerProperties() == null ? null : this.innerProperties().connectivityCapabilities();
+    }
+
+    /**
+     * Set the connectivityCapabilities property: Collection of additional settings to enhance specific topology
+     * behaviors of the connectivity configuration resource.
+     * 
+     * @param connectivityCapabilities the connectivityCapabilities value to set.
+     * @return the EffectiveConnectivityConfiguration object itself.
+     */
+    public EffectiveConnectivityConfiguration withConnectivityCapabilities(
+        ConnectivityConfigurationPropertiesConnectivityCapabilities connectivityCapabilities) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectivityConfigurationProperties();
+        }
+        this.innerProperties().withConnectivityCapabilities(connectivityCapabilities);
+        return this;
+    }
+
+    /**
      * Get the appliesToGroups property: Groups for configuration.
      * 
      * @return the appliesToGroups value.

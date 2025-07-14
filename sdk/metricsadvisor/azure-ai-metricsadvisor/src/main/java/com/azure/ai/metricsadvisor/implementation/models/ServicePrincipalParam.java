@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class ServicePrincipalParam implements JsonSerializable<ServicePrin
     /*
      * The client id of the service principal.
      */
+    @Generated
     private String clientId;
 
     /*
      * The client secret of the service principal.
      */
+    @Generated
     private String clientSecret;
 
     /*
      * The tenant id of the service principal.
      */
+    @Generated
     private String tenantId;
 
     /**
      * Creates an instance of ServicePrincipalParam class.
      */
+    @Generated
     public ServicePrincipalParam() {
     }
 
@@ -42,6 +47,7 @@ public final class ServicePrincipalParam implements JsonSerializable<ServicePrin
      * 
      * @return the clientId value.
      */
+    @Generated
     public String getClientId() {
         return this.clientId;
     }
@@ -52,6 +58,7 @@ public final class ServicePrincipalParam implements JsonSerializable<ServicePrin
      * @param clientId the clientId value to set.
      * @return the ServicePrincipalParam object itself.
      */
+    @Generated
     public ServicePrincipalParam setClientId(String clientId) {
         this.clientId = clientId;
         return this;
@@ -62,6 +69,7 @@ public final class ServicePrincipalParam implements JsonSerializable<ServicePrin
      * 
      * @return the clientSecret value.
      */
+    @Generated
     public String getClientSecret() {
         return this.clientSecret;
     }
@@ -72,6 +80,7 @@ public final class ServicePrincipalParam implements JsonSerializable<ServicePrin
      * @param clientSecret the clientSecret value to set.
      * @return the ServicePrincipalParam object itself.
      */
+    @Generated
     public ServicePrincipalParam setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
         return this;
@@ -82,6 +91,7 @@ public final class ServicePrincipalParam implements JsonSerializable<ServicePrin
      * 
      * @return the tenantId value.
      */
+    @Generated
     public String getTenantId() {
         return this.tenantId;
     }
@@ -92,6 +102,7 @@ public final class ServicePrincipalParam implements JsonSerializable<ServicePrin
      * @param tenantId the tenantId value to set.
      * @return the ServicePrincipalParam object itself.
      */
+    @Generated
     public ServicePrincipalParam setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -100,6 +111,7 @@ public final class ServicePrincipalParam implements JsonSerializable<ServicePrin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +130,7 @@ public final class ServicePrincipalParam implements JsonSerializable<ServicePrin
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ServicePrincipalParam.
      */
+    @Generated
     public static ServicePrincipalParam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ServicePrincipalParam deserializedServicePrincipalParam = new ServicePrincipalParam();

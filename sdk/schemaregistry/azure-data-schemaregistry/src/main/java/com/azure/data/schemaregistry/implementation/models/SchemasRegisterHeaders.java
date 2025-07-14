@@ -5,6 +5,7 @@
 package com.azure.data.schemaregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,31 +17,37 @@ public final class SchemasRegisterHeaders {
     /*
      * The Schema-Version property.
      */
+    @Generated
     private Integer schemaVersion;
 
     /*
      * The Schema-Id property.
      */
+    @Generated
     private String schemaId;
 
     /*
      * The Schema-Group-Name property.
      */
+    @Generated
     private String schemaGroupName;
 
     /*
      * The Schema-Name property.
      */
+    @Generated
     private String schemaName;
 
     /*
      * The Schema-Id-Location property.
      */
+    @Generated
     private String schemaIdLocation;
 
     /*
      * The Location property.
      */
+    @Generated
     private String location;
 
     private static final HttpHeaderName SCHEMA_VERSION = HttpHeaderName.fromString("Schema-Version");
@@ -63,6 +70,8 @@ public final class SchemasRegisterHeaders {
         String schemaVersion = rawHeaders.getValue(SCHEMA_VERSION);
         if (schemaVersion != null) {
             this.schemaVersion = Integer.parseInt(schemaVersion);
+        } else {
+            this.schemaVersion = null;
         }
         this.schemaId = rawHeaders.getValue(SCHEMA_ID);
         this.schemaGroupName = rawHeaders.getValue(SCHEMA_GROUP_NAME);
@@ -76,6 +85,7 @@ public final class SchemasRegisterHeaders {
      * 
      * @return the schemaVersion value.
      */
+    @Generated
     public Integer getSchemaVersion() {
         return this.schemaVersion;
     }
@@ -86,6 +96,7 @@ public final class SchemasRegisterHeaders {
      * @param schemaVersion the schemaVersion value to set.
      * @return the SchemasRegisterHeaders object itself.
      */
+    @Generated
     public SchemasRegisterHeaders setSchemaVersion(Integer schemaVersion) {
         this.schemaVersion = schemaVersion;
         return this;
@@ -96,6 +107,7 @@ public final class SchemasRegisterHeaders {
      * 
      * @return the schemaId value.
      */
+    @Generated
     public String getSchemaId() {
         return this.schemaId;
     }
@@ -106,6 +118,7 @@ public final class SchemasRegisterHeaders {
      * @param schemaId the schemaId value to set.
      * @return the SchemasRegisterHeaders object itself.
      */
+    @Generated
     public SchemasRegisterHeaders setSchemaId(String schemaId) {
         this.schemaId = schemaId;
         return this;
@@ -116,6 +129,7 @@ public final class SchemasRegisterHeaders {
      * 
      * @return the schemaGroupName value.
      */
+    @Generated
     public String getSchemaGroupName() {
         return this.schemaGroupName;
     }
@@ -126,6 +140,7 @@ public final class SchemasRegisterHeaders {
      * @param schemaGroupName the schemaGroupName value to set.
      * @return the SchemasRegisterHeaders object itself.
      */
+    @Generated
     public SchemasRegisterHeaders setSchemaGroupName(String schemaGroupName) {
         this.schemaGroupName = schemaGroupName;
         return this;
@@ -136,6 +151,7 @@ public final class SchemasRegisterHeaders {
      * 
      * @return the schemaName value.
      */
+    @Generated
     public String getSchemaName() {
         return this.schemaName;
     }
@@ -146,6 +162,7 @@ public final class SchemasRegisterHeaders {
      * @param schemaName the schemaName value to set.
      * @return the SchemasRegisterHeaders object itself.
      */
+    @Generated
     public SchemasRegisterHeaders setSchemaName(String schemaName) {
         this.schemaName = schemaName;
         return this;
@@ -156,6 +173,7 @@ public final class SchemasRegisterHeaders {
      * 
      * @return the schemaIdLocation value.
      */
+    @Generated
     public String getSchemaIdLocation() {
         return this.schemaIdLocation;
     }
@@ -166,6 +184,7 @@ public final class SchemasRegisterHeaders {
      * @param schemaIdLocation the schemaIdLocation value to set.
      * @return the SchemasRegisterHeaders object itself.
      */
+    @Generated
     public SchemasRegisterHeaders setSchemaIdLocation(String schemaIdLocation) {
         this.schemaIdLocation = schemaIdLocation;
         return this;
@@ -176,6 +195,7 @@ public final class SchemasRegisterHeaders {
      * 
      * @return the location value.
      */
+    @Generated
     public String getLocation() {
         return this.location;
     }
@@ -186,6 +206,7 @@ public final class SchemasRegisterHeaders {
      * @param location the location value to set.
      * @return the SchemasRegisterHeaders object itself.
      */
+    @Generated
     public SchemasRegisterHeaders setLocation(String location) {
         this.location = location;
         return this;

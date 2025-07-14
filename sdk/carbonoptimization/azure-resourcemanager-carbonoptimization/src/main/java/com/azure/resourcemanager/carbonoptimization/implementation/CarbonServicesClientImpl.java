@@ -58,7 +58,7 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "CarbonOptimizationMa")
+    @ServiceInterface(name = "CarbonOptimizationManagementClientCarbonServices")
     public interface CarbonServicesService {
         @Post("/providers/Microsoft.Carbon/carbonEmissionReports")
         @ExpectedResponses({ 200 })

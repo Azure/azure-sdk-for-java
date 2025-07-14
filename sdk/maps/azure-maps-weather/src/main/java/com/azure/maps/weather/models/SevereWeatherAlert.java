@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
     /*
      * 2-character ISO 3166-1 Alpha-2 country code, for example, "US".
      */
+    @Generated
     private String countryCode;
 
     /*
      * A unique numerical identifier for a weather alert.
      */
+    @Generated
     private Integer alertId;
 
     /*
      * Description of the alert.
      */
+    @Generated
     private SevereWeatherAlertDescription description;
 
     /*
      * Category of the alert.
      */
+    @Generated
     private String category;
 
     /*
@@ -42,43 +47,51 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
      * A lower number signifies a higher priority. For example, 1 is the highest priority. The number varies by
      * country/region and can change over time as each country/region evolves their alert systems.
      */
+    @Generated
     private Integer priority;
 
     /*
      * Classification of the alert. This field is not available for all countries and therefore not always returned.
      */
+    @Generated
     private String classification;
 
     /*
      * Severity level of the alert. This field is not available for all countries and therefore not always returned.
      */
+    @Generated
     private String level;
 
     /*
      * The provider of the alert information. By default the source is returned in English (en-US). The alerts are from
      * official Government Meteorological Agencies and leading global weather alert providers.
      */
+    @Generated
     private String source;
 
     /*
      * A numerical identifier associated with the source provider name of the alert data.
      */
+    @Generated
     private Integer sourceId;
 
     /*
      * A disclaimer regarding the source of the alert information. This field is not always available. For example,
      * disclaimer may include details about the delays or potential issues related to the alarm.
      */
+    @Generated
     private String disclaimer;
 
     /*
      * Information about the alert specific to the affected area(s).
      */
+    @Generated
     private List<AlertDetails> alertDetails;
 
     /**
      * Set default SevereWeatherAlert constructor to private
      */
+    @Generated
     private SevereWeatherAlert() {
     }
 
@@ -87,6 +100,7 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
      *
      * @return the countryCode value.
      */
+    @Generated
     public String getCountryCode() {
         return this.countryCode;
     }
@@ -96,6 +110,7 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
      *
      * @return the alertId value.
      */
+    @Generated
     public Integer getAlertId() {
         return this.alertId;
     }
@@ -105,6 +120,7 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
      *
      * @return the description value.
      */
+    @Generated
     public SevereWeatherAlertDescription getDescription() {
         return this.description;
     }
@@ -114,6 +130,7 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
      *
      * @return the category value.
      */
+    @Generated
     public String getCategory() {
         return this.category;
     }
@@ -126,6 +143,7 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
      *
      * @return the priority value.
      */
+    @Generated
     public Integer getPriority() {
         return this.priority;
     }
@@ -136,6 +154,7 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
      *
      * @return the classification value.
      */
+    @Generated
     public String getClassification() {
         return this.classification;
     }
@@ -146,6 +165,7 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
      *
      * @return the level value.
      */
+    @Generated
     public String getLevel() {
         return this.level;
     }
@@ -157,6 +177,7 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
      *
      * @return the source value.
      */
+    @Generated
     public String getSource() {
         return this.source;
     }
@@ -166,6 +187,7 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
      *
      * @return the sourceId value.
      */
+    @Generated
     public Integer getSourceId() {
         return this.sourceId;
     }
@@ -176,6 +198,7 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
      *
      * @return the disclaimer value.
      */
+    @Generated
     public String getDisclaimer() {
         return this.disclaimer;
     }
@@ -185,6 +208,7 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
      *
      * @return the alertDetails value.
      */
+    @Generated
     public List<AlertDetails> getAlertDetails() {
         return this.alertDetails;
     }
@@ -192,6 +216,7 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -217,6 +242,7 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SevereWeatherAlert.
      */
+    @Generated
     public static SevereWeatherAlert fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SevereWeatherAlert deserializedSevereWeatherAlert = new SevereWeatherAlert();

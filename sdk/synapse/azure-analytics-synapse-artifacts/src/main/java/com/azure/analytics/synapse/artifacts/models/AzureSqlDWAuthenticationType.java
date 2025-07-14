@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,22 +15,26 @@ public final class AzureSqlDWAuthenticationType extends ExpandableStringEnum<Azu
     /**
      * Static value SQL for AzureSqlDWAuthenticationType.
      */
+    @Generated
     public static final AzureSqlDWAuthenticationType SQL = fromString("SQL");
 
     /**
      * Static value ServicePrincipal for AzureSqlDWAuthenticationType.
      */
+    @Generated
     public static final AzureSqlDWAuthenticationType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
 
     /**
      * Static value SystemAssignedManagedIdentity for AzureSqlDWAuthenticationType.
      */
+    @Generated
     public static final AzureSqlDWAuthenticationType SYSTEM_ASSIGNED_MANAGED_IDENTITY
         = fromString("SystemAssignedManagedIdentity");
 
     /**
      * Static value UserAssignedManagedIdentity for AzureSqlDWAuthenticationType.
      */
+    @Generated
     public static final AzureSqlDWAuthenticationType USER_ASSIGNED_MANAGED_IDENTITY
         = fromString("UserAssignedManagedIdentity");
 
@@ -38,6 +43,7 @@ public final class AzureSqlDWAuthenticationType extends ExpandableStringEnum<Azu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AzureSqlDWAuthenticationType() {
     }
@@ -48,6 +54,7 @@ public final class AzureSqlDWAuthenticationType extends ExpandableStringEnum<Azu
      * @param name a name to look for.
      * @return the corresponding AzureSqlDWAuthenticationType.
      */
+    @Generated
     public static AzureSqlDWAuthenticationType fromString(String name) {
         return fromString(name, AzureSqlDWAuthenticationType.class);
     }
@@ -57,6 +64,7 @@ public final class AzureSqlDWAuthenticationType extends ExpandableStringEnum<Azu
      * 
      * @return known AzureSqlDWAuthenticationType values.
      */
+    @Generated
     public static Collection<AzureSqlDWAuthenticationType> values() {
         return values(AzureSqlDWAuthenticationType.class);
     }

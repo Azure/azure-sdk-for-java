@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public class CloudError implements JsonSerializable<CloudError> {
     /*
      * Error code.
      */
+    @Generated
     private String code;
 
     /*
      * Error message.
      */
+    @Generated
     private String message;
 
     /*
      * Property name/path in request associated with error.
      */
+    @Generated
     private String target;
 
     /*
      * Array with additional error details.
      */
+    @Generated
     private List<CloudError> details;
 
     /**
      * Creates an instance of CloudError class.
      */
+    @Generated
     public CloudError() {
     }
 
@@ -48,6 +54,7 @@ public class CloudError implements JsonSerializable<CloudError> {
      * 
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -58,6 +65,7 @@ public class CloudError implements JsonSerializable<CloudError> {
      * @param code the code value to set.
      * @return the CloudError object itself.
      */
+    @Generated
     public CloudError setCode(String code) {
         this.code = code;
         return this;
@@ -68,6 +76,7 @@ public class CloudError implements JsonSerializable<CloudError> {
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -78,6 +87,7 @@ public class CloudError implements JsonSerializable<CloudError> {
      * @param message the message value to set.
      * @return the CloudError object itself.
      */
+    @Generated
     public CloudError setMessage(String message) {
         this.message = message;
         return this;
@@ -88,6 +98,7 @@ public class CloudError implements JsonSerializable<CloudError> {
      * 
      * @return the target value.
      */
+    @Generated
     public String getTarget() {
         return this.target;
     }
@@ -98,6 +109,7 @@ public class CloudError implements JsonSerializable<CloudError> {
      * @param target the target value to set.
      * @return the CloudError object itself.
      */
+    @Generated
     public CloudError setTarget(String target) {
         this.target = target;
         return this;
@@ -108,6 +120,7 @@ public class CloudError implements JsonSerializable<CloudError> {
      * 
      * @return the details value.
      */
+    @Generated
     public List<CloudError> getDetails() {
         return this.details;
     }
@@ -118,6 +131,7 @@ public class CloudError implements JsonSerializable<CloudError> {
      * @param details the details value to set.
      * @return the CloudError object itself.
      */
+    @Generated
     public CloudError setDetails(List<CloudError> details) {
         this.details = details;
         return this;
@@ -126,6 +140,7 @@ public class CloudError implements JsonSerializable<CloudError> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -149,6 +164,7 @@ public class CloudError implements JsonSerializable<CloudError> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CloudError.
      */
+    @Generated
     public static CloudError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CloudError deserializedCloudError = new CloudError();

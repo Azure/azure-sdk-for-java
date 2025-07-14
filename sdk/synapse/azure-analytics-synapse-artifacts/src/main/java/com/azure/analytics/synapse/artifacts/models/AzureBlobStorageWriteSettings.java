@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public final class AzureBlobStorageWriteSettings extends StoreWriteSettings {
     /*
      * The write setting type.
      */
+    @Generated
     private String type = "AzureBlobStorageWriteSettings";
 
     /*
      * Indicates the block size(MB) when writing data to blob. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object blockSizeInMB;
 
     /**
      * Creates an instance of AzureBlobStorageWriteSettings class.
      */
+    @Generated
     public AzureBlobStorageWriteSettings() {
     }
 
@@ -39,6 +43,7 @@ public final class AzureBlobStorageWriteSettings extends StoreWriteSettings {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -50,6 +55,7 @@ public final class AzureBlobStorageWriteSettings extends StoreWriteSettings {
      * 
      * @return the blockSizeInMB value.
      */
+    @Generated
     public Object getBlockSizeInMB() {
         return this.blockSizeInMB;
     }
@@ -61,6 +67,7 @@ public final class AzureBlobStorageWriteSettings extends StoreWriteSettings {
      * @param blockSizeInMB the blockSizeInMB value to set.
      * @return the AzureBlobStorageWriteSettings object itself.
      */
+    @Generated
     public AzureBlobStorageWriteSettings setBlockSizeInMB(Object blockSizeInMB) {
         this.blockSizeInMB = blockSizeInMB;
         return this;
@@ -69,6 +76,7 @@ public final class AzureBlobStorageWriteSettings extends StoreWriteSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobStorageWriteSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -78,6 +86,7 @@ public final class AzureBlobStorageWriteSettings extends StoreWriteSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobStorageWriteSettings setCopyBehavior(Object copyBehavior) {
         super.setCopyBehavior(copyBehavior);
@@ -87,6 +96,7 @@ public final class AzureBlobStorageWriteSettings extends StoreWriteSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobStorageWriteSettings setMetadata(List<MetadataItem> metadata) {
         super.setMetadata(metadata);
@@ -96,14 +106,21 @@ public final class AzureBlobStorageWriteSettings extends StoreWriteSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
-        jsonWriter.writeUntypedField("copyBehavior", getCopyBehavior());
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
+        if (getCopyBehavior() != null) {
+            jsonWriter.writeUntypedField("copyBehavior", getCopyBehavior());
+        }
         jsonWriter.writeArrayField("metadata", getMetadata(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("blockSizeInMB", this.blockSizeInMB);
+        if (this.blockSizeInMB != null) {
+            jsonWriter.writeUntypedField("blockSizeInMB", this.blockSizeInMB);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -120,6 +137,7 @@ public final class AzureBlobStorageWriteSettings extends StoreWriteSettings {
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureBlobStorageWriteSettings.
      */
+    @Generated
     public static AzureBlobStorageWriteSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureBlobStorageWriteSettings deserializedAzureBlobStorageWriteSettings

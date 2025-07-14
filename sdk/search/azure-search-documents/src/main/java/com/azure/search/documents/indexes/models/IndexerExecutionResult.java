@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -25,62 +26,74 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
     /*
      * The outcome of this indexer execution.
      */
+    @Generated
     private final IndexerExecutionStatus status;
 
     /*
      * The outcome of this indexer execution.
      */
+    @Generated
     private IndexerExecutionStatusDetail statusDetail;
 
     /*
-     * All of the state that defines and dictates the indexer's current execution.
+     * The mode the indexer is running in.
      */
-    private IndexerCurrentState currentState;
+    @Generated
+    private IndexingMode mode;
 
     /*
      * The error message indicating the top-level error, if any.
      */
+    @Generated
     private String errorMessage;
 
     /*
      * The start time of this indexer execution.
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * The end time of this indexer execution, if the execution has already completed.
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
      * The item-level indexing errors.
      */
+    @Generated
     private final List<SearchIndexerError> errors;
 
     /*
      * The item-level indexing warnings.
      */
+    @Generated
     private final List<SearchIndexerWarning> warnings;
 
     /*
      * The number of items that were processed during this indexer execution. This includes both successfully processed
      * items and items where indexing was attempted but failed.
      */
+    @Generated
     private final int itemCount;
 
     /*
      * The number of items that failed to be indexed during this indexer execution.
      */
+    @Generated
     private final int failedItemCount;
 
     /*
      * Change tracking state with which an indexer execution started.
      */
+    @Generated
     private String initialTrackingState;
 
     /*
      * Change tracking state with which an indexer execution finished.
      */
+    @Generated
     private String finalTrackingState;
 
     /**
@@ -92,6 +105,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      * @param itemCount the itemCount value to set.
      * @param failedItemCount the failedItemCount value to set.
      */
+    @Generated
     public IndexerExecutionResult(IndexerExecutionStatus status, List<SearchIndexerError> errors,
         List<SearchIndexerWarning> warnings, int itemCount, int failedItemCount) {
         this.status = status;
@@ -106,6 +120,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      * 
      * @return the status value.
      */
+    @Generated
     public IndexerExecutionStatus getStatus() {
         return this.status;
     }
@@ -115,17 +130,19 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      * 
      * @return the statusDetail value.
      */
+    @Generated
     public IndexerExecutionStatusDetail getStatusDetail() {
         return this.statusDetail;
     }
 
     /**
-     * Get the currentState property: All of the state that defines and dictates the indexer's current execution.
+     * Get the mode property: The mode the indexer is running in.
      * 
-     * @return the currentState value.
+     * @return the mode value.
      */
-    public IndexerCurrentState getCurrentState() {
-        return this.currentState;
+    @Generated
+    public IndexingMode getMode() {
+        return this.mode;
     }
 
     /**
@@ -133,6 +150,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      * 
      * @return the errorMessage value.
      */
+    @Generated
     public String getErrorMessage() {
         return this.errorMessage;
     }
@@ -142,6 +160,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -151,6 +170,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -160,6 +180,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      * 
      * @return the errors value.
      */
+    @Generated
     public List<SearchIndexerError> getErrors() {
         return this.errors;
     }
@@ -169,6 +190,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      * 
      * @return the warnings value.
      */
+    @Generated
     public List<SearchIndexerWarning> getWarnings() {
         return this.warnings;
     }
@@ -179,6 +201,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      * 
      * @return the itemCount value.
      */
+    @Generated
     public int getItemCount() {
         return this.itemCount;
     }
@@ -188,6 +211,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      * 
      * @return the failedItemCount value.
      */
+    @Generated
     public int getFailedItemCount() {
         return this.failedItemCount;
     }
@@ -197,6 +221,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      * 
      * @return the initialTrackingState value.
      */
+    @Generated
     public String getInitialTrackingState() {
         return this.initialTrackingState;
     }
@@ -206,6 +231,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      * 
      * @return the finalTrackingState value.
      */
+    @Generated
     public String getFinalTrackingState() {
         return this.finalTrackingState;
     }
@@ -213,6 +239,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -228,6 +255,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IndexerExecutionResult.
      */
+    @Generated
     public static IndexerExecutionResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean statusFound = false;
@@ -241,7 +269,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
             boolean failedItemCountFound = false;
             int failedItemCount = 0;
             IndexerExecutionStatusDetail statusDetail = null;
-            IndexerCurrentState currentState = null;
+            IndexingMode mode = null;
             String errorMessage = null;
             OffsetDateTime startTime = null;
             OffsetDateTime endTime = null;
@@ -268,8 +296,8 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
                     failedItemCountFound = true;
                 } else if ("statusDetail".equals(fieldName)) {
                     statusDetail = IndexerExecutionStatusDetail.fromString(reader.getString());
-                } else if ("currentState".equals(fieldName)) {
-                    currentState = IndexerCurrentState.fromJson(reader);
+                } else if ("mode".equals(fieldName)) {
+                    mode = IndexingMode.fromString(reader.getString());
                 } else if ("errorMessage".equals(fieldName)) {
                     errorMessage = reader.getString();
                 } else if ("startTime".equals(fieldName)) {
@@ -290,7 +318,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
                 IndexerExecutionResult deserializedIndexerExecutionResult
                     = new IndexerExecutionResult(status, errors, warnings, itemCount, failedItemCount);
                 deserializedIndexerExecutionResult.statusDetail = statusDetail;
-                deserializedIndexerExecutionResult.currentState = currentState;
+                deserializedIndexerExecutionResult.mode = mode;
                 deserializedIndexerExecutionResult.errorMessage = errorMessage;
                 deserializedIndexerExecutionResult.startTime = startTime;
                 deserializedIndexerExecutionResult.endTime = endTime;

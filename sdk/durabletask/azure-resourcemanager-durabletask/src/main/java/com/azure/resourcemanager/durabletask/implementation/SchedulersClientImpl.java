@@ -72,7 +72,7 @@ public final class SchedulersClientImpl implements SchedulersClient {
      * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DurableTaskManagemen")
+    @ServiceInterface(name = "DurableTaskManagementClientSchedulers")
     public interface SchedulersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}")

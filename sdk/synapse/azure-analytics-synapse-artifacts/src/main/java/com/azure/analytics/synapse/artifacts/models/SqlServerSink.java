@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,42 +21,50 @@ public final class SqlServerSink extends CopySink {
     /*
      * Copy sink type.
      */
+    @Generated
     private String type = "SqlServerSink";
 
     /*
      * SQL writer stored procedure name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object sqlWriterStoredProcedureName;
 
     /*
      * SQL writer table type. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object sqlWriterTableType;
 
     /*
      * SQL pre-copy script. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object preCopyScript;
 
     /*
      * SQL stored procedure parameters.
      */
+    @Generated
     private Object storedProcedureParameters;
 
     /*
      * The stored procedure parameter name of the table type. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object storedProcedureTableTypeParameterName;
 
     /*
      * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string
      * (or Expression with resultType string).
      */
+    @Generated
     private Object tableOption;
 
     /**
      * Creates an instance of SqlServerSink class.
      */
+    @Generated
     public SqlServerSink() {
     }
 
@@ -64,6 +73,7 @@ public final class SqlServerSink extends CopySink {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -75,6 +85,7 @@ public final class SqlServerSink extends CopySink {
      * 
      * @return the sqlWriterStoredProcedureName value.
      */
+    @Generated
     public Object getSqlWriterStoredProcedureName() {
         return this.sqlWriterStoredProcedureName;
     }
@@ -86,6 +97,7 @@ public final class SqlServerSink extends CopySink {
      * @param sqlWriterStoredProcedureName the sqlWriterStoredProcedureName value to set.
      * @return the SqlServerSink object itself.
      */
+    @Generated
     public SqlServerSink setSqlWriterStoredProcedureName(Object sqlWriterStoredProcedureName) {
         this.sqlWriterStoredProcedureName = sqlWriterStoredProcedureName;
         return this;
@@ -96,6 +108,7 @@ public final class SqlServerSink extends CopySink {
      * 
      * @return the sqlWriterTableType value.
      */
+    @Generated
     public Object getSqlWriterTableType() {
         return this.sqlWriterTableType;
     }
@@ -106,6 +119,7 @@ public final class SqlServerSink extends CopySink {
      * @param sqlWriterTableType the sqlWriterTableType value to set.
      * @return the SqlServerSink object itself.
      */
+    @Generated
     public SqlServerSink setSqlWriterTableType(Object sqlWriterTableType) {
         this.sqlWriterTableType = sqlWriterTableType;
         return this;
@@ -116,6 +130,7 @@ public final class SqlServerSink extends CopySink {
      * 
      * @return the preCopyScript value.
      */
+    @Generated
     public Object getPreCopyScript() {
         return this.preCopyScript;
     }
@@ -126,6 +141,7 @@ public final class SqlServerSink extends CopySink {
      * @param preCopyScript the preCopyScript value to set.
      * @return the SqlServerSink object itself.
      */
+    @Generated
     public SqlServerSink setPreCopyScript(Object preCopyScript) {
         this.preCopyScript = preCopyScript;
         return this;
@@ -136,6 +152,7 @@ public final class SqlServerSink extends CopySink {
      * 
      * @return the storedProcedureParameters value.
      */
+    @Generated
     public Object getStoredProcedureParameters() {
         return this.storedProcedureParameters;
     }
@@ -146,6 +163,7 @@ public final class SqlServerSink extends CopySink {
      * @param storedProcedureParameters the storedProcedureParameters value to set.
      * @return the SqlServerSink object itself.
      */
+    @Generated
     public SqlServerSink setStoredProcedureParameters(Object storedProcedureParameters) {
         this.storedProcedureParameters = storedProcedureParameters;
         return this;
@@ -157,6 +175,7 @@ public final class SqlServerSink extends CopySink {
      * 
      * @return the storedProcedureTableTypeParameterName value.
      */
+    @Generated
     public Object getStoredProcedureTableTypeParameterName() {
         return this.storedProcedureTableTypeParameterName;
     }
@@ -168,6 +187,7 @@ public final class SqlServerSink extends CopySink {
      * @param storedProcedureTableTypeParameterName the storedProcedureTableTypeParameterName value to set.
      * @return the SqlServerSink object itself.
      */
+    @Generated
     public SqlServerSink setStoredProcedureTableTypeParameterName(Object storedProcedureTableTypeParameterName) {
         this.storedProcedureTableTypeParameterName = storedProcedureTableTypeParameterName;
         return this;
@@ -179,6 +199,7 @@ public final class SqlServerSink extends CopySink {
      * 
      * @return the tableOption value.
      */
+    @Generated
     public Object getTableOption() {
         return this.tableOption;
     }
@@ -190,6 +211,7 @@ public final class SqlServerSink extends CopySink {
      * @param tableOption the tableOption value to set.
      * @return the SqlServerSink object itself.
      */
+    @Generated
     public SqlServerSink setTableOption(Object tableOption) {
         this.tableOption = tableOption;
         return this;
@@ -198,6 +220,7 @@ public final class SqlServerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
@@ -207,6 +230,7 @@ public final class SqlServerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
@@ -216,6 +240,7 @@ public final class SqlServerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
@@ -225,6 +250,7 @@ public final class SqlServerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
@@ -234,6 +260,7 @@ public final class SqlServerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -243,22 +270,45 @@ public final class SqlServerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getWriteBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        }
+        if (getWriteBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        }
+        if (getSinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        }
+        if (getSinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("sqlWriterStoredProcedureName", this.sqlWriterStoredProcedureName);
-        jsonWriter.writeUntypedField("sqlWriterTableType", this.sqlWriterTableType);
-        jsonWriter.writeUntypedField("preCopyScript", this.preCopyScript);
-        jsonWriter.writeUntypedField("storedProcedureParameters", this.storedProcedureParameters);
-        jsonWriter.writeUntypedField("storedProcedureTableTypeParameterName",
-            this.storedProcedureTableTypeParameterName);
-        jsonWriter.writeUntypedField("tableOption", this.tableOption);
+        if (this.sqlWriterStoredProcedureName != null) {
+            jsonWriter.writeUntypedField("sqlWriterStoredProcedureName", this.sqlWriterStoredProcedureName);
+        }
+        if (this.sqlWriterTableType != null) {
+            jsonWriter.writeUntypedField("sqlWriterTableType", this.sqlWriterTableType);
+        }
+        if (this.preCopyScript != null) {
+            jsonWriter.writeUntypedField("preCopyScript", this.preCopyScript);
+        }
+        if (this.storedProcedureParameters != null) {
+            jsonWriter.writeUntypedField("storedProcedureParameters", this.storedProcedureParameters);
+        }
+        if (this.storedProcedureTableTypeParameterName != null) {
+            jsonWriter.writeUntypedField("storedProcedureTableTypeParameterName",
+                this.storedProcedureTableTypeParameterName);
+        }
+        if (this.tableOption != null) {
+            jsonWriter.writeUntypedField("tableOption", this.tableOption);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -275,6 +325,7 @@ public final class SqlServerSink extends CopySink {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SqlServerSink.
      */
+    @Generated
     public static SqlServerSink fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SqlServerSink deserializedSqlServerSink = new SqlServerSink();

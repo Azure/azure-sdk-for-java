@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.models.AuthType;
@@ -23,27 +23,27 @@ public final class VaultCertificatesCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"authType\":\"ResourceCertificateDetails\",\"friendlyName\":\"kbegibt\",\"issuer\":\"xiebwwaloayqcg\",\"resourceId\":6136339981043942378,\"subject\":\"uzgwyzmhtx\",\"thumbprint\":\"gmtsavjcbpwxqpsr\",\"validFrom\":\"2021-10-15T11:22:09Z\",\"validTo\":\"2021-01-16T18:55:51Z\"},\"id\":\"uvriuhprwm\",\"name\":\"yvxqtayriwwroy\",\"type\":\"bexrmcq\"}";
+            = "{\"properties\":{\"authType\":\"ResourceCertificateDetails\",\"friendlyName\":\"c\",\"issuer\":\"xzvlvqhjkbegib\",\"resourceId\":6232281043746114213,\"subject\":\"ebwwaloayqc\",\"thumbprint\":\"rtzju\",\"validFrom\":\"2021-08-18T20:27:18Z\",\"validTo\":\"2021-09-03T04:43:16Z\"},\"id\":\"mhtxongmtsavjcb\",\"name\":\"wxqpsrknftguvri\",\"type\":\"hprwmdyv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesManager manager = RecoveryServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VaultCertificateResponse response = manager.vaultCertificates()
-            .define("gw")
-            .withExistingVault("bbcswsrtjri", "lrbpbewtghfgbl")
-            .withProperties(new RawCertificateData().withAuthType(AuthType.ACCESS_CONTROL_SERVICE))
+            .define("wsrtjriplrbpbe")
+            .withExistingVault("eualupjmkhf", "obbc")
+            .withProperties(new RawCertificateData().withAuthType(AuthType.ACS))
             .create();
 
-        Assertions.assertEquals("kbegibt", response.properties().friendlyName());
-        Assertions.assertEquals("xiebwwaloayqcg", response.properties().issuer());
-        Assertions.assertEquals(6136339981043942378L, response.properties().resourceId());
-        Assertions.assertEquals("uzgwyzmhtx", response.properties().subject());
-        Assertions.assertEquals("gmtsavjcbpwxqpsr", response.properties().thumbprint());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-15T11:22:09Z"), response.properties().validFrom());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-16T18:55:51Z"), response.properties().validTo());
+        Assertions.assertEquals("c", response.properties().friendlyName());
+        Assertions.assertEquals("xzvlvqhjkbegib", response.properties().issuer());
+        Assertions.assertEquals(6232281043746114213L, response.properties().resourceId());
+        Assertions.assertEquals("ebwwaloayqc", response.properties().subject());
+        Assertions.assertEquals("rtzju", response.properties().thumbprint());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-18T20:27:18Z"), response.properties().validFrom());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-03T04:43:16Z"), response.properties().validTo());
     }
 }

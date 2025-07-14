@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,22 +22,26 @@ public class Office365Dataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "Office365Table";
 
     /*
      * Name of the dataset to extract from Office 365. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object tableName;
 
     /*
      * A predicate expression that can be used to filter the specific rows to extract from Office 365. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object predicate;
 
     /**
      * Creates an instance of Office365Dataset class.
      */
+    @Generated
     public Office365Dataset() {
     }
 
@@ -45,6 +50,7 @@ public class Office365Dataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -56,6 +62,7 @@ public class Office365Dataset extends Dataset {
      * 
      * @return the tableName value.
      */
+    @Generated
     public Object getTableName() {
         return this.tableName;
     }
@@ -67,6 +74,7 @@ public class Office365Dataset extends Dataset {
      * @param tableName the tableName value to set.
      * @return the Office365Dataset object itself.
      */
+    @Generated
     public Office365Dataset setTableName(Object tableName) {
         this.tableName = tableName;
         return this;
@@ -78,6 +86,7 @@ public class Office365Dataset extends Dataset {
      * 
      * @return the predicate value.
      */
+    @Generated
     public Object getPredicate() {
         return this.predicate;
     }
@@ -89,6 +98,7 @@ public class Office365Dataset extends Dataset {
      * @param predicate the predicate value to set.
      * @return the Office365Dataset object itself.
      */
+    @Generated
     public Office365Dataset setPredicate(Object predicate) {
         this.predicate = predicate;
         return this;
@@ -97,6 +107,7 @@ public class Office365Dataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Office365Dataset setDescription(String description) {
         super.setDescription(description);
@@ -106,6 +117,7 @@ public class Office365Dataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Office365Dataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -115,6 +127,7 @@ public class Office365Dataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Office365Dataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -124,6 +137,7 @@ public class Office365Dataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Office365Dataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -133,6 +147,7 @@ public class Office365Dataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Office365Dataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -142,6 +157,7 @@ public class Office365Dataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Office365Dataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -151,6 +167,7 @@ public class Office365Dataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Office365Dataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -160,13 +177,18 @@ public class Office365Dataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -174,7 +196,9 @@ public class Office365Dataset extends Dataset {
         if (tableName != null || predicate != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("tableName", this.tableName);
-            jsonWriter.writeUntypedField("predicate", this.predicate);
+            if (this.predicate != null) {
+                jsonWriter.writeUntypedField("predicate", this.predicate);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -194,6 +218,7 @@ public class Office365Dataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Office365Dataset.
      */
+    @Generated
     public static Office365Dataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Office365Dataset deserializedOffice365Dataset = new Office365Dataset();

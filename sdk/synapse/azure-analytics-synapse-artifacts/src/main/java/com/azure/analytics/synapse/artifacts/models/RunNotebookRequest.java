@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,31 +21,37 @@ public final class RunNotebookRequest implements JsonSerializable<RunNotebookReq
     /*
      * Notebook name.
      */
+    @Generated
     private String notebook;
 
     /*
      * SparkPool name.
      */
+    @Generated
     private String sparkPool;
 
     /*
      * Session properties.
      */
+    @Generated
     private RunNotebookSparkSessionOptions sessionOptions;
 
     /*
      * Whether session should run till time to live after run completes.
      */
+    @Generated
     private Boolean honorSessionTimeToLive;
 
     /*
      * Run notebook parameters
      */
+    @Generated
     private Map<String, RunNotebookParameter> parameters;
 
     /**
      * Creates an instance of RunNotebookRequest class.
      */
+    @Generated
     public RunNotebookRequest() {
     }
 
@@ -53,6 +60,7 @@ public final class RunNotebookRequest implements JsonSerializable<RunNotebookReq
      * 
      * @return the notebook value.
      */
+    @Generated
     public String getNotebook() {
         return this.notebook;
     }
@@ -63,6 +71,7 @@ public final class RunNotebookRequest implements JsonSerializable<RunNotebookReq
      * @param notebook the notebook value to set.
      * @return the RunNotebookRequest object itself.
      */
+    @Generated
     public RunNotebookRequest setNotebook(String notebook) {
         this.notebook = notebook;
         return this;
@@ -73,6 +82,7 @@ public final class RunNotebookRequest implements JsonSerializable<RunNotebookReq
      * 
      * @return the sparkPool value.
      */
+    @Generated
     public String getSparkPool() {
         return this.sparkPool;
     }
@@ -83,6 +93,7 @@ public final class RunNotebookRequest implements JsonSerializable<RunNotebookReq
      * @param sparkPool the sparkPool value to set.
      * @return the RunNotebookRequest object itself.
      */
+    @Generated
     public RunNotebookRequest setSparkPool(String sparkPool) {
         this.sparkPool = sparkPool;
         return this;
@@ -93,6 +104,7 @@ public final class RunNotebookRequest implements JsonSerializable<RunNotebookReq
      * 
      * @return the sessionOptions value.
      */
+    @Generated
     public RunNotebookSparkSessionOptions getSessionOptions() {
         return this.sessionOptions;
     }
@@ -103,6 +115,7 @@ public final class RunNotebookRequest implements JsonSerializable<RunNotebookReq
      * @param sessionOptions the sessionOptions value to set.
      * @return the RunNotebookRequest object itself.
      */
+    @Generated
     public RunNotebookRequest setSessionOptions(RunNotebookSparkSessionOptions sessionOptions) {
         this.sessionOptions = sessionOptions;
         return this;
@@ -113,6 +126,7 @@ public final class RunNotebookRequest implements JsonSerializable<RunNotebookReq
      * 
      * @return the honorSessionTimeToLive value.
      */
+    @Generated
     public Boolean isHonorSessionTimeToLive() {
         return this.honorSessionTimeToLive;
     }
@@ -123,6 +137,7 @@ public final class RunNotebookRequest implements JsonSerializable<RunNotebookReq
      * @param honorSessionTimeToLive the honorSessionTimeToLive value to set.
      * @return the RunNotebookRequest object itself.
      */
+    @Generated
     public RunNotebookRequest setHonorSessionTimeToLive(Boolean honorSessionTimeToLive) {
         this.honorSessionTimeToLive = honorSessionTimeToLive;
         return this;
@@ -133,6 +148,7 @@ public final class RunNotebookRequest implements JsonSerializable<RunNotebookReq
      * 
      * @return the parameters value.
      */
+    @Generated
     public Map<String, RunNotebookParameter> getParameters() {
         return this.parameters;
     }
@@ -143,6 +159,7 @@ public final class RunNotebookRequest implements JsonSerializable<RunNotebookReq
      * @param parameters the parameters value to set.
      * @return the RunNotebookRequest object itself.
      */
+    @Generated
     public RunNotebookRequest setParameters(Map<String, RunNotebookParameter> parameters) {
         this.parameters = parameters;
         return this;
@@ -151,6 +168,7 @@ public final class RunNotebookRequest implements JsonSerializable<RunNotebookReq
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -170,6 +188,7 @@ public final class RunNotebookRequest implements JsonSerializable<RunNotebookReq
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RunNotebookRequest.
      */
+    @Generated
     public static RunNotebookRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RunNotebookRequest deserializedRunNotebookRequest = new RunNotebookRequest();

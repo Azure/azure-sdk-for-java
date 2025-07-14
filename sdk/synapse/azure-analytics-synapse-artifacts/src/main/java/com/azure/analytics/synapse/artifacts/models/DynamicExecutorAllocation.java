@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class DynamicExecutorAllocation implements JsonSerializable<Dynamic
     /*
      * Indicates whether Dynamic Executor Allocation is enabled or not.
      */
+    @Generated
     private Boolean enabled;
 
     /**
      * Creates an instance of DynamicExecutorAllocation class.
      */
+    @Generated
     public DynamicExecutorAllocation() {
     }
 
@@ -32,6 +35,7 @@ public final class DynamicExecutorAllocation implements JsonSerializable<Dynamic
      * 
      * @return the enabled value.
      */
+    @Generated
     public Boolean isEnabled() {
         return this.enabled;
     }
@@ -42,6 +46,7 @@ public final class DynamicExecutorAllocation implements JsonSerializable<Dynamic
      * @param enabled the enabled value to set.
      * @return the DynamicExecutorAllocation object itself.
      */
+    @Generated
     public DynamicExecutorAllocation setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
@@ -50,6 +55,7 @@ public final class DynamicExecutorAllocation implements JsonSerializable<Dynamic
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class DynamicExecutorAllocation implements JsonSerializable<Dynamic
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DynamicExecutorAllocation.
      */
+    @Generated
     public static DynamicExecutorAllocation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DynamicExecutorAllocation deserializedDynamicExecutorAllocation = new DynamicExecutorAllocation();

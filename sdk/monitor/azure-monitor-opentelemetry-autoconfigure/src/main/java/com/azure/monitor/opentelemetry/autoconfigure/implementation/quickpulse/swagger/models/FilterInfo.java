@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class FilterInfo implements JsonSerializable<FilterInfo> {
     /*
      * dimension name of the filter
      */
+    @Generated
     private String fieldName;
 
     /*
      * Operator of the filter
      */
+    @Generated
     private PredicateType predicate;
 
     /*
      * Comparand of the filter
      */
+    @Generated
     private String comparand;
 
     /**
      * Creates an instance of FilterInfo class.
      */
+    @Generated
     public FilterInfo() {
     }
 
@@ -42,6 +47,7 @@ public final class FilterInfo implements JsonSerializable<FilterInfo> {
      * 
      * @return the fieldName value.
      */
+    @Generated
     public String getFieldName() {
         return this.fieldName;
     }
@@ -52,6 +58,7 @@ public final class FilterInfo implements JsonSerializable<FilterInfo> {
      * @param fieldName the fieldName value to set.
      * @return the FilterInfo object itself.
      */
+    @Generated
     public FilterInfo setFieldName(String fieldName) {
         this.fieldName = fieldName;
         return this;
@@ -62,6 +69,7 @@ public final class FilterInfo implements JsonSerializable<FilterInfo> {
      * 
      * @return the predicate value.
      */
+    @Generated
     public PredicateType getPredicate() {
         return this.predicate;
     }
@@ -72,6 +80,7 @@ public final class FilterInfo implements JsonSerializable<FilterInfo> {
      * @param predicate the predicate value to set.
      * @return the FilterInfo object itself.
      */
+    @Generated
     public FilterInfo setPredicate(PredicateType predicate) {
         this.predicate = predicate;
         return this;
@@ -82,6 +91,7 @@ public final class FilterInfo implements JsonSerializable<FilterInfo> {
      * 
      * @return the comparand value.
      */
+    @Generated
     public String getComparand() {
         return this.comparand;
     }
@@ -92,6 +102,7 @@ public final class FilterInfo implements JsonSerializable<FilterInfo> {
      * @param comparand the comparand value to set.
      * @return the FilterInfo object itself.
      */
+    @Generated
     public FilterInfo setComparand(String comparand) {
         this.comparand = comparand;
         return this;
@@ -100,6 +111,7 @@ public final class FilterInfo implements JsonSerializable<FilterInfo> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +130,7 @@ public final class FilterInfo implements JsonSerializable<FilterInfo> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FilterInfo.
      */
+    @Generated
     public static FilterInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FilterInfo deserializedFilterInfo = new FilterInfo();

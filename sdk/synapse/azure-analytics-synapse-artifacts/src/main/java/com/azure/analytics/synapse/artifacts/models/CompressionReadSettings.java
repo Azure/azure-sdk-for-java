@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public class CompressionReadSettings implements JsonSerializable<CompressionRead
     /*
      * The Compression setting type.
      */
+    @Generated
     private String type = "CompressionReadSettings";
 
     /*
      * Compression read settings.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of CompressionReadSettings class.
      */
+    @Generated
     public CompressionReadSettings() {
     }
 
@@ -39,6 +43,7 @@ public class CompressionReadSettings implements JsonSerializable<CompressionRead
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -48,6 +53,7 @@ public class CompressionReadSettings implements JsonSerializable<CompressionRead
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -58,6 +64,7 @@ public class CompressionReadSettings implements JsonSerializable<CompressionRead
      * @param additionalProperties the additionalProperties value to set.
      * @return the CompressionReadSettings object itself.
      */
+    @Generated
     public CompressionReadSettings setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -66,6 +73,7 @@ public class CompressionReadSettings implements JsonSerializable<CompressionRead
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -86,6 +94,7 @@ public class CompressionReadSettings implements JsonSerializable<CompressionRead
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CompressionReadSettings.
      */
+    @Generated
     public static CompressionReadSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -115,6 +124,7 @@ public class CompressionReadSettings implements JsonSerializable<CompressionRead
         });
     }
 
+    @Generated
     static CompressionReadSettings fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CompressionReadSettings deserializedCompressionReadSettings = new CompressionReadSettings();

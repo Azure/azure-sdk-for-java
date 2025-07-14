@@ -93,7 +93,7 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
 
         if (azureTestMode != null) {
             try {
-                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
+                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
                 LOGGER.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
                 return TestMode.PLAYBACK;

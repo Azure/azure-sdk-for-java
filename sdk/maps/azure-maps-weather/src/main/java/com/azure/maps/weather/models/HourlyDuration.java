@@ -4,6 +4,7 @@
 
 package com.azure.maps.weather.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableEnum;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -28,31 +29,37 @@ public final class HourlyDuration implements ExpandableEnum<Integer>, JsonSerial
     /**
      * 1 Hours.
      */
+    @Generated
     public static final HourlyDuration ONE_HOUR = fromValue(1);
 
     /**
      * 12 Hours.
      */
+    @Generated
     public static final HourlyDuration TWELVE_HOURS = fromValue(12);
 
     /**
      * 24 Hours.
      */
+    @Generated
     public static final HourlyDuration TWENTY_FOUR_HOURS = fromValue(24);
 
     /**
      * 48 Hours.
      */
+    @Generated
     public static final HourlyDuration FORTY_EIGHT_HOURS = fromValue(48);
 
     /**
      * 72 Hours.
      */
+    @Generated
     public static final HourlyDuration SEVENTY_TWO_HOURS = fromValue(72);
 
     /**
      * 96 Hours.
      */
+    @Generated
     public static final HourlyDuration NINETY_SIX_HOURS = fromValue(96);
 
     private final Integer value;
@@ -68,6 +75,7 @@ public final class HourlyDuration implements ExpandableEnum<Integer>, JsonSerial
      * @return the corresponding HourlyDuration.
      * @throws IllegalArgumentException if value is null.
      */
+    @Generated
     public static HourlyDuration fromValue(Integer value) {
         if (value == null) {
             throw new IllegalArgumentException("'value' cannot be null.");
@@ -80,6 +88,7 @@ public final class HourlyDuration implements ExpandableEnum<Integer>, JsonSerial
      * 
      * @return Known HourlyDuration values.
      */
+    @Generated
     public static Collection<HourlyDuration> values() {
         return new ArrayList<>(VALUES.values());
     }
@@ -89,6 +98,7 @@ public final class HourlyDuration implements ExpandableEnum<Integer>, JsonSerial
      * 
      * @return the value of the HourlyDuration instance.
      */
+    @Generated
     @Override
     public Integer getValue() {
         return this.value;
@@ -97,6 +107,7 @@ public final class HourlyDuration implements ExpandableEnum<Integer>, JsonSerial
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return jsonWriter.writeInt(getValue());
@@ -111,6 +122,7 @@ public final class HourlyDuration implements ExpandableEnum<Integer>, JsonSerial
      * @throws IOException If an error occurs while reading the HourlyDuration.
      * @throws IllegalStateException If unexpected JSON token is found.
      */
+    @Generated
     public static HourlyDuration fromJson(JsonReader jsonReader) throws IOException {
         JsonToken nextToken = jsonReader.nextToken();
         if (nextToken == JsonToken.NULL) {
@@ -123,16 +135,19 @@ public final class HourlyDuration implements ExpandableEnum<Integer>, JsonSerial
         return HourlyDuration.fromValue(jsonReader.getInt());
     }
 
+    @Generated
     @Override
     public String toString() {
         return Objects.toString(this.value);
     }
 
+    @Generated
     @Override
     public boolean equals(Object obj) {
         return this == obj;
     }
 
+    @Generated
     @Override
     public int hashCode() {
         return Objects.hashCode(this.value);

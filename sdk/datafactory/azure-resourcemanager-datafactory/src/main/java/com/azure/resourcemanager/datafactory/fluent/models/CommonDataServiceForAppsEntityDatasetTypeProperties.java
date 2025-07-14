@@ -62,7 +62,9 @@ public final class CommonDataServiceForAppsEntityDatasetTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("entityName", this.entityName);
+        if (this.entityName != null) {
+            jsonWriter.writeUntypedField("entityName", this.entityName);
+        }
         return jsonWriter.writeEndObject();
     }
 

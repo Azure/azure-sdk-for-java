@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class AuthConfig implements JsonSerializable<AuthConfig> {
     /*
-     * If Enabled, Azure Active Directory authentication is enabled.
+     * If Enabled, Microsoft Entra authentication is enabled.
      */
     private ActiveDirectoryAuthEnum activeDirectoryAuth;
 
@@ -38,7 +38,7 @@ public final class AuthConfig implements JsonSerializable<AuthConfig> {
     }
 
     /**
-     * Get the activeDirectoryAuth property: If Enabled, Azure Active Directory authentication is enabled.
+     * Get the activeDirectoryAuth property: If Enabled, Microsoft Entra authentication is enabled.
      * 
      * @return the activeDirectoryAuth value.
      */
@@ -47,7 +47,7 @@ public final class AuthConfig implements JsonSerializable<AuthConfig> {
     }
 
     /**
-     * Set the activeDirectoryAuth property: If Enabled, Azure Active Directory authentication is enabled.
+     * Set the activeDirectoryAuth property: If Enabled, Microsoft Entra authentication is enabled.
      * 
      * @param activeDirectoryAuth the activeDirectoryAuth value to set.
      * @return the AuthConfig object itself.

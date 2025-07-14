@@ -63,6 +63,10 @@ public final class BareMetalMachineImpl
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
     }
@@ -248,6 +252,14 @@ public final class BareMetalMachineImpl
 
     private String bareMetalMachineName;
 
+    private String createIfMatch;
+
+    private String createIfNoneMatch;
+
+    private String updateIfMatch;
+
+    private String updateIfNoneMatch;
+
     private BareMetalMachinePatchParameters updateBareMetalMachineUpdateParameters;
 
     public BareMetalMachineImpl withExistingResourceGroup(String resourceGroupName) {
@@ -258,14 +270,16 @@ public final class BareMetalMachineImpl
     public BareMetalMachine create() {
         this.innerObject = serviceManager.serviceClient()
             .getBareMetalMachines()
-            .createOrUpdate(resourceGroupName, bareMetalMachineName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, bareMetalMachineName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE);
         return this;
     }
 
     public BareMetalMachine create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getBareMetalMachines()
-            .createOrUpdate(resourceGroupName, bareMetalMachineName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, bareMetalMachineName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context);
         return this;
     }
 
@@ -273,9 +287,13 @@ public final class BareMetalMachineImpl
         this.innerObject = new BareMetalMachineInner();
         this.serviceManager = serviceManager;
         this.bareMetalMachineName = name;
+        this.createIfMatch = null;
+        this.createIfNoneMatch = null;
     }
 
     public BareMetalMachineImpl update() {
+        this.updateIfMatch = null;
+        this.updateIfNoneMatch = null;
         this.updateBareMetalMachineUpdateParameters = new BareMetalMachinePatchParameters();
         return this;
     }
@@ -283,14 +301,16 @@ public final class BareMetalMachineImpl
     public BareMetalMachine apply() {
         this.innerObject = serviceManager.serviceClient()
             .getBareMetalMachines()
-            .update(resourceGroupName, bareMetalMachineName, updateBareMetalMachineUpdateParameters, Context.NONE);
+            .update(resourceGroupName, bareMetalMachineName, updateIfMatch, updateIfNoneMatch,
+                updateBareMetalMachineUpdateParameters, Context.NONE);
         return this;
     }
 
     public BareMetalMachine apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getBareMetalMachines()
-            .update(resourceGroupName, bareMetalMachineName, updateBareMetalMachineUpdateParameters, context);
+            .update(resourceGroupName, bareMetalMachineName, updateIfMatch, updateIfNoneMatch,
+                updateBareMetalMachineUpdateParameters, context);
         return this;
     }
 
@@ -502,7 +522,27 @@ public final class BareMetalMachineImpl
         return this;
     }
 
+    public BareMetalMachineImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    public BareMetalMachineImpl withIfNoneMatch(String ifNoneMatch) {
+        if (isInCreateMode()) {
+            this.createIfNoneMatch = ifNoneMatch;
+            return this;
+        } else {
+            this.updateIfNoneMatch = ifNoneMatch;
+            return this;
+        }
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

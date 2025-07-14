@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class PurviewConfiguration implements JsonSerializable<PurviewConfi
     /*
      * Purview Resource ID
      */
+    @Generated
     private String purviewResourceId;
 
     /**
      * Creates an instance of PurviewConfiguration class.
      */
+    @Generated
     public PurviewConfiguration() {
     }
 
@@ -32,6 +35,7 @@ public final class PurviewConfiguration implements JsonSerializable<PurviewConfi
      * 
      * @return the purviewResourceId value.
      */
+    @Generated
     public String getPurviewResourceId() {
         return this.purviewResourceId;
     }
@@ -42,6 +46,7 @@ public final class PurviewConfiguration implements JsonSerializable<PurviewConfi
      * @param purviewResourceId the purviewResourceId value to set.
      * @return the PurviewConfiguration object itself.
      */
+    @Generated
     public PurviewConfiguration setPurviewResourceId(String purviewResourceId) {
         this.purviewResourceId = purviewResourceId;
         return this;
@@ -50,6 +55,7 @@ public final class PurviewConfiguration implements JsonSerializable<PurviewConfi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class PurviewConfiguration implements JsonSerializable<PurviewConfi
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PurviewConfiguration.
      */
+    @Generated
     public static PurviewConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PurviewConfiguration deserializedPurviewConfiguration = new PurviewConfiguration();

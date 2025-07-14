@@ -12,7 +12,7 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.SettingsInner;
 public final class SettingsOperationPatchSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/settings
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2025-02-19-preview/examples/settings
      * /SettingsPatch.json
      */
     /**

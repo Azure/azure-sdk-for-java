@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class NotebookListResponse implements JsonSerializable<NotebookList
     /*
      * List of Notebooks.
      */
+    @Generated
     private List<NotebookResource> value;
 
     /*
      * The link to the next page of results, if any remaining results exist.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of NotebookListResponse class.
      */
+    @Generated
     public NotebookListResponse() {
     }
 
@@ -38,6 +42,7 @@ public final class NotebookListResponse implements JsonSerializable<NotebookList
      * 
      * @return the value value.
      */
+    @Generated
     public List<NotebookResource> getValue() {
         return this.value;
     }
@@ -48,6 +53,7 @@ public final class NotebookListResponse implements JsonSerializable<NotebookList
      * @param value the value value to set.
      * @return the NotebookListResponse object itself.
      */
+    @Generated
     public NotebookListResponse setValue(List<NotebookResource> value) {
         this.value = value;
         return this;
@@ -58,6 +64,7 @@ public final class NotebookListResponse implements JsonSerializable<NotebookList
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -68,6 +75,7 @@ public final class NotebookListResponse implements JsonSerializable<NotebookList
      * @param nextLink the nextLink value to set.
      * @return the NotebookListResponse object itself.
      */
+    @Generated
     public NotebookListResponse setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -76,6 +84,7 @@ public final class NotebookListResponse implements JsonSerializable<NotebookList
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class NotebookListResponse implements JsonSerializable<NotebookList
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the NotebookListResponse.
      */
+    @Generated
     public static NotebookListResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             NotebookListResponse deserializedNotebookListResponse = new NotebookListResponse();

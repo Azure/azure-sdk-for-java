@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,13 +17,21 @@ public final class IndexerExecutionStatusDetail extends ExpandableStringEnum<Ind
     /**
      * Indicates that the reset that occurred was for a call to ResetDocs.
      */
+    @Generated
     public static final IndexerExecutionStatusDetail RESET_DOCS = fromString("resetDocs");
+
+    /**
+     * Indicates to selectively resync based on option(s) from data source.
+     */
+    @Generated
+    public static final IndexerExecutionStatusDetail RESYNC = fromString("resync");
 
     /**
      * Creates a new instance of IndexerExecutionStatusDetail value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IndexerExecutionStatusDetail() {
     }
@@ -33,6 +42,7 @@ public final class IndexerExecutionStatusDetail extends ExpandableStringEnum<Ind
      * @param name a name to look for.
      * @return the corresponding IndexerExecutionStatusDetail.
      */
+    @Generated
     public static IndexerExecutionStatusDetail fromString(String name) {
         return fromString(name, IndexerExecutionStatusDetail.class);
     }
@@ -42,6 +52,7 @@ public final class IndexerExecutionStatusDetail extends ExpandableStringEnum<Ind
      * 
      * @return known IndexerExecutionStatusDetail values.
      */
+    @Generated
     public static Collection<IndexerExecutionStatusDetail> values() {
         return values(IndexerExecutionStatusDetail.class);
     }

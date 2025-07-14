@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,37 +19,44 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /*
      * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * The type used for authentication. Type: string.
      */
+    @Generated
     private AmazonRdsForSqlServerAuthenticationType authenticationType;
 
     /*
      * The on-premises Windows authentication user name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object userName;
 
     /*
      * The on-premises Windows authentication password.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /*
      * Sql always encrypted properties.
      */
+    @Generated
     private SqlAlwaysEncryptedProperties alwaysEncryptedSettings;
 
     /**
      * Creates an instance of AmazonRdsForSqlServerLinkedServiceTypeProperties class.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedServiceTypeProperties() {
     }
 
@@ -58,6 +66,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -69,6 +78,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
      * @param connectionString the connectionString value to set.
      * @return the AmazonRdsForSqlServerLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -79,6 +89,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public AmazonRdsForSqlServerAuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -89,6 +100,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
      * @param authenticationType the authenticationType value to set.
      * @return the AmazonRdsForSqlServerLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedServiceTypeProperties
         setAuthenticationType(AmazonRdsForSqlServerAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
@@ -101,6 +113,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
      * 
      * @return the userName value.
      */
+    @Generated
     public Object getUserName() {
         return this.userName;
     }
@@ -112,6 +125,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
      * @param userName the userName value to set.
      * @return the AmazonRdsForSqlServerLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setUserName(Object userName) {
         this.userName = userName;
         return this;
@@ -122,6 +136,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -132,6 +147,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
      * @param password the password value to set.
      * @return the AmazonRdsForSqlServerLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -143,6 +159,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -154,6 +171,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AmazonRdsForSqlServerLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -164,6 +182,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
      * 
      * @return the alwaysEncryptedSettings value.
      */
+    @Generated
     public SqlAlwaysEncryptedProperties getAlwaysEncryptedSettings() {
         return this.alwaysEncryptedSettings;
     }
@@ -174,6 +193,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
      * @param alwaysEncryptedSettings the alwaysEncryptedSettings value to set.
      * @return the AmazonRdsForSqlServerLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public AmazonRdsForSqlServerLinkedServiceTypeProperties
         setAlwaysEncryptedSettings(SqlAlwaysEncryptedProperties alwaysEncryptedSettings) {
         this.alwaysEncryptedSettings = alwaysEncryptedSettings;
@@ -183,6 +203,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setServer(Object server) {
         super.setServer(server);
@@ -192,6 +213,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setDatabase(Object database) {
         super.setDatabase(database);
@@ -201,6 +223,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setEncrypt(Object encrypt) {
         super.setEncrypt(encrypt);
@@ -210,6 +233,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setTrustServerCertificate(Object trustServerCertificate) {
         super.setTrustServerCertificate(trustServerCertificate);
@@ -219,6 +243,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setHostNameInCertificate(Object hostNameInCertificate) {
         super.setHostNameInCertificate(hostNameInCertificate);
@@ -228,6 +253,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setApplicationIntent(Object applicationIntent) {
         super.setApplicationIntent(applicationIntent);
@@ -237,6 +263,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setConnectTimeout(Object connectTimeout) {
         super.setConnectTimeout(connectTimeout);
@@ -246,6 +273,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setConnectRetryCount(Object connectRetryCount) {
         super.setConnectRetryCount(connectRetryCount);
@@ -255,6 +283,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setConnectRetryInterval(Object connectRetryInterval) {
         super.setConnectRetryInterval(connectRetryInterval);
@@ -264,6 +293,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setLoadBalanceTimeout(Object loadBalanceTimeout) {
         super.setLoadBalanceTimeout(loadBalanceTimeout);
@@ -273,6 +303,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setCommandTimeout(Object commandTimeout) {
         super.setCommandTimeout(commandTimeout);
@@ -282,6 +313,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setIntegratedSecurity(Object integratedSecurity) {
         super.setIntegratedSecurity(integratedSecurity);
@@ -291,6 +323,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setFailoverPartner(Object failoverPartner) {
         super.setFailoverPartner(failoverPartner);
@@ -300,6 +333,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setMaxPoolSize(Object maxPoolSize) {
         super.setMaxPoolSize(maxPoolSize);
@@ -309,6 +343,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setMinPoolSize(Object minPoolSize) {
         super.setMinPoolSize(minPoolSize);
@@ -318,6 +353,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties
         setMultipleActiveResultSets(Object multipleActiveResultSets) {
@@ -328,6 +364,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setMultiSubnetFailover(Object multiSubnetFailover) {
         super.setMultiSubnetFailover(multiSubnetFailover);
@@ -337,6 +374,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setPacketSize(Object packetSize) {
         super.setPacketSize(packetSize);
@@ -346,6 +384,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AmazonRdsForSqlServerLinkedServiceTypeProperties setPooling(Object pooling) {
         super.setPooling(pooling);
@@ -355,34 +394,79 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("server", getServer());
-        jsonWriter.writeUntypedField("database", getDatabase());
-        jsonWriter.writeUntypedField("encrypt", getEncrypt());
-        jsonWriter.writeUntypedField("trustServerCertificate", getTrustServerCertificate());
-        jsonWriter.writeUntypedField("hostNameInCertificate", getHostNameInCertificate());
-        jsonWriter.writeUntypedField("applicationIntent", getApplicationIntent());
-        jsonWriter.writeUntypedField("connectTimeout", getConnectTimeout());
-        jsonWriter.writeUntypedField("connectRetryCount", getConnectRetryCount());
-        jsonWriter.writeUntypedField("connectRetryInterval", getConnectRetryInterval());
-        jsonWriter.writeUntypedField("loadBalanceTimeout", getLoadBalanceTimeout());
-        jsonWriter.writeUntypedField("commandTimeout", getCommandTimeout());
-        jsonWriter.writeUntypedField("integratedSecurity", getIntegratedSecurity());
-        jsonWriter.writeUntypedField("failoverPartner", getFailoverPartner());
-        jsonWriter.writeUntypedField("maxPoolSize", getMaxPoolSize());
-        jsonWriter.writeUntypedField("minPoolSize", getMinPoolSize());
-        jsonWriter.writeUntypedField("multipleActiveResultSets", getMultipleActiveResultSets());
-        jsonWriter.writeUntypedField("multiSubnetFailover", getMultiSubnetFailover());
-        jsonWriter.writeUntypedField("packetSize", getPacketSize());
-        jsonWriter.writeUntypedField("pooling", getPooling());
-        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        if (getServer() != null) {
+            jsonWriter.writeUntypedField("server", getServer());
+        }
+        if (getDatabase() != null) {
+            jsonWriter.writeUntypedField("database", getDatabase());
+        }
+        if (getEncrypt() != null) {
+            jsonWriter.writeUntypedField("encrypt", getEncrypt());
+        }
+        if (getTrustServerCertificate() != null) {
+            jsonWriter.writeUntypedField("trustServerCertificate", getTrustServerCertificate());
+        }
+        if (getHostNameInCertificate() != null) {
+            jsonWriter.writeUntypedField("hostNameInCertificate", getHostNameInCertificate());
+        }
+        if (getApplicationIntent() != null) {
+            jsonWriter.writeUntypedField("applicationIntent", getApplicationIntent());
+        }
+        if (getConnectTimeout() != null) {
+            jsonWriter.writeUntypedField("connectTimeout", getConnectTimeout());
+        }
+        if (getConnectRetryCount() != null) {
+            jsonWriter.writeUntypedField("connectRetryCount", getConnectRetryCount());
+        }
+        if (getConnectRetryInterval() != null) {
+            jsonWriter.writeUntypedField("connectRetryInterval", getConnectRetryInterval());
+        }
+        if (getLoadBalanceTimeout() != null) {
+            jsonWriter.writeUntypedField("loadBalanceTimeout", getLoadBalanceTimeout());
+        }
+        if (getCommandTimeout() != null) {
+            jsonWriter.writeUntypedField("commandTimeout", getCommandTimeout());
+        }
+        if (getIntegratedSecurity() != null) {
+            jsonWriter.writeUntypedField("integratedSecurity", getIntegratedSecurity());
+        }
+        if (getFailoverPartner() != null) {
+            jsonWriter.writeUntypedField("failoverPartner", getFailoverPartner());
+        }
+        if (getMaxPoolSize() != null) {
+            jsonWriter.writeUntypedField("maxPoolSize", getMaxPoolSize());
+        }
+        if (getMinPoolSize() != null) {
+            jsonWriter.writeUntypedField("minPoolSize", getMinPoolSize());
+        }
+        if (getMultipleActiveResultSets() != null) {
+            jsonWriter.writeUntypedField("multipleActiveResultSets", getMultipleActiveResultSets());
+        }
+        if (getMultiSubnetFailover() != null) {
+            jsonWriter.writeUntypedField("multiSubnetFailover", getMultiSubnetFailover());
+        }
+        if (getPacketSize() != null) {
+            jsonWriter.writeUntypedField("packetSize", getPacketSize());
+        }
+        if (getPooling() != null) {
+            jsonWriter.writeUntypedField("pooling", getPooling());
+        }
+        if (this.connectionString != null) {
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        }
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("userName", this.userName);
+        if (this.userName != null) {
+            jsonWriter.writeUntypedField("userName", this.userName);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+        if (this.encryptedCredential != null) {
+            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+        }
         jsonWriter.writeJsonField("alwaysEncryptedSettings", this.alwaysEncryptedSettings);
         return jsonWriter.writeEndObject();
     }
@@ -395,6 +479,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties extends SqlS
      * instance of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AmazonRdsForSqlServerLinkedServiceTypeProperties.
      */
+    @Generated
     public static AmazonRdsForSqlServerLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AmazonRdsForSqlServerLinkedServiceTypeProperties deserializedAmazonRdsForSqlServerLinkedServiceTypeProperties

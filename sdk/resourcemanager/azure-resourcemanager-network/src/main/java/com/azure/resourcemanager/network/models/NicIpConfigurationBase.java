@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasSubnet;
 import java.util.Collection;
 import java.util.List;
@@ -72,4 +73,15 @@ public interface NicIpConfigurationBase extends HasSubnet, HasPrivateIpAddress {
      * @return the application security groups associated with this network IP configuration
      */
     List<ApplicationSecurityGroup> listAssociatedApplicationSecurityGroups();
+
+    /**
+     * Gets the application security groups associated with this network IP configuration.
+     *
+     * @param context the {@link Context} of the request
+     * @return the application security groups associated with this network IP configuration
+     */
+    default List<ApplicationSecurityGroup> listAssociatedApplicationSecurityGroups(Context context) {
+        throw new UnsupportedOperationException(
+            "[listAssociatedApplicationSecurityGroups(Context)] is not supported in " + getClass());
+    }
 }

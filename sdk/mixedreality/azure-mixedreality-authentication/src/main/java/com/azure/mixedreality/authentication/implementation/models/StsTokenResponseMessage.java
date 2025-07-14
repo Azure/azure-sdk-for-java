@@ -5,6 +5,7 @@
 package com.azure.mixedreality.authentication.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class StsTokenResponseMessage implements JsonSerializable<StsTokenR
     /*
      * An access token for the account.
      */
+    @Generated
     private String accessToken;
 
     /**
      * Creates an instance of StsTokenResponseMessage class.
      */
+    @Generated
     public StsTokenResponseMessage() {
     }
 
@@ -32,6 +35,7 @@ public final class StsTokenResponseMessage implements JsonSerializable<StsTokenR
      * 
      * @return the accessToken value.
      */
+    @Generated
     public String getAccessToken() {
         return this.accessToken;
     }
@@ -42,6 +46,7 @@ public final class StsTokenResponseMessage implements JsonSerializable<StsTokenR
      * @param accessToken the accessToken value to set.
      * @return the StsTokenResponseMessage object itself.
      */
+    @Generated
     public StsTokenResponseMessage setAccessToken(String accessToken) {
         this.accessToken = accessToken;
         return this;
@@ -50,6 +55,7 @@ public final class StsTokenResponseMessage implements JsonSerializable<StsTokenR
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -66,6 +72,7 @@ public final class StsTokenResponseMessage implements JsonSerializable<StsTokenR
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StsTokenResponseMessage.
      */
+    @Generated
     public static StsTokenResponseMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StsTokenResponseMessage deserializedStsTokenResponseMessage = new StsTokenResponseMessage();

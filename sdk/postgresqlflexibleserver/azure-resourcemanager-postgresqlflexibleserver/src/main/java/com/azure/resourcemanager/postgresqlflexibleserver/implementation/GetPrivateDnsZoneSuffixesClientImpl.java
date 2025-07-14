@@ -20,6 +20,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.GetPrivateDnsZoneSuffixesClient;
 import reactor.core.publisher.Mono;
 
@@ -61,6 +62,13 @@ public final class GetPrivateDnsZoneSuffixesClientImpl implements GetPrivateDnsZ
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<String>> execute(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/Microsoft.DBforPostgreSQL/getPrivateDnsZoneSuffix")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<String> executeSync(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -87,27 +95,6 @@ public final class GetPrivateDnsZoneSuffixesClientImpl implements GetPrivateDnsZ
     /**
      * Get private DNS zone suffix in the cloud.
      * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private DNS zone suffix in the cloud along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<String>> executeWithResponseAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.execute(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get private DNS zone suffix in the cloud.
-     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private DNS zone suffix in the cloud on successful completion of {@link Mono}.
@@ -128,7 +115,13 @@ public final class GetPrivateDnsZoneSuffixesClientImpl implements GetPrivateDnsZ
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> executeWithResponse(Context context) {
-        return executeWithResponseAsync(context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.executeSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -142,4 +135,6 @@ public final class GetPrivateDnsZoneSuffixesClientImpl implements GetPrivateDnsZ
     public String execute() {
         return executeWithResponse(Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GetPrivateDnsZoneSuffixesClientImpl.class);
 }

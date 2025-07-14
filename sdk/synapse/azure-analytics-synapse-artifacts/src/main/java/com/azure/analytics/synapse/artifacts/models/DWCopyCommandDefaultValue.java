@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class DWCopyCommandDefaultValue implements JsonSerializable<DWCopyC
     /*
      * Column name. Type: object (or Expression with resultType string).
      */
+    @Generated
     private Object columnName;
 
     /*
      * The default value of the column. Type: object (or Expression with resultType string).
      */
+    @Generated
     private Object defaultValue;
 
     /**
      * Creates an instance of DWCopyCommandDefaultValue class.
      */
+    @Generated
     public DWCopyCommandDefaultValue() {
     }
 
@@ -37,6 +41,7 @@ public final class DWCopyCommandDefaultValue implements JsonSerializable<DWCopyC
      * 
      * @return the columnName value.
      */
+    @Generated
     public Object getColumnName() {
         return this.columnName;
     }
@@ -47,6 +52,7 @@ public final class DWCopyCommandDefaultValue implements JsonSerializable<DWCopyC
      * @param columnName the columnName value to set.
      * @return the DWCopyCommandDefaultValue object itself.
      */
+    @Generated
     public DWCopyCommandDefaultValue setColumnName(Object columnName) {
         this.columnName = columnName;
         return this;
@@ -58,6 +64,7 @@ public final class DWCopyCommandDefaultValue implements JsonSerializable<DWCopyC
      * 
      * @return the defaultValue value.
      */
+    @Generated
     public Object getDefaultValue() {
         return this.defaultValue;
     }
@@ -69,6 +76,7 @@ public final class DWCopyCommandDefaultValue implements JsonSerializable<DWCopyC
      * @param defaultValue the defaultValue value to set.
      * @return the DWCopyCommandDefaultValue object itself.
      */
+    @Generated
     public DWCopyCommandDefaultValue setDefaultValue(Object defaultValue) {
         this.defaultValue = defaultValue;
         return this;
@@ -77,11 +85,16 @@ public final class DWCopyCommandDefaultValue implements JsonSerializable<DWCopyC
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("columnName", this.columnName);
-        jsonWriter.writeUntypedField("defaultValue", this.defaultValue);
+        if (this.columnName != null) {
+            jsonWriter.writeUntypedField("columnName", this.columnName);
+        }
+        if (this.defaultValue != null) {
+            jsonWriter.writeUntypedField("defaultValue", this.defaultValue);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -93,6 +106,7 @@ public final class DWCopyCommandDefaultValue implements JsonSerializable<DWCopyC
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DWCopyCommandDefaultValue.
      */
+    @Generated
     public static DWCopyCommandDefaultValue fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DWCopyCommandDefaultValue deserializedDWCopyCommandDefaultValue = new DWCopyCommandDefaultValue();

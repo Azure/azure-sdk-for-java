@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,31 +22,37 @@ public class ForEachActivity extends ControlActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "ForEach";
 
     /*
      * Should the loop be executed in sequence or in parallel (max 50)
      */
+    @Generated
     private Boolean isSequential;
 
     /*
      * Batch count to be used for controlling the number of parallel execution (when isSequential is set to false).
      */
+    @Generated
     private Integer batchCount;
 
     /*
      * Collection to iterate.
      */
+    @Generated
     private Expression items;
 
     /*
      * List of activities to execute .
      */
+    @Generated
     private List<Activity> activities;
 
     /**
      * Creates an instance of ForEachActivity class.
      */
+    @Generated
     public ForEachActivity() {
     }
 
@@ -54,6 +61,7 @@ public class ForEachActivity extends ControlActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -64,6 +72,7 @@ public class ForEachActivity extends ControlActivity {
      * 
      * @return the isSequential value.
      */
+    @Generated
     public Boolean isSequential() {
         return this.isSequential;
     }
@@ -74,6 +83,7 @@ public class ForEachActivity extends ControlActivity {
      * @param isSequential the isSequential value to set.
      * @return the ForEachActivity object itself.
      */
+    @Generated
     public ForEachActivity setIsSequential(Boolean isSequential) {
         this.isSequential = isSequential;
         return this;
@@ -85,6 +95,7 @@ public class ForEachActivity extends ControlActivity {
      * 
      * @return the batchCount value.
      */
+    @Generated
     public Integer getBatchCount() {
         return this.batchCount;
     }
@@ -96,6 +107,7 @@ public class ForEachActivity extends ControlActivity {
      * @param batchCount the batchCount value to set.
      * @return the ForEachActivity object itself.
      */
+    @Generated
     public ForEachActivity setBatchCount(Integer batchCount) {
         this.batchCount = batchCount;
         return this;
@@ -106,6 +118,7 @@ public class ForEachActivity extends ControlActivity {
      * 
      * @return the items value.
      */
+    @Generated
     public Expression getItems() {
         return this.items;
     }
@@ -116,6 +129,7 @@ public class ForEachActivity extends ControlActivity {
      * @param items the items value to set.
      * @return the ForEachActivity object itself.
      */
+    @Generated
     public ForEachActivity setItems(Expression items) {
         this.items = items;
         return this;
@@ -126,6 +140,7 @@ public class ForEachActivity extends ControlActivity {
      * 
      * @return the activities value.
      */
+    @Generated
     public List<Activity> getActivities() {
         return this.activities;
     }
@@ -136,6 +151,7 @@ public class ForEachActivity extends ControlActivity {
      * @param activities the activities value to set.
      * @return the ForEachActivity object itself.
      */
+    @Generated
     public ForEachActivity setActivities(List<Activity> activities) {
         this.activities = activities;
         return this;
@@ -144,6 +160,7 @@ public class ForEachActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ForEachActivity setName(String name) {
         super.setName(name);
@@ -153,6 +170,7 @@ public class ForEachActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ForEachActivity setDescription(String description) {
         super.setDescription(description);
@@ -162,6 +180,7 @@ public class ForEachActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ForEachActivity setState(ActivityState state) {
         super.setState(state);
@@ -171,6 +190,7 @@ public class ForEachActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ForEachActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -180,6 +200,7 @@ public class ForEachActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ForEachActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -189,6 +210,7 @@ public class ForEachActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ForEachActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -198,6 +220,7 @@ public class ForEachActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -235,6 +258,7 @@ public class ForEachActivity extends ControlActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ForEachActivity.
      */
+    @Generated
     public static ForEachActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ForEachActivity deserializedForEachActivity = new ForEachActivity();

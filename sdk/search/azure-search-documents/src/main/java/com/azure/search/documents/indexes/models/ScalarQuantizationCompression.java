@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,11 +22,13 @@ public final class ScalarQuantizationCompression extends VectorSearchCompression
     /*
      * The name of the kind of compression method being configured for use with vector search.
      */
+    @Generated
     private VectorSearchCompressionKind kind = VectorSearchCompressionKind.SCALAR_QUANTIZATION;
 
     /*
      * Contains the parameters specific to Scalar Quantization.
      */
+    @Generated
     private ScalarQuantizationParameters parameters;
 
     /**
@@ -33,6 +36,7 @@ public final class ScalarQuantizationCompression extends VectorSearchCompression
      * 
      * @param compressionName the compressionName value to set.
      */
+    @Generated
     public ScalarQuantizationCompression(String compressionName) {
         super(compressionName);
     }
@@ -42,6 +46,7 @@ public final class ScalarQuantizationCompression extends VectorSearchCompression
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public VectorSearchCompressionKind getKind() {
         return this.kind;
@@ -52,6 +57,7 @@ public final class ScalarQuantizationCompression extends VectorSearchCompression
      * 
      * @return the parameters value.
      */
+    @Generated
     public ScalarQuantizationParameters getParameters() {
         return this.parameters;
     }
@@ -62,6 +68,7 @@ public final class ScalarQuantizationCompression extends VectorSearchCompression
      * @param parameters the parameters value to set.
      * @return the ScalarQuantizationCompression object itself.
      */
+    @Generated
     public ScalarQuantizationCompression setParameters(ScalarQuantizationParameters parameters) {
         this.parameters = parameters;
         return this;
@@ -70,6 +77,7 @@ public final class ScalarQuantizationCompression extends VectorSearchCompression
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ScalarQuantizationCompression setRerankWithOriginalVectors(Boolean rerankWithOriginalVectors) {
         super.setRerankWithOriginalVectors(rerankWithOriginalVectors);
@@ -79,6 +87,7 @@ public final class ScalarQuantizationCompression extends VectorSearchCompression
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ScalarQuantizationCompression setDefaultOversampling(Double defaultOversampling) {
         super.setDefaultOversampling(defaultOversampling);
@@ -88,6 +97,7 @@ public final class ScalarQuantizationCompression extends VectorSearchCompression
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ScalarQuantizationCompression setRescoringOptions(RescoringOptions rescoringOptions) {
         super.setRescoringOptions(rescoringOptions);
@@ -97,6 +107,7 @@ public final class ScalarQuantizationCompression extends VectorSearchCompression
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ScalarQuantizationCompression setTruncationDimension(Integer truncationDimension) {
         super.setTruncationDimension(truncationDimension);
@@ -106,6 +117,7 @@ public final class ScalarQuantizationCompression extends VectorSearchCompression
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -128,6 +140,7 @@ public final class ScalarQuantizationCompression extends VectorSearchCompression
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ScalarQuantizationCompression.
      */
+    @Generated
     public static ScalarQuantizationCompression fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean compressionNameFound = false;

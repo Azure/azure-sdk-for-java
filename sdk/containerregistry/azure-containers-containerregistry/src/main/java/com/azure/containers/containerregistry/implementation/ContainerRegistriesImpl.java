@@ -83,7 +83,7 @@ public final class ContainerRegistriesImpl {
      * service to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureContainerRegist")
+    @ServiceInterface(name = "AzureContainerRegistryContainerRegistries")
     public interface ContainerRegistriesService {
         @Get("/v2/")
         @ExpectedResponses({ 200 })

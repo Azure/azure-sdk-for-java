@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,11 +21,13 @@ public final class SapCloudForCustomerSink extends CopySink {
     /*
      * Copy sink type.
      */
+    @Generated
     private String type = "SapCloudForCustomerSink";
 
     /*
      * The write behavior for the operation. Default is 'Insert'.
      */
+    @Generated
     private SapCloudForCustomerSinkWriteBehavior writeBehavior;
 
     /*
@@ -32,11 +35,13 @@ public final class SapCloudForCustomerSink extends CopySink {
      * response data. Default value: 00:05:00. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
+    @Generated
     private Object httpRequestTimeout;
 
     /**
      * Creates an instance of SapCloudForCustomerSink class.
      */
+    @Generated
     public SapCloudForCustomerSink() {
     }
 
@@ -45,6 +50,7 @@ public final class SapCloudForCustomerSink extends CopySink {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -55,6 +61,7 @@ public final class SapCloudForCustomerSink extends CopySink {
      * 
      * @return the writeBehavior value.
      */
+    @Generated
     public SapCloudForCustomerSinkWriteBehavior getWriteBehavior() {
         return this.writeBehavior;
     }
@@ -65,6 +72,7 @@ public final class SapCloudForCustomerSink extends CopySink {
      * @param writeBehavior the writeBehavior value to set.
      * @return the SapCloudForCustomerSink object itself.
      */
+    @Generated
     public SapCloudForCustomerSink setWriteBehavior(SapCloudForCustomerSinkWriteBehavior writeBehavior) {
         this.writeBehavior = writeBehavior;
         return this;
@@ -77,6 +85,7 @@ public final class SapCloudForCustomerSink extends CopySink {
      * 
      * @return the httpRequestTimeout value.
      */
+    @Generated
     public Object getHttpRequestTimeout() {
         return this.httpRequestTimeout;
     }
@@ -89,6 +98,7 @@ public final class SapCloudForCustomerSink extends CopySink {
      * @param httpRequestTimeout the httpRequestTimeout value to set.
      * @return the SapCloudForCustomerSink object itself.
      */
+    @Generated
     public SapCloudForCustomerSink setHttpRequestTimeout(Object httpRequestTimeout) {
         this.httpRequestTimeout = httpRequestTimeout;
         return this;
@@ -97,6 +107,7 @@ public final class SapCloudForCustomerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapCloudForCustomerSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
@@ -106,6 +117,7 @@ public final class SapCloudForCustomerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapCloudForCustomerSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
@@ -115,6 +127,7 @@ public final class SapCloudForCustomerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapCloudForCustomerSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
@@ -124,6 +137,7 @@ public final class SapCloudForCustomerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapCloudForCustomerSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
@@ -133,6 +147,7 @@ public final class SapCloudForCustomerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapCloudForCustomerSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -142,17 +157,30 @@ public final class SapCloudForCustomerSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getWriteBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        }
+        if (getWriteBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        }
+        if (getSinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        }
+        if (getSinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("writeBehavior", this.writeBehavior == null ? null : this.writeBehavior.toString());
-        jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
+        if (this.httpRequestTimeout != null) {
+            jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -169,6 +197,7 @@ public final class SapCloudForCustomerSink extends CopySink {
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SapCloudForCustomerSink.
      */
+    @Generated
     public static SapCloudForCustomerSink fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SapCloudForCustomerSink deserializedSapCloudForCustomerSink = new SapCloudForCustomerSink();

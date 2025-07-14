@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.HybridComputePrivateLinkScope;
@@ -22,22 +22,21 @@ public final class PrivateLinkScopesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"publicNetworkAccess\":\"SecuredByPerimeter\",\"provisioningState\":\"bmjk\",\"privateLinkScopeId\":\"bjgsjjxxahmrn\",\"privateEndpointConnections\":[{\"id\":\"qegxyivpin\",\"name\":\"hwbjijkgqxnhmbk\",\"type\":\"njaujvaan\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"ycwkdtaawx\",\"description\":\"fe\"},\"provisioningState\":\"umrrqmbzm\",\"groupIds\":[\"atbnxwbj\",\"idbirkfpkso\",\"dgo\"]}},{\"id\":\"wijymr\",\"name\":\"guzozkyew\",\"type\":\"nzhhhqos\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"kutycyarnroohgua\",\"description\":\"zoghktdpyczhc\"},\"provisioningState\":\"ocnhzqrottjzcfyj\",\"groupIds\":[\"wrlohapqinfszpyg\",\"qdhmrjzralcxpjby\",\"psjoqcjenk\"]}},{\"id\":\"fq\",\"name\":\"sqxfxjelgcmpz\",\"type\":\"hhhqxuwyv\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"yv\",\"description\":\"vbsizusjszlbscm\"},\"provisioningState\":\"zijiufehgmv\",\"groupIds\":[\"wyvq\",\"xrerlniylylyf\"]}}]},\"location\":\"zutgqztwhghmupg\",\"tags\":{\"bklqpxz\":\"tcdxabbujftaben\",\"nlzafwxudgnh\":\"cafeddw\",\"pbeme\":\"ookrtalvnbw\",\"kyrdnqodx\":\"uclvdjj\"},\"id\":\"hhxhq\",\"name\":\"aqnvzoqgyipemchg\",\"type\":\"v\"}";
+            = "{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"qigtuujwouhdaws\",\"privateLinkScopeId\":\"rb\",\"privateEndpointConnections\":[{\"id\":\"jybvit\",\"name\":\"kjyaznumtg\",\"type\":\"uwdchozf\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"xlvxnoakiz\",\"description\":\"oaiknaqlnuwig\"},\"provisioningState\":\"xly\",\"groupIds\":[\"hvxzcwxhmp\",\"jtlkexaonwivkcqh\"]}},{\"id\":\"hxknlccrmmkyupi\",\"name\":\"byqjfkakfqfrkem\",\"type\":\"ldudxjascowv\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"pdxphlkksnmgzvyf\",\"description\":\"jd\"},\"provisioningState\":\"uqnwsithu\",\"groupIds\":[\"yahluqwqulsutr\"]}},{\"id\":\"hxykfhyqez\",\"name\":\"qugdrftbcvexreuq\",\"type\":\"wtl\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"hreagk\",\"description\":\"yxvrqtvbczsul\"},\"provisioningState\":\"gglmepjpfsey\",\"groupIds\":[\"angpszngafpgyl\"]}}]},\"location\":\"ecjujcng\",\"tags\":{\"oknub\":\"yedmzrgj\",\"coqra\":\"oitpkpztrgdgx\",\"qi\":\"wugyx\"},\"id\":\"we\",\"name\":\"alwvskbu\",\"type\":\"z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HybridComputePrivateLinkScope response = manager.privateLinkScopes()
-            .getByResourceGroupWithResponse("ormkfqlwxldyk", "lsygaol", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("pl", "dbmairrhvhfnr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zutgqztwhghmupg", response.location());
-        Assertions.assertEquals("tcdxabbujftaben", response.tags().get("bklqpxz"));
-        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER,
-            response.properties().publicNetworkAccess());
+        Assertions.assertEquals("ecjujcng", response.location());
+        Assertions.assertEquals("yedmzrgj", response.tags().get("oknub"));
+        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, response.properties().publicNetworkAccess());
     }
 }

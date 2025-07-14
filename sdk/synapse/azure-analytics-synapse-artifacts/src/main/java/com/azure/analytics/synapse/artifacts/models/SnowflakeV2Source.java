@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,21 +21,25 @@ public final class SnowflakeV2Source extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "SnowflakeV2Source";
 
     /*
      * Snowflake Sql query. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object query;
 
     /*
      * Snowflake export settings.
      */
+    @Generated
     private SnowflakeExportCopyCommand exportSettings;
 
     /**
      * Creates an instance of SnowflakeV2Source class.
      */
+    @Generated
     public SnowflakeV2Source() {
     }
 
@@ -43,6 +48,7 @@ public final class SnowflakeV2Source extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -53,6 +59,7 @@ public final class SnowflakeV2Source extends CopySource {
      * 
      * @return the query value.
      */
+    @Generated
     public Object getQuery() {
         return this.query;
     }
@@ -63,6 +70,7 @@ public final class SnowflakeV2Source extends CopySource {
      * @param query the query value to set.
      * @return the SnowflakeV2Source object itself.
      */
+    @Generated
     public SnowflakeV2Source setQuery(Object query) {
         this.query = query;
         return this;
@@ -73,6 +81,7 @@ public final class SnowflakeV2Source extends CopySource {
      * 
      * @return the exportSettings value.
      */
+    @Generated
     public SnowflakeExportCopyCommand getExportSettings() {
         return this.exportSettings;
     }
@@ -83,6 +92,7 @@ public final class SnowflakeV2Source extends CopySource {
      * @param exportSettings the exportSettings value to set.
      * @return the SnowflakeV2Source object itself.
      */
+    @Generated
     public SnowflakeV2Source setExportSettings(SnowflakeExportCopyCommand exportSettings) {
         this.exportSettings = exportSettings;
         return this;
@@ -91,6 +101,7 @@ public final class SnowflakeV2Source extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SnowflakeV2Source setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -100,6 +111,7 @@ public final class SnowflakeV2Source extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SnowflakeV2Source setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -109,6 +121,7 @@ public final class SnowflakeV2Source extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SnowflakeV2Source setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -118,15 +131,24 @@ public final class SnowflakeV2Source extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeJsonField("exportSettings", this.exportSettings);
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("query", this.query);
+        if (this.query != null) {
+            jsonWriter.writeUntypedField("query", this.query);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -144,6 +166,7 @@ public final class SnowflakeV2Source extends CopySource {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SnowflakeV2Source.
      */
+    @Generated
     public static SnowflakeV2Source fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SnowflakeV2Source deserializedSnowflakeV2Source = new SnowflakeV2Source();

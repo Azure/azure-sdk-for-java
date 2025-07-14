@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class SsisExecutionParameter implements JsonSerializable<SsisExecut
     /*
      * SSIS package execution parameter value. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object value;
 
     /**
      * Creates an instance of SsisExecutionParameter class.
      */
+    @Generated
     public SsisExecutionParameter() {
     }
 
@@ -33,6 +36,7 @@ public final class SsisExecutionParameter implements JsonSerializable<SsisExecut
      * 
      * @return the value value.
      */
+    @Generated
     public Object getValue() {
         return this.value;
     }
@@ -44,6 +48,7 @@ public final class SsisExecutionParameter implements JsonSerializable<SsisExecut
      * @param value the value value to set.
      * @return the SsisExecutionParameter object itself.
      */
+    @Generated
     public SsisExecutionParameter setValue(Object value) {
         this.value = value;
         return this;
@@ -52,6 +57,7 @@ public final class SsisExecutionParameter implements JsonSerializable<SsisExecut
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -68,6 +74,7 @@ public final class SsisExecutionParameter implements JsonSerializable<SsisExecut
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SsisExecutionParameter.
      */
+    @Generated
     public static SsisExecutionParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SsisExecutionParameter deserializedSsisExecutionParameter = new SsisExecutionParameter();

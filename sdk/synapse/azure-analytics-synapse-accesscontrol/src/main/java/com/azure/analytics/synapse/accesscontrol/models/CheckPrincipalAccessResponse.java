@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.accesscontrol.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,11 +22,13 @@ public final class CheckPrincipalAccessResponse implements JsonSerializable<Chec
      * To check if the current user, group, or service principal has permission to read artifacts in the specified
      * workspace.
      */
+    @Generated
     private List<CheckAccessDecision> accessDecisions;
 
     /**
      * Creates an instance of CheckPrincipalAccessResponse class.
      */
+    @Generated
     public CheckPrincipalAccessResponse() {
     }
 
@@ -35,6 +38,7 @@ public final class CheckPrincipalAccessResponse implements JsonSerializable<Chec
      * 
      * @return the accessDecisions value.
      */
+    @Generated
     public List<CheckAccessDecision> getAccessDecisions() {
         return this.accessDecisions;
     }
@@ -46,6 +50,7 @@ public final class CheckPrincipalAccessResponse implements JsonSerializable<Chec
      * @param accessDecisions the accessDecisions value to set.
      * @return the CheckPrincipalAccessResponse object itself.
      */
+    @Generated
     public CheckPrincipalAccessResponse setAccessDecisions(List<CheckAccessDecision> accessDecisions) {
         this.accessDecisions = accessDecisions;
         return this;
@@ -54,6 +59,7 @@ public final class CheckPrincipalAccessResponse implements JsonSerializable<Chec
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -70,6 +76,7 @@ public final class CheckPrincipalAccessResponse implements JsonSerializable<Chec
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CheckPrincipalAccessResponse.
      */
+    @Generated
     public static CheckPrincipalAccessResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CheckPrincipalAccessResponse deserializedCheckPrincipalAccessResponse = new CheckPrincipalAccessResponse();

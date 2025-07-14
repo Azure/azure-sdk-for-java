@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,16 +23,19 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
     /*
      * Unique document classifier name.
      */
+    @Generated
     private final String classifierId;
 
     /*
      * Document classifier description.
      */
+    @Generated
     private String description;
 
     /*
      * List of document types to classify against.
      */
+    @Generated
     private final Map<String, ClassifierDocumentTypeDetails> docTypes;
 
     /**
@@ -40,6 +44,7 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
      * @param classifierId the classifierId value to set.
      * @param docTypes the docTypes value to set.
      */
+    @Generated
     public BuildDocumentClassifierRequest(String classifierId, Map<String, ClassifierDocumentTypeDetails> docTypes) {
         this.classifierId = classifierId;
         this.docTypes = docTypes;
@@ -50,6 +55,7 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
      * 
      * @return the classifierId value.
      */
+    @Generated
     public String getClassifierId() {
         return this.classifierId;
     }
@@ -59,6 +65,7 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -69,6 +76,7 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
      * @param description the description value to set.
      * @return the BuildDocumentClassifierRequest object itself.
      */
+    @Generated
     public BuildDocumentClassifierRequest setDescription(String description) {
         this.description = description;
         return this;
@@ -79,6 +87,7 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
      * 
      * @return the docTypes value.
      */
+    @Generated
     public Map<String, ClassifierDocumentTypeDetails> getDocTypes() {
         return this.docTypes;
     }
@@ -86,6 +95,7 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -104,6 +114,7 @@ public final class BuildDocumentClassifierRequest implements JsonSerializable<Bu
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BuildDocumentClassifierRequest.
      */
+    @Generated
     public static BuildDocumentClassifierRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean classifierIdFound = false;

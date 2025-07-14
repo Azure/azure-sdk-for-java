@@ -4,6 +4,7 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class RecordingFormatInternal extends ExpandableStringEnum<Recordin
     /**
      * Static value wav for RecordingFormatInternal.
      */
+    @Generated
     public static final RecordingFormatInternal WAV = fromString("wav");
 
     /**
      * Static value mp3 for RecordingFormatInternal.
      */
+    @Generated
     public static final RecordingFormatInternal MP3 = fromString("mp3");
 
     /**
      * Static value mp4 for RecordingFormatInternal.
      */
+    @Generated
     public static final RecordingFormatInternal MP4 = fromString("mp4");
 
     /**
@@ -31,6 +35,7 @@ public final class RecordingFormatInternal extends ExpandableStringEnum<Recordin
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RecordingFormatInternal() {
     }
@@ -41,6 +46,7 @@ public final class RecordingFormatInternal extends ExpandableStringEnum<Recordin
      * @param name a name to look for.
      * @return the corresponding RecordingFormatInternal.
      */
+    @Generated
     public static RecordingFormatInternal fromString(String name) {
         return fromString(name, RecordingFormatInternal.class);
     }
@@ -50,6 +56,7 @@ public final class RecordingFormatInternal extends ExpandableStringEnum<Recordin
      * 
      * @return known RecordingFormatInternal values.
      */
+    @Generated
     public static Collection<RecordingFormatInternal> values() {
         return values(RecordingFormatInternal.class);
     }

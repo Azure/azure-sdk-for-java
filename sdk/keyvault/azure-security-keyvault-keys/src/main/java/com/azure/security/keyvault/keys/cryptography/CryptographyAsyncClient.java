@@ -673,9 +673,9 @@ public class CryptographyAsyncClient {
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      * <p>
-     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128KW A128KW},
-     * {@link EncryptionAlgorithm#A192KW A192KW}, {@link EncryptionAlgorithm#A256KW A256KW},
-     * {@link EncryptionAlgorithm#CKM_AES_KEY_WRAP}, and {@link EncryptionAlgorithm#CKM_AES_KEY_WRAP_PAD}.</p>
+     * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW},
+     * {@link KeyWrapAlgorithm#A192KW A192KW}, {@link KeyWrapAlgorithm#A256KW A256KW},
+     * {@link KeyWrapAlgorithm#CKM_AES_KEY_WRAP}, and {@link KeyWrapAlgorithm#CKM_AES_KEY_WRAP_PAD}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a
@@ -731,7 +731,8 @@ public class CryptographyAsyncClient {
      * {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      * <p>
      * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW},
-     * {@link KeyWrapAlgorithm#A192KW A192KW} and {@link KeyWrapAlgorithm#A256KW A256KW}.</p>
+     * {@link KeyWrapAlgorithm#A192KW A192KW}, {@link KeyWrapAlgorithm#A256KW A256KW},
+     * {@link KeyWrapAlgorithm#CKM_AES_KEY_WRAP}, and {@link KeyWrapAlgorithm#CKM_AES_KEY_WRAP_PAD}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Unwraps the key content. Subscribes to the call asynchronously and prints out the unwrapped key details when

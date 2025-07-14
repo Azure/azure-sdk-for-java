@@ -5,6 +5,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
+import com.azure.messaging.eventgrid.systemevents.models.StorageBlobCreatedEventData;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

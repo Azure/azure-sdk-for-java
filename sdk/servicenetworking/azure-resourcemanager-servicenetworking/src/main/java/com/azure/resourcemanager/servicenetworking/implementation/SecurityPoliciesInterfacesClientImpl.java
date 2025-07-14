@@ -72,7 +72,7 @@ public final class SecurityPoliciesInterfacesClientImpl implements SecurityPolic
      * used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "TrafficControllerMan")
+    @ServiceInterface(name = "TrafficControllerManagementClientSecurityPoliciesInterfaces")
     public interface SecurityPoliciesInterfacesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}")

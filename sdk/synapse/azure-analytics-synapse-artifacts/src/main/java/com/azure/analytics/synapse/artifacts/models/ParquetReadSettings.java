@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,16 +21,19 @@ public final class ParquetReadSettings extends FormatReadSettings {
     /*
      * The read setting type.
      */
+    @Generated
     private String type = "ParquetReadSettings";
 
     /*
      * Compression settings.
      */
+    @Generated
     private CompressionReadSettings compressionProperties;
 
     /**
      * Creates an instance of ParquetReadSettings class.
      */
+    @Generated
     public ParquetReadSettings() {
     }
 
@@ -38,6 +42,7 @@ public final class ParquetReadSettings extends FormatReadSettings {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -48,6 +53,7 @@ public final class ParquetReadSettings extends FormatReadSettings {
      * 
      * @return the compressionProperties value.
      */
+    @Generated
     public CompressionReadSettings getCompressionProperties() {
         return this.compressionProperties;
     }
@@ -58,6 +64,7 @@ public final class ParquetReadSettings extends FormatReadSettings {
      * @param compressionProperties the compressionProperties value to set.
      * @return the ParquetReadSettings object itself.
      */
+    @Generated
     public ParquetReadSettings setCompressionProperties(CompressionReadSettings compressionProperties) {
         this.compressionProperties = compressionProperties;
         return this;
@@ -66,6 +73,7 @@ public final class ParquetReadSettings extends FormatReadSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -87,6 +95,7 @@ public final class ParquetReadSettings extends FormatReadSettings {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ParquetReadSettings.
      */
+    @Generated
     public static ParquetReadSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ParquetReadSettings deserializedParquetReadSettings = new ParquetReadSettings();

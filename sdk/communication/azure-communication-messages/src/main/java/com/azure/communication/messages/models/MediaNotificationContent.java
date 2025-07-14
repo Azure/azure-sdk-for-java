@@ -15,7 +15,7 @@ import java.util.List;
  * @deprecated A request to send an image notification.
  */
 @Fluent
-@Deprecated()
+@Deprecated
 public final class MediaNotificationContent extends NotificationContent {
 
     /*

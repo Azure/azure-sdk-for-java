@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class LinkTableRequestSource implements JsonSerializable<LinkTableR
     /*
      * Source table table name
      */
+    @Generated
     private String tableName;
 
     /*
      * Source table schema name
      */
+    @Generated
     private String schemaName;
 
     /**
      * Creates an instance of LinkTableRequestSource class.
      */
+    @Generated
     public LinkTableRequestSource() {
     }
 
@@ -37,6 +41,7 @@ public final class LinkTableRequestSource implements JsonSerializable<LinkTableR
      * 
      * @return the tableName value.
      */
+    @Generated
     public String getTableName() {
         return this.tableName;
     }
@@ -47,6 +52,7 @@ public final class LinkTableRequestSource implements JsonSerializable<LinkTableR
      * @param tableName the tableName value to set.
      * @return the LinkTableRequestSource object itself.
      */
+    @Generated
     public LinkTableRequestSource setTableName(String tableName) {
         this.tableName = tableName;
         return this;
@@ -57,6 +63,7 @@ public final class LinkTableRequestSource implements JsonSerializable<LinkTableR
      * 
      * @return the schemaName value.
      */
+    @Generated
     public String getSchemaName() {
         return this.schemaName;
     }
@@ -67,6 +74,7 @@ public final class LinkTableRequestSource implements JsonSerializable<LinkTableR
      * @param schemaName the schemaName value to set.
      * @return the LinkTableRequestSource object itself.
      */
+    @Generated
     public LinkTableRequestSource setSchemaName(String schemaName) {
         this.schemaName = schemaName;
         return this;
@@ -75,6 +83,7 @@ public final class LinkTableRequestSource implements JsonSerializable<LinkTableR
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class LinkTableRequestSource implements JsonSerializable<LinkTableR
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the LinkTableRequestSource.
      */
+    @Generated
     public static LinkTableRequestSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkTableRequestSource deserializedLinkTableRequestSource = new LinkTableRequestSource();

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public class MongoDbAtlasCollectionDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "MongoDbAtlasCollection";
 
     /*
      * The collection name of the MongoDB Atlas database. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object collection;
 
     /**
      * Creates an instance of MongoDbAtlasCollectionDataset class.
      */
+    @Generated
     public MongoDbAtlasCollectionDataset() {
     }
 
@@ -39,6 +43,7 @@ public class MongoDbAtlasCollectionDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -50,6 +55,7 @@ public class MongoDbAtlasCollectionDataset extends Dataset {
      * 
      * @return the collection value.
      */
+    @Generated
     public Object getCollection() {
         return this.collection;
     }
@@ -61,6 +67,7 @@ public class MongoDbAtlasCollectionDataset extends Dataset {
      * @param collection the collection value to set.
      * @return the MongoDbAtlasCollectionDataset object itself.
      */
+    @Generated
     public MongoDbAtlasCollectionDataset setCollection(Object collection) {
         this.collection = collection;
         return this;
@@ -69,6 +76,7 @@ public class MongoDbAtlasCollectionDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbAtlasCollectionDataset setDescription(String description) {
         super.setDescription(description);
@@ -78,6 +86,7 @@ public class MongoDbAtlasCollectionDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbAtlasCollectionDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -87,6 +96,7 @@ public class MongoDbAtlasCollectionDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbAtlasCollectionDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -96,6 +106,7 @@ public class MongoDbAtlasCollectionDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbAtlasCollectionDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -105,6 +116,7 @@ public class MongoDbAtlasCollectionDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbAtlasCollectionDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -114,6 +126,7 @@ public class MongoDbAtlasCollectionDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbAtlasCollectionDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -123,6 +136,7 @@ public class MongoDbAtlasCollectionDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbAtlasCollectionDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -132,13 +146,18 @@ public class MongoDbAtlasCollectionDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -165,6 +184,7 @@ public class MongoDbAtlasCollectionDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MongoDbAtlasCollectionDataset.
      */
+    @Generated
     public static MongoDbAtlasCollectionDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MongoDbAtlasCollectionDataset deserializedMongoDbAtlasCollectionDataset

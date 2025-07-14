@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,16 +20,19 @@ public final class AzureTableStorageLinkedServiceTypeProperties extends AzureSto
      * Table service endpoint of the Azure Table Storage resource. It is mutually exclusive with connectionString,
      * sasUri property.
      */
+    @Generated
     private Object serviceEndpoint;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
 
     /**
      * Creates an instance of AzureTableStorageLinkedServiceTypeProperties class.
      */
+    @Generated
     public AzureTableStorageLinkedServiceTypeProperties() {
     }
 
@@ -38,6 +42,7 @@ public final class AzureTableStorageLinkedServiceTypeProperties extends AzureSto
      * 
      * @return the serviceEndpoint value.
      */
+    @Generated
     public Object getServiceEndpoint() {
         return this.serviceEndpoint;
     }
@@ -49,6 +54,7 @@ public final class AzureTableStorageLinkedServiceTypeProperties extends AzureSto
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the AzureTableStorageLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public AzureTableStorageLinkedServiceTypeProperties setServiceEndpoint(Object serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
@@ -59,6 +65,7 @@ public final class AzureTableStorageLinkedServiceTypeProperties extends AzureSto
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -69,6 +76,7 @@ public final class AzureTableStorageLinkedServiceTypeProperties extends AzureSto
      * @param credential the credential value to set.
      * @return the AzureTableStorageLinkedServiceTypeProperties object itself.
      */
+    @Generated
     public AzureTableStorageLinkedServiceTypeProperties setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
@@ -77,6 +85,7 @@ public final class AzureTableStorageLinkedServiceTypeProperties extends AzureSto
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableStorageLinkedServiceTypeProperties setConnectionString(Object connectionString) {
         super.setConnectionString(connectionString);
@@ -86,6 +95,7 @@ public final class AzureTableStorageLinkedServiceTypeProperties extends AzureSto
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableStorageLinkedServiceTypeProperties setAccountKey(AzureKeyVaultSecretReference accountKey) {
         super.setAccountKey(accountKey);
@@ -95,6 +105,7 @@ public final class AzureTableStorageLinkedServiceTypeProperties extends AzureSto
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableStorageLinkedServiceTypeProperties setSasUri(Object sasUri) {
         super.setSasUri(sasUri);
@@ -104,6 +115,7 @@ public final class AzureTableStorageLinkedServiceTypeProperties extends AzureSto
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableStorageLinkedServiceTypeProperties setSasToken(AzureKeyVaultSecretReference sasToken) {
         super.setSasToken(sasToken);
@@ -113,6 +125,7 @@ public final class AzureTableStorageLinkedServiceTypeProperties extends AzureSto
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureTableStorageLinkedServiceTypeProperties setEncryptedCredential(String encryptedCredential) {
         super.setEncryptedCredential(encryptedCredential);
@@ -122,15 +135,22 @@ public final class AzureTableStorageLinkedServiceTypeProperties extends AzureSto
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionString", getConnectionString());
+        if (getConnectionString() != null) {
+            jsonWriter.writeUntypedField("connectionString", getConnectionString());
+        }
         jsonWriter.writeJsonField("accountKey", getAccountKey());
-        jsonWriter.writeUntypedField("sasUri", getSasUri());
+        if (getSasUri() != null) {
+            jsonWriter.writeUntypedField("sasUri", getSasUri());
+        }
         jsonWriter.writeJsonField("sasToken", getSasToken());
         jsonWriter.writeStringField("encryptedCredential", getEncryptedCredential());
-        jsonWriter.writeUntypedField("serviceEndpoint", this.serviceEndpoint);
+        if (this.serviceEndpoint != null) {
+            jsonWriter.writeUntypedField("serviceEndpoint", this.serviceEndpoint);
+        }
         jsonWriter.writeJsonField("credential", this.credential);
         return jsonWriter.writeEndObject();
     }
@@ -143,6 +163,7 @@ public final class AzureTableStorageLinkedServiceTypeProperties extends AzureSto
      * of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureTableStorageLinkedServiceTypeProperties.
      */
+    @Generated
     public static AzureTableStorageLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureTableStorageLinkedServiceTypeProperties deserializedAzureTableStorageLinkedServiceTypeProperties

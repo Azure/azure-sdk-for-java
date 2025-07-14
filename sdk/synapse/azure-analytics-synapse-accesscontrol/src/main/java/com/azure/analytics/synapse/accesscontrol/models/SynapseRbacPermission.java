@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.accesscontrol.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class SynapseRbacPermission implements JsonSerializable<SynapseRbac
     /*
      * List of actions
      */
+    @Generated
     private List<String> actions;
 
     /*
      * List of Not actions
      */
+    @Generated
     private List<String> notActions;
 
     /*
      * List of data actions
      */
+    @Generated
     private List<String> dataActions;
 
     /*
      * List of Not data actions
      */
+    @Generated
     private List<String> notDataActions;
 
     /**
      * Creates an instance of SynapseRbacPermission class.
      */
+    @Generated
     public SynapseRbacPermission() {
     }
 
@@ -48,6 +54,7 @@ public final class SynapseRbacPermission implements JsonSerializable<SynapseRbac
      * 
      * @return the actions value.
      */
+    @Generated
     public List<String> getActions() {
         return this.actions;
     }
@@ -58,6 +65,7 @@ public final class SynapseRbacPermission implements JsonSerializable<SynapseRbac
      * @param actions the actions value to set.
      * @return the SynapseRbacPermission object itself.
      */
+    @Generated
     public SynapseRbacPermission setActions(List<String> actions) {
         this.actions = actions;
         return this;
@@ -68,6 +76,7 @@ public final class SynapseRbacPermission implements JsonSerializable<SynapseRbac
      * 
      * @return the notActions value.
      */
+    @Generated
     public List<String> getNotActions() {
         return this.notActions;
     }
@@ -78,6 +87,7 @@ public final class SynapseRbacPermission implements JsonSerializable<SynapseRbac
      * @param notActions the notActions value to set.
      * @return the SynapseRbacPermission object itself.
      */
+    @Generated
     public SynapseRbacPermission setNotActions(List<String> notActions) {
         this.notActions = notActions;
         return this;
@@ -88,6 +98,7 @@ public final class SynapseRbacPermission implements JsonSerializable<SynapseRbac
      * 
      * @return the dataActions value.
      */
+    @Generated
     public List<String> getDataActions() {
         return this.dataActions;
     }
@@ -98,6 +109,7 @@ public final class SynapseRbacPermission implements JsonSerializable<SynapseRbac
      * @param dataActions the dataActions value to set.
      * @return the SynapseRbacPermission object itself.
      */
+    @Generated
     public SynapseRbacPermission setDataActions(List<String> dataActions) {
         this.dataActions = dataActions;
         return this;
@@ -108,6 +120,7 @@ public final class SynapseRbacPermission implements JsonSerializable<SynapseRbac
      * 
      * @return the notDataActions value.
      */
+    @Generated
     public List<String> getNotDataActions() {
         return this.notDataActions;
     }
@@ -118,6 +131,7 @@ public final class SynapseRbacPermission implements JsonSerializable<SynapseRbac
      * @param notDataActions the notDataActions value to set.
      * @return the SynapseRbacPermission object itself.
      */
+    @Generated
     public SynapseRbacPermission setNotDataActions(List<String> notDataActions) {
         this.notDataActions = notDataActions;
         return this;
@@ -126,6 +140,7 @@ public final class SynapseRbacPermission implements JsonSerializable<SynapseRbac
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -145,6 +160,7 @@ public final class SynapseRbacPermission implements JsonSerializable<SynapseRbac
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SynapseRbacPermission.
      */
+    @Generated
     public static SynapseRbacPermission fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SynapseRbacPermission deserializedSynapseRbacPermission = new SynapseRbacPermission();

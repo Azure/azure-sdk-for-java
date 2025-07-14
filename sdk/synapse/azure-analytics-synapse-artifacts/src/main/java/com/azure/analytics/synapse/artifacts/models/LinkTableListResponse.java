@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class LinkTableListResponse implements JsonSerializable<LinkTableLi
     /*
      * List link table value
      */
+    @Generated
     private List<LinkTableResource> value;
 
     /**
      * Creates an instance of LinkTableListResponse class.
      */
+    @Generated
     public LinkTableListResponse() {
     }
 
@@ -33,6 +36,7 @@ public final class LinkTableListResponse implements JsonSerializable<LinkTableLi
      * 
      * @return the value value.
      */
+    @Generated
     public List<LinkTableResource> getValue() {
         return this.value;
     }
@@ -43,6 +47,7 @@ public final class LinkTableListResponse implements JsonSerializable<LinkTableLi
      * @param value the value value to set.
      * @return the LinkTableListResponse object itself.
      */
+    @Generated
     public LinkTableListResponse setValue(List<LinkTableResource> value) {
         this.value = value;
         return this;
@@ -51,6 +56,7 @@ public final class LinkTableListResponse implements JsonSerializable<LinkTableLi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -66,6 +72,7 @@ public final class LinkTableListResponse implements JsonSerializable<LinkTableLi
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the LinkTableListResponse.
      */
+    @Generated
     public static LinkTableListResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkTableListResponse deserializedLinkTableListResponse = new LinkTableListResponse();

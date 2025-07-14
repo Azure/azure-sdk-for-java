@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class LinkTableRequest implements JsonSerializable<LinkTableRequest
     /*
      * Link table id
      */
+    @Generated
     private String id;
 
     /*
      * Source table properties for link table request
      */
+    @Generated
     private LinkTableRequestSource source;
 
     /*
      * Target table properties for link table request
      */
+    @Generated
     private LinkTableRequestTarget target;
 
     /*
      * Link table operation type
      */
+    @Generated
     private String operationType;
 
     /**
      * Creates an instance of LinkTableRequest class.
      */
+    @Generated
     public LinkTableRequest() {
     }
 
@@ -47,6 +53,7 @@ public final class LinkTableRequest implements JsonSerializable<LinkTableRequest
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -57,6 +64,7 @@ public final class LinkTableRequest implements JsonSerializable<LinkTableRequest
      * @param id the id value to set.
      * @return the LinkTableRequest object itself.
      */
+    @Generated
     public LinkTableRequest setId(String id) {
         this.id = id;
         return this;
@@ -67,6 +75,7 @@ public final class LinkTableRequest implements JsonSerializable<LinkTableRequest
      * 
      * @return the source value.
      */
+    @Generated
     public LinkTableRequestSource getSource() {
         return this.source;
     }
@@ -77,6 +86,7 @@ public final class LinkTableRequest implements JsonSerializable<LinkTableRequest
      * @param source the source value to set.
      * @return the LinkTableRequest object itself.
      */
+    @Generated
     public LinkTableRequest setSource(LinkTableRequestSource source) {
         this.source = source;
         return this;
@@ -87,6 +97,7 @@ public final class LinkTableRequest implements JsonSerializable<LinkTableRequest
      * 
      * @return the target value.
      */
+    @Generated
     public LinkTableRequestTarget getTarget() {
         return this.target;
     }
@@ -97,6 +108,7 @@ public final class LinkTableRequest implements JsonSerializable<LinkTableRequest
      * @param target the target value to set.
      * @return the LinkTableRequest object itself.
      */
+    @Generated
     public LinkTableRequest setTarget(LinkTableRequestTarget target) {
         this.target = target;
         return this;
@@ -107,6 +119,7 @@ public final class LinkTableRequest implements JsonSerializable<LinkTableRequest
      * 
      * @return the operationType value.
      */
+    @Generated
     public String getOperationType() {
         return this.operationType;
     }
@@ -117,6 +130,7 @@ public final class LinkTableRequest implements JsonSerializable<LinkTableRequest
      * @param operationType the operationType value to set.
      * @return the LinkTableRequest object itself.
      */
+    @Generated
     public LinkTableRequest setOperationType(String operationType) {
         this.operationType = operationType;
         return this;
@@ -125,6 +139,7 @@ public final class LinkTableRequest implements JsonSerializable<LinkTableRequest
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -143,6 +158,7 @@ public final class LinkTableRequest implements JsonSerializable<LinkTableRequest
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the LinkTableRequest.
      */
+    @Generated
     public static LinkTableRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkTableRequest deserializedLinkTableRequest = new LinkTableRequest();

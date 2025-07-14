@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class SqlServerAuthenticationType extends ExpandableStringEnum<SqlS
     /**
      * Static value SQL for SqlServerAuthenticationType.
      */
+    @Generated
     public static final SqlServerAuthenticationType SQL = fromString("SQL");
 
     /**
      * Static value Windows for SqlServerAuthenticationType.
      */
+    @Generated
     public static final SqlServerAuthenticationType WINDOWS = fromString("Windows");
 
     /**
      * Static value UserAssignedManagedIdentity for SqlServerAuthenticationType.
      */
+    @Generated
     public static final SqlServerAuthenticationType USER_ASSIGNED_MANAGED_IDENTITY
         = fromString("UserAssignedManagedIdentity");
 
@@ -32,6 +36,7 @@ public final class SqlServerAuthenticationType extends ExpandableStringEnum<SqlS
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SqlServerAuthenticationType() {
     }
@@ -42,6 +47,7 @@ public final class SqlServerAuthenticationType extends ExpandableStringEnum<SqlS
      * @param name a name to look for.
      * @return the corresponding SqlServerAuthenticationType.
      */
+    @Generated
     public static SqlServerAuthenticationType fromString(String name) {
         return fromString(name, SqlServerAuthenticationType.class);
     }
@@ -51,6 +57,7 @@ public final class SqlServerAuthenticationType extends ExpandableStringEnum<SqlS
      * 
      * @return known SqlServerAuthenticationType values.
      */
+    @Generated
     public static Collection<SqlServerAuthenticationType> values() {
         return values(SqlServerAuthenticationType.class);
     }

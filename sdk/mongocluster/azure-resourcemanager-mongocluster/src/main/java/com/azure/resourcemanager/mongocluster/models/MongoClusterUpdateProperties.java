@@ -67,6 +67,11 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      */
     private List<PreviewFeature> previewFeatures;
 
+    /*
+     * The authentication configuration for the cluster.
+     */
+    private AuthConfigProperties authConfig;
+
     /**
      * Creates an instance of MongoClusterUpdateProperties class.
      */
@@ -276,6 +281,26 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
+     * Get the authConfig property: The authentication configuration for the cluster.
+     * 
+     * @return the authConfig value.
+     */
+    public AuthConfigProperties authConfig() {
+        return this.authConfig;
+    }
+
+    /**
+     * Set the authConfig property: The authentication configuration for the cluster.
+     * 
+     * @param authConfig the authConfig value to set.
+     * @return the MongoClusterUpdateProperties object itself.
+     */
+    public MongoClusterUpdateProperties withAuthConfig(AuthConfigProperties authConfig) {
+        this.authConfig = authConfig;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -302,6 +327,9 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
         if (dataApi() != null) {
             dataApi().validate();
         }
+        if (authConfig() != null) {
+            authConfig().validate();
+        }
     }
 
     /**
@@ -322,6 +350,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
         jsonWriter.writeJsonField("dataApi", this.dataApi);
         jsonWriter.writeArrayField("previewFeatures", this.previewFeatures,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("authConfig", this.authConfig);
         return jsonWriter.writeEndObject();
     }
 
@@ -364,6 +393,8 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
                     List<PreviewFeature> previewFeatures
                         = reader.readArray(reader1 -> PreviewFeature.fromString(reader1.getString()));
                     deserializedMongoClusterUpdateProperties.previewFeatures = previewFeatures;
+                } else if ("authConfig".equals(fieldName)) {
+                    deserializedMongoClusterUpdateProperties.authConfig = AuthConfigProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

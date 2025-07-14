@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class ExposureControlRequest implements JsonSerializable<ExposureCo
     /*
      * The feature name.
      */
+    @Generated
     private String featureName;
 
     /*
      * The feature type.
      */
+    @Generated
     private String featureType;
 
     /**
      * Creates an instance of ExposureControlRequest class.
      */
+    @Generated
     public ExposureControlRequest() {
     }
 
@@ -37,6 +41,7 @@ public final class ExposureControlRequest implements JsonSerializable<ExposureCo
      * 
      * @return the featureName value.
      */
+    @Generated
     public String getFeatureName() {
         return this.featureName;
     }
@@ -47,6 +52,7 @@ public final class ExposureControlRequest implements JsonSerializable<ExposureCo
      * @param featureName the featureName value to set.
      * @return the ExposureControlRequest object itself.
      */
+    @Generated
     public ExposureControlRequest setFeatureName(String featureName) {
         this.featureName = featureName;
         return this;
@@ -57,6 +63,7 @@ public final class ExposureControlRequest implements JsonSerializable<ExposureCo
      * 
      * @return the featureType value.
      */
+    @Generated
     public String getFeatureType() {
         return this.featureType;
     }
@@ -67,6 +74,7 @@ public final class ExposureControlRequest implements JsonSerializable<ExposureCo
      * @param featureType the featureType value to set.
      * @return the ExposureControlRequest object itself.
      */
+    @Generated
     public ExposureControlRequest setFeatureType(String featureType) {
         this.featureType = featureType;
         return this;
@@ -75,6 +83,7 @@ public final class ExposureControlRequest implements JsonSerializable<ExposureCo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class ExposureControlRequest implements JsonSerializable<ExposureCo
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ExposureControlRequest.
      */
+    @Generated
     public static ExposureControlRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ExposureControlRequest deserializedExposureControlRequest = new ExposureControlRequest();

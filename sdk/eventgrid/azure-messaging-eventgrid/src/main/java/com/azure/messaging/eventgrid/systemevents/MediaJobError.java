@@ -4,6 +4,7 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,32 +21,38 @@ public final class MediaJobError implements JsonSerializable<MediaJobError> {
     /*
      * Error code describing the error.
      */
+    @Generated
     private MediaJobErrorCode code;
 
     /*
      * A human-readable language-dependent representation of the error.
      */
+    @Generated
     private String message;
 
     /*
      * Helps with categorization of errors.
      */
+    @Generated
     private MediaJobErrorCategory category;
 
     /*
      * Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via
      * Azure Portal.
      */
+    @Generated
     private MediaJobRetry retry;
 
     /*
      * An array of details about specific errors that led to this reported error.
      */
+    @Generated
     private List<MediaJobErrorDetail> details;
 
     /**
      * Creates an instance of MediaJobError class.
      */
+    @Generated
     public MediaJobError() {
     }
 
@@ -54,6 +61,7 @@ public final class MediaJobError implements JsonSerializable<MediaJobError> {
      * 
      * @return the code value.
      */
+    @Generated
     public MediaJobErrorCode getCode() {
         return this.code;
     }
@@ -63,6 +71,7 @@ public final class MediaJobError implements JsonSerializable<MediaJobError> {
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -72,6 +81,7 @@ public final class MediaJobError implements JsonSerializable<MediaJobError> {
      * 
      * @return the category value.
      */
+    @Generated
     public MediaJobErrorCategory getCategory() {
         return this.category;
     }
@@ -82,6 +92,7 @@ public final class MediaJobError implements JsonSerializable<MediaJobError> {
      * 
      * @return the retry value.
      */
+    @Generated
     public MediaJobRetry getRetry() {
         return this.retry;
     }
@@ -91,6 +102,7 @@ public final class MediaJobError implements JsonSerializable<MediaJobError> {
      * 
      * @return the details value.
      */
+    @Generated
     public List<MediaJobErrorDetail> getDetails() {
         return this.details;
     }
@@ -98,6 +110,7 @@ public final class MediaJobError implements JsonSerializable<MediaJobError> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -112,6 +125,7 @@ public final class MediaJobError implements JsonSerializable<MediaJobError> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the MediaJobError.
      */
+    @Generated
     public static MediaJobError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MediaJobError deserializedMediaJobError = new MediaJobError();

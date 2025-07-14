@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,22 +22,26 @@ public class AzureKeyVaultLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AzureKeyVault";
 
     /*
      * The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object baseUrl;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
 
     /**
      * Creates an instance of AzureKeyVaultLinkedService class.
      */
+    @Generated
     public AzureKeyVaultLinkedService() {
     }
 
@@ -45,6 +50,7 @@ public class AzureKeyVaultLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -56,6 +62,7 @@ public class AzureKeyVaultLinkedService extends LinkedService {
      * 
      * @return the baseUrl value.
      */
+    @Generated
     public Object getBaseUrl() {
         return this.baseUrl;
     }
@@ -67,6 +74,7 @@ public class AzureKeyVaultLinkedService extends LinkedService {
      * @param baseUrl the baseUrl value to set.
      * @return the AzureKeyVaultLinkedService object itself.
      */
+    @Generated
     public AzureKeyVaultLinkedService setBaseUrl(Object baseUrl) {
         this.baseUrl = baseUrl;
         return this;
@@ -77,6 +85,7 @@ public class AzureKeyVaultLinkedService extends LinkedService {
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -87,6 +96,7 @@ public class AzureKeyVaultLinkedService extends LinkedService {
      * @param credential the credential value to set.
      * @return the AzureKeyVaultLinkedService object itself.
      */
+    @Generated
     public AzureKeyVaultLinkedService setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
@@ -95,6 +105,7 @@ public class AzureKeyVaultLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureKeyVaultLinkedService setVersion(String version) {
         super.setVersion(version);
@@ -104,6 +115,7 @@ public class AzureKeyVaultLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureKeyVaultLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -113,6 +125,7 @@ public class AzureKeyVaultLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureKeyVaultLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -122,6 +135,7 @@ public class AzureKeyVaultLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureKeyVaultLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -131,6 +145,7 @@ public class AzureKeyVaultLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureKeyVaultLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -140,6 +155,7 @@ public class AzureKeyVaultLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -172,6 +188,7 @@ public class AzureKeyVaultLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureKeyVaultLinkedService.
      */
+    @Generated
     public static AzureKeyVaultLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureKeyVaultLinkedService deserializedAzureKeyVaultLinkedService = new AzureKeyVaultLinkedService();

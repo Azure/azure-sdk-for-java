@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class MetastoreRegistrationResponse implements JsonSerializable<Met
     /*
      * Enumerates possible request statuses.
      */
+    @Generated
     private RequestStatus status;
 
     /**
      * Creates an instance of MetastoreRegistrationResponse class.
      */
+    @Generated
     public MetastoreRegistrationResponse() {
     }
 
@@ -32,6 +35,7 @@ public final class MetastoreRegistrationResponse implements JsonSerializable<Met
      * 
      * @return the status value.
      */
+    @Generated
     public RequestStatus getStatus() {
         return this.status;
     }
@@ -42,6 +46,7 @@ public final class MetastoreRegistrationResponse implements JsonSerializable<Met
      * @param status the status value to set.
      * @return the MetastoreRegistrationResponse object itself.
      */
+    @Generated
     public MetastoreRegistrationResponse setStatus(RequestStatus status) {
         this.status = status;
         return this;
@@ -50,6 +55,7 @@ public final class MetastoreRegistrationResponse implements JsonSerializable<Met
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class MetastoreRegistrationResponse implements JsonSerializable<Met
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MetastoreRegistrationResponse.
      */
+    @Generated
     public static MetastoreRegistrationResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetastoreRegistrationResponse deserializedMetastoreRegistrationResponse

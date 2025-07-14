@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,32 +23,38 @@ public final class IntegrationRuntimeDataFlowProperties
     /*
      * Compute type of the cluster which will execute data flow job.
      */
+    @Generated
     private DataFlowComputeType computeType;
 
     /*
      * Core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and 272.
      */
+    @Generated
     private Integer coreCount;
 
     /*
      * Time to live (in minutes) setting of the cluster which will execute data flow job.
      */
+    @Generated
     private Integer timeToLive;
 
     /*
      * Cluster will not be recycled and it will be used in next data flow activity run until TTL (time to live) is
      * reached if this is set as false. Default is true.
      */
+    @Generated
     private Boolean cleanup;
 
     /*
      * Data flow properties for managed integration runtime.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of IntegrationRuntimeDataFlowProperties class.
      */
+    @Generated
     public IntegrationRuntimeDataFlowProperties() {
     }
 
@@ -56,6 +63,7 @@ public final class IntegrationRuntimeDataFlowProperties
      * 
      * @return the computeType value.
      */
+    @Generated
     public DataFlowComputeType getComputeType() {
         return this.computeType;
     }
@@ -66,6 +74,7 @@ public final class IntegrationRuntimeDataFlowProperties
      * @param computeType the computeType value to set.
      * @return the IntegrationRuntimeDataFlowProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeDataFlowProperties setComputeType(DataFlowComputeType computeType) {
         this.computeType = computeType;
         return this;
@@ -77,6 +86,7 @@ public final class IntegrationRuntimeDataFlowProperties
      * 
      * @return the coreCount value.
      */
+    @Generated
     public Integer getCoreCount() {
         return this.coreCount;
     }
@@ -88,6 +98,7 @@ public final class IntegrationRuntimeDataFlowProperties
      * @param coreCount the coreCount value to set.
      * @return the IntegrationRuntimeDataFlowProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeDataFlowProperties setCoreCount(Integer coreCount) {
         this.coreCount = coreCount;
         return this;
@@ -98,6 +109,7 @@ public final class IntegrationRuntimeDataFlowProperties
      * 
      * @return the timeToLive value.
      */
+    @Generated
     public Integer getTimeToLive() {
         return this.timeToLive;
     }
@@ -108,6 +120,7 @@ public final class IntegrationRuntimeDataFlowProperties
      * @param timeToLive the timeToLive value to set.
      * @return the IntegrationRuntimeDataFlowProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeDataFlowProperties setTimeToLive(Integer timeToLive) {
         this.timeToLive = timeToLive;
         return this;
@@ -119,6 +132,7 @@ public final class IntegrationRuntimeDataFlowProperties
      * 
      * @return the cleanup value.
      */
+    @Generated
     public Boolean isCleanup() {
         return this.cleanup;
     }
@@ -130,6 +144,7 @@ public final class IntegrationRuntimeDataFlowProperties
      * @param cleanup the cleanup value to set.
      * @return the IntegrationRuntimeDataFlowProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeDataFlowProperties setCleanup(Boolean cleanup) {
         this.cleanup = cleanup;
         return this;
@@ -140,6 +155,7 @@ public final class IntegrationRuntimeDataFlowProperties
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -150,6 +166,7 @@ public final class IntegrationRuntimeDataFlowProperties
      * @param additionalProperties the additionalProperties value to set.
      * @return the IntegrationRuntimeDataFlowProperties object itself.
      */
+    @Generated
     public IntegrationRuntimeDataFlowProperties setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -158,6 +175,7 @@ public final class IntegrationRuntimeDataFlowProperties
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -181,6 +199,7 @@ public final class IntegrationRuntimeDataFlowProperties
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the IntegrationRuntimeDataFlowProperties.
      */
+    @Generated
     public static IntegrationRuntimeDataFlowProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IntegrationRuntimeDataFlowProperties deserializedIntegrationRuntimeDataFlowProperties

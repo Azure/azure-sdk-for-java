@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class RunQueryFilterOperator extends ExpandableStringEnum<RunQueryF
     /**
      * Static value Equals for RunQueryFilterOperator.
      */
+    @Generated
     public static final RunQueryFilterOperator EQUALS = fromString("Equals");
 
     /**
      * Static value NotEquals for RunQueryFilterOperator.
      */
+    @Generated
     public static final RunQueryFilterOperator NOT_EQUALS = fromString("NotEquals");
 
     /**
      * Static value In for RunQueryFilterOperator.
      */
+    @Generated
     public static final RunQueryFilterOperator IN = fromString("In");
 
     /**
      * Static value NotIn for RunQueryFilterOperator.
      */
+    @Generated
     public static final RunQueryFilterOperator NOT_IN = fromString("NotIn");
 
     /**
@@ -36,6 +41,7 @@ public final class RunQueryFilterOperator extends ExpandableStringEnum<RunQueryF
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RunQueryFilterOperator() {
     }
@@ -46,6 +52,7 @@ public final class RunQueryFilterOperator extends ExpandableStringEnum<RunQueryF
      * @param name a name to look for.
      * @return the corresponding RunQueryFilterOperator.
      */
+    @Generated
     public static RunQueryFilterOperator fromString(String name) {
         return fromString(name, RunQueryFilterOperator.class);
     }
@@ -55,6 +62,7 @@ public final class RunQueryFilterOperator extends ExpandableStringEnum<RunQueryF
      * 
      * @return known RunQueryFilterOperator values.
      */
+    @Generated
     public static Collection<RunQueryFilterOperator> values() {
         return values(RunQueryFilterOperator.class);
     }

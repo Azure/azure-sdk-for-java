@@ -4,6 +4,7 @@
 
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,67 +15,80 @@ public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
     /**
      * Unit of raw quantity.
      */
+    @Generated
     public static final MetricUnit COUNT = fromString("Count");
 
     /**
      * Unit of memory in bytes.
      */
+    @Generated
     public static final MetricUnit BYTES = fromString("Bytes");
 
     /**
      * Unit of time in seconds.
      */
+    @Generated
     public static final MetricUnit SECONDS = fromString("Seconds");
 
     /**
      * Rate unit of raw quantity per second.
      */
+    @Generated
     public static final MetricUnit COUNT_PER_SECOND = fromString("CountPerSecond");
 
     /**
      * Rate unit of memory in bytes per second.
      */
+    @Generated
     public static final MetricUnit BYTES_PER_SECOND = fromString("BytesPerSecond");
 
     /**
      * Percentage unit.
      */
+    @Generated
     public static final MetricUnit PERCENT = fromString("Percent");
 
     /**
      * Unit of time in 1/1000th of a second.
      */
+    @Generated
     public static final MetricUnit MILLI_SECONDS = fromString("MilliSeconds");
 
     /**
      * Unit of data transfer or storage. It is the size of the data in bytes multiplied by the time it takes to transfer
      * or store the data in seconds.
      */
+    @Generated
     public static final MetricUnit BYTE_SECONDS = fromString("ByteSeconds");
 
     /**
      * No specified unit.
      */
+    @Generated
     public static final MetricUnit UNSPECIFIED = fromString("Unspecified");
 
     /**
      * Unit of processing power.
      */
+    @Generated
     public static final MetricUnit CORES = fromString("Cores");
 
     /**
      * Unit of processing power in 1/1000th of a CPU core.
      */
+    @Generated
     public static final MetricUnit MILLI_CORES = fromString("MilliCores");
 
     /**
      * Unit of processing power in one billionth of a CPU core.
      */
+    @Generated
     public static final MetricUnit NANO_CORES = fromString("NanoCores");
 
     /**
      * Rate unit of binary digits per second.
      */
+    @Generated
     public static final MetricUnit BITS_PER_SECOND = fromString("BitsPerSecond");
 
     /**
@@ -82,6 +96,7 @@ public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MetricUnit() {
     }
@@ -92,6 +107,7 @@ public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
      * @param name a name to look for.
      * @return the corresponding MetricUnit.
      */
+    @Generated
     public static MetricUnit fromString(String name) {
         return fromString(name, MetricUnit.class);
     }
@@ -101,6 +117,7 @@ public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
      * 
      * @return known MetricUnit values.
      */
+    @Generated
     public static Collection<MetricUnit> values() {
         return values(MetricUnit.class);
     }

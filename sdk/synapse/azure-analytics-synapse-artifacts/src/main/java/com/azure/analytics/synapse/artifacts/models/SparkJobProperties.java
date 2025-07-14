@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,76 +23,91 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
     /*
      * The name of the job.
      */
+    @Generated
     private String name;
 
     /*
      * File containing the application to execute.
      */
+    @Generated
     private String file;
 
     /*
      * Main class for Java/Scala application.
      */
+    @Generated
     private String className;
 
     /*
      * Spark configuration properties.
      */
+    @Generated
     private Object conf;
 
     /*
      * Command line arguments for the application.
      */
+    @Generated
     private List<String> args;
 
     /*
      * Jars to be used in this job.
      */
+    @Generated
     private List<String> jars;
 
     /*
      * files to be used in this job.
      */
+    @Generated
     private List<String> files;
 
     /*
      * Archives to be used in this job.
      */
+    @Generated
     private List<String> archives;
 
     /*
      * Amount of memory to use for the driver process.
      */
+    @Generated
     private String driverMemory;
 
     /*
      * Number of cores to use for the driver.
      */
+    @Generated
     private int driverCores;
 
     /*
      * Amount of memory to use per executor process.
      */
+    @Generated
     private String executorMemory;
 
     /*
      * Number of cores to use for each executor.
      */
+    @Generated
     private int executorCores;
 
     /*
      * Number of executors to launch for this job.
      */
+    @Generated
     private int numExecutors;
 
     /*
      * The properties of the Spark job.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of SparkJobProperties class.
      */
+    @Generated
     public SparkJobProperties() {
     }
 
@@ -100,6 +116,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -110,6 +127,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * @param name the name value to set.
      * @return the SparkJobProperties object itself.
      */
+    @Generated
     public SparkJobProperties setName(String name) {
         this.name = name;
         return this;
@@ -120,6 +138,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * 
      * @return the file value.
      */
+    @Generated
     public String getFile() {
         return this.file;
     }
@@ -130,6 +149,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * @param file the file value to set.
      * @return the SparkJobProperties object itself.
      */
+    @Generated
     public SparkJobProperties setFile(String file) {
         this.file = file;
         return this;
@@ -140,6 +160,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * 
      * @return the className value.
      */
+    @Generated
     public String getClassName() {
         return this.className;
     }
@@ -150,6 +171,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * @param className the className value to set.
      * @return the SparkJobProperties object itself.
      */
+    @Generated
     public SparkJobProperties setClassName(String className) {
         this.className = className;
         return this;
@@ -160,6 +182,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * 
      * @return the conf value.
      */
+    @Generated
     public Object getConf() {
         return this.conf;
     }
@@ -170,6 +193,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * @param conf the conf value to set.
      * @return the SparkJobProperties object itself.
      */
+    @Generated
     public SparkJobProperties setConf(Object conf) {
         this.conf = conf;
         return this;
@@ -180,6 +204,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * 
      * @return the args value.
      */
+    @Generated
     public List<String> getArgs() {
         return this.args;
     }
@@ -190,6 +215,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * @param args the args value to set.
      * @return the SparkJobProperties object itself.
      */
+    @Generated
     public SparkJobProperties setArgs(List<String> args) {
         this.args = args;
         return this;
@@ -200,6 +226,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * 
      * @return the jars value.
      */
+    @Generated
     public List<String> getJars() {
         return this.jars;
     }
@@ -210,6 +237,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * @param jars the jars value to set.
      * @return the SparkJobProperties object itself.
      */
+    @Generated
     public SparkJobProperties setJars(List<String> jars) {
         this.jars = jars;
         return this;
@@ -220,6 +248,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * 
      * @return the files value.
      */
+    @Generated
     public List<String> getFiles() {
         return this.files;
     }
@@ -230,6 +259,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * @param files the files value to set.
      * @return the SparkJobProperties object itself.
      */
+    @Generated
     public SparkJobProperties setFiles(List<String> files) {
         this.files = files;
         return this;
@@ -240,6 +270,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * 
      * @return the archives value.
      */
+    @Generated
     public List<String> getArchives() {
         return this.archives;
     }
@@ -250,6 +281,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * @param archives the archives value to set.
      * @return the SparkJobProperties object itself.
      */
+    @Generated
     public SparkJobProperties setArchives(List<String> archives) {
         this.archives = archives;
         return this;
@@ -260,6 +292,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * 
      * @return the driverMemory value.
      */
+    @Generated
     public String getDriverMemory() {
         return this.driverMemory;
     }
@@ -270,6 +303,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * @param driverMemory the driverMemory value to set.
      * @return the SparkJobProperties object itself.
      */
+    @Generated
     public SparkJobProperties setDriverMemory(String driverMemory) {
         this.driverMemory = driverMemory;
         return this;
@@ -280,6 +314,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * 
      * @return the driverCores value.
      */
+    @Generated
     public int getDriverCores() {
         return this.driverCores;
     }
@@ -290,6 +325,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * @param driverCores the driverCores value to set.
      * @return the SparkJobProperties object itself.
      */
+    @Generated
     public SparkJobProperties setDriverCores(int driverCores) {
         this.driverCores = driverCores;
         return this;
@@ -300,6 +336,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * 
      * @return the executorMemory value.
      */
+    @Generated
     public String getExecutorMemory() {
         return this.executorMemory;
     }
@@ -310,6 +347,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * @param executorMemory the executorMemory value to set.
      * @return the SparkJobProperties object itself.
      */
+    @Generated
     public SparkJobProperties setExecutorMemory(String executorMemory) {
         this.executorMemory = executorMemory;
         return this;
@@ -320,6 +358,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * 
      * @return the executorCores value.
      */
+    @Generated
     public int getExecutorCores() {
         return this.executorCores;
     }
@@ -330,6 +369,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * @param executorCores the executorCores value to set.
      * @return the SparkJobProperties object itself.
      */
+    @Generated
     public SparkJobProperties setExecutorCores(int executorCores) {
         this.executorCores = executorCores;
         return this;
@@ -340,6 +380,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * 
      * @return the numExecutors value.
      */
+    @Generated
     public int getNumExecutors() {
         return this.numExecutors;
     }
@@ -350,6 +391,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * @param numExecutors the numExecutors value to set.
      * @return the SparkJobProperties object itself.
      */
+    @Generated
     public SparkJobProperties setNumExecutors(int numExecutors) {
         this.numExecutors = numExecutors;
         return this;
@@ -360,6 +402,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -370,6 +413,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * @param additionalProperties the additionalProperties value to set.
      * @return the SparkJobProperties object itself.
      */
+    @Generated
     public SparkJobProperties setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -378,6 +422,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -389,7 +434,9 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
         jsonWriter.writeIntField("numExecutors", this.numExecutors);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("className", this.className);
-        jsonWriter.writeUntypedField("conf", this.conf);
+        if (this.conf != null) {
+            jsonWriter.writeUntypedField("conf", this.conf);
+        }
         jsonWriter.writeArrayField("args", this.args, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("jars", this.jars, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("files", this.files, (writer, element) -> writer.writeString(element));
@@ -411,6 +458,7 @@ public final class SparkJobProperties implements JsonSerializable<SparkJobProper
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SparkJobProperties.
      */
+    @Generated
     public static SparkJobProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkJobProperties deserializedSparkJobProperties = new SparkJobProperties();

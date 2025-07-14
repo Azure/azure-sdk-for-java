@@ -5,6 +5,7 @@
 package com.azure.communication.sms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,36 +20,43 @@ public final class SmsSendResponseItem implements JsonSerializable<SmsSendRespon
     /*
      * The recipient's phone number in E.164 format.
      */
+    @Generated
     private String to;
 
     /*
      * The identifier of the outgoing Sms message. Only present if message processed.
      */
+    @Generated
     private String messageId;
 
     /*
      * HTTP Status code.
      */
+    @Generated
     private int httpStatusCode;
 
     /*
      * The result of a repeatable request with one of the case-insensitive values accepted or rejected.
      */
+    @Generated
     private SmsSendResponseItemRepeatabilityResult repeatabilityResult;
 
     /*
      * Indicates if the message is processed successfully or not.
      */
+    @Generated
     private boolean successful;
 
     /*
      * Optional error message in case of 4xx/5xx/repeatable errors.
      */
+    @Generated
     private String errorMessage;
 
     /**
      * Creates an instance of SmsSendResponseItem class.
      */
+    @Generated
     public SmsSendResponseItem() {
     }
 
@@ -57,6 +65,7 @@ public final class SmsSendResponseItem implements JsonSerializable<SmsSendRespon
      * 
      * @return the to value.
      */
+    @Generated
     public String getTo() {
         return this.to;
     }
@@ -67,6 +76,7 @@ public final class SmsSendResponseItem implements JsonSerializable<SmsSendRespon
      * @param to the to value to set.
      * @return the SmsSendResponseItem object itself.
      */
+    @Generated
     public SmsSendResponseItem setTo(String to) {
         this.to = to;
         return this;
@@ -77,6 +87,7 @@ public final class SmsSendResponseItem implements JsonSerializable<SmsSendRespon
      * 
      * @return the messageId value.
      */
+    @Generated
     public String getMessageId() {
         return this.messageId;
     }
@@ -87,6 +98,7 @@ public final class SmsSendResponseItem implements JsonSerializable<SmsSendRespon
      * @param messageId the messageId value to set.
      * @return the SmsSendResponseItem object itself.
      */
+    @Generated
     public SmsSendResponseItem setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
@@ -97,6 +109,7 @@ public final class SmsSendResponseItem implements JsonSerializable<SmsSendRespon
      * 
      * @return the httpStatusCode value.
      */
+    @Generated
     public int getHttpStatusCode() {
         return this.httpStatusCode;
     }
@@ -107,6 +120,7 @@ public final class SmsSendResponseItem implements JsonSerializable<SmsSendRespon
      * @param httpStatusCode the httpStatusCode value to set.
      * @return the SmsSendResponseItem object itself.
      */
+    @Generated
     public SmsSendResponseItem setHttpStatusCode(int httpStatusCode) {
         this.httpStatusCode = httpStatusCode;
         return this;
@@ -118,6 +132,7 @@ public final class SmsSendResponseItem implements JsonSerializable<SmsSendRespon
      * 
      * @return the repeatabilityResult value.
      */
+    @Generated
     public SmsSendResponseItemRepeatabilityResult getRepeatabilityResult() {
         return this.repeatabilityResult;
     }
@@ -129,6 +144,7 @@ public final class SmsSendResponseItem implements JsonSerializable<SmsSendRespon
      * @param repeatabilityResult the repeatabilityResult value to set.
      * @return the SmsSendResponseItem object itself.
      */
+    @Generated
     public SmsSendResponseItem setRepeatabilityResult(SmsSendResponseItemRepeatabilityResult repeatabilityResult) {
         this.repeatabilityResult = repeatabilityResult;
         return this;
@@ -139,6 +155,7 @@ public final class SmsSendResponseItem implements JsonSerializable<SmsSendRespon
      * 
      * @return the successful value.
      */
+    @Generated
     public boolean isSuccessful() {
         return this.successful;
     }
@@ -149,6 +166,7 @@ public final class SmsSendResponseItem implements JsonSerializable<SmsSendRespon
      * @param successful the successful value to set.
      * @return the SmsSendResponseItem object itself.
      */
+    @Generated
     public SmsSendResponseItem setSuccessful(boolean successful) {
         this.successful = successful;
         return this;
@@ -159,6 +177,7 @@ public final class SmsSendResponseItem implements JsonSerializable<SmsSendRespon
      * 
      * @return the errorMessage value.
      */
+    @Generated
     public String getErrorMessage() {
         return this.errorMessage;
     }
@@ -169,6 +188,7 @@ public final class SmsSendResponseItem implements JsonSerializable<SmsSendRespon
      * @param errorMessage the errorMessage value to set.
      * @return the SmsSendResponseItem object itself.
      */
+    @Generated
     public SmsSendResponseItem setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
         return this;
@@ -177,6 +197,7 @@ public final class SmsSendResponseItem implements JsonSerializable<SmsSendRespon
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -199,6 +220,7 @@ public final class SmsSendResponseItem implements JsonSerializable<SmsSendRespon
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SmsSendResponseItem.
      */
+    @Generated
     public static SmsSendResponseItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SmsSendResponseItem deserializedSmsSendResponseItem = new SmsSendResponseItem();

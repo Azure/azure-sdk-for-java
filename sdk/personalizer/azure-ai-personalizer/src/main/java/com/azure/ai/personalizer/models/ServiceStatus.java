@@ -4,6 +4,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ class ServiceStatus implements JsonSerializable<ServiceStatus> {
     /*
      * The service property.
      */
+    @Generated
     private String service;
 
     /*
      * The apiStatus property.
      */
+    @Generated
     private String apiStatus;
 
     /*
      * The apiStatusMessage property.
      */
+    @Generated
     private String apiStatusMessage;
 
     /**
      * Creates an instance of ServiceStatus class.
      */
+    @Generated
     ServiceStatus() {
     }
 
@@ -42,6 +47,7 @@ class ServiceStatus implements JsonSerializable<ServiceStatus> {
      *
      * @return the service value.
      */
+    @Generated
     public String getService() {
         return this.service;
     }
@@ -52,6 +58,7 @@ class ServiceStatus implements JsonSerializable<ServiceStatus> {
      * @param service the service value to set.
      * @return the ServiceStatus object itself.
      */
+    @Generated
     public ServiceStatus setService(String service) {
         this.service = service;
         return this;
@@ -62,6 +69,7 @@ class ServiceStatus implements JsonSerializable<ServiceStatus> {
      *
      * @return the apiStatus value.
      */
+    @Generated
     public String getApiStatus() {
         return this.apiStatus;
     }
@@ -72,6 +80,7 @@ class ServiceStatus implements JsonSerializable<ServiceStatus> {
      * @param apiStatus the apiStatus value to set.
      * @return the ServiceStatus object itself.
      */
+    @Generated
     public ServiceStatus setApiStatus(String apiStatus) {
         this.apiStatus = apiStatus;
         return this;
@@ -82,6 +91,7 @@ class ServiceStatus implements JsonSerializable<ServiceStatus> {
      *
      * @return the apiStatusMessage value.
      */
+    @Generated
     public String getApiStatusMessage() {
         return this.apiStatusMessage;
     }
@@ -92,6 +102,7 @@ class ServiceStatus implements JsonSerializable<ServiceStatus> {
      * @param apiStatusMessage the apiStatusMessage value to set.
      * @return the ServiceStatus object itself.
      */
+    @Generated
     public ServiceStatus setApiStatusMessage(String apiStatusMessage) {
         this.apiStatusMessage = apiStatusMessage;
         return this;
@@ -100,6 +111,7 @@ class ServiceStatus implements JsonSerializable<ServiceStatus> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,6 +129,7 @@ class ServiceStatus implements JsonSerializable<ServiceStatus> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ServiceStatus.
      */
+    @Generated
     public static ServiceStatus fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ServiceStatus deserializedServiceStatus = new ServiceStatus();

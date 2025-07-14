@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,61 +15,73 @@ public final class SectionType extends ExpandableStringEnum<SectionType> {
     /**
      * Sections of the route that are cars or trains.
      */
+    @Generated
     public static final SectionType CAR_OR_TRAIN = fromString("carTrain");
 
     /**
      * Sections indicating which countries/regions the route is in.
      */
+    @Generated
     public static final SectionType COUNTRY = fromString("country");
 
     /**
      * Sections of the route that are ferries.
      */
+    @Generated
     public static final SectionType FERRY = fromString("ferry");
 
     /**
      * Sections of the route that are motorways.
      */
+    @Generated
     public static final SectionType MOTORWAY = fromString("motorway");
 
     /**
      * Sections of the route that are only suited for pedestrians.
      */
+    @Generated
     public static final SectionType PEDESTRIAN = fromString("pedestrian");
 
     /**
      * Sections of the route that require a toll to be paid.
      */
+    @Generated
     public static final SectionType TOLL_ROAD = fromString("tollRoad");
 
     /**
      * Sections of the route that require a toll vignette to be present.
      */
+    @Generated
     public static final SectionType TOLL_VIGNETTE = fromString("tollVignette");
 
     /**
      * Sections of the route that contain traffic information.
      */
+    @Generated
     public static final SectionType TRAFFIC = fromString("traffic");
 
     /**
      * Sections in relation to the request parameter `travelMode`.
      */
+    @Generated
     public static final SectionType TRAVEL_MODE = fromString("travelMode");
 
     /**
      * Sections of the route that are tunnels.
      */
+    @Generated
     public static final SectionType TUNNEL = fromString("tunnel");
 
     /**
      * Sections of the route that require use of carpool (HOV/High Occupancy Vehicle) lanes.
      */
+    @Generated
     public static final SectionType CARPOOL = fromString("carpool");
 
     /**
      * Sections of the route that are located within urban areas.
      */
+    @Generated
     public static final SectionType URBAN = fromString("urban");
 
     /**
@@ -76,6 +89,7 @@ public final class SectionType extends ExpandableStringEnum<SectionType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SectionType() {
     }
@@ -86,6 +100,7 @@ public final class SectionType extends ExpandableStringEnum<SectionType> {
      * @param name a name to look for.
      * @return the corresponding SectionType.
      */
+    @Generated
     public static SectionType fromString(String name) {
         return fromString(name, SectionType.class);
     }
@@ -95,6 +110,7 @@ public final class SectionType extends ExpandableStringEnum<SectionType> {
      * 
      * @return known SectionType values.
      */
+    @Generated
     public static Collection<SectionType> values() {
         return values(SectionType.class);
     }

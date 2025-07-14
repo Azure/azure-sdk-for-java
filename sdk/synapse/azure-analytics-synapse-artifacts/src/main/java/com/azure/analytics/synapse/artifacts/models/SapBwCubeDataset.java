@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,11 +22,13 @@ public final class SapBwCubeDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "SapBwCube";
 
     /**
      * Creates an instance of SapBwCubeDataset class.
      */
+    @Generated
     public SapBwCubeDataset() {
     }
 
@@ -34,6 +37,7 @@ public final class SapBwCubeDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -42,6 +46,7 @@ public final class SapBwCubeDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapBwCubeDataset setDescription(String description) {
         super.setDescription(description);
@@ -51,6 +56,7 @@ public final class SapBwCubeDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapBwCubeDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -60,6 +66,7 @@ public final class SapBwCubeDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapBwCubeDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -69,6 +76,7 @@ public final class SapBwCubeDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapBwCubeDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -78,6 +86,7 @@ public final class SapBwCubeDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapBwCubeDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -87,6 +96,7 @@ public final class SapBwCubeDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapBwCubeDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -96,6 +106,7 @@ public final class SapBwCubeDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapBwCubeDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -105,13 +116,18 @@ public final class SapBwCubeDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -133,6 +149,7 @@ public final class SapBwCubeDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SapBwCubeDataset.
      */
+    @Generated
     public static SapBwCubeDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SapBwCubeDataset deserializedSapBwCubeDataset = new SapBwCubeDataset();

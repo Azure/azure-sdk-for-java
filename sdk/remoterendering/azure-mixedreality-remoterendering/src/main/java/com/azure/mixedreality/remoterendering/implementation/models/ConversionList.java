@@ -4,6 +4,7 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,12 +21,14 @@ public final class ConversionList implements JsonSerializable<ConversionList> {
     /*
      * The list of conversions.
      */
+    @Generated
     private final List<Conversion> conversions;
 
     /*
      * If more conversions are available this field will contain a URL where the next batch of conversions can be
      * requested. This URL will need the same authentication as all calls to the Azure Remote Rendering API.
      */
+    @Generated
     private String nextLink;
 
     /**
@@ -33,6 +36,7 @@ public final class ConversionList implements JsonSerializable<ConversionList> {
      * 
      * @param conversions the conversions value to set.
      */
+    @Generated
     public ConversionList(List<Conversion> conversions) {
         this.conversions = conversions;
     }
@@ -42,6 +46,7 @@ public final class ConversionList implements JsonSerializable<ConversionList> {
      * 
      * @return the conversions value.
      */
+    @Generated
     public List<Conversion> getConversions() {
         return this.conversions;
     }
@@ -53,6 +58,7 @@ public final class ConversionList implements JsonSerializable<ConversionList> {
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -60,6 +66,7 @@ public final class ConversionList implements JsonSerializable<ConversionList> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -76,6 +83,7 @@ public final class ConversionList implements JsonSerializable<ConversionList> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ConversionList.
      */
+    @Generated
     public static ConversionList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean conversionsFound = false;

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class UserProperty implements JsonSerializable<UserProperty> {
     /*
      * User property name.
      */
+    @Generated
     private String name;
 
     /*
      * User property value. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object value;
 
     /**
      * Creates an instance of UserProperty class.
      */
+    @Generated
     public UserProperty() {
     }
 
@@ -37,6 +41,7 @@ public final class UserProperty implements JsonSerializable<UserProperty> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -47,6 +52,7 @@ public final class UserProperty implements JsonSerializable<UserProperty> {
      * @param name the name value to set.
      * @return the UserProperty object itself.
      */
+    @Generated
     public UserProperty setName(String name) {
         this.name = name;
         return this;
@@ -57,6 +63,7 @@ public final class UserProperty implements JsonSerializable<UserProperty> {
      * 
      * @return the value value.
      */
+    @Generated
     public Object getValue() {
         return this.value;
     }
@@ -67,6 +74,7 @@ public final class UserProperty implements JsonSerializable<UserProperty> {
      * @param value the value value to set.
      * @return the UserProperty object itself.
      */
+    @Generated
     public UserProperty setValue(Object value) {
         this.value = value;
         return this;
@@ -75,6 +83,7 @@ public final class UserProperty implements JsonSerializable<UserProperty> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class UserProperty implements JsonSerializable<UserProperty> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the UserProperty.
      */
+    @Generated
     public static UserProperty fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             UserProperty deserializedUserProperty = new UserProperty();
