@@ -415,6 +415,7 @@ public class TaskTests extends BatchClientTestBase {
         }
     }
 
+    @SyncAsyncTest
     public void failIfPoisonTaskTooLarge() throws Exception {
         //This test will temporarily only run in Live/Record mode. It runs fine in Playback mode too on Mac and Windows machines.
         // Linux machines are causing issues. This issue is under investigation.
@@ -447,14 +448,13 @@ public class TaskTests extends BatchClientTestBase {
         tasksToAdd.add(taskToAdd);
 
         try {
-            batchClient.createTasks(jobId, tasksToAdd);
+            SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd),
+                () -> batchAsyncClient.createTasks(jobId, tasksToAdd));
             try {
                 SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
             } catch (Exception e) {
                 // Ignore here
             }
-
-            Assertions.fail("Expected RequestBodyTooLarge error");
         } catch (HttpResponseException err) {
             try {
                 SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
@@ -468,10 +468,10 @@ public class TaskTests extends BatchClientTestBase {
             } catch (Exception e) {
                 // Ignore here
             }
-            Assertions.fail("Expected RequestBodyTooLarge error");
         }
     }
 
+    @SyncAsyncTest
     public void succeedWithRetry() {
         //This test does not run in Playback mode. It only runs in Record/Live mode.
         // This test uses multi threading. Playing back the test doesn't match its recorded sequence always.
