@@ -51,7 +51,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class TaskTests extends BatchClientTestBase {
     private static String livePoolId;
@@ -338,7 +337,7 @@ public class TaskTests extends BatchClientTestBase {
     @SyncAsyncTest
     public void testAddMultiTasks() {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasks" + testModeSuffix + "-" + UUID.randomUUID());
+        String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasks" + testModeSuffix);
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(livePoolId);
@@ -698,7 +697,7 @@ public class TaskTests extends BatchClientTestBase {
     @SyncAsyncTest
     public void testCreateTasks() {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String jobId = getStringIdWithUserNamePrefix("-testCreateTasks" + testModeSuffix + "-" + UUID.randomUUID());
+        String jobId = getStringIdWithUserNamePrefix("-testCreateTasks" + testModeSuffix);
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(livePoolId);
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
