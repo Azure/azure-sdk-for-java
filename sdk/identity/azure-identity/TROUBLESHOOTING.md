@@ -21,6 +21,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot AzurePowerShellCredential authentication issues](#troubleshoot-azurepowershellcredential-authentication-issues)
 - [Troubleshoot WorkloadIdentityCredential authentication issues](#troubleshoot-workloadidentitycredential-authentication-issues)
 - [Troubleshoot IntelliJCredential authentication issues](#troubleshoot-intellijcredential-authentication-issues)
+- [Troubleshoot VisualStudioCodeCredential authentication issues](#troubleshoot-visualstudiocodecredential-authentication-issues)
 - [Troubleshoot AzurePipelinesCredential authentication issues](#troubleshoot-azurepipelinescredential-authentication-issues)
 - [Troubleshoot authentication timeout issues](#troubleshoot-authentication-timeout-issues)
 - [Troubleshoot Web Account Manager (WAM) brokered authentication issues](#troubleshoot-web-account-manager-wam-brokered-authentication-issues)
@@ -269,6 +270,27 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 |`CredentialUnavailableException` raised with message. "IntelliJ Authentication not available. Please log in with Azure Tools for IntelliJ plugin in the IDE."| The Credential was not able to locate the cached token to use for authentication. | Ensure that you login on the  Azure Tools for IntelliJ plugin, that will populate the cache for the credential to pick up.
 
 > Note: Azure Toolkit for IntelliJ version 3.53 and higher are supported by this credential. If you are using an older version, please update to the latest version.
+
+
+
+
+# Troubleshoot `VisualStudioCodeCredential` authentication issues
+
+> **Applies to:** Version 1.17.0-beta.1 and later
+
+As of version 1.17.0-beta.1, `VisualStudioCodeCredential` uses broker authentication to sign in using the Azure Resources extension in Visual Studio Code. This approach requires the `azure-identity-broker` dependency and currently only works on Windows. Broker authentication is not yet supported on macOS or Linux.
+
+#### Platform Support
+
+> **Note:** VisualStudioCodeCredential with broker authentication is currently only supported on Windows. macOS and Linux are not yet supported.
+
+#### Common Error
+
+| Error Message | Description | Mitigation |
+|---|---|---|
+| `CredentialUnavailableException: Visual Studio Code Authentication is not available. Ensure you have azure-identity-broker dependency added to your application. Then ensure, you have signed into Azure via VS Code and have Azure Resources Extension installed in VS Code.` | Broker authentication is not available, which may be due to missing dependencies, not being signed in to Azure in VS Code, or the Azure Resources extension not being installed. | <ul><li>Ensure your project includes the <code>azure-identity-broker</code> dependency.</li><li>In Visual Studio Code, install the <a href="https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureresourcegroups">Azure Resources extension</a>.</li><li>Sign in to Azure using the "Azure: Sign In" command in VS Code.</li><li>Restart your application after signing in.</li></ul> |
+
+> VisualStudioCodeCredential is intended for local development scenarios and is not recommended for production environments.
 
 ## Troubleshoot `AzurePipelinesCredential` authentication issues
 
