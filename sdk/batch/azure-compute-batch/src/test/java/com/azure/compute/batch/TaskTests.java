@@ -415,7 +415,6 @@ public class TaskTests extends BatchClientTestBase {
         }
     }
 
-    @SyncAsyncTest
     public void failIfPoisonTaskTooLarge() throws Exception {
         //This test will temporarily only run in Live/Record mode. It runs fine in Playback mode too on Mac and Windows machines.
         // Linux machines are causing issues. This issue is under investigation.
@@ -473,7 +472,6 @@ public class TaskTests extends BatchClientTestBase {
         }
     }
 
-    @SyncAsyncTest
     public void succeedWithRetry() {
         //This test does not run in Playback mode. It only runs in Record/Live mode.
         // This test uses multi threading. Playing back the test doesn't match its recorded sequence always.
