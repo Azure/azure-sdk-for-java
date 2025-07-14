@@ -39,12 +39,7 @@ public abstract class AzureServiceClient {
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure.properties");
-
-    private static final String SDK_VERSION;
-    static {
-        SDK_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
-    }
+    private final String sdkVersion;
 
     private final SerializerAdapter serializerAdapter;
     private final HttpPipeline httpPipeline;
@@ -69,6 +64,9 @@ public abstract class AzureServiceClient {
             packageName = packageName.substring(0, packageName.length() - implementationSegment.length());
         }
         this.sdkName = packageName;
+        String artifactId = packageName.substring("com.".length()).replace(".", "-");
+        Map<String, String> properties = CoreUtils.getProperties(artifactId + ".properties");
+        sdkVersion = properties.getOrDefault("version", "UnknownVersion");
     }
 
     /**
@@ -102,7 +100,7 @@ public abstract class AzureServiceClient {
      * @return the default client context.
      */
     public Context getContext() {
-        return new Context("Sdk-Name", sdkName).addData("Sdk-Version", SDK_VERSION);
+        return new Context("Sdk-Name", sdkName).addData("Sdk-Version", sdkVersion);
     }
 
     /**
