@@ -1203,7 +1203,7 @@ private[spark] case class DiagnosticsConfig
 
 private[spark] object DiagnosticsConfig {
   def apply(): DiagnosticsConfig = {
-    DiagnosticsConfig()
+    DiagnosticsConfig(None, None, None)
   }
 
   private val diagnosticsMode = CosmosConfigEntry[String](key = CosmosConfigNames.DiagnosticsMode,
