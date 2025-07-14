@@ -499,7 +499,9 @@ public class Configuration {
         String connectionString = System.getProperty("applicationinsights.connection.string",
             StringUtils.defaultString(Strings.emptyToNull(
                 System.getenv().get("APPLICATIONINSIGHTS_CONNECTION_STRING")), null));
-        return instrumentationKey == null ? null : this.azureMonitorMeterRegistry(connectionString, instrumentationKey);
+        return instrumentationKey == null && connectionString == null
+            ? null
+            : this.azureMonitorMeterRegistry(connectionString, instrumentationKey);
     }
 
     public MeterRegistry getGraphiteMeterRegistry() {
