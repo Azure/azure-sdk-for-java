@@ -138,7 +138,7 @@ def delete_generated_code(path: str) -> None:
                     with open(cur_path, 'r', encoding='utf-8') as f:
                         content = f.read()
                     if autorest_generated_header in content or typespec_generated_header in content:
-                        os.unlink(cur_path)  # Delete the file
+                        os.remove(cur_path)  # Delete the file
                 except Exception as e:
                     # Skip files that can't be read (binary files, permission issues)
                     print(f"Warning: Could not process file {cur_path}: {e}")

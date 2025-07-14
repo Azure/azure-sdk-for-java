@@ -32,7 +32,7 @@ MODELERFOUR_ARGUMENTS = "--modelerfour.additional-checks=false --modelerfour.len
 FLUENTLITE_ARGUMENTS = "{0} --azure-arm --verbose --sdk-integration --generate-samples --generate-tests --fluent=lite --java.fluent=lite --java.license-header=MICROSOFT_MIT_SMALL".format(
     MODELERFOUR_ARGUMENTS
 )
-FLUENTPREMIUM_ARGUMENTS = "--verbose --sdk-integration --generate-samples --generate-tests --fluent --java.fluent --java.license-header=MICROSOFT_MIT_SMALL"
+FLUENTPREMIUM_ARGUMENTS = "--verbose --generate-samples --fluent --java.fluent --java.license-header=MICROSOFT_MIT_SMALL"
 
 FLUENT_PREMIUM_PACKAGES = (
     "azure-resourcemanager-appplatform",
