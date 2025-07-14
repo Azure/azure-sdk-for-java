@@ -18,8 +18,6 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesClientBuilder;
-import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesServiceVersion;
 import com.azure.monitor.ingestion.models.LogsIngestionAudience;
 
 import java.net.MalformedURLException;
@@ -64,8 +62,8 @@ public final class LogsIngestionClientBuilder
     implements ConfigurationTrait<LogsIngestionClientBuilder>, HttpTrait<LogsIngestionClientBuilder>,
     EndpointTrait<LogsIngestionClientBuilder>, TokenCredentialTrait<LogsIngestionClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(LogsIngestionClientBuilder.class);
-    private final IngestionUsingDataCollectionRulesClientBuilder innerLogBuilder
-        = new IngestionUsingDataCollectionRulesClientBuilder();
+    private final com.azure.monitor.ingestion.implementation.LogsIngestionClientBuilder innerLogBuilder
+        = new com.azure.monitor.ingestion.implementation.LogsIngestionClientBuilder();
     private String endpoint;
     private TokenCredential tokenCredential;
 
@@ -205,7 +203,7 @@ public final class LogsIngestionClientBuilder
      */
     public LogsIngestionClientBuilder serviceVersion(LogsIngestionServiceVersion serviceVersion) {
         innerLogBuilder
-            .serviceVersion(IngestionUsingDataCollectionRulesServiceVersion.valueOf(serviceVersion.getVersion()));
+            .serviceVersion(LogsIngestionServiceVersion.valueOf(serviceVersion.getVersion()));
         return this;
     }
 
