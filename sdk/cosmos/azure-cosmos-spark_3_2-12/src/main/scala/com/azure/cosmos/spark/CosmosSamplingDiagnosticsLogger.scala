@@ -33,7 +33,7 @@ private[spark] class CosmosSamplingDiagnosticsLogger(val maxLogCount: Int, val s
    * @param diagnosticsContext the diagnostics context
    * @return a flag indicating whether to log the operation or not
    */
-  protected def shouldLog(diagnosticsContext: CosmosDiagnosticsContext): Boolean = {
+  private def shouldLog(diagnosticsContext: CosmosDiagnosticsContext): Boolean = {
     if (!diagnosticsContext.isCompleted) {
       return false
     }
@@ -59,12 +59,11 @@ private[spark] class CosmosSamplingDiagnosticsLogger(val maxLogCount: Int, val s
           val nowSnapshot = System.currentTimeMillis()
           val nextResetSnapshot = nextReset.get()
           if (nowSnapshot > nextResetSnapshot) {
-            if (nextReset.compareAndSet(nextResetSnapshot, nowSnapshot + samplingIntervalInSeconds * 1000)) {
-              logCountInSamplingInterval.set(0)
-            }
+            nextReset.set(nowSnapshot + samplingIntervalInSeconds * 1000)
+            logCountInSamplingInterval.set(0)
             shouldLog = true
           } else if (previousLogCount == maxLogCount + 1) {
-            logInfo(s"Already logged $maxLogCount diagnostics - stopping until sampling interval is reset.")
+            logInfo(s"Already logged $maxLogCount diagnostics - stopping until sampling interval is reset at $nextResetSnapshot.")
           }
         }
       }

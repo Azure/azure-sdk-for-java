@@ -53,14 +53,13 @@ private[spark] class CosmosMaxCountPerIntervalSpanHeadSampler(
         val nowSnapshot = System.currentTimeMillis()
         val nextResetSnapshot = nextResetTimestamp.get()
         if (nowSnapshot > nextResetSnapshot) {
-          if (nextResetTimestamp.compareAndSet(nextResetSnapshot, nowSnapshot + samplingIntervalInSeconds * 1000)) {
-            sampledSpanCountInInterval.set(0)
-          }
+          nextResetTimestamp.set(nowSnapshot + samplingIntervalInSeconds * 1000)
+          sampledSpanCountInInterval.set(0)
 
           SamplingResult.recordAndSample()
         } else {
           if (previousSpanCount == maxSpanCount + 1) {
-            logInfo(s"Already sampled.in $maxSpanCount spans - always recording only until sampling interval is reset.")
+            logInfo(s"Already sampled.in $maxSpanCount spans - always recording only until sampling interval is reset at $nextResetSnapshot.")
           }
           SamplingResult.recordOnly()
         }

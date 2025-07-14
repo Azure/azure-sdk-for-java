@@ -41,15 +41,14 @@ private[spark] class CosmosMaxCountPerIntervalLogExporter
         val nowSnapshot = System.currentTimeMillis()
         val nextResetSnapshot = nextResetTimestamp.get()
         if (nowSnapshot > nextResetSnapshot) {
-          if (nextResetTimestamp.compareAndSet(nextResetSnapshot, nowSnapshot + samplingIntervalInSeconds * 1000)) {
-            lessThanSeverityThresholdLogCountInInterval.set(0)
-          }
+          nextResetTimestamp.set(nowSnapshot + samplingIntervalInSeconds * 1000)
+          lessThanSeverityThresholdLogCountInInterval.set(0)
 
           true
         } else {
           if (previousLogCount == maxLessThanThresholdSeverityLogCount + 1) {
             logInfo(s"Already logged $maxLessThanThresholdSeverityLogCount log records with severity less than "
-              + s"$thresholdSeverity - dropping those until sampling interval is reset.")
+              + s"$thresholdSeverity - dropping those until sampling interval is reset at $nextResetSnapshot.")
           }
 
           false
