@@ -1,14 +1,124 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2025-07-15)
+
+- Azure Resource Manager Compute Schedule client library for Java. This package contains Microsoft Azure SDK for Compute Schedule Management SDK. Microsoft.ComputeSchedule Resource Provider management API. Package api-version 2025-04-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.OccurrenceProperties` was added
 
-### Bugs Fixed
+* `models.InnerError` was added
 
-### Other Changes
+* `models.OccurrenceExtensions` was added
+
+* `models.OccurrenceResultSummary` was added
+
+* `models.ResourceResultSummary` was added
+
+* `models.ResourceType` was added
+
+* `models.Occurrence` was added
+
+* `models.WeekDay` was added
+
+* `models.Error` was added
+
+* `models.Language` was added
+
+* `models.ScheduledActionResources` was added
+
+* `models.Month` was added
+
+* `models.OccurrenceExtensionResource` was added
+
+* `models.ScheduledAction$UpdateStages` was added
+
+* `models.OccurrenceResource` was added
+
+* `models.ResourceOperationResponse` was added
+
+* `models.ResourceOperationStatus` was added
+
+* `models.NotificationProperties` was added
+
+* `models.ResourceProvisioningState` was added
+
+* `models.ScheduledActionProperties` was added
+
+* `models.Occurrences` was added
+
+* `models.ScheduledAction` was added
+
+* `models.ScheduledAction$Update` was added
+
+* `models.ScheduledActionExtensions` was added
+
+* `models.OccurrenceExtensionProperties` was added
+
+* `models.DelayRequest` was added
+
+* `models.NotificationType` was added
+
+* `models.ResourcePatchRequest` was added
+
+* `models.ScheduledAction$Definition` was added
+
+* `models.ScheduledActionsSchedule` was added
+
+* `models.ResourceAttachRequest` was added
+
+* `models.OccurrenceState` was added
+
+* `models.ProvisioningState` was added
+
+* `models.ResourceDetachRequest` was added
+
+* `models.CancelOccurrenceRequest` was added
+
+* `models.ResourceStatus` was added
+
+* `models.ScheduledAction$DefinitionStages` was added
+
+* `models.ScheduledActionResource` was added
+
+#### `models.ScheduledActions` was modified
+
+* `getById(java.lang.String)` was added
+* `enableWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `patchResourcesWithResponse(java.lang.String,java.lang.String,models.ResourcePatchRequest,com.azure.core.util.Context)` was added
+* `enable(java.lang.String,java.lang.String)` was added
+* `deleteByResourceGroup(java.lang.String,java.lang.String)` was added
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was added
+* `define(java.lang.String)` was added
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `triggerManualOccurrenceWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `attachResourcesWithResponse(java.lang.String,java.lang.String,models.ResourceAttachRequest,com.azure.core.util.Context)` was added
+* `list()` was added
+* `listResources(java.lang.String,java.lang.String)` was added
+* `disable(java.lang.String,java.lang.String)` was added
+* `getByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `list(com.azure.core.util.Context)` was added
+* `listByResourceGroup(java.lang.String)` was added
+* `deleteById(java.lang.String)` was added
+* `cancelNextOccurrence(java.lang.String,java.lang.String,models.CancelOccurrenceRequest)` was added
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `detachResourcesWithResponse(java.lang.String,java.lang.String,models.ResourceDetachRequest,com.azure.core.util.Context)` was added
+* `getByResourceGroup(java.lang.String,java.lang.String)` was added
+* `patchResources(java.lang.String,java.lang.String,models.ResourcePatchRequest)` was added
+* `listResources(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `detachResources(java.lang.String,java.lang.String,models.ResourceDetachRequest)` was added
+* `disableWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `triggerManualOccurrence(java.lang.String,java.lang.String)` was added
+* `attachResources(java.lang.String,java.lang.String,models.ResourceAttachRequest)` was added
+* `cancelNextOccurrenceWithResponse(java.lang.String,java.lang.String,models.CancelOccurrenceRequest,com.azure.core.util.Context)` was added
+
+#### `ComputeScheduleManager` was modified
+
+* `occurrenceExtensions()` was added
+* `occurrences()` was added
+* `scheduledActionExtensions()` was added
 
 ## 1.1.0 (2025-06-04)
 
