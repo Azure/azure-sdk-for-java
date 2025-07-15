@@ -3,6 +3,7 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.BatchFileProperties;
+import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobCreateParameters;
 import com.azure.compute.batch.models.BatchNodeFile;
 import com.azure.compute.batch.models.BatchPool;
@@ -17,6 +18,7 @@ import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 
@@ -112,8 +114,13 @@ public class FileTests extends BatchClientTestBase {
             }
 
         } finally {
+            // DELETE
             try {
-                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
+                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+
+                deletePoller.waitForCompletion();
             } catch (Exception e) {
                 // Ignore here
             }
@@ -197,8 +204,13 @@ public class FileTests extends BatchClientTestBase {
             }
 
         } finally {
+            // DELETE
             try {
-                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
+                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+
+                deletePoller.waitForCompletion();
             } catch (Exception e) {
                 // Ignore here
             }
