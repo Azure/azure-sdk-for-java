@@ -65,11 +65,14 @@ public class CallAutomationUnitTestBase {
     static final String FROM_CALL_CONNECTION_ID = "fromCallConnectionId";
 
     static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION
-        = new MediaStreamingOptions("https://websocket.url.com", MediaStreamingTransport.WEBSOCKET,
-            MediaStreamingContent.AUDIO, MediaStreamingAudioChannel.MIXED, true);
+        = new MediaStreamingOptions(MediaStreamingAudioChannel.MIXED, MediaStreamingTransport.WEBSOCKET)
+            .setStartMediaStreaming(true)
+            .setContentType(MediaStreamingContent.AUDIO)
+            .setTransportUrl("https://websocket.url.com");
 
     static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION
-        = new TranscriptionOptions("https://websocket.url.com", TranscriptionTransport.WEBSOCKET, "en-US", true);
+        = new TranscriptionOptions("en-US", TranscriptionTransport.WEBSOCKET).setStartTranscription(true)
+            .setTransportUrl("https://websocket.url.com");
 
     public static String generateDownloadResult(String content) {
         return content;

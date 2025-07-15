@@ -432,8 +432,10 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             // create options
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
             MediaStreamingOptions mediaStreamingOptions
-                = new MediaStreamingOptions(TRANSPORT_URL, MediaStreamingTransport.WEBSOCKET,
-                    MediaStreamingContent.AUDIO, MediaStreamingAudioChannel.MIXED, false);
+                = new MediaStreamingOptions(MediaStreamingAudioChannel.MIXED, MediaStreamingTransport.WEBSOCKET)
+                    .setStartMediaStreaming(false)
+                    .setContentType(MediaStreamingContent.AUDIO)
+                    .setTransportUrl(TRANSPORT_URL);
             CreateGroupCallOptions createCallOptions
                 = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
 
@@ -549,7 +551,8 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
             TranscriptionOptions transcriptionOptions
-                = new TranscriptionOptions(TRANSPORT_URL, TranscriptionTransport.WEBSOCKET, "en-US", false);
+                = new TranscriptionOptions("en-US", TranscriptionTransport.WEBSOCKET).setStartTranscription(false)
+                    .setTransportUrl(TRANSPORT_URL);
             CreateGroupCallOptions createCallOptions
                 = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             createCallOptions.setTranscriptionOptions(transcriptionOptions);
