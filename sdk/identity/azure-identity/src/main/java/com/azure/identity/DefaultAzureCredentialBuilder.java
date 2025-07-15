@@ -62,9 +62,6 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     private String managedIdentityResourceId;
     private List<String> additionallyAllowedTenants
         = IdentityUtil.getAdditionalTenantsFromEnvironment(Configuration.getGlobalConfiguration().clone());
-    private static final String BROKER_BUILDER_CLASS
-        = "com.azure.identity.broker.InteractiveBrowserBrokerCredentialBuilder";
-    // Removed unused BROKER_BUILDER_CLASS field
 
     /**
      * Creates an instance of a DefaultAzureCredentialBuilder.
@@ -320,7 +317,6 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
                         + "To mitigate this issue, please refer to the troubleshooting guidelines here at "
                         + "https://aka.ms/azure-identity-java-default-azure-credential-troubleshoot"));
             }
-            // Removed unreachable code: OSBrokerCredential addition was after return
         }
 
         // Default case: full chain (prod + dev)
@@ -344,6 +340,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         credentials.add(new AzureCliCredential(tenantId, identityClientOptions.clone()));
         credentials.add(new AzurePowerShellCredential(tenantId, identityClientOptions.clone()));
         credentials.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
+        credentials.add(new OSBrokerCredential(tenantId));
     }
 
 
