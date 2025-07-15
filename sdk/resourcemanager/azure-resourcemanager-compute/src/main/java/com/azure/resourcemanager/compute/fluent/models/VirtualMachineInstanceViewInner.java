@@ -82,7 +82,7 @@ public final class VirtualMachineInstanceViewInner implements JsonSerializable<V
     private List<VirtualMachineExtensionInstanceView> extensions;
 
     /*
-     * The application health status for the VM, provided through Application Health Extension.
+     * The health status for the VM.
      */
     private VirtualMachineHealthStatus vmHealth;
 
@@ -343,8 +343,7 @@ public final class VirtualMachineInstanceViewInner implements JsonSerializable<V
     }
 
     /**
-     * Get the vmHealth property: The application health status for the VM, provided through Application Health
-     * Extension.
+     * Get the vmHealth property: The health status for the VM.
      * 
      * @return the vmHealth value.
      */

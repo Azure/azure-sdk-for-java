@@ -61,15 +61,15 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ComputeManagementCli")
+    @ServiceInterface(name = "ComputeManagementClientSharedGalleries")
     public interface SharedGalleriesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<SharedGalleryList>> list(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion, @QueryParam("sharedTo") SharedToValues sharedTo,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @QueryParam("sharedTo") SharedToValues sharedTo,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -77,8 +77,8 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<SharedGalleryInner>> get(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
-            @PathParam("galleryUniqueName") String galleryUniqueName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("galleryUniqueName") String galleryUniqueName,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -92,7 +92,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
     /**
      * List shared galleries by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -116,8 +116,8 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
-                apiVersion, sharedTo, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                location, sharedTo, accept, context))
             .<PagedResponse<SharedGalleryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -126,7 +126,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
     /**
      * List shared galleries by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +153,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), location, apiVersion, sharedTo, accept,
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location, sharedTo, accept,
                 context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -162,7 +162,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
     /**
      * List shared galleries by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -178,7 +178,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
     /**
      * List shared galleries by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -194,7 +194,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
     /**
      * List shared galleries by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,7 +211,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
     /**
      * List shared galleries by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -226,7 +226,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
     /**
      * List shared galleries by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -242,7 +242,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
     /**
      * Get a shared gallery by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -270,15 +270,15 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
-                galleryUniqueName, apiVersion, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                location, galleryUniqueName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a shared gallery by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -308,14 +308,14 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location, galleryUniqueName,
-            apiVersion, accept, context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
+            galleryUniqueName, accept, context);
     }
 
     /**
      * Get a shared gallery by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -330,7 +330,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
     /**
      * Get a shared gallery by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -346,7 +346,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
     /**
      * Get a shared gallery by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

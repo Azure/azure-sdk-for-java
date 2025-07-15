@@ -319,8 +319,12 @@ public final class VirtualMachineExtensionUpdateProperties
         jsonWriter.writeStringField("typeHandlerVersion", this.typeHandlerVersion);
         jsonWriter.writeBooleanField("autoUpgradeMinorVersion", this.autoUpgradeMinorVersion);
         jsonWriter.writeBooleanField("enableAutomaticUpgrade", this.enableAutomaticUpgrade);
-        jsonWriter.writeUntypedField("settings", this.settings);
-        jsonWriter.writeUntypedField("protectedSettings", this.protectedSettings);
+        if (this.settings != null) {
+            jsonWriter.writeUntypedField("settings", this.settings);
+        }
+        if (this.protectedSettings != null) {
+            jsonWriter.writeUntypedField("protectedSettings", this.protectedSettings);
+        }
         jsonWriter.writeBooleanField("suppressFailures", this.suppressFailures);
         jsonWriter.writeJsonField("protectedSettingsFromKeyVault", this.protectedSettingsFromKeyVault);
         return jsonWriter.writeEndObject();

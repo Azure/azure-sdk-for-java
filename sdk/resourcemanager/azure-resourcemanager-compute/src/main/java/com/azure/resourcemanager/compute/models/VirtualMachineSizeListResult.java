@@ -23,6 +23,11 @@ public final class VirtualMachineSizeListResult implements JsonSerializable<Virt
      */
     private List<VirtualMachineSizeInner> value;
 
+    /*
+     * The link to the next page of items.
+     */
+    private String nextLink;
+
     /**
      * Creates an instance of VirtualMachineSizeListResult class.
      */
@@ -50,6 +55,26 @@ public final class VirtualMachineSizeListResult implements JsonSerializable<Virt
     }
 
     /**
+     * Get the nextLink property: The link to the next page of items.
+     * 
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: The link to the next page of items.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the VirtualMachineSizeListResult object itself.
+     */
+    public VirtualMachineSizeListResult withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -67,6 +92,7 @@ public final class VirtualMachineSizeListResult implements JsonSerializable<Virt
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
         return jsonWriter.writeEndObject();
     }
 
@@ -89,6 +115,8 @@ public final class VirtualMachineSizeListResult implements JsonSerializable<Virt
                     List<VirtualMachineSizeInner> value
                         = reader.readArray(reader1 -> VirtualMachineSizeInner.fromJson(reader1));
                     deserializedVirtualMachineSizeListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedVirtualMachineSizeListResult.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

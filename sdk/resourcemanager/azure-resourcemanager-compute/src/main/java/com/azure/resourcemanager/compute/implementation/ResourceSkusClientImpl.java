@@ -60,7 +60,7 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ComputeManagementCli")
+    @ServiceInterface(name = "ComputeManagementClientResourceSkus")
     public interface ResourceSkusService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/skus")

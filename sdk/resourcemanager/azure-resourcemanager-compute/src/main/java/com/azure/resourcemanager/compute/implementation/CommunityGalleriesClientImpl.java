@@ -55,22 +55,22 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ComputeManagementCli")
+    @ServiceInterface(name = "ComputeManagementClientCommunityGalleries")
     public interface CommunityGalleriesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/communityGalleries/{publicGalleryName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<CommunityGalleryInner>> get(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
-            @PathParam("publicGalleryName") String publicGalleryName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("publicGalleryName") String publicGalleryName,
             @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a community gallery by gallery public name.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param publicGalleryName The public name of the community gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -98,15 +98,15 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
-                publicGalleryName, apiVersion, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                location, publicGalleryName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a community gallery by gallery public name.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param publicGalleryName The public name of the community gallery.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -136,14 +136,14 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location, publicGalleryName,
-            apiVersion, accept, context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
+            publicGalleryName, accept, context);
     }
 
     /**
      * Get a community gallery by gallery public name.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param publicGalleryName The public name of the community gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -158,7 +158,7 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
     /**
      * Get a community gallery by gallery public name.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param publicGalleryName The public name of the community gallery.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -174,7 +174,7 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
     /**
      * Get a community gallery by gallery public name.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param publicGalleryName The public name of the community gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

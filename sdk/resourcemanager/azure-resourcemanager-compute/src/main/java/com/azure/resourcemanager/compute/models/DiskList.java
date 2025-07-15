@@ -20,12 +20,12 @@ import java.util.List;
 @Fluent
 public final class DiskList implements JsonSerializable<DiskList> {
     /*
-     * A list of disks.
+     * The Disk items on this page
      */
     private List<DiskInner> value;
 
     /*
-     * The uri to fetch the next page of disks. Call ListNext() with this to fetch the next page of disks.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -36,7 +36,7 @@ public final class DiskList implements JsonSerializable<DiskList> {
     }
 
     /**
-     * Get the value property: A list of disks.
+     * Get the value property: The Disk items on this page.
      * 
      * @return the value value.
      */
@@ -45,7 +45,7 @@ public final class DiskList implements JsonSerializable<DiskList> {
     }
 
     /**
-     * Set the value property: A list of disks.
+     * Set the value property: The Disk items on this page.
      * 
      * @param value the value value to set.
      * @return the DiskList object itself.
@@ -56,8 +56,7 @@ public final class DiskList implements JsonSerializable<DiskList> {
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of disks. Call ListNext() with this to fetch the next
-     * page of disks.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
@@ -66,8 +65,7 @@ public final class DiskList implements JsonSerializable<DiskList> {
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of disks. Call ListNext() with this to fetch the next
-     * page of disks.
+     * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
      * @return the DiskList object itself.

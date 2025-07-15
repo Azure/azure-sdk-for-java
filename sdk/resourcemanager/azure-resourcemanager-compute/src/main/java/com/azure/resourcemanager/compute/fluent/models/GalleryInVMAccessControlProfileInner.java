@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,6 +23,11 @@ public final class GalleryInVMAccessControlProfileInner extends Resource {
      * Describes the properties of a gallery inVMAccessControlProfile.
      */
     private GalleryInVMAccessControlProfileProperties properties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -62,6 +68,15 @@ public final class GalleryInVMAccessControlProfileInner extends Resource {
     public GalleryInVMAccessControlProfileInner withProperties(GalleryInVMAccessControlProfileProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -166,6 +181,8 @@ public final class GalleryInVMAccessControlProfileInner extends Resource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedGalleryInVMAccessControlProfileInner.properties
                         = GalleryInVMAccessControlProfileProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedGalleryInVMAccessControlProfileInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

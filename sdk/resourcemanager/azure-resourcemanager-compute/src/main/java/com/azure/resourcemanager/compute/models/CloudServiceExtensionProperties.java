@@ -331,8 +331,12 @@ public final class CloudServiceExtensionProperties implements JsonSerializable<C
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("typeHandlerVersion", this.typeHandlerVersion);
         jsonWriter.writeBooleanField("autoUpgradeMinorVersion", this.autoUpgradeMinorVersion);
-        jsonWriter.writeUntypedField("settings", this.settings);
-        jsonWriter.writeUntypedField("protectedSettings", this.protectedSettings);
+        if (this.settings != null) {
+            jsonWriter.writeUntypedField("settings", this.settings);
+        }
+        if (this.protectedSettings != null) {
+            jsonWriter.writeUntypedField("protectedSettings", this.protectedSettings);
+        }
         jsonWriter.writeJsonField("protectedSettingsFromKeyVault", this.protectedSettingsFromKeyVault);
         jsonWriter.writeStringField("forceUpdateTag", this.forceUpdateTag);
         jsonWriter.writeArrayField("rolesAppliedTo", this.rolesAppliedTo,
