@@ -176,6 +176,10 @@ parameters:
   displayName: 'azure-resourcemanager-trafficmanager'
   type: boolean
   default: true
+- name: release_azureresourcemanagertest
+  displayName: 'azure-resourcemanager-test'
+  type: boolean
+  default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -278,14 +282,15 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagertrafficmanager
         releaseInBatch: ${{ parameters.release_azureresourcemanagertrafficmanager }}
+      - name: azure-resourcemanager-test
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagertest
+        releaseInBatch: ${{ parameters.release_azureresourcemanagertest }}
     AdditionalModules:
       - name: azure-resourcemanager-samples
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagersamples
       - name: azure-resourcemanager-perf
         groupId: com.azure.resourcemanager
-      - name: azure-resourcemanager-test
-        groupId: com.azure.resourcemanager
-        # required by the above perf library
       - name: perf-test-core
         groupId: com.azure

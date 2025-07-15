@@ -1,5 +1,5 @@
 # Release History
 
-## 2.0.0-beta.1 (Unreleased)
+## 2.0.0-beta.1 (2025-07-16)
 
-- TODO
+- Initial release of the `azure-resourcemanager-test` library.
