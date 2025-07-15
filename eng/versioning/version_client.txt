@@ -400,7 +400,7 @@ com.azure.resourcemanager:azure-resourcemanager-dashboard;1.1.0;1.2.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-servicelinker;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appcontainers;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-scvmm;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-hardwaresecuritymodules;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-hardwaresecuritymodules;1.0.0;1.1.0
 com.azure.resourcemanager:azure-resourcemanager-workloads;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-confidentialledger;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-dynatrace;1.0.0;1.1.0-beta.1
