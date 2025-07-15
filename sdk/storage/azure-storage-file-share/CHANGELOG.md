@@ -1,6 +1,6 @@
 # Release History
 
-## 12.27.0 (2025-07-15)
+## 12.27.0 (2025-07-16)
 
 ### Features Added
 - Added the `ShareFileClient.CreateSymbolicLink()`, `.CreateSymbolicLinkAsync()`, `.GetSymbolicLink()`, and `.GetSymbolicLinkAsync()` APIs.
