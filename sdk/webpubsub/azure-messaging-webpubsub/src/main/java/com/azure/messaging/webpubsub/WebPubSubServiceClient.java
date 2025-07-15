@@ -13,6 +13,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -23,6 +24,7 @@ import com.azure.messaging.webpubsub.models.WebPubSubClientProtocol;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
+import com.azure.messaging.webpubsub.models.WebPubSubGroupConnection;
 import com.azure.messaging.webpubsub.models.WebPubSubPermission;
 
 import java.util.List;
@@ -652,5 +654,44 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> closeUserConnectionsWithResponse(String userId, RequestOptions requestOptions) {
         return this.serviceClient.closeUserConnectionsWithResponse(hub, userId, requestOptions);
+    }
+
+    /**
+     * List connections in a group.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of connections to include in a single response. It should be between 1 and 200.</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The maximum number of connections to return. If the value is not set, then all the connections in a group are returned.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     connectionId: String (Required)
+     *     userId: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param group Target group name, whose length should be greater than 0 and less than 1025.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a page of elements as a LIST REST API result as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<WebPubSubGroupConnection> listConnectionsInGroup(String group, RequestOptions requestOptions) {
+        return this.serviceClient.listConnectionsInGroup(hub, group, requestOptions)
+            .mapPage(binaryData -> binaryData.toObject(WebPubSubGroupConnection.class));
     }
 }

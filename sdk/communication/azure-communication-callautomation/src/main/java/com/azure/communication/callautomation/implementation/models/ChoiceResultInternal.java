@@ -31,6 +31,12 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
     @Generated
     private String recognizedPhrase;
 
+    /*
+     * The confidence level of the recognized speech, if available, ranges from 0.0 to 1.0
+     */
+    @Generated
+    private Double confidence;
+
     /**
      * Creates an instance of ChoiceResultInternal class.
      */
@@ -87,6 +93,28 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
     }
 
     /**
+     * Get the confidence property: The confidence level of the recognized speech, if available, ranges from 0.0 to 1.0.
+     * 
+     * @return the confidence value.
+     */
+    @Generated
+    public Double getConfidence() {
+        return this.confidence;
+    }
+
+    /**
+     * Set the confidence property: The confidence level of the recognized speech, if available, ranges from 0.0 to 1.0.
+     * 
+     * @param confidence the confidence value to set.
+     * @return the ChoiceResultInternal object itself.
+     */
+    @Generated
+    public ChoiceResultInternal setConfidence(Double confidence) {
+        this.confidence = confidence;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -95,6 +123,7 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("label", this.label);
         jsonWriter.writeStringField("recognizedPhrase", this.recognizedPhrase);
+        jsonWriter.writeNumberField("confidence", this.confidence);
         return jsonWriter.writeEndObject();
     }
 
@@ -118,6 +147,8 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
                     deserializedChoiceResultInternal.label = reader.getString();
                 } else if ("recognizedPhrase".equals(fieldName)) {
                     deserializedChoiceResultInternal.recognizedPhrase = reader.getString();
+                } else if ("confidence".equals(fieldName)) {
+                    deserializedChoiceResultInternal.confidence = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }

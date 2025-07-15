@@ -117,8 +117,8 @@ stages:
                 targetPath: '$(Pipeline.Workspace)/packages-esrp-flattened'
 
             pool:
-              name: azsdk-pool-mms-win-2022-general
-              image: azsdk-pool-mms-win-2022-1espt
+              name: azsdk-pool
+              image: windows-2022
               os: windows
             strategy:
               runOnce:
@@ -157,7 +157,7 @@ stages:
                 parameters:
                   ArtifactID: ${{artifact.name}}
                   GroupID: ${{artifact.groupId}}
-                - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+              - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
                 parameters:
                   ArtifactName: packages-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
                   ArtifactPath: $(Pipeline.Workspace)/packages-signed

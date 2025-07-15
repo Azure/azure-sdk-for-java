@@ -26,6 +26,7 @@ import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import java.lang.reflect.InvocationTargetException;
@@ -48,6 +49,11 @@ public final class AppendBlobsImpl {
     private final AzureBlobStorageImpl client;
 
     /**
+     * The instance of instrumentation to report telemetry.
+     */
+    private final Instrumentation instrumentation;
+
+    /**
      * Initializes an instance of AppendBlobsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
@@ -55,6 +61,7 @@ public final class AppendBlobsImpl {
     AppendBlobsImpl(AzureBlobStorageImpl client) {
         this.service = AppendBlobsService.getNewInstance(client.getHttpPipeline());
         this.client = client;
+        this.instrumentation = client.getInstrumentation();
     }
 
     /**
@@ -231,118 +238,74 @@ public final class AppendBlobsImpl {
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
         BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
         RequestContext requestContext) {
-        final String blobType = "AppendBlob";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (blobHttpHeaders != null) {
-            contentTypeInternal = blobHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (blobHttpHeaders != null) {
-            contentEncodingInternal = blobHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (blobHttpHeaders != null) {
-            contentLanguageInternal = blobHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        byte[] contentMd5Internal = null;
-        if (blobHttpHeaders != null) {
-            contentMd5Internal = blobHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String cacheControlInternal = null;
-        if (blobHttpHeaders != null) {
-            cacheControlInternal = blobHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentDispositionInternal = null;
-        if (blobHttpHeaders != null) {
-            contentDispositionInternal = blobHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String contentMd5Converted = new String(Base64.getEncoder().encode(contentMd5));
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        return service.create(this.client.getUrl(), containerName, blob, blobType, timeout, contentLength, contentType,
-            contentEncoding, contentLanguage, contentMd5Converted, cacheControl, metadata, leaseId, contentDisposition,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
-            blobTagsString, immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept,
-            requestContext);
-    }
-
-    /**
-     * The Create Append Blob operation creates a new append blob.
-     * 
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param contentLength The length of the request.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
-     * pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob.
-     * If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and
-     * metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names
-     * must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata
-     * for more information.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     * specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     * the specified date/time.
-     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param blobTagsString Optional. Used to set blob tags in various blob operations.
-     * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
-     * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
-     * @param legalHold Specified if a legal hold should be set on the blob.
-     * @param blobHttpHeaders Parameter group.
-     * @param cpkInfo Parameter group.
-     * @param encryptionScopeParam Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void create(String containerName, String blob, long contentLength, Integer timeout,
-        Map<String, String> metadata, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
-        String ifMatch, String ifNoneMatch, String ifTags, String requestId, String blobTagsString,
-        OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
-        BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
-        createWithResponse(containerName, blob, contentLength, timeout, metadata, leaseId, ifModifiedSince,
-            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobTagsString, immutabilityPolicyExpiry,
-            immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo, encryptionScopeParam, RequestContext.none());
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Create", requestContext,
+            updatedContext -> {
+                final String blobType = "AppendBlob";
+                final String accept = "application/xml";
+                String contentTypeInternal = null;
+                if (blobHttpHeaders != null) {
+                    contentTypeInternal = blobHttpHeaders.getContentType();
+                }
+                String contentType = contentTypeInternal;
+                String contentEncodingInternal = null;
+                if (blobHttpHeaders != null) {
+                    contentEncodingInternal = blobHttpHeaders.getContentEncoding();
+                }
+                String contentEncoding = contentEncodingInternal;
+                String contentLanguageInternal = null;
+                if (blobHttpHeaders != null) {
+                    contentLanguageInternal = blobHttpHeaders.getContentLanguage();
+                }
+                String contentLanguage = contentLanguageInternal;
+                byte[] contentMd5Internal = null;
+                if (blobHttpHeaders != null) {
+                    contentMd5Internal = blobHttpHeaders.getContentMd5();
+                }
+                byte[] contentMd5 = contentMd5Internal;
+                String cacheControlInternal = null;
+                if (blobHttpHeaders != null) {
+                    cacheControlInternal = blobHttpHeaders.getCacheControl();
+                }
+                String cacheControl = cacheControlInternal;
+                String contentDispositionInternal = null;
+                if (blobHttpHeaders != null) {
+                    contentDispositionInternal = blobHttpHeaders.getContentDisposition();
+                }
+                String contentDisposition = contentDispositionInternal;
+                String encryptionKeyInternal = null;
+                if (cpkInfo != null) {
+                    encryptionKeyInternal = cpkInfo.getEncryptionKey();
+                }
+                String encryptionKey = encryptionKeyInternal;
+                String encryptionKeySha256Internal = null;
+                if (cpkInfo != null) {
+                    encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+                }
+                String encryptionKeySha256 = encryptionKeySha256Internal;
+                EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+                if (cpkInfo != null) {
+                    encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+                }
+                EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+                String encryptionScopeInternal = null;
+                if (encryptionScopeParam != null) {
+                    encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+                }
+                String encryptionScope = encryptionScopeInternal;
+                String contentMd5Converted = new String(Base64.getEncoder().encode(contentMd5));
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                DateTimeRfc1123 immutabilityPolicyExpiryConverted
+                    = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
+                return service.create(this.client.getUrl(), containerName, blob, blobType, timeout, contentLength,
+                    contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, metadata, leaseId,
+                    contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+                    ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                    this.client.getVersion(), requestId, blobTagsString, immutabilityPolicyExpiryConverted,
+                    immutabilityPolicyMode, legalHold, accept, updatedContext);
+            });
     }
 
     /**
@@ -396,93 +359,45 @@ public final class AppendBlobsImpl {
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
         RequestContext requestContext) {
-        final String comp = "appendblock";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String transactionalContentMD5Converted = new String(Base64.getEncoder().encode(transactionalContentMD5));
-        String transactionalContentCrc64Converted = new String(Base64.getEncoder().encode(transactionalContentCrc64));
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.appendBlock(this.client.getUrl(), containerName, blob, comp, timeout, contentLength,
-            transactionalContentMD5Converted, transactionalContentCrc64Converted, leaseId, maxSize, appendPosition,
-            encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
-            ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
-            structuredBodyType, structuredContentLength, body, accept, requestContext);
-    }
-
-    /**
-     * The Append Block operation commits a new block of data to the end of an existing append blob. The Append Block
-     * operation is permitted only if the blob was created with x-ms-blob-type set to AppendBlob. Append Block is
-     * supported only on version 2015-02-21 version or later.
-     * 
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param contentLength The length of the request.
-     * @param body Initial data.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
-     * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param maxSize Optional conditional header. The max length in bytes permitted for the append blob. If the Append
-     * Block operation would cause the blob to exceed that limit or if the blob size is already greater than the value
-     * specified in this header, the request will fail with MaxBlobSizeConditionNotMet error (HTTP status code 412 -
-     * Precondition Failed).
-     * @param appendPosition Optional conditional header, used only for the Append Block operation. A number indicating
-     * the byte offset to compare. Append Block will succeed only if the append position is equal to this number. If it
-     * is not, the request will fail with the AppendPositionConditionNotMet error (HTTP status code 412 - Precondition
-     * Failed).
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     * specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     * the specified date/time.
-     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
-     * version and properties.
-     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
-     * blob/file content inside the message body. Will always be smaller than Content-Length.
-     * @param cpkInfo Parameter group.
-     * @param encryptionScopeParam Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void appendBlock(String containerName, String blob, long contentLength, BinaryData body, Integer timeout,
-        byte[] transactionalContentMD5, byte[] transactionalContentCrc64, String leaseId, Long maxSize,
-        Long appendPosition, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
-        String ifNoneMatch, String ifTags, String requestId, String structuredBodyType, Long structuredContentLength,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
-        appendBlockWithResponse(containerName, blob, contentLength, body, timeout, transactionalContentMD5,
-            transactionalContentCrc64, leaseId, maxSize, appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch,
-            ifNoneMatch, ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam,
-            RequestContext.none());
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.AppendBlock", requestContext,
+            updatedContext -> {
+                final String comp = "appendblock";
+                final String accept = "application/xml";
+                String encryptionKeyInternal = null;
+                if (cpkInfo != null) {
+                    encryptionKeyInternal = cpkInfo.getEncryptionKey();
+                }
+                String encryptionKey = encryptionKeyInternal;
+                String encryptionKeySha256Internal = null;
+                if (cpkInfo != null) {
+                    encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+                }
+                String encryptionKeySha256 = encryptionKeySha256Internal;
+                EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+                if (cpkInfo != null) {
+                    encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+                }
+                EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+                String encryptionScopeInternal = null;
+                if (encryptionScopeParam != null) {
+                    encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+                }
+                String encryptionScope = encryptionScopeInternal;
+                String transactionalContentMD5Converted
+                    = new String(Base64.getEncoder().encode(transactionalContentMD5));
+                String transactionalContentCrc64Converted
+                    = new String(Base64.getEncoder().encode(transactionalContentCrc64));
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                return service.appendBlock(this.client.getUrl(), containerName, blob, comp, timeout, contentLength,
+                    transactionalContentMD5Converted, transactionalContentCrc64Converted, leaseId, maxSize,
+                    appendPosition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
+                    ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
+                    this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept,
+                    updatedContext);
+            });
     }
 
     /**
@@ -544,109 +459,50 @@ public final class AppendBlobsImpl {
         String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, RequestContext requestContext) {
-        final String comp = "appendblock";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String sourceContentMD5Converted = new String(Base64.getEncoder().encode(sourceContentMD5));
-        String sourceContentcrc64Converted = new String(Base64.getEncoder().encode(sourceContentcrc64));
-        String transactionalContentMD5Converted = new String(Base64.getEncoder().encode(transactionalContentMD5));
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.appendBlockFromUrl(this.client.getUrl(), containerName, blob, comp, sourceUrl, sourceRange,
-            sourceContentMD5Converted, sourceContentcrc64Converted, timeout, contentLength,
-            transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
-            ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
-            sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization, accept, requestContext);
-    }
-
-    /**
-     * The Append Block operation commits a new block of data to the end of an existing append blob where the contents
-     * are read from a source url. The Append Block operation is permitted only if the blob was created with
-     * x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
-     * 
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param sourceUrl Specify a URL to the copy source.
-     * @param contentLength The length of the request.
-     * @param sourceRange Bytes of source data in the specified range.
-     * @param sourceContentMD5 Specify the md5 calculated for the range of bytes that must be read from the copy source.
-     * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
-     * source.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param maxSize Optional conditional header. The max length in bytes permitted for the append blob. If the Append
-     * Block operation would cause the blob to exceed that limit or if the blob size is already greater than the value
-     * specified in this header, the request will fail with MaxBlobSizeConditionNotMet error (HTTP status code 412 -
-     * Precondition Failed).
-     * @param appendPosition Optional conditional header, used only for the Append Block operation. A number indicating
-     * the byte offset to compare. Append Block will succeed only if the append position is equal to this number. If it
-     * is not, the request will fail with the AppendPositionConditionNotMet error (HTTP status code 412 - Precondition
-     * Failed).
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     * specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     * the specified date/time.
-     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param sourceIfModifiedSince Specify this header value to operate only on a blob if it has been modified since
-     * the specified date/time.
-     * @param sourceIfUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified
-     * since the specified date/time.
-     * @param sourceIfMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param sourceIfNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
-     * copy source.
-     * @param cpkInfo Parameter group.
-     * @param encryptionScopeParam Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void appendBlockFromUrl(String containerName, String blob, String sourceUrl, long contentLength,
-        String sourceRange, byte[] sourceContentMD5, byte[] sourceContentcrc64, Integer timeout,
-        byte[] transactionalContentMD5, String leaseId, Long maxSize, Long appendPosition,
-        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
-        String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
-        appendBlockFromUrlWithResponse(containerName, blob, sourceUrl, contentLength, sourceRange, sourceContentMD5,
-            sourceContentcrc64, timeout, transactionalContentMD5, leaseId, maxSize, appendPosition, ifModifiedSince,
-            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince,
-            sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo, encryptionScopeParam,
-            RequestContext.none());
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.AppendBlockFromUrl", requestContext,
+            updatedContext -> {
+                final String comp = "appendblock";
+                final String accept = "application/xml";
+                String encryptionKeyInternal = null;
+                if (cpkInfo != null) {
+                    encryptionKeyInternal = cpkInfo.getEncryptionKey();
+                }
+                String encryptionKey = encryptionKeyInternal;
+                String encryptionKeySha256Internal = null;
+                if (cpkInfo != null) {
+                    encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+                }
+                String encryptionKeySha256 = encryptionKeySha256Internal;
+                EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+                if (cpkInfo != null) {
+                    encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+                }
+                EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+                String encryptionScopeInternal = null;
+                if (encryptionScopeParam != null) {
+                    encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+                }
+                String encryptionScope = encryptionScopeInternal;
+                String sourceContentMD5Converted = new String(Base64.getEncoder().encode(sourceContentMD5));
+                String sourceContentcrc64Converted = new String(Base64.getEncoder().encode(sourceContentcrc64));
+                String transactionalContentMD5Converted
+                    = new String(Base64.getEncoder().encode(transactionalContentMD5));
+                DateTimeRfc1123 ifModifiedSinceConverted
+                    = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+                DateTimeRfc1123 ifUnmodifiedSinceConverted
+                    = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+                DateTimeRfc1123 sourceIfModifiedSinceConverted
+                    = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+                DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+                    = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
+                return service.appendBlockFromUrl(this.client.getUrl(), containerName, blob, comp, sourceUrl,
+                    sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout, contentLength,
+                    transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
+                    encryptionScope, leaseId, maxSize, appendPosition, ifModifiedSinceConverted,
+                    ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted,
+                    sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(),
+                    requestId, copySourceAuthorization, accept, updatedContext);
+            });
     }
 
     /**
@@ -681,48 +537,16 @@ public final class AppendBlobsImpl {
     public Response<Void> sealWithResponse(String containerName, String blob, Integer timeout, String requestId,
         String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, Long appendPosition, RequestContext requestContext) {
-        final String comp = "seal";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.seal(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
-            requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
-            appendPosition, accept, requestContext);
-    }
-
-    /**
-     * The Seal operation seals the Append Blob to make it read-only. Seal is supported only on version 2019-12-12
-     * version or later.
-     * 
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
-     * specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
-     * the specified date/time.
-     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
-     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param appendPosition Optional conditional header, used only for the Append Block operation. A number indicating
-     * the byte offset to compare. Append Block will succeed only if the append position is equal to this number. If it
-     * is not, the request will fail with the AppendPositionConditionNotMet error (HTTP status code 412 - Precondition
-     * Failed).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void seal(String containerName, String blob, Integer timeout, String requestId, String leaseId,
-        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        Long appendPosition) {
-        sealWithResponse(containerName, blob, timeout, requestId, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch,
-            ifNoneMatch, appendPosition, RequestContext.none());
+        return this.instrumentation.instrumentWithResponse("AzureBlobStorage.Seal", requestContext, updatedContext -> {
+            final String comp = "seal";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            return service.seal(this.client.getUrl(), containerName, blob, comp, timeout, this.client.getVersion(),
+                requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
+                appendPosition, accept, updatedContext);
+        });
     }
 }

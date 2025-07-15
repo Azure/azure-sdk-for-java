@@ -13,8 +13,12 @@ import java.io.IOException;
 
 /**
  * Schema of common properties of all Router events.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
+@Deprecated
 public class AcsRouterEventData implements JsonSerializable<AcsRouterEventData> {
 
     /*
