@@ -4,6 +4,8 @@
 
 package com.azure.resourcemanager.providerhub.models;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.providerhub.fluent.models.CustomRolloutInner;
 
@@ -38,6 +40,13 @@ public interface CustomRollout {
      * @return the properties value.
      */
     CustomRolloutProperties properties();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.providerhub.fluent.models.CustomRolloutInner object.
@@ -170,4 +179,23 @@ public interface CustomRollout {
      * @return the refreshed resource.
      */
     CustomRollout refresh(Context context);
+
+    /**
+     * Stops or cancels the custom rollout, if in progress.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> stopWithResponse(Context context);
+
+    /**
+     * Stops or cancels the custom rollout, if in progress.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stop();
 }

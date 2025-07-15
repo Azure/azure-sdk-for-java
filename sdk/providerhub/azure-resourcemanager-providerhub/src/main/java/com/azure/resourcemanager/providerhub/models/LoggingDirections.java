@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for LoggingDirections.
+ * The direction.
  */
 public final class LoggingDirections extends ExpandableStringEnum<LoggingDirections> {
     /**

@@ -20,7 +20,7 @@ import java.util.List;
 public final class ProviderRegistrationArrayResponseWithContinuation
     implements JsonSerializable<ProviderRegistrationArrayResponseWithContinuation> {
     /*
-     * The value property.
+     * The value.
      */
     private List<ProviderRegistrationInner> value;
 
@@ -36,7 +36,7 @@ public final class ProviderRegistrationArrayResponseWithContinuation
     }
 
     /**
-     * Get the value property: The value property.
+     * Get the value property: The value.
      * 
      * @return the value value.
      */
@@ -45,7 +45,7 @@ public final class ProviderRegistrationArrayResponseWithContinuation
     }
 
     /**
-     * Set the value property: The value property.
+     * Set the value property: The value.
      * 
      * @param value the value value to set.
      * @return the ProviderRegistrationArrayResponseWithContinuation object itself.

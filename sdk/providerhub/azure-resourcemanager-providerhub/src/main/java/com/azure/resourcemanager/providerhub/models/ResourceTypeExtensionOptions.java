@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public class ResourceTypeExtensionOptions implements JsonSerializable<ResourceTypeExtensionOptions> {
     /*
-     * The resourceCreationBegin property.
+     * Resource creation begin.
      */
     private ResourceTypeExtensionOptionsResourceCreationBegin resourceCreationBegin;
 
@@ -28,7 +28,7 @@ public class ResourceTypeExtensionOptions implements JsonSerializable<ResourceTy
     }
 
     /**
-     * Get the resourceCreationBegin property: The resourceCreationBegin property.
+     * Get the resourceCreationBegin property: Resource creation begin.
      * 
      * @return the resourceCreationBegin value.
      */
@@ -37,7 +37,7 @@ public class ResourceTypeExtensionOptions implements JsonSerializable<ResourceTy
     }
 
     /**
-     * Set the resourceCreationBegin property: The resourceCreationBegin property.
+     * Set the resourceCreationBegin property: Resource creation begin.
      * 
      * @param resourceCreationBegin the resourceCreationBegin value to set.
      * @return the ResourceTypeExtensionOptions object itself.

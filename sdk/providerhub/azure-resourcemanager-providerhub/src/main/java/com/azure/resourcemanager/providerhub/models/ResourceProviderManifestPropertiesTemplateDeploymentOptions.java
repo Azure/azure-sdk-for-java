@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The ResourceProviderManifestPropertiesTemplateDeploymentOptions model.
+ * The template deployment options.
  */
 @Fluent
 public final class ResourceProviderManifestPropertiesTemplateDeploymentOptions extends TemplateDeploymentOptions {

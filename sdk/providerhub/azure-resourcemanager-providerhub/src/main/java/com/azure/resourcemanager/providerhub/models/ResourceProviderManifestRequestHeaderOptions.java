@@ -11,7 +11,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResourceProviderManifestRequestHeaderOptions model.
+ * The request header options.
  */
 @Fluent
 public final class ResourceProviderManifestRequestHeaderOptions extends RequestHeaderOptions {
@@ -31,6 +31,15 @@ public final class ResourceProviderManifestRequestHeaderOptions extends RequestH
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResourceProviderManifestRequestHeaderOptions withOptOutHeaders(OptOutHeaderType optOutHeaders) {
+        super.withOptOutHeaders(optOutHeaders);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -46,6 +55,7 @@ public final class ResourceProviderManifestRequestHeaderOptions extends RequestH
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("optInHeaders", optInHeaders() == null ? null : optInHeaders().toString());
+        jsonWriter.writeStringField("optOutHeaders", optOutHeaders() == null ? null : optOutHeaders().toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -68,6 +78,9 @@ public final class ResourceProviderManifestRequestHeaderOptions extends RequestH
                 if ("optInHeaders".equals(fieldName)) {
                     deserializedResourceProviderManifestRequestHeaderOptions
                         .withOptInHeaders(OptInHeaderType.fromString(reader.getString()));
+                } else if ("optOutHeaders".equals(fieldName)) {
+                    deserializedResourceProviderManifestRequestHeaderOptions
+                        .withOptOutHeaders(OptOutHeaderType.fromString(reader.getString()));
                 } else {
                     reader.skipChildren();
                 }

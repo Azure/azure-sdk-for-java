@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for ResourceProviderCapabilitiesEffect.
+ * The effect.
  */
 public final class ResourceProviderCapabilitiesEffect extends ExpandableStringEnum<ResourceProviderCapabilitiesEffect> {
     /**

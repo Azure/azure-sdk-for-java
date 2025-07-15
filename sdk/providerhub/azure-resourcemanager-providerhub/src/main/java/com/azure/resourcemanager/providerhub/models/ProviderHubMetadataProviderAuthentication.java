@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The ProviderHubMetadataProviderAuthentication model.
+ * The provider authentication.
  */
 @Fluent
 public final class ProviderHubMetadataProviderAuthentication extends ResourceProviderAuthentication {

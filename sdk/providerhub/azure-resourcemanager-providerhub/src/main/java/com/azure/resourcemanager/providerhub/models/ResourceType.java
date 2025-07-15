@@ -18,124 +18,159 @@ import java.util.List;
 @Fluent
 public final class ResourceType implements JsonSerializable<ResourceType> {
     /*
-     * The name property.
+     * The resource type name.
      */
     private String name;
 
     /*
-     * The routingType property.
+     * The resource routing type.
      */
     private RoutingType routingType;
 
     /*
-     * The resourceValidation property.
+     * The additional options.
+     */
+    private AdditionalOptions additionalOptions;
+
+    /*
+     * The cross tenant token validation.
+     */
+    private CrossTenantTokenValidation crossTenantTokenValidation;
+
+    /*
+     * The resource validation.
      */
     private ResourceValidation resourceValidation;
 
     /*
-     * The allowedUnauthorizedActions property.
+     * The allowed unauthorized actions.
      */
     private List<String> allowedUnauthorizedActions;
 
     /*
-     * The authorizationActionMappings property.
+     * The allowed unauthorized actions extensions.
+     */
+    private List<AllowedUnauthorizedActionsExtension> allowedUnauthorizedActionsExtensions;
+
+    /*
+     * The authorization action mappings.
      */
     private List<AuthorizationActionMapping> authorizationActionMappings;
 
     /*
-     * The linkedAccessChecks property.
+     * The linked access checks.
      */
     private List<LinkedAccessCheck> linkedAccessChecks;
 
     /*
-     * The defaultApiVersion property.
+     * The default api version.
      */
     private String defaultApiVersion;
 
     /*
-     * The loggingRules property.
+     * The logging rules.
      */
     private List<LoggingRule> loggingRules;
 
     /*
-     * The throttlingRules property.
+     * The throttling rules.
      */
     private List<ThrottlingRule> throttlingRules;
 
     /*
-     * The endpoints property.
+     * The endpoints.
      */
     private List<ResourceProviderEndpoint> endpoints;
 
     /*
-     * The marketplaceType property.
+     * The marketplace type.
      */
     private MarketplaceType marketplaceType;
 
     /*
-     * The identityManagement property.
+     * The identity management.
      */
     private ResourceTypeIdentityManagement identityManagement;
 
     /*
-     * Anything
+     * The metadata.
      */
     private Object metadata;
 
     /*
-     * The requiredFeatures property.
+     * The required features.
      */
     private List<String> requiredFeatures;
 
     /*
-     * The featuresRule property.
+     * The features rule.
      */
     private ResourceTypeFeaturesRule featuresRule;
 
     /*
-     * The subscriptionStateRules property.
+     * The subscription state rules.
      */
     private List<SubscriptionStateRule> subscriptionStateRules;
 
     /*
-     * The serviceTreeInfos property.
+     * The service tree infos.
      */
     private List<ServiceTreeInfo> serviceTreeInfos;
 
     /*
-     * The requestHeaderOptions property.
+     * The request header options.
      */
     private ResourceTypeRequestHeaderOptions requestHeaderOptions;
 
     /*
-     * The skuLink property.
+     * The sku link.
      */
     private String skuLink;
 
     /*
-     * The disallowedActionVerbs property.
+     * The disallowed action verbs.
      */
     private List<String> disallowedActionVerbs;
 
     /*
-     * The templateDeploymentPolicy property.
+     * The template deployment policy.
      */
     private ResourceTypeTemplateDeploymentPolicy templateDeploymentPolicy;
 
     /*
-     * The extendedLocations property.
+     * The extended locations.
      */
     private List<ExtendedLocationOptions> extendedLocations;
 
     /*
-     * The linkedOperationRules property.
+     * The linked operation rules.
      */
     private List<LinkedOperationRule> linkedOperationRules;
 
     /*
-     * The resourceDeletionPolicy property.
+     * The resource deletion policy.
      */
     private ManifestResourceDeletionPolicy resourceDeletionPolicy;
+
+    /*
+     * The quota rule.
+     */
+    private QuotaRule quotaRule;
+
+    /*
+     * The notifications.
+     */
+    private List<Notification> notifications;
+
+    /*
+     * The linked notification rules.
+     */
+    private List<LinkedNotificationRule> linkedNotificationRules;
+
+    /*
+     * The resource provider authorization rules.
+     */
+    private ResourceProviderAuthorizationRules resourceProviderAuthorizationRules;
 
     /**
      * Creates an instance of ResourceType class.
@@ -144,7 +179,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the name property: The name property.
+     * Get the name property: The resource type name.
      * 
      * @return the name value.
      */
@@ -153,7 +188,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the name property: The name property.
+     * Set the name property: The resource type name.
      * 
      * @param name the name value to set.
      * @return the ResourceType object itself.
@@ -164,7 +199,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the routingType property: The routingType property.
+     * Get the routingType property: The resource routing type.
      * 
      * @return the routingType value.
      */
@@ -173,7 +208,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the routingType property: The routingType property.
+     * Set the routingType property: The resource routing type.
      * 
      * @param routingType the routingType value to set.
      * @return the ResourceType object itself.
@@ -184,7 +219,47 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the resourceValidation property: The resourceValidation property.
+     * Get the additionalOptions property: The additional options.
+     * 
+     * @return the additionalOptions value.
+     */
+    public AdditionalOptions additionalOptions() {
+        return this.additionalOptions;
+    }
+
+    /**
+     * Set the additionalOptions property: The additional options.
+     * 
+     * @param additionalOptions the additionalOptions value to set.
+     * @return the ResourceType object itself.
+     */
+    public ResourceType withAdditionalOptions(AdditionalOptions additionalOptions) {
+        this.additionalOptions = additionalOptions;
+        return this;
+    }
+
+    /**
+     * Get the crossTenantTokenValidation property: The cross tenant token validation.
+     * 
+     * @return the crossTenantTokenValidation value.
+     */
+    public CrossTenantTokenValidation crossTenantTokenValidation() {
+        return this.crossTenantTokenValidation;
+    }
+
+    /**
+     * Set the crossTenantTokenValidation property: The cross tenant token validation.
+     * 
+     * @param crossTenantTokenValidation the crossTenantTokenValidation value to set.
+     * @return the ResourceType object itself.
+     */
+    public ResourceType withCrossTenantTokenValidation(CrossTenantTokenValidation crossTenantTokenValidation) {
+        this.crossTenantTokenValidation = crossTenantTokenValidation;
+        return this;
+    }
+
+    /**
+     * Get the resourceValidation property: The resource validation.
      * 
      * @return the resourceValidation value.
      */
@@ -193,7 +268,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the resourceValidation property: The resourceValidation property.
+     * Set the resourceValidation property: The resource validation.
      * 
      * @param resourceValidation the resourceValidation value to set.
      * @return the ResourceType object itself.
@@ -204,7 +279,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the allowedUnauthorizedActions property: The allowedUnauthorizedActions property.
+     * Get the allowedUnauthorizedActions property: The allowed unauthorized actions.
      * 
      * @return the allowedUnauthorizedActions value.
      */
@@ -213,7 +288,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the allowedUnauthorizedActions property: The allowedUnauthorizedActions property.
+     * Set the allowedUnauthorizedActions property: The allowed unauthorized actions.
      * 
      * @param allowedUnauthorizedActions the allowedUnauthorizedActions value to set.
      * @return the ResourceType object itself.
@@ -224,7 +299,28 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the authorizationActionMappings property: The authorizationActionMappings property.
+     * Get the allowedUnauthorizedActionsExtensions property: The allowed unauthorized actions extensions.
+     * 
+     * @return the allowedUnauthorizedActionsExtensions value.
+     */
+    public List<AllowedUnauthorizedActionsExtension> allowedUnauthorizedActionsExtensions() {
+        return this.allowedUnauthorizedActionsExtensions;
+    }
+
+    /**
+     * Set the allowedUnauthorizedActionsExtensions property: The allowed unauthorized actions extensions.
+     * 
+     * @param allowedUnauthorizedActionsExtensions the allowedUnauthorizedActionsExtensions value to set.
+     * @return the ResourceType object itself.
+     */
+    public ResourceType withAllowedUnauthorizedActionsExtensions(
+        List<AllowedUnauthorizedActionsExtension> allowedUnauthorizedActionsExtensions) {
+        this.allowedUnauthorizedActionsExtensions = allowedUnauthorizedActionsExtensions;
+        return this;
+    }
+
+    /**
+     * Get the authorizationActionMappings property: The authorization action mappings.
      * 
      * @return the authorizationActionMappings value.
      */
@@ -233,7 +329,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the authorizationActionMappings property: The authorizationActionMappings property.
+     * Set the authorizationActionMappings property: The authorization action mappings.
      * 
      * @param authorizationActionMappings the authorizationActionMappings value to set.
      * @return the ResourceType object itself.
@@ -244,7 +340,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the linkedAccessChecks property: The linkedAccessChecks property.
+     * Get the linkedAccessChecks property: The linked access checks.
      * 
      * @return the linkedAccessChecks value.
      */
@@ -253,7 +349,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the linkedAccessChecks property: The linkedAccessChecks property.
+     * Set the linkedAccessChecks property: The linked access checks.
      * 
      * @param linkedAccessChecks the linkedAccessChecks value to set.
      * @return the ResourceType object itself.
@@ -264,7 +360,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the defaultApiVersion property: The defaultApiVersion property.
+     * Get the defaultApiVersion property: The default api version.
      * 
      * @return the defaultApiVersion value.
      */
@@ -273,7 +369,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the defaultApiVersion property: The defaultApiVersion property.
+     * Set the defaultApiVersion property: The default api version.
      * 
      * @param defaultApiVersion the defaultApiVersion value to set.
      * @return the ResourceType object itself.
@@ -284,7 +380,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the loggingRules property: The loggingRules property.
+     * Get the loggingRules property: The logging rules.
      * 
      * @return the loggingRules value.
      */
@@ -293,7 +389,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the loggingRules property: The loggingRules property.
+     * Set the loggingRules property: The logging rules.
      * 
      * @param loggingRules the loggingRules value to set.
      * @return the ResourceType object itself.
@@ -304,7 +400,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the throttlingRules property: The throttlingRules property.
+     * Get the throttlingRules property: The throttling rules.
      * 
      * @return the throttlingRules value.
      */
@@ -313,7 +409,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the throttlingRules property: The throttlingRules property.
+     * Set the throttlingRules property: The throttling rules.
      * 
      * @param throttlingRules the throttlingRules value to set.
      * @return the ResourceType object itself.
@@ -324,7 +420,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the endpoints property: The endpoints property.
+     * Get the endpoints property: The endpoints.
      * 
      * @return the endpoints value.
      */
@@ -333,7 +429,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the endpoints property: The endpoints property.
+     * Set the endpoints property: The endpoints.
      * 
      * @param endpoints the endpoints value to set.
      * @return the ResourceType object itself.
@@ -344,7 +440,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the marketplaceType property: The marketplaceType property.
+     * Get the marketplaceType property: The marketplace type.
      * 
      * @return the marketplaceType value.
      */
@@ -353,7 +449,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the marketplaceType property: The marketplaceType property.
+     * Set the marketplaceType property: The marketplace type.
      * 
      * @param marketplaceType the marketplaceType value to set.
      * @return the ResourceType object itself.
@@ -364,7 +460,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the identityManagement property: The identityManagement property.
+     * Get the identityManagement property: The identity management.
      * 
      * @return the identityManagement value.
      */
@@ -373,7 +469,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the identityManagement property: The identityManagement property.
+     * Set the identityManagement property: The identity management.
      * 
      * @param identityManagement the identityManagement value to set.
      * @return the ResourceType object itself.
@@ -384,7 +480,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the metadata property: Anything.
+     * Get the metadata property: The metadata.
      * 
      * @return the metadata value.
      */
@@ -393,7 +489,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the metadata property: Anything.
+     * Set the metadata property: The metadata.
      * 
      * @param metadata the metadata value to set.
      * @return the ResourceType object itself.
@@ -404,7 +500,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the requiredFeatures property: The requiredFeatures property.
+     * Get the requiredFeatures property: The required features.
      * 
      * @return the requiredFeatures value.
      */
@@ -413,7 +509,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the requiredFeatures property: The requiredFeatures property.
+     * Set the requiredFeatures property: The required features.
      * 
      * @param requiredFeatures the requiredFeatures value to set.
      * @return the ResourceType object itself.
@@ -424,7 +520,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the featuresRule property: The featuresRule property.
+     * Get the featuresRule property: The features rule.
      * 
      * @return the featuresRule value.
      */
@@ -433,7 +529,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the featuresRule property: The featuresRule property.
+     * Set the featuresRule property: The features rule.
      * 
      * @param featuresRule the featuresRule value to set.
      * @return the ResourceType object itself.
@@ -444,7 +540,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the subscriptionStateRules property: The subscriptionStateRules property.
+     * Get the subscriptionStateRules property: The subscription state rules.
      * 
      * @return the subscriptionStateRules value.
      */
@@ -453,7 +549,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the subscriptionStateRules property: The subscriptionStateRules property.
+     * Set the subscriptionStateRules property: The subscription state rules.
      * 
      * @param subscriptionStateRules the subscriptionStateRules value to set.
      * @return the ResourceType object itself.
@@ -464,7 +560,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the serviceTreeInfos property: The serviceTreeInfos property.
+     * Get the serviceTreeInfos property: The service tree infos.
      * 
      * @return the serviceTreeInfos value.
      */
@@ -473,7 +569,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the serviceTreeInfos property: The serviceTreeInfos property.
+     * Set the serviceTreeInfos property: The service tree infos.
      * 
      * @param serviceTreeInfos the serviceTreeInfos value to set.
      * @return the ResourceType object itself.
@@ -484,7 +580,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the requestHeaderOptions property: The requestHeaderOptions property.
+     * Get the requestHeaderOptions property: The request header options.
      * 
      * @return the requestHeaderOptions value.
      */
@@ -493,7 +589,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the requestHeaderOptions property: The requestHeaderOptions property.
+     * Set the requestHeaderOptions property: The request header options.
      * 
      * @param requestHeaderOptions the requestHeaderOptions value to set.
      * @return the ResourceType object itself.
@@ -504,7 +600,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the skuLink property: The skuLink property.
+     * Get the skuLink property: The sku link.
      * 
      * @return the skuLink value.
      */
@@ -513,7 +609,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the skuLink property: The skuLink property.
+     * Set the skuLink property: The sku link.
      * 
      * @param skuLink the skuLink value to set.
      * @return the ResourceType object itself.
@@ -524,7 +620,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the disallowedActionVerbs property: The disallowedActionVerbs property.
+     * Get the disallowedActionVerbs property: The disallowed action verbs.
      * 
      * @return the disallowedActionVerbs value.
      */
@@ -533,7 +629,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the disallowedActionVerbs property: The disallowedActionVerbs property.
+     * Set the disallowedActionVerbs property: The disallowed action verbs.
      * 
      * @param disallowedActionVerbs the disallowedActionVerbs value to set.
      * @return the ResourceType object itself.
@@ -544,7 +640,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the templateDeploymentPolicy property: The templateDeploymentPolicy property.
+     * Get the templateDeploymentPolicy property: The template deployment policy.
      * 
      * @return the templateDeploymentPolicy value.
      */
@@ -553,7 +649,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the templateDeploymentPolicy property: The templateDeploymentPolicy property.
+     * Set the templateDeploymentPolicy property: The template deployment policy.
      * 
      * @param templateDeploymentPolicy the templateDeploymentPolicy value to set.
      * @return the ResourceType object itself.
@@ -564,7 +660,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the extendedLocations property: The extendedLocations property.
+     * Get the extendedLocations property: The extended locations.
      * 
      * @return the extendedLocations value.
      */
@@ -573,7 +669,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the extendedLocations property: The extendedLocations property.
+     * Set the extendedLocations property: The extended locations.
      * 
      * @param extendedLocations the extendedLocations value to set.
      * @return the ResourceType object itself.
@@ -584,7 +680,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the linkedOperationRules property: The linkedOperationRules property.
+     * Get the linkedOperationRules property: The linked operation rules.
      * 
      * @return the linkedOperationRules value.
      */
@@ -593,7 +689,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the linkedOperationRules property: The linkedOperationRules property.
+     * Set the linkedOperationRules property: The linked operation rules.
      * 
      * @param linkedOperationRules the linkedOperationRules value to set.
      * @return the ResourceType object itself.
@@ -604,7 +700,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Get the resourceDeletionPolicy property: The resourceDeletionPolicy property.
+     * Get the resourceDeletionPolicy property: The resource deletion policy.
      * 
      * @return the resourceDeletionPolicy value.
      */
@@ -613,7 +709,7 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
-     * Set the resourceDeletionPolicy property: The resourceDeletionPolicy property.
+     * Set the resourceDeletionPolicy property: The resource deletion policy.
      * 
      * @param resourceDeletionPolicy the resourceDeletionPolicy value to set.
      * @return the ResourceType object itself.
@@ -624,11 +720,95 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
     }
 
     /**
+     * Get the quotaRule property: The quota rule.
+     * 
+     * @return the quotaRule value.
+     */
+    public QuotaRule quotaRule() {
+        return this.quotaRule;
+    }
+
+    /**
+     * Set the quotaRule property: The quota rule.
+     * 
+     * @param quotaRule the quotaRule value to set.
+     * @return the ResourceType object itself.
+     */
+    public ResourceType withQuotaRule(QuotaRule quotaRule) {
+        this.quotaRule = quotaRule;
+        return this;
+    }
+
+    /**
+     * Get the notifications property: The notifications.
+     * 
+     * @return the notifications value.
+     */
+    public List<Notification> notifications() {
+        return this.notifications;
+    }
+
+    /**
+     * Set the notifications property: The notifications.
+     * 
+     * @param notifications the notifications value to set.
+     * @return the ResourceType object itself.
+     */
+    public ResourceType withNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
+        return this;
+    }
+
+    /**
+     * Get the linkedNotificationRules property: The linked notification rules.
+     * 
+     * @return the linkedNotificationRules value.
+     */
+    public List<LinkedNotificationRule> linkedNotificationRules() {
+        return this.linkedNotificationRules;
+    }
+
+    /**
+     * Set the linkedNotificationRules property: The linked notification rules.
+     * 
+     * @param linkedNotificationRules the linkedNotificationRules value to set.
+     * @return the ResourceType object itself.
+     */
+    public ResourceType withLinkedNotificationRules(List<LinkedNotificationRule> linkedNotificationRules) {
+        this.linkedNotificationRules = linkedNotificationRules;
+        return this;
+    }
+
+    /**
+     * Get the resourceProviderAuthorizationRules property: The resource provider authorization rules.
+     * 
+     * @return the resourceProviderAuthorizationRules value.
+     */
+    public ResourceProviderAuthorizationRules resourceProviderAuthorizationRules() {
+        return this.resourceProviderAuthorizationRules;
+    }
+
+    /**
+     * Set the resourceProviderAuthorizationRules property: The resource provider authorization rules.
+     * 
+     * @param resourceProviderAuthorizationRules the resourceProviderAuthorizationRules value to set.
+     * @return the ResourceType object itself.
+     */
+    public ResourceType
+        withResourceProviderAuthorizationRules(ResourceProviderAuthorizationRules resourceProviderAuthorizationRules) {
+        this.resourceProviderAuthorizationRules = resourceProviderAuthorizationRules;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (allowedUnauthorizedActionsExtensions() != null) {
+            allowedUnauthorizedActionsExtensions().forEach(e -> e.validate());
+        }
         if (authorizationActionMappings() != null) {
             authorizationActionMappings().forEach(e -> e.validate());
         }
@@ -668,6 +848,18 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
         if (linkedOperationRules() != null) {
             linkedOperationRules().forEach(e -> e.validate());
         }
+        if (quotaRule() != null) {
+            quotaRule().validate();
+        }
+        if (notifications() != null) {
+            notifications().forEach(e -> e.validate());
+        }
+        if (linkedNotificationRules() != null) {
+            linkedNotificationRules().forEach(e -> e.validate());
+        }
+        if (resourceProviderAuthorizationRules() != null) {
+            resourceProviderAuthorizationRules().validate();
+        }
     }
 
     /**
@@ -678,10 +870,16 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("routingType", this.routingType == null ? null : this.routingType.toString());
+        jsonWriter.writeStringField("additionalOptions",
+            this.additionalOptions == null ? null : this.additionalOptions.toString());
+        jsonWriter.writeStringField("crossTenantTokenValidation",
+            this.crossTenantTokenValidation == null ? null : this.crossTenantTokenValidation.toString());
         jsonWriter.writeStringField("resourceValidation",
             this.resourceValidation == null ? null : this.resourceValidation.toString());
         jsonWriter.writeArrayField("allowedUnauthorizedActions", this.allowedUnauthorizedActions,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("allowedUnauthorizedActionsExtensions", this.allowedUnauthorizedActionsExtensions,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("authorizationActionMappings", this.authorizationActionMappings,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("linkedAccessChecks", this.linkedAccessChecks,
@@ -694,7 +892,9 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
         jsonWriter.writeStringField("marketplaceType",
             this.marketplaceType == null ? null : this.marketplaceType.toString());
         jsonWriter.writeJsonField("identityManagement", this.identityManagement);
-        jsonWriter.writeUntypedField("metadata", this.metadata);
+        if (this.metadata != null) {
+            jsonWriter.writeUntypedField("metadata", this.metadata);
+        }
         jsonWriter.writeArrayField("requiredFeatures", this.requiredFeatures,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("featuresRule", this.featuresRule);
@@ -713,6 +913,11 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("resourceDeletionPolicy",
             this.resourceDeletionPolicy == null ? null : this.resourceDeletionPolicy.toString());
+        jsonWriter.writeJsonField("quotaRule", this.quotaRule);
+        jsonWriter.writeArrayField("notifications", this.notifications, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("linkedNotificationRules", this.linkedNotificationRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("resourceProviderAuthorizationRules", this.resourceProviderAuthorizationRules);
         return jsonWriter.writeEndObject();
     }
 
@@ -735,11 +940,21 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
                     deserializedResourceType.name = reader.getString();
                 } else if ("routingType".equals(fieldName)) {
                     deserializedResourceType.routingType = RoutingType.fromString(reader.getString());
+                } else if ("additionalOptions".equals(fieldName)) {
+                    deserializedResourceType.additionalOptions = AdditionalOptions.fromString(reader.getString());
+                } else if ("crossTenantTokenValidation".equals(fieldName)) {
+                    deserializedResourceType.crossTenantTokenValidation
+                        = CrossTenantTokenValidation.fromString(reader.getString());
                 } else if ("resourceValidation".equals(fieldName)) {
                     deserializedResourceType.resourceValidation = ResourceValidation.fromString(reader.getString());
                 } else if ("allowedUnauthorizedActions".equals(fieldName)) {
                     List<String> allowedUnauthorizedActions = reader.readArray(reader1 -> reader1.getString());
                     deserializedResourceType.allowedUnauthorizedActions = allowedUnauthorizedActions;
+                } else if ("allowedUnauthorizedActionsExtensions".equals(fieldName)) {
+                    List<AllowedUnauthorizedActionsExtension> allowedUnauthorizedActionsExtensions
+                        = reader.readArray(reader1 -> AllowedUnauthorizedActionsExtension.fromJson(reader1));
+                    deserializedResourceType.allowedUnauthorizedActionsExtensions
+                        = allowedUnauthorizedActionsExtensions;
                 } else if ("authorizationActionMappings".equals(fieldName)) {
                     List<AuthorizationActionMapping> authorizationActionMappings
                         = reader.readArray(reader1 -> AuthorizationActionMapping.fromJson(reader1));
@@ -801,6 +1016,18 @@ public final class ResourceType implements JsonSerializable<ResourceType> {
                 } else if ("resourceDeletionPolicy".equals(fieldName)) {
                     deserializedResourceType.resourceDeletionPolicy
                         = ManifestResourceDeletionPolicy.fromString(reader.getString());
+                } else if ("quotaRule".equals(fieldName)) {
+                    deserializedResourceType.quotaRule = QuotaRule.fromJson(reader);
+                } else if ("notifications".equals(fieldName)) {
+                    List<Notification> notifications = reader.readArray(reader1 -> Notification.fromJson(reader1));
+                    deserializedResourceType.notifications = notifications;
+                } else if ("linkedNotificationRules".equals(fieldName)) {
+                    List<LinkedNotificationRule> linkedNotificationRules
+                        = reader.readArray(reader1 -> LinkedNotificationRule.fromJson(reader1));
+                    deserializedResourceType.linkedNotificationRules = linkedNotificationRules;
+                } else if ("resourceProviderAuthorizationRules".equals(fieldName)) {
+                    deserializedResourceType.resourceProviderAuthorizationRules
+                        = ResourceProviderAuthorizationRules.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

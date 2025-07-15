@@ -18,17 +18,17 @@ import java.io.IOException;
 @Fluent
 public final class SkuCost implements JsonSerializable<SkuCost> {
     /*
-     * The meterId property.
+     * The meter id.
      */
     private String meterId;
 
     /*
-     * The quantity property.
+     * The quantity.
      */
     private Integer quantity;
 
     /*
-     * The extendedUnit property.
+     * The extended unit.
      */
     private String extendedUnit;
 
@@ -39,7 +39,7 @@ public final class SkuCost implements JsonSerializable<SkuCost> {
     }
 
     /**
-     * Get the meterId property: The meterId property.
+     * Get the meterId property: The meter id.
      * 
      * @return the meterId value.
      */
@@ -48,7 +48,7 @@ public final class SkuCost implements JsonSerializable<SkuCost> {
     }
 
     /**
-     * Set the meterId property: The meterId property.
+     * Set the meterId property: The meter id.
      * 
      * @param meterId the meterId value to set.
      * @return the SkuCost object itself.
@@ -59,7 +59,7 @@ public final class SkuCost implements JsonSerializable<SkuCost> {
     }
 
     /**
-     * Get the quantity property: The quantity property.
+     * Get the quantity property: The quantity.
      * 
      * @return the quantity value.
      */
@@ -68,7 +68,7 @@ public final class SkuCost implements JsonSerializable<SkuCost> {
     }
 
     /**
-     * Set the quantity property: The quantity property.
+     * Set the quantity property: The quantity.
      * 
      * @param quantity the quantity value to set.
      * @return the SkuCost object itself.
@@ -79,7 +79,7 @@ public final class SkuCost implements JsonSerializable<SkuCost> {
     }
 
     /**
-     * Get the extendedUnit property: The extendedUnit property.
+     * Get the extendedUnit property: The extended unit.
      * 
      * @return the extendedUnit value.
      */
@@ -88,7 +88,7 @@ public final class SkuCost implements JsonSerializable<SkuCost> {
     }
 
     /**
-     * Set the extendedUnit property: The extendedUnit property.
+     * Set the extendedUnit property: The extended unit.
      * 
      * @param extendedUnit the extendedUnit value to set.
      * @return the SkuCost object itself.

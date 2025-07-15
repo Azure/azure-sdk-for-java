@@ -18,12 +18,12 @@ import java.util.List;
 @Fluent
 public class ThirdPartyProviderAuthorization implements JsonSerializable<ThirdPartyProviderAuthorization> {
     /*
-     * The authorizations property.
+     * The authorizations.
      */
     private List<LightHouseAuthorization> authorizations;
 
     /*
-     * The managedByTenantId property.
+     * The managed by tenant id.
      */
     private String managedByTenantId;
 
@@ -34,7 +34,7 @@ public class ThirdPartyProviderAuthorization implements JsonSerializable<ThirdPa
     }
 
     /**
-     * Get the authorizations property: The authorizations property.
+     * Get the authorizations property: The authorizations.
      * 
      * @return the authorizations value.
      */
@@ -43,7 +43,7 @@ public class ThirdPartyProviderAuthorization implements JsonSerializable<ThirdPa
     }
 
     /**
-     * Set the authorizations property: The authorizations property.
+     * Set the authorizations property: The authorizations.
      * 
      * @param authorizations the authorizations value to set.
      * @return the ThirdPartyProviderAuthorization object itself.
@@ -54,7 +54,7 @@ public class ThirdPartyProviderAuthorization implements JsonSerializable<ThirdPa
     }
 
     /**
-     * Get the managedByTenantId property: The managedByTenantId property.
+     * Get the managedByTenantId property: The managed by tenant id.
      * 
      * @return the managedByTenantId value.
      */
@@ -63,7 +63,7 @@ public class ThirdPartyProviderAuthorization implements JsonSerializable<ThirdPa
     }
 
     /**
-     * Set the managedByTenantId property: The managedByTenantId property.
+     * Set the managedByTenantId property: The managed by tenant id.
      * 
      * @param managedByTenantId the managedByTenantId value to set.
      * @return the ThirdPartyProviderAuthorization object itself.
