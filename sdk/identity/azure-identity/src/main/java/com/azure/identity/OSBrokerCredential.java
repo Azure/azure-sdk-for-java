@@ -15,7 +15,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 class OSBrokerCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(OSBrokerCredential.class);
-    private static final String BROKER_BUILDER_CLASS = "com.azure.identity.broker.InteractiveBrowserBrokerCredentialBuilder";
+    private static final String BROKER_BUILDER_CLASS
+        = "com.azure.identity.broker.InteractiveBrowserBrokerCredentialBuilder";
     private final String tenantId;
     private final AtomicReference<TokenCredential> cached = new AtomicReference<>();
 
@@ -49,11 +50,12 @@ class OSBrokerCredential implements TokenCredential {
     }
 
     private TokenCredential createBrokerCredential() {
-        final String troubleshoot = " To mitigate this issue, refer to http://aka.ms/azsdk/java/identity/dacbrokerauth/troubleshoot";
+        final String troubleshoot
+            = " To mitigate this issue, refer to http://aka.ms/azsdk/java/identity/dacbrokerauth/troubleshoot";
         if (!IdentityUtil.isBrokerAvailable()) {
             throw LOGGER.logExceptionAsError(
                 new CredentialUnavailableException("azure-identity-broker dependency is not available. "
-                + "Ensure you have azure-identity-broker dependency added to your application." + troubleshoot));
+                    + "Ensure you have azure-identity-broker dependency added to your application." + troubleshoot));
         }
         try {
             Class<?> builderClass = Class.forName(BROKER_BUILDER_CLASS);
@@ -67,12 +69,14 @@ class OSBrokerCredential implements TokenCredential {
             }
             return browserCredentialBuilder.build();
         } catch (ClassNotFoundException e) {
-            throw LOGGER.logExceptionAsError(
-                new CredentialUnavailableException("InteractiveBrowserBrokerCredentialBuilder class not found. "
-                + "Ensure you have azure-identity-broker dependency added to your application." + troubleshoot, e));
+            throw LOGGER
+                .logExceptionAsError(new CredentialUnavailableException(
+                    "InteractiveBrowserBrokerCredentialBuilder class not found. "
+                        + "Ensure you have azure-identity-broker dependency added to your application." + troubleshoot,
+                    e));
         } catch (Exception e) {
-            throw LOGGER.logExceptionAsError(
-                new CredentialUnavailableException("Failed to create InteractiveBrowserBrokerCredential dynamically." + troubleshoot, e));
+            throw LOGGER.logExceptionAsError(new CredentialUnavailableException(
+                "Failed to create InteractiveBrowserBrokerCredential dynamically." + troubleshoot, e));
         }
     }
 }
