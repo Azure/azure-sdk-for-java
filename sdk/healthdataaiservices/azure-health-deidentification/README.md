@@ -59,6 +59,8 @@ Given an input text, the de-identification service can perform three main operat
 When using the `Tag` operation, the service will return the locations of PHI entities in the input text. These locations will be represented as offsets and lengths, each of which is a [StringIndex][string_index] containing
 three properties corresponding to three different text encodings. **Java applications should call `getUtf16()`.**
 
+For more on text encoding, see [Character encoding in .NET][character_encoding].
+
 ### Available endpoints
 There are two ways to interact with the de-identification service. You can send text directly, or you can create jobs 
 to de-identify documents in Azure Storage.
