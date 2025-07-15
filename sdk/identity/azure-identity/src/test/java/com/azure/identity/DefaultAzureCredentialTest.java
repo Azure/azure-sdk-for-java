@@ -659,7 +659,7 @@ public class DefaultAzureCredentialTest {
         List<TokenCredential> credentials = extractCredentials(credential);
 
         // Only developer credentials should be present (4)
-        assertEquals(5, credentials.size());
+        assertEquals(6, credentials.size());
 
         // Verify developer credentials in order
         assertInstanceOf(IntelliJCredential.class, credentials.get(0));
@@ -667,6 +667,7 @@ public class DefaultAzureCredentialTest {
         assertInstanceOf(AzureCliCredential.class, credentials.get(2));
         assertInstanceOf(AzurePowerShellCredential.class, credentials.get(3));
         assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(4));
+        assertInstanceOf(OSBrokerCredential.class, credentials.get(5));
     }
 
     @ParameterizedTest
@@ -772,8 +773,8 @@ public class DefaultAzureCredentialTest {
         // Extract credentials to check their types and order
         List<TokenCredential> credentials = extractCredentials(credential);
 
-        // Verify the complete chain with all 7 credentials
-        assertEquals(8, credentials.size());
+        // Verify the complete chain with all 9 credentials
+        assertEquals(9, credentials.size());
         assertInstanceOf(EnvironmentCredential.class, credentials.get(0));
         assertInstanceOf(WorkloadIdentityCredential.class, credentials.get(1));
         assertInstanceOf(ManagedIdentityCredential.class, credentials.get(2));
@@ -782,6 +783,7 @@ public class DefaultAzureCredentialTest {
         assertInstanceOf(AzureCliCredential.class, credentials.get(5));
         assertInstanceOf(AzurePowerShellCredential.class, credentials.get(6));
         assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(7));
+        assertInstanceOf(OSBrokerCredential.class, credentials.get(8));
     }
 
     /**

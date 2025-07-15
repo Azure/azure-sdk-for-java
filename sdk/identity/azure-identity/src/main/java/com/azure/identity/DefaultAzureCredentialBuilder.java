@@ -18,8 +18,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
-
-
 /**
  * <p>Fluent credential builder for instantiating {@link DefaultAzureCredential}.</p>
  *
@@ -342,7 +340,6 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         credentials.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
         credentials.add(new OSBrokerCredential(tenantId));
     }
-
 
     private WorkloadIdentityCredential getWorkloadIdentityCredential() {
         Configuration configuration = identityClientOptions.getConfiguration() == null
