@@ -434,6 +434,7 @@ public class TaskTests extends BatchClientTestBase {
             System.out.printf("Expect exception %s", ex.toString());
         }
     }
+
     @SyncAsyncTest
     public void failIfPoisonTaskTooLarge() throws Exception {
         //This test will temporarily only run in Live/Record mode. It runs fine in Playback mode too on Mac and Windows machines.
