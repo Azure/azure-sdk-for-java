@@ -321,8 +321,12 @@ public class DefaultAzureCredentialTest {
                 = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
                     when(intelliJCredential.getToken(request)).thenReturn(
                         Mono.error(new CredentialUnavailableException("Cannot get token from IntelliJ Credential")));
+                });
+            MockedConstruction<OSBrokerCredential> osBrokerCredentialMock
+                = mockConstruction(OSBrokerCredential.class, (osBrokerCredential, context) -> {
+                    when(osBrokerCredential.getToken(request)).thenReturn(
+                        Mono.error(new CredentialUnavailableException("Cannot get token from OS Broker credential")));
                 })) {
-
             // test
             DefaultAzureCredential credential
                 = new DefaultAzureCredentialBuilder().configuration(configuration).build();
@@ -335,6 +339,7 @@ public class DefaultAzureCredentialTest {
             Assertions.assertNotNull(azureDeveloperCliCredentialMock);
             Assertions.assertNotNull(azurePowerShellCredentialMock);
             Assertions.assertNotNull(intelliJCredentialMock);
+            Assertions.assertNotNull(osBrokerCredentialMock);
         }
     }
 
@@ -368,7 +373,13 @@ public class DefaultAzureCredentialTest {
                 = mockConstruction(AzureDeveloperCliCredential.class, (AzureDeveloperCliCredential, context) -> {
                     when(AzureDeveloperCliCredential.getToken(request)).thenReturn(Mono.error(
                         new CredentialUnavailableException("Cannot get token from Azure Developer CLI credential")));
+                });
+            MockedConstruction<OSBrokerCredential> osBrokerCredentialMock
+                = mockConstruction(OSBrokerCredential.class, (osBrokerCredential, context) -> {
+                    when(osBrokerCredential.getToken(request)).thenReturn(
+                        Mono.error(new CredentialUnavailableException("Cannot get token from OS Broker credential")));
                 })) {
+
             // test
             DefaultAzureCredential credential
                 = new DefaultAzureCredentialBuilder().configuration(configuration).build();
@@ -381,8 +392,8 @@ public class DefaultAzureCredentialTest {
             Assertions.assertNotNull(powerShellCredentialMock);
             Assertions.assertNotNull(azureCliCredentialMock);
             Assertions.assertNotNull(azureDeveloperCliCredentialMock);
+            Assertions.assertNotNull(osBrokerCredentialMock);
         }
-
     }
 
     @Test
