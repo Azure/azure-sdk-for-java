@@ -273,7 +273,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                     Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
                             this.defaultEndpoint,
                             new ArrayList<>(this.getEffectivePreferredRegions()),
-                            this::getDatabaseAccountAsync);
+                        this::getDatabaseAccountAsync);
 
                     return databaseAccountObs.map(dbAccount -> {
                         this.databaseAccountWriteLock.lock();
@@ -340,7 +340,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
                             logger.debug("startRefreshLocationTimerAsync() - Invoking refresh, I was registered on [{}]", now);
                             Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(this.getEffectivePreferredRegions()),
-                                    this::getDatabaseAccountAsync);
+                                this::getDatabaseAccountAsync);
 
                             return databaseAccountObs.flatMap(dbAccount -> {
                                 logger.info("db account retrieved {}", dbAccount);
@@ -360,7 +360,7 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.hasThinClientReadLocations.get();
     }
 
-    private Mono<DatabaseAccount> getDatabaseAccountAsync(URI serviceEndpoint) {
+    public Mono<DatabaseAccount> getDatabaseAccountAsync(URI serviceEndpoint) {
         return this.owner.getDatabaseAccountFromEndpoint(serviceEndpoint)
             .doOnNext(databaseAccount -> {
                 if(databaseAccount != null) {
@@ -399,7 +399,7 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.connectionPolicy;
     }
 
-    private List<String> getEffectivePreferredRegions() {
+    public List<String> getEffectivePreferredRegions() {
 
         if (this.connectionPolicy.getPreferredRegions() != null && !this.connectionPolicy.getPreferredRegions().isEmpty()) {
             return this.connectionPolicy.getPreferredRegions();
@@ -418,5 +418,9 @@ public class GlobalEndpointManager implements AutoCloseable {
         } finally {
             this.databaseAccountReadLock.unlock();
         }
+    }
+
+    public DatabaseAccount getDatabaseAccount() {
+        return this.latestDatabaseAccount;
     }
 }
