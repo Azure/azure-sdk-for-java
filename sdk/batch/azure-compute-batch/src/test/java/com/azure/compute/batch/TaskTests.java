@@ -5,6 +5,7 @@ package com.azure.compute.batch;
 import com.azure.compute.batch.models.BatchApplicationPackageReference;
 import com.azure.compute.batch.models.BatchClientParallelOptions;
 import com.azure.compute.batch.models.BatchErrorSourceCategory;
+import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobCreateParameters;
 import com.azure.compute.batch.models.BatchPoolInfo;
 import com.azure.compute.batch.models.BatchTask;
@@ -31,6 +32,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.storage.blob.BlobContainerClient;
@@ -119,8 +121,13 @@ public class TaskTests extends BatchClientTestBase {
                 // Ignore here
             }
 
+            // DELETE
             try {
-                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
+                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+
+                deletePoller.waitForCompletion();
             } catch (Exception e) {
                 // Ignore here
             }
@@ -164,8 +171,13 @@ public class TaskTests extends BatchClientTestBase {
             }
 
         } finally {
+            // DELETE
             try {
-                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
+                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+
+                deletePoller.waitForCompletion();
             } catch (Exception e) {
                 // Ignore here
             }
@@ -316,7 +328,11 @@ public class TaskTests extends BatchClientTestBase {
             throw e;
         } finally {
             try {
-                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
+                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+
+                deletePoller.waitForCompletion();
             } catch (Exception e) {
                 // Ignore here
             }
@@ -374,7 +390,11 @@ public class TaskTests extends BatchClientTestBase {
             Assertions.assertEquals(taskListCount, taskCount);
         } finally {
             try {
-                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
+                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+
+                deletePoller.waitForCompletion();
             } catch (Exception e) {
                 // Ignore here
             }
@@ -451,20 +471,33 @@ public class TaskTests extends BatchClientTestBase {
             SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd),
                 () -> batchAsyncClient.createTasks(jobId, tasksToAdd));
             try {
-                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
+                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+                deletePoller.waitForCompletion();
             } catch (Exception e) {
                 // Ignore here
             }
         } catch (HttpResponseException err) {
+            // DELETE
             try {
-                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
+                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+
+                deletePoller.waitForCompletion();
             } catch (Exception e) {
                 // Ignore here
             }
             Assertions.assertEquals(413, err.getResponse().getStatusCode());
         } catch (Exception err) {
+            // DELETE
             try {
-                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
+                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+
+                deletePoller.waitForCompletion();
             } catch (Exception e) {
                 // Ignore here
             }
@@ -514,13 +547,21 @@ public class TaskTests extends BatchClientTestBase {
             SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd, option),
                 () -> batchAsyncClient.createTasks(jobId, tasksToAdd, option));
             try {
-                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
+                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+                deletePoller.waitForCompletion();
             } catch (Exception e) {
                 // Ignore here
             }
         } catch (Exception err) {
+            // DELETE
             try {
-                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
+                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+
+                deletePoller.waitForCompletion();
             } catch (Exception e) {
                 // Ignore here
             }
@@ -582,7 +623,10 @@ public class TaskTests extends BatchClientTestBase {
             Assertions.assertEquals(taskCount, allSlots);
         } finally {
             try {
-                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
+                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+                deletePoller.waitForCompletion();
             } catch (Exception e) {
                 // Ignore here
             }
@@ -685,7 +729,10 @@ public class TaskTests extends BatchClientTestBase {
                 if (getTestMode() == TestMode.RECORD) {
                     containerClient.delete();
                 }
-                SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
+                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+                deletePoller.waitForCompletion();
             } catch (Exception e) {
                 // Ignore here
             }
@@ -730,7 +777,15 @@ public class TaskTests extends BatchClientTestBase {
 
         } finally {
             // Clean up
-            SyncAsyncExtension.execute(() -> batchClient.deleteJob(jobId), () -> batchAsyncClient.deleteJob(jobId));
+            try {
+                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+
+                deletePoller.waitForCompletion();
+            } catch (Exception e) {
+                // Ignore here
+            }
         }
     }
 
