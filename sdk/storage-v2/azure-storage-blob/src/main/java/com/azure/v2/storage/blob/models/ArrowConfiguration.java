@@ -40,9 +40,6 @@ public final class ArrowConfiguration implements XmlSerializable<ArrowConfigurat
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public List<ArrowField> getSchema() {
-        if (this.schema == null) {
-            this.schema = new ArrayList<>();
-        }
         return this.schema;
     }
 
