@@ -146,7 +146,7 @@ server.registerTool(
     },
 );
 
-// Tool: sync_typespec_source_file
+// Tool: sync_typespec_source_files
 server.registerTool(
     "sync_typespec_source_files",
     {
