@@ -12,9 +12,10 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.SharedExecutorService;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
-import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.IdentityUtil;
+import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.LoggingUtil;
+import com.azure.identity.implementation.util.PowerShellUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 import com.azure.json.JsonProviders;
@@ -442,18 +443,8 @@ public class IdentityClient extends IdentityClientBase {
         return Mono.defer(() -> {
             String sep = System.lineSeparator();
 
-            String command = "$ErrorActionPreference = 'Stop'" + sep + "[version]$minimumVersion = '2.2.0'" + sep + ""
-                + sep
-                + "$m = Import-Module Az.Accounts -MinimumVersion $minimumVersion -PassThru -ErrorAction SilentlyContinue"
-                + sep + "" + sep + "if (! $m) {" + sep + "    Write-Output 'VersionTooOld'" + sep + "    exit" + sep
-                + "}" + sep + "" + sep + "$useSecureString = $m.Version -ge [version]'2.17.0'" + sep + "" + sep
-                + "$params = @{" + sep + "    'WarningAction'='Ignore'" + sep + "    'ResourceUrl'='" + scope + "'"
-                + sep + "}" + sep + "" + sep + "if ($useSecureString) {" + sep + "    $params['AsSecureString'] = $true"
-                + sep + "}" + sep + "" + sep + "$token = Get-AzAccessToken @params" + sep
-                + "$customToken = New-Object -TypeName psobject" + sep + "" + sep
-                + "$customToken | Add-Member -MemberType NoteProperty -Name Token -Value ($useSecureString -eq $true ? (ConvertFrom-SecureString -AsPlainText $token.Token) : $token.Token)"
-                + sep + "$customToken | Add-Member -MemberType NoteProperty -Name ExpiresOn -Value $token.ExpiresOn"
-                + sep + "" + sep + "return $customToken | ConvertTo-Json";
+            String command = PowerShellUtil.getPwshCommand(tenantId, scope, sep);
+
             return powershellManager.runCommand(command).flatMap(output -> {
                 if (output.contains("VersionTooOld")) {
                     return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,

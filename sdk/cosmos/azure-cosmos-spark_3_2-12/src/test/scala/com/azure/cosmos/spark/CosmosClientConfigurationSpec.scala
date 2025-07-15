@@ -220,7 +220,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     azMonCfg.authConfig shouldEqual None
     azMonCfg.liveMetricsEnabled shouldEqual true
     azMonCfg.samplingRate shouldEqual 0.05f
-    azMonCfg.samplingRateMaxCount shouldEqual 100000
+    azMonCfg.samplingRateMaxCount shouldEqual 10000
     azMonCfg.samplingRateIntervalInSeconds shouldEqual 60
 
     AzureMonitorConfig.resetForUsageInTest()
@@ -265,7 +265,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     azMonCfg.authEnabled shouldEqual true
     azMonCfg.liveMetricsEnabled shouldEqual true
     azMonCfg.samplingRate shouldEqual 0.05f
-    azMonCfg.samplingRateMaxCount shouldEqual 100000
+    azMonCfg.samplingRateMaxCount shouldEqual 10000
     azMonCfg.samplingRateIntervalInSeconds shouldEqual 60
     azMonCfg.authConfig.isDefined shouldEqual true
     val miAuthCfg = azMonCfg.authConfig.get.asInstanceOf[CosmosManagedIdentityAuthConfig]
