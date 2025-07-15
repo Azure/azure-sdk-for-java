@@ -41,12 +41,12 @@ then
 fi
 
 echo "Deleting files in dbfs:/tmp/libraries/$JARFILE"
-dbfs rm dbfs:/tmp/libraries/$JARFILE
-dbfs ls dbfs:/tmp/libraries/
+databricks fs rm dbfs:/tmp/libraries/$JARFILE
+databricks fs ls dbfs:/tmp/libraries/
 
 echo "Copying files to DBFS $JARPATH/$JARFILE"
-dbfs cp $JARPATH/$JARFILE dbfs:/tmp/libraries/$JARFILE --overwrite
-dbfs ls dbfs:/tmp/libraries/
+databricks fs cp $JARPATH/$JARFILE dbfs:/tmp/libraries/$JARFILE --overwrite
+databricks fs ls dbfs:/tmp/libraries/
 
 echo "Installing $JARFILE in $CLUSTER_ID"
 databricks libraries install --cluster-id $CLUSTER_ID --jar dbfs:/tmp/libraries/$JARFILE
