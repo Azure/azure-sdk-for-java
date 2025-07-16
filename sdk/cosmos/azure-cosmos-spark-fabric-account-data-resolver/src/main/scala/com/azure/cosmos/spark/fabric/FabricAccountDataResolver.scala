@@ -66,9 +66,12 @@ private object FabricConfigNames {
 private case class ConfigParameters(audience: Option[String], accountDataResolverServiceName: Option[String])
 private object ConfigParameters {
   def apply(configs: Map[String, String]): ConfigParameters = {
+    // lookup keys case-insensitively to accept lowercase variations
+    def getIgnoreCase(key: String): Option[String] =
+      configs.collectFirst { case (k, v) if k.equalsIgnoreCase(key) => v }
     new ConfigParameters(
-      configs.get(FabricConfigNames.Audience),
-      configs.get(AccountDataResolverServiceName)
+      getIgnoreCase(FabricConfigNames.Audience),
+      getIgnoreCase(AccountDataResolverServiceName)
     )
   }
 }
