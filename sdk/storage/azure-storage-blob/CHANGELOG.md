@@ -10,13 +10,6 @@
 
 ### Other Changes
 
-## 12.32.0-beta.1 (2025-07-09)
-
-### Features Added
-- AppendBlobClient.AppendBlobFromUri(), .AppendBlockFromUriAsync(), BlobBaseClient.StartCopyFromUri(), .StartCopyFromUriAsync(), SyncCopyFromUri(), .SyncCopyFromUriAsync(), BlockBlobClient.StageBlockFromUri(), .StageBlockFromUriAsync(), PageBlobClient.UploadPagesFromUri(), and .UploadPagesFromUri() will now return CopySourceStatusCode, CopySourceErrorCode, and CopySourceErrorMessage as part of error responses.
-- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
-- Added support for service version 2025-11-05.
-
 ## 12.31.0 (2025-07-16)
 
 ### Features Added
@@ -31,6 +24,13 @@
 - Upgraded `azure-storage-internal-avro` from `12.15.0` to version `12.15.0`.
 - Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
 - Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+
+## 12.32.0-beta.1 (2025-07-09)
+
+### Features Added
+- AppendBlobClient.AppendBlobFromUri(), .AppendBlockFromUriAsync(), BlobBaseClient.StartCopyFromUri(), .StartCopyFromUriAsync(), SyncCopyFromUri(), .SyncCopyFromUriAsync(), BlockBlobClient.StageBlockFromUri(), .StageBlockFromUriAsync(), PageBlobClient.UploadPagesFromUri(), and .UploadPagesFromUri() will now return CopySourceStatusCode, CopySourceErrorCode, and CopySourceErrorMessage as part of error responses.
+- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
+- Added support for service version 2025-11-05.
 
 ## 12.30.1 (2025-06-19)
 
