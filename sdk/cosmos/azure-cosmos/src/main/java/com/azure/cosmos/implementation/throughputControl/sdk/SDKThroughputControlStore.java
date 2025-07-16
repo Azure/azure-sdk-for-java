@@ -17,7 +17,7 @@ import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.throughputControl.EmptyThroughputContainerController;
 import com.azure.cosmos.implementation.throughputControl.IThroughputContainerController;
 import com.azure.cosmos.implementation.throughputControl.sdk.config.SDKThroughputControlGroupInternal;
-import com.azure.cosmos.implementation.throughputControl.sdk.controller.IThroughputController;
+import com.azure.cosmos.implementation.throughputControl.IThroughputController;
 import com.azure.cosmos.implementation.throughputControl.sdk.controller.container.SDKThroughputContainerController;
 import com.azure.cosmos.implementation.throughputControl.sdk.exceptions.ThroughputControlInitializationException;
 import org.slf4j.Logger;
@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.util.HashSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.Exceptions.isNameCacheStale;
@@ -105,9 +104,7 @@ public class SDKThroughputControlStore {
         this.cancellationTokenMap = new ConcurrentHashMap<>();
     }
 
-    public void enableThroughputControlGroup(
-        SDKThroughputControlGroupInternal group,
-        Mono<Integer> throughputQueryMono) {
+    public void enableThroughputControlGroup(SDKThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
         checkNotNull(group, "Throughput control group cannot be null");
 
         String containerNameLink = Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(group.getTargetContainer()));
@@ -253,7 +250,7 @@ public class SDKThroughputControlStore {
                         new SDKThroughputContainerController(
                             this.collectionCache,
                             this.connectionMode,
-                            new HashSet<>(throughputControlContainerProperties.getThroughputControlGroups().values()),
+                            throughputControlContainerProperties.getThroughputControlGroups(),
                             this.partitionKeyRangeCache,
                             parentToken,
                             throughputControlContainerProperties.getThroughputQueryMono());
@@ -298,26 +295,6 @@ public class SDKThroughputControlStore {
                 () -> createAndInitContainerController(containerLink)
             );
         }
-    }
-
-    public boolean hasDefaultGroup(String containerNameLink) {
-        if (this.containerMap.containsKey(containerNameLink)) {
-            return this.containerMap.get(containerNameLink).hasDefaultGroup();
-        }
-
-        return false;
-    }
-
-    public boolean hasGroup(String containerNameLink, String throughputControlGroupName) {
-        if (StringUtils.isEmpty(throughputControlGroupName)) {
-            return false;
-        }
-
-        if (this.containerMap.containsKey(containerNameLink)) {
-            return this.containerMap.get(containerNameLink).hasGroup(throughputControlGroupName);
-        }
-
-        return false;
     }
 
     public void close() {

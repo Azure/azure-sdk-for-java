@@ -2818,7 +2818,6 @@ public class CosmosAsyncContainer {
         this.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig, null);
     }
 
-
     /***
      * Only used internally.
      * <br/>
@@ -2838,7 +2837,7 @@ public class CosmosAsyncContainer {
     }
 
     /***
-     * Enable the service throughput bucket control group.
+     * Enable the server throughput bucket control group.
      * <p>
      * For more information about throughput bucket please visit
      * <a href="https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/throughput-buckets?tabs=dotnet">Throughput buckets in Azure Cosmos DB</a>

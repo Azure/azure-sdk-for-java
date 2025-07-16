@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.implementation.throughputControl.server;
 
 import com.azure.cosmos.BridgeInternal;
@@ -9,8 +12,6 @@ import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.throughputControl.EmptyThroughputContainerController;
 import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroupInternal;
 import com.azure.cosmos.implementation.throughputControl.server.controller.ServerThroughputContainerController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,7 +20,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class ServerThroughputControlStore {
-    private static final Logger logger = LoggerFactory.getLogger(ServerThroughputControlStore.class);
 
     private final AsyncCache<String, ServerThroughputContainerController> containerControllerCache;
     private final ConcurrentHashMap<String, ContainerServerThroughputControlGroupProperties> containerMap;

@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.throughputControl.sdk.controller.request;
 
-import com.azure.cosmos.implementation.throughputControl.sdk.controller.IThroughputController;
+import com.azure.cosmos.implementation.throughputControl.IThroughputController;
 
 /**
  * Represents a throughput request controller.

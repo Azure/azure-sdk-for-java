@@ -41,7 +41,7 @@ import reactor.core.publisher.Mono;
 import reactor.util.retry.RetrySpec;
 
 import java.time.Duration;
-import java.util.Set;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -65,7 +65,7 @@ public class SDKThroughputContainerController implements IThroughputContainerCon
     private final RxCollectionCache collectionCache;
     private final ConnectionMode connectionMode;
     private final AsyncCache<String, ThroughputGroupControllerBase> groupControllerCache;
-    private final Set<SDKThroughputControlGroupInternal> groups;
+    private final Map<String, SDKThroughputControlGroupInternal> groups;
     private final AtomicReference<Integer> maxContainerThroughput;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
     private final CosmosAsyncContainer targetContainer;
@@ -82,7 +82,7 @@ public class SDKThroughputContainerController implements IThroughputContainerCon
     public SDKThroughputContainerController(
         RxCollectionCache collectionCache,
         ConnectionMode connectionMode,
-        Set<SDKThroughputControlGroupInternal> groups,
+        Map<String, SDKThroughputControlGroupInternal> groups,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
         LinkedCancellationToken parentToken,
         Mono<Integer> throughputQueryMono) {
@@ -99,7 +99,7 @@ public class SDKThroughputContainerController implements IThroughputContainerCon
         this.maxContainerThroughput = new AtomicReference<>();
         this.partitionKeyRangeCache = partitionKeyRangeCache;
 
-        this.targetContainer = groups.iterator().next().getTargetContainer();
+        this.targetContainer = groups.values().iterator().next().getTargetContainer();
         this.client = CosmosBridgeInternal.getContextClient(this.targetContainer);
 
         this.throughputProvisioningScope = this.getThroughputResolveLevel(groups);
@@ -109,8 +109,8 @@ public class SDKThroughputContainerController implements IThroughputContainerCon
         this.throughputQueryMono = throughputQueryMono == null ? this.resolveContainerMaxThroughputCore() : throughputQueryMono;
     }
 
-    private ThroughputProvisioningScope getThroughputResolveLevel(Set<SDKThroughputControlGroupInternal> groupConfigs) {
-        if (groupConfigs.stream().anyMatch(groupConfig -> groupConfig.getTargetThroughputThreshold() != null)) {
+    private ThroughputProvisioningScope getThroughputResolveLevel(Map<String, SDKThroughputControlGroupInternal> groupConfigs) {
+        if (groupConfigs.values().stream().anyMatch(groupConfig -> groupConfig.getTargetThroughputThreshold() != null)) {
             // Throughput can be provisioned on container level or database level, will start from container
             return ThroughputProvisioningScope.CONTAINER;
         } else {
@@ -312,15 +312,13 @@ public class SDKThroughputContainerController implements IThroughputContainerCon
             return Mono.just(new Utils.ValueHolder<>(this.defaultGroupController));
         }
 
-        for (SDKThroughputControlGroupInternal group : this.groups) {
-            if (StringUtils.equals(groupName, group.getGroupName())) {
-                return this.resolveThroughputGroupController(group)
-                    .map(Utils.ValueHolder::new);
-            }
+        SDKThroughputControlGroupInternal group = this.groups.get(groupName);
+        if (group == null) {
+            // If the request is associated with a group not enabled, will fall back to the default one.
+            return Mono.just(new Utils.ValueHolder<>(this.defaultGroupController));
         }
 
-        // If the request is associated with a group not enabled, will fall back to the default one.
-        return Mono.just(new Utils.ValueHolder<>(this.defaultGroupController));
+        return this.resolveThroughputGroupController(group).map(Utils.ValueHolder::new);
     }
 
     public String getTargetContainerRid() {
@@ -335,7 +333,7 @@ public class SDKThroughputContainerController implements IThroughputContainerCon
     }
 
     private Mono<SDKThroughputContainerController> createAndInitializeGroupControllers() {
-        return Flux.fromIterable(this.groups)
+        return Flux.fromIterable(this.groups.values())
             .flatMap(this::resolveThroughputGroupController)
             .then(Mono.just(this));
     }
@@ -388,7 +386,7 @@ public class SDKThroughputContainerController implements IThroughputContainerCon
                     return this.resolveContainerMaxThroughput();
                 }
             })
-            .flatMapIterable(controller -> this.groups)
+            .flatMapIterable(controller -> this.groups.values())
             .flatMap(this::resolveThroughputGroupController)
             .doOnNext(groupController -> groupController.onContainerMaxThroughputRefresh(this.maxContainerThroughput.get()))
             .onErrorResume(throwable -> {

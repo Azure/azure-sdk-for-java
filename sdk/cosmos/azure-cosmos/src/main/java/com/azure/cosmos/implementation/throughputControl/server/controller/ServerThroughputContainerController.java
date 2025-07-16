@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.throughputControl.IThroughputContainerController;
-import com.azure.cosmos.implementation.throughputControl.sdk.controller.IThroughputController;
 import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroupInternal;
 import com.azure.cosmos.implementation.throughputControl.server.config.ThroughputBucketControlGroup;
 import org.slf4j.Logger;
@@ -21,7 +20,7 @@ import java.util.Map;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class ServerThroughputContainerController implements IThroughputController {
+public class ServerThroughputContainerController implements IThroughputContainerController {
     private static final Logger logger = LoggerFactory.getLogger(ServerThroughputContainerController.class);
 
     private final AsyncCache<String, ServerThroughputGroupControllerBase> groupControllerCache;

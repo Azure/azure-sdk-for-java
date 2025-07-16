@@ -14,7 +14,7 @@ import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.throughputControl.sdk.LinkedCancellationToken;
 import com.azure.cosmos.implementation.throughputControl.sdk.LinkedCancellationTokenSource;
 import com.azure.cosmos.implementation.throughputControl.sdk.config.SDKThroughputControlGroupInternal;
-import com.azure.cosmos.implementation.throughputControl.sdk.controller.IThroughputController;
+import com.azure.cosmos.implementation.throughputControl.IThroughputController;
 import com.azure.cosmos.implementation.throughputControl.sdk.controller.request.GlobalThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.sdk.controller.request.IThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.sdk.controller.request.PkRangesThroughputRequestController;

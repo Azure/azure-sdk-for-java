@@ -1,9 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.implementation.throughputControl.server;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroupInternal;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,7 +14,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class ContainerServerThroughputControlGroupProperties {
-    private static Logger logger  = LoggerFactory.getLogger(ContainerServerThroughputControlGroupProperties.class);
 
     private final String containerNameLink;
     private final AtomicReference<ServerThroughputControlGroupInternal> defaultGroup;

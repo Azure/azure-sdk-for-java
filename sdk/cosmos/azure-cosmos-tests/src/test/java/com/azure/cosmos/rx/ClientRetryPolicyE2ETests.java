@@ -13,6 +13,7 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
+import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
@@ -20,7 +21,6 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.throughputControl.sdk.TestItem;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -151,7 +151,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
     @Test(groups = { "multi-master" }, dataProvider = "preferredRegionsConfigProvider", timeOut = TIMEOUT)
     public void queryPlanHttpTimeoutWillNotMarkRegionUnavailable(boolean shouldUsePreferredRegionsOnClient) {
-        TestItem newItem = TestItem.createNewItem();
+        TestObject newItem = TestObject.create();
 
         CosmosAsyncContainer resultantCosmosAsyncContainer;
         CosmosAsyncClient resultantCosmosAsyncClient;
@@ -194,7 +194,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         try {
             // validate the query plan will be retried in a different region and the final requests will be succeeded
             // TODO: Also capture all retries for metadata requests in the diagnostics
-            FeedResponse<TestItem> firstPage = cosmosAsyncContainerFromClientWithPreferredRegions.queryItems(query, queryRequestOptions, TestItem.class)
+            FeedResponse<TestObject> firstPage = cosmosAsyncContainerFromClientWithPreferredRegions.queryItems(query, queryRequestOptions, TestObject.class)
                 .byPage()
                 .blockFirst();
 
@@ -229,7 +229,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             throw new SkipException("queryPlanHttpTimeoutWillNotMarkRegionUnavailable() is only meant for DIRECT mode");
         }
 
-        TestItem newItem = TestItem.createNewItem();
+        TestObject newItem = TestObject.create();
         resultantCosmosAsyncContainer.createItem(newItem).block();
 
         // create fault injection rules for address refresh
@@ -264,8 +264,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 resultantCosmosAsyncContainer,
                 Arrays.asList(addressRefreshDelayRule, serverGoneRule)).block();
         try {
-            CosmosItemResponse<TestItem> itemResponse = resultantCosmosAsyncContainer
-                .readItem(newItem.getId(), new PartitionKey(newItem.getId()), TestItem.class)
+            CosmosItemResponse<TestObject> itemResponse = resultantCosmosAsyncContainer
+                .readItem(newItem.getId(), new PartitionKey(newItem.getId()), TestObject.class)
                 .block();
 
             assertThat(itemResponse).isNotNull();
@@ -334,7 +334,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 resultantCosmosAsyncContainer,
                 Arrays.asList(addressRefreshDelayRule, serverGoneRule)).block();
         try {
-            TestItem newItem = TestItem.createNewItem();
+            TestObject newItem = TestObject.create();
             resultantCosmosAsyncContainer.createItem(newItem).block();
         } catch (CosmosException e) {
             assertThat(e.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
@@ -372,7 +372,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             throw new SkipException("queryPlanHttpTimeoutWillNotMarkRegionUnavailable() is only meant for GATEWAY mode");
         }
 
-        TestItem newItem = TestItem.createNewItem();
+        TestObject newItem = TestObject.create();
         resultantCosmosAsyncContainer.createItem(newItem).block();
         FaultInjectionRule requestHttpTimeoutRule = new FaultInjectionRuleBuilder("requestHttpTimeoutRule" + UUID.randomUUID())
             .condition(
@@ -398,7 +398,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                             resultantCosmosAsyncContainer,
                             operationType,
                             newItem,
-                            (testItem) -> new PartitionKey(testItem.getId())
+                            (TestObject) -> new PartitionKey(TestObject.getId())
                         ).block();
 
                     assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(this.preferredRegions.size());
@@ -412,7 +412,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                         resultantCosmosAsyncContainer,
                         operationType,
                         newItem,
-                        (testItem) -> new PartitionKey(testItem.getId())
+                        (TestObject) -> new PartitionKey(TestObject.getId())
                     ).block();
                     fail("dataPlaneRequestHttpTimeout() should have failed for operationType " + operationType);
                 } catch (CosmosException e) {
@@ -475,7 +475,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(channelAcquisitionExceptionRule)).block();
 
         try {
-            TestItem createdItem = TestItem.createNewItem();
+            TestObject createdItem = TestObject.create();
             testContainer.createItem(createdItem).block();
 
             // using a higher concurrency to force channelAcquisitionException to happen
@@ -486,7 +486,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                         testContainer,
                         operationType,
                         createdItem,
-                        (testItem) -> new PartitionKey(testItem.getMypk())))
+                        (TestObject) -> new PartitionKey(TestObject.getMypk())))
                 .doOnNext(diagnostics -> {
                     // since we have only injected connection delay error in one region, so we should only see 2 regions being contacted eventually
                     assertThat(diagnostics.getContactedRegionNames().size()).isEqualTo(2);
@@ -538,13 +538,13 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     private Mono<CosmosDiagnostics> performDocumentOperation(
         CosmosAsyncContainer cosmosAsyncContainer,
         OperationType operationType,
-        TestItem createdItem,
-        Function<TestItem, PartitionKey> extractPartitionKeyFunc) {
+        TestObject createdItem,
+        Function<TestObject, PartitionKey> extractPartitionKeyFunc) {
         if (operationType == OperationType.Query) {
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
             String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
-            FeedResponse<TestItem> itemFeedResponse =
-                cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst();
+            FeedResponse<TestObject> itemFeedResponse =
+                cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestObject.class).byPage().blockFirst();
             return Mono.just(itemFeedResponse.getCosmosDiagnostics());
         }
 
@@ -560,7 +560,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     .readItem(
                         createdItem.getId(),
                         extractPartitionKeyFunc.apply(createdItem),
-                        TestItem.class
+                        TestObject.class
                     )
                     .map(itemResponse -> itemResponse.getDiagnostics());
             }
@@ -579,11 +579,11 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             }
 
             if (operationType == OperationType.Create) {
-                return cosmosAsyncContainer.createItem(TestItem.createNewItem()).map(itemResponse -> itemResponse.getDiagnostics());
+                return cosmosAsyncContainer.createItem(TestObject.create()).map(itemResponse -> itemResponse.getDiagnostics());
             }
 
             if (operationType == OperationType.Upsert) {
-                return cosmosAsyncContainer.upsertItem(TestItem.createNewItem()).map(itemResponse -> itemResponse.getDiagnostics());
+                return cosmosAsyncContainer.upsertItem(TestObject.create()).map(itemResponse -> itemResponse.getDiagnostics());
             }
 
             if (operationType == OperationType.Patch) {
@@ -596,7 +596,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                         createdItem.getId(),
                         extractPartitionKeyFunc.apply(createdItem),
                         patchOperations,
-                        TestItem.class)
+                        TestObject.class)
                     .map(itemResponse -> itemResponse.getDiagnostics());
             }
         }
@@ -606,8 +606,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             CosmosChangeFeedRequestOptions changeFeedRequestOptions =
                 CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
 
-            FeedResponse<TestItem> firstPage =  cosmosAsyncContainer
-                .queryChangeFeed(changeFeedRequestOptions, TestItem.class)
+            FeedResponse<TestObject> firstPage =  cosmosAsyncContainer
+                .queryChangeFeed(changeFeedRequestOptions, TestObject.class)
                 .byPage()
                 .blockFirst();
             return Mono.just(firstPage.getCosmosDiagnostics());

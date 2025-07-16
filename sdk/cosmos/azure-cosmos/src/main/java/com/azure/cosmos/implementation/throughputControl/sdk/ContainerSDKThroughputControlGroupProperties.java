@@ -97,7 +97,6 @@ public class ContainerSDKThroughputControlGroupProperties {
         return Pair.of(this.throughputControlGroups.size(), updatedGroupConfig.get());
     }
 
-    // TODO: double check the data structure here
     public Map<String, SDKThroughputControlGroupInternal> getThroughputControlGroups() {
         return this.throughputControlGroups;
     }
@@ -120,9 +119,6 @@ public class ContainerSDKThroughputControlGroupProperties {
         return this.supressInitErrorGroupSet.contains(requestGroupName);
     }
 
-    public boolean isNotEmpty() {
-        return !this.throughputControlGroups.isEmpty();
-    }
     public boolean hasDefaultGroup() {
         return this.defaultGroup.get() != null;
     }

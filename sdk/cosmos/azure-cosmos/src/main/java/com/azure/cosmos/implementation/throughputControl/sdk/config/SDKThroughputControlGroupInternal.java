@@ -200,7 +200,6 @@ public abstract class SDKThroughputControlGroupInternal {
                 && Objects.equals(this.priorityLevel, that.priorityLevel);
     }
 
-
     public boolean hasSameIdentity(Object other) {
         if (this == other) {
             return true;

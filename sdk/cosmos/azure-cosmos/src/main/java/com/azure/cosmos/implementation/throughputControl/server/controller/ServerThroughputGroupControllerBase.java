@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.throughputControl.server.controller;
 
-import com.azure.cosmos.implementation.throughputControl.sdk.controller.IThroughputController;
+import com.azure.cosmos.implementation.throughputControl.IThroughputController;
 
 public abstract class ServerThroughputGroupControllerBase implements IThroughputController {
 }
