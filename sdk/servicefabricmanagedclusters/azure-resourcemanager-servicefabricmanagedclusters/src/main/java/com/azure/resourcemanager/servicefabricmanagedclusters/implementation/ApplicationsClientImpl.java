@@ -1941,8 +1941,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all managed application resources created or in the process of being created in the Service Fabric
+     * cluster resource along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -1967,7 +1967,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application resources along with {@link PagedResponse}.
+     * @return all managed application resources created or in the process of being created in the Service Fabric
+     * cluster resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationResourceInner> listNextSinglePage(String nextLink) {
@@ -1995,7 +1996,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application resources along with {@link PagedResponse}.
+     * @return all managed application resources created or in the process of being created in the Service Fabric
+     * cluster resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationResourceInner> listNextSinglePage(String nextLink, Context context) {

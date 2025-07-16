@@ -3954,8 +3954,8 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NodeType list operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all Node types of the specified managed cluster along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NodeTypeInner>> listByManagedClustersNextSinglePageAsync(String nextLink) {
@@ -3982,7 +3982,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NodeType list operation along with {@link PagedResponse}.
+     * @return all Node types of the specified managed cluster along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeTypeInner> listByManagedClustersNextSinglePage(String nextLink) {
@@ -4010,7 +4010,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NodeType list operation along with {@link PagedResponse}.
+     * @return all Node types of the specified managed cluster along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeTypeInner> listByManagedClustersNextSinglePage(String nextLink, Context context) {
@@ -4037,7 +4037,8 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fault simulation list results along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of recent fault simulations for the node type along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FaultSimulationInner>> listFaultSimulationNextSinglePageAsync(String nextLink) {
@@ -4064,7 +4065,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fault simulation list results along with {@link PagedResponse}.
+     * @return the list of recent fault simulations for the node type along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationNextSinglePage(String nextLink) {
@@ -4092,7 +4093,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fault simulation list results along with {@link PagedResponse}.
+     * @return the list of recent fault simulations for the node type along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationNextSinglePage(String nextLink, Context context) {
