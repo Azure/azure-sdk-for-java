@@ -275,6 +275,7 @@ public class Netty4ConnectionPool implements Closeable {
         private final Deque<Promise<Channel>> pendingAcquirers = new ConcurrentLinkedDeque<>();
         // Counter for all connections for a specific route (active and idle).
         private final AtomicInteger totalConnections = new AtomicInteger(0);
+        private final AtomicBoolean dispatching = new AtomicBoolean(false);
         private final Netty4ConnectionPoolKey key;
         private final SocketAddress route;
         private final boolean isHttps;
@@ -310,28 +311,90 @@ public class Netty4ConnectionPool implements Closeable {
                 return connection.channel.eventLoop().newSucceededFuture(connection.channel);
             }
 
-            // No idle connections, we need to either create a new one or queue.
-            int currentTotal = totalConnections.getAndIncrement();
-            if (currentTotal < maxConnectionsPerRoute) {
-                return createNewConnection();
+            Promise<Channel> promise = bootstrap.config().group().next().newPromise();
+            if (pendingAcquirers.size() >= maxPendingAcquires) {
+                promise.setFailure(CoreException.from("Pending acquisition queue is full."));
+                return promise;
             }
 
-            // Pool is full, decrement the counter back and queue the request.
-            totalConnections.getAndDecrement();
-            return queueAcquireRequest();
+            pendingAcquirers.offer(promise);
+            dispatch();
+
+            if (pendingAcquireTimeout != null) {
+                promise.addListener(future -> {
+                    if (future.isCancelled()) {
+                        pendingAcquirers.remove(promise);
+                    }
+                });
+
+                bootstrap.config().group().schedule(() -> {
+                    if (promise.tryFailure(
+                        CoreException.from("Connection acquisition timed out after " + pendingAcquireTimeout))) {
+                        pendingAcquirers.remove(promise);
+                    }
+                }, pendingAcquireTimeout.toMillis(), TimeUnit.MILLISECONDS);
+            }
+            return promise;
         }
 
         void release(PooledConnection connection) {
             if (!isHealthy(connection)) {
-                connection.close(); // The close listener will handle decrementing the counter.
+                connection.close();
+                return;
+            }
+            connection.idleSince = OffsetDateTime.now(ZoneOffset.UTC);
+            idleConnections.offer(connection);
+            dispatch();
+        }
+
+        private void dispatch() {
+            if (!dispatching.compareAndSet(false, true)) {
                 return;
             }
 
-            connection.idleSince = OffsetDateTime.now(ZoneOffset.UTC);
+            try {
+                while (!pendingAcquirers.isEmpty()) {
+                    PooledConnection idleConnection = pollIdleConnection();
+                    if (idleConnection != null) {
+                        Promise<Channel> waiter = pollNextWaiter();
+                        if (waiter != null) {
+                            if (!waiter.trySuccess(idleConnection.channel)) {
+                                release(idleConnection);
+                            }
+                        } else {
+                            idleConnections.addFirst(idleConnection);
+                            break;
+                        }
+                        continue;
+                    }
 
-            // Offer to the idle queue and then try to satisfy pending waiters.
-            idleConnections.offer(connection);
-            satisfyWaiter();
+                    if (totalConnections.get() < maxConnectionsPerRoute) {
+                        if (totalConnections.incrementAndGet() > maxConnectionsPerRoute) {
+                            totalConnections.decrementAndGet();
+                            break;
+                        }
+
+                        Promise<Channel> waiter = pollNextWaiter();
+                        if (waiter != null) {
+                            createNewConnection().addListener(future -> {
+                                if (future.isSuccess()) {
+                                    if (!waiter.trySuccess((Channel) future.getNow())) {
+                                        release(((Channel) future.getNow()).attr(POOLED_CONNECTION_KEY).get());
+                                    }
+                                } else {
+                                    waiter.tryFailure(future.cause());
+                                }
+                            });
+                        } else {
+                            totalConnections.decrementAndGet();
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            } finally {
+                dispatching.set(false);
+            }
         }
 
         private PooledConnection pollIdleConnection() {
@@ -340,107 +403,11 @@ public class Netty4ConnectionPool implements Closeable {
                 if (connection == null) {
                     return null;
                 }
-
                 if (isHealthy(connection)) {
                     connection.idleSince = null; // Mark as active
                     return connection;
                 }
-
-                connection.close(); // The close listener will handle decrementing the counter.
-            }
-        }
-
-        /**
-         * Queues a new promise for a connection.
-         * This is called when the pool is at max capacity.
-         *
-         * @return A Future that will be completed later.
-         */
-        private Future<Channel> queueAcquireRequest() {
-            if (pendingAcquirers.size() >= maxPendingAcquires) {
-                return bootstrap.config()
-                    .group()
-                    .next()
-                    .newFailedFuture(CoreException.from("Pending acquisition queue is full."));
-            }
-
-            Promise<Channel> promise = bootstrap.config().group().next().newPromise();
-            promise.addListener(future -> {
-                if (future.isCancelled()) {
-                    pendingAcquirers.remove(promise);
-                }
-            });
-            pendingAcquirers.offer(promise);
-            if (pendingAcquireTimeout != null) {
-                bootstrap.config().group().schedule(() -> {
-                    if (!promise.isDone()) {
-                        promise.tryFailure(
-                            CoreException.from("Connection acquisition timed out after " + pendingAcquireTimeout));
-                    }
-                }, pendingAcquireTimeout.toMillis(), TimeUnit.MILLISECONDS);
-            }
-            satisfyWaiter();
-            return promise;
-        }
-
-        /**
-         * This is the core logic that matches pending waiters with available resources.
-         * It can be triggered when a connection is released, or when a slot opens up.
-         */
-        private void satisfyWaiter() {
-            if (pendingAcquirers.isEmpty()) {
-                return;
-            }
-
-            // First, try to get a ready-to-use idle connection.
-            PooledConnection idleConnection = pollIdleConnection();
-            if (idleConnection != null) {
-                Promise<Channel> waiter = pollNextWaiter();
-                if (waiter != null) {
-                    if (!waiter.trySuccess(idleConnection.channel)) {
-                        // Waiter was canceled, release the connection back.
-                        release(idleConnection);
-                    }
-                } else {
-                    // No waiter, put the connection back in the idle queue.
-                    idleConnections.addFirst(idleConnection);
-                }
-                return;
-            }
-
-            // No idle connections, try to create a new one if there is capacity.
-            while (true) {
-                int currentTotal = totalConnections.get();
-                if (currentTotal >= maxConnectionsPerRoute) {
-                    // No capacity, can't create a new connection.
-                    return;
-                }
-
-                if (totalConnections.compareAndSet(currentTotal, currentTotal + 1)) {
-                    // We successfully reserved a slot for a new connection.
-                    Promise<Channel> waiter = pollNextWaiter();
-                    if (waiter != null) {
-                        // Create a new connection for this specific waiter.
-                        createNewConnection().addListener(future -> {
-                            if (future.isSuccess()) {
-                                if (!waiter.trySuccess((Channel) future.getNow())) {
-                                    // The Waiter was canceled while we were connecting.
-                                    // Release the new connection.
-                                    release(((Channel) future.getNow()).attr(POOLED_CONNECTION_KEY).get());
-                                }
-                            } else {
-                                // Connection failed. The close listener on the (failed) channel
-                                // will decrement totalConnections and trigger another satisfyWaiter call.
-                                waiter.tryFailure(future.cause());
-                            }
-                        });
-                    } else {
-                        // We reserved a slot, but there's no waiter. Release the slot.
-                        totalConnections.decrementAndGet();
-                    }
-                    return;
-                }
-                // CAS failed, another thread acted. Loop to retry.
+                connection.close();
             }
         }
 
@@ -448,7 +415,7 @@ public class Netty4ConnectionPool implements Closeable {
             while (true) {
                 Promise<Channel> waiter = pendingAcquirers.poll();
                 if (waiter == null) {
-                    return null; // Queue is empty
+                    return null;
                 }
                 if (!waiter.isCancelled()) {
                     return waiter;
@@ -493,16 +460,16 @@ public class Netty4ConnectionPool implements Closeable {
             newConnectionBootstrap.connect(route).addListener(future -> {
                 if (!future.isSuccess()) {
                     LOGGER.atError().setThrowable(future.cause()).log("Failed connection.");
-                    totalConnections.getAndDecrement();
-                    satisfyWaiter();
+                    totalConnections.decrementAndGet();
+                    dispatch();
                     promise.setFailure(future.cause());
                     return;
                 }
 
                 Channel newChannel = ((ChannelFuture) future).channel();
                 newChannel.closeFuture().addListener(closeFuture -> {
-                    totalConnections.getAndDecrement();
-                    satisfyWaiter();
+                    totalConnections.decrementAndGet();
+                    dispatch();
                 });
 
                 Runnable connectionReadyRunner = () -> {
@@ -539,7 +506,7 @@ public class Netty4ConnectionPool implements Closeable {
                         }
                     });
                 } else {
-                    promise.setSuccess(newChannel);
+                    connectionReadyRunner.run();
                 }
             });
             return promise;
