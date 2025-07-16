@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class UserAgentPolicyTests extends ResourceManagerTestProxyTestBase {
     private AzureResourceManager azureResourceManager;
     VerificationPolicy verificationPolicy = new VerificationPolicy();
+
     @Test
     public void assertSdkVersionCorrect() {
         azureResourceManager.virtualMachines().list().stream().count();
@@ -38,7 +39,7 @@ public class UserAgentPolicyTests extends ResourceManagerTestProxyTestBase {
 
     @Override
     protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
-                                             HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
         policies.add(verificationPolicy);
         return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
             new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
@@ -62,14 +63,19 @@ public class UserAgentPolicyTests extends ResourceManagerTestProxyTestBase {
         private AtomicInteger callCount = new AtomicInteger();
 
         @Override
-        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
+        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext,
+            HttpPipelineNextPolicy httpPipelineNextPolicy) {
             synchronized (this) {
                 if (sdkVersion == null) {
                     sdkVersion = CoreUtils.getProperties("azure-resourcemanager-compute.properties").get("version");
                 }
             }
             Assertions.assertNotNull(sdkVersion);
-            Assertions.assertTrue(httpPipelineCallContext.getHttpRequest().getHeaders().get("User-Agent").getValue().contains(sdkVersion));
+            Assertions.assertTrue(httpPipelineCallContext.getHttpRequest()
+                .getHeaders()
+                .get("User-Agent")
+                .getValue()
+                .contains(sdkVersion));
             callCount.incrementAndGet();
             return httpPipelineNextPolicy.process();
         }

@@ -64,9 +64,14 @@ public abstract class AzureServiceClient {
             packageName = packageName.substring(0, packageName.length() - implementationSegment.length());
         }
         this.sdkName = packageName;
-        String artifactId = packageName.substring("com.".length()).replace(".", "-");
-        Map<String, String> properties = CoreUtils.getProperties(artifactId + ".properties");
-        sdkVersion = properties.getOrDefault("version", "UnknownVersion");
+        if (packageName.startsWith("com.")) {
+            // com.azure.resourcemanager.compute -> azure-resourcemanager-compute.properties
+            String artifactId = packageName.substring("com.".length()).replace(".", "-");
+            Map<String, String> properties = CoreUtils.getProperties(artifactId + ".properties");
+            sdkVersion = properties.getOrDefault("version", "UnknownVersion");
+        } else {
+            sdkVersion = "UnknownVersion";
+        }
     }
 
     /**
