@@ -45,8 +45,8 @@ echo "CLUSTER_NAME: $CLUSTER_NAME"
 # Using cluster name for the cluster that was created with 16.4
 if [ $CLUSTER_NAME == "oltp-ci-spark35-2workers-ds3v2-16.4" ]; then
   echo "Copying files to $JARPATH/$JARFILE"
-  databricks fs cp "$JARPATH/$JARFILE" "/Workspace/tmp/libraries/$JARFILE" --overwrite
-  databricks libraries install --cluster-id $CLUSTER_ID --jar "/Workspace/tmp/libraries/$JARFILE"
+  databricks fs cp "$JARPATH/$JARFILE" "dbfs:/Workspace/tmp/libraries/$JARFILE" --overwrite
+  databricks libraries install --cluster-id $CLUSTER_ID --jar "dbfs:/Workspace/tmp/libraries/$JARFILE"
 else
   # For older runtimes: Use DBFS path
   echo "Using DBFS library installation for DBR $DBR_VERSION"
