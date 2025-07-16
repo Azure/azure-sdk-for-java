@@ -12,7 +12,7 @@ import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 /**
- * Checks that any class that implements the {@code HttpPipelinePolicy} interface should:
+ * Checks that any class that implements {@code HttpPipelinePolicy} should follow the following rules:
  * <ol>
  *   <li>Be a public class.</li>
  *   <li>Not live in the implementation package or any of its sub-packages.</li>

@@ -14,7 +14,9 @@ import java.util.Map;
 /**
  * Checks that only allowed external dependencies are exposed in public APIs.
  * <p>
- * {@code allowedDependencyPrefixes}: An array of prefixes of allowed dependencies that can be exposed by public APIs.
+ * {@code allowedDependencyPrefixes} (optional): An array of prefixes of allowed dependencies that can be exposed by
+ * public APIs. Defined in the checkstyle.xml config file. If left empty, no external dependencies will be allowed,
+ * other than {@code java.} and {@code javax.} prefixes.
  * <p>
  * {@code java.} and {@code javax.} are always allowed prefixes.
  */
@@ -27,8 +29,7 @@ public class ExternalDependencyExposedCheck extends ImplementationExcludingCheck
     private final Map<String, String> simpleClassNameToQualifiedNameMap = new HashMap<>();
 
     private boolean isPublicClass;
-    private String[] allowedDependencyPrefixes
-        = new String[] { "com.azure.", "io.clientcore.", "reactor.", "org.reactivestreams." };
+    private String[] allowedDependencyPrefixes = new String[0];
 
     /**
      * Creates a new instance of {@link ExternalDependencyExposedCheck}.

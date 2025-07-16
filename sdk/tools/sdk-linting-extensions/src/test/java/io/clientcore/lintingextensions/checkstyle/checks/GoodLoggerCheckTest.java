@@ -5,6 +5,8 @@ package io.clientcore.lintingextensions.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.Checker;
+import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +23,8 @@ public class GoodLoggerCheckTest extends AbstractModuleTestSupport {
 
     @BeforeEach
     public void prepare() throws Exception {
-        checker = createChecker(createModuleConfig(GoodLoggingCheck.class));
+        checker = prepareCheckStyleChecker();
+        checker.addListener(this.getBriefUtLogger());
     }
 
     @AfterEach
@@ -62,5 +65,24 @@ public class GoodLoggerCheckTest extends AbstractModuleTestSupport {
                 "WrongClassInLoggerConstructorTestData", "XXXXXX.class")
         };
         verify(checker, getPath("WrongClassInLoggerConstructorTestData.java"), expected);
+    }
+
+    private Checker prepareCheckStyleChecker() throws CheckstyleException {
+        Checker checker = new Checker();
+        checker.setModuleClassLoader(Thread.currentThread().getContextClassLoader());
+        checker.configure(prepareConfiguration());
+        return checker;
+    }
+
+    private DefaultConfiguration prepareConfiguration() {
+        DefaultConfiguration checks = new DefaultConfiguration("Checks");
+        DefaultConfiguration treeWalker = new DefaultConfiguration("TreeWalker");
+        DefaultConfiguration goodLoggingCheck = new DefaultConfiguration(GoodLoggingCheck.class.getCanonicalName());
+        goodLoggingCheck.addProperty("fullyQualifiedLoggerName", "com.azure.core.util.logging.ClientLogger");
+        goodLoggingCheck.addProperty("simpleClassName", "ClientLogger");
+        goodLoggingCheck.addProperty("loggerName", "logger");
+        checks.addChild(treeWalker);
+        treeWalker.addChild(goodLoggingCheck);
+        return checks;
     }
 }

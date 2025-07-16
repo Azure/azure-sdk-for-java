@@ -14,12 +14,17 @@ import java.util.Collections;
 import java.util.Queue;
 
 /**
+ * Checks that methods in fluent classes follow the naming conventions and requirements.
+ * <p>
  * Model Class Method check requirements:
  * <ol>
 *  <li>Fluent Methods: All methods that return an instance of the class, and that have one parameter.</li>
- * <li>The method name should not start with {@code avoidStartWords}.</li>
+ * <li>The method name should not start with {@code disallowedPrefixes}.</li>
  * <li>All methods should not throw checked exceptions.</li>
  * </ol>
+ * <p>
+ * {@code disallowedPrefixes} (optional): An array of prefixes that aren't allowed. Defined in the checkstyle.xml config
+ * file. If left empty, no prefixes will be checked.
  */
 public class FluentMethodNameCheck extends AbstractCheck {
     /**
@@ -30,7 +35,7 @@ public class FluentMethodNameCheck extends AbstractCheck {
     /**
      * This is a custom defined set which contains all prefixes that are not allowed.
      */
-    private String[] avoidStartWords = new String[0];
+    private String[] disallowedPrefixes = new String[0];
 
     /**
      * Creates a new instance of {@link FluentMethodNameCheck}.
@@ -40,11 +45,11 @@ public class FluentMethodNameCheck extends AbstractCheck {
 
     /**
      * Adds words that methods in fluent classes should not be prefixed with.
-     * @param avoidStartWords the starting strings that should not start with in fluent method
+     * @param disallowedPrefixes the starting strings that should not start with in fluent method
      */
-    public final void setAvoidStartWords(String... avoidStartWords) {
-        if (avoidStartWords != null) {
-            this.avoidStartWords = Arrays.copyOf(avoidStartWords, avoidStartWords.length);
+    public final void setDisallowedPrefixes(String... disallowedPrefixes) {
+        if (disallowedPrefixes != null) {
+            this.disallowedPrefixes = Arrays.copyOf(disallowedPrefixes, disallowedPrefixes.length);
         }
     }
 
@@ -106,7 +111,7 @@ public class FluentMethodNameCheck extends AbstractCheck {
 
         final String methodName = methodDefToken.findFirstToken(TokenTypes.IDENT).getText();
         // method name should not start with words in the avoid string list
-        for (String avoidStartWord : avoidStartWords) {
+        for (String avoidStartWord : disallowedPrefixes) {
             if (methodName.startsWith(avoidStartWord)) {
                 log(methodDefToken, String.format("''%s'' fluent method name should not start with keyword ''%s''.",
                     methodName, avoidStartWord));

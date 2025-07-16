@@ -10,20 +10,33 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 
 /**
+ * Checks that the logging practices in the code follow the good logging practices.
+ * <p>
  * Good Logging Practice:
  * <ol>
  * <li>A non-static instance logger in a non-static method.</li>
  * <li>ClientLogger in public API should all named 'logger', public API classes are those classes that are declared
  *     as public and that do not exist in an implementation package or subpackage.</li>
- * <li>Should not use any external logger class, only use ClientLogger. No slf4j, log4j, or other logging imports are
+ * <li>Should not use any external logger class, only use ClientLogger. No SLF4J, log4j, or other logging imports are
  *     allowed.</li>
  * <li>'System.out' and 'System.err' is not allowed as well.</li>
  * </ol>
+ * <p>
+ * {@code fullyQualifiedLoggerName} (required): The fully-qualified class name of the logger type. Defined in the
+ * checkstyle.xml config file. If left empty, an exception will be thrown by the check.
+ * <p>
+ * {@code simpleClassName} (required): The simple class name of the logger type. Defined in the checkstyle.xml config
+ * file. If left empty, an exception will be thrown by the check.
+ * <p>
+ * {@code loggerName} (required): The case-insensitive name of the logger instance. Defined in the checkstyle.xml config
+ * file. If left empty, an exception will be thrown by the check.
  */
 public class GoodLoggingCheck extends AbstractCheck {
     private static final int[] REQUIRED_TOKENS = new int[]{
@@ -50,9 +63,9 @@ public class GoodLoggingCheck extends AbstractCheck {
         "org.slf4j", "org.apache.logging.log4j", "java.util.logging"
     };
 
-    private String fullyQualifiedLoggerName = "com.azure.core.util.logging.ClientLogger";
-    private String simpleClassName = "ClientLogger";
-    private String loggerName = "logger";
+    private String fullyQualifiedLoggerName;
+    private String simpleClassName;
+    private String loggerName;
 
     /**
      * Creates a new instance of {@link GoodLoggingCheck}.
@@ -62,8 +75,6 @@ public class GoodLoggingCheck extends AbstractCheck {
 
     /**
      * Sets the fully qualified logger name.
-     * <p>
-     * If not set this will default to {@code com.azure.core.util.logging.ClientLogger}.
      *
      * @param fullyQualifiedLoggerName the fully qualified logger name.
      * @throws IllegalArgumentException if the fully qualified logger name is null or empty.
@@ -78,8 +89,6 @@ public class GoodLoggingCheck extends AbstractCheck {
 
     /**
      * Sets the simple class name for the logger.
-     * <p>
-     * If not set this will default to {@code ClientLogger}.
      *
      * @param simpleClassName the simple class name for the logger.
      * @throws IllegalArgumentException if the simple class name is null or empty.
@@ -94,8 +103,6 @@ public class GoodLoggingCheck extends AbstractCheck {
 
     /**
      * Sets the case-insensitive name of the logger instance.
-     * <p>
-     * If not set this will default to {@code logger}.
      *
      * @param loggerName the case-insensitive name of the logger instance.
      * @throws IllegalArgumentException if the logger name is null or empty.
@@ -117,6 +124,26 @@ public class GoodLoggingCheck extends AbstractCheck {
     @Override
     public int[] getRequiredTokens() {
         return REQUIRED_TOKENS;
+    }
+
+    @Override
+    public void beginTree(DetailAST rootAST) {
+        List<String> missingConfig = new ArrayList<>(3);
+
+        if (fullyQualifiedLoggerName == null || fullyQualifiedLoggerName.isEmpty()) {
+            missingConfig.add("fullyQualifiedLoggerName");
+        }
+        if (simpleClassName == null || simpleClassName.isEmpty()) {
+            missingConfig.add("simpleClassName");
+        }
+        if (loggerName == null || loggerName.isEmpty()) {
+            missingConfig.add("loggerName");
+        }
+
+        if (!missingConfig.isEmpty()) {
+            throw new IllegalArgumentException("GoodLoggingCheck configuration error, missing the following "
+                + "configurations: " + String.join(", ", missingConfig));
+        }
     }
 
     @Override

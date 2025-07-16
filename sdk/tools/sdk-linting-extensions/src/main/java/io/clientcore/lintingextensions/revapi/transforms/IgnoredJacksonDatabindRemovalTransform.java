@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static io.clientcore.lintingextensions.revapi.transforms.RevApiUtils.createPrefixMatchersFromConfiguration;
+
 /**
  * Transform that runs after RevApi generates API differences that removes Jackson Databind changes from the flagged
  * differences set.
@@ -22,6 +24,7 @@ import java.util.function.Predicate;
  */
 public final class IgnoredJacksonDatabindRemovalTransform<E extends Element<E>> extends BaseDifferenceTransform<E> {
     private boolean enabled = false;
+    private List<PrefixMatcher> ignoredPackages = Collections.emptyList();
 
     /**
      * Creates a new instance of {@link IgnoredJacksonDatabindRemovalTransform}.
@@ -44,6 +47,7 @@ public final class IgnoredJacksonDatabindRemovalTransform<E extends Element<E>> 
     public void initialize(AnalysisContext analysisContext) {
         JsonNode enabledNode = analysisContext.getConfigurationNode().get("enabled");
         this.enabled = enabledNode != null && enabledNode.isBoolean() && enabledNode.booleanValue();
+        this.ignoredPackages = createPrefixMatchersFromConfiguration(analysisContext, "ignoredPackages");
     }
 
     @Override
@@ -86,106 +90,14 @@ public final class IgnoredJacksonDatabindRemovalTransform<E extends Element<E>> 
         return shouldDiscard(packageName) ? TransformationResult.discard() : TransformationResult.keep();
     }
 
-    private static boolean shouldDiscard(String packageName) {
-        if (!packageName.startsWith("com.azure.")) {
-            // The package isn't from the Azure SDK, keep the current result.
-            return false;
+    private boolean shouldDiscard(String packageName) {
+        for (PrefixMatcher prefixMatcher : ignoredPackages) {
+            if (prefixMatcher.test(packageName)) {
+                // The package matches one of the ignored packages, discard the change.
+                return true;
+            }
         }
 
-        if (packageName.regionMatches(10, "containers.containerregistry.models", 0, 35)) {
-            // Container Registry
-            return true;
-        } else if (packageName.regionMatches(10, "search.documents", 0, 16)) {
-            // Search Documents
-            return packageName.regionMatches(26, ".models", 0, 7)
-                || packageName.regionMatches(26, ".indexes.models", 0, 13);
-        } else if (packageName.regionMatches(10, "security.", 0, 9)) {
-            if (packageName.regionMatches(19, "attestation.models", 0, 17)) {
-                // Attestation
-                return true;
-            } else if (packageName.regionMatches(19, "keyvault.", 0, 9)) {
-                // KeyVault
-                return packageName.regionMatches(28, "administration.models", 0, 21)
-                    || packageName.regionMatches(28, "certificates.models", 0, 19)
-                    || packageName.regionMatches(28, "keys.models", 0, 11)
-                    || packageName.regionMatches(28, "keys.cryptography.models", 0, 24);
-            }
-        } else if (packageName.regionMatches(10, "ai.", 0, 3)) {
-            if (packageName.regionMatches(13, "textanalytics.models", 0, 20)) {
-                // Text Analytics
-                return true;
-            } else if (packageName.regionMatches(13, "formrecognizer.", 0, 15)) {
-                // Form Recognizer
-                return packageName.regionMatches(28, "models", 0, 6)
-                    || packageName.regionMatches(28, "training.models", 0, 15)
-                    || packageName.regionMatches(28, "documentanalysis.models", 0, 23)
-                    || packageName.regionMatches(28, "documentanalysis.administration.models", 0, 38);
-            } else if (packageName.regionMatches(13, "metricsadvisor.", 0, 15)) {
-                // Metrics Advisor
-                return packageName.regionMatches(28, "models", 0, 6)
-                    || packageName.regionMatches(28, "administration.models", 0, 21);
-            } else if (packageName.regionMatches(13, "contentsafety.models", 0, 20)) {
-                // Content Safety
-                return true;
-            }
-        } else if (packageName.regionMatches(10, "messaging.", 0, 10)) {
-            // Service Bus
-            if (packageName.regionMatches(20, "servicebus.", 0, 11)) {
-                return packageName.regionMatches(31, "models", 0, 6)
-                    || packageName.regionMatches(31, "administration.models", 0, 21);
-            } else if (packageName.regionMatches(20, "eventgrid.systemevents", 0, 22)) {
-                // Event Grid
-                return true;
-            } else if (packageName.regionMatches(20, "webpubsub.", 0, 10)) {
-                // WebPubSub
-                return packageName.regionMatches(30, "models", 0, 6)
-                    || packageName.regionMatches(30, "client.models", 0, 13);
-            }
-        } else if (packageName.regionMatches(10, "monitor.query.models", 0, 20)) {
-            // Monitor Query
-            return true;
-        } else if (packageName.regionMatches(10, "data.tables.models", 0, 18)) {
-            // Tables
-            return true;
-        } else if (packageName.regionMatches(10, "storage.", 0, 8)) {
-            if (packageName.regionMatches(18, "file.datalake.models", 0, 20)) {
-                // DataLake
-                return true;
-            } else if (packageName.regionMatches(18, "file.share.models", 0, 17)) {
-                // Shares
-                return true;
-            } else if (packageName.regionMatches(18, "queue.models", 0, 12)) {
-                // Queue
-                return true;
-            } else if (packageName.regionMatches(18, "blob.", 0, 5)) {
-                // Blob
-                return packageName.regionMatches(23, "models", 0, 6)
-                    || packageName.regionMatches(23, "options", 0, 7);
-            }
-        } else if (packageName.regionMatches(10, "communication.", 0, 14)) {
-            return packageName.regionMatches(24, "jobrouter.models", 0, 16) // Communication Job Router
-                || packageName.regionMatches(24, "messages.models", 0, 15) // Communication Messages
-                || packageName.regionMatches(24, "callautomation.models", 0, 21) // Communication Call Automation
-                || packageName.regionMatches(24, "chat.models", 0, 11) // Communication Chat
-                || packageName.regionMatches(24, "rooms.models", 0, 12) // Communication Rooms
-                || packageName.regionMatches(24, "identity.models", 0, 15) // Communication Identity
-                || packageName.regionMatches(24, "email.models", 0, 12) // Communication Email
-                || packageName.regionMatches(24, "phonenumbers.models", 0, 19); // Communication Phone Numbers
-        } else if (packageName.regionMatches(10, "digitaltwins.core", 0, 17)) {
-            // Digital Twins Core
-            return true;
-        } else if (packageName.regionMatches(10, "developer.devcenter.models", 0, 26)) {
-            // Developer Dev Center
-            return true;
-        } else if (packageName.regionMatches(10, "compute.batch.models", 0, 20)) {
-            // Compute Batch
-            return true;
-        } else if (packageName.regionMatches(10, "ai.translation.text.models", 0, 26)) {
-            // Translation Text
-            return true;
-        }
-
-        // The package is from the Azure SDK, but not in the allowed list, keep the current result.
         return false;
     }
 }

@@ -1,1 +1,1 @@
-io.clientcore.tools.lintingextensions.transforms.ClassAndPackageTreeFilterProvider
+io.clientcore.lintingextensions.revapi.transforms.ClassAndPackageTreeFilterProvider

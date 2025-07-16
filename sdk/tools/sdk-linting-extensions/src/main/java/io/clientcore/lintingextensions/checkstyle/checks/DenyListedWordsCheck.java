@@ -13,7 +13,8 @@ import java.util.Arrays;
  * Checks that public class and interface definitions, methods, and variables don't use words or abbreviations that are
  * deny listed by this Checkstyle.
  * <p>
- * {@code denyListedWords}: An array of words that cannot be used. Defined in the checkstyle.xml config file.
+ * {@code denyListedWords} (optional): An array of words that cannot be used. Defined in the checkstyle.xml config file.
+ * If left empty, no words will be checked.
  */
 public class DenyListedWordsCheck extends ImplementationExcludingCheck {
     static final String ERROR_MESSAGE_TEMPLATE

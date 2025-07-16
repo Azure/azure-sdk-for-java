@@ -8,7 +8,10 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 /**
- * ServiceInterface annotation should have a non-empty 'name' property
+ * Checks that the {@code @ServiceInterface} annotation is used correctly on interfaces.
+ * <ul>
+ *     <li>The {@code name} property should be non-empty.</li>
+ * </ul>
  */
 public class ServiceInterfaceCheck extends AbstractCheck {
 

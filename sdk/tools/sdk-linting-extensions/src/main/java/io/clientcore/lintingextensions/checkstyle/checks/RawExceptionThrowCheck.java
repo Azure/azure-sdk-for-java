@@ -8,24 +8,23 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Check that verifies that exceptions are logged when they are created.
  * The check is skipped if:
- * - the exception is created in a generated method or service interface
- * - the exception is a NullPointerException, IllegalArgumentException or UnsupportedOperationException that are used for immediate input validation
+ * <ul>
+ *   <li>The exception is created in a generated method or service interface.</li>
+ *   <li>The exception is a NullPointerException, IllegalArgumentException, IllegalStateException, or
+ *   UnsupportedOperationException that are used for immediate input validation.</li>
+ * </ul>
  */
 public class RawExceptionThrowCheck extends AbstractCheck {
-    static final String ERROR_MESSAGE = "Directly throwing a new exception is disallowed. Use the \"io.clientcore.core.instrumentation.logging.ClientLogger\" API instead, "
-        + "such as \"logger.throwableAtError()\" or \"logger.throwableAtWarning()\"."
-        + "See https://github.com/Azure/azure-sdk-for-java/wiki/Client-core:-logging-exceptions-best-practices for more details.";
+    static final String ERROR_MESSAGE = "Directly throwing a new exception is disallowed. Use the "
+        + "\"io.clientcore.core.instrumentation.logging.ClientLogger\" API instead, such as "
+        + "\"logger.throwableAtError()\" or \"logger.throwableAtWarning()\". See "
+        + "https://github.com/Azure/azure-sdk-for-java/wiki/Client-core:-logging-exceptions-best-practices for more details.";
 
-    private static final List<String> IGNORED_EXCEPTIONS = Arrays.asList("NullPointerException",
-        "IllegalArgumentException",
-        "IllegalStateException",
-        "UnsupportedOperationException");
+    private static final String[] IGNORED_EXCEPTIONS = new String[] { "NullPointerException",
+        "IllegalArgumentException", "IllegalStateException", "UnsupportedOperationException" };
 
     private static final String CORE_EXCEPTION_FACTORY_NAME = "CoreException.from";
 
@@ -59,8 +58,7 @@ public class RawExceptionThrowCheck extends AbstractCheck {
 
         DetailAST newToken = expr.findFirstToken(TokenTypes.LITERAL_NEW);
         if (newToken != null) {
-            String name = FullIdent.createFullIdentBelow(newToken).getText();
-            if (IGNORED_EXCEPTIONS.stream().noneMatch(name::endsWith)) {
+            if (isNotIgnoredException(FullIdent.createFullIdentBelow(newToken).getText())) {
                 log(newToken, ERROR_MESSAGE);
             }
 
@@ -68,11 +66,19 @@ public class RawExceptionThrowCheck extends AbstractCheck {
         }
 
         DetailAST methodCallToken = expr.findFirstToken(TokenTypes.METHOD_CALL);
-        if (methodCallToken != null) {
-            if (CORE_EXCEPTION_FACTORY_NAME.equals(FullIdent.createFullIdentBelow(methodCallToken).getText()))
-            {
-                log(methodCallToken, ERROR_MESSAGE);
+        if (methodCallToken != null
+            && CORE_EXCEPTION_FACTORY_NAME.equals(FullIdent.createFullIdentBelow(methodCallToken).getText())) {
+            log(methodCallToken, ERROR_MESSAGE);
+        }
+    }
+
+    private static boolean isNotIgnoredException(String exceptionName) {
+        for (String ignoredException : IGNORED_EXCEPTIONS) {
+            if (exceptionName.endsWith(ignoredException)) {
+                return false;
             }
         }
+
+        return true;
     }
 }
