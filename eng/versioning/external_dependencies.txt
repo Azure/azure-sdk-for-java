@@ -45,8 +45,6 @@ io.cloudevents:cloudevents-api;2.2.0
 io.cloudevents:cloudevents-core;2.2.0
 io.fabric8:kubernetes-client;6.12.1
 io.micrometer:micrometer-core;1.9.17
-io.micrometer:micrometer-registry-azure-monitor;1.9.17
-io.micrometer:micrometer-registry-graphite;1.9.17
 io.netty:netty-buffer;4.1.118.Final
 io.netty:netty-common;4.1.118.Final
 io.netty:netty-codec;4.1.118.Final
@@ -70,7 +68,7 @@ org.apache.commons:commons-compress;1.26.0
 org.apache.ant:ant;1.10.14
 org.apache.avro:avro;1.11.4
 org.apache.avro:avro-maven-plugin;1.11.4
-org.apache.commons:commons-lang3;3.12.0
+org.apache.commons:commons-lang3;3.18.0
 org.apache.httpcomponents:httpclient;4.5.14
 org.apache.httpcomponents.client5:httpclient5;5.4.3
 org.apache.logging.log4j:log4j-api;2.17.2
@@ -255,6 +253,7 @@ cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;1.1.0
 cosmos_org.hdrhistogram:HdrHistogram;2.1.12
 cosmos_com.fasterxml.jackson.core:jackson-databind;2.15.2
 cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;2.15.2
+cosmos_org.apache.commons:commons-lang3;3.12.0
 
 ## Cosmos Spark connector under sdk\cosmos\azure-cosmos-spark_3-<version>_2-12\pom.xml
 # Cosmos Spark connector runtime dependencies - provided by Spark runtime/host
@@ -269,6 +268,10 @@ cosmos_org.scala-lang.modules:scala-java8-compat_2.12;0.8.0
 cosmos_io.projectreactor:reactor-scala-extensions_2.12;0.8.0
 cosmos_commons-io:commons-io;2.4
 cosmos_com.microsoft.azure:applicationinsights-core;2.6.4
+cosmos_io.micrometer:micrometer-core;1.15.1
+cosmos_io.micrometer:micrometer-registry-azure-monitor;1.15.1
+cosmos_io.micrometer:micrometer-registry-graphite;1.15.1
+cosmos_io.opentelemetry.instrumentation:opentelemetry-log4j-appender-2.17;2.15.0-alpha
 
 # Cosmos Spark connector tests only
 cosmos_org.scalatest:scalatest_2.12;3.2.2
