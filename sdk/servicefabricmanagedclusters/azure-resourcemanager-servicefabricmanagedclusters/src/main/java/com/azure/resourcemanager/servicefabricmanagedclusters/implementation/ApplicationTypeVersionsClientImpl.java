@@ -1251,8 +1251,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application type version resources for the specified application type name resource along
-     * with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * managed application type name resource along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationTypeVersionResourceInner>>
@@ -1280,8 +1280,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application type version resources for the specified application type name resource along
-     * with {@link PagedResponse}.
+     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * managed application type name resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationTypeVersionResourceInner> listByApplicationTypesNextSinglePage(String nextLink) {
@@ -1309,8 +1309,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application type version resources for the specified application type name resource along
-     * with {@link PagedResponse}.
+     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * managed application type name resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationTypeVersionResourceInner> listByApplicationTypesNextSinglePage(String nextLink,
