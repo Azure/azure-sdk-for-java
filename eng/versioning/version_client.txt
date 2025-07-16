@@ -164,6 +164,7 @@ com.azure:azure-monitor-opentelemetry-autoconfigure;1.2.0;1.3.0-beta.1
 com.azure:azure-monitor-ingestion;1.2.10;1.3.0-beta.1
 com.azure:azure-monitor-ingestion-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-monitor-query;1.5.7;1.6.0-beta.1
+com.azure:azure-monitor-query-logs;2.0.0-beta.1;2.0.0-beta.1
 com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-openrewrite;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-perf-test-parent;1.0.0-beta.1;1.0.0-beta.1

@@ -1,8 +1,8 @@
 # Release History
 
-## 1.0.0-beta.1 (Unreleased)
+## 2.0.0-beta.1 (Unreleased)
 
-- Azure MonitorQueryLogs client library for Java. This package contains Microsoft Azure MonitorQueryLogs client library.
+- This package contains Microsoft Azure Monitor Logs Query client library.
 
 ### Features Added
 
