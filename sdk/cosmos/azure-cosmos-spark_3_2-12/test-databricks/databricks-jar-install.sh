@@ -40,28 +40,13 @@ then
 	exit 1
 fi
 
-if [ $DATABRICKS_RUNTIME_VERSION > 15 ]; then
-  # For DBR 15+: Upload to workspace and install from there
-  echo "Using Workspace library installation for DBR $DBR_VERSION"
-  echo "Deleting files in /tmp/libraries/$JARFILE"
-  databricks workspace delete /tmp/libraries/$JARFILE
+# Upload to workspace and install from there
+echo "Using Workspace library installation for DBR $DBR_VERSION"
+echo "Deleting files in /tmp/libraries/$JARFILE"
+databricks workspace delete /tmp/libraries/$JARFILE
 
-  echo "Copying files to $JARPATH/$JARFILE"
-  databricks workspace import --format AUTO "$JARPATH/$JARFILE" "/tmp/libraries/$JARFILE" --overwrite
-  databricks libraries install --cluster-id $CLUSTER_ID --jar "/tmp/libraries/$JARFILE"
-else
-  # For older runtimes: Use DBFS path
-  echo "Using DBFS library installation for DBR $DBR_VERSION"
-  echo "Deleting files in dbfs:/tmp/libraries/$JARFILE"
-  dbfs rm dbfs:/tmp/libraries/$JARFILE
-  dbfs ls dbfs:/tmp/libraries/
-
-  echo "Copying files to DBFS $JARPATH/$JARFILE"
-  dbfs cp $JARPATH/$JARFILE dbfs:/tmp/libraries/$JARFILE --overwrite
-  dbfs ls dbfs:/tmp/libraries/
-
-  echo "Installing $JARFILE in $CLUSTER_ID"
-  databricks libraries install --cluster-id $CLUSTER_ID --jar dbfs:/tmp/libraries/$JARFILE
-fi
+echo "Copying files to $JARPATH/$JARFILE"
+databricks workspace import --format AUTO "$JARPATH/$JARFILE" "/tmp/libraries/$JARFILE" --overwrite
+databricks libraries install --cluster-id $CLUSTER_ID --jar "/tmp/libraries/$JARFILE"
 
 bash sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-cluster-restart.sh $CLUSTER_ID
