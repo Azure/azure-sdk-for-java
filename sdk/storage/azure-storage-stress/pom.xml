@@ -7,7 +7,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-stress</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-stress;current} -->
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -40,7 +40,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>perf-test-core</artifactId>
-      <version>1.0.0-beta.1</version>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:perf-test-core;current} -->
     </dependency>
 
     <!-- logging, tracing, metrics -->

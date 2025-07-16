@@ -68,5 +68,7 @@ extends:
         skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_httpokhttp3 }}
     AdditionalModules:
+      - name: perf-test-core
+        groupId: com.azure
       - name: optional-dependency-tests
         groupId: io.clientcore

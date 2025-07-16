@@ -15,18 +15,6 @@
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
   </properties>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.openrewrite.recipe</groupId>
-        <artifactId>rewrite-recipe-bom</artifactId>
-        <version>3.9.0</version> <!-- {x-version-update;org.openrewrite.recipe:rewrite-recipe-bom;external_dependency} -->
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <profiles>
     <profile>
       <id>default</id>
@@ -38,12 +26,14 @@
         <dependency>
           <groupId>org.openrewrite</groupId>
           <artifactId>rewrite-java</artifactId>
+          <version>8.54.0</version> <!-- {x-version-update;org.openrewrite:rewrite-java;external_dependency} -->
           <scope>compile</scope>
         </dependency>
 
         <dependency>
           <groupId>org.openrewrite</groupId>
           <artifactId>rewrite-maven</artifactId>
+          <version>8.54.0</version> <!-- {x-version-update;org.openrewrite:rewrite-maven;external_dependency} -->
           <scope>compile</scope>
         </dependency>
 
@@ -52,33 +42,36 @@
         <dependency>
           <groupId>org.openrewrite</groupId>
           <artifactId>rewrite-java-8</artifactId>
+          <version>8.54.0</version> <!-- {x-version-update;org.openrewrite:rewrite-java-8;external_dependency} -->
           <scope>test</scope>
         </dependency>
 
         <dependency>
           <groupId>org.openrewrite</groupId>
           <artifactId>rewrite-java-11</artifactId>
+          <version>8.54.0</version> <!-- {x-version-update;org.openrewrite:rewrite-java-11;external_dependency} -->
           <scope>test</scope>
         </dependency>
 
         <dependency>
           <groupId>org.openrewrite</groupId>
           <artifactId>rewrite-java-17</artifactId>
+          <version>8.54.0</version> <!-- {x-version-update;org.openrewrite:rewrite-java-17;external_dependency} -->
           <scope>test</scope>
         </dependency>
 
         <dependency>
           <groupId>org.openrewrite</groupId>
           <artifactId>rewrite-java-21</artifactId>
+          <version>8.54.0</version> <!-- {x-version-update;org.openrewrite:rewrite-java-21;external_dependency} -->
           <scope>test</scope>
         </dependency>
 
         <!-- rewrite-maven dependency only necessary for Maven Recipe development -->
-
-
         <dependency>
           <groupId>org.openrewrite</groupId>
           <artifactId>rewrite-test</artifactId>
+          <version>8.54.0</version> <!-- {x-version-update;org.openrewrite:rewrite-test;external_dependency} -->
           <scope>test</scope>
           <exclusions>
             <exclusion>
@@ -128,15 +121,15 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.18.4.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-core</artifactId>
+          <version>2.18.4.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
         </dependency>
         <!-- Jackson Dataformat Smile -->
         <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-smile</artifactId>
-            <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-smile;external_dependency} -->
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformat-smile</artifactId>
+          <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-smile;external_dependency} -->
         </dependency>
         <dependency>
           <groupId>com.fasterxml.jackson.core</groupId>
@@ -242,8 +235,6 @@
     <profile>
       <id>v1</id>
       <dependencies>
-
-
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
@@ -493,7 +484,7 @@
         <plugin>
           <groupId>com.azure</groupId>
           <artifactId>azure-openrewrite-compiler-maven-plugin</artifactId>
-          <version>1.0.0-beta.1</version>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-openrewrite-compiler-maven-plugin;current} -->
           <configuration>
             <targetProfiles>v1,v2</targetProfiles>
           </configuration>
