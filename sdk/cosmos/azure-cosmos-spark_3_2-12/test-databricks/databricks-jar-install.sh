@@ -41,15 +41,11 @@ then
 fi
 
 echo "CLUSTER_NAME: $CLUSTER_NAME"
-# Version comparison is messy in bash - using cluster name for the cluster that was created with 16.4
+# DATABRICKS_RUNTIME_VERSION is not populated in the environment and version comparison is messy in bash
+# Using cluster name for the cluster that was created with 16.4
 if [ $CLUSTER_NAME == "oltp-ci-spark35-2workers-ds3v2-16.4" ]; then
-  # Upload to workspace and install from there
-  echo "Using Workspace library installation for DBR $DBR_VERSION"
-  echo "Deleting files in /Workspace/tmp/libraries/$JARFILE"
-  databricks workspace delete /tmp/libraries/$JARFILE
-
   echo "Copying files to $JARPATH/$JARFILE"
-  databricks workspace import --format AUTO "$JARPATH/$JARFILE" "/Workspace/tmp/libraries/$JARFILE" --overwrite
+  databricks fs cp "$JARPATH/$JARFILE" "/Workspace/tmp/libraries/$JARFILE" --overwrite
   databricks libraries install --cluster-id $CLUSTER_ID --jar "/Workspace/tmp/libraries/$JARFILE"
 else
   # For older runtimes: Use DBFS path
