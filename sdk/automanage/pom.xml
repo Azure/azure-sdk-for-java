@@ -11,5 +11,6 @@
 
   <modules>
       <module>azure-resourcemanager-automanage</module>
+      <module>../resourcemanager/azure-resourcemanager-test</module>
   </modules>
 </project>
