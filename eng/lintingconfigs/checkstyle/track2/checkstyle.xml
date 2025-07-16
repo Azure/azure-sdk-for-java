@@ -18,7 +18,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
   </module>
 
   <!-- Custom filter for Azure SDKs. -->
-  <module name="com.azure.tools.checkstyle.filters.AzureSdkFilter"/>
+  <module name="io.clientcore.lintingextensions.checkstyle.filters.SdkCheckFilter"/>
 
   <module name="SuppressionFilter">
     <property name="file" value="${samedir}/checkstyle-suppressions.xml"/>
@@ -279,11 +279,11 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="ArrayTypeStyle"/>
 
     <!--Checks for package naming and name length limit. Package names have to starting with either-->
-    <!--'com.azure.v2', or 'io.clientcore' and then the extension names start with-->
+    <!--'com.microsoft.azure', 'com.azure', or 'io.clientcore' and then the extension names start with-->
     <!--characters 'a' to 'z' and only contains 'a' to 'z' or '0' to '9' with no more than 32 characters-->
     <!--and the package names should be no more than 80 characters.-->
     <module name="PackageName">
-      <property name="format" value="^(?=.{9,80}$)((io.clientcore|com.azure.v2)(\.[a-z][a-z0-9]{1,31})*)+$"/>
+      <property name="format" value="^(?=.{9,80}$)((com.microsoft|com.azure|io.clientcore)(\.[a-z][a-z0-9]{1,31})*)+$"/>
     </module>
 
     <!-- Javadoc checks                                   -->
@@ -297,13 +297,13 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
     <!-- Verifies that all throws in the public API have JavaDocs explaining why and when they are thrown. -->
     <!-- The check verifies both checked (in the throws clause) and unchecked throws -->
-    <module name="com.azure.tools.checkstyle.checks.JavadocThrowsChecks"/>
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.JavadocThrowsChecks"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Checks for the public API that should
     1) not return classes in the implementation package
     2) no class of implementation package as method's parameters -->
-    <module name="com.azure.tools.checkstyle.checks.NoImplInPublicAPI"/>
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.NoImplInPublicAPI"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Verify the classes with annotation @ServiceClient should have following rules:
@@ -320,14 +320,14 @@ page at http://checkstyle.sourceforge.net/config.html -->
       3.2) The return type for async single value should be of type? extends Mono
       3.3) The return type for sync collection should be of type? extends PagedIterable
       3.4) The return type for sync single value should be of type? extends Response -->
-    <module name="com.azure.tools.checkstyle.checks.ServiceClientCheck"/>
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.ServiceClientCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Checks for no external dependency exposed in the public API.
     We should only return types, and accept argument types, that are from the com.azure namespace.
     All other types should have suppression added if required. -->
-    <module name="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck">
-      <property name="allowedDependencyPrefixes" value="io.clientcore."/>
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck">
+      <property name="allowedDependencyPrefixes" value="com.azure.,io.clientcore.,reactor.,org.reactivestreams."/>
     </module>
 
     <!-- CUSTOM CHECKS -->
@@ -335,46 +335,38 @@ page at http://checkstyle.sourceforge.net/config.html -->
     1) All service client builder should be named <ServiceName>ClientBuilder and annotated with @ServiceClientBuilder.
     2) Has a method 'buildClient()' to build a synchronous client,
     3) Has a method 'buildAsyncClient()' to build an asynchronous client -->
-    <module name="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"/>
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.ServiceClientBuilderCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- The @ServiceInterface class should have the following rules:
     1) The annotation property 'name' should be non-empty
     2) The length of value of property 'name' should be less than 20 characters and without space -->
-    <module name="com.azure.tools.checkstyle.checks.ServiceInterfaceCheck"/>
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.ServiceInterfaceCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- The @Immutable class should have the following rules: -->
     <!-- 1) All public and protected fields must be final -->
     <!-- 2) No public or protected setters -->
-    <module name="com.azure.tools.checkstyle.checks.ImmutableClassCheck"/>
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.ImmutableClassCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Verify the whenever a field is assigned just once in constructor to be final -->
-    <module name="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"/>
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.EnforceFinalFieldsCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Javadoc format: 'param / return / throws' descriptions text should only have one space character after the
      parameter name or return -->
-    <module name="com.azure.tools.checkstyle.checks.JavadocFormatting"/>
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.JavadocFormatting"/>
 
     <!-- CUSTOM CHECKS -->
-    <!-- Don't format exception messages -->
-    <module name="com.azure.tools.checkstyle.checks.StringFormattedExceptionMessageCheck"/>
-
-    <!-- CUSTOM CHECKS -->
-    <!-- Log exceptions at creation time -->
-    <module name="com.azure.tools.checkstyle.checks.RawExceptionThrowCheck"/>
-
-    <!-- CUSTOM CHECKS -->
-    <!-- Throw created and logged exceptions -->
-    <module name="com.azure.tools.checkstyle.checks.ExceptionCreatedButNotThrownCheck"/>
+    <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.ThrowFromClientLoggerCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Any class that implements the HttpPipelinePolicy interface should:
     1) Must be a public class.
     2) Not in an implementation package or sub-package. -->
-    <module name="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"/>
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.HttpPipelinePolicyCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Javadoc inline check should:
@@ -384,7 +376,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- This check was removed as it causes more noise than fixes. The purpose of this check was to move away from -->
     <!-- using <code>, <pre>, and {@code} tags while we were on-boarding codesnippets. These tags have since been   -->
     <!-- removed and codesnippets are expected.                                                                     -->
-    <!-- <module name="com.azure.tools.checkstyle.checks.JavadocInlineTagCheck"/> -->
+    <!-- <module name="io.clientcore.lintingextensions.checkstyle.checks.JavadocInlineTagCheck"/> -->
 
     <!-- CUSTOM CHECKS -->
     <!-- {@codesnippet ...} description should match naming pattern requirement below:
@@ -392,7 +384,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     2) Methods arguments should be concatenated by dash '-'. Ex. string-string  for methodName(String s, String s2)
     3) Use '#' to concatenate 1) and 2), ex packageName.className.methodName#string-string -->
     <!-- Disabled as {@codesnippet} is no longer used. -->
-    <!-- <module name="com.azure.tools.checkstyle.checks.JavadocCodeSnippetCheck"/> -->
+    <!-- <module name="io.clientcore.lintingextensions.checkstyle.checks.JavadocCodeSnippetCheck"/> -->
 
     <!--CUSTOM CHECKS-->
     <!-- Good Logging Practice
@@ -402,8 +394,8 @@ page at http://checkstyle.sourceforge.net/config.html -->
     3) Should not use any external logger class, only use ClientLogger. No slf4j, log4j, or other logging imports are allowed.
       'System.out' and 'System.err' is not allowed as well.
     4) All classes should use ClientLogger as logger only but except ClientLogger itself -->
-    <module name="com.azure.tools.checkstyle.checks.GoodLoggingCheck">
-      <property name="fullyQualifiedLoggerName" value="io.clientcore.core.instrumentation.logging.ClientLogger"/>
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.GoodLoggingCheck">
+      <property name="fullyQualifiedLoggerName" value="com.azure.core.util.logging.ClientLogger"/>
       <property name="simpleClassName" value="ClientLogger"/>
       <property name="loggerName" value="logger"/>
     </module>
@@ -414,7 +406,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- 2. methodName -->
     <!-- 3. variableName -->
     <!-- 4. longerVariableOrMethodName -->
-    <module name="com.azure.tools.checkstyle.checks.DenyListedWordsCheck">
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.DenyListedWordsCheck">
       <property name="denyListedWords" value="URL, HTTP, XML, JSON, SAS, CPK, API" />
     </module>
 
@@ -422,12 +414,14 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- Fluent method checks:
     (1) A method returns an instance of the class, and that have one parameter,
     (2) should not start with the words in the avoidStartWords list.-->
-    <!-- <module name="com.azure.tools.checkstyle.checks.FluentMethodNameCheck">-->
+    <!-- <module name="io.clientcore.lintingextensions.checkstyle.checks.FluentMethodNameCheck">-->
     <!--    <property name="disallowedPrefixes" value="with,set"/>-->
     <!-- </module>-->
 
     <!-- CUSTOM CHECKS -->
     <!-- Ensures caught exceptions are included as exception cause in subsequently thrown exception -->
-    <module name="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck"/>
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.UseCaughtExceptionCauseCheck"/>
+
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.StepVerifierCheck"/>
   </module>
 </module>

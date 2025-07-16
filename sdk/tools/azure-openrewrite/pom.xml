@@ -400,9 +400,9 @@
         <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <dependencies>
           <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>sdk-build-tools</artifactId>
-            <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+            <groupId>io.clientcore</groupId>
+            <artifactId>sdk-linting-extensions</artifactId>
+            <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_io.clientcore:sdk-linting-extensions;dependency} -->
           </dependency>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
@@ -411,9 +411,9 @@
           </dependency>
         </dependencies>
         <configuration>
-          <configLocation>${project.basedir}/../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>${project.basedir}/../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-          <headerLocation>${project.basedir}/../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+          <configLocation>${project.basedir}/../../../eng/lintingconfigs/checkstyle/track2/checkstyle.xml</configLocation>
+          <suppressionsLocation>${project.basedir}/../../../eng/lintingconfigs/checkstyle/track2/checkstyle-suppressions.xml</suppressionsLocation>
+          <headerLocation>${project.basedir}/../../../eng/lintingconfigs/checkstyle/java.header</headerLocation>
           <propertyExpansion>samedir=</propertyExpansion>
           <consoleOutput>true</consoleOutput>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
@@ -428,11 +428,6 @@
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>4.8.3.1</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <dependencies>
-          <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>sdk-build-tools</artifactId>
-            <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
-          </dependency>
           <dependency>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs</artifactId>
@@ -450,7 +445,7 @@
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>${project.basedir}/../../../eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+          <excludeFilterFile>${project.basedir}/../../../eng/lintingconfigs/spotbugs/track2/spotbugs-exclude.xml</excludeFilterFile>
           <fork>true</fork>
         </configuration>
       </plugin>
