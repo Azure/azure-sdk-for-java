@@ -21,7 +21,7 @@
     <profile>
       <id>dev</id>
       <modules>
-        <module>../../eng/code-quality-reports</module>
+        <module>../tools/sdk-linting-extensions</module>
       </modules>
     </profile>
   </profiles>

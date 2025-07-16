@@ -54,6 +54,7 @@ extends:
                     - '**/*.yml'
                     - '!sdk/**/test-recordings/*'
                     - '!sdk/**/session-records/*'
+                    - 'sdk/tools/sdk-linting-extensions'
 
             - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
               parameters:
@@ -113,7 +114,7 @@ extends:
             # Why is this necessary? Normal build and release jobs don't install reporting tools prior to building however
             # they're still able to find the build tools through the root aggregate pom file. The ClientFromSourcePom only
             # contains what is necessary for the list of libraries and needs to have them installed explicitly otherwise the
-            # checkstyle plugin will fail to find com.azure:sdk-build-tools which is a dependency. It does this in spite of
+            # checkstyle plugin will fail to find io.clientcore:sdk-linting-extensions which is a dependency. It does this in spite of
             # the fact that we're not running actually running checkstyle, it loads it to skip it...well done.
             - template: ../steps/install-reporting-tools.yml
               parameters:
@@ -204,6 +205,7 @@ extends:
                   - '.vscode/cspell.json'
                   - '!sdk/**/test-recordings/*'
                   - '!sdk/**/session-records/*'
+                  - 'sdk/tools/sdk-linting-extensions'
 
             - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
               parameters:

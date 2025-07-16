@@ -37,7 +37,7 @@ $azIdentityRoot = "$PSScriptRoot" | Resolve-Path
 
 $azIdentityRootPom = "$PSScriptRoot/azure-identity/pom.xml" | Resolve-Path
 
-$azBuildToolsRootPom = "$PSScriptRoot/../../eng/code-quality-reports/pom.xml" | Resolve-Path
+$azBuildToolsRootPom = "$PSScriptRoot/../tools/sdk-linting-extensions/pom.xml" | Resolve-Path
 
 $funcAppRoot = "$PSScriptRoot/live-test-apps/identity-test-function" | Resolve-Path
 $funcAppPom = "$funcAppRoot/pom.xml" | Resolve-Path

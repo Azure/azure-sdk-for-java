@@ -14,7 +14,7 @@ The build system is configured to support JDK, as well as the current long-term 
 Building azure-cosmos SDK locally depends on the availability of the build tooling. This can be installed by running the following:
 
 ```shell
-mvn install -f eng/code-quality-reports/pom.xml 
+mvn install -f sdk/tools/sdk-linting-extensions/pom.xml 
 ```
 
 ### Building and Testing

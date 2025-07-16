@@ -145,6 +145,7 @@ stages:
               - "sdk/${{ parameters.ServiceDirectory }}/**/*.json"
               - '!sdk/**/test-recordings/*'
               - '!sdk/**/session-records/*'
+              - 'sdk/tools/sdk-linting-extensions'
               - ${{ parameters.AdditionalSparseCheckoutPaths }}
             JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
             AdditionalParameters:
