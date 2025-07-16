@@ -9,7 +9,8 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.sdk.ContainerSDKThroughputControlGroupProperties;
+import com.azure.cosmos.implementation.throughputControl.sdk.config.LocalThroughputControlGroup;
 import com.azure.cosmos.models.PriorityLevel;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
@@ -30,8 +31,8 @@ public class ContainerThroughputControlGroupPropertiesTests {
                 .key(TestConfigurations.MASTER_KEY)
                 .buildAsyncClient();
 
-            ContainerThroughputControlGroupProperties throughputControlContainerProperties =
-                new ContainerThroughputControlGroupProperties("/testDB/testContainer");
+            ContainerSDKThroughputControlGroupProperties throughputControlContainerProperties =
+                new ContainerSDKThroughputControlGroupProperties("/testDB/testContainer");
 
             CosmosAsyncContainer container = testClient.getDatabase("fakeDatabase").getContainer("fakeContainer");
 
@@ -160,8 +161,8 @@ public class ContainerThroughputControlGroupPropertiesTests {
                 .key(TestConfigurations.MASTER_KEY)
                 .buildAsyncClient();
 
-            ContainerThroughputControlGroupProperties throughputControlContainerProperties =
-                new ContainerThroughputControlGroupProperties("/testDB/testContainer");
+            ContainerSDKThroughputControlGroupProperties throughputControlContainerProperties =
+                new ContainerSDKThroughputControlGroupProperties("/testDB/testContainer");
 
             //  Test: Without default group and request not having the group name, allowRequestToContinueOnInitError
             //  should not throw NPE

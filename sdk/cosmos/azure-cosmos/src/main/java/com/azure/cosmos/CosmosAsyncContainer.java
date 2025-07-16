@@ -37,9 +37,10 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
-import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
-import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupFactory;
+import com.azure.cosmos.implementation.throughputControl.sdk.config.GlobalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.sdk.config.LocalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.server.config.ThroughputBucketControlGroup;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlGroupFactory;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
@@ -81,7 +82,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -2783,7 +2783,7 @@ public class CosmosAsyncContainer {
 
         LocalThroughputControlGroup localControlGroup =
             ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupConfig, this);
-        this.database.getClient().enableThroughputControlGroup(localControlGroup, throughputQueryMono);
+        this.database.getClient().enableSDKThroughputControlGroup(localControlGroup, throughputQueryMono);
     }
 
     /**
@@ -2808,7 +2808,7 @@ public class CosmosAsyncContainer {
      * </pre>
      * <!-- end com.azure.cosmos.throughputControl.globalControl -->
      *
-     * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
+     * @param groupConfig The throughput control group configuration, see {@link ThroughputControlGroupConfig}.
      * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      */
     public void enableGlobalThroughputControlGroup(
@@ -2818,10 +2818,11 @@ public class CosmosAsyncContainer {
         this.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig, null);
     }
 
+
     /***
      * Only used internally.
      * <br/>
-     * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
+     * @param groupConfig The throughput control group configuration, see {@link ThroughputControlGroupConfig}.
      * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      * @param throughputQueryMono The throughput query mono.
      */
@@ -2833,7 +2834,22 @@ public class CosmosAsyncContainer {
         GlobalThroughputControlGroup globalControlGroup =
             ThroughputControlGroupFactory.createThroughputGlobalControlGroup(groupConfig, globalControlConfig, this);
 
-        this.database.getClient().enableThroughputControlGroup(globalControlGroup, throughputQueryMono);
+        this.database.getClient().enableSDKThroughputControlGroup(globalControlGroup, throughputQueryMono);
+    }
+
+    /***
+     * Enable the service throughput bucket control group.
+     * <p>
+     * For more information about throughput bucket please visit
+     * <a href="https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/throughput-buckets?tabs=dotnet">Throughput buckets in Azure Cosmos DB</a>
+     *
+     * @param groupConfig the throughput control group config, see {@link ThroughputControlGroupConfig}.
+     */
+    public void enableThroughputBucketControlGroup(ThroughputControlGroupConfig groupConfig) {
+        ThroughputBucketControlGroup throughputBucketControlGroup =
+            ThroughputControlGroupFactory.createThroughputBucketControlGroup(groupConfig, this);
+
+        this.database.getClient().enableServerThroughputControlGroup(throughputBucketControlGroup);
     }
 
     void configureFaultInjectionProvider(IFaultInjectorProvider injectorProvider) {

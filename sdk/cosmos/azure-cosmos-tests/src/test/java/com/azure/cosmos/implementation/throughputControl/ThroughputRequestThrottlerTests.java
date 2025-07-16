@@ -13,6 +13,8 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.throughputControl.sdk.ThroughputControlTrackingUnit;
+import com.azure.cosmos.implementation.throughputControl.sdk.ThroughputRequestThrottler;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.test.StepVerifier;
