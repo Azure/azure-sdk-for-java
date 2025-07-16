@@ -80,27 +80,7 @@ public class TaskManager {
                         exception = (Exception) e;
                         pendingList.addAll(taskList);
                     }
-                }).subscribe(response -> {
-                    if (response != null && response.getValues() != null) {
-                        for (BatchTaskCreateResult result : response.getValues()) {
-                            if (result.getError() != null) {
-                                if (result.getStatus() == BatchTaskAddStatus.SERVER_ERROR) {
-                                    // Server error will be retried
-                                    for (BatchTaskCreateParameters batchTaskToCreate : taskList) {
-                                        if (batchTaskToCreate.getId().equals(result.getTaskId())) {
-                                            pendingList.add(batchTaskToCreate);
-                                            break;
-                                        }
-                                    }
-                                } else if (result.getStatus() == BatchTaskAddStatus.CLIENT_ERROR
-                                    && !result.getError().getMessage().getValue().contains("Status code 409")) {
-                                    // Client error will be recorded
-                                    failures.add(result);
-                                }
-                            }
-                        }
-                    }
-                });
+                }).block();
             } catch (Exception e) {
                 e.printStackTrace();
             }
