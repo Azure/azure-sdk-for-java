@@ -40,15 +40,16 @@ then
 	exit 1
 fi
 
+echo "DATABRICKS_RUNTIME_VERSION: $DATABRICKS_RUNTIME_VERSION"
 if [ $DATABRICKS_RUNTIME_VERSION > 15 ]; then
   # Upload to workspace and install from there
   echo "Using Workspace library installation for DBR $DBR_VERSION"
-  echo "Deleting files in /tmp/libraries/$JARFILE"
+  echo "Deleting files in /Workspace/tmp/libraries/$JARFILE"
   databricks workspace delete /tmp/libraries/$JARFILE
 
   echo "Copying files to $JARPATH/$JARFILE"
-  databricks workspace import --format AUTO "$JARPATH/$JARFILE" "/tmp/libraries/$JARFILE" --overwrite
-  databricks libraries install --cluster-id $CLUSTER_ID --jar "/tmp/libraries/$JARFILE"
+  databricks workspace import --format AUTO "$JARPATH/$JARFILE" "/Workspace/tmp/libraries/$JARFILE" --overwrite
+  databricks libraries install --cluster-id $CLUSTER_ID --jar "/Workspace/tmp/libraries/$JARFILE"
 else
   # For older runtimes: Use DBFS path
   echo "Using DBFS library installation for DBR $DBR_VERSION"
