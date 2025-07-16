@@ -140,6 +140,7 @@
     "sdk/mixedreality/azure-mixedreality-authentication/**",
     "sdk/maps/azure-maps-search/**",
     "sdk/monitor/azure-monitor-query/**",
+    "sdk/monitor/azure-monitor-query-logs/**",
     "sdk/monitor/azure-monitor-opentelemetry-exporter/**",
     "sdk/monitor/azure-monitor-opentelemetry-autoconfigure/**",
     "sdk/monitor/test-resources.json",
