@@ -75,7 +75,7 @@ com.azure:azure-communication-callingserver;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-communication-chat;1.6.0;1.7.0-beta.1
 com.azure:azure-communication-common;1.4.0;1.5.0-beta.1
 com.azure:azure-communication-common-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-communication-email;1.0.22;1.1.0-beta.2
+com.azure:azure-communication-email;1.0.22;1.2.0-beta.1
 com.azure:azure-communication-identity;1.6.5;1.7.0-beta.1
 com.azure:azure-communication-jobrouter;1.1.13;2.0.0-beta.1
 com.azure:azure-communication-messages;1.1.4;1.2.0-beta.2
@@ -86,7 +86,7 @@ com.azure:azure-compute-batch;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-containers-containerregistry;1.2.17;1.3.0-beta.1
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core;1.55.5;1.56.0-beta.1
-com.azure:azure-core-amqp;2.10.1;2.11.0-beta.1
+com.azure:azure-core-amqp;2.10.1;2.10.2
 com.azure:azure-core-experimental;1.0.0-beta.62;1.0.0-beta.63
 com.azure:azure-core-http-jdk-httpclient;1.0.5;1.1.0-beta.1
 com.azure:azure-core-http-netty;1.15.13;1.16.0-beta.1
@@ -331,7 +331,7 @@ com.azure.resourcemanager:azure-resourcemanager-appconfiguration;1.1.0;1.2.0-bet
 com.azure.resourcemanager:azure-resourcemanager-attestation;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-azurestack;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-azurestackhci;1.0.0-beta.5;1.0.0-beta.6
-com.azure.resourcemanager:azure-resourcemanager-avs;1.2.0;1.3.0
+com.azure.resourcemanager:azure-resourcemanager-avs;1.3.0;1.4.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-consumption;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-commerce;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-billing;1.0.0;1.1.0-beta.1
@@ -396,11 +396,11 @@ com.azure.resourcemanager:azure-resourcemanager-oep;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-dnsresolver;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mobilenetwork;1.3.0;1.4.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-azureadexternalidentities;1.0.0-beta.1;1.0.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-dashboard;1.1.0;1.2.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-dashboard;1.1.0;1.2.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-servicelinker;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appcontainers;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-scvmm;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-hardwaresecuritymodules;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-hardwaresecuritymodules;1.0.0;1.1.0
 com.azure.resourcemanager:azure-resourcemanager-workloads;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-confidentialledger;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-dynatrace;1.0.0;1.1.0-beta.1
@@ -454,7 +454,7 @@ com.azure.resourcemanager:azure-resourcemanager-astro;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-workloadssapvirtualinstance;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-largeinstance;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-migrationdiscoverysap;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-storageactions;1.0.0-beta.3;1.0.0-beta.4
+com.azure.resourcemanager:azure-resourcemanager-storageactions;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-deviceregistry;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-standbypool;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-edgezones;1.0.0-beta.2;1.0.0-beta.3
@@ -497,9 +497,10 @@ com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-fluxconf
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensions;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-extensiontypes;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-cloudhealth;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-resources-deploymentstacks;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-resources-deploymentstacks;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-privatelinkscopes;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resources-bicep;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-playwright;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 com.azure.v2:azure-client-sdk-parent;2.0.0-beta.1;2.0.0-beta.1
@@ -532,7 +533,7 @@ io.clientcore:sdk-linting-extensions;1.0.0-beta.1;1.0.0-beta.1
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 
-unreleased_com.azure:azure-core-amqp;2.11.0-beta.1
+unreleased_com.azure:azure-core-amqp;2.10.2
 unreleased_com.azure.v2:azure-core;2.0.0-beta.1
 unreleased_com.azure.v2:azure-identity;2.0.0-beta.1
 unreleased_io.clientcore:annotation-processor;1.0.0-beta.4

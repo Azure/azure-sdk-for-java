@@ -1302,8 +1302,8 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OnlineExperimentationWorkspace list operation along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return all online experimentation workspaces in a resource group along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OnlineExperimentationWorkspaceInner>>
@@ -1331,7 +1331,7 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OnlineExperimentationWorkspace list operation along with {@link PagedResponse}.
+     * @return all online experimentation workspaces in a resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OnlineExperimentationWorkspaceInner> listByResourceGroupNextSinglePage(String nextLink) {
@@ -1359,7 +1359,7 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OnlineExperimentationWorkspace list operation along with {@link PagedResponse}.
+     * @return all online experimentation workspaces in a resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OnlineExperimentationWorkspaceInner> listByResourceGroupNextSinglePage(String nextLink,
@@ -1387,7 +1387,7 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OnlineExperimentationWorkspace list operation along with {@link PagedResponse} on
+     * @return all online experimentation workspaces in the specified subscription along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1416,7 +1416,7 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OnlineExperimentationWorkspace list operation along with {@link PagedResponse}.
+     * @return all online experimentation workspaces in the specified subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OnlineExperimentationWorkspaceInner> listBySubscriptionNextSinglePage(String nextLink) {
@@ -1444,7 +1444,7 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OnlineExperimentationWorkspace list operation along with {@link PagedResponse}.
+     * @return all online experimentation workspaces in the specified subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OnlineExperimentationWorkspaceInner> listBySubscriptionNextSinglePage(String nextLink,
