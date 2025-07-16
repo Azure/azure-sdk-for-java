@@ -1213,20 +1213,46 @@ class FileApiTests extends FileShareTestBase {
         }
     }
 
-    //    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
-    //    @Test
-    //    public void uploadRangeFromURLSourceErrorAndStatusCode() {
-    //        primaryFileClient.create(1024);
-    //        ShareFileClient destinationClient = shareClient.getFileClient(generatePathName());
-    //        destinationClient.create(1024);
-    //
-    //        ShareStorageException e = assertThrows(ShareStorageException.class,
-    //            () -> destinationClient.uploadRangeFromUrl(5, 0, 0, primaryFileClient.getFileUrl()));
-    //
-    //        assertTrue(e.getStatusCode() == 401);
-    //        assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
-    //        assertTrue(e.getServiceMessage().contains("Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
-    //    }
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void uploadRangeFromURLSourceErrorAndStatusCode() {
+        primaryFileClient.create(1024);
+        ShareFileClient destinationClient = shareClient.getFileClient(generatePathName());
+        destinationClient.create(1024);
+
+        ShareStorageException e = assertThrows(ShareStorageException.class,
+            () -> destinationClient.uploadRangeFromUrl(5, 0, 0, primaryFileClient.getFileUrl()));
+
+        assertTrue(e.getStatusCode() == 401);
+        assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
+        assertTrue(e.getServiceMessage()
+            .contains(
+                "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void startCopySourceErrorAndStatusCode() {
+        ShareFileClient srcFile = shareClient.getFileClient(generatePathName());
+        srcFile.create(Constants.KB);
+        ShareFileClient destFile = shareClient.getFileClient(generatePathName());
+        destFile.create(Constants.KB);
+
+        String sasToken = srcFile.generateSas(new ShareServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new ShareFileSasPermission().setWritePermission(true)));
+        String sourceUri = srcFile.getFileUrl() + "?" + sasToken;
+
+        ShareStorageException e = assertThrows(ShareStorageException.class, () -> {
+            SyncPoller<ShareFileCopyInfo, Void> poller
+                = destFile.beginCopy(sourceUri, (Map<String, String>) null, null);
+            poller.waitForCompletion();
+        });
+
+        assertTrue(e.getStatusCode() == 403);
+        assertTrue(e.getServiceMessage().contains("AuthorizationPermissionMismatch"));
+        assertTrue(e.getServiceMessage()
+            .contains("This request is not authorized to perform this operation using this permission."));
+    }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
