@@ -20,7 +20,7 @@ For more on service functionality and important usage considerations, see [the d
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-health-deidentification</artifactId>
-    <version>1.1.0-beta.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -61,7 +61,7 @@ with the Azure SDK, please include the `azure-identity` package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.16.2</version>
+    <version>1.15.3</version>
 </dependency>
 ```
 
