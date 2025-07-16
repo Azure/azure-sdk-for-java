@@ -8,10 +8,10 @@ import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.throughputControl.sdk.LinkedCancellationToken;
 import com.azure.cosmos.implementation.throughputControl.sdk.config.LocalThroughputControlGroup;
-import com.azure.cosmos.implementation.throughputControl.sdk.controller.group.ThroughputGroupControllerBase;
+import com.azure.cosmos.implementation.throughputControl.sdk.controller.group.SDKThroughputGroupControllerBase;
 import reactor.core.publisher.Mono;
 
-public class LocalThroughputControlGroupController extends ThroughputGroupControllerBase {
+public class LocalThroughputControlGroupController extends SDKThroughputGroupControllerBase {
 
     public LocalThroughputControlGroupController(
         ConnectionMode connectionMode,

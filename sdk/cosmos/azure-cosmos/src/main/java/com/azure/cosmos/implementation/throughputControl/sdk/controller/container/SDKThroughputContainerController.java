@@ -26,7 +26,7 @@ import com.azure.cosmos.implementation.throughputControl.IThroughputContainerCon
 import com.azure.cosmos.implementation.throughputControl.sdk.LinkedCancellationToken;
 import com.azure.cosmos.implementation.throughputControl.sdk.LinkedCancellationTokenSource;
 import com.azure.cosmos.implementation.throughputControl.sdk.config.SDKThroughputControlGroupInternal;
-import com.azure.cosmos.implementation.throughputControl.sdk.controller.group.ThroughputGroupControllerBase;
+import com.azure.cosmos.implementation.throughputControl.sdk.controller.group.SDKThroughputGroupControllerBase;
 import com.azure.cosmos.implementation.throughputControl.sdk.controller.group.ThroughputGroupControllerFactory;
 import com.azure.cosmos.implementation.throughputControl.sdk.exceptions.ThroughputControlInitializationException;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -64,7 +64,7 @@ public class SDKThroughputContainerController implements IThroughputContainerCon
     private final AsyncDocumentClient client;
     private final RxCollectionCache collectionCache;
     private final ConnectionMode connectionMode;
-    private final AsyncCache<String, ThroughputGroupControllerBase> groupControllerCache;
+    private final AsyncCache<String, SDKThroughputGroupControllerBase> groupControllerCache;
     private final Map<String, SDKThroughputControlGroupInternal> groups;
     private final AtomicReference<Integer> maxContainerThroughput;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
@@ -74,7 +74,7 @@ public class SDKThroughputContainerController implements IThroughputContainerCon
     private final ConcurrentHashMap<String, LinkedCancellationToken> cancellationTokenMap;
     private final Mono<Integer> throughputQueryMono;
 
-    private ThroughputGroupControllerBase defaultGroupController;
+    private SDKThroughputGroupControllerBase defaultGroupController;
     private String targetContainerRid;
     private String targetDatabaseRid;
     private ThroughputProvisioningScope throughputProvisioningScope;
@@ -305,7 +305,7 @@ public class SDKThroughputContainerController implements IThroughputContainerCon
     }
 
     // TODO: a better way to handle throughput control group enabled after the container initialization
-    private Mono<Utils.ValueHolder<ThroughputGroupControllerBase>> getOrCreateThroughputGroupController(String groupName) {
+    private Mono<Utils.ValueHolder<SDKThroughputGroupControllerBase>> getOrCreateThroughputGroupController(String groupName) {
 
         // If there is no control group defined, using the default group controller
         if (StringUtils.isEmpty(groupName)) {
@@ -338,7 +338,7 @@ public class SDKThroughputContainerController implements IThroughputContainerCon
             .then(Mono.just(this));
     }
 
-    private Mono<ThroughputGroupControllerBase> resolveThroughputGroupController(SDKThroughputControlGroupInternal group) {
+    private Mono<SDKThroughputGroupControllerBase> resolveThroughputGroupController(SDKThroughputControlGroupInternal group) {
         return this.groupControllerCache.getAsync(
                     group.getGroupName(),
                     null,
@@ -346,13 +346,13 @@ public class SDKThroughputContainerController implements IThroughputContainerCon
                 .onErrorResume(throwable -> Mono.error(new ThroughputControlInitializationException(throwable)));
     }
 
-    private Mono<ThroughputGroupControllerBase> createAndInitializeGroupController(SDKThroughputControlGroupInternal group) {
+    private Mono<SDKThroughputGroupControllerBase> createAndInitializeGroupController(SDKThroughputControlGroupInternal group) {
         LinkedCancellationToken parentToken =
             this.cancellationTokenMap.compute(
                 group.getGroupName(),
                 (key, cancellationToken) -> this.cancellationTokenSource.getToken());
 
-        ThroughputGroupControllerBase groupController = ThroughputGroupControllerFactory.createController(
+        SDKThroughputGroupControllerBase groupController = ThroughputGroupControllerFactory.createController(
             this.connectionMode,
             group,
             this.maxContainerThroughput.get(),
@@ -362,7 +362,7 @@ public class SDKThroughputContainerController implements IThroughputContainerCon
 
         return groupController
             .init()
-            .cast(ThroughputGroupControllerBase.class)
+            .cast(SDKThroughputGroupControllerBase.class)
             .doOnSuccess(controller -> {
                 if (controller.isDefault()) {
                     this.defaultGroupController = controller;

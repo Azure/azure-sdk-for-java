@@ -9,7 +9,7 @@ import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.guava25.collect.EvictingQueue;
 import com.azure.cosmos.implementation.throughputControl.sdk.LinkedCancellationToken;
 import com.azure.cosmos.implementation.throughputControl.sdk.config.GlobalThroughputControlGroup;
-import com.azure.cosmos.implementation.throughputControl.sdk.controller.group.ThroughputGroupControllerBase;
+import com.azure.cosmos.implementation.throughputControl.sdk.controller.group.SDKThroughputGroupControllerBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -19,7 +19,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class GlobalThroughputControlGroupController extends ThroughputGroupControllerBase {
+public class GlobalThroughputControlGroupController extends SDKThroughputGroupControllerBase {
     private static final Logger logger = LoggerFactory.getLogger(GlobalThroughputControlGroupController.class);
     private static final double INITIAL_CLIENT_THROUGHPUT_RU_SHARE = 1.0;
     private static final double INITIAL_THROUGHPUT_USAGE = 1.0;

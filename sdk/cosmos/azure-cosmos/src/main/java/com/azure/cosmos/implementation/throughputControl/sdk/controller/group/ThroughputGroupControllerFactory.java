@@ -14,7 +14,7 @@ import com.azure.cosmos.implementation.throughputControl.sdk.controller.group.lo
 
 public class ThroughputGroupControllerFactory {
 
-    public static ThroughputGroupControllerBase createController(
+    public static SDKThroughputGroupControllerBase createController(
         ConnectionMode connectionMode,
         SDKThroughputControlGroupInternal group,
         Integer maxContainerThroughput,

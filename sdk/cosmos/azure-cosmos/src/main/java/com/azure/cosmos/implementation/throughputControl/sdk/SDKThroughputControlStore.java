@@ -297,6 +297,26 @@ public class SDKThroughputControlStore {
         }
     }
 
+    public boolean hasDefaultGroup(String containerNameLink) {
+        if (this.containerMap.containsKey(containerNameLink)) {
+            return this.containerMap.get(containerNameLink).hasDefaultGroup();
+        }
+
+        return false;
+    }
+
+    public boolean hasGroup(String containerNameLink, String throughputControlGroupName) {
+        if (throughputControlGroupName.isEmpty()) {
+            return false;
+        }
+
+        if (this.containerMap.containsKey(containerNameLink)) {
+            return this.containerMap.get(containerNameLink).hasGroup(throughputControlGroupName);
+        }
+
+        return false;
+    }
+
     public void close() {
         this.cancellationTokenSource.close();
     }

@@ -2844,7 +2844,7 @@ public class CosmosAsyncContainer {
      *
      * @param groupConfig the throughput control group config, see {@link ThroughputControlGroupConfig}.
      */
-    public void enableThroughputBucketControlGroup(ThroughputControlGroupConfig groupConfig) {
+    public void enableServerThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
         ThroughputBucketControlGroup throughputBucketControlGroup =
             ThroughputControlGroupFactory.createThroughputBucketControlGroup(groupConfig, this);
 

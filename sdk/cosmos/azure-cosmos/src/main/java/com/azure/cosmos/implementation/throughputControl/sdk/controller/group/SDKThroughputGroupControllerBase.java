@@ -39,8 +39,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * 1. Create and initialize request controller based on connection mode
  * 2. Schedule reset throughput usage every 1s.
  */
-public abstract class ThroughputGroupControllerBase implements IThroughputController {
-    private final static Logger logger = LoggerFactory.getLogger(ThroughputGroupControllerBase.class);
+public abstract class SDKThroughputGroupControllerBase implements IThroughputController {
+    private final static Logger logger = LoggerFactory.getLogger(SDKThroughputGroupControllerBase.class);
     private final Duration DEFAULT_THROUGHPUT_USAGE_RESET_DURATION = Duration.ofSeconds(1);
 
     private final ConnectionMode connectionMode;
@@ -53,7 +53,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
     protected final AtomicReference<Double> groupThroughput;
     protected final LinkedCancellationTokenSource cancellationTokenSource;
 
-    public ThroughputGroupControllerBase(
+    public SDKThroughputGroupControllerBase(
         ConnectionMode connectionMode,
         SDKThroughputControlGroupInternal group,
         Integer maxContainerThroughput,
