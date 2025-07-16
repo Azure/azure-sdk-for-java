@@ -40,8 +40,9 @@ then
 	exit 1
 fi
 
-echo "DATABRICKS_RUNTIME_VERSION: $DATABRICKS_RUNTIME_VERSION"
-if [ $DATABRICKS_RUNTIME_VERSION > 15 ]; then
+echo "CLUSTER_NAME: $CLUSTER_NAME"
+# Version comparison is messy in bash - using cluster name for the cluster that was created with 16.4
+if [ $CLUSTER_NAME == "oltp-ci-spark35-2workers-ds3v2-16.4" ]; then
   # Upload to workspace and install from there
   echo "Using Workspace library installation for DBR $DBR_VERSION"
   echo "Deleting files in /Workspace/tmp/libraries/$JARFILE"
