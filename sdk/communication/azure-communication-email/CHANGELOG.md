@@ -1,20 +1,10 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2025-07-16)
 
 ### Features Added
 
 - Added `beginSend(String operationId)` method to `EmailClient` and `EmailAsyncClient` to create a poller from an existing operation ID. This allows customers to check the status of a previously started email send operation.
-
-## 1.1.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.0.22 (2025-06-19)
 
