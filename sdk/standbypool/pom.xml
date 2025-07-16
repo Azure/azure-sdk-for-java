@@ -11,6 +11,5 @@
 
   <modules>
     <module>azure-resourcemanager-standbypool</module>
-    <module>../resourcemanager/azure-resourcemanager-test</module>
   </modules>
 </project>
