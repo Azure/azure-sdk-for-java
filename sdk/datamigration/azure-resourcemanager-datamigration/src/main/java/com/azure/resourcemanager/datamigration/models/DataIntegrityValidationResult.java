@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Results for checksum based Data Integrity validation results.
  */
-@Immutable
+@Fluent
 public final class DataIntegrityValidationResult implements JsonSerializable<DataIntegrityValidationResult> {
     /*
      * List of failed table names of source and target pair
@@ -43,12 +43,34 @@ public final class DataIntegrityValidationResult implements JsonSerializable<Dat
     }
 
     /**
+     * Set the failedObjects property: List of failed table names of source and target pair.
+     * 
+     * @param failedObjects the failedObjects value to set.
+     * @return the DataIntegrityValidationResult object itself.
+     */
+    public DataIntegrityValidationResult withFailedObjects(Map<String, String> failedObjects) {
+        this.failedObjects = failedObjects;
+        return this;
+    }
+
+    /**
      * Get the validationErrors property: List of errors that happened while performing data integrity validation.
      * 
      * @return the validationErrors value.
      */
     public ValidationError validationErrors() {
         return this.validationErrors;
+    }
+
+    /**
+     * Set the validationErrors property: List of errors that happened while performing data integrity validation.
+     * 
+     * @param validationErrors the validationErrors value to set.
+     * @return the DataIntegrityValidationResult object itself.
+     */
+    public DataIntegrityValidationResult withValidationErrors(ValidationError validationErrors) {
+        this.validationErrors = validationErrors;
+        return this;
     }
 
     /**
@@ -68,6 +90,8 @@ public final class DataIntegrityValidationResult implements JsonSerializable<Dat
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("failedObjects", this.failedObjects, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("validationErrors", this.validationErrors);
         return jsonWriter.writeEndObject();
     }
 

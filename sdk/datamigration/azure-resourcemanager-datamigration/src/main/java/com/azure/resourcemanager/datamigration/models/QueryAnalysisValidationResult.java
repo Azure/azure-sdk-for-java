@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Results for query analysis comparison between the source and target.
  */
-@Immutable
+@Fluent
 public final class QueryAnalysisValidationResult implements JsonSerializable<QueryAnalysisValidationResult> {
     /*
      * List of queries executed and it's execution results in source and target
@@ -42,12 +42,34 @@ public final class QueryAnalysisValidationResult implements JsonSerializable<Que
     }
 
     /**
+     * Set the queryResults property: List of queries executed and it's execution results in source and target.
+     * 
+     * @param queryResults the queryResults value to set.
+     * @return the QueryAnalysisValidationResult object itself.
+     */
+    public QueryAnalysisValidationResult withQueryResults(QueryExecutionResult queryResults) {
+        this.queryResults = queryResults;
+        return this;
+    }
+
+    /**
      * Get the validationErrors property: Errors that are part of the execution.
      * 
      * @return the validationErrors value.
      */
     public ValidationError validationErrors() {
         return this.validationErrors;
+    }
+
+    /**
+     * Set the validationErrors property: Errors that are part of the execution.
+     * 
+     * @param validationErrors the validationErrors value to set.
+     * @return the QueryAnalysisValidationResult object itself.
+     */
+    public QueryAnalysisValidationResult withValidationErrors(ValidationError validationErrors) {
+        this.validationErrors = validationErrors;
+        return this;
     }
 
     /**
@@ -70,6 +92,8 @@ public final class QueryAnalysisValidationResult implements JsonSerializable<Que
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("queryResults", this.queryResults);
+        jsonWriter.writeJsonField("validationErrors", this.validationErrors);
         return jsonWriter.writeEndObject();
     }
 

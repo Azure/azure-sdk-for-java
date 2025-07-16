@@ -37,6 +37,16 @@ public final class MigrateSqlServerSqlDbDatabaseInput implements JsonSerializabl
      */
     private Map<String, String> tableMap;
 
+    /*
+     * Settings selected for DB schema migration.
+     */
+    private Object schemaSetting;
+
+    /*
+     * id of the database
+     */
+    private String id;
+
     /**
      * Creates an instance of MigrateSqlServerSqlDbDatabaseInput class.
      */
@@ -126,6 +136,46 @@ public final class MigrateSqlServerSqlDbDatabaseInput implements JsonSerializabl
     }
 
     /**
+     * Get the schemaSetting property: Settings selected for DB schema migration.
+     * 
+     * @return the schemaSetting value.
+     */
+    public Object schemaSetting() {
+        return this.schemaSetting;
+    }
+
+    /**
+     * Set the schemaSetting property: Settings selected for DB schema migration.
+     * 
+     * @param schemaSetting the schemaSetting value to set.
+     * @return the MigrateSqlServerSqlDbDatabaseInput object itself.
+     */
+    public MigrateSqlServerSqlDbDatabaseInput withSchemaSetting(Object schemaSetting) {
+        this.schemaSetting = schemaSetting;
+        return this;
+    }
+
+    /**
+     * Get the id property: id of the database.
+     * 
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: id of the database.
+     * 
+     * @param id the id value to set.
+     * @return the MigrateSqlServerSqlDbDatabaseInput object itself.
+     */
+    public MigrateSqlServerSqlDbDatabaseInput withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -143,6 +193,10 @@ public final class MigrateSqlServerSqlDbDatabaseInput implements JsonSerializabl
         jsonWriter.writeStringField("targetDatabaseName", this.targetDatabaseName);
         jsonWriter.writeBooleanField("makeSourceDbReadOnly", this.makeSourceDbReadOnly);
         jsonWriter.writeMapField("tableMap", this.tableMap, (writer, element) -> writer.writeString(element));
+        if (this.schemaSetting != null) {
+            jsonWriter.writeUntypedField("schemaSetting", this.schemaSetting);
+        }
+        jsonWriter.writeStringField("id", this.id);
         return jsonWriter.writeEndObject();
     }
 
@@ -172,6 +226,10 @@ public final class MigrateSqlServerSqlDbDatabaseInput implements JsonSerializabl
                 } else if ("tableMap".equals(fieldName)) {
                     Map<String, String> tableMap = reader.readMap(reader1 -> reader1.getString());
                     deserializedMigrateSqlServerSqlDbDatabaseInput.tableMap = tableMap;
+                } else if ("schemaSetting".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbDatabaseInput.schemaSetting = reader.readUntyped();
+                } else if ("id".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbDatabaseInput.id = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

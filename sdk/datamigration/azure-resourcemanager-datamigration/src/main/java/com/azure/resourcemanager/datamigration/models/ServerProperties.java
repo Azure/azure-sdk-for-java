@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Server properties for Oracle, MySQL type source.
+ * Server properties for MySQL type source.
  */
 @Immutable
 public final class ServerProperties implements JsonSerializable<ServerProperties> {
