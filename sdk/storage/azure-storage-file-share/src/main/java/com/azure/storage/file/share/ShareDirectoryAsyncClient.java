@@ -233,18 +233,11 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<Boolean>> existsWithResponse(Context context) {
         return this.getPropertiesWithResponse(context)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
-            .onErrorResume(this::checkDoesNotExistStatusCode, t -> {
+            .onErrorResume(ModelHelper::checkDoesNotExistStatusCode, t -> {
                 HttpResponse response = ((ShareStorageException) t).getResponse();
                 return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), false));
             });
-    }
-
-    private boolean checkDoesNotExistStatusCode(Throwable t) {
-        return t instanceof ShareStorageException
-            && ((ShareStorageException) t).getStatusCode() == 404
-            && (((ShareStorageException) t).getErrorCode() == ShareErrorCode.RESOURCE_NOT_FOUND
-                || ((ShareStorageException) t).getErrorCode() == ShareErrorCode.SHARE_NOT_FOUND);
     }
 
     /**
