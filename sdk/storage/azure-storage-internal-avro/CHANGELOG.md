@@ -15,6 +15,17 @@
 ### Features Added
 - Added support for service version 2025-11-05.
 
+## 12.16.0 (2025-07-16)
+
+### Features Added
+- Added support for service version 2025-07-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.29.0` to version `12.30.0`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+
 ## 12.15.1 (2025-06-19)
 
 ### Other Changes

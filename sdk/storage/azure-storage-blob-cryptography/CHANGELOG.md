@@ -15,6 +15,19 @@
 ### Features Added
 - Added support for service version 2025-11-05.
 
+## 12.30.0 (2025-07-16)
+
+### Features Added
+- Added support for service version 2025-07-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.30.0` to version `12.31.0`.
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+
 ## 12.29.1 (2025-06-19)
 
 ### Other Changes
