@@ -642,8 +642,7 @@ public final class RoleAssignmentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return role assignment list operation result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return role assignments for a scope along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listForScopeNextSinglePageAsync(String nextLink,
@@ -681,7 +680,7 @@ public final class RoleAssignmentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return role assignment list operation result along with {@link PagedResponse}.
+     * @return role assignments for a scope along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listForScopeNextSinglePage(String nextLink, RequestOptions requestOptions) {

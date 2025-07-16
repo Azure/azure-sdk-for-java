@@ -796,10 +796,10 @@
 # ServiceOwners:                                     @azureSQLGitHub
 
 # PRLabel: %Storage
-/sdk/storage/                                        @seanmcc-msft @ibrandes @kyleknap @alzimmermsft @gunjansingh-msft
+/sdk/storage/                                        @seanmcc-msft @ibrandes @kyleknap @alzimmermsft @gunjansingh-msft @browndav-msft
 
 # ServiceLabel:  %Storage
-# AzureSdkOwners:                                    @seanmcc-msft @ibrandes @kyleknap @gunjansingh-msft
+# AzureSdkOwners:                                    @seanmcc-msft @ibrandes @kyleknap @gunjansingh-msft @browndav-msft
 # ServiceOwners:                                     @xgithubtriage
 
 # ServiceLabel:  %Storsimple
@@ -934,6 +934,7 @@
 /.github/CODEOWNERS                                           @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles @alzimmermsft @Azure/azure-sdk-eng @Azure/azure-java-sdk
 /.github/workflows/                                           @Azure/azure-sdk-eng
 /.config/1espt/                                               @benbp @weshaggard
+/eng/tools/mcp/                                               @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @samvaity
 
 # Removing owners for this file to not require codeowner approval for changes to them given they are shared with project
 /eng/versioning/version_client.txt

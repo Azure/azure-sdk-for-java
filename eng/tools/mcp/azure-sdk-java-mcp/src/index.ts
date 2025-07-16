@@ -30,12 +30,12 @@ server.registerTool(
     "clean_java_source",
     {
         description:
-            "Remove all generated Java source files and directories for a given module. This tool is typically used to clean up the output of previous SDK generations before a new build.",
+            "Remove all generated Java source files and directories for a given module. This tool is typically used to clean up the output of previous SDK generations before a new build. It should only be applied to packages with the prefix `azure-resourcemanager-*`.",
         inputSchema: {
             cwd: z
                 .string()
                 .describe(
-                    "The absolute path to the module directory containing tsp-location.yaml. Example: C:\\workspace\\azure-sdk-for-java\\sdk\\communication\\azure-communication-messages",
+                    "The absolute path to the module directory containing tsp-location.yaml. Example: C:\\workspace\\azure-sdk-for-java\\sdk\\devcenter\\azure-resourcemanager-devcenter",
                 ),
         },
         annotations: {
@@ -224,7 +224,7 @@ server.registerTool(
     "prepare_java_sdk_environment",
     {
         description:
-            "Prepare the development environment required for Java SDK generation. This includes setting up Node.js/npm, Java/Maven, and TypeSpec tools.",
+            "Prepare the development environment required for Java SDK generation when there are errors about missing development environments. The tool returns a cookbook with step-by-step instructions to install necessary environments including Node.js/npm, Java/Maven, and TypeSpec tools.",
         inputSchema: {
             cwd: z
                 .string()

@@ -147,9 +147,6 @@ public final class BlobServiceProperties implements XmlSerializable<BlobServiceP
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public List<BlobCorsRule> getCors() {
-        if (this.cors == null) {
-            this.cors = new ArrayList<>();
-        }
         return this.cors;
     }
 
