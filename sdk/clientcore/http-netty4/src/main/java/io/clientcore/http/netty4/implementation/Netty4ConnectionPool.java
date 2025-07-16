@@ -16,12 +16,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
-import io.netty.handler.codec.http.DefaultFullHttpRequest;
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpHeaderNames;
-import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpResponse;
-import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http2.Http2GoAwayFrame;
 import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.proxy.ProxyHandler;
@@ -30,7 +24,6 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.util.AttributeKey;
-import io.netty.util.ReferenceCountUtil;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.Promise;
 
@@ -348,67 +341,12 @@ public class Netty4ConnectionPool implements Closeable {
                     return null;
                 }
 
-                boolean isConnectionAlive = isConnectionAlive(connection.channel);
-                System.out.println("ISCONNECTIONALIVE: " + isConnectionAlive);
-                if (isConnectionAlive) {
-                    if (isHealthy(connection)) {
-                        connection.idleSince = null; // Mark as active
-                        return connection;
-                    }
+                if (isHealthy(connection)) {
+                    connection.idleSince = null; // Mark as active
+                    return connection;
                 }
 
                 connection.close(); // The close listener will handle decrementing the counter.
-            }
-        }
-
-        private boolean isConnectionAlive(Channel channel) {
-            PooledConnection pooledConnection = channel.attr(POOLED_CONNECTION_KEY).get();
-            if (pooledConnection == null) {
-                return false;
-            }
-
-            SocketAddress address = pooledConnection.key.getFinalDestination();
-            if (!(address instanceof InetSocketAddress)) {
-                return false;
-            }
-
-            String host = ((InetSocketAddress) address).getHostString();
-            int port = ((InetSocketAddress) address).getPort();
-            String hostHeader = host + ":" + port;
-
-            try {
-                Promise<Boolean> validationPromise = channel.eventLoop().newPromise();
-
-                ChannelHandler validationHandler = new ChannelInboundHandlerAdapter() {
-                    @Override
-                    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-                        if (msg instanceof io.netty.handler.codec.http.HttpResponse) {
-                            validationPromise.trySuccess(true);
-                            io.netty.util.ReferenceCountUtil.release(msg);
-                            ctx.pipeline().remove(this);
-                        } else {
-                            super.channelRead(ctx, msg);
-                        }
-                    }
-
-                    @Override
-                    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-                        validationPromise.trySuccess(false);
-                        ctx.pipeline().remove(this);
-                    }
-                };
-
-                channel.pipeline().addLast("validationHandler", validationHandler);
-
-                FullHttpRequest pingRequest = new DefaultFullHttpRequest(
-                    HttpVersion.HTTP_1_1, HttpMethod.OPTIONS, "*");
-                pingRequest.headers().set(HttpHeaderNames.HOST, hostHeader);
-
-                channel.writeAndFlush(pingRequest);
-
-                return validationPromise.get(2, TimeUnit.SECONDS);
-            } catch (Exception e) {
-                return false;
             }
         }
 

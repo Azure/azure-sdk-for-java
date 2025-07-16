@@ -82,12 +82,8 @@ public final class HttpClientTestsServer {
             boolean head = "HEAD".equalsIgnoreCase(req.getMethod());
             boolean delete = "DELETE".equalsIgnoreCase(req.getMethod());
             boolean patch = "PATCH".equalsIgnoreCase(req.getMethod());
-            boolean options = "OPTIONS".equalsIgnoreCase(req.getMethod());
 
-            if (options && "*".equals(path)) {
-                resp.setStatus(200);
-                resp.flushBuffer();
-            } else if (get && path.startsWith("/bytes")) {
+            if (get && path.startsWith("/bytes")) {
                 // Stub that will return a response with a body containing the passed number of bytes.
                 sendBytesResponse(path, resp);
             } else if (get && path.startsWith("/status")) {
