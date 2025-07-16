@@ -15,7 +15,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.ALPN;
-import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PIPELINE_CLEANUP;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.configureHttpsPipeline;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.sendHttp11Request;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.sendHttp2Request;
@@ -41,28 +40,6 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
     private final AtomicReference<ResponseStateInfo> responseReference;
     private final AtomicReference<Throwable> errorReference;
     private final CountDownLatch latch;
-    private final Netty4ConnectionPool connectionPool;
-    private final Object pipelineOwnerToken;
-
-    /**
-     * Creates a new instance of {@link Netty4AlpnHandler} with a fallback to using HTTP/1.1.
-     *
-     * @param request        The request to send once ALPN negotiation completes.
-     * @param errorReference An AtomicReference keeping track of errors during the request lifecycle.
-     * @param latch          A CountDownLatch that will be released once the request completes.
-     * @param connectionPool The connection pool.
-     */
-    public Netty4AlpnHandler(HttpRequest request, AtomicReference<ResponseStateInfo> responseReference,
-        AtomicReference<Throwable> errorReference, CountDownLatch latch, Netty4ConnectionPool connectionPool,
-        Object pipelineOwnerToken) {
-        super(ApplicationProtocolNames.HTTP_1_1);
-        this.request = request;
-        this.responseReference = responseReference;
-        this.errorReference = errorReference;
-        this.latch = latch;
-        this.connectionPool = connectionPool;
-        this.pipelineOwnerToken = pipelineOwnerToken;
-    }
 
     /**
      * Creates a new instance of {@link Netty4AlpnHandler} with a fallback to using HTTP/1.1.
@@ -78,8 +55,6 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
         this.responseReference = responseReference;
         this.errorReference = errorReference;
         this.latch = latch;
-        this.connectionPool = null;
-        this.pipelineOwnerToken = null;
     }
 
     @Override
@@ -106,12 +81,6 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
 
         if (protocolVersion == HttpProtocolVersion.HTTP_2) {
             ctx.pipeline().addLast(GO_AWAY_HANDLER);
-        }
-
-        if (connectionPool != null) {
-            ctx.pipeline()
-                .addLast(PIPELINE_CLEANUP,
-                    new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch, pipelineOwnerToken));
         }
 
         if (protocolVersion == HttpProtocolVersion.HTTP_2) {

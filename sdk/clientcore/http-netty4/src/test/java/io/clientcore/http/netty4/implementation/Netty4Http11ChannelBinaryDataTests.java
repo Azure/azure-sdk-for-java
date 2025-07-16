@@ -12,6 +12,8 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.AbstractChannel;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelConfig;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelMetadata;
 import io.netty.channel.ChannelOutboundBuffer;
 import io.netty.channel.ChannelPromise;
@@ -241,8 +243,10 @@ public class Netty4Http11ChannelBinaryDataTests {
     @Test
     public void toBytesThrowsIfChannelErrors() {
         IOException testException = new IOException("test error");
-        Channel channel
-            = createChannelWithReadHandling((ignored, ch) -> ch.pipeline().fireExceptionCaught(testException));
+        Channel channel = createChannelWithReadHandling((ignored, ch) -> {
+            ch.pipeline().addLast(new ExceptionSuppressingHandler());
+            ch.pipeline().fireExceptionCaught(testException);
+        });
         Netty4ChannelBinaryData binaryData
             = new Netty4ChannelBinaryData(new ByteArrayOutputStream(), channel, 10L, false);
 
@@ -418,17 +422,23 @@ public class Netty4Http11ChannelBinaryDataTests {
 
         @Override
         public boolean isOpen() {
-            return true;
+            return !closeCalled.get();
         }
 
         @Override
         public boolean isActive() {
-            return true;
+            return !closeCalled.get();
         }
 
         @Override
         public ChannelMetadata metadata() {
             return new ChannelMetadata(false);
+        }
+    }
+
+    private static final class ExceptionSuppressingHandler extends ChannelInboundHandlerAdapter {
+        @Override
+        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         }
     }
 

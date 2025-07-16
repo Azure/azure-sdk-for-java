@@ -313,90 +313,89 @@ class NettyHttpClient implements HttpClient {
         AtomicReference<ResponseStateInfo> responseReference, AtomicReference<Throwable> errorReference,
         CountDownLatch latch, boolean isHttps) {
 
-        channel.eventLoop().execute(() -> {
-            ReentrantLock lock = channel.attr(Netty4ConnectionPool.CHANNEL_LOCK).get();
-            lock.lock();
-            try {
-                channel.config().setAutoRead(false);
+        ReentrantLock lock = channel.attr(Netty4ConnectionPool.CHANNEL_LOCK).get();
+        lock.lock();
+        try {
+            channel.config().setAutoRead(false);
 
-                // It's possible that the channel was closed between the time it was acquired and now.
-                // This check ensures that we don't try to add handlers to a closed channel.
-                // Read handlers are responsible after this check for not being added in a closed channel.
-                if (!channel.isActive()) {
-                    LOGGER.atWarning().log("Channel acquired from the pool is inactive, failing the request.");
-                    setOrSuppressError(errorReference, new ClosedChannelException());
-                    latch.countDown();
-                    return;
-                }
+            // It's possible that the channel was closed between the time it was acquired and now.
+            // This check ensures that we don't try to add handlers to a closed channel.
+            // Read handlers are responsible after this check for not being added in a closed channel.
+            if (!channel.isActive()) {
+                LOGGER.atWarning().log("Channel acquired from the pool is inactive, failing the request.");
+                setOrSuppressError(errorReference, new ClosedChannelException());
+                latch.countDown();
+                return;
+            }
 
-                final Object pipelineOwnerToken = new Object();
-                channel.attr(Netty4ConnectionPool.PIPELINE_OWNER_TOKEN).set(pipelineOwnerToken);
+            channel.config().setAutoRead(false);
 
-                ProgressReporter progressReporter = (request.getContext() == null)
-                    ? null
-                    : (ProgressReporter) request.getContext().getMetadata("progressReporter");
-                boolean addProgressAndTimeoutHandler = progressReporter != null
-                    || writeTimeoutMillis > 0
-                    || responseTimeoutMillis > 0
-                    || readTimeoutMillis > 0;
+            final Object pipelineOwnerToken = new Object();
+            channel.attr(Netty4ConnectionPool.PIPELINE_OWNER_TOKEN).set(pipelineOwnerToken);
 
-                ChannelPipeline pipeline = channel.pipeline();
+            ProgressReporter progressReporter = (request.getContext() == null)
+                ? null
+                : (ProgressReporter) request.getContext().getMetadata("progressReporter");
+            boolean addProgressAndTimeoutHandler = progressReporter != null
+                || writeTimeoutMillis > 0
+                || responseTimeoutMillis > 0
+                || readTimeoutMillis > 0;
 
-                // Only add CoreProgressAndTimeoutHandler if it will do anything, ex it is reporting progress or is
-                // applying timeouts.
-                // This is done to keep the ChannelPipeline shorter, therefore more performant if this
-                // effectively is a no-op.
-                if (addProgressAndTimeoutHandler) {
-                    pipeline.addLast(PROGRESS_AND_TIMEOUT, new Netty4ProgressAndTimeoutHandler(progressReporter,
-                        writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
-                }
+            ChannelPipeline pipeline = channel.pipeline();
 
-                // The SslHandler is already in the pipeline if this is an HTTPS request, as it's added
-                // by the connection pool during the initial connection setup. The SSL handshake is also
-                // guaranteed to be complete by the time we get the channel because the Netty4AlpnHandler
-                // reacts to the result of the ALPN negotiation that happened during the SSL handshake.
-                if (isHttps) {
-                    HttpProtocolVersion protocolVersion
-                        = channel.attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).get();
-                    if (protocolVersion != null) {
-                        // The Connection is being reused, ALPN is already done.
-                        // Manually configure the pipeline based on the stored protocol.
-                        boolean isHttp2 = protocolVersion == HttpProtocolVersion.HTTP_2;
-                        pipeline.addLast(HTTP_RESPONSE,
-                            new Netty4ResponseHandler(request, responseReference, errorReference, latch));
+            pipeline.addLast(PIPELINE_CLEANUP,
+                new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch, pipelineOwnerToken));
 
-                        if (!isHttp2 && pipeline.get(HTTP_CODEC) == null) {
-                            pipeline.addBefore(HTTP_RESPONSE, HTTP_CODEC, createCodec());
-                        }
+            // Only add CoreProgressAndTimeoutHandler if it will do anything, ex it is reporting progress or is
+            // applying timeouts.
+            // This is done to keep the ChannelPipeline shorter, therefore more performant if this
+            // effectively is a no-op.
+            if (addProgressAndTimeoutHandler) {
+                pipeline.addLast(PROGRESS_AND_TIMEOUT, new Netty4ProgressAndTimeoutHandler(progressReporter,
+                    writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
+            }
 
-                        pipeline.addLast(PIPELINE_CLEANUP, new Netty4PipelineCleanupHandler(connectionPool,
-                            errorReference, latch, pipelineOwnerToken));
-                        if (isHttp2) {
-                            sendHttp2Request(request, channel, errorReference, latch);
-                        } else {
-                            send(request, channel, errorReference, latch);
-                        }
-                    } else {
-                        // This is a new connection, let ALPN do the work.
-                        // For HTTPS, we delegate the addition of the response handler and codec to the ALPN handler.
-                        pipeline.addAfter(SSL, ALPN, new Netty4AlpnHandler(request, responseReference, errorReference,
-                            latch, connectionPool, pipelineOwnerToken));
-                    }
-                } else {
-                    // If there isn't an SslHandler, we can send the request immediately.
-                    // Add the HTTP/1.1 codec, as we only support HTTP/2 when using SSL ALPN.
+            // The SslHandler is already in the pipeline if this is an HTTPS request, as it's added
+            // by the connection pool during the initial connection setup. The SSL handshake is also
+            // guaranteed to be complete by the time we get the channel because the Netty4AlpnHandler
+            // reacts to the result of the ALPN negotiation that happened during the SSL handshake.
+            if (isHttps) {
+                HttpProtocolVersion protocolVersion = channel.attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).get();
+                if (protocolVersion != null) {
+                    // The Connection is being reused, ALPN is already done.
+                    // Manually configure the pipeline based on the stored protocol.
+                    boolean isHttp2 = protocolVersion == HttpProtocolVersion.HTTP_2;
                     pipeline.addLast(HTTP_RESPONSE,
                         new Netty4ResponseHandler(request, responseReference, errorReference, latch));
-                    String addBefore = addProgressAndTimeoutHandler ? PROGRESS_AND_TIMEOUT : HTTP_RESPONSE;
-                    pipeline.addBefore(addBefore, HTTP_CODEC, createCodec());
-                    pipeline.addLast(PIPELINE_CLEANUP,
-                        new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch, pipelineOwnerToken));
-                    send(request, channel, errorReference, latch);
+
+                    if (!isHttp2 && pipeline.get(HTTP_CODEC) == null) {
+                        pipeline.addBefore(HTTP_RESPONSE, HTTP_CODEC, createCodec());
+                    }
+
+                    if (isHttp2) {
+                        sendHttp2Request(request, channel, errorReference, latch);
+                    } else {
+                        send(request, channel, errorReference, latch);
+                    }
+                } else {
+                    // This is a new connection, let ALPN do the work.
+                    // For HTTPS, we delegate the addition of the response handler and codec to the ALPN handler.
+                    pipeline.addAfter(SSL, ALPN,
+                        new Netty4AlpnHandler(request, responseReference, errorReference, latch));
+                    channel.writeAndFlush(Unpooled.EMPTY_BUFFER);
                 }
-            } finally {
-                lock.unlock();
+            } else {
+                // If there isn't an SslHandler, we can send the request immediately.
+                // Add the HTTP/1.1 codec, as we only support HTTP/2 when using SSL ALPN.
+                pipeline.addLast(HTTP_RESPONSE,
+                    new Netty4ResponseHandler(request, responseReference, errorReference, latch));
+                String addBefore = addProgressAndTimeoutHandler ? PROGRESS_AND_TIMEOUT : HTTP_RESPONSE;
+                pipeline.addBefore(addBefore, HTTP_CODEC, createCodec());
+                send(request, channel, errorReference, latch);
             }
-        });
+        } finally {
+            lock.unlock();
+        }
     }
 
     private void send(HttpRequest request, Channel channel, AtomicReference<Throwable> errorReference,

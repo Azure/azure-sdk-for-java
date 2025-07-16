@@ -212,7 +212,6 @@ public final class Netty4ChannelBinaryData extends BinaryData {
                 }
 
                 CountDownLatch ioLatch = new CountDownLatch(1);
-                // This handler is responsible for triggering the cleanup when it completes.
                 Netty4EagerConsumeChannelHandler handler = new Netty4EagerConsumeChannelHandler(ioLatch,
                     buf -> buf.readBytes(eagerContent, buf.readableBytes()), isHttp2);
 

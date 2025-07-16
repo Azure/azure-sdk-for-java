@@ -74,7 +74,8 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
         if (latch != null) {
             latch.countDown();
         }
-        ctx.channel().eventLoop().execute(() -> cleanup(ctx, true));
+        cleanup(ctx, true);
+        ctx.fireChannelInactive();
     }
 
     @Override

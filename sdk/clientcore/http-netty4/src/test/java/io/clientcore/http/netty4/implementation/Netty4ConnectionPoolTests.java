@@ -24,8 +24,18 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,6 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests for {@link Netty4ConnectionPool}.
@@ -317,6 +328,71 @@ public class Netty4ConnectionPoolTests {
         } finally {
             route1Server.stop();
             route2Server.stop();
+        }
+    }
+
+    @Test
+    public void poolDoesNotDeadlockAndRecoversCleanlyUnderSaturation() throws InterruptedException, IOException {
+        final int poolSize = 10;
+        final int numThreads = 20;
+        final int numTasks = 100;
+
+        final CountDownLatch latch = new CountDownLatch(numTasks);
+        final AtomicInteger successCounter = new AtomicInteger(0);
+        final Queue<Throwable> exceptions = new ConcurrentLinkedQueue<>();
+        final ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+
+        try (Netty4ConnectionPool pool
+            = createPool(poolSize, Duration.ofSeconds(10), null, Duration.ofSeconds(2), numTasks)) {
+            for (int i = 0; i < numTasks; i++) {
+                executor.submit(() -> {
+                    try {
+                        Channel channel = pool.acquire(connectionPoolKey, false).awaitUninterruptibly().getNow();
+
+                        // Hold the connection for a short, random time to simulate work.
+                        Thread.sleep(ThreadLocalRandom.current().nextInt(10, 50));
+
+                        pool.release(channel);
+                        successCounter.incrementAndGet();
+                    } catch (Throwable t) {
+                        exceptions.add(t);
+                    } finally {
+                        latch.countDown();
+                    }
+                });
+            }
+
+            assertTrue(latch.await(30, TimeUnit.SECONDS), "Test deadlocked, not all tasks completed.");
+
+            executor.shutdown();
+            assertTrue(executor.awaitTermination(5, TimeUnit.SECONDS));
+
+            if (!exceptions.isEmpty()) {
+                fail("Test tasks threw exceptions: "
+                    + exceptions.stream().map(Throwable::getMessage).collect(Collectors.joining(", ")));
+            }
+            assertEquals(numTasks, successCounter.get(), "Mismatch in the number of successful tasks.");
+
+            // Use reflection to check the final state of the pool's queues.
+            assertDoesNotThrow(() -> {
+                Field poolField = Netty4ConnectionPool.class.getDeclaredField("pool");
+                poolField.setAccessible(true);
+                @SuppressWarnings("unchecked")
+                ConcurrentMap<?, Netty4ConnectionPool.PerRoutePool> routePools
+                    = (ConcurrentMap<?, Netty4ConnectionPool.PerRoutePool>) poolField.get(pool);
+                Netty4ConnectionPool.PerRoutePool perRoutePool = routePools.get(connectionPoolKey);
+
+                Field idleField = Netty4ConnectionPool.PerRoutePool.class.getDeclaredField("idleConnections");
+                idleField.setAccessible(true);
+                Deque<?> idleConnections = (Deque<?>) idleField.get(perRoutePool);
+
+                Field pendingField = Netty4ConnectionPool.PerRoutePool.class.getDeclaredField("pendingAcquirers");
+                pendingField.setAccessible(true);
+                Deque<?> pendingAcquirers = (Deque<?>) pendingField.get(perRoutePool);
+
+                assertEquals(poolSize, idleConnections.size(), "Pool should be full of idle connections.");
+                assertTrue(pendingAcquirers.isEmpty(), "Pending acquirers queue should be empty.");
+            });
         }
     }
 }

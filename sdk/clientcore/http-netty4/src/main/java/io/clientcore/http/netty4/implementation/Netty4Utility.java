@@ -148,10 +148,10 @@ public final class Netty4Utility {
         }
 
         byteBuf.readBytes(stream, byteBuf.readableBytes());
-        if (byteBuf.refCnt() > 0) {
-            // Release the ByteBuf as we've consumed it.
-            byteBuf.release();
-        }
+        //        if (byteBuf.refCnt() > 0) {
+        //            // Release the ByteBuf as we've consumed it.
+        //            byteBuf.release();
+        //        }
     }
 
     /**
@@ -558,7 +558,6 @@ public final class Netty4Utility {
             return new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, bodyBytes, nettyHeaders,
                 trailersFactory().newHeaders());
         } else {
-            nettyHeaders.getCoreHeaders().set(HttpHeaderName.TRANSFER_ENCODING, "chunked");
             return new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, nettyHeaders);
         }
     }
