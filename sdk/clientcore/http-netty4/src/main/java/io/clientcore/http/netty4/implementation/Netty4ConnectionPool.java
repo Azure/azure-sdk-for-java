@@ -16,6 +16,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.socket.ChannelInputShutdownEvent;
 import io.netty.handler.codec.http2.Http2GoAwayFrame;
 import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.proxy.ProxyHandler;
@@ -127,6 +128,36 @@ public class Netty4ConnectionPool implements Closeable {
                 ctx.channel().close();
             }
             super.userEventTriggered(ctx, evt);
+        }
+    }
+
+    @ChannelHandler.Sharable
+    private static class PoolConnectionHealthHandler extends ChannelInboundHandlerAdapter {
+        private static final AttributeKey<Boolean> CONNECTION_INVALIDATED
+            = AttributeKey.valueOf("connection-invalidated");
+
+        @Override
+        public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+            // This event is fired when the server closes its side of the connection.
+            if (evt instanceof ChannelInputShutdownEvent) {
+                invalidateAndClose(ctx.channel());
+            }
+            super.userEventTriggered(ctx, evt);
+        }
+
+        @Override
+        public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+            // This is a fallback for when the connection is fully closed for any reason.
+            invalidateAndClose(ctx.channel());
+            super.channelInactive(ctx);
+        }
+
+        private void invalidateAndClose(Channel channel) {
+            System.out.println("CONNECTION INVALIDATED");
+            // Mark the channel as invalid. The 'isHealthy' check can use this attribute
+            // to immediately reject the channel without waiting for it to be fully closed.
+            channel.attr(CONNECTION_INVALIDATED).set(true);
+            channel.close();
         }
     }
 
@@ -468,6 +499,8 @@ public class Netty4ConnectionPool implements Closeable {
                     new PooledConnection(channel, key);
 
                     ChannelPipeline pipeline = channel.pipeline();
+                    pipeline.addLast("poolHealthHandler", new PoolConnectionHealthHandler());
+                    
                     // Test whether proxying should be applied to this Channel. If so, add it.
                     // Proxy detection MUST use the final destination address from the key.
                     boolean hasProxy = channelInitializationProxyHandler.test(key.getFinalDestination());
@@ -547,6 +580,10 @@ public class Netty4ConnectionPool implements Closeable {
 
         private boolean isHealthy(PooledConnection connection) {
             Channel channel = connection.channel;
+
+            if (Boolean.TRUE.equals(channel.attr(PoolConnectionHealthHandler.CONNECTION_INVALIDATED).get())) {
+                return false;
+            }
 
             if (!connection.isActiveAndWriteable() || channel.config().isAutoRead()) {
                 return false;

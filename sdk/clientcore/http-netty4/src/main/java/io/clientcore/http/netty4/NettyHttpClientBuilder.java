@@ -396,6 +396,7 @@ public class NettyHttpClientBuilder {
         // Disable auto-read as we want to control when and how data is read from the channel.
         bootstrap.option(ChannelOption.AUTO_READ, false);
         bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
+        bootstrap.option(ChannelOption.ALLOW_HALF_CLOSURE, true);
 
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
