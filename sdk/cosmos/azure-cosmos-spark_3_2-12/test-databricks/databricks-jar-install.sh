@@ -40,7 +40,7 @@ then
 	exit 1
 fi
 
-if [ "$DBR_MAJOR" -ge "15" ]; then
+if [ $DATABRICKS_RUNTIME_VERSION > 15 ]; then
   # For DBR 15+: Upload to workspace and install from there
   echo "Using Workspace library installation for DBR $DBR_VERSION"
   echo "Deleting files in /tmp/libraries/$JARFILE"
