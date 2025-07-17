@@ -44,9 +44,7 @@
       --add-opens com.azure.data.schemaregistry.jsonschema/com.azure.data.schemaregistry.jsonschema=com.fasterxml.jackson.databind,ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>

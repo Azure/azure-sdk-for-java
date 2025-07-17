@@ -117,6 +117,7 @@
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-data-cosmos[/\\]src[/\\]test[/\\]"/>
   <suppress checks="MethodName|MemberName|ParameterName" files="src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]cosmos[/\\]domain|repository.*.java"/>
   <suppress checks="EnforceFinalFields" files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest"/>
+  <suppress checks="EnforceFinalFields" files="com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration.java"/>
   <suppress checks="MethodName" files="com.azure.spring.data.cosmos.config.CosmosConfig.java"/>
   <suppress checks="MemberName" files="com.azure.spring.data.cosmos.MyItem.java"/>
 
@@ -155,7 +156,7 @@
 
   <!-- Suppress checks for stress packages. -->
   <suppress checks="ExternalDependencyExposed" files=".*[/\\]azure-template-stress[/\\].*\.java"/>
-  <suppress checks="(IllegalImport|ThrowFromClientLogger)" files="com.azure.*.stress"/>
+  <suppress checks="(EnforceFinalFields|IllegalImport|ThrowFromClientLogger)" files="com.azure.*.stress"/>
 
   <!-- The build tool plugin checkstyle exceptions -->
   <suppress checks="io.clientcore.lintingextensions.checkstyle.checks.(ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck)"
@@ -163,4 +164,7 @@
   <suppress checks="io.clientcore.lintingextensions.checkstyle.checks.GoodLoggingCheck" files="ConsoleLogger.java"/>
 
   <suppress checks="ExternalDependencyExposed" files=".*[/\\]http-stress[/\\].*\.java"/>
+
+  <suppress checks="io.clientcore.lintingextensions.checkstyle.checks.DenyListedWordsCheck"
+            files="com.azure.resourcemanager.oep.fluent.OpenEnergyPlatformManagementServiceAPIs.java"/>
 </suppressions>

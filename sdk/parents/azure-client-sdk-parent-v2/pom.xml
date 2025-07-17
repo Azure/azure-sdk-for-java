@@ -1602,5 +1602,29 @@
         </plugins>
       </build>
     </profile>
+
+    <profile>
+      <id>local-checkstyle-suppressions</id>
+      <activation>
+        <file>
+          <exists>checkstyle-suppressions.xml</exists>
+        </file>
+      </activation>
+      <properties>
+        <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>local-spotbugs-exclude</id>
+      <activation>
+        <file>
+          <exists>spotbugs-exclude.xml</exists>
+        </file>
+      </activation>
+      <properties>
+        <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
+      </properties>
+    </profile>
   </profiles>
 </project>

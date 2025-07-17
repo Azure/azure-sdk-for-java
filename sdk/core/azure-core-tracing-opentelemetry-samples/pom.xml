@@ -31,10 +31,6 @@
     <tag>HEAD</tag>
   </scm>
 
-  <properties>
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

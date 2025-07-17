@@ -1595,7 +1595,7 @@
     </profile>
 
     <profile>
-      <id>set-checkstyle-suppressions</id>
+      <id>local-checkstyle-suppressions</id>
       <activation>
         <file>
           <exists>checkstyle-suppressions.xml</exists>
@@ -1607,7 +1607,7 @@
     </profile>
 
     <profile>
-      <id>set-spotbugs-exclude</id>
+      <id>local-spotbugs-exclude</id>
       <activation>
         <file>
           <exists>spotbugs-exclude.xml</exists>
