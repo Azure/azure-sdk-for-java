@@ -7,7 +7,6 @@ module com.azure.monitor.ingestion {
 
     exports com.azure.monitor.ingestion;
     exports com.azure.monitor.ingestion.models;
-    exports com.azure.monitor.ingestion.implementation;
 
     opens com.azure.monitor.ingestion to com.azure.core;
 }
