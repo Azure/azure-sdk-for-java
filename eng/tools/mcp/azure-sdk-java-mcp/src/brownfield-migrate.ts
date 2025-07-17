@@ -10,7 +10,7 @@ export async function brownfieldMigration(): Promise<CallToolResult> {
    Run "git status --porcelain" to find the "tsp-location.yaml" file. The path to the SDK module is the directory containing the "tsp-location.yaml" file. The "pom.xml" file is located in the same directory.
 
 3. Clean the Java source in SDK module.
-   Use the tool to clean the Java source in the SDK module.
+   Delete folder "src/main" in the SDK module. Delete folder with the name "generated" from "src/samples" and "src/test" in the SDK module.
 
 4. Synchronize the TypeSpec source for Java SDK.
    Use the tool to synchronize the TypeSpec source for the Java SDK. This will download the the TypeSpec source specified in the "tsp-location.yaml" file.
