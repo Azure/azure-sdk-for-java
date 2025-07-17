@@ -14,8 +14,8 @@ export async function buildJavaSdk(
 
         const mvnCmd = process.platform === "win32" ? "mvn.cmd" : "mvn";
 
-        // Run the Java SDK generation command
-        const generateResult = await spawnAsync(
+        // Run the Java SDK Build command
+        const buildResult = await spawnAsync(
             mvnCmd,
             [
                 "--no-transfer-progress",
@@ -33,24 +33,24 @@ export async function buildJavaSdk(
             ],
             {
                 cwd: process.cwd(),
-                shell: true, // Use shell to allow tsp-client command
+                shell: true,
                 timeout: 600000, // 10 minute timeout
             },
         );
 
         let result = `Java SDK Build Results:\n\n`;
 
-        if (generateResult.success) {
+        if (buildResult.success) {
             result += `✅ SDK build completed successfully!\n\n`;
         } else {
-            result += `❌ SDK build failed with exit code ${generateResult.exitCode}\n\n`;
+            result += `❌ SDK build failed with exit code ${buildResult.exitCode}\n\n`;
 
-            if (generateResult.stdout) {
-                result += `Output:\n${generateResult.stdout}\n`;
+            if (buildResult.stdout) {
+                result += `Output:\n${buildResult.stdout}\n`;
             }
 
-            if (generateResult.stderr) {
-                result += `\nErrors:\n${generateResult.stderr}\n`;
+            if (buildResult.stderr) {
+                result += `\nErrors:\n${buildResult.stderr}\n`;
             }
         }
 
