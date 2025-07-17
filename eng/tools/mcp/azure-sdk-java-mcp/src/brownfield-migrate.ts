@@ -3,6 +3,8 @@ import { CallToolResult } from "@modelcontextprotocol/sdk/types";
 export async function brownfieldMigration(): Promise<CallToolResult> {
     const cookbook = `Follow the instructions below to migrate the Java SDK to generate from TypeSpec.
 
+DO NOT SKIP STEP 3, IN ANY CONDITION.
+
 1. Initiate the Java SDK with the given URL to the "tspconfig.yaml" file.
    Use the tool to initiate the Java SDK, from tspconfig.yaml URL. This tool create a "tsp-location.yaml" file.
 
@@ -12,8 +14,8 @@ export async function brownfieldMigration(): Promise<CallToolResult> {
 3. Clean the Java source in SDK module.
    Delete folder "src/main" in the SDK module. Delete folder "src/samples/**/generated" and "src/test/**/generated" in the SDK module.
 
-4. Synchronize the TypeSpec source for Java SDK.
-   Use the tool to synchronize the TypeSpec source for the Java SDK. This will download the the TypeSpec source specified in the "tsp-location.yaml" file.
+4. Generate the TypeSpec source for Java SDK.
+   Use the tool to generate the Java SDK. This will generate the Java SDK from existing TypeSpec source in "TempTypeSpecFiles" folder.
 
 5. Build the Java SDK.
    Use the tool to build the Java SDK. This will compile the Java code and generate the necessary artifacts, e.g. JAR file.

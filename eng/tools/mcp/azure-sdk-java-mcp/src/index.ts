@@ -10,7 +10,6 @@ import { initJavaSdk } from "./init-java-sdk.js";
 import { prepareJavaSdkEnvironmentCookbook } from "./prepare-environment.js";
 import { buildJavaSdk } from "./build-java-sdk.js";
 import { getJavaSdkChangelog } from "./java-sdk-changelog.js";
-import { cleanJavaSource } from "./clean-java-source.js";
 import { updateChangelogMd } from "./update-changelog-md.js";
 
 // Create the MCP server
