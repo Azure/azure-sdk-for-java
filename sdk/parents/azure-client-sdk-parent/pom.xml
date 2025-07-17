@@ -112,7 +112,7 @@
     <!-- This property determines the relative path from a pom.xml to the eng/ folder. -->
     <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
 
-    <!-- This property determines the max heap size of the Surefire JVM. By default 4GB, or 4096MB, is used. -->
+    <!-- This property determines the max heap size of the Surefire JVM. By default, 4GB, or 4096MB, is used. -->
     <surefireXmx>4096m</surefireXmx>
 
     <!-- This property configures the max heap size of the Surefire JVM. -->
@@ -179,7 +179,7 @@
     <!-- This property configures whether the maven-checkstyle-plugin should be used. -->
     <checkstyle.skip>false</checkstyle.skip>
 
-    <!-- These properties configures whether maven-checkstyle-plugin should fail on errors. -->
+    <!-- These properties configure whether maven-checkstyle-plugin should fail on errors. -->
     <checkstyle.failOnViolation>true</checkstyle.failOnViolation>
     <checkstyle.failsOnError>true</checkstyle.failsOnError>
 
@@ -196,14 +196,14 @@
     <!-- This property configures whether the spotbugs-maven-plugin should be used. -->
     <spotbugs.skip>true</spotbugs.skip>
 
-    <!-- This property configures whether Spotbugs analysis is ran on samples and tests. Default is false. -->
+    <!-- This property configures whether Spotbugs analysis is run on samples and tests. Default is false. -->
     <spotbugs.includeTests>false</spotbugs.includeTests>
 
     <!-- This property configures whether the spotbugs-maven-plugin should fail on errors. -->
     <spotbugs.failOnError>true</spotbugs.failOnError>
 
     <!-- This property configures where the Spotbugs exclusion file can be found. -->
-    <spotbugs.excludeFilterFile>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/spotbugs/track2/spotbugs-exclude.xml</spotbugs.excludeFilterFile>
+    <spotbugs.excludeFilterFile>${project.parent.relativePath}/${relative.path.to.eng.folder}/eng/lintingconfigs/spotbugs/track2/spotbugs-exclude.xml</spotbugs.excludeFilterFile>
 
     <graalvm.disable>true</graalvm.disable>
     <nativeImage.buildArgs></nativeImage.buildArgs>
@@ -211,10 +211,10 @@
     <!-- This property configures whether the revapi-maven-plugin should fail on errors. -->
     <revapi.failBuildOnProblemsFound>true</revapi.failBuildOnProblemsFound>
 
-    <!-- This property configures whether doclinting is performed when generating Javadocs. -->
+    <!-- This property configures whether doclint is performed when generating Javadocs. -->
     <doclint>all</doclint>
 
-    <!-- This property configures whether doclinting includes warning and erroring for missing tags and descriptions. -->
+    <!-- This property configures whether doclint includes warning and erroring for missing tags and descriptions. -->
     <!-- By default, missing tags and descriptions are included as issues. -->
     <!-- If needed, temporarily, override this property in a child POM with a value of '-' to exclude this validation. -->
     <!-- Even with this validation excluded other linting tooling, such as Checkstyle, may still raise errors. -->
@@ -223,7 +223,7 @@
     <!-- The following properties configure compile skipping. -->
     <!-- While maven-compiler-plugin has properties for skipping source and test compile other plugins -->
     <!-- key in on the properties as well. These properties ensure that skipping compiles doesn't result -->
-    <!-- in unexpected plugin changes outside of maven-compiler-plugin. -->
+    <!-- in unexpected plugin changes outside maven-compiler-plugin. -->
     <skipCompile>false</skipCompile>
     <skipTestCompile>false</skipTestCompile>
 
@@ -769,7 +769,7 @@
             <xmlOutput>true</xmlOutput>
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>${spotbugs.excludeFilterFile}</excludeFilterFile>
-            <includeFilterFile>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/spotbugs/spotbugs-include.xml</includeFilterFile>
+            <includeFilterFile>${project.parent.relativePath}/${relative.path.to.eng.folder}/eng/lintingconfigs/spotbugs/spotbugs-include.xml</includeFilterFile>
             <fork>true</fork>
             <failOnError>${spotbugs.failOnError}</failOnError>
             <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
@@ -1007,7 +1007,7 @@
             <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
             <analysisConfigurationFiles>
               <configurationFile>
-                <resource>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/revapi/track2/revapi.json</resource>
+                <path>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/revapi/track2/revapi.json</path>
               </configurationFile>
             </analysisConfigurationFiles>
             <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
@@ -1253,7 +1253,7 @@
             </configuration>
             <executions>
               <!-- compile first with VM's default Java version -->
-              <!-- this will generate module-info with major class version based on the Java version being used, in CI this should be 61 (i.e Java 17) -->
+              <!-- this will generate module-info with major class version based on the Java version being used, in CI this should be 61 (i.e. Java 17) -->
               <execution>
                 <id>default-compile</id>
                 <goals>

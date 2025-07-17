@@ -5,6 +5,11 @@
 <suppressions>
   <suppress files="com.azure.v2.security.keyvault.certificates.models.CertificateContentType.java" checks="EqualsHashCodeCheck" />
   <suppress files="com.azure.v2.security.keyvault.certificates.models.CertificatePolicyAction.java" checks="EqualsHashCodeCheck" />
-  <suppress files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientImpl.java" checks="com.azure.tools.checkstyle.checks.RawExceptionThrowCheck" />
-  <suppress files="com.azure.v2.security.keyvault.certificates.CertificateClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.v2.security.keyvault.certificates.CertificateClient.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.v2.security.keyvault.certificates.CertificateClientBuilder.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.v2.security.keyvault.certificates.models.CertificateIssuer.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.v2.security.keyvault.certificates.models.CertificateProperties.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.v2.security.keyvault.certificates.models.DeletedCertificate.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientImpl.java" checks="io.clientcore.lintingextensions.checkstyle.checks.RawExceptionThrowCheck" />
+  <suppress files="com.azure.v2.security.keyvault.certificates.CertificateClient.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ServiceClientCheck" />
 </suppressions>

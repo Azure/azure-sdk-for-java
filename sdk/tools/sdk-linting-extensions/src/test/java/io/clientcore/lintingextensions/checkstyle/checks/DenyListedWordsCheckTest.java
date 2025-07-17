@@ -58,7 +58,7 @@ public class DenyListedWordsCheckTest extends AbstractModuleTestSupport {
     @Test
     public void denyListedWordsInterface() throws Exception {
         File file = TestUtils.createCheckFile("denyListedWordsInterface",
-            "package com.azure.tools.checkstyle.checks;",
+            "package io.clientcore.lintingextensions.checkstyle.checks;",
             "import java.time.Duration;",
             "public interface DenyListedWordsInterface {",
             "    int HTTP_STATUS_TOO_MANY_REQUESTS = 429;",

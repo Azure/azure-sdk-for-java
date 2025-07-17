@@ -1,1 +1,1 @@
-package com.azure.tools.checkstyle.checks.JavadocThrowsChecks;
+package io.clientcore.lintingextensions.checkstyle.checks.JavadocThrowsChecks;
