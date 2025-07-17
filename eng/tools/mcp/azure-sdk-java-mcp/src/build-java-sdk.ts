@@ -25,7 +25,6 @@ export async function buildJavaSdk(
                 moduleDirectory + "/pom.xml",
                 "-Dcodesnippet.skip=true",
                 "-Dmaven.javadoc.skip",
-                "-Dcodesnippet.skip",
                 "-Dgpg.skip",
                 "-Drevapi.skip",
                 "-pl",
