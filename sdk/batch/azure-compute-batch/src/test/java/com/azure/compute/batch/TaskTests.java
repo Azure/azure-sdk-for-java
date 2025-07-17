@@ -556,35 +556,24 @@ public class TaskTests extends BatchClientTestBase {
             }
             Assertions.assertEquals(413, err.getResponse().getStatusCode());
         } catch (Exception err) {
-            // DELETE
-            try {
-                SyncPoller<BatchJob, Void> deletePoller
-                    = setPlaybackSyncPollerPollInterval(batchAsyncClient.beginDeleteJob(jobId).getSyncPoller());
-
-                deletePoller.waitForCompletion();
-            } catch (Exception e) {
-                // Ignore here
-            }
             Assertions.fail("Expected RequestBodyTooLarge error");
         }
     }
 
-    @SyncAsyncTest
-    public void succeedWithRetry() {
+    @Test
+    public void succeedWithRetrySync() {
         //This test does not run in Playback mode. It only runs in Record/Live mode.
         // This test uses multi threading. Playing back the test doesn't match its recorded sequence always.
         // Hence Playback of this test is disabled.
         Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "This Test only runs in Live/Record mode");
 
-        String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String jobId = getStringIdWithUserNamePrefix("-succeedWithRetry" + testModeSuffix);
-        String taskId = "mytask" + testModeSuffix;
+        String jobId = getStringIdWithUserNamePrefix("-succeedWithRetry-sync");
+        String taskId = "mytask-sync";
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(liveIaasPoolId);
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
-        SyncAsyncExtension.execute(() -> batchClient.createJob(jobToCreate),
-            () -> batchAsyncClient.createJob(jobToCreate));
+        batchClient.createJob(jobToCreate);
 
         List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<BatchTaskCreateParameters>();
         BatchTaskCreateParameters taskToAdd;
@@ -609,27 +598,66 @@ public class TaskTests extends BatchClientTestBase {
         }
 
         try {
-            SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd, option),
-                () -> batchAsyncClient.createTasks(jobId, tasksToAdd, option));
+            batchClient.createTasks(jobId, tasksToAdd, option);
             try {
-                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+                SyncPoller<BatchJob, Void> deletePoller
+                    = setPlaybackSyncPollerPollInterval(batchClient.beginDeleteJob(jobId));
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
                 // Ignore here
             }
         } catch (Exception err) {
-            // DELETE
-            try {
-                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+            Assertions.fail("Expected Success");
+        }
+    }
 
+    @Test
+    public void succeedWithRetryAsync() {
+        //This test does not run in Playback mode. It only runs in Record/Live mode.
+        // This test uses multi threading. Playing back the test doesn't match its recorded sequence always.
+        // Hence Playback of this test is disabled.
+        Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "This Test only runs in Live/Record mode");
+
+        String jobId = getStringIdWithUserNamePrefix("-succeedWithRetry-async");
+        String taskId = "mytask-async";
+
+        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        poolInfo.setPoolId(liveIaasPoolId);
+        BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
+        batchAsyncClient.createJob(jobToCreate).block();
+
+        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<BatchTaskCreateParameters>();
+        BatchTaskCreateParameters taskToAdd;
+        List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
+        ResourceFile resourceFile;
+
+        BatchClientParallelOptions option = new BatchClientParallelOptions();
+        option.setMaxConcurrency(10);
+
+        // Num Resource Files * Max Chunk Size should be greater than or equal to the limit which triggers the PoisonTask test to ensure we encounter the error in the initial chunk.
+        for (int i = 0; i < 100; i++) {
+            resourceFile
+                = new ResourceFile().setHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile" + i)
+                    .setFilePath("resourceFile" + i);
+            resourceFiles.add(resourceFile);
+        }
+        // Num tasks to add
+        for (int i = 0; i < 1500; i++) {
+            taskToAdd = new BatchTaskCreateParameters(taskId + i, "sleep 1");
+            taskToAdd.setResourceFiles(resourceFiles);
+            tasksToAdd.add(taskToAdd);
+        }
+
+        try {
+            batchAsyncClient.createTasks(jobId, tasksToAdd, option).block();
+            try {
+                SyncPoller<BatchJob, Void> deletePoller
+                    = setPlaybackSyncPollerPollInterval(batchAsyncClient.beginDeleteJob(jobId).getSyncPoller());
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
                 // Ignore here
             }
+        } catch (Exception err) {
             Assertions.fail("Expected Success");
         }
     }
