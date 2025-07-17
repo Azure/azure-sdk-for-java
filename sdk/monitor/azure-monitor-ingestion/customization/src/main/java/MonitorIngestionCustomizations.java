@@ -66,17 +66,17 @@ public class MonitorIngestionCustomizations extends Customization {
      *
      * The following classes are customized:
      * <ol>
-     *     <li>IngestionUsingDataCollectionRulesClientBuilder</li>
+     *     <li>LogsIngestionClientBuilder</li>
      * </ol>
      *
      * @param packageCustomization The package customization.
      */
     private void monitorIngestionImplementation(PackageCustomization packageCustomization) {
-        IngestionUsingDataCollectionRulesClientBuilderCustomization(packageCustomization.getClass("IngestionUsingDataCollectionRulesClientBuilder"));
+        LogsIngestionClientBuilderCustomization(packageCustomization.getClass("LogsIngestionClientBuilder"));
     }
 
     /**
-     * Customizes the generated code for `IngestionUsingDataCollectionRulesClientBuilder`.
+     * Customizes the generated code for `LogsIngestionClientBuilder`.
      *
      * <br/>
      *
@@ -96,7 +96,7 @@ public class MonitorIngestionCustomizations extends Customization {
      *
      * @param classCustomization The class customization.
      */
-    private void IngestionUsingDataCollectionRulesClientBuilderCustomization(ClassCustomization classCustomization) {
+    private void LogsIngestionClientBuilderCustomization(ClassCustomization classCustomization) {
         classCustomization.customizeAst(ast -> {
             ast.addImport("com.azure.monitor.ingestion.models.LogsIngestionAudience");
             ast.getClassByName(classCustomization.getClassName()).ifPresent(clazz -> {
@@ -105,12 +105,12 @@ public class MonitorIngestionCustomizations extends Customization {
                     .setJavadocComment("The audience indicating the authorization scope of log ingestion clients.")
                     .createSetter()
                     .setName("audience")
-                    .setType("IngestionUsingDataCollectionRulesClientBuilder")
+                    .setType("LogsIngestionClientBuilder")
                     .setBody(StaticJavaParser.parseBlock("{this.audience = audience; return this; }"))
                     .addAnnotation("Generated")
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText("Sets the audience."))
                         .addBlockTag("param", "audience", "the audience indicating the authorization scope of log ingestion clients.")
-                        .addBlockTag("return", "the IngestionUsingDataCollectionRulesClientBuilder."));
+                        .addBlockTag("return", "the LogsIngestionClientBuilder."));
 
                 clazz.getMethodsByName("createHttpPipeline").forEach(method -> method.setBody(StaticJavaParser.parseBlock(
                     String.join("\n",
