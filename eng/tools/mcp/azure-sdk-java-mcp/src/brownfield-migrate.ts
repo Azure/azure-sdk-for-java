@@ -30,8 +30,9 @@ DO NOT SKIP STEP 3, IN ANY CONDITION.
    If there is no such candidates, the migration is completed, and you can skip all the next steps.
 
 8. Apply the changes to the TypeSpec source.
-   Use the tool to apply the rename changes to the TypeSpec source. Ask it to e.g. "Update client name, rename model from <old_name> to <new_name>".
-   Java SDK is following the convention of e.g. "username", "hostname", "Ip", "Id". Hence, we should let the tool to process these kind of renames.
+   Use the tool to apply the rename changes to the TypeSpec source, so that it can keep the original naming.
+   Ask it to e.g. "Update client name, rename model from <name_after_codegen> to <name_before_codegen>".
+   Java SDK is following the convention of e.g. "username", "hostname", "Ip", "Id". Hence, the tool should keep using these naming patterns.
 
 9. Go to step 5.
 `;
