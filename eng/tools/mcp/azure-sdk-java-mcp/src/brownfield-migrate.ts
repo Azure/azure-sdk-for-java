@@ -31,6 +31,7 @@ DO NOT SKIP STEP 3, IN ANY CONDITION.
 
 8. Apply the changes to the TypeSpec source.
    Use the tool to apply the rename changes to the TypeSpec source. Ask it to e.g. "Update client name, rename model from <old_name> to <new_name>".
+   Java SDK is following the convention of e.g. "username", "hostname", "Ip", "Id". Hence, we should let the tool to process these kind of renames.
 
 9. Go to step 5.
 `;
