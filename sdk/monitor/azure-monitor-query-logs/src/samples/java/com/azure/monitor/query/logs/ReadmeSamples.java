@@ -3,6 +3,8 @@
 
 package com.azure.monitor.query.logs;
 
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -188,6 +190,19 @@ public class ReadmeSamples {
         // END: readme-sample-logsquerymultipleworkspaces
     }
 
+    /**
+     * Enable HTTP request and response logging.
+     */
+    public void tsgEnableHttpLogging() {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // BEGIN: readme-sample-enablehttplogging
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+            .credential(credential)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .buildClient();
+        // END: readme-sample-enablehttplogging
+    }
 
     /**
      * Sample to show how to set response timeout for http client.
