@@ -435,21 +435,19 @@ public class TaskTests extends BatchClientTestBase {
         }
     }
 
-    @SyncAsyncTest
-    public void failIfPoisonTaskTooLarge() throws Exception {
+    @Test
+    public void failIfPoisonTaskTooLargeSync() throws Exception {
         //This test will temporarily only run in Live/Record mode. It runs fine in Playback mode too on Mac and Windows machines.
         // Linux machines are causing issues. This issue is under investigation.
         Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "This Test only runs in Live/Record mode");
 
-        String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String jobId = getStringIdWithUserNamePrefix("-failIfPoisonTaskTooLarge" + testModeSuffix);
-        String taskId = "mytask" + testModeSuffix;
+        String jobId = getStringIdWithUserNamePrefix("-failIfPoisonTaskTooLarge-sync");
+        String taskId = "mytask-sync";
 
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(liveIaasPoolId);
         BatchJobCreateParameters parameters = new BatchJobCreateParameters(jobId, poolInfo);
-        SyncAsyncExtension.execute(() -> batchClient.createJob(parameters),
-            () -> batchAsyncClient.createJob(parameters));
+        batchClient.createJob(parameters);
 
         List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<BatchTaskCreateParameters>();
         BatchTaskCreateParameters taskToAdd = new BatchTaskCreateParameters(taskId, "sleep 1");
@@ -468,22 +466,20 @@ public class TaskTests extends BatchClientTestBase {
         tasksToAdd.add(taskToAdd);
 
         try {
-            SyncAsyncExtension.execute(() -> batchClient.createTasks(jobId, tasksToAdd),
-                () -> batchAsyncClient.createTasks(jobId, tasksToAdd));
+            batchClient.createTasks(jobId, tasksToAdd);
             try {
-                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+                SyncPoller<BatchJob, Void> deletePoller
+                    = setPlaybackSyncPollerPollInterval(batchClient.beginDeleteJob(jobId));
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
                 // Ignore here
             }
+            Assertions.fail("Expected RequestBodyTooLarge error");
         } catch (HttpResponseException err) {
             // DELETE
             try {
-                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+                SyncPoller<BatchJob, Void> deletePoller
+                    = setPlaybackSyncPollerPollInterval(batchClient.beginDeleteJob(jobId));
 
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
@@ -493,14 +489,83 @@ public class TaskTests extends BatchClientTestBase {
         } catch (Exception err) {
             // DELETE
             try {
-                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+                SyncPoller<BatchJob, Void> deletePoller
+                    = setPlaybackSyncPollerPollInterval(batchClient.beginDeleteJob(jobId));
 
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
                 // Ignore here
             }
+            Assertions.fail("Expected RequestBodyTooLarge error");
+        }
+    }
+
+    @Test
+    public void failIfPoisonTaskTooLargeAsync() throws Exception {
+        //This test will temporarily only run in Live/Record mode. It runs fine in Playback mode too on Mac and Windows machines.
+        // Linux machines are causing issues. This issue is under investigation.
+        Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "This Test only runs in Live/Record mode");
+
+        String jobId = getStringIdWithUserNamePrefix("-failIfPoisonTaskTooLarge-async");
+        String taskId = "mytask-async";
+
+        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        poolInfo.setPoolId(liveIaasPoolId);
+        BatchJobCreateParameters parameters = new BatchJobCreateParameters(jobId, poolInfo);
+        batchAsyncClient.createJob(parameters).block();
+
+        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<BatchTaskCreateParameters>();
+        BatchTaskCreateParameters taskToAdd = new BatchTaskCreateParameters(taskId, "sleep 1");
+        List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
+        ResourceFile resourceFile;
+
+        // If this test fails try increasing the size of the Task in case maximum size increase
+        for (int i = 0; i < 10000; i++) {
+            resourceFile
+                = new ResourceFile().setHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile" + i)
+                    .setFilePath("resourceFile" + i);
+            resourceFiles.add(resourceFile);
+        }
+
+        taskToAdd.setResourceFiles(resourceFiles);
+        tasksToAdd.add(taskToAdd);
+
+        try {
+            batchAsyncClient.createTasks(jobId, tasksToAdd)
+                .doOnError(err -> System.out.println("Async error caught: " + err))
+                .doOnSuccess(x -> System.out.println("Async success"))
+                .block();
+
+            try {
+                SyncPoller<BatchJob, Void> deletePoller
+                    = setPlaybackSyncPollerPollInterval(batchAsyncClient.beginDeleteJob(jobId).getSyncPoller());
+                deletePoller.waitForCompletion();
+            } catch (Exception e) {
+                // Ignore here
+            }
+            Assertions.fail("Expected RequestBodyTooLarge error");
+        } catch (HttpResponseException err) {
+            // DELETE
+            try {
+                SyncPoller<BatchJob, Void> deletePoller
+                    = setPlaybackSyncPollerPollInterval(batchAsyncClient.beginDeleteJob(jobId).getSyncPoller());
+
+                deletePoller.waitForCompletion();
+            } catch (Exception e) {
+                // Ignore here
+            }
+            Assertions.assertEquals(413, err.getResponse().getStatusCode());
+        } catch (Exception err) {
+            // DELETE
+            try {
+                SyncPoller<BatchJob, Void> deletePoller
+                    = setPlaybackSyncPollerPollInterval(batchAsyncClient.beginDeleteJob(jobId).getSyncPoller());
+
+                deletePoller.waitForCompletion();
+            } catch (Exception e) {
+                // Ignore here
+            }
+            Assertions.fail("Expected RequestBodyTooLarge error");
         }
     }
 
