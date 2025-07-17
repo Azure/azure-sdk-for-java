@@ -801,7 +801,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
         if (StringUtils.isNotEmpty(value)) {
             final int throughputBucket = Integer.valueOf(value);
-            this.getThroughputBucket().setValue(throughputBucket);
+            this.getThroughputBucket().setValue((byte)throughputBucket);
         }
     }
 

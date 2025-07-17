@@ -96,7 +96,7 @@ public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBas
     public void validateThroughputControlGroupMalformed() {
         assertThatThrownBy(() -> new ThroughputControlGroupConfigBuilder().groupName("test").build())
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("All targetThroughput, targetThroughputThreshold and priorityLevel cannot be null or empty.");
+            .hasMessage("All targetThroughput, targetThroughputThreshold, priorityLevel and throughput bucket cannot be null or empty.");
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = 4 * SETUP_TIMEOUT)
