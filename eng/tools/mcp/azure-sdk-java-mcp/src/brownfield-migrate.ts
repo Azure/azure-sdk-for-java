@@ -14,7 +14,7 @@ DO NOT SKIP STEP 3, IN ANY CONDITION.
 3. Clean the Java source in SDK module.
    Delete folder "src/main" in the SDK module. Delete folder "src/samples/**/generated" and "src/test/**/generated" in the SDK module.
 
-4. Generate the TypeSpec source for Java SDK.
+4. Generate Java SDK from the TypeSpec source.
    Use the tool to generate the Java SDK. This will generate the Java SDK from existing TypeSpec source in "TempTypeSpecFiles" folder.
 
 5. Build the Java SDK.
