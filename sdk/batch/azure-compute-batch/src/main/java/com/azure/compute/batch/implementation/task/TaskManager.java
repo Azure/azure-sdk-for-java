@@ -14,7 +14,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.azure.compute.batch.BatchClient;
 import com.azure.compute.batch.models.BatchClientParallelOptions;
 import com.azure.compute.batch.models.BatchTaskCreateResult;
-import com.azure.compute.batch.models.BatchTaskAddStatus;
 import com.azure.compute.batch.models.BatchTaskCreateParameters;
 import com.azure.compute.batch.models.BatchTaskGroup;
 import com.azure.compute.batch.models.CreateTasksErrorException;
