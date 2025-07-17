@@ -15,7 +15,7 @@ import java.io.IOException;
  * Request model for creating liveness session.
  */
 @Fluent
-public final class CreateLivenessSessionContent implements JsonSerializable<CreateLivenessSessionContent> {
+public final class CreateLivenessSessionOptions implements JsonSerializable<CreateLivenessSessionOptions> {
 
     /*
      * Type of liveness mode the client should follow.
@@ -57,12 +57,12 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
     private Integer authTokenTimeToLiveInSeconds;
 
     /**
-     * Creates an instance of CreateLivenessSessionContent class.
+     * Creates an instance of CreateLivenessSessionOptions class.
      *
      * @param livenessOperationMode the livenessOperationMode value to set.
      */
     @Generated
-    public CreateLivenessSessionContent(LivenessOperationMode livenessOperationMode) {
+    public CreateLivenessSessionOptions(LivenessOperationMode livenessOperationMode) {
         this.livenessOperationMode = livenessOperationMode;
     }
 
@@ -94,10 +94,10 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
      * body.
      *
      * @param deviceCorrelationIdSetInClient the deviceCorrelationIdSetInClient value to set.
-     * @return the CreateLivenessSessionContent object itself.
+     * @return the CreateLivenessSessionOptions object itself.
      */
     @Generated
-    public CreateLivenessSessionContent setDeviceCorrelationIdSetInClient(Boolean deviceCorrelationIdSetInClient) {
+    public CreateLivenessSessionOptions setDeviceCorrelationIdSetInClient(Boolean deviceCorrelationIdSetInClient) {
         this.deviceCorrelationIdSetInClient = deviceCorrelationIdSetInClient;
         return this;
     }
@@ -116,10 +116,10 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
      * Set the enableSessionImage property: Whether or not store the session image.
      *
      * @param enableSessionImage the enableSessionImage value to set.
-     * @return the CreateLivenessSessionContent object itself.
+     * @return the CreateLivenessSessionOptions object itself.
      */
     @Generated
-    public CreateLivenessSessionContent setEnableSessionImage(Boolean enableSessionImage) {
+    public CreateLivenessSessionOptions setEnableSessionImage(Boolean enableSessionImage) {
         this.enableSessionImage = enableSessionImage;
         return this;
     }
@@ -140,10 +140,10 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
      * parameter, and if this is not specified, then the latest supported model version will be chosen.
      *
      * @param livenessModelVersion the livenessModelVersion value to set.
-     * @return the CreateLivenessSessionContent object itself.
+     * @return the CreateLivenessSessionOptions object itself.
      */
     @Generated
-    public CreateLivenessSessionContent setLivenessModelVersion(LivenessModel livenessModelVersion) {
+    public CreateLivenessSessionOptions setLivenessModelVersion(LivenessModel livenessModelVersion) {
         this.livenessModelVersion = livenessModelVersion;
         return this;
     }
@@ -166,10 +166,10 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
      * null.
      *
      * @param deviceCorrelationId the deviceCorrelationId value to set.
-     * @return the CreateLivenessSessionContent object itself.
+     * @return the CreateLivenessSessionOptions object itself.
      */
     @Generated
-    public CreateLivenessSessionContent setDeviceCorrelationId(String deviceCorrelationId) {
+    public CreateLivenessSessionOptions setDeviceCorrelationId(String deviceCorrelationId) {
         this.deviceCorrelationId = deviceCorrelationId;
         return this;
     }
@@ -190,10 +190,10 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
      * Default value is 600.
      *
      * @param authTokenTimeToLiveInSeconds the authTokenTimeToLiveInSeconds value to set.
-     * @return the CreateLivenessSessionContent object itself.
+     * @return the CreateLivenessSessionOptions object itself.
      */
     @Generated
-    public CreateLivenessSessionContent setAuthTokenTimeToLiveInSeconds(Integer authTokenTimeToLiveInSeconds) {
+    public CreateLivenessSessionOptions setAuthTokenTimeToLiveInSeconds(Integer authTokenTimeToLiveInSeconds) {
         this.authTokenTimeToLiveInSeconds = authTokenTimeToLiveInSeconds;
         return this;
     }
@@ -217,16 +217,16 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
     }
 
     /**
-     * Reads an instance of CreateLivenessSessionContent from the JsonReader.
+     * Reads an instance of CreateLivenessSessionOptions from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CreateLivenessSessionContent if the JsonReader was pointing to an instance of it, or null
+     * @return An instance of CreateLivenessSessionOptions if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CreateLivenessSessionContent.
+     * @throws IOException If an error occurs while reading the CreateLivenessSessionOptions.
      */
     @Generated
-    public static CreateLivenessSessionContent fromJson(JsonReader jsonReader) throws IOException {
+    public static CreateLivenessSessionOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LivenessOperationMode livenessOperationMode = null;
             Boolean deviceCorrelationIdSetInClient = null;
@@ -253,14 +253,14 @@ public final class CreateLivenessSessionContent implements JsonSerializable<Crea
                     reader.skipChildren();
                 }
             }
-            CreateLivenessSessionContent deserializedCreateLivenessSessionContent
-                = new CreateLivenessSessionContent(livenessOperationMode);
-            deserializedCreateLivenessSessionContent.deviceCorrelationIdSetInClient = deviceCorrelationIdSetInClient;
-            deserializedCreateLivenessSessionContent.enableSessionImage = enableSessionImage;
-            deserializedCreateLivenessSessionContent.livenessModelVersion = livenessModelVersion;
-            deserializedCreateLivenessSessionContent.deviceCorrelationId = deviceCorrelationId;
-            deserializedCreateLivenessSessionContent.authTokenTimeToLiveInSeconds = authTokenTimeToLiveInSeconds;
-            return deserializedCreateLivenessSessionContent;
+            CreateLivenessSessionOptions deserializedCreateLivenessSessionOptions
+                = new CreateLivenessSessionOptions(livenessOperationMode);
+            deserializedCreateLivenessSessionOptions.deviceCorrelationIdSetInClient = deviceCorrelationIdSetInClient;
+            deserializedCreateLivenessSessionOptions.enableSessionImage = enableSessionImage;
+            deserializedCreateLivenessSessionOptions.livenessModelVersion = livenessModelVersion;
+            deserializedCreateLivenessSessionOptions.deviceCorrelationId = deviceCorrelationId;
+            deserializedCreateLivenessSessionOptions.authTokenTimeToLiveInSeconds = authTokenTimeToLiveInSeconds;
+            return deserializedCreateLivenessSessionOptions;
         });
     }
 }

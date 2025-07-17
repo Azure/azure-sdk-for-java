@@ -206,7 +206,7 @@ FaceSessionClient sessionClient = new FaceSessionClientBuilder()
         .buildClient();
 
 String deviceCorrelationId = UUID.randomUUID().toString();
-CreateLivenessSessionContent parameters = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE)
+CreateLivenessSessionOptions parameters = new CreateLivenessSessionOptions(LivenessOperationMode.PASSIVE)
         .setDeviceCorrelationId(deviceCorrelationId);
 
 LivenessSession createLivenessSessionResult = sessionClient.createLivenessSession(parameters);

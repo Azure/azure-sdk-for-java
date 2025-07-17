@@ -5,7 +5,7 @@ package com.azure.ai.vision.face.samples;
 
 import com.azure.ai.vision.face.FaceSessionClient;
 import com.azure.ai.vision.face.FaceSessionClientBuilder;
-import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
+import com.azure.ai.vision.face.models.CreateLivenessSessionOptions;
 import com.azure.ai.vision.face.models.LivenessOperationMode;
 import com.azure.ai.vision.face.models.LivenessSession;
 import com.azure.ai.vision.face.models.LivenessSessionAttempt;
@@ -38,7 +38,7 @@ public class DetectLiveness {
             .buildClient();
 
         // Create a liveness session
-        CreateLivenessSessionContent parameters = new CreateLivenessSessionContent(LivenessOperationMode.PASSIVE)
+        CreateLivenessSessionOptions parameters = new CreateLivenessSessionOptions(LivenessOperationMode.PASSIVE)
             .setDeviceCorrelationId(UUID.randomUUID().toString());
 
         LivenessSession livenessSession = faceSessionClient.createLivenessSession(parameters);

@@ -6,7 +6,7 @@ package com.azure.ai.vision.face;
 import com.azure.ai.vision.face.implementation.FaceSessionClientImpl;
 import com.azure.ai.vision.face.implementation.MultipartFormDataHelper;
 import com.azure.ai.vision.face.implementation.models.DetectFromSessionImageRequest;
-import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
+import com.azure.ai.vision.face.models.CreateLivenessSessionOptions;
 import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionContent;
 import com.azure.ai.vision.face.models.DetectFromSessionImageOptions;
 import com.azure.ai.vision.face.models.FaceAttributeType;
@@ -111,7 +111,7 @@ public final class FaceSessionClient {
      * }
      * </pre>
      *
-     * @param body Body parameter.
+     * @param options Options parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -121,8 +121,8 @@ public final class FaceSessionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createLivenessSessionWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.createLivenessSessionWithResponse(body, requestOptions);
+    public Response<BinaryData> createLivenessSessionWithResponse(BinaryData options, RequestOptions requestOptions) {
+        return this.serviceClient.createLivenessSessionWithResponse(options, requestOptions);
     }
 
     /**
@@ -558,30 +558,6 @@ public final class FaceSessionClient {
     }
 
     /**
-     * Create a new detect liveness session.
-     *
-     * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/create-liveness-session for
-     * more details.
-     *
-     * @param body Body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return session result of detect liveness.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LivenessSession createLivenessSession(CreateLivenessSessionContent body) {
-        // Generated convenience method for createLivenessSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createLivenessSessionWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
-            .toObject(LivenessSession.class);
-    }
-
-    /**
      * Delete all session related information for matching the specified session id.
      *
      * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/delete-liveness-session for
@@ -809,4 +785,28 @@ public final class FaceSessionClient {
     private static final TypeReference<List<FaceDetectionResult>> TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT
         = new TypeReference<List<FaceDetectionResult>>() {
         };
+
+    /**
+     * Create a new detect liveness session.
+     *
+     * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/create-liveness-session for
+     * more details.
+     *
+     * @param options Options parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return session result of detect liveness.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LivenessSession createLivenessSession(CreateLivenessSessionOptions options) {
+        // Generated convenience method for createLivenessSessionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createLivenessSessionWithResponse(BinaryData.fromObject(options), requestOptions).getValue()
+            .toObject(LivenessSession.class);
+    }
 }
