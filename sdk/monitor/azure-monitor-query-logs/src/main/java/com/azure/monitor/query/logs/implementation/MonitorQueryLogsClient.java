@@ -54,7 +54,7 @@ public final class MonitorQueryLogsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -66,9 +66,9 @@ public final class MonitorQueryLogsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -154,7 +154,7 @@ public final class MonitorQueryLogsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -166,9 +166,9 @@ public final class MonitorQueryLogsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -244,7 +244,7 @@ public final class MonitorQueryLogsClient {
      * [Here](https://learn.microsoft.com/azure/azure-monitor/logs/api/batch-queries)
      * is an example for using POST with an Analytics query.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -269,9 +269,9 @@ public final class MonitorQueryLogsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

@@ -31,6 +31,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.monitor.query.logs.LogsQueryServiceVersion;
 import reactor.core.publisher.Mono;
 
 /**
@@ -49,7 +50,7 @@ public final class MonitorQueryLogsClientImpl {
 
     /**
      * Gets The Log Analytics service endpoint.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -59,14 +60,14 @@ public final class MonitorQueryLogsClientImpl {
     /**
      * Service version.
      */
-    private final MonitorQueryLogsServiceVersion serviceVersion;
+    private final LogsQueryServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
-    public MonitorQueryLogsServiceVersion getServiceVersion() {
+    public LogsQueryServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -77,7 +78,7 @@ public final class MonitorQueryLogsClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -91,7 +92,7 @@ public final class MonitorQueryLogsClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -100,37 +101,36 @@ public final class MonitorQueryLogsClientImpl {
 
     /**
      * Initializes an instance of MonitorQueryLogsClient client.
-     *
+     * 
      * @param endpoint The Log Analytics service endpoint.
      * @param serviceVersion Service version.
      */
-    MonitorQueryLogsClientImpl(String endpoint, MonitorQueryLogsServiceVersion serviceVersion) {
+    MonitorQueryLogsClientImpl(String endpoint, LogsQueryServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of MonitorQueryLogsClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The Log Analytics service endpoint.
      * @param serviceVersion Service version.
      */
-    MonitorQueryLogsClientImpl(HttpPipeline httpPipeline, String endpoint,
-        MonitorQueryLogsServiceVersion serviceVersion) {
+    MonitorQueryLogsClientImpl(HttpPipeline httpPipeline, String endpoint, LogsQueryServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of MonitorQueryLogsClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The Log Analytics service endpoint.
      * @param serviceVersion Service version.
      */
     MonitorQueryLogsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        MonitorQueryLogsServiceVersion serviceVersion) {
+        LogsQueryServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
@@ -215,7 +215,7 @@ public final class MonitorQueryLogsClientImpl {
 
     /**
      * Execute an Analytics query
-     *
+     * 
      * Executes an Analytics query for data.
      * [Here](https://learn.microsoft.com/azure/azure-monitor/logs/api/request-format)
      * is an example for using POST with an Analytics query.
@@ -228,7 +228,7 @@ public final class MonitorQueryLogsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -240,9 +240,9 @@ public final class MonitorQueryLogsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -293,7 +293,7 @@ public final class MonitorQueryLogsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param workspaceId Primary Workspace ID of the query. This is the Workspace ID from the Properties
      * blade in the Azure portal.
      * @param body The Analytics query. Learn more about the
@@ -317,7 +317,7 @@ public final class MonitorQueryLogsClientImpl {
 
     /**
      * Execute an Analytics query
-     *
+     * 
      * Executes an Analytics query for data.
      * [Here](https://learn.microsoft.com/azure/azure-monitor/logs/api/request-format)
      * is an example for using POST with an Analytics query.
@@ -330,7 +330,7 @@ public final class MonitorQueryLogsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -342,9 +342,9 @@ public final class MonitorQueryLogsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -395,7 +395,7 @@ public final class MonitorQueryLogsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param workspaceId Primary Workspace ID of the query. This is the Workspace ID from the Properties
      * blade in the Azure portal.
      * @param body The Analytics query. Learn more about the
@@ -418,7 +418,7 @@ public final class MonitorQueryLogsClientImpl {
 
     /**
      * Execute an Analytics query using resource ID
-     *
+     * 
      * Executes an Analytics query for data in the context of a resource.
      * [Here](https://learn.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries)
      * is an example for using POST with an Analytics query.
@@ -432,7 +432,7 @@ public final class MonitorQueryLogsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -444,9 +444,9 @@ public final class MonitorQueryLogsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -497,7 +497,7 @@ public final class MonitorQueryLogsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param body The Analytics query. Learn more about the
      * [Analytics query syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
@@ -520,7 +520,7 @@ public final class MonitorQueryLogsClientImpl {
 
     /**
      * Execute an Analytics query using resource ID
-     *
+     * 
      * Executes an Analytics query for data in the context of a resource.
      * [Here](https://learn.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries)
      * is an example for using POST with an Analytics query.
@@ -534,7 +534,7 @@ public final class MonitorQueryLogsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -546,9 +546,9 @@ public final class MonitorQueryLogsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -599,7 +599,7 @@ public final class MonitorQueryLogsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param body The Analytics query. Learn more about the
      * [Analytics query syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
@@ -621,12 +621,12 @@ public final class MonitorQueryLogsClientImpl {
 
     /**
      * Execute a batch of Analytics queries
-     *
+     * 
      * Executes a batch of Analytics queries for data.
      * [Here](https://learn.microsoft.com/azure/azure-monitor/logs/api/batch-queries)
      * is an example for using POST with an Analytics query.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -651,9 +651,9 @@ public final class MonitorQueryLogsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -715,7 +715,7 @@ public final class MonitorQueryLogsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param body The batch request body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -734,12 +734,12 @@ public final class MonitorQueryLogsClientImpl {
 
     /**
      * Execute a batch of Analytics queries
-     *
+     * 
      * Executes a batch of Analytics queries for data.
      * [Here](https://learn.microsoft.com/azure/azure-monitor/logs/api/batch-queries)
      * is an example for using POST with an Analytics query.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -764,9 +764,9 @@ public final class MonitorQueryLogsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -828,7 +828,7 @@ public final class MonitorQueryLogsClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param body The batch request body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

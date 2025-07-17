@@ -8,9 +8,5 @@ module com.azure.monitor.query.logs {
     exports com.azure.monitor.query.logs;
     exports com.azure.monitor.query.logs.models;
 
-    opens com.azure.monitor.query.logs.models to com.azure.core;
     opens com.azure.monitor.query.logs.implementation.models to com.azure.core;
-
-    exports com.azure.monitor.query.logs.implementation;
-    exports com.azure.monitor.query.logs.implementation.models;
 }

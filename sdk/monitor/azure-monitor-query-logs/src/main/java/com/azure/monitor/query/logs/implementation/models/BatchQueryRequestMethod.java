@@ -24,7 +24,7 @@ public enum BatchQueryRequestMethod {
 
     /**
      * Parses a serialized value to a BatchQueryRequestMethod instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed BatchQueryRequestMethod object, or null if unable to parse.
      */

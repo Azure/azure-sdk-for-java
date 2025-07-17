@@ -33,7 +33,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-
+import com.azure.monitor.query.logs.LogsQueryServiceVersion;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -217,19 +217,7 @@ public final class MonitorQueryLogsClientBuilder
      * Service version
      */
     @Generated
-    private MonitorQueryLogsServiceVersion serviceVersion;
-
-    /**
-     * Sets Service version.
-     *
-     * @param serviceVersion the serviceVersion value.
-     * @return the MonitorQueryLogsClientBuilder.
-     */
-    @Generated
-    public MonitorQueryLogsClientBuilder serviceVersion(MonitorQueryLogsServiceVersion serviceVersion) {
-        this.serviceVersion = serviceVersion;
-        return this;
-    }
+    private LogsQueryServiceVersion serviceVersion;
 
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
@@ -259,8 +247,8 @@ public final class MonitorQueryLogsClientBuilder
         this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localEndpoint = (endpoint != null) ? endpoint : "https://api.loganalytics.io";
-        MonitorQueryLogsServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : MonitorQueryLogsServiceVersion.getLatest();
+        LogsQueryServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : LogsQueryServiceVersion.getLatest();
         MonitorQueryLogsClientImpl client = new MonitorQueryLogsClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), localEndpoint, localServiceVersion);
         return client;
@@ -296,7 +284,9 @@ public final class MonitorQueryLogsClientBuilder
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+            String localEndpoint = (endpoint != null) ? endpoint : "https://api.loganalytics.io";
+            policies
+                .add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", localEndpoint)));
         }
         this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
@@ -331,4 +321,16 @@ public final class MonitorQueryLogsClientBuilder
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MonitorQueryLogsClientBuilder.class);
+
+    /**
+     * Sets Service version.
+     *
+     * @param serviceVersion the serviceVersion value.
+     * @return the MonitorQueryLogsClientBuilder.
+     */
+    @Generated
+    public MonitorQueryLogsClientBuilder serviceVersion(LogsQueryServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
+        return this;
+    }
 }
