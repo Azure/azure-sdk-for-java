@@ -69,7 +69,7 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query-logs
 [get_logs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query-logs/src/samples/java/com/azure/monitor/query/logs/LogsQuerySample.java
 [get_batch_logs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query-logs/src/samples/java/com/azure/monitor/query/logs/LogsQueryBatchSample.java
-[get_servertimeout_logs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query-logs/src/samples/java/com/azure/monitor/query/logs/logsServerTimeoutSample.java
+[get_servertimeout_logs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query-logs/src/samples/java/com/azure/monitor/query/logs/LogsServerTimeoutSample.java
 [monitor_service_limits]: https://learn.microsoft.com/azure/azure-monitor/service-limits#la-query-api
 [logs_data_export]: https://learn.microsoft.com/azure/azure-monitor/logs/logs-data-export?tabs=portal
 [kql_language_subset]: https://learn.microsoft.com/azure/azure-monitor/logs/basic-logs-query?tabs=portal-1#kql-language-limits
