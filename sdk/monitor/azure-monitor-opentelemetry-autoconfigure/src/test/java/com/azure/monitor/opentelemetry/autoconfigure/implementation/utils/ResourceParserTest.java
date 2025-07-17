@@ -5,13 +5,12 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.utils;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
 import io.opentelemetry.sdk.resources.Resource;
-import io.opentelemetry.semconv.ServiceAttributes;
-import io.opentelemetry.semconv.incubating.ServiceIncubatingAttributes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.util.annotation.Nullable;
@@ -105,13 +104,13 @@ class ResourceParserTest {
         @Nullable String serviceInstance) {
         AttributesBuilder builder = Attributes.builder();
         if (serviceName != null) {
-            builder.put(ServiceAttributes.SERVICE_NAME, serviceName);
+            builder.put(AttributeKey.stringKey("service.name"), serviceName);
         }
         if (serviceNameSpace != null) {
-            builder.put(ServiceIncubatingAttributes.SERVICE_NAMESPACE, serviceNameSpace);
+            builder.put(AttributeKey.stringKey("service.namespace"), serviceNameSpace);
         }
         if (serviceInstance != null) {
-            builder.put(ServiceIncubatingAttributes.SERVICE_INSTANCE_ID, serviceInstance);
+            builder.put(AttributeKey.stringKey("service.instance.id"), serviceInstance);
         }
         return Resource.create(builder.build());
     }

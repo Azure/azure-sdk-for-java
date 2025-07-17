@@ -12,14 +12,14 @@ public final class NginxDeploymentUserProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NginxDeploymentUserProfile model
-            = BinaryData.fromString("{\"preferredEmail\":\"wqsmbsur\"}").toObject(NginxDeploymentUserProfile.class);
-        Assertions.assertEquals("wqsmbsur", model.preferredEmail());
+            = BinaryData.fromString("{\"preferredEmail\":\"mdua\"}").toObject(NginxDeploymentUserProfile.class);
+        Assertions.assertEquals("mdua", model.preferredEmail());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NginxDeploymentUserProfile model = new NginxDeploymentUserProfile().withPreferredEmail("wqsmbsur");
+        NginxDeploymentUserProfile model = new NginxDeploymentUserProfile().withPreferredEmail("mdua");
         model = BinaryData.fromObject(model).toObject(NginxDeploymentUserProfile.class);
-        Assertions.assertEquals("wqsmbsur", model.preferredEmail());
+        Assertions.assertEquals("mdua", model.preferredEmail());
     }
 }

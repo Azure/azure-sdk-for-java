@@ -204,7 +204,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     /**
      * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
      * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
      * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
@@ -216,7 +216,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     /**
      * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
      * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
      * expressed in bytes as multiples of 1 GiB.
      * 
      * @param usageThreshold the usageThreshold value to set.
@@ -547,20 +547,6 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     }
 
     /**
-     * Set the isRestoring property: Restoring.
-     * 
-     * @param isRestoring the isRestoring value to set.
-     * @return the VolumeGroupVolumeProperties object itself.
-     */
-    public VolumeGroupVolumeProperties withIsRestoring(Boolean isRestoring) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VolumeProperties();
-        }
-        this.innerProperties().withIsRestoring(isRestoring);
-        return this;
-    }
-
-    /**
      * Get the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
      * directory which provides access to each of the volume's snapshots (defaults to true).
      * 
@@ -847,6 +833,29 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     }
 
     /**
+     * Get the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
+     * 
+     * @return the ldapServerType value.
+     */
+    public LdapServerType ldapServerType() {
+        return this.innerProperties() == null ? null : this.innerProperties().ldapServerType();
+    }
+
+    /**
+     * Set the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
+     * 
+     * @param ldapServerType the ldapServerType value to set.
+     * @return the VolumeGroupVolumeProperties object itself.
+     */
+    public VolumeGroupVolumeProperties withLdapServerType(LdapServerType ldapServerType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withLdapServerType(ldapServerType);
+        return this;
+    }
+
+    /**
      * Get the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
      * 
      * @return the coolAccess value.
@@ -927,6 +936,35 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
             this.innerProperties = new VolumeProperties();
         }
         this.innerProperties().withCoolAccessRetrievalPolicy(coolAccessRetrievalPolicy);
+        return this;
+    }
+
+    /**
+     * Get the coolAccessTieringPolicy property: coolAccessTieringPolicy determines which cold data blocks are moved to
+     * cool tier. The possible values for this field are: Auto - Moves cold user data blocks in both the Snapshot copies
+     * and the active file system to the cool tier tier. This policy is the default. SnapshotOnly - Moves user data
+     * blocks of the Volume Snapshot copies that are not associated with the active file system to the cool tier.
+     * 
+     * @return the coolAccessTieringPolicy value.
+     */
+    public CoolAccessTieringPolicy coolAccessTieringPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().coolAccessTieringPolicy();
+    }
+
+    /**
+     * Set the coolAccessTieringPolicy property: coolAccessTieringPolicy determines which cold data blocks are moved to
+     * cool tier. The possible values for this field are: Auto - Moves cold user data blocks in both the Snapshot copies
+     * and the active file system to the cool tier tier. This policy is the default. SnapshotOnly - Moves user data
+     * blocks of the Volume Snapshot copies that are not associated with the active file system to the cool tier.
+     * 
+     * @param coolAccessTieringPolicy the coolAccessTieringPolicy value to set.
+     * @return the VolumeGroupVolumeProperties object itself.
+     */
+    public VolumeGroupVolumeProperties withCoolAccessTieringPolicy(CoolAccessTieringPolicy coolAccessTieringPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withCoolAccessTieringPolicy(coolAccessTieringPolicy);
         return this;
     }
 

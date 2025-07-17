@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,56 +22,66 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AzureDataLakeAnalytics";
 
     /*
      * The Azure Data Lake Analytics account name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object accountName;
 
     /*
      * The ID of the application used to authenticate against the Azure Data Lake Analytics account. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object servicePrincipalId;
 
     /*
      * The Key of the application used to authenticate against the Azure Data Lake Analytics account.
      */
+    @Generated
     private SecretBase servicePrincipalKey;
 
     /*
      * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object tenant;
 
     /*
      * Data Lake Analytics account subscription ID (if different from Data Factory account). Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object subscriptionId;
 
     /*
      * Data Lake Analytics account resource group name (if different from Data Factory account). Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object resourceGroupName;
 
     /*
      * Azure Data Lake Analytics URI Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object dataLakeAnalyticsUri;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of AzureDataLakeAnalyticsLinkedService class.
      */
+    @Generated
     public AzureDataLakeAnalyticsLinkedService() {
     }
 
@@ -79,6 +90,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -90,6 +102,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * 
      * @return the accountName value.
      */
+    @Generated
     public Object getAccountName() {
         return this.accountName;
     }
@@ -101,6 +114,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * @param accountName the accountName value to set.
      * @return the AzureDataLakeAnalyticsLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeAnalyticsLinkedService setAccountName(Object accountName) {
         this.accountName = accountName;
         return this;
@@ -112,6 +126,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalId value.
      */
+    @Generated
     public Object getServicePrincipalId() {
         return this.servicePrincipalId;
     }
@@ -123,6 +138,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the AzureDataLakeAnalyticsLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeAnalyticsLinkedService setServicePrincipalId(Object servicePrincipalId) {
         this.servicePrincipalId = servicePrincipalId;
         return this;
@@ -134,6 +150,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalKey value.
      */
+    @Generated
     public SecretBase getServicePrincipalKey() {
         return this.servicePrincipalKey;
     }
@@ -145,6 +162,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureDataLakeAnalyticsLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeAnalyticsLinkedService setServicePrincipalKey(SecretBase servicePrincipalKey) {
         this.servicePrincipalKey = servicePrincipalKey;
         return this;
@@ -156,6 +174,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * 
      * @return the tenant value.
      */
+    @Generated
     public Object getTenant() {
         return this.tenant;
     }
@@ -167,6 +186,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * @param tenant the tenant value to set.
      * @return the AzureDataLakeAnalyticsLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeAnalyticsLinkedService setTenant(Object tenant) {
         this.tenant = tenant;
         return this;
@@ -178,6 +198,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * 
      * @return the subscriptionId value.
      */
+    @Generated
     public Object getSubscriptionId() {
         return this.subscriptionId;
     }
@@ -189,6 +210,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * @param subscriptionId the subscriptionId value to set.
      * @return the AzureDataLakeAnalyticsLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeAnalyticsLinkedService setSubscriptionId(Object subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
@@ -200,6 +222,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * 
      * @return the resourceGroupName value.
      */
+    @Generated
     public Object getResourceGroupName() {
         return this.resourceGroupName;
     }
@@ -211,6 +234,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * @param resourceGroupName the resourceGroupName value to set.
      * @return the AzureDataLakeAnalyticsLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeAnalyticsLinkedService setResourceGroupName(Object resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -222,6 +246,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * 
      * @return the dataLakeAnalyticsUri value.
      */
+    @Generated
     public Object getDataLakeAnalyticsUri() {
         return this.dataLakeAnalyticsUri;
     }
@@ -233,6 +258,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * @param dataLakeAnalyticsUri the dataLakeAnalyticsUri value to set.
      * @return the AzureDataLakeAnalyticsLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeAnalyticsLinkedService setDataLakeAnalyticsUri(Object dataLakeAnalyticsUri) {
         this.dataLakeAnalyticsUri = dataLakeAnalyticsUri;
         return this;
@@ -244,6 +270,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -255,6 +282,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureDataLakeAnalyticsLinkedService object itself.
      */
+    @Generated
     public AzureDataLakeAnalyticsLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -263,6 +291,17 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public AzureDataLakeAnalyticsLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public AzureDataLakeAnalyticsLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -272,6 +311,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataLakeAnalyticsLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -281,6 +321,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataLakeAnalyticsLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -290,6 +331,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataLakeAnalyticsLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -299,9 +341,11 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -317,13 +361,23 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("accountName", this.accountName);
-            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            if (this.servicePrincipalId != null) {
+                jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            }
             jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
             jsonWriter.writeUntypedField("tenant", this.tenant);
-            jsonWriter.writeUntypedField("subscriptionId", this.subscriptionId);
-            jsonWriter.writeUntypedField("resourceGroupName", this.resourceGroupName);
-            jsonWriter.writeUntypedField("dataLakeAnalyticsUri", this.dataLakeAnalyticsUri);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.subscriptionId != null) {
+                jsonWriter.writeUntypedField("subscriptionId", this.subscriptionId);
+            }
+            if (this.resourceGroupName != null) {
+                jsonWriter.writeUntypedField("resourceGroupName", this.resourceGroupName);
+            }
+            if (this.dataLakeAnalyticsUri != null) {
+                jsonWriter.writeUntypedField("dataLakeAnalyticsUri", this.dataLakeAnalyticsUri);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -343,6 +397,7 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureDataLakeAnalyticsLinkedService.
      */
+    @Generated
     public static AzureDataLakeAnalyticsLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureDataLakeAnalyticsLinkedService deserializedAzureDataLakeAnalyticsLinkedService
@@ -352,7 +407,9 @@ public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedAzureDataLakeAnalyticsLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedAzureDataLakeAnalyticsLinkedService
                         .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.MigrationRecoveryPoint;
@@ -22,19 +22,19 @@ public final class MigrationRecoveryPointsListByReplicationMockTests {
     @Test
     public void testListByReplicationMigrationItems() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"recoveryPointTime\":\"2021-07-07T21:49:56Z\",\"recoveryPointType\":\"ApplicationConsistent\"},\"location\":\"lgfaphwuu\",\"id\":\"wtsaynrtvj\",\"name\":\"qreeo\",\"type\":\"vqjmrnblihs\"}]}";
+            = "{\"value\":[{\"properties\":{\"recoveryPointTime\":\"2021-03-29T03:55:06Z\",\"recoveryPointType\":\"ApplicationConsistent\"},\"location\":\"ufavvlnpbso\",\"id\":\"m\",\"name\":\"nklnmrz\",\"type\":\"mtvrkkfcwxi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<MigrationRecoveryPoint> response = manager.migrationRecoveryPoints()
-            .listByReplicationMigrationItems("wynepktvmwgvco", "ysebjij", "hpxnikouox", "alokb", "kkyporsyn",
+            .listByReplicationMigrationItems("bcqpfusekij", "minenkbivpy", "kvorlfqm", "j", "wynbfvvc",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lgfaphwuu", response.iterator().next().location());
+        Assertions.assertEquals("ufavvlnpbso", response.iterator().next().location());
     }
 }

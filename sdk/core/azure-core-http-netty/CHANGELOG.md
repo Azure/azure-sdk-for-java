@@ -10,6 +10,55 @@
 
 ### Other Changes
 
+## 1.15.13 (2025-06-26)
+
+### Bugs Fixed
+
+- Fixed a bug where the `NoopAddressResolverGroup` would attempt to resolve an address when a non-proxied host was used.
+  This could lead to `UnknownHostException` being thrown. ([#45774](https://github.com/Azure/azure-sdk-for-java/pull/45774))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to `1.55.5`.
+
+## 1.15.12 (2025-06-05)
+
+### Bugs Fixed
+
+- Fixed a bug where `TooLongHttpHeaderException` would be thrown if an Azure service returned HTTP headers that exceeded
+  the default 8 KB limit. The new limit is now 256 KB when the default of 8 KB is seen. ([#45291](https://github.com/Azure/azure-sdk-for-java/pull/45291))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to `1.55.4`.
+
+## 1.15.11 (2025-03-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to `1.55.3`.
+
+## 1.15.10 (2025-02-20)
+
+### Other Changes
+
+- Fix for the `1.15.9` release as Netty dependencies weren't updated.
+
+## 1.15.9 (2025-02-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Netty dependencies from `4.1.115.Final` to `4.1.118.Final` to resolve a CVE.
+- Upgraded Netty TcNative dependencies from `2.0.69.Final` to `2.0.70.Final` to resolve a CVE.
+
 ## 1.15.8 (2025-02-06)
 
 ### Other Changes

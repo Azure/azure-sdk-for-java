@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicenetworking.generated;
  */
 public final class TrafficControllerInterfaceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-01-01/TrafficControllerGet.json
+     * x-ms-original-file: 2025-03-01-preview/TrafficControllerGet.json
      */
     /**
      * Sample code: Get Traffic Controller.

@@ -10,8 +10,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class ClusterManagersGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
-     * ClusterManagers_Get.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/ClusterManagers_Get
+     * .json
      */
     /**
      * Sample code: Get cluster manager.

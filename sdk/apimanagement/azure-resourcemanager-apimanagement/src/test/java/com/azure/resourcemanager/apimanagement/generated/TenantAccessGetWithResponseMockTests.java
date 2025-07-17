@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.AccessIdName;
@@ -22,21 +22,21 @@ public final class TenantAccessGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"id\":\"nbyi\",\"principalId\":\"etwwjvxycygcv\",\"enabled\":false},\"id\":\"feityantecvttk\",\"name\":\"opdj\",\"type\":\"nsicucqteciexsc\"}";
+            = "{\"properties\":{\"id\":\"xylbbugojdzc\",\"principalId\":\"yosig\",\"enabled\":false},\"id\":\"ykjxqsspeqgedp\",\"name\":\"zjqpjzturdiverkw\",\"type\":\"afyxo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AccessInformationContract response = manager.tenantAccess()
-            .getWithResponse("pxtbxyn", "ubwkd", AccessIdName.GIT_ACCESS, com.azure.core.util.Context.NONE)
+            .getWithResponse("iffaj", "iwbyz", AccessIdName.GIT_ACCESS, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nbyi", response.idPropertiesId());
-        Assertions.assertEquals("etwwjvxycygcv", response.principalId());
-        Assertions.assertEquals(false, response.enabled());
+        Assertions.assertEquals("xylbbugojdzc", response.idPropertiesId());
+        Assertions.assertEquals("yosig", response.principalId());
+        Assertions.assertFalse(response.enabled());
     }
 }

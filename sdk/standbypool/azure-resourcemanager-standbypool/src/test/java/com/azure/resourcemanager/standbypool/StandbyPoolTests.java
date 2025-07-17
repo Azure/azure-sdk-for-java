@@ -25,6 +25,7 @@ import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolRes
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceProperties;
 import com.azure.resourcemanager.standbypool.models.VirtualMachineState;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -82,6 +83,16 @@ public class StandbyPoolTests extends TestProxyTestBase {
 
     @Test
     @LiveOnly
+    public void testStandByVirtualMachinePool() {
+        // live test subscription is having issue creating VMSS resource. Only check API availability here.
+        standbyPoolManager.standbyVirtualMachinePools().list().stream().count();
+        // need to register preview feature in live test subscription
+        // standbyPoolManager.standbyContainerGroupPools().list().stream().count();
+    }
+
+    @Test
+    @LiveOnly
+    @Disabled("Live test subscription only has available VMSS/VirtualMachine SKUs in centraleuap region. Network resource doesn't support this region.")
     public void testStandbyVirtualMachinePool() {
         String poolName = "pool" + randomPadding();
         StandbyVirtualMachinePoolResource standbyVirtualMachinePool = null;

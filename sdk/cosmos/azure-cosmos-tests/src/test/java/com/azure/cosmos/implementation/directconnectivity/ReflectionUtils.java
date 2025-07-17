@@ -231,6 +231,10 @@ public class ReflectionUtils {
         return getStaticField(CpuMemoryMonitor.class, "cpuListeners");
     }
 
+    public static RxStoreModel getThinProxy(RxDocumentClientImpl rxDocumentClient){
+        return get(RxStoreModel.class, rxDocumentClient, "thinProxy");
+    }
+
     public static RxStoreModel getGatewayProxy(RxDocumentClientImpl rxDocumentClient){
         return get(RxStoreModel.class, rxDocumentClient, "gatewayProxy");
     }
@@ -241,6 +245,10 @@ public class ReflectionUtils {
 
     public static GlobalEndpointManager getGlobalEndpointManager(RxDocumentClientImpl rxDocumentClient){
         return get(GlobalEndpointManager.class, rxDocumentClient, "globalEndpointManager");
+    }
+
+    public static void setThinProxy(RxDocumentClientImpl client, RxStoreModel storeModel) {
+        set(client, storeModel, "thinProxy");
     }
 
     public static void setGatewayProxy(RxDocumentClientImpl client, RxStoreModel storeModel) {
@@ -466,5 +474,15 @@ public class ReflectionUtils {
 
     public static SslContext getSslContextWithCertValidationDisabled(Configs configs) {
         return get(SslContext.class, configs, "sslContextWithCertValidationDisabled");
+    }
+
+    public static Class<?> getClassBySimpleName(Class<?>[] classes, String classSimpleName) {
+        for (Class<?> clazz : classes) {
+            if (clazz.getSimpleName().equals(classSimpleName)) {
+                return clazz;
+            }
+        }
+
+        return null;
     }
 }

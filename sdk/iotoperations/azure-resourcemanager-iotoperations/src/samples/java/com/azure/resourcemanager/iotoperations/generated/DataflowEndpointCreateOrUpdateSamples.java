@@ -49,7 +49,7 @@ import com.azure.resourcemanager.iotoperations.models.TlsProperties;
  */
 public final class DataflowEndpointCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_EventGrid.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_EventGrid.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_EventGrid.
@@ -75,7 +75,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_ADLSv2.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_ADLSv2.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_ADLSv2.
@@ -102,7 +102,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_EventHub.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_EventHub.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_EventHub.
@@ -129,7 +129,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate.
@@ -254,7 +254,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_ADX.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_ADX.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_ADX.
@@ -281,7 +281,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_Fabric.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_Fabric.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_Fabric.
@@ -309,7 +309,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_LocalStorage.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_LocalStorage.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_LocalStorage.
@@ -330,7 +330,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_AIO.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_AIO.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_AIO.
@@ -358,7 +358,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_MQTT.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_MQTT.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_MQTT.
@@ -391,7 +391,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/DataflowEndpoint_CreateOrUpdate_Kafka.json
+     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_Kafka.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_Kafka.

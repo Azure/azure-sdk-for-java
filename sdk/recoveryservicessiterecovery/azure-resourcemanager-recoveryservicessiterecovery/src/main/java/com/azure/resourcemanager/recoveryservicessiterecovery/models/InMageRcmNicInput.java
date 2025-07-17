@@ -52,6 +52,11 @@ public final class InMageRcmNicInput implements JsonSerializable<InMageRcmNicInp
      */
     private String testStaticIpAddress;
 
+    /*
+     * The target NIC name.
+     */
+    private String targetNicName;
+
     /**
      * Creates an instance of InMageRcmNicInput class.
      */
@@ -199,6 +204,26 @@ public final class InMageRcmNicInput implements JsonSerializable<InMageRcmNicInp
     }
 
     /**
+     * Get the targetNicName property: The target NIC name.
+     * 
+     * @return the targetNicName value.
+     */
+    public String targetNicName() {
+        return this.targetNicName;
+    }
+
+    /**
+     * Set the targetNicName property: The target NIC name.
+     * 
+     * @param targetNicName the targetNicName value to set.
+     * @return the InMageRcmNicInput object itself.
+     */
+    public InMageRcmNicInput withTargetNicName(String targetNicName) {
+        this.targetNicName = targetNicName;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -229,6 +254,7 @@ public final class InMageRcmNicInput implements JsonSerializable<InMageRcmNicInp
         jsonWriter.writeStringField("targetStaticIPAddress", this.targetStaticIpAddress);
         jsonWriter.writeStringField("testSubnetName", this.testSubnetName);
         jsonWriter.writeStringField("testStaticIPAddress", this.testStaticIpAddress);
+        jsonWriter.writeStringField("targetNicName", this.targetNicName);
         return jsonWriter.writeEndObject();
     }
 
@@ -262,6 +288,8 @@ public final class InMageRcmNicInput implements JsonSerializable<InMageRcmNicInp
                     deserializedInMageRcmNicInput.testSubnetName = reader.getString();
                 } else if ("testStaticIPAddress".equals(fieldName)) {
                     deserializedInMageRcmNicInput.testStaticIpAddress = reader.getString();
+                } else if ("targetNicName".equals(fieldName)) {
+                    deserializedInMageRcmNicInput.targetNicName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

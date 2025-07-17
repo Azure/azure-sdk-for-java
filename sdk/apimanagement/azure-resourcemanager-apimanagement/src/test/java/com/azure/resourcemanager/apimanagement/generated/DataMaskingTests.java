@@ -15,25 +15,29 @@ public final class DataMaskingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataMasking model = BinaryData.fromString(
-            "{\"queryParams\":[{\"value\":\"bqlj\",\"mode\":\"Hide\"}],\"headers\":[{\"value\":\"h\",\"mode\":\"Hide\"},{\"value\":\"ulehurqlr\",\"mode\":\"Mask\"},{\"value\":\"weyurkphyjd\",\"mode\":\"Mask\"}]}")
+            "{\"queryParams\":[{\"value\":\"cdigpt\",\"mode\":\"Hide\"},{\"value\":\"zmqxucyci\",\"mode\":\"Mask\"},{\"value\":\"xiutgjcyzyzj\",\"mode\":\"Mask\"},{\"value\":\"jb\",\"mode\":\"Hide\"}],\"headers\":[{\"value\":\"qaqbz\",\"mode\":\"Mask\"},{\"value\":\"w\",\"mode\":\"Hide\"},{\"value\":\"tbwbqamteuli\",\"mode\":\"Hide\"},{\"value\":\"kcvmwfauxxepmy\",\"mode\":\"Mask\"}]}")
             .toObject(DataMasking.class);
-        Assertions.assertEquals("bqlj", model.queryParams().get(0).value());
+        Assertions.assertEquals("cdigpt", model.queryParams().get(0).value());
         Assertions.assertEquals(DataMaskingMode.HIDE, model.queryParams().get(0).mode());
-        Assertions.assertEquals("h", model.headers().get(0).value());
-        Assertions.assertEquals(DataMaskingMode.HIDE, model.headers().get(0).mode());
+        Assertions.assertEquals("qaqbz", model.headers().get(0).value());
+        Assertions.assertEquals(DataMaskingMode.MASK, model.headers().get(0).mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataMasking model = new DataMasking()
-            .withQueryParams(Arrays.asList(new DataMaskingEntity().withValue("bqlj").withMode(DataMaskingMode.HIDE)))
-            .withHeaders(Arrays.asList(new DataMaskingEntity().withValue("h").withMode(DataMaskingMode.HIDE),
-                new DataMaskingEntity().withValue("ulehurqlr").withMode(DataMaskingMode.MASK),
-                new DataMaskingEntity().withValue("weyurkphyjd").withMode(DataMaskingMode.MASK)));
+            .withQueryParams(Arrays.asList(new DataMaskingEntity().withValue("cdigpt").withMode(DataMaskingMode.HIDE),
+                new DataMaskingEntity().withValue("zmqxucyci").withMode(DataMaskingMode.MASK),
+                new DataMaskingEntity().withValue("xiutgjcyzyzj").withMode(DataMaskingMode.MASK),
+                new DataMaskingEntity().withValue("jb").withMode(DataMaskingMode.HIDE)))
+            .withHeaders(Arrays.asList(new DataMaskingEntity().withValue("qaqbz").withMode(DataMaskingMode.MASK),
+                new DataMaskingEntity().withValue("w").withMode(DataMaskingMode.HIDE),
+                new DataMaskingEntity().withValue("tbwbqamteuli").withMode(DataMaskingMode.HIDE),
+                new DataMaskingEntity().withValue("kcvmwfauxxepmy").withMode(DataMaskingMode.MASK)));
         model = BinaryData.fromObject(model).toObject(DataMasking.class);
-        Assertions.assertEquals("bqlj", model.queryParams().get(0).value());
+        Assertions.assertEquals("cdigpt", model.queryParams().get(0).value());
         Assertions.assertEquals(DataMaskingMode.HIDE, model.queryParams().get(0).mode());
-        Assertions.assertEquals("h", model.headers().get(0).value());
-        Assertions.assertEquals(DataMaskingMode.HIDE, model.headers().get(0).mode());
+        Assertions.assertEquals("qaqbz", model.headers().get(0).value());
+        Assertions.assertEquals(DataMaskingMode.MASK, model.headers().get(0).mode());
     }
 }

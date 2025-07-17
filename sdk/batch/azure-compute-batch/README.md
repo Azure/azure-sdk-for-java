@@ -26,7 +26,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-compute-batch</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 
@@ -157,6 +157,19 @@ Create a task
 String taskId = "ExampleTaskId";
 BatchTaskCreateContent taskToCreate = new BatchTaskCreateContent(taskId, "echo hello world");
 batchClient.createTask(jobId, taskToCreate);
+```
+
+Error handling
+
+When a call to the batch service fails the response from that call will contain a BatchError object in the body of the response.  In the AZURE-COMPUTE-BATCH SDK when an api method is called and a failure from the server occurs the sdk will throw a HttpResponseException exception.  You can use the helper method BatchError.fromException() to extract out the BatchError object.
+
+```java
+try {
+    BatchPool pool = batchClient.getPool("poolthatdoesnotexist");
+} catch (HttpResponseException err) {
+    BatchError batchError = BatchError.fromException(err);
+    Assertions.assertEquals("PoolNotFound", batchError.getCode());
+}
 ```
 
 ## Help

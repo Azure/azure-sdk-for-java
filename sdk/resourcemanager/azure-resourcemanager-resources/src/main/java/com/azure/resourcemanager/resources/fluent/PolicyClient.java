@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface PolicyClient {
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -54,11 +54,25 @@ public interface PolicyClient {
     PolicyDefinitionsClient getPolicyDefinitions();
 
     /**
+     * Gets the PolicyDefinitionVersionsClient object to access its operations.
+     * 
+     * @return the PolicyDefinitionVersionsClient object.
+     */
+    PolicyDefinitionVersionsClient getPolicyDefinitionVersions();
+
+    /**
      * Gets the PolicySetDefinitionsClient object to access its operations.
      * 
      * @return the PolicySetDefinitionsClient object.
      */
     PolicySetDefinitionsClient getPolicySetDefinitions();
+
+    /**
+     * Gets the PolicySetDefinitionVersionsClient object to access its operations.
+     * 
+     * @return the PolicySetDefinitionVersionsClient object.
+     */
+    PolicySetDefinitionVersionsClient getPolicySetDefinitionVersions();
 
     /**
      * Gets the PolicyAssignmentsClient object to access its operations.

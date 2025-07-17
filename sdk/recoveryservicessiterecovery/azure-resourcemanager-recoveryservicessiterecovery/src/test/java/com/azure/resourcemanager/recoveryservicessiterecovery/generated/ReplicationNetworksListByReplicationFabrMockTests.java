@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.Network;
@@ -22,24 +22,25 @@ public final class ReplicationNetworksListByReplicationFabrMockTests {
     @Test
     public void testListByReplicationFabrics() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"fabricType\":\"sorch\",\"subnets\":[{\"name\":\"o\",\"friendlyName\":\"yhl\",\"addressList\":[\"vhs\",\"b\",\"pwxslaj\"]},{\"name\":\"fzga\",\"friendlyName\":\"hawkmibuydwi\",\"addressList\":[\"icupdyt\",\"qmiuvjpl\"]},{\"name\":\"ebmhhtuq\",\"friendlyName\":\"xynof\",\"addressList\":[\"bfix\",\"gxebihexhnk\",\"ng\"]},{\"name\":\"cdolrpgupsjlbsmn\",\"friendlyName\":\"fbncuyje\",\"addressList\":[\"nhpplzhcfzxjzi\",\"ucrln\",\"wnuwkkfzzetl\",\"hdyxz\"]}],\"friendlyName\":\"wywjvrlgqpwwlzp\",\"networkType\":\"arcbcdwhslxebaja\"},\"location\":\"n\",\"id\":\"stbdoprwkampyh\",\"name\":\"pbldz\",\"type\":\"iudrcycmwhuzym\"}]}";
+            = "{\"value\":[{\"properties\":{\"fabricType\":\"zmdahyclxrs\",\"subnets\":[{\"name\":\"bldpoiaffjkrtn\",\"friendlyName\":\"evimxmaxcj\",\"addressList\":[\"tygvdwd\",\"oqtbfkvuozbzc\",\"nqekwankl\"]},{\"name\":\"rlcydjht\",\"friendlyName\":\"serwiyndurdonkg\",\"addressList\":[\"blrdolenr\",\"wknpdrg\",\"mzaof\"]}],\"friendlyName\":\"efqckievyrejyo\",\"networkType\":\"kqf\"},\"location\":\"sdwmnrtvvbuc\",\"id\":\"nrovome\",\"name\":\"xwsicvwqzocsfshe\",\"type\":\"nmsg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Network> response = manager.replicationNetworks()
-            .listByReplicationFabrics("kdv", "el", "modpe", com.azure.core.util.Context.NONE);
+            .listByReplicationFabrics("qngca", "dz", "nloou", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sorch", response.iterator().next().properties().fabricType());
-        Assertions.assertEquals("o", response.iterator().next().properties().subnets().get(0).name());
-        Assertions.assertEquals("yhl", response.iterator().next().properties().subnets().get(0).friendlyName());
-        Assertions.assertEquals("vhs", response.iterator().next().properties().subnets().get(0).addressList().get(0));
-        Assertions.assertEquals("wywjvrlgqpwwlzp", response.iterator().next().properties().friendlyName());
-        Assertions.assertEquals("arcbcdwhslxebaja", response.iterator().next().properties().networkType());
-        Assertions.assertEquals("n", response.iterator().next().location());
+        Assertions.assertEquals("zmdahyclxrs", response.iterator().next().properties().fabricType());
+        Assertions.assertEquals("bldpoiaffjkrtn", response.iterator().next().properties().subnets().get(0).name());
+        Assertions.assertEquals("evimxmaxcj", response.iterator().next().properties().subnets().get(0).friendlyName());
+        Assertions.assertEquals("tygvdwd",
+            response.iterator().next().properties().subnets().get(0).addressList().get(0));
+        Assertions.assertEquals("efqckievyrejyo", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals("kqf", response.iterator().next().properties().networkType());
+        Assertions.assertEquals("sdwmnrtvvbuc", response.iterator().next().location());
     }
 }

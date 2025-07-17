@@ -3,13 +3,12 @@
 
 package io.clientcore.core.implementation.serializer;
 
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.implementation.util.JsonSerializer;
-import io.clientcore.core.util.serializer.ObjectSerializer;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -34,7 +33,7 @@ import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BinaryDataSerializationTests {
-    private static final ObjectSerializer SERIALIZER = new JsonSerializer();
+    private static final JsonSerializer SERIALIZER = new JsonSerializer();
     private static final byte[] HELLO_BYTES = "hello".getBytes(StandardCharsets.UTF_8);
     private static final String BASE64_HELLO_BYTES = Base64.getEncoder().encodeToString(HELLO_BYTES);
     private static final SimplePojo SIMPLE_POJO = new SimplePojo().setString("hello").setNumber(3.14).setBool(true);

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,26 +22,31 @@ public class AppFiguresLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AppFigures";
 
     /*
      * The username of the Appfigures source.
      */
+    @Generated
     private Object userName;
 
     /*
      * The password of the AppFigures source.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * The client key for the AppFigures source.
      */
+    @Generated
     private SecretBase clientKey;
 
     /**
      * Creates an instance of AppFiguresLinkedService class.
      */
+    @Generated
     public AppFiguresLinkedService() {
     }
 
@@ -49,6 +55,7 @@ public class AppFiguresLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -59,6 +66,7 @@ public class AppFiguresLinkedService extends LinkedService {
      * 
      * @return the userName value.
      */
+    @Generated
     public Object getUserName() {
         return this.userName;
     }
@@ -69,6 +77,7 @@ public class AppFiguresLinkedService extends LinkedService {
      * @param userName the userName value to set.
      * @return the AppFiguresLinkedService object itself.
      */
+    @Generated
     public AppFiguresLinkedService setUserName(Object userName) {
         this.userName = userName;
         return this;
@@ -79,6 +88,7 @@ public class AppFiguresLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -89,6 +99,7 @@ public class AppFiguresLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the AppFiguresLinkedService object itself.
      */
+    @Generated
     public AppFiguresLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -99,6 +110,7 @@ public class AppFiguresLinkedService extends LinkedService {
      * 
      * @return the clientKey value.
      */
+    @Generated
     public SecretBase getClientKey() {
         return this.clientKey;
     }
@@ -109,6 +121,7 @@ public class AppFiguresLinkedService extends LinkedService {
      * @param clientKey the clientKey value to set.
      * @return the AppFiguresLinkedService object itself.
      */
+    @Generated
     public AppFiguresLinkedService setClientKey(SecretBase clientKey) {
         this.clientKey = clientKey;
         return this;
@@ -117,6 +130,17 @@ public class AppFiguresLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public AppFiguresLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public AppFiguresLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -126,6 +150,7 @@ public class AppFiguresLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AppFiguresLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -135,6 +160,7 @@ public class AppFiguresLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AppFiguresLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -144,6 +170,7 @@ public class AppFiguresLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AppFiguresLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -153,9 +180,11 @@ public class AppFiguresLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -185,6 +214,7 @@ public class AppFiguresLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AppFiguresLinkedService.
      */
+    @Generated
     public static AppFiguresLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AppFiguresLinkedService deserializedAppFiguresLinkedService = new AppFiguresLinkedService();
@@ -193,7 +223,9 @@ public class AppFiguresLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedAppFiguresLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedAppFiguresLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedAppFiguresLinkedService.setDescription(reader.getString());

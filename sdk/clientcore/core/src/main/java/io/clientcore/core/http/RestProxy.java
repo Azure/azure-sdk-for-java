@@ -3,14 +3,14 @@
 
 package io.clientcore.core.http;
 
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.http.rest.RestProxyImpl;
 import io.clientcore.core.implementation.http.rest.SwaggerInterfaceParser;
 import io.clientcore.core.implementation.http.rest.SwaggerMethodParser;
-import io.clientcore.core.implementation.util.JsonSerializer;
-import io.clientcore.core.util.serializer.ObjectSerializer;
-import io.clientcore.core.implementation.util.XmlSerializer;
+import io.clientcore.core.serialization.json.JsonSerializer;
+import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.serialization.xml.XmlSerializer;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -19,8 +19,7 @@ import java.lang.reflect.Proxy;
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
  * <p>
- * RestProxy can create proxy implementations for interfaces with methods that return deserialized Java objects as well
- * as asynchronous Single objects that resolve to a deserialized Java object.
+ * RestProxy can create proxy implementations for interfaces with methods that return deserialized Java objects.
  */
 public final class RestProxy implements InvocationHandler {
     private final SwaggerInterfaceParser interfaceParser;
@@ -54,10 +53,10 @@ public final class RestProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, final Method method, Object[] args) {
-        // Note: RequestOptions need to be evaluated here, as it is a public class with package private methods.
+        // Note: RequestContext need to be evaluated here, as it is a public class with package private methods.
         // Evaluating here allows the package private methods to be invoked here for downstream use.
         final SwaggerMethodParser methodParser = getMethodParser(method);
-        RequestOptions options = methodParser.setRequestOptions(args);
+        RequestContext options = methodParser.setRequestContext(args);
 
         return restProxyImpl.invoke(proxy, options, methodParser, args);
     }

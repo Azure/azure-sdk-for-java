@@ -10,8 +10,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class AgentPoolsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
-     * AgentPools_Delete.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/AgentPools_Delete.
+     * json
      */
     /**
      * Sample code: Delete Kubernetes cluster agent pool.
@@ -21,6 +21,7 @@ public final class AgentPoolsDeleteSamples {
     public static void
         deleteKubernetesClusterAgentPool(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
         manager.agentPools()
-            .delete("resourceGroupName", "kubernetesClusterName", "agentPoolName", com.azure.core.util.Context.NONE);
+            .delete("resourceGroupName", "kubernetesClusterName", "agentPoolName", null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

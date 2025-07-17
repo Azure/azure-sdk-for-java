@@ -145,7 +145,7 @@ public final class ChatCompletionsClientImpl {
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ChatCompletionsClien")
+    @ServiceInterface(name = "ChatCompletionsClient")
     public interface ChatCompletionsClientService {
         @Post("/chat/completions")
         @ExpectedResponses({ 200 })
@@ -155,7 +155,7 @@ public final class ChatCompletionsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> complete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData completeRequest,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Post("/chat/completions")
@@ -166,7 +166,7 @@ public final class ChatCompletionsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> completeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData completeRequest,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
 
         @Get("/info")
@@ -212,7 +212,7 @@ public final class ChatCompletionsClientImpl {
      * {
      *     messages (Required): [
      *          (Required){
-     *             role: String(system/user/assistant/tool) (Required)
+     *             role: String(system/user/assistant/tool/developer) (Required)
      *         }
      *     ]
      *     frequency_penalty: Double (Optional)
@@ -265,7 +265,7 @@ public final class ChatCompletionsClientImpl {
      *             index: int (Required)
      *             finish_reason: String(stop/length/content_filter/tool_calls) (Required)
      *             message (Required): {
-     *                 role: String(system/user/assistant/tool) (Required)
+     *                 role: String(system/user/assistant/tool/developer) (Required)
      *                 content: String (Required)
      *                 tool_calls (Optional): [
      *                      (Optional){
@@ -284,7 +284,7 @@ public final class ChatCompletionsClientImpl {
      * }
      * </pre>
      * 
-     * @param completeRequest The completeRequest parameter.
+     * @param body request options to pass to the endpoint using complete path.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -295,12 +295,11 @@ public final class ChatCompletionsClientImpl {
      * provided prompt data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> completeWithResponseAsync(BinaryData completeRequest,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> completeWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.complete(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, accept, completeRequest, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
     /**
@@ -325,7 +324,7 @@ public final class ChatCompletionsClientImpl {
      * {
      *     messages (Required): [
      *          (Required){
-     *             role: String(system/user/assistant/tool) (Required)
+     *             role: String(system/user/assistant/tool/developer) (Required)
      *         }
      *     ]
      *     frequency_penalty: Double (Optional)
@@ -378,7 +377,7 @@ public final class ChatCompletionsClientImpl {
      *             index: int (Required)
      *             finish_reason: String(stop/length/content_filter/tool_calls) (Required)
      *             message (Required): {
-     *                 role: String(system/user/assistant/tool) (Required)
+     *                 role: String(system/user/assistant/tool/developer) (Required)
      *                 content: String (Required)
      *                 tool_calls (Optional): [
      *                      (Optional){
@@ -397,7 +396,7 @@ public final class ChatCompletionsClientImpl {
      * }
      * </pre>
      * 
-     * @param completeRequest The completeRequest parameter.
+     * @param body request options to pass to the endpoint using complete path.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -408,11 +407,11 @@ public final class ChatCompletionsClientImpl {
      * provided prompt data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> completeWithResponse(BinaryData completeRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> completeWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.completeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
-            completeRequest, requestOptions, Context.NONE);
+            body, requestOptions, Context.NONE);
     }
 
     /**
@@ -424,7 +423,7 @@ public final class ChatCompletionsClientImpl {
      * {@code
      * {
      *     model_name: String (Required)
-     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat) (Required)
+     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat_completion) (Required)
      *     model_provider_name: String (Required)
      * }
      * }
@@ -454,7 +453,7 @@ public final class ChatCompletionsClientImpl {
      * {@code
      * {
      *     model_name: String (Required)
-     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat) (Required)
+     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat_completion) (Required)
      *     model_provider_name: String (Required)
      * }
      * }

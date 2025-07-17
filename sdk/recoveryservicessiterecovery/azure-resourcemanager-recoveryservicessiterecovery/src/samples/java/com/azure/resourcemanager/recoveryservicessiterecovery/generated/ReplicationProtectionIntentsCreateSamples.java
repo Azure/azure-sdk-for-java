@@ -14,7 +14,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.CreateProte
 public final class ReplicationProtectionIntentsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationProtectionIntents_Create.json
      */
     /**
@@ -26,7 +26,7 @@ public final class ReplicationProtectionIntentsCreateSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationProtectionIntents()
             .define("vm1")
-            .withExistingVault("vault1", "resourceGroupPS1")
+            .withExistingVault("resourceGroupPS1", "vault1")
             .withProperties(new CreateProtectionIntentProperties()
                 .withProviderSpecificDetails(new A2ACreateProtectionIntentInput().withFabricObjectId(
                     "/subscriptions/509099b2-9d2c-4636-b43e-bd5cafb6be69/resourceGroups/removeOne/providers/Microsoft.Compute/virtualMachines/vmPpgAv5")

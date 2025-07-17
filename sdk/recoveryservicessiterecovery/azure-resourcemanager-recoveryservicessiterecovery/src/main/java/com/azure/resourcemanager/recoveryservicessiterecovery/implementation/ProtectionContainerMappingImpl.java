@@ -61,9 +61,9 @@ public final class ProtectionContainerMappingImpl
         return this.serviceManager;
     }
 
-    private String resourceName;
-
     private String resourceGroupName;
+
+    private String resourceName;
 
     private String fabricName;
 
@@ -75,10 +75,10 @@ public final class ProtectionContainerMappingImpl
 
     private UpdateProtectionContainerMappingInput updateUpdateInput;
 
-    public ProtectionContainerMappingImpl withExistingReplicationProtectionContainer(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName) {
-        this.resourceName = resourceName;
+    public ProtectionContainerMappingImpl withExistingReplicationProtectionContainer(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName) {
         this.resourceGroupName = resourceGroupName;
+        this.resourceName = resourceName;
         this.fabricName = fabricName;
         this.protectionContainerName = protectionContainerName;
         return this;
@@ -87,7 +87,7 @@ public final class ProtectionContainerMappingImpl
     public ProtectionContainerMapping create() {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationProtectionContainerMappings()
-            .create(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            .create(resourceGroupName, resourceName, fabricName, protectionContainerName, mappingName,
                 createCreationInput, Context.NONE);
         return this;
     }
@@ -95,7 +95,7 @@ public final class ProtectionContainerMappingImpl
     public ProtectionContainerMapping create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationProtectionContainerMappings()
-            .create(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            .create(resourceGroupName, resourceName, fabricName, protectionContainerName, mappingName,
                 createCreationInput, context);
         return this;
     }
@@ -116,7 +116,7 @@ public final class ProtectionContainerMappingImpl
     public ProtectionContainerMapping apply() {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationProtectionContainerMappings()
-            .update(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            .update(resourceGroupName, resourceName, fabricName, protectionContainerName, mappingName,
                 updateUpdateInput, Context.NONE);
         return this;
     }
@@ -124,7 +124,7 @@ public final class ProtectionContainerMappingImpl
     public ProtectionContainerMapping apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationProtectionContainerMappings()
-            .update(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            .update(resourceGroupName, resourceName, fabricName, protectionContainerName, mappingName,
                 updateUpdateInput, context);
         return this;
     }
@@ -133,8 +133,8 @@ public final class ProtectionContainerMappingImpl
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
         this.fabricName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicationFabrics");
         this.protectionContainerName
             = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicationProtectionContainers");
@@ -145,7 +145,7 @@ public final class ProtectionContainerMappingImpl
     public ProtectionContainerMapping refresh() {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationProtectionContainerMappings()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName, mappingName,
                 Context.NONE)
             .getValue();
         return this;
@@ -154,19 +154,19 @@ public final class ProtectionContainerMappingImpl
     public ProtectionContainerMapping refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationProtectionContainerMappings()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, context)
+            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName, mappingName, context)
             .getValue();
         return this;
     }
 
     public void delete(RemoveProtectionContainerMappingInput removalInput) {
         serviceManager.replicationProtectionContainerMappings()
-            .delete(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, removalInput);
+            .delete(resourceGroupName, resourceName, fabricName, protectionContainerName, mappingName, removalInput);
     }
 
     public void delete(RemoveProtectionContainerMappingInput removalInput, Context context) {
         serviceManager.replicationProtectionContainerMappings()
-            .delete(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, removalInput,
+            .delete(resourceGroupName, resourceName, fabricName, protectionContainerName, mappingName, removalInput,
                 context);
     }
 

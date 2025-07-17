@@ -12,19 +12,19 @@ public final class TieringCostRehydrationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TieringCostRehydrationInfo model = BinaryData.fromString(
-            "{\"objectType\":\"TieringCostRehydrationInfo\",\"rehydrationSizeInBytes\":1068598055053483626,\"retailRehydrationCostPerGBPerMonth\":63.147314650239416}")
+            "{\"objectType\":\"TieringCostRehydrationInfo\",\"rehydrationSizeInBytes\":5753434754911669837,\"retailRehydrationCostPerGBPerMonth\":14.712435267029655}")
             .toObject(TieringCostRehydrationInfo.class);
-        Assertions.assertEquals(1068598055053483626L, model.rehydrationSizeInBytes());
-        Assertions.assertEquals(63.147314650239416, model.retailRehydrationCostPerGBPerMonth());
+        Assertions.assertEquals(5753434754911669837L, model.rehydrationSizeInBytes());
+        Assertions.assertEquals(14.712435267029655, model.retailRehydrationCostPerGBPerMonth());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TieringCostRehydrationInfo model
-            = new TieringCostRehydrationInfo().withRehydrationSizeInBytes(1068598055053483626L)
-                .withRetailRehydrationCostPerGBPerMonth(63.147314650239416);
+            = new TieringCostRehydrationInfo().withRehydrationSizeInBytes(5753434754911669837L)
+                .withRetailRehydrationCostPerGBPerMonth(14.712435267029655);
         model = BinaryData.fromObject(model).toObject(TieringCostRehydrationInfo.class);
-        Assertions.assertEquals(1068598055053483626L, model.rehydrationSizeInBytes());
-        Assertions.assertEquals(63.147314650239416, model.retailRehydrationCostPerGBPerMonth());
+        Assertions.assertEquals(5753434754911669837L, model.rehydrationSizeInBytes());
+        Assertions.assertEquals(14.712435267029655, model.retailRehydrationCostPerGBPerMonth());
     }
 }

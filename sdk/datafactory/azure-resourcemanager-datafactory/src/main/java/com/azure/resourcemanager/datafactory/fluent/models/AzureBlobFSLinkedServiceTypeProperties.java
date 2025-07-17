@@ -390,17 +390,31 @@ public final class AzureBlobFSLinkedServiceTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("url", this.url);
-        jsonWriter.writeUntypedField("accountKey", this.accountKey);
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        if (this.url != null) {
+            jsonWriter.writeUntypedField("url", this.url);
+        }
+        if (this.accountKey != null) {
+            jsonWriter.writeUntypedField("accountKey", this.accountKey);
+        }
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-        jsonWriter.writeUntypedField("tenant", this.tenant);
-        jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        if (this.tenant != null) {
+            jsonWriter.writeUntypedField("tenant", this.tenant);
+        }
+        if (this.azureCloudType != null) {
+            jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         jsonWriter.writeJsonField("credential", this.credential);
-        jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        if (this.servicePrincipalCredentialType != null) {
+            jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        }
         jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
-        jsonWriter.writeUntypedField("sasUri", this.sasUri);
+        if (this.sasUri != null) {
+            jsonWriter.writeUntypedField("sasUri", this.sasUri);
+        }
         jsonWriter.writeJsonField("sasToken", this.sasToken);
         return jsonWriter.writeEndObject();
     }

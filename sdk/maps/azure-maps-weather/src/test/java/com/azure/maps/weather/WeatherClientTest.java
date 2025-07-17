@@ -146,7 +146,7 @@ public class WeatherClientTest extends WeatherTestBase {
     public void testGetCurrentConditions(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         CurrentConditionsResult actualResult
-            = client.getCurrentConditions(new GeoPosition(-122.125679, 47.641268), null, null, null, null);
+            = client.getCurrentConditions(new GeoPosition(-122.125679, 47.641268), null, true, null, null);
         CurrentConditionsResult expectedResult = TestUtils.getExpectedCurrentConditions();
         validateGetCurrentConditions(expectedResult, actualResult);
     }
@@ -158,7 +158,7 @@ public class WeatherClientTest extends WeatherTestBase {
     public void testGetCurrentConditionsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         validateGetCurrentConditionsWithResponse(TestUtils.getExpectedCurrentConditions(), client
-            .getCurrentConditionsWithResponse(new GeoPosition(-122.125679, 47.641268), null, null, null, null, null));
+            .getCurrentConditionsWithResponse(new GeoPosition(-122.125679, 47.641268), null, true, null, null, null));
     }
 
     // Case 2: Response 400, incorrect input
@@ -339,7 +339,7 @@ public class WeatherClientTest extends WeatherTestBase {
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             StormSearchResult actualResult
-                = client.searchTropicalStorm(storm.getYear(), storm.getBasinId(), storm.getGovId());
+                = client.searchTropicalStorm(storm.getYear(), storm.getBasinId(), storm.getGovernmentId());
             StormSearchResult expectedResult = TestUtils.getExpectedSearchTropicalStorm();
             validateGetSearchTropicalStorm(expectedResult, actualResult);
         }
@@ -354,8 +354,8 @@ public class WeatherClientTest extends WeatherTestBase {
         ActiveStormResult result = client.getTropicalStormActive();
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
-            validateGetSearchTropicalStormWithResponse(TestUtils.getExpectedSearchTropicalStorm(),
-                client.searchTropicalStormWithResponse(storm.getYear(), storm.getBasinId(), storm.getGovId(), null));
+            validateGetSearchTropicalStormWithResponse(TestUtils.getExpectedSearchTropicalStorm(), client
+                .searchTropicalStormWithResponse(storm.getYear(), storm.getBasinId(), storm.getGovernmentId(), null));
         }
     }
 
@@ -369,7 +369,7 @@ public class WeatherClientTest extends WeatherTestBase {
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.searchTropicalStormWithResponse(-100, storm.getBasinId(), storm.getGovId(), null));
+                () -> client.searchTropicalStormWithResponse(-100, storm.getBasinId(), storm.getGovernmentId(), null));
             assertEquals(400, httpResponseException.getResponse().getStatusCode());
         }
     }
@@ -383,7 +383,7 @@ public class WeatherClientTest extends WeatherTestBase {
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormForecastOptions forecastOptions
-                = new TropicalStormForecastOptions(storm.getYear(), storm.getBasinId(), storm.getGovId())
+                = new TropicalStormForecastOptions(storm.getYear(), storm.getBasinId(), storm.getGovernmentId())
                     .setIncludeWindowGeometry(true);
             StormForecastResult actualResult = client.getTropicalStormForecast(forecastOptions);
             StormForecastResult expectedResult = TestUtils.getExpectedTropicalStormForecast();
@@ -401,7 +401,7 @@ public class WeatherClientTest extends WeatherTestBase {
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormForecastOptions forecastOptions
-                = new TropicalStormForecastOptions(storm.getYear(), storm.getBasinId(), storm.getGovId())
+                = new TropicalStormForecastOptions(storm.getYear(), storm.getBasinId(), storm.getGovernmentId())
                     .setIncludeWindowGeometry(true);
             validateGetTropicalStormForecastWithResponse(TestUtils.getExpectedTropicalStormForecast(),
                 client.getTropicalStormForecastWithResponse(forecastOptions, null));
@@ -418,7 +418,7 @@ public class WeatherClientTest extends WeatherTestBase {
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormForecastOptions forecastOptions
-                = new TropicalStormForecastOptions(-100, storm.getBasinId(), storm.getGovId())
+                = new TropicalStormForecastOptions(-100, storm.getBasinId(), storm.getGovernmentId())
                     .setIncludeWindowGeometry(true);
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.getTropicalStormForecastWithResponse(forecastOptions, null));
@@ -435,7 +435,7 @@ public class WeatherClientTest extends WeatherTestBase {
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormLocationOptions locationOptions
-                = new TropicalStormLocationOptions(storm.getYear(), storm.getBasinId(), storm.getGovId());
+                = new TropicalStormLocationOptions(storm.getYear(), storm.getBasinId(), storm.getGovernmentId());
             StormLocationsResult actualResult = client.getTropicalStormLocations(locationOptions);
             StormLocationsResult expectedResult = TestUtils.getExpectedTropicalStormLocations();
             validateGetTropicalStormLocations(expectedResult, actualResult);
@@ -452,7 +452,7 @@ public class WeatherClientTest extends WeatherTestBase {
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormLocationOptions locationOptions
-                = new TropicalStormLocationOptions(storm.getYear(), storm.getBasinId(), storm.getGovId());
+                = new TropicalStormLocationOptions(storm.getYear(), storm.getBasinId(), storm.getGovernmentId());
             validateGetTropicalStormLocationsWithResponse(TestUtils.getExpectedTropicalStormLocations(),
                 client.getTropicalStormLocationsWithResponse(locationOptions, null));
         }
@@ -468,7 +468,7 @@ public class WeatherClientTest extends WeatherTestBase {
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormLocationOptions locationOptions
-                = new TropicalStormLocationOptions(-100, storm.getBasinId(), storm.getGovId());
+                = new TropicalStormLocationOptions(-100, storm.getBasinId(), storm.getGovernmentId());
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.getTropicalStormLocationsWithResponse(locationOptions, null));
             assertEquals(400, httpResponseException.getResponse().getStatusCode());
@@ -510,34 +510,34 @@ public class WeatherClientTest extends WeatherTestBase {
     // Test get air quality daily forecasts
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetAirQualityDailyForecasts(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
+    public void testGetDailyAirQualityForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         DailyAirQualityForecastResult actualResult
-            = client.getAirQualityDailyForecasts(new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS);
-        DailyAirQualityForecastResult expectedResult = TestUtils.getExpectedAirQualityDailyForecasts();
-        validateGetAirQualityDailyForecasts(expectedResult, actualResult);
+            = client.getDailyAirQualityForecast(new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS);
+        DailyAirQualityForecastResult expectedResult = TestUtils.getExpectedDailyAirQualityForecast();
+        validateGetDailyAirQualityForecast(expectedResult, actualResult);
     }
 
     // Test get air quality daily forecasts with response
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetAirQualityDailyForecastsWithResponse(HttpClient httpClient,
+    public void testGetDailyAirQualityForecastWithResponse(HttpClient httpClient,
         WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        validateGetAirQualityDailyForecastsWithResponse(TestUtils.getExpectedAirQualityDailyForecasts(),
-            client.getAirQualityDailyForecastsWithResponse(new GeoPosition(-122.138874, 47.632346), "en",
+        validateGetDailyAirQualityForecastWithResponse(TestUtils.getExpectedDailyAirQualityForecast(),
+            client.getDailyAirQualityForecastWithResponse(new GeoPosition(-122.138874, 47.632346), "en",
                 DailyDuration.TWO_DAYS, null));
     }
 
     // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidGetAirQualityDailyForecastsWithResponse(HttpClient httpClient,
+    public void testInvalidGetDailyAirQualityForecastWithResponse(HttpClient httpClient,
         WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getAirQualityDailyForecastsWithResponse(new GeoPosition(-100000, 47.632346), "en",
+            () -> client.getDailyAirQualityForecastWithResponse(new GeoPosition(-100000, 47.632346), "en",
                 DailyDuration.TWO_DAYS, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }
@@ -545,34 +545,34 @@ public class WeatherClientTest extends WeatherTestBase {
     // Test get air quality hourly forecasts
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetAirQualityHourlyForecasts(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
+    public void testGetHourlyAirQualityForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        AirQualityResult actualResult = client.getAirQualityHourlyForecasts(new GeoPosition(-122.138874, 47.632346),
+        AirQualityResult actualResult = client.getHourlyAirQualityForecast(new GeoPosition(-122.138874, 47.632346),
             "fr", HourlyDuration.ONE_HOUR, false);
-        AirQualityResult expectedResult = TestUtils.getExpectedAirQualityHourlyForecasts();
-        validateGetAirQualityHourlyForecasts(expectedResult, actualResult);
+        AirQualityResult expectedResult = TestUtils.getExpectedHourlyAirQualityForecast();
+        validateGetHourlyAirQualityForecast(expectedResult, actualResult);
     }
 
     // Test get air quality hourly forecasts with response
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testGetAirQualityHourlyForecastsWithResponse(HttpClient httpClient,
+    public void testGetHourlyAirQualityForecastWithResponse(HttpClient httpClient,
         WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
-        validateGetAirQualityHourlyForecastsWithResponse(TestUtils.getExpectedAirQualityHourlyForecasts(),
-            client.getAirQualityHourlyForecastsWithResponse(new GeoPosition(-122.138874, 47.632346), "fr",
+        validateGetHourlyAirQualityForecastWithResponse(TestUtils.getExpectedHourlyAirQualityForecast(),
+            client.getHourlyAirQualityForecastWithResponse(new GeoPosition(-122.138874, 47.632346), "fr",
                 HourlyDuration.ONE_HOUR, false, null));
     }
 
     // Case 2: Response 400, incorrect input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testInvalidGetAirQualityHourlyForecastsWithResponse(HttpClient httpClient,
+    public void testInvalidGetHourlyAirQualityForecastWithResponse(HttpClient httpClient,
         WeatherServiceVersion serviceVersion) {
         client = getWeatherClient(httpClient, serviceVersion);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getAirQualityHourlyForecastsWithResponse(new GeoPosition(-100000, 47.632346), "fr",
+            () -> client.getHourlyAirQualityForecastWithResponse(new GeoPosition(-100000, 47.632346), "fr",
                 HourlyDuration.ONE_HOUR, false, null));
         assertEquals(400, httpResponseException.getResponse().getStatusCode());
     }

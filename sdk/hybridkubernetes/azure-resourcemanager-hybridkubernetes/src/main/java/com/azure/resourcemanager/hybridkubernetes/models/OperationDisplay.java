@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class OperationDisplay implements JsonSerializable<OperationDisplay> {
     /*
-     * Service provider: Microsoft.connectedClusters
+     * Service provider: Microsoft.Kubernetes
      */
     private String provider;
 
@@ -43,7 +43,7 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
     }
 
     /**
-     * Get the provider property: Service provider: Microsoft.connectedClusters.
+     * Get the provider property: Service provider: Microsoft.Kubernetes.
      * 
      * @return the provider value.
      */
@@ -52,7 +52,7 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
     }
 
     /**
-     * Set the provider property: Service provider: Microsoft.connectedClusters.
+     * Set the provider property: Service provider: Microsoft.Kubernetes.
      * 
      * @param provider the provider value to set.
      * @return the OperationDisplay object itself.

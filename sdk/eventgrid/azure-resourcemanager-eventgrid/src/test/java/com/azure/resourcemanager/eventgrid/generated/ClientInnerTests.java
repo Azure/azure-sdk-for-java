@@ -18,33 +18,32 @@ public final class ClientInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"xnj\",\"authenticationName\":\"seiphe\",\"clientCertificateAuthentication\":{\"validationScheme\":\"ThumbprintMatch\",\"allowedThumbprints\":[\"yyien\"]},\"state\":\"Disabled\",\"attributes\":{\"azjpqyegualhbxxh\":\"datatgrhpdjpjumas\",\"zvdudgwdslfhotwm\":\"datajj\",\"pgacftadehxnlty\":\"dataynpwlbj\"},\"provisioningState\":\"Updating\"},\"id\":\"pusuesn\",\"name\":\"wd\",\"type\":\"jbavorxzdm\"}")
+            "{\"properties\":{\"description\":\"lwhijcoejctbzaq\",\"authenticationName\":\"sycbkbfk\",\"clientCertificateAuthentication\":{\"validationScheme\":\"SubjectMatchesAuthenticationName\",\"allowedThumbprints\":[\"xxppofm\",\"axcfjpgddtocjjx\",\"vpmouexhdzxib\",\"eojnxqbzvddn\"]},\"state\":\"Enabled\",\"attributes\":{\"vuhrhcffcyddgl\":\"dataicbtwnpzao\"},\"provisioningState\":\"Deleted\"},\"id\":\"jqkwpyeicx\",\"name\":\"qciwqvhkhixuigdt\",\"type\":\"pbobjo\"}")
             .toObject(ClientInner.class);
-        Assertions.assertEquals("xnj", model.description());
-        Assertions.assertEquals("seiphe", model.authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.THUMBPRINT_MATCH,
+        Assertions.assertEquals("lwhijcoejctbzaq", model.description());
+        Assertions.assertEquals("sycbkbfk", model.authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.SUBJECT_MATCHES_AUTHENTICATION_NAME,
             model.clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("yyien", model.clientCertificateAuthentication().allowedThumbprints().get(0));
-        Assertions.assertEquals(ClientState.DISABLED, model.state());
+        Assertions.assertEquals("xxppofm", model.clientCertificateAuthentication().allowedThumbprints().get(0));
+        Assertions.assertEquals(ClientState.ENABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientInner model = new ClientInner().withDescription("xnj")
-            .withAuthenticationName("seiphe")
+        ClientInner model = new ClientInner().withDescription("lwhijcoejctbzaq")
+            .withAuthenticationName("sycbkbfk")
             .withClientCertificateAuthentication(new ClientCertificateAuthentication()
-                .withValidationScheme(ClientCertificateValidationScheme.THUMBPRINT_MATCH)
-                .withAllowedThumbprints(Arrays.asList("yyien")))
-            .withState(ClientState.DISABLED)
-            .withAttributes(mapOf("azjpqyegualhbxxh", "datatgrhpdjpjumas", "zvdudgwdslfhotwm", "datajj",
-                "pgacftadehxnlty", "dataynpwlbj"));
+                .withValidationScheme(ClientCertificateValidationScheme.SUBJECT_MATCHES_AUTHENTICATION_NAME)
+                .withAllowedThumbprints(Arrays.asList("xxppofm", "axcfjpgddtocjjx", "vpmouexhdzxib", "eojnxqbzvddn")))
+            .withState(ClientState.ENABLED)
+            .withAttributes(mapOf("vuhrhcffcyddgl", "dataicbtwnpzao"));
         model = BinaryData.fromObject(model).toObject(ClientInner.class);
-        Assertions.assertEquals("xnj", model.description());
-        Assertions.assertEquals("seiphe", model.authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.THUMBPRINT_MATCH,
+        Assertions.assertEquals("lwhijcoejctbzaq", model.description());
+        Assertions.assertEquals("sycbkbfk", model.authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.SUBJECT_MATCHES_AUTHENTICATION_NAME,
             model.clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("yyien", model.clientCertificateAuthentication().allowedThumbprints().get(0));
-        Assertions.assertEquals(ClientState.DISABLED, model.state());
+        Assertions.assertEquals("xxppofm", model.clientCertificateAuthentication().allowedThumbprints().get(0));
+        Assertions.assertEquals(ClientState.ENABLED, model.state());
     }
 
     // Use "Map.of" if available

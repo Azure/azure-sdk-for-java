@@ -6,8 +6,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplate;
@@ -21,27 +21,27 @@ public final class WorkbookTemplatesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"priority\":456926110,\"author\":\"cfotangcfhnykzcu\",\"templateData\":\"dataswvxwlmzqwmv\",\"galleries\":[{\"name\":\"jmxmcuqud\",\"category\":\"vclx\",\"type\":\"pdkvg\",\"order\":1567015685,\"resourceType\":\"iyji\"},{\"name\":\"zphdugneiknp\",\"category\":\"xgjiuqh\",\"type\":\"tozipqwj\",\"order\":775560662,\"resourceType\":\"rrxxgewpktvq\"}],\"localized\":{\"foiyjwpfilk\":[{\"templateData\":\"datapzoyhlfbcg\",\"galleries\":[{},{}]},{\"templateData\":\"dataoxoebqi\",\"galleries\":[{},{}]},{\"templateData\":\"datanwjfu\",\"galleries\":[{},{}]},{\"templateData\":\"datafcbahhp\",\"galleries\":[{},{}]}]}},\"location\":\"kkholvdndvia\",\"tags\":{\"iukyefchnmna\":\"phuartv\",\"xffi\":\"mnxhkxjqirwrweo\",\"rsnewmozqvbubqma\":\"hx\"},\"id\":\"hsycxhxzgaz\",\"name\":\"taboidvmf\",\"type\":\"hppubowsepdfgkmt\"}";
+            = "{\"properties\":{\"priority\":341362078,\"author\":\"dqmjxly\",\"templateData\":\"datazg\",\"galleries\":[{\"name\":\"uwt\",\"category\":\"jjyuojqtobax\",\"type\":\"eytu\",\"order\":1073974691,\"resourceType\":\"jkwrusnkq\"},{\"name\":\"syrq\",\"category\":\"jqhden\",\"type\":\"ulkpakd\",\"order\":466096532,\"resourceType\":\"jnnawtqa\"}],\"localized\":{\"sdp\":[{\"templateData\":\"datakpggqoweyi\",\"galleries\":[{},{}]},{\"templateData\":\"dataisngwflqqmpizru\",\"galleries\":[{},{}]},{\"templateData\":\"dataxpxiwfcngjs\",\"galleries\":[{}]},{\"templateData\":\"dataixtmkzjvkviirhgf\",\"galleries\":[{},{},{}]}],\"bglbyvict\":[{\"templateData\":\"datat\",\"galleries\":[{}]}],\"bydpizqaclnapxb\":[{\"templateData\":\"datarxkjzwrgxffmshk\",\"galleries\":[{},{},{},{}]},{\"templateData\":\"datagozxw\",\"galleries\":[{}]}],\"smfcttuxuuyilfl\":[{\"templateData\":\"datanugj\",\"galleries\":[{},{},{},{}]}]}},\"location\":\"oiquvrehmrnjhvs\",\"tags\":{\"uunfprnjletlxsm\":\"tczytqjtwh\",\"nlqwzdvpiwhx\":\"pddouifamowaziyn\"},\"id\":\"szdtmaajquh\",\"name\":\"xylrjvmtygjbmz\",\"type\":\"ospspshckf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkbookTemplate response = manager.workbookTemplates()
-            .getByResourceGroupWithResponse("mmkjsvthnwpztek", "vmribiat", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("tgfebwln", "mhyreeudz", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kkholvdndvia", response.location());
-        Assertions.assertEquals("phuartv", response.tags().get("iukyefchnmna"));
-        Assertions.assertEquals(456926110, response.priority());
-        Assertions.assertEquals("cfotangcfhnykzcu", response.author());
-        Assertions.assertEquals("jmxmcuqud", response.galleries().get(0).name());
-        Assertions.assertEquals("vclx", response.galleries().get(0).category());
-        Assertions.assertEquals("pdkvg", response.galleries().get(0).type());
-        Assertions.assertEquals(1567015685, response.galleries().get(0).order());
-        Assertions.assertEquals("iyji", response.galleries().get(0).resourceType());
+        Assertions.assertEquals("oiquvrehmrnjhvs", response.location());
+        Assertions.assertEquals("tczytqjtwh", response.tags().get("uunfprnjletlxsm"));
+        Assertions.assertEquals(341362078, response.priority());
+        Assertions.assertEquals("dqmjxly", response.author());
+        Assertions.assertEquals("uwt", response.galleries().get(0).name());
+        Assertions.assertEquals("jjyuojqtobax", response.galleries().get(0).category());
+        Assertions.assertEquals("eytu", response.galleries().get(0).type());
+        Assertions.assertEquals(1073974691, response.galleries().get(0).order());
+        Assertions.assertEquals("jkwrusnkq", response.galleries().get(0).resourceType());
     }
 }

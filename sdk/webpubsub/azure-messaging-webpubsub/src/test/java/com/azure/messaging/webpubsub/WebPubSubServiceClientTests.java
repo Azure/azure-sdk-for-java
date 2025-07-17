@@ -26,10 +26,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,6 +40,10 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.messaging.webpubsub.models.WebPubSubGroupConnection;
 
 public class WebPubSubServiceClientTests extends TestProxyTestBase {
 
@@ -99,7 +106,8 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     @Test
     public void testBroadcastStringWithFilter() {
         assertResponse(client.sendToAllWithResponse(BinaryData.fromString("Hello World - Broadcast test!"),
-            new RequestOptions().setHeader("Content-Type", "text/plain").addQueryParam("filter", "userId ne 'user1'")),
+            new RequestOptions().setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain")
+                .addQueryParam("filter", "userId ne 'user1'")),
             202);
     }
 
@@ -172,7 +180,8 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     @Test
     public void testSendToConnectionStringWithFilter() {
         assertResponse(client.sendToConnectionWithResponse("test_connection", BinaryData.fromString("Hello World!"),
-            new RequestOptions().setHeader("Content-Type", "text/plain").addQueryParam("filter", "userId ne 'user1'")),
+            new RequestOptions().setHeader(HttpHeaderName.CONTENT_TYPE, "text/plain")
+                .addQueryParam("filter", "userId ne 'user1'")),
             202);
     }
 
@@ -187,18 +196,16 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
 
     @Test
     public void testSendToConnectionJson() {
-        assertResponse(
-            client
-                .sendToConnectionWithResponse("test_connection", BinaryData.fromString("{\"data\": true}"),
-                    new RequestOptions()
-                        .addRequestCallback(request -> request.getHeaders().set("Content-Type", "application/json"))),
+        assertResponse(client.sendToConnectionWithResponse("test_connection", BinaryData.fromString("{\"data\": true}"),
+            new RequestOptions().addRequestCallback(
+                request -> request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"))),
             202);
     }
 
     @Test
     public void testSendToAllJson() {
         RequestOptions requestOptions = new RequestOptions()
-            .addRequestCallback(request -> request.getHeaders().set("Content-Type", "application/json"));
+            .addRequestCallback(request -> request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"));
 
         assertResponse(client.sendToAllWithResponse(BinaryData.fromString("{\"boolvalue\": true}"), requestOptions),
             202);
@@ -277,7 +284,7 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     @LiveOnly
     public void testGetSocketIOAuthenticationToken() throws ParseException {
         GetClientAccessTokenOptions options
-            = new GetClientAccessTokenOptions().setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKETIO);
+            = new GetClientAccessTokenOptions().setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKET_IO);
         WebPubSubClientAccessToken token = client.getClientAccessToken(options);
 
         Assertions.assertNotNull(token);
@@ -308,7 +315,7 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
                 .hub(TestUtils.HUB_NAME);
         WebPubSubServiceClient aadClient = aadClientBuilder.buildClient();
         GetClientAccessTokenOptions options
-            = new GetClientAccessTokenOptions().setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKETIO);
+            = new GetClientAccessTokenOptions().setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKET_IO);
         WebPubSubClientAccessToken token = aadClient.getClientAccessToken(options);
 
         Assertions.assertNotNull(token);
@@ -419,4 +426,52 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
                 .getValue();
         Assertions.assertTrue(permission);
     }
+
+    @ParameterizedTest
+    @CsvSource({
+        "6, 6, -1, 6, 1, group1_uniqueA",
+        "6, 3, -1, 3, 1, group1_uniqueB",
+        "6, -1, 2, 6, 3, group1_uniqueC",
+        "6, 5, 2, 5, 3, group1_uniqueD" })
+    public void testListConnectionsInGroup(int totalConnectionCount, int top, int maxPageSize, int expectedTotalCount,
+        int expectedPageCount, String groupName) {
+        WebPubSubClientAccessToken token
+            = client.getClientAccessToken(new GetClientAccessTokenOptions().setGroups(Arrays.asList(groupName)));
+
+        List<WebSocketTestClient> clients = new ArrayList<>();
+        if (getTestMode() != TestMode.PLAYBACK) {
+            for (int i = 0; i < totalConnectionCount; i++) {
+                WebSocketTestClient wsClient = new WebSocketTestClient();
+                wsClient.connect(token.getUrl());
+                clients.add(wsClient);
+            }
+        }
+
+        int actualPageCount = 0;
+        int actualConnectionCount = 0;
+
+        RequestOptions options = new RequestOptions();
+        if (maxPageSize != -1) {
+            options.addQueryParam("maxpagesize", String.valueOf(maxPageSize));
+        }
+        if (top != -1) {
+            options.addQueryParam("top", String.valueOf(top));
+        }
+
+        PagedIterable<WebPubSubGroupConnection> pages = client.listConnectionsInGroup(groupName, options);
+        for (PagedResponse<WebPubSubGroupConnection> page : pages.iterableByPage()) {
+            actualPageCount++;
+            actualConnectionCount += page.getValue().size();
+        }
+
+        assertEquals(expectedPageCount, actualPageCount);
+        assertEquals(expectedTotalCount, actualConnectionCount);
+
+        if (getTestMode() != TestMode.PLAYBACK) {
+            for (WebSocketTestClient client : clients) {
+                client.close();
+            }
+        }
+    }
+
 }

@@ -13,18 +13,18 @@ public final class VolumeUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeUpdateProperties model
-            = BinaryData.fromString("{\"sizeGiB\":9201853601959691706,\"managedBy\":{\"resourceId\":\"vplwzbhv\"}}")
+            = BinaryData.fromString("{\"sizeGiB\":7589899074834096610,\"managedBy\":{\"resourceId\":\"jswztsdbpg\"}}")
                 .toObject(VolumeUpdateProperties.class);
-        Assertions.assertEquals(9201853601959691706L, model.sizeGiB());
-        Assertions.assertEquals("vplwzbhv", model.managedBy().resourceId());
+        Assertions.assertEquals(7589899074834096610L, model.sizeGiB());
+        Assertions.assertEquals("jswztsdbpg", model.managedBy().resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeUpdateProperties model = new VolumeUpdateProperties().withSizeGiB(9201853601959691706L)
-            .withManagedBy(new ManagedByInfo().withResourceId("vplwzbhv"));
+        VolumeUpdateProperties model = new VolumeUpdateProperties().withSizeGiB(7589899074834096610L)
+            .withManagedBy(new ManagedByInfo().withResourceId("jswztsdbpg"));
         model = BinaryData.fromObject(model).toObject(VolumeUpdateProperties.class);
-        Assertions.assertEquals(9201853601959691706L, model.sizeGiB());
-        Assertions.assertEquals("vplwzbhv", model.managedBy().resourceId());
+        Assertions.assertEquals(7589899074834096610L, model.sizeGiB());
+        Assertions.assertEquals("jswztsdbpg", model.managedBy().resourceId());
     }
 }

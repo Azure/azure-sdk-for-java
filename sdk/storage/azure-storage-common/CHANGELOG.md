@@ -1,6 +1,6 @@
 # Release History
 
-## 12.29.0-beta.1 (Unreleased)
+## 12.31.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,59 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.30.0 (2025-07-16)
+
+### Features Added
+- Added support for service version 2025-07-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+
+## 12.31.0-beta.1 (2025-07-09)
+
+### Features Added
+- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
+- Added support for service version 2025-11-05.
+
+## 12.29.1 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
+## 12.30.0-beta.1 (2025-05-06)
+
+### Features Added
+- Added support for service version 2025-07-05.
+
+## 12.29.0 (2025-03-11)
+
+### Features Added
+- Added support for service version 2025-05-05.
+
+### Bugs Fixed
+- Fixed an issue where the tenant ID was not properly extracted from the authorization URI. 
+
+## 12.28.1 (2025-03-03)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-xml` from `1.1.0` to version `1.2.0`.
+- Upgraded `azure-core` from `1.54.0` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` from `1.15.6` to version `1.15.10`.
+
+## 12.29.0-beta.1 (2025-02-11)
+
+### Features Added
+- Added support for service version 2025-05-05.
 
 ## 12.28.0 (2024-11-13)
 

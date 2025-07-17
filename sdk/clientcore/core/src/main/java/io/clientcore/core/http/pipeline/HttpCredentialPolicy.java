@@ -8,13 +8,18 @@ package io.clientcore.core.http.pipeline;
  */
 public abstract class HttpCredentialPolicy implements HttpPipelinePolicy {
     /**
+     * Constant used to confiure authentication metadata in Request Context.
+     */
+    public static final String IO_CLIENTCORE_AUTH_METADATA = "IO_CLIENTCORE_AUTH_METADATA";
+
+    /**
      * Creates an instance of {@link HttpCredentialPolicy}.
      */
     public HttpCredentialPolicy() {
     }
 
     @Override
-    public final HttpPipelineOrder getOrder() {
-        return HttpPipelineOrder.AUTHENTICATION;
+    public final HttpPipelinePosition getPipelinePosition() {
+        return HttpPipelinePosition.AUTHENTICATION;
     }
 }

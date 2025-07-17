@@ -4,17 +4,12 @@
 
 package com.azure.resourcemanager.nginx.generated;
 
-import com.azure.resourcemanager.nginx.models.NginxConfigurationFile;
-import com.azure.resourcemanager.nginx.models.NginxConfigurationPackage;
-import com.azure.resourcemanager.nginx.models.NginxConfigurationProperties;
-import java.util.Arrays;
-
 /**
  * Samples for Configurations CreateOrUpdate.
  */
 public final class ConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/
      * Configurations_CreateOrUpdate.json
      */
     /**
@@ -26,11 +21,6 @@ public final class ConfigurationsCreateOrUpdateSamples {
         manager.configurations()
             .define("default")
             .withExistingNginxDeployment("myResourceGroup", "myDeployment")
-            .withProperties(new NginxConfigurationProperties()
-                .withFiles(Arrays.asList(
-                    new NginxConfigurationFile().withContent("ABCDEF==").withVirtualPath("/etc/nginx/nginx.conf")))
-                .withPackageProperty(new NginxConfigurationPackage())
-                .withRootFile("/etc/nginx/nginx.conf"))
             .create();
     }
 }

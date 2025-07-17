@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.metrics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,11 +23,13 @@ public final class ErrorContract implements JsonSerializable<ErrorContract> {
     /*
      * The error object.
      */
+    @Generated
     private ErrorResponse error;
 
     /**
      * Creates an instance of ErrorContract class.
      */
+    @Generated
     public ErrorContract() {
     }
 
@@ -35,6 +38,7 @@ public final class ErrorContract implements JsonSerializable<ErrorContract> {
      * 
      * @return the error value.
      */
+    @Generated
     public ErrorResponse getError() {
         return this.error;
     }
@@ -45,6 +49,7 @@ public final class ErrorContract implements JsonSerializable<ErrorContract> {
      * @param error the error value to set.
      * @return the ErrorContract object itself.
      */
+    @Generated
     public ErrorContract setError(ErrorResponse error) {
         this.error = error;
         return this;
@@ -53,6 +58,7 @@ public final class ErrorContract implements JsonSerializable<ErrorContract> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -68,6 +74,7 @@ public final class ErrorContract implements JsonSerializable<ErrorContract> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ErrorContract.
      */
+    @Generated
     public static ErrorContract fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ErrorContract deserializedErrorContract = new ErrorContract();

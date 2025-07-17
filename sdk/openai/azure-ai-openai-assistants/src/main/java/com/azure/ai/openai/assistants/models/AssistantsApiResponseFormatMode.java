@@ -19,12 +19,6 @@ public final class AssistantsApiResponseFormatMode extends ExpandableStringEnum<
     public static final AssistantsApiResponseFormatMode AUTO = fromString("auto");
 
     /**
-     * Setting the value to `none`, will result in a 400 Bad request.
-     */
-    @Generated
-    public static final AssistantsApiResponseFormatMode NONE = fromString("none");
-
-    /**
      * Creates a new instance of AssistantsApiResponseFormatMode value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.

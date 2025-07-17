@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.4 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,173 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2025-02-21)
+
+- Azure Resource Manager quota client library for Java. This package contains Microsoft Azure SDK for quota Management SDK. Microsoft Azure Quota Resource Provider. This Swagger is for Azure Group Quota using GroupQuota Entity. Package tag package-2025-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.SubscriptionQuotaAllocationsListProperties` was added
+
+* `models.GroupQuotasEntityBasePatch` was added
+
+* `models.GroupQuotaRequestBase` was added
+
+* `models.SubscriptionQuotaAllocationsProperties` was added
+
+* `models.GroupQuotasEntityBase` was added
+
+* `models.GroupQuotasEntityPatch` was added
+
+* `models.SubscriptionQuotaDetails` was added
+
+* `models.GroupQuotas` was added
+
+* `models.GroupQuotaSubscriptionRequests` was added
+
+* `models.GroupQuotaSubscriptionRequestStatus` was added
+
+* `models.GroupQuotasEntityPatchProperties` was added
+
+* `models.SubscriptionQuotaAllocations` was added
+
+* `models.GroupQuotasEntityProperties` was added
+
+* `models.RequestState` was added
+
+* `models.GroupQuotaLimits` was added
+
+* `models.GroupQuotaLimitProperties` was added
+
+* `models.QuotaAllocationRequestBase` was added
+
+* `models.GroupQuotaSubscriptionIdProperties` was added
+
+* `models.GroupQuotaSubscriptions` was added
+
+* `models.SubscriptionQuotaAllocationsList` was added
+
+* `models.QuotaAllocationRequestStatusList` was added
+
+* `models.GroupQuotaSubscriptionAllocationRequests` was added
+
+* `models.AllocatedQuotaToSubscriptionList` was added
+
+* `models.SubmittedResourceRequestStatusProperties` was added
+
+* `models.SubmittedResourceRequestStatus` was added
+
+* `models.SubmittedResourceRequestStatusList` was added
+
+* `models.GroupQuotaList` was added
+
+* `models.QuotaAllocationRequestStatus` was added
+
+* `models.LroResponseProperties` was added
+
+* `models.LroResponse` was added
+
+* `models.GroupQuotaSubscriptionRequestStatusProperties` was added
+
+* `models.GroupQuotaLimitsRequests` was added
+
+* `models.GroupQuotaLimit` was added
+
+* `models.GroupQuotaLimitList` was added
+
+* `models.GroupQuotaDetails` was added
+
+* `models.GroupQuotaSubscriptionAllocations` was added
+
+* `models.GroupQuotaLimitListProperties` was added
+
+* `models.GroupQuotaSubscriptionRequestStatusList` was added
+
+* `models.GroupQuotaSubscriptionIdList` was added
+
+* `models.AllocatedToSubscription` was added
+
+* `models.GroupQuotasEntity` was added
+
+* `models.GroupQuotaSubscriptionId` was added
+
+#### `models.UsagesLimits` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.UsagesObject` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.QuotaProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ServiceErrorDetail` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `QuotaManager` was modified
+
+* `groupQuotas()` was added
+* `groupQuotaSubscriptions()` was added
+* `groupQuotaSubscriptionAllocationRequests()` was added
+* `groupQuotaSubscriptionRequests()` was added
+* `groupQuotaLimits()` was added
+* `groupQuotaLimitsRequests()` was added
+* `groupQuotaSubscriptionAllocations()` was added
+
+#### `models.ResourceName` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.QuotaLimits` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.QuotaRequestDetailsList` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.OperationDisplay` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.LimitObject` was modified
+
+* `limitObjectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.LimitJsonObject` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `limitObjectType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SubRequest` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.OperationList` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.UsagesProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 ## 1.1.0-beta.3 (2025-01-22)
 

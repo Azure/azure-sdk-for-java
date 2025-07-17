@@ -158,7 +158,9 @@ public final class SqlAlwaysEncryptedProperties implements JsonSerializable<SqlA
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("alwaysEncryptedAkvAuthType",
             this.alwaysEncryptedAkvAuthType == null ? null : this.alwaysEncryptedAkvAuthType.toString());
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
         jsonWriter.writeJsonField("credential", this.credential);
         return jsonWriter.writeEndObject();

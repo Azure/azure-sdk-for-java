@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.Channel;
@@ -16,13 +16,10 @@ import com.azure.resourcemanager.eventgrid.models.ChannelType;
 import com.azure.resourcemanager.eventgrid.models.EventDefinitionKind;
 import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.InlineEventProperties;
-import com.azure.resourcemanager.eventgrid.models.PartnerDestinationInfo;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicInfo;
 import com.azure.resourcemanager.eventgrid.models.ReadinessState;
-import com.azure.resourcemanager.eventgrid.models.ResourceMoveChangeHistory;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -33,59 +30,45 @@ public final class ChannelsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"channelType\":\"PartnerTopic\",\"partnerTopicInfo\":{\"azureSubscriptionId\":\"rdi\",\"resourceGroupName\":\"dw\",\"name\":\"fowxwyovcxjsgbi\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"eksbuhoduchvls\":{},\"rdpibfd\":{},\"jdusspyszekb\":{},\"wlkaaggkrehbfrnu\":{}}},\"source\":\"ff\"},\"partnerDestinationInfo\":{\"endpointType\":\"PartnerDestinationInfo\",\"azureSubscriptionId\":\"iimreoagsqta\",\"resourceGroupName\":\"usrexxf\",\"name\":\"sqwudohzilfmnli\",\"endpointServiceContext\":\"simsfeypofqpmb\",\"resourceMoveChangeHistory\":[{\"azureSubscriptionId\":\"sdrmmttjxophgerh\",\"resourceGroupName\":\"vgohtw\",\"changedTimeUtc\":\"2021-11-04T11:49:52Z\"},{\"azureSubscriptionId\":\"lrixysfnimsq\",\"resourceGroupName\":\"wwmhkruwae\",\"changedTimeUtc\":\"2021-03-09T04:09:25Z\"}]},\"messageForActivation\":\"pmlqoinhzduew\",\"provisioningState\":\"Succeeded\",\"readinessState\":\"Activated\",\"expirationTimeIfNotActivatedUtc\":\"2021-10-19T00:18:47Z\"},\"id\":\"knjdiqfliejhp\",\"name\":\"lbiedfsbw\",\"type\":\"eivbvz\"}";
+            = "{\"properties\":{\"channelType\":\"PartnerTopic\",\"partnerTopicInfo\":{\"azureSubscriptionId\":\"mtuowogtgitsqhzv\",\"resourceGroupName\":\"zcdba\",\"name\":\"zndscxmxeatkdbmw\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"bqbnaomhjrmkuh\":{},\"axljal\":{},\"i\":{}}},\"source\":\"jmobca\"},\"messageForActivation\":\"de\",\"provisioningState\":\"Succeeded\",\"readinessState\":\"Activated\",\"expirationTimeIfNotActivatedUtc\":\"2021-12-08T09:52:24Z\"},\"id\":\"fgvaknokzwj\",\"name\":\"zrltixldzyyf\",\"type\":\"tpq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Channel response = manager.channels()
-            .define("iezeagm")
-            .withExistingPartnerNamespace("wpqrtvaozn", "ni")
-            .withChannelType(ChannelType.PARTNER_TOPIC)
-            .withPartnerTopicInfo(new PartnerTopicInfo().withAzureSubscriptionId("gedhfpjstlzm")
-                .withResourceGroupName("syjdeolctae")
-                .withName("syrled")
-                .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                    .withInlineEventTypes(mapOf("vtqigdxzvsgeafg", new InlineEventProperties())))
-                .withSource("sehxlzsxezp"))
-            .withPartnerDestinationInfo(new PartnerDestinationInfo().withAzureSubscriptionId("waaeskyfjl")
-                .withResourceGroupName("eqtoyrpl")
-                .withName("lajmllp")
-                .withEndpointServiceContext("evhamfowg")
-                .withResourceMoveChangeHistory(
-                    Arrays.asList(new ResourceMoveChangeHistory().withAzureSubscriptionId("kek")
-                        .withResourceGroupName("kzwaqxofq")
-                        .withChangedTimeUtc(OffsetDateTime.parse("2021-12-07T21:46:47Z")))))
-            .withMessageForActivation("iqbplvfidusz")
-            .withProvisioningState(ChannelProvisioningState.DELETING)
-            .withReadinessState(ReadinessState.ACTIVATED)
-            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-06-23T19:55:38Z"))
-            .create();
+        Channel response
+            = manager.channels()
+                .define("dfaifyzyzeyuube")
+                .withExistingPartnerNamespace("gxannnoytzposewx", "gpxvkqmaupxvpi")
+                .withChannelType(ChannelType.PARTNER_TOPIC)
+                .withPartnerTopicInfo(
+                    new PartnerTopicInfo().withAzureSubscriptionId("ytoithgygvfl")
+                        .withResourceGroupName("vdihoynkrx")
+                        .withName("twk")
+                        .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
+                            .withInlineEventTypes(mapOf("cpcunnuzdqum", new InlineEventProperties(), "enodna",
+                                new InlineEventProperties(), "enhqhskndnelq", new InlineEventProperties(), "aadl",
+                                new InlineEventProperties())))
+                        .withSource("wf"))
+                .withMessageForActivation("nniyopetxi")
+                .withProvisioningState(ChannelProvisioningState.CANCELED)
+                .withReadinessState(ReadinessState.ACTIVATED)
+                .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-06-10T00:54:20Z"))
+                .create();
 
         Assertions.assertEquals(ChannelType.PARTNER_TOPIC, response.channelType());
-        Assertions.assertEquals("rdi", response.partnerTopicInfo().azureSubscriptionId());
-        Assertions.assertEquals("dw", response.partnerTopicInfo().resourceGroupName());
-        Assertions.assertEquals("fowxwyovcxjsgbi", response.partnerTopicInfo().name());
+        Assertions.assertEquals("mtuowogtgitsqhzv", response.partnerTopicInfo().azureSubscriptionId());
+        Assertions.assertEquals("zcdba", response.partnerTopicInfo().resourceGroupName());
+        Assertions.assertEquals("zndscxmxeatkdbmw", response.partnerTopicInfo().name());
         Assertions.assertEquals(EventDefinitionKind.INLINE, response.partnerTopicInfo().eventTypeInfo().kind());
-        Assertions.assertEquals("ff", response.partnerTopicInfo().source());
-        Assertions.assertEquals("iimreoagsqta", response.partnerDestinationInfo().azureSubscriptionId());
-        Assertions.assertEquals("usrexxf", response.partnerDestinationInfo().resourceGroupName());
-        Assertions.assertEquals("sqwudohzilfmnli", response.partnerDestinationInfo().name());
-        Assertions.assertEquals("simsfeypofqpmb", response.partnerDestinationInfo().endpointServiceContext());
-        Assertions.assertEquals("sdrmmttjxophgerh",
-            response.partnerDestinationInfo().resourceMoveChangeHistory().get(0).azureSubscriptionId());
-        Assertions.assertEquals("vgohtw",
-            response.partnerDestinationInfo().resourceMoveChangeHistory().get(0).resourceGroupName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T11:49:52Z"),
-            response.partnerDestinationInfo().resourceMoveChangeHistory().get(0).changedTimeUtc());
-        Assertions.assertEquals("pmlqoinhzduew", response.messageForActivation());
+        Assertions.assertEquals("jmobca", response.partnerTopicInfo().source());
+        Assertions.assertEquals("de", response.messageForActivation());
         Assertions.assertEquals(ChannelProvisioningState.SUCCEEDED, response.provisioningState());
         Assertions.assertEquals(ReadinessState.ACTIVATED, response.readinessState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-19T00:18:47Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-08T09:52:24Z"),
             response.expirationTimeIfNotActivatedUtc());
     }
 

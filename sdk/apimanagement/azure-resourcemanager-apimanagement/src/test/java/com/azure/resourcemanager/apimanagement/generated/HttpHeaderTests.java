@@ -12,16 +12,16 @@ public final class HttpHeaderTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HttpHeader model
-            = BinaryData.fromString("{\"name\":\"tibpv\",\"value\":\"kaehxsmzyg\"}").toObject(HttpHeader.class);
-        Assertions.assertEquals("tibpv", model.name());
-        Assertions.assertEquals("kaehxsmzyg", model.value());
+            = BinaryData.fromString("{\"name\":\"ksdwgdnk\",\"value\":\"fgmwd\"}").toObject(HttpHeader.class);
+        Assertions.assertEquals("ksdwgdnk", model.name());
+        Assertions.assertEquals("fgmwd", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpHeader model = new HttpHeader().withName("tibpv").withValue("kaehxsmzyg");
+        HttpHeader model = new HttpHeader().withName("ksdwgdnk").withValue("fgmwd");
         model = BinaryData.fromObject(model).toObject(HttpHeader.class);
-        Assertions.assertEquals("tibpv", model.name());
-        Assertions.assertEquals("kaehxsmzyg", model.value());
+        Assertions.assertEquals("ksdwgdnk", model.name());
+        Assertions.assertEquals("fgmwd", model.value());
     }
 }

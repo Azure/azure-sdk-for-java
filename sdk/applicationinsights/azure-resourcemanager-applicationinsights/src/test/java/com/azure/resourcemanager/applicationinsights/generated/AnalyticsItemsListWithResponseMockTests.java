@@ -6,8 +6,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentAnalyticsItem;
@@ -26,25 +26,25 @@ public final class AnalyticsItemsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "[{\"Id\":\"inwjizcilngh\",\"Name\":\"h\",\"Content\":\"jtbxqmuluxlx\",\"Version\":\"vnersbycucrw\",\"Scope\":\"shared\",\"Type\":\"recent\",\"TimeCreated\":\"ebrqbsmswziqgfuh\",\"TimeModified\":\"zruswh\",\"Properties\":{\"functionAlias\":\"zznvfbyc\"}},{\"Id\":\"xjww\",\"Name\":\"z\",\"Content\":\"mwmxqhndvnoamld\",\"Version\":\"haohdjhhflzokxc\",\"Scope\":\"user\",\"Type\":\"recent\",\"TimeCreated\":\"jetagltsxoatft\",\"TimeModified\":\"pnpbswveflocc\",\"Properties\":{\"functionAlias\":\"ozihmipgawt\"}},{\"Id\":\"pkyjcxcjxgrytfm\",\"Name\":\"ycilrmcaykggnox\",\"Content\":\"t\",\"Version\":\"sxwpndfcpfnznthj\",\"Scope\":\"user\",\"Type\":\"query\",\"TimeCreated\":\"srxuzvoam\",\"TimeModified\":\"cqiosmgbza\",\"Properties\":{\"functionAlias\":\"qdlyrtl\"}},{\"Id\":\"ap\",\"Name\":\"tz\",\"Content\":\"tbhjmznnbsoqe\",\"Version\":\"larvlagunbtg\",\"Scope\":\"shared\",\"Type\":\"none\",\"TimeCreated\":\"bmhyreeudz\",\"TimeModified\":\"vbpdqmjxlyyzglgo\",\"Properties\":{\"functionAlias\":\"lmjjyuo\"}}]";
+            = "[{\"Id\":\"honqjujeickpz\",\"Name\":\"p\",\"Content\":\"mxelnwcltyjed\",\"Version\":\"xm\",\"Scope\":\"shared\",\"Type\":\"recent\",\"TimeCreated\":\"cazuaw\",\"TimeModified\":\"z\",\"Properties\":{\"functionAlias\":\"amwabzxrvxcushsp\"}},{\"Id\":\"ivmxyasfl\",\"Name\":\"sgzwywakoihknsm\",\"Content\":\"lmljhlnymzotq\",\"Version\":\"yuzcbmqqvxmvw\",\"Scope\":\"shared\",\"Type\":\"query\",\"TimeCreated\":\"onsupeujlz\",\"TimeModified\":\"hcvsqltnzoi\",\"Properties\":{\"functionAlias\":\"xgnxfyqonmpqoxwd\"}}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<ApplicationInsightsComponentAnalyticsItem> response = manager.analyticsItems()
-            .listWithResponse("uwc", "b", ItemScopePath.MYANALYTICS_ITEMS, ItemScope.USER, ItemTypeParameter.NONE,
-                false, com.azure.core.util.Context.NONE)
+            .listWithResponse("wjutifdwfmv", "gorqjbttzh", ItemScopePath.MYANALYTICS_ITEMS, ItemScope.SHARED,
+                ItemTypeParameter.QUERY, false, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("inwjizcilngh", response.get(0).id());
-        Assertions.assertEquals("h", response.get(0).name());
-        Assertions.assertEquals("jtbxqmuluxlx", response.get(0).content());
+        Assertions.assertEquals("honqjujeickpz", response.get(0).id());
+        Assertions.assertEquals("p", response.get(0).name());
+        Assertions.assertEquals("mxelnwcltyjed", response.get(0).content());
         Assertions.assertEquals(ItemScope.SHARED, response.get(0).scope());
         Assertions.assertEquals(ItemType.RECENT, response.get(0).type());
-        Assertions.assertEquals("zznvfbyc", response.get(0).properties().functionAlias());
+        Assertions.assertEquals("amwabzxrvxcushsp", response.get(0).properties().functionAlias());
     }
 }

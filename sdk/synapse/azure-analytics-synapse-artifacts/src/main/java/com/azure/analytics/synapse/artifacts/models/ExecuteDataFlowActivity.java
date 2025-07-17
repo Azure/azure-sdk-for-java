@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,55 +22,71 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "ExecuteDataFlow";
 
     /*
      * Data flow reference.
      */
+    @Generated
     private DataFlowReference dataflow;
 
     /*
      * Staging info for execute data flow activity.
      */
+    @Generated
     private DataFlowStagingInfo staging;
 
     /*
      * The integration runtime reference.
      */
+    @Generated
     private IntegrationRuntimeReference integrationRuntime;
+
+    /*
+     * Continuation settings for execute data flow activity.
+     */
+    @Generated
+    private ContinuationSettingsReference continuationSettings;
 
     /*
      * Compute properties for data flow activity.
      */
+    @Generated
     private ExecuteDataFlowActivityTypePropertiesCompute compute;
 
     /*
      * Trace level setting used for data flow monitoring output. Supported values are: 'coarse', 'fine', and 'none'.
      * Type: string (or Expression with resultType string)
      */
+    @Generated
     private Object traceLevel;
 
     /*
      * Continue on error setting used for data flow execution. Enables processing to continue if a sink fails. Type:
      * boolean (or Expression with resultType boolean)
      */
+    @Generated
     private Object continueOnError;
 
     /*
      * Concurrent run setting used for data flow execution. Allows sinks with the same save order to be processed
      * concurrently. Type: boolean (or Expression with resultType boolean)
      */
+    @Generated
     private Object runConcurrently;
 
     /*
      * Specify number of parallel staging for sources applicable to the sink. Type: integer (or Expression with
      * resultType integer)
      */
+    @Generated
     private Object sourceStagingConcurrency;
 
     /**
      * Creates an instance of ExecuteDataFlowActivity class.
      */
+    @Generated
     public ExecuteDataFlowActivity() {
     }
 
@@ -78,6 +95,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -88,6 +106,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * 
      * @return the dataflow value.
      */
+    @Generated
     public DataFlowReference getDataflow() {
         return this.dataflow;
     }
@@ -98,6 +117,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * @param dataflow the dataflow value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
+    @Generated
     public ExecuteDataFlowActivity setDataflow(DataFlowReference dataflow) {
         this.dataflow = dataflow;
         return this;
@@ -108,6 +128,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * 
      * @return the staging value.
      */
+    @Generated
     public DataFlowStagingInfo getStaging() {
         return this.staging;
     }
@@ -118,6 +139,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * @param staging the staging value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
+    @Generated
     public ExecuteDataFlowActivity setStaging(DataFlowStagingInfo staging) {
         this.staging = staging;
         return this;
@@ -128,6 +150,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * 
      * @return the integrationRuntime value.
      */
+    @Generated
     public IntegrationRuntimeReference getIntegrationRuntime() {
         return this.integrationRuntime;
     }
@@ -138,8 +161,31 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * @param integrationRuntime the integrationRuntime value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
+    @Generated
     public ExecuteDataFlowActivity setIntegrationRuntime(IntegrationRuntimeReference integrationRuntime) {
         this.integrationRuntime = integrationRuntime;
+        return this;
+    }
+
+    /**
+     * Get the continuationSettings property: Continuation settings for execute data flow activity.
+     * 
+     * @return the continuationSettings value.
+     */
+    @Generated
+    public ContinuationSettingsReference getContinuationSettings() {
+        return this.continuationSettings;
+    }
+
+    /**
+     * Set the continuationSettings property: Continuation settings for execute data flow activity.
+     * 
+     * @param continuationSettings the continuationSettings value to set.
+     * @return the ExecuteDataFlowActivity object itself.
+     */
+    @Generated
+    public ExecuteDataFlowActivity setContinuationSettings(ContinuationSettingsReference continuationSettings) {
+        this.continuationSettings = continuationSettings;
         return this;
     }
 
@@ -148,6 +194,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * 
      * @return the compute value.
      */
+    @Generated
     public ExecuteDataFlowActivityTypePropertiesCompute getCompute() {
         return this.compute;
     }
@@ -158,6 +205,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * @param compute the compute value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
+    @Generated
     public ExecuteDataFlowActivity setCompute(ExecuteDataFlowActivityTypePropertiesCompute compute) {
         this.compute = compute;
         return this;
@@ -169,6 +217,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * 
      * @return the traceLevel value.
      */
+    @Generated
     public Object getTraceLevel() {
         return this.traceLevel;
     }
@@ -180,6 +229,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * @param traceLevel the traceLevel value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
+    @Generated
     public ExecuteDataFlowActivity setTraceLevel(Object traceLevel) {
         this.traceLevel = traceLevel;
         return this;
@@ -191,6 +241,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * 
      * @return the continueOnError value.
      */
+    @Generated
     public Object getContinueOnError() {
         return this.continueOnError;
     }
@@ -202,6 +253,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * @param continueOnError the continueOnError value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
+    @Generated
     public ExecuteDataFlowActivity setContinueOnError(Object continueOnError) {
         this.continueOnError = continueOnError;
         return this;
@@ -213,6 +265,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * 
      * @return the runConcurrently value.
      */
+    @Generated
     public Object getRunConcurrently() {
         return this.runConcurrently;
     }
@@ -224,6 +277,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * @param runConcurrently the runConcurrently value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
+    @Generated
     public ExecuteDataFlowActivity setRunConcurrently(Object runConcurrently) {
         this.runConcurrently = runConcurrently;
         return this;
@@ -235,6 +289,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * 
      * @return the sourceStagingConcurrency value.
      */
+    @Generated
     public Object getSourceStagingConcurrency() {
         return this.sourceStagingConcurrency;
     }
@@ -246,6 +301,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * @param sourceStagingConcurrency the sourceStagingConcurrency value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
+    @Generated
     public ExecuteDataFlowActivity setSourceStagingConcurrency(Object sourceStagingConcurrency) {
         this.sourceStagingConcurrency = sourceStagingConcurrency;
         return this;
@@ -254,6 +310,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecuteDataFlowActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -263,6 +320,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecuteDataFlowActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -272,6 +330,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecuteDataFlowActivity setName(String name) {
         super.setName(name);
@@ -281,6 +340,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecuteDataFlowActivity setDescription(String description) {
         super.setDescription(description);
@@ -290,6 +350,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecuteDataFlowActivity setState(ActivityState state) {
         super.setState(state);
@@ -299,6 +360,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecuteDataFlowActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -308,6 +370,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecuteDataFlowActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -317,6 +380,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExecuteDataFlowActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -326,6 +390,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -343,6 +408,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
         if (dataflow != null
             || staging != null
             || integrationRuntime != null
+            || continuationSettings != null
             || compute != null
             || traceLevel != null
             || continueOnError != null
@@ -352,11 +418,20 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
             jsonWriter.writeJsonField("dataflow", this.dataflow);
             jsonWriter.writeJsonField("staging", this.staging);
             jsonWriter.writeJsonField("integrationRuntime", this.integrationRuntime);
+            jsonWriter.writeJsonField("continuationSettings", this.continuationSettings);
             jsonWriter.writeJsonField("compute", this.compute);
-            jsonWriter.writeUntypedField("traceLevel", this.traceLevel);
-            jsonWriter.writeUntypedField("continueOnError", this.continueOnError);
-            jsonWriter.writeUntypedField("runConcurrently", this.runConcurrently);
-            jsonWriter.writeUntypedField("sourceStagingConcurrency", this.sourceStagingConcurrency);
+            if (this.traceLevel != null) {
+                jsonWriter.writeUntypedField("traceLevel", this.traceLevel);
+            }
+            if (this.continueOnError != null) {
+                jsonWriter.writeUntypedField("continueOnError", this.continueOnError);
+            }
+            if (this.runConcurrently != null) {
+                jsonWriter.writeUntypedField("runConcurrently", this.runConcurrently);
+            }
+            if (this.sourceStagingConcurrency != null) {
+                jsonWriter.writeUntypedField("sourceStagingConcurrency", this.sourceStagingConcurrency);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -376,6 +451,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ExecuteDataFlowActivity.
      */
+    @Generated
     public static ExecuteDataFlowActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ExecuteDataFlowActivity deserializedExecuteDataFlowActivity = new ExecuteDataFlowActivity();
@@ -418,6 +494,9 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
                         } else if ("integrationRuntime".equals(fieldName)) {
                             deserializedExecuteDataFlowActivity.integrationRuntime
                                 = IntegrationRuntimeReference.fromJson(reader);
+                        } else if ("continuationSettings".equals(fieldName)) {
+                            deserializedExecuteDataFlowActivity.continuationSettings
+                                = ContinuationSettingsReference.fromJson(reader);
                         } else if ("compute".equals(fieldName)) {
                             deserializedExecuteDataFlowActivity.compute
                                 = ExecuteDataFlowActivityTypePropertiesCompute.fromJson(reader);

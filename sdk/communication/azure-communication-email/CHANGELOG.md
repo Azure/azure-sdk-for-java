@@ -1,14 +1,41 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.2.0-beta.1 (2025-07-16)
 
 ### Features Added
 
-### Breaking Changes
+- Added `beginSend(String operationId)` method to `EmailClient` and `EmailAsyncClient` to create a poller from an existing operation ID. This allows customers to check the status of a previously started email send operation.
 
-### Bugs Fixed
+## 1.0.22 (2025-06-19)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.10` to version `1.4.0`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
+## 1.0.21 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.9` to version `1.3.10`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+
+
+## 1.0.20 (2025-03-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.8` to version `1.3.9`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
 
 
 ## 1.0.19 (2024-12-04)
@@ -63,6 +90,7 @@
 
 ## 1.0.15 (2024-07-26)
 
+### Other Changes
 
 #### Dependency Updates
 
@@ -77,7 +105,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-communication-common` from `1.3.3` to version `1.3.4`.
+- Upgraded `azure-communication-common` from `1.3.2` to version `1.3.3`.
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
 - Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
 
@@ -90,7 +118,7 @@
 
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 - Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
-- Upgraded `azure-communication-common` from `1.3.2` to version `1.3.3`.
+- Upgraded `azure-communication-common` from `1.3.1` to version `1.3.2`.
 
 
 ## 1.0.12 (2024-04-23)

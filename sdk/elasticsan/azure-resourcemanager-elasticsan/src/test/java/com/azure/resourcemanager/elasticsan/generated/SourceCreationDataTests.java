@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class SourceCreationDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SourceCreationData model = BinaryData.fromString("{\"createSource\":\"None\",\"sourceId\":\"ancuxrhd\"}")
+        SourceCreationData model = BinaryData.fromString("{\"createSource\":\"None\",\"sourceId\":\"lfktsths\"}")
             .toObject(SourceCreationData.class);
         Assertions.assertEquals(VolumeCreateOption.NONE, model.createSource());
-        Assertions.assertEquals("ancuxrhd", model.sourceId());
+        Assertions.assertEquals("lfktsths", model.sourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SourceCreationData model
-            = new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceId("ancuxrhd");
+            = new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceId("lfktsths");
         model = BinaryData.fromObject(model).toObject(SourceCreationData.class);
         Assertions.assertEquals(VolumeCreateOption.NONE, model.createSource());
-        Assertions.assertEquals("ancuxrhd", model.sourceId());
+        Assertions.assertEquals("lfktsths", model.sourceId());
     }
 }

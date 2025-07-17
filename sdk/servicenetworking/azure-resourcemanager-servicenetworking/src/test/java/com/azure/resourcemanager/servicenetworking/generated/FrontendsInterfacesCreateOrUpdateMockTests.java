@@ -6,12 +6,15 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.Frontend;
 import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
+import com.azure.resourcemanager.servicenetworking.models.IpAccessRulesSecurityPolicy;
+import com.azure.resourcemanager.servicenetworking.models.SecurityPolicyConfigurations;
+import com.azure.resourcemanager.servicenetworking.models.WafSecurityPolicy;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -24,25 +27,30 @@ public final class FrontendsInterfacesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"fqdn\":\"iwdjswztsdbpgn\",\"provisioningState\":\"Succeeded\"},\"location\":\"hpzxbzpfzab\",\"tags\":{\"lwzbhvgyugu\":\"uhxwtctyqiklbbov\"},\"id\":\"svmkfssxquk\",\"name\":\"fpl\",\"type\":\"mg\"}";
+            = "{\"properties\":{\"fqdn\":\"alaexqpvfadmwsrc\",\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"xpvgo\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"lf\"}},\"provisioningState\":\"Succeeded\"},\"location\":\"wbnb\",\"tags\":{\"urqhaka\":\"dawkzbali\",\"xcug\":\"hashsfwxosow\",\"ovbvmeueciv\":\"cjooxdjebwpucwwf\",\"otwmcdyt\":\"hzceuojgjrwjue\"},\"id\":\"x\",\"name\":\"it\",\"type\":\"nrjawgqwg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         TrafficControllerManager manager = TrafficControllerManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Frontend response = manager.frontendsInterfaces()
-            .define("axdbabph")
-            .withRegion("mnyyazt")
-            .withExistingTrafficController("xywnytnrsynlqidy", "yxczfclh")
-            .withTags(mapOf("uedck", "wwrq", "bxu", "ywbiexzfeyueax"))
-            .withProperties(new FrontendProperties())
+            .define("qj")
+            .withRegion("afkuwb")
+            .withExistingTrafficController("udxytlmoyrx", "wfudwpzntxhdzhl")
+            .withTags(mapOf("hseyvju", "wbme", "hspkdeemao", "rts"))
+            .withProperties(new FrontendProperties().withSecurityPolicyConfigurations(
+                new SecurityPolicyConfigurations().withWafSecurityPolicy(new WafSecurityPolicy().withId("ca"))
+                    .withIpAccessRulesSecurityPolicy(new IpAccessRulesSecurityPolicy().withId("z"))))
             .create();
 
-        Assertions.assertEquals("hpzxbzpfzab", response.location());
-        Assertions.assertEquals("uhxwtctyqiklbbov", response.tags().get("lwzbhvgyugu"));
+        Assertions.assertEquals("wbnb", response.location());
+        Assertions.assertEquals("dawkzbali", response.tags().get("urqhaka"));
+        Assertions.assertEquals("xpvgo", response.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
+        Assertions.assertEquals("lf",
+            response.properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 
     // Use "Map.of" if available

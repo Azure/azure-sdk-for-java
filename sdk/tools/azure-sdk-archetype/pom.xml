@@ -177,7 +177,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
             <dependencies>
               <dependency>
                 <groupId>com.azure</groupId>
@@ -211,7 +211,7 @@
               <dependency>
                 <groupId>org.ow2.asm</groupId>
                 <artifactId>asm</artifactId>
-                <version>9.7</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+                <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
               </dependency>
             </dependencies>
             <configuration>
@@ -228,7 +228,7 @@
           <plugin>
             <groupId>org.revapi</groupId>
             <artifactId>revapi-maven-plugin</artifactId>
-            <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+            <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
             <configuration>
               <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
               <analysisConfigurationFiles>
@@ -265,12 +265,12 @@
               <dependency>
                 <groupId>org.revapi</groupId>
                 <artifactId>revapi-java</artifactId>
-                <version>0.26.1</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+                <version>0.28.3</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
               </dependency>
               <dependency>
                 <groupId>org.revapi</groupId>
                 <artifactId>revapi-reporter-json</artifactId>
-                <version>0.4.5</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
+                <version>0.5.1</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
               </dependency>
             </dependencies>
           </plugin>

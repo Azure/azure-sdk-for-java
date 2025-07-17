@@ -11,8 +11,8 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.resources.ResourceManager;
@@ -32,7 +32,7 @@ public class AzureConfigurableTests {
         ResourceManager resourceManager = ResourceManager.configure()
             .withRetryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
             .withHttpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE))
+            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD))
             .withSubscription(Mockito.anyString());
 
         HttpPipeline httpPipeline = resourceManager.genericResources().manager().httpPipeline();
@@ -41,7 +41,7 @@ public class AzureConfigurableTests {
         // Default is RetryPolicy with ExponentialBackoff
         resourceManager = ResourceManager.configure()
             .withHttpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE))
+            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD))
             .withSubscription(Mockito.anyString());
 
         httpPipeline = resourceManager.genericResources().manager().httpPipeline();
@@ -49,7 +49,7 @@ public class AzureConfigurableTests {
 
         resourceManager = ResourceManager.configure()
             .withHttpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE))
+            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD))
             .withSubscription(Mockito.anyString());
 
         httpPipeline = resourceManager.genericResources().manager().httpPipeline();

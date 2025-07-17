@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-pineconevectordb</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-pineconevectordb;current} -->
+  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-pineconevectordb;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Pinecone Vector Db Management</name>
@@ -46,29 +46,28 @@
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
     <revapi.skip>true</revapi.skip>
-    <spotless.skip>false</spotless.skip>
   </properties>
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.55.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.55.5</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+      <version>1.18.1</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.5</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.10</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.15.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

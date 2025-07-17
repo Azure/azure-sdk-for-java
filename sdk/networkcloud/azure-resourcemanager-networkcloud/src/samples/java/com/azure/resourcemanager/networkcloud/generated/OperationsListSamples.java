@@ -10,8 +10,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
-     * Operations_List.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/Operations_List.
+     * json
      */
     /**
      * Sample code: List resource provider operations.

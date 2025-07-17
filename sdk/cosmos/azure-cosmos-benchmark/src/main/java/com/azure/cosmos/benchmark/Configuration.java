@@ -11,6 +11,7 @@ import com.beust.jcommander.ParameterException;
 import com.google.common.base.Strings;
 import com.google.common.net.HostAndPort;
 import com.google.common.net.PercentEscaper;
+import com.microsoft.applicationinsights.TelemetryConfiguration;
 import io.micrometer.azuremonitor.AzureMonitorConfig;
 import io.micrometer.azuremonitor.AzureMonitorMeterRegistry;
 import io.micrometer.core.instrument.Clock;
@@ -31,6 +32,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 public class Configuration {
     public static final String SUCCESS_COUNTER_METER_NAME = "#Successful Operations";
@@ -146,6 +148,12 @@ public class Configuration {
     @Parameter(names = "isPartitionLevelCircuitBreakerEnabled", description = "A flag to denote whether partition level circuit breaker is enabled.")
     private String isPartitionLevelCircuitBreakerEnabled = String.valueOf(true);
 
+    @Parameter(names = "-isManagedIdentityRequired", description = "A flag to denote whether benchmark-specific CosmosClient instance should use Managed Identity to authenticate.")
+    private String isManagedIdentityRequired = String.valueOf(false);
+
+    @Parameter(names = "-isPerPartitionAutomaticFailoverRequired", description = "A flag to denote whether per-partition automatic failover is required.")
+    private String isPerPartitionAutomaticFailoverRequired = String.valueOf(true);
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -178,6 +186,14 @@ public class Configuration {
 
     @Parameter(names = "-numberOfOperations", description = "Total NUMBER Of Documents To Insert")
     private int numberOfOperations = 100000;
+
+    public Boolean isManagedIdentityRequired() {
+        return Boolean.parseBoolean(this.isManagedIdentityRequired);
+    }
+
+    public Boolean isPerPartitionAutomaticFailoverRequired() {
+        return Boolean.parseBoolean(this.isPerPartitionAutomaticFailoverRequired);
+    }
 
     static class DurationConverter implements IStringConverter<Duration> {
         @Override
@@ -228,15 +244,6 @@ public class Configuration {
 
     @Parameter(names = "-accountNameInGraphiteReporter", description = "if set, account name with be appended in graphite reporter")
     private boolean accountNameInGraphiteReporter = false;
-
-    @Parameter(names = "-clientTelemetryEnabled", description = "Switch to enable client telemetry")
-    private String clientTelemetryEnabled = String.valueOf(false);
-
-    @Parameter(names = "-clientTelemetrySchedulingInSeconds", description = "Client telemetry scheduling intervals in seconds")
-    private int clientTelemetrySchedulingInSeconds = 10 * 60;
-
-    @Parameter(names = "-clientTelemetryEndpoint", description = "Client Telemetry Juno endpoint")
-    private String clientTelemetryEndpoint;
 
     @Parameter(names = "-pointLatencyThresholdMs", description = "Latency threshold for point operations")
     private int pointLatencyThresholdMs = -1;
@@ -490,7 +497,12 @@ public class Configuration {
         String instrumentationKey = System.getProperty("azure.cosmos.monitoring.azureMonitor.instrumentationKey",
             StringUtils.defaultString(Strings.emptyToNull(
                 System.getenv().get("AZURE_INSTRUMENTATION_KEY")), null));
-        return instrumentationKey == null ? null : this.azureMonitorMeterRegistry(instrumentationKey);
+        String connectionString = System.getProperty("applicationinsights.connection.string",
+            StringUtils.defaultString(Strings.emptyToNull(
+                System.getenv().get("APPLICATIONINSIGHTS_CONNECTION_STRING")), null));
+        return instrumentationKey == null && connectionString == null
+            ? null
+            : this.azureMonitorMeterRegistry(connectionString, instrumentationKey);
     }
 
     public MeterRegistry getGraphiteMeterRegistry() {
@@ -588,20 +600,8 @@ public class Configuration {
         return encryptionEnabled;
     }
 
-    public boolean isClientTelemetryEnabled() {
-        return Boolean.parseBoolean(clientTelemetryEnabled);
-    }
-
     public boolean isDefaultLog4jLoggerEnabled() {
         return Boolean.parseBoolean(defaultLog4jLoggerEnabled);
-    }
-
-    public String getClientTelemetryEndpoint() {
-        return clientTelemetryEndpoint;
-    }
-
-    public int getClientTelemetrySchedulingInSeconds() {
-        return clientTelemetrySchedulingInSeconds;
     }
 
     public Integer getTupleSize() {
@@ -738,7 +738,7 @@ public class Configuration {
             "COSMOS_RESULT_UPLOAD_CONTAINER")), resultUploadContainer);
     }
 
-    private synchronized MeterRegistry azureMonitorMeterRegistry(String instrumentationKey) {
+    private synchronized MeterRegistry azureMonitorMeterRegistry(String connectionString, String instrumentationKey) {
 
         if (this.azureMonitorMeterRegistry == null) {
 
@@ -757,8 +757,12 @@ public class Configuration {
                 @Override
                 @Nullable
                 public String instrumentationKey() {
-                    return instrumentationKey;
+                    return connectionString != null ? null : instrumentationKey;
                 }
+
+                @Override
+                public String connectionString() { return connectionString; }
+
 
                 @Override
                 public Duration step() {
@@ -771,12 +775,23 @@ public class Configuration {
                 }
             };
 
-            this.azureMonitorMeterRegistry = new AzureMonitorMeterRegistry(config, Clock.SYSTEM);
-            if (!Strings.isNullOrEmpty(testCategoryTag)) {
-                List<Tag> globalTags = new ArrayList<>();
-                globalTags.add(Tag.of("TestCategory", testCategoryTag));
-                this.azureMonitorMeterRegistry.config().commonTags(globalTags);
+            String roleName = System.getenv("APPLICATIONINSIGHTS_ROLE_NAME");
+            if (roleName != null) {
+                TelemetryConfiguration.getActive().setRoleName(roleName);
             }
+
+            this.azureMonitorMeterRegistry = new AzureMonitorMeterRegistry(config, Clock.SYSTEM);
+            List<Tag> globalTags = new ArrayList<>();
+            if (!Strings.isNullOrEmpty(testCategoryTag)) {
+                globalTags.add(Tag.of("TestCategory", testCategoryTag));
+            }
+
+            String roleInstance = System.getenv("APPLICATIONINSIGHTS_ROLE_INSTANCE");
+            if (roleName != null) {
+                globalTags.add(Tag.of("cloud_RoleInstance", roleInstance));
+            }
+
+            this.azureMonitorMeterRegistry.config().commonTags(globalTags);
         }
 
         return this.azureMonitorMeterRegistry;
@@ -850,5 +865,56 @@ public class Configuration {
         }
 
         return this.graphiteMeterRegistry;
+    }
+
+    public static String getAadLoginUri() {
+        return getOptionalConfigProperty(
+                "AAD_LOGIN_ENDPOINT",
+                "https://login.microsoftonline.com/",
+                v -> v);
+    }
+
+    public static String getAadManagedIdentityId() {
+        return getOptionalConfigProperty("AAD_MANAGED_IDENTITY_ID", null, v -> v);
+    }
+
+    public static String getAadTenantId() {
+        return getOptionalConfigProperty("AAD_TENANT_ID", null, v -> v);
+    }
+
+    private static <T> T getOptionalConfigProperty(String name, T defaultValue, Function<String, T> conversion) {
+        String textValue = getConfigPropertyOrNull(name);
+
+        if (textValue == null) {
+            return defaultValue;
+        }
+
+        T returnValue = conversion.apply(textValue);
+        return returnValue != null ? returnValue : defaultValue;
+    }
+
+    private static String getConfigPropertyOrNull(String name) {
+        String systemPropertyName = "COSMOS." + name;
+        String environmentVariableName = "COSMOS_" + name;
+        String fromSystemProperty = emptyToNull(System.getProperty(systemPropertyName));
+        if (fromSystemProperty != null) {
+            return fromSystemProperty;
+        }
+
+        return emptyToNull(System.getenv().get(environmentVariableName));
+    }
+
+    /**
+     * Returns the given string if it is nonempty; {@code null} otherwise.
+     *
+     * @param string the string to test and possibly return
+     * @return {@code string} itself if it is nonempty; {@code null} if it is empty or null
+     */
+    private static String emptyToNull(String string) {
+        if (string == null || string.isEmpty()) {
+            return null;
+        }
+
+        return string;
     }
 }

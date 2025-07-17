@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ContainerAppsSessionPoolsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/SessionPools_Delete.json
+     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/SessionPools_Delete.json
      */
     /**
      * Sample code: Delete Session Pool.

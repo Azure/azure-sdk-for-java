@@ -109,7 +109,7 @@ public final class ApisClientImpl implements ApisClient {
 
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}")
-        @ExpectedResponses({ 200, 201, 202 })
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
@@ -131,9 +131,9 @@ public final class ApisClientImpl implements ApisClient {
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}")
-        @ExpectedResponses({ 200, 204 })
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
             @PathParam("apiId") String apiId, @QueryParam("deleteRevisions") Boolean deleteRevisions,
             @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
@@ -1160,8 +1160,8 @@ public final class ApisClientImpl implements ApisClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String apiId,
-        String ifMatch, Boolean deleteRevisions) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String apiId, String ifMatch, Boolean deleteRevisions) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1208,8 +1208,8 @@ public final class ApisClientImpl implements ApisClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String apiId,
-        String ifMatch, Boolean deleteRevisions, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String apiId, String ifMatch, Boolean deleteRevisions, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1246,16 +1246,43 @@ public final class ApisClientImpl implements ApisClient {
      * revision has ;rev=n as a suffix where n is the revision number.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      * request or it should be * for unconditional update.
+     * @param deleteRevisions Delete all revisions of the Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String apiId, String ifMatch) {
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String apiId, String ifMatch, Boolean deleteRevisions) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Deletes the specified API of the API Management service instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     * revision has ;rev=n as a suffix where n is the revision number.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String apiId, String ifMatch) {
         final Boolean deleteRevisions = null;
-        return deleteWithResponseAsync(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions)
-            .flatMap(ignored -> Mono.empty());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1272,13 +1299,126 @@ public final class ApisClientImpl implements ApisClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String apiId, String ifMatch, Boolean deleteRevisions, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Deletes the specified API of the API Management service instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     * revision has ;rev=n as a suffix where n is the revision number.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String apiId,
+        String ifMatch) {
+        final Boolean deleteRevisions = null;
+        return this.beginDeleteAsync(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified API of the API Management service instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     * revision has ;rev=n as a suffix where n is the revision number.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
+     * @param deleteRevisions Delete all revisions of the Api.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String apiId,
+        String ifMatch, Boolean deleteRevisions, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified API of the API Management service instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     * revision has ;rev=n as a suffix where n is the revision number.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
+     * @param deleteRevisions Delete all revisions of the Api.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String ifMatch,
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String apiId, String ifMatch,
+        Boolean deleteRevisions) {
+        return beginDeleteAsync(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes the specified API of the API Management service instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     * revision has ;rev=n as a suffix where n is the revision number.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String apiId, String ifMatch) {
+        final Boolean deleteRevisions = null;
+        return beginDeleteAsync(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes the specified API of the API Management service instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     * revision has ;rev=n as a suffix where n is the revision number.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
+     * @param deleteRevisions Delete all revisions of the Api.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String apiId, String ifMatch,
         Boolean deleteRevisions, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions, context)
-            .block();
+        return beginDeleteAsync(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1297,7 +1437,28 @@ public final class ApisClientImpl implements ApisClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serviceName, String apiId, String ifMatch) {
         final Boolean deleteRevisions = null;
-        deleteWithResponse(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions, Context.NONE);
+        deleteAsync(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions).block();
+    }
+
+    /**
+     * Deletes the specified API of the API Management service instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     * revision has ;rev=n as a suffix where n is the revision number.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
+     * @param deleteRevisions Delete all revisions of the Api.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String serviceName, String apiId, String ifMatch,
+        Boolean deleteRevisions, Context context) {
+        deleteAsync(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions, context).block();
     }
 
     /**

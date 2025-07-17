@@ -835,6 +835,8 @@ public final class SpanDataMapper {
         String message = attributes.get(SemanticAttributes.EXCEPTION_MESSAGE);
         if (message != null && !message.isEmpty()) {
             builder.setMessage(message);
+        } else {
+            builder.setMessage(type); // Breeze rejects exceptions without a message
         }
         builder.setStack(stack);
         telemetryBuilder.setExceptions(singletonList(builder));

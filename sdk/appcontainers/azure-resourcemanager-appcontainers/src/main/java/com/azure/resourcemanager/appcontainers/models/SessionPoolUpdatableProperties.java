@@ -12,12 +12,24 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.fluent.models.SessionPoolUpdatablePropertiesProperties;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Container App session pool updatable properties.
  */
 @Fluent
 public final class SessionPoolUpdatableProperties implements JsonSerializable<SessionPoolUpdatableProperties> {
+    /*
+     * Resource tags.
+     */
+    private Map<String, String> tags;
+
+    /*
+     * Managed identities needed by a session pool to interact with other Azure services to not maintain any secrets or
+     * credentials in code.
+     */
+    private ManagedServiceIdentity identity;
+
     /*
      * Session pool resource specific updatable properties.
      */
@@ -27,6 +39,48 @@ public final class SessionPoolUpdatableProperties implements JsonSerializable<Se
      * Creates an instance of SessionPoolUpdatableProperties class.
      */
     public SessionPoolUpdatableProperties() {
+    }
+
+    /**
+     * Get the tags property: Resource tags.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Resource tags.
+     * 
+     * @param tags the tags value to set.
+     * @return the SessionPoolUpdatableProperties object itself.
+     */
+    public SessionPoolUpdatableProperties withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Managed identities needed by a session pool to interact with other Azure services to
+     * not maintain any secrets or credentials in code.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed identities needed by a session pool to interact with other Azure services to
+     * not maintain any secrets or credentials in code.
+     * 
+     * @param identity the identity value to set.
+     * @return the SessionPoolUpdatableProperties object itself.
+     */
+    public SessionPoolUpdatableProperties withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -163,6 +217,9 @@ public final class SessionPoolUpdatableProperties implements JsonSerializable<Se
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }
@@ -174,6 +231,8 @@ public final class SessionPoolUpdatableProperties implements JsonSerializable<Se
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -194,7 +253,12 @@ public final class SessionPoolUpdatableProperties implements JsonSerializable<Se
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("properties".equals(fieldName)) {
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSessionPoolUpdatableProperties.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedSessionPoolUpdatableProperties.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
                     deserializedSessionPoolUpdatableProperties.innerProperties
                         = SessionPoolUpdatablePropertiesProperties.fromJson(reader);
                 } else {

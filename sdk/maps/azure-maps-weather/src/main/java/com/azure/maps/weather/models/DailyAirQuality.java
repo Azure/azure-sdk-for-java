@@ -4,6 +4,8 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,41 +23,51 @@ public final class DailyAirQuality implements JsonSerializable<DailyAirQuality> 
     /*
      * Date and time of the current observation displayed in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00.
      */
+    @Generated
     private OffsetDateTime timestamp;
 
     /*
-     * Air quality rating on a scale set by local regulating bodies. Scales can vary widely based on location. See [Wikipedia](https://en.wikipedia.org/wiki/Air_quality_index) for more information.
+     * Air quality rating on a scale set by local regulating bodies. Scales can vary widely based on location. See
+     * [Wikipedia](https://en.wikipedia.org/wiki/Air_quality_index) for more information.
      */
+    @Generated
     private Float index;
 
     /*
-     * Internationally normalized air quality rating on a scale from 0 to 300 and up, with higher numbers representing worse air quality.
+     * Internationally normalized air quality rating on a scale from 0 to 300 and up, with higher numbers representing
+     * worse air quality.
      */
+    @Generated
     private Float globalIndex;
 
     /*
      * The pollutant with the highest concentration.
      */
+    @Generated
     private DominantPollutant dominantPollutant;
 
     /*
      * One-word description of the air quality in the requested language. For example, "Excellent".
      */
+    @Generated
     private String category;
 
     /*
      * A unique color corresponding to the category of this air quality result.
      */
+    @Generated
     private String categoryColor;
 
     /*
      * A textual explanation of this air quality result in the requested language.
      */
+    @Generated
     private String description;
 
     /**
      * Set default DailyAirQuality constructor to private
      */
+    @Generated
     private DailyAirQuality() {
     }
 
@@ -65,6 +77,7 @@ public final class DailyAirQuality implements JsonSerializable<DailyAirQuality> 
      *
      * @return the timestamp value.
      */
+    @Generated
     public OffsetDateTime getTimestamp() {
         return this.timestamp;
     }
@@ -75,6 +88,7 @@ public final class DailyAirQuality implements JsonSerializable<DailyAirQuality> 
      *
      * @return the index value.
      */
+    @Generated
     public Float getIndex() {
         return this.index;
     }
@@ -85,6 +99,7 @@ public final class DailyAirQuality implements JsonSerializable<DailyAirQuality> 
      *
      * @return the globalIndex value.
      */
+    @Generated
     public Float getGlobalIndex() {
         return this.globalIndex;
     }
@@ -94,6 +109,7 @@ public final class DailyAirQuality implements JsonSerializable<DailyAirQuality> 
      *
      * @return the dominantPollutant value.
      */
+    @Generated
     public DominantPollutant getDominantPollutant() {
         return this.dominantPollutant;
     }
@@ -104,6 +120,7 @@ public final class DailyAirQuality implements JsonSerializable<DailyAirQuality> 
      *
      * @return the category value.
      */
+    @Generated
     public String getCategory() {
         return this.category;
     }
@@ -113,6 +130,7 @@ public final class DailyAirQuality implements JsonSerializable<DailyAirQuality> 
      *
      * @return the categoryColor value.
      */
+    @Generated
     public String getCategoryColor() {
         return this.categoryColor;
     }
@@ -122,6 +140,7 @@ public final class DailyAirQuality implements JsonSerializable<DailyAirQuality> 
      *
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -129,6 +148,7 @@ public final class DailyAirQuality implements JsonSerializable<DailyAirQuality> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -152,6 +172,7 @@ public final class DailyAirQuality implements JsonSerializable<DailyAirQuality> 
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DailyAirQuality.
      */
+    @Generated
     public static DailyAirQuality fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DailyAirQuality deserializedDailyAirQuality = new DailyAirQuality();
@@ -159,8 +180,8 @@ public final class DailyAirQuality implements JsonSerializable<DailyAirQuality> 
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("dateTime".equals(fieldName)) {
-                    deserializedDailyAirQuality.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDailyAirQuality.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("index".equals(fieldName)) {
                     deserializedDailyAirQuality.index = reader.getNullable(JsonReader::getFloat);
                 } else if ("globalIndex".equals(fieldName)) {

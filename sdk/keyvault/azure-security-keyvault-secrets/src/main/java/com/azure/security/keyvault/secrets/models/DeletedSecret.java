@@ -23,9 +23,53 @@ import java.time.OffsetDateTime;
  * @see SecretAsyncClient
  */
 public final class DeletedSecret extends KeyVaultSecret {
-
     static {
         DeletedSecretHelper.setAccessor(new DeletedSecretHelper.DeletedSecretAccessor() {
+            @Override
+            public void setId(DeletedSecret deletedSecret, String id) {
+                deletedSecret.properties.id = id;
+            }
+
+            @Override
+            public void setVersion(DeletedSecret deletedSecret, String version) {
+                deletedSecret.properties.version = version;
+            }
+
+            @Override
+            public void setCreatedOn(DeletedSecret deletedSecret, OffsetDateTime createdOn) {
+                deletedSecret.properties.createdOn = createdOn;
+            }
+
+            @Override
+            public void setUpdatedOn(DeletedSecret deletedSecret, OffsetDateTime updatedOn) {
+                deletedSecret.properties.updatedOn = updatedOn;
+            }
+
+            @Override
+            public void setName(DeletedSecret deletedSecret, String name) {
+                deletedSecret.properties.name = name;
+            }
+
+            @Override
+            public void setRecoveryLevel(DeletedSecret deletedSecret, String recoveryLevel) {
+                deletedSecret.properties.recoveryLevel = recoveryLevel;
+            }
+
+            @Override
+            public void setKeyId(DeletedSecret deletedSecret, String keyId) {
+                deletedSecret.properties.keyId = keyId;
+            }
+
+            @Override
+            public void setManaged(DeletedSecret deletedSecret, Boolean managed) {
+                deletedSecret.properties.managed = managed;
+            }
+
+            @Override
+            public void setRecoverableDays(DeletedSecret deletedSecret, Integer recoverableDays) {
+                deletedSecret.properties.recoverableDays = recoverableDays;
+            }
+
             @Override
             public void setRecoveryId(DeletedSecret deletedSecret, String recoveryId) {
                 deletedSecret.recoveryId = recoveryId;
@@ -62,6 +106,7 @@ public final class DeletedSecret extends KeyVaultSecret {
      * Creates a new instance of {@link DeletedSecret}.
      */
     public DeletedSecret() {
+        super();
     }
 
     /**

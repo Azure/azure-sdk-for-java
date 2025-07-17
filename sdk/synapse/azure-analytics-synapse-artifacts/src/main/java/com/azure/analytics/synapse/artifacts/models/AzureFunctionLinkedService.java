@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,43 +22,51 @@ public class AzureFunctionLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AzureFunction";
 
     /*
      * The endpoint of the Azure Function App. URL will be in the format https://<accountName>.azurewebsites.net.
      */
+    @Generated
     private Object functionAppUrl;
 
     /*
      * Function or Host key for Azure Function App.
      */
+    @Generated
     private SecretBase functionKey;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
 
     /*
      * Allowed token audiences for azure function.
      */
+    @Generated
     private Object resourceId;
 
     /*
      * Type of authentication (Required to specify MSI) used to connect to AzureFunction. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object authentication;
 
     /**
      * Creates an instance of AzureFunctionLinkedService class.
      */
+    @Generated
     public AzureFunctionLinkedService() {
     }
 
@@ -66,6 +75,7 @@ public class AzureFunctionLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -77,6 +87,7 @@ public class AzureFunctionLinkedService extends LinkedService {
      * 
      * @return the functionAppUrl value.
      */
+    @Generated
     public Object getFunctionAppUrl() {
         return this.functionAppUrl;
     }
@@ -88,6 +99,7 @@ public class AzureFunctionLinkedService extends LinkedService {
      * @param functionAppUrl the functionAppUrl value to set.
      * @return the AzureFunctionLinkedService object itself.
      */
+    @Generated
     public AzureFunctionLinkedService setFunctionAppUrl(Object functionAppUrl) {
         this.functionAppUrl = functionAppUrl;
         return this;
@@ -98,6 +110,7 @@ public class AzureFunctionLinkedService extends LinkedService {
      * 
      * @return the functionKey value.
      */
+    @Generated
     public SecretBase getFunctionKey() {
         return this.functionKey;
     }
@@ -108,6 +121,7 @@ public class AzureFunctionLinkedService extends LinkedService {
      * @param functionKey the functionKey value to set.
      * @return the AzureFunctionLinkedService object itself.
      */
+    @Generated
     public AzureFunctionLinkedService setFunctionKey(SecretBase functionKey) {
         this.functionKey = functionKey;
         return this;
@@ -119,6 +133,7 @@ public class AzureFunctionLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -130,6 +145,7 @@ public class AzureFunctionLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureFunctionLinkedService object itself.
      */
+    @Generated
     public AzureFunctionLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -140,6 +156,7 @@ public class AzureFunctionLinkedService extends LinkedService {
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -150,6 +167,7 @@ public class AzureFunctionLinkedService extends LinkedService {
      * @param credential the credential value to set.
      * @return the AzureFunctionLinkedService object itself.
      */
+    @Generated
     public AzureFunctionLinkedService setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
@@ -160,6 +178,7 @@ public class AzureFunctionLinkedService extends LinkedService {
      * 
      * @return the resourceId value.
      */
+    @Generated
     public Object getResourceId() {
         return this.resourceId;
     }
@@ -170,6 +189,7 @@ public class AzureFunctionLinkedService extends LinkedService {
      * @param resourceId the resourceId value to set.
      * @return the AzureFunctionLinkedService object itself.
      */
+    @Generated
     public AzureFunctionLinkedService setResourceId(Object resourceId) {
         this.resourceId = resourceId;
         return this;
@@ -181,6 +201,7 @@ public class AzureFunctionLinkedService extends LinkedService {
      * 
      * @return the authentication value.
      */
+    @Generated
     public Object getAuthentication() {
         return this.authentication;
     }
@@ -192,6 +213,7 @@ public class AzureFunctionLinkedService extends LinkedService {
      * @param authentication the authentication value to set.
      * @return the AzureFunctionLinkedService object itself.
      */
+    @Generated
     public AzureFunctionLinkedService setAuthentication(Object authentication) {
         this.authentication = authentication;
         return this;
@@ -200,6 +222,17 @@ public class AzureFunctionLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public AzureFunctionLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public AzureFunctionLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -209,6 +242,7 @@ public class AzureFunctionLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureFunctionLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -218,6 +252,7 @@ public class AzureFunctionLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureFunctionLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -227,6 +262,7 @@ public class AzureFunctionLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureFunctionLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -236,9 +272,11 @@ public class AzureFunctionLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -253,10 +291,16 @@ public class AzureFunctionLinkedService extends LinkedService {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("functionAppUrl", this.functionAppUrl);
             jsonWriter.writeJsonField("functionKey", this.functionKey);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeJsonField("credential", this.credential);
-            jsonWriter.writeUntypedField("resourceId", this.resourceId);
-            jsonWriter.writeUntypedField("authentication", this.authentication);
+            if (this.resourceId != null) {
+                jsonWriter.writeUntypedField("resourceId", this.resourceId);
+            }
+            if (this.authentication != null) {
+                jsonWriter.writeUntypedField("authentication", this.authentication);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -276,6 +320,7 @@ public class AzureFunctionLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureFunctionLinkedService.
      */
+    @Generated
     public static AzureFunctionLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureFunctionLinkedService deserializedAzureFunctionLinkedService = new AzureFunctionLinkedService();
@@ -284,7 +329,9 @@ public class AzureFunctionLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedAzureFunctionLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedAzureFunctionLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedAzureFunctionLinkedService.setDescription(reader.getString());

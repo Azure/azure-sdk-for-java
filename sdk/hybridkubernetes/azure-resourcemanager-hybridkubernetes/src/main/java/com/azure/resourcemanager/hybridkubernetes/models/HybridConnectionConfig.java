@@ -36,6 +36,16 @@ public final class HybridConnectionConfig implements JsonSerializable<HybridConn
      */
     private String token;
 
+    /*
+     * TenantID of the relay
+     */
+    private String relayTid;
+
+    /*
+     * Type of relay
+     */
+    private String relayType;
+
     /**
      * Creates an instance of HybridConnectionConfig class.
      */
@@ -79,6 +89,24 @@ public final class HybridConnectionConfig implements JsonSerializable<HybridConn
     }
 
     /**
+     * Get the relayTid property: TenantID of the relay.
+     * 
+     * @return the relayTid value.
+     */
+    public String relayTid() {
+        return this.relayTid;
+    }
+
+    /**
+     * Get the relayType property: Type of relay.
+     * 
+     * @return the relayType value.
+     */
+    public String relayType() {
+        return this.relayType;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -118,6 +146,10 @@ public final class HybridConnectionConfig implements JsonSerializable<HybridConn
                     deserializedHybridConnectionConfig.relay = reader.getString();
                 } else if ("token".equals(fieldName)) {
                     deserializedHybridConnectionConfig.token = reader.getString();
+                } else if ("relayTid".equals(fieldName)) {
+                    deserializedHybridConnectionConfig.relayTid = reader.getString();
+                } else if ("relayType".equals(fieldName)) {
+                    deserializedHybridConnectionConfig.relayType = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

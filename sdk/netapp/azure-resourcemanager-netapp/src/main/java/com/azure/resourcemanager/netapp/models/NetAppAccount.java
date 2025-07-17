@@ -109,11 +109,18 @@ public interface NetAppAccount {
     String nfsV4IdDomain();
 
     /**
-     * Gets the isMultiAdEnabled property: This will have true value only if account is Multiple AD enabled.
+     * Gets the multiAdStatus property: MultiAD Status for the account.
      * 
-     * @return the isMultiAdEnabled value.
+     * @return the multiAdStatus value.
      */
-    Boolean isMultiAdEnabled();
+    MultiAdStatus multiAdStatus();
+
+    /**
+     * Gets the ldapConfiguration property: LDAP Configuration for the account.
+     * 
+     * @return the ldapConfiguration value.
+     */
+    LdapConfiguration ldapConfiguration();
 
     /**
      * Gets the region of the resource.
@@ -198,9 +205,9 @@ public interface NetAppAccount {
          * The stage of the NetAppAccount definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithActiveDirectories,
-            DefinitionStages.WithEncryption, DefinitionStages.WithNfsV4IdDomain {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithActiveDirectories, DefinitionStages.WithEncryption, DefinitionStages.WithNfsV4IdDomain,
+            DefinitionStages.WithLdapConfiguration {
             /**
              * Executes the create request.
              * 
@@ -283,6 +290,19 @@ public interface NetAppAccount {
              */
             WithCreate withNfsV4IdDomain(String nfsV4IdDomain);
         }
+
+        /**
+         * The stage of the NetAppAccount definition allowing to specify ldapConfiguration.
+         */
+        interface WithLdapConfiguration {
+            /**
+             * Specifies the ldapConfiguration property: LDAP Configuration for the account..
+             * 
+             * @param ldapConfiguration LDAP Configuration for the account.
+             * @return the next definition stage.
+             */
+            WithCreate withLdapConfiguration(LdapConfiguration ldapConfiguration);
+        }
     }
 
     /**
@@ -296,7 +316,7 @@ public interface NetAppAccount {
      * The template for NetAppAccount update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithActiveDirectories,
-        UpdateStages.WithEncryption, UpdateStages.WithNfsV4IdDomain {
+        UpdateStages.WithEncryption, UpdateStages.WithNfsV4IdDomain, UpdateStages.WithLdapConfiguration {
         /**
          * Executes the update request.
          * 
@@ -383,6 +403,19 @@ public interface NetAppAccount {
              */
             Update withNfsV4IdDomain(String nfsV4IdDomain);
         }
+
+        /**
+         * The stage of the NetAppAccount update allowing to specify ldapConfiguration.
+         */
+        interface WithLdapConfiguration {
+            /**
+             * Specifies the ldapConfiguration property: LDAP Configuration for the account..
+             * 
+             * @param ldapConfiguration LDAP Configuration for the account.
+             * @return the next definition stage.
+             */
+            Update withLdapConfiguration(LdapConfiguration ldapConfiguration);
+        }
     }
 
     /**
@@ -458,8 +491,9 @@ public interface NetAppAccount {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted.
      */
-    void getChangeKeyVaultInformation();
+    GetKeyVaultStatusResponse getChangeKeyVaultInformation();
 
     /**
      * Get information about how volumes under NetApp account are encrypted.
@@ -472,8 +506,9 @@ public interface NetAppAccount {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted.
      */
-    void getChangeKeyVaultInformation(Context context);
+    GetKeyVaultStatusResponse getChangeKeyVaultInformation(Context context);
 
     /**
      * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.

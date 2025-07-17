@@ -52,7 +52,7 @@ public final class CosmosDbMongoDbApiLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private CosmosDbMongoDbApiLinkedServiceTypeProperties innerTypeProperties() {
+    CosmosDbMongoDbApiLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

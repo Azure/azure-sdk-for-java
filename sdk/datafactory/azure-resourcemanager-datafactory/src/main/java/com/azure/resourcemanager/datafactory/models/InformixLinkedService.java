@@ -51,7 +51,7 @@ public final class InformixLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private InformixLinkedServiceTypeProperties innerTypeProperties() {
+    InformixLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

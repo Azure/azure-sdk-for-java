@@ -390,7 +390,8 @@
         "supportsHttpsTrafficOnly": true,
         "encryption": "[variables('encryption')]",
         "accessTier": "Hot",
-        "minimumTlsVersion": "TLS1_2"
+        "minimumTlsVersion": "TLS1_2",
+        "allowSharedKeyAccess": false
       }
     },
     {

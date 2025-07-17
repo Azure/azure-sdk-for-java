@@ -3,6 +3,11 @@
 
 package com.azure.communication.callautomation;
 
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.SendDtmfTonesResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
@@ -11,7 +16,6 @@ import com.azure.communication.callautomation.implementation.models.DtmfOptionsI
 import com.azure.communication.callautomation.implementation.models.DtmfToneInternal;
 import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
 import com.azure.communication.callautomation.implementation.models.HoldRequest;
-import com.azure.communication.callautomation.implementation.models.InterruptAudioAndAnnounceRequest;
 import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
@@ -40,7 +44,6 @@ import com.azure.communication.callautomation.models.ContinuousDtmfRecognitionOp
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.HoldOptions;
-import com.azure.communication.callautomation.models.InterruptAudioAndAnnounceOptions;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
@@ -54,6 +57,7 @@ import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.UnholdOptions;
+import com.azure.communication.callautomation.models.UpdateTranscriptionOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -62,16 +66,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Mono;
-
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import com.azure.core.util.logging.ClientLogger;
+
+import reactor.core.publisher.Mono;
 
 /**
  * CallContent.
@@ -332,8 +331,8 @@ public final class CallMediaAsync {
         if (!playSourcesInternal.isEmpty()) {
             PlayRequest request = new PlayRequest().setPlaySources(playSourcesInternal);
 
-            request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop())
-                .setInterruptCallMediaOperation(options.isInterruptCallMediaOperation()));
+            request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop()));
+            request.setInterruptCallMediaOperation(options.isInterruptCallMediaOperation());
             request.setOperationContext(options.getOperationContext());
             request.setOperationCallbackUri(options.getOperationCallbackUrl());
 
@@ -803,7 +802,8 @@ public final class CallMediaAsync {
             context = context == null ? Context.NONE : context;
             UnholdRequest request = new UnholdRequest()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(options.getTargetParticipant()))
-                .setOperationContext(options.getOperationContext());
+                .setOperationContext(options.getOperationContext())
+                .setOperationCallbackUri(options.getOperationCallbackUrl());
 
             return contentsInternal.unholdWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
@@ -839,7 +839,7 @@ public final class CallMediaAsync {
             if (options != null) {
                 request.setLocale(options.getLocale());
                 request.setOperationContext(options.getOperationContext());
-                request.setSpeechRecognitionModelEndpointId(options.getSpeechRecognitionModelEndpointId());
+                request.setSpeechModelEndpointId(options.getSpeechRecognitionModelEndpointId());
             }
             return contentsInternal.startTranscriptionWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
@@ -882,61 +882,33 @@ public final class CallMediaAsync {
     }
 
     /**
-     * Updates transcription language
+     * API to change transcription language
      *
      * @param locale Defines new locale for transcription.
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateTranscription(String locale) {
-        return updateTranscriptionWithResponse(locale, null, null).then();
+        return updateTranscriptionWithResponse(new UpdateTranscriptionOptions().setLocale(locale)).then();
     }
 
     /**
-     * Updates transcription language
-     *
-     * @param locale Defines new locale for transcription.
-     * @param speechRecognitionModelEndpointId Defines custom model endpoint.
-     * @return Response for successful operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateTranscription(String locale, String speechRecognitionModelEndpointId) {
-        return updateTranscriptionWithResponse(locale, speechRecognitionModelEndpointId, null).then();
-    }
-
-    /**
-    * Updates transcription language
-    * @param speechRecognitionModelEndpointId Defines custom model endpoint.
-    * @param locale Defines new locale for transcription.
-    * @param operationContext operational context.
+    * API to change transcription language
+    * @param options Options for the Update Transcription operation.
     * @return Response for successful operation.
     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateTranscriptionWithResponse(String locale, String speechRecognitionModelEndpointId,
-        String operationContext) {
-        return withContext(context -> updateTranscriptionWithResponseInternal(locale, speechRecognitionModelEndpointId,
-            operationContext, context));
+    public Mono<Response<Void>> updateTranscriptionWithResponse(UpdateTranscriptionOptions options) {
+        return withContext(context -> updateTranscriptionWithResponseInternal(options, context));
     }
 
-    Mono<Response<Void>> updateTranscriptionWithResponseInternal(String locale, Context context) {
+    Mono<Response<Void>> updateTranscriptionWithResponseInternal(UpdateTranscriptionOptions options, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             UpdateTranscriptionRequestInternal request = new UpdateTranscriptionRequestInternal();
-            request.setLocale(locale);
-            return contentsInternal.updateTranscriptionWithResponseAsync(callConnectionId, request, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<Response<Void>> updateTranscriptionWithResponseInternal(String locale, String speechRecognitionModelEndpointId,
-        String operationContext, Context context) {
-        try {
-            context = context == null ? Context.NONE : context;
-            UpdateTranscriptionRequestInternal request = new UpdateTranscriptionRequestInternal();
-            request.setLocale(locale);
-            request.setSpeechRecognitionModelEndpointId(speechRecognitionModelEndpointId);
-            request.setOperationContext(operationContext);
+            request.setLocale(options.getLocale());
+            request.setSpeechModelEndpointId(options.getSpeechRecognitionModelEndpointId());
+            request.setOperationContext(options.getOperationContext());
             return contentsInternal.updateTranscriptionWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1007,52 +979,6 @@ public final class CallMediaAsync {
                 request.setOperationCallbackUri(options.getOperationCallbackUrl());
             }
             return contentsInternal.stopMediaStreamingWithResponseAsync(callConnectionId, request, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-    * Interrupt audio and play announment to the participant in call.
-    * @param playTo the target.
-    * @param playSource the play source.
-    * @return Response for successful operation.
-    */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> interruptAudioAndAnnounce(PlaySource playSource, CommunicationIdentifier playTo) {
-        return interruptAudioAndAnnounceWithResponse(new InterruptAudioAndAnnounceOptions(playSource, playTo))
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Interrupt audio and play announment to the participant in call.
-     * @param options - Different options to pass to the request.
-     * @return Response for successful operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> interruptAudioAndAnnounceWithResponse(InterruptAudioAndAnnounceOptions options) {
-        return withContext(context -> interruptAudioAndAnnounceWithResponseInternal(options, context));
-    }
-
-    Mono<Response<Void>> interruptAudioAndAnnounceWithResponseInternal(InterruptAudioAndAnnounceOptions options,
-        Context context) {
-        try {
-            context = context == null ? Context.NONE : context;
-            List<PlaySourceInternal> playSourcesInternal = new ArrayList<>();
-            InterruptAudioAndAnnounceRequest request = new InterruptAudioAndAnnounceRequest()
-                .setPlayTo(CommunicationIdentifierConverter.convert(options.getPlayTo()))
-                .setOperationContext(options.getOperationContext());
-
-            if (options.getPlaySources() != null) {
-                for (PlaySource playSource : options.getPlaySources()) {
-                    if (playSource != null) {
-                        playSourcesInternal.add(convertPlaySourceToPlaySourceInternal(playSource));
-                    }
-                }
-            }
-            request.setPlaySources(playSourcesInternal);
-
-            return contentsInternal.interruptAudioAndAnnounceWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

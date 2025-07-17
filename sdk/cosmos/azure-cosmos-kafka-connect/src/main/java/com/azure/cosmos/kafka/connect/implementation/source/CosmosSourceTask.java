@@ -3,13 +3,13 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
-import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.guava25.base.Stopwatch;
-import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
@@ -17,8 +17,8 @@ import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
 import org.apache.kafka.connect.source.SourceRecord;
@@ -39,9 +39,9 @@ public class CosmosSourceTask extends SourceTask {
     private static final String LSN_ATTRIBUTE_NAME = "_lsn";
 
     private CosmosSourceTaskConfig taskConfig;
-    private CosmosAsyncClient cosmosClient;
-    private CosmosAsyncClient throughputControlCosmosClient;
-    private Queue<ITaskUnit> taskUnitsQueue = new LinkedList<>();
+    private CosmosClientCacheItem cosmosClientItem;
+    private CosmosClientCacheItem throughputControlCosmosClientItem;
+    private final Queue<ITaskUnit> taskUnitsQueue = new LinkedList<>();
 
     @Override
     public String version() {
@@ -61,24 +61,24 @@ public class CosmosSourceTask extends SourceTask {
         this.taskUnitsQueue.addAll(this.taskConfig.getFeedRangeTaskUnits());
         LOGGER.info("Creating the cosmos client");
 
-        this.cosmosClient =
-            CosmosClientStore.getCosmosClient(
+        this.cosmosClientItem =
+            CosmosClientCache.getCosmosClient(
                 this.taskConfig.getAccountConfig(),
                 this.taskConfig.getTaskId(),
                 this.taskConfig.getCosmosClientMetadataCachesSnapshot());
-        this.throughputControlCosmosClient = this.getThroughputControlCosmosClient();
+        this.throughputControlCosmosClientItem = this.getThroughputControlCosmosClientItem();
     }
 
-    private CosmosAsyncClient getThroughputControlCosmosClient() {
+    private CosmosClientCacheItem getThroughputControlCosmosClientItem() {
         if (this.taskConfig.getThroughputControlConfig().isThroughputControlEnabled()
             && this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig() != null) {
             // throughput control is using a different database account config
-            return CosmosClientStore.getCosmosClient(
+            return CosmosClientCache.getCosmosClient(
                 this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig(),
                 this.taskConfig.getTaskId(),
                 this.taskConfig.getThroughputControlCosmosClientMetadataCachesSnapshot());
         } else {
-            return this.cosmosClient;
+            return this.cosmosClientItem;
         }
     }
 
@@ -135,13 +135,19 @@ public class CosmosSourceTask extends SourceTask {
         List<SourceRecord> sourceRecords = new ArrayList<>();
 
         // add the containers metadata record - it tracks the databaseName -> List[containerRid] mapping
-        Pair<ContainersMetadataTopicPartition, ContainersMetadataTopicOffset> containersMetadata = taskUnit.getContainersMetadata();
+        Pair<ContainersMetadataTopicPartition, ContainersMetadataTopicOffset> containersMetadata =
+            taskUnit.getContainersMetadata();
 
         // Convert JSON to Kafka Connect struct and JSON schema
-        SchemaAndValue containersMetadataSchemaAndValue = JsonToStruct.recordToSchemaAndValue(
-            Utils.getSimpleObjectMapper().convertValue(
-                ContainersMetadataTopicOffset.toMap(containersMetadata.getRight()),
-                ObjectNode.class));
+        SchemaAndValue containersMetadataSchemaAndValue = null;
+        try {
+            containersMetadataSchemaAndValue = JsonToStruct.recordToUnifiedSchema(
+                MetadataEntityTypes.CONTAINERS_METADATA_V1,
+                Utils.getSimpleObjectMapper().writeValueAsString(
+                    ContainersMetadataTopicOffset.toMap(containersMetadata.getRight())));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         sourceRecords.add(
             new SourceRecord(
@@ -155,10 +161,15 @@ public class CosmosSourceTask extends SourceTask {
 
         // add the container feedRanges metadata record - it tracks the containerRid -> List[FeedRange] mapping
         for (Pair<FeedRangesMetadataTopicPartition, FeedRangesMetadataTopicOffset> feedRangesMetadata : taskUnit.getFeedRangesMetadataList()) {
-            SchemaAndValue feedRangeMetadataSchemaAndValue = JsonToStruct.recordToSchemaAndValue(
-                Utils.getSimpleObjectMapper().convertValue(
-                    FeedRangesMetadataTopicOffset.toMap(feedRangesMetadata.getRight()),
-                    ObjectNode.class));
+            SchemaAndValue feedRangeMetadataSchemaAndValue = null;
+            try {
+                feedRangeMetadataSchemaAndValue = JsonToStruct.recordToUnifiedSchema(
+                    MetadataEntityTypes.FEED_RANGES_METADATA_V1,
+                    Utils.getSimpleObjectMapper().writeValueAsString(
+                        FeedRangesMetadataTopicOffset.toMap(feedRangesMetadata.getRight())));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
 
             sourceRecords.add(
                 new SourceRecord(
@@ -188,12 +199,13 @@ public class CosmosSourceTask extends SourceTask {
 
     private Pair<List<SourceRecord>, Boolean> executeFeedRangeTask(FeedRangeTaskUnit feedRangeTaskUnit) {
         CosmosAsyncContainer container =
-            this.cosmosClient
+            this.cosmosClientItem
+                .getClient()
                 .getDatabase(feedRangeTaskUnit.getDatabaseName())
                 .getContainer(feedRangeTaskUnit.getContainerName());
         CosmosThroughputControlHelper.tryEnableThroughputControl(
             container,
-            this.throughputControlCosmosClient,
+            this.throughputControlCosmosClientItem.getClient(),
             this.taskConfig.getThroughputControlConfig());
 
         // each time we will only pull one page
@@ -267,7 +279,8 @@ public class CosmosSourceTask extends SourceTask {
     private Mono<Boolean> handleFeedRangeGone(FeedRangeTaskUnit feedRangeTaskUnit) {
         // need to find out whether it is split or merge
         CosmosAsyncContainer container =
-            this.cosmosClient
+            this.cosmosClientItem
+                .getClient()
                 .getDatabase(feedRangeTaskUnit.getDatabaseName())
                 .getContainer(feedRangeTaskUnit.getContainerName());
 
@@ -295,18 +308,13 @@ public class CosmosSourceTask extends SourceTask {
                     );
 
                     for (FeedRange pkRange : overlappedRanges) {
-                        KafkaCosmosChangeFeedState childContinuationState =
-                            new KafkaCosmosChangeFeedState(
-                                feedRangeTaskUnit.getContinuationState().getResponseContinuation(),
-                                pkRange);
-
                         FeedRangeTaskUnit childTaskUnit =
                             new FeedRangeTaskUnit(
                                 feedRangeTaskUnit.getDatabaseName(),
                                 feedRangeTaskUnit.getContainerName(),
                                 feedRangeTaskUnit.getContainerRid(),
                                 pkRange,
-                                childContinuationState,
+                                getChildRangeChangeFeedState(feedRangeTaskUnit.getContinuationState(), pkRange),
                                 feedRangeTaskUnit.getTopic());
                         this.taskUnitsQueue.add(childTaskUnit);
                     }
@@ -331,6 +339,13 @@ public class CosmosSourceTask extends SourceTask {
         }
 
         return messageKey;
+    }
+
+    private KafkaCosmosChangeFeedState getChildRangeChangeFeedState(
+        KafkaCosmosChangeFeedState parent,
+        FeedRange feedRange) {
+        return parent == null
+            ? null : new KafkaCosmosChangeFeedState(parent.getResponseContinuation(), feedRange);
     }
 
     private CosmosChangeFeedRequestOptions getChangeFeedRequestOptions(FeedRangeTaskUnit feedRangeTaskUnit) {
@@ -377,8 +392,14 @@ public class CosmosSourceTask extends SourceTask {
 
     @Override
     public void stop() {
-        if (this.cosmosClient != null) {
-            this.cosmosClient.close();
+        if (this.throughputControlCosmosClientItem != null && this.throughputControlCosmosClientItem != this.cosmosClientItem) {
+            CosmosClientCache.releaseCosmosClient(this.throughputControlCosmosClientItem.getClientConfig());
+            this.throughputControlCosmosClientItem = null;
+        }
+
+        if (this.cosmosClientItem != null) {
+            CosmosClientCache.releaseCosmosClient(this.cosmosClientItem.getClientConfig());
+            this.cosmosClientItem = null;
         }
     }
 }

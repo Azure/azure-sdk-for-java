@@ -39,10 +39,26 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
     private Map<String, DeploymentParameter> parameters;
 
     /*
+     * External input values, used by external tooling for parameter evaluation.
+     */
+    private Map<String, DeploymentExternalInput> externalInputs;
+
+    /*
+     * External input definitions, used by external tooling to define expected external input values.
+     */
+    private Map<String, DeploymentExternalInputDefinition> externalInputDefinitions;
+
+    /*
      * The URI of parameters file. You use this element to link to an existing parameters file. Use either the
      * parametersLink property or the parameters property, but not both.
      */
     private ParametersLink parametersLink;
+
+    /*
+     * The configurations to use for deployment extensions. The keys of this object are deployment extension aliases as
+     * defined in the deployment template.
+     */
+    private Map<String, Map<String, DeploymentExtensionConfigItem>> extensionConfigs;
 
     /*
      * The mode that is used to deploy resources. This value can be either Incremental or Complete. In Incremental mode,
@@ -67,6 +83,11 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
      * Only applicable to nested templates. If not specified, default value is outer.
      */
     private ExpressionEvaluationOptions expressionEvaluationOptions;
+
+    /*
+     * The validation level of the deployment
+     */
+    private ValidationLevel validationLevel;
 
     /**
      * Creates an instance of DeploymentProperties class.
@@ -147,6 +168,49 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
     }
 
     /**
+     * Get the externalInputs property: External input values, used by external tooling for parameter evaluation.
+     * 
+     * @return the externalInputs value.
+     */
+    public Map<String, DeploymentExternalInput> externalInputs() {
+        return this.externalInputs;
+    }
+
+    /**
+     * Set the externalInputs property: External input values, used by external tooling for parameter evaluation.
+     * 
+     * @param externalInputs the externalInputs value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withExternalInputs(Map<String, DeploymentExternalInput> externalInputs) {
+        this.externalInputs = externalInputs;
+        return this;
+    }
+
+    /**
+     * Get the externalInputDefinitions property: External input definitions, used by external tooling to define
+     * expected external input values.
+     * 
+     * @return the externalInputDefinitions value.
+     */
+    public Map<String, DeploymentExternalInputDefinition> externalInputDefinitions() {
+        return this.externalInputDefinitions;
+    }
+
+    /**
+     * Set the externalInputDefinitions property: External input definitions, used by external tooling to define
+     * expected external input values.
+     * 
+     * @param externalInputDefinitions the externalInputDefinitions value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties
+        withExternalInputDefinitions(Map<String, DeploymentExternalInputDefinition> externalInputDefinitions) {
+        this.externalInputDefinitions = externalInputDefinitions;
+        return this;
+    }
+
+    /**
      * Get the parametersLink property: The URI of parameters file. You use this element to link to an existing
      * parameters file. Use either the parametersLink property or the parameters property, but not both.
      * 
@@ -165,6 +229,29 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
      */
     public DeploymentProperties withParametersLink(ParametersLink parametersLink) {
         this.parametersLink = parametersLink;
+        return this;
+    }
+
+    /**
+     * Get the extensionConfigs property: The configurations to use for deployment extensions. The keys of this object
+     * are deployment extension aliases as defined in the deployment template.
+     * 
+     * @return the extensionConfigs value.
+     */
+    public Map<String, Map<String, DeploymentExtensionConfigItem>> extensionConfigs() {
+        return this.extensionConfigs;
+    }
+
+    /**
+     * Set the extensionConfigs property: The configurations to use for deployment extensions. The keys of this object
+     * are deployment extension aliases as defined in the deployment template.
+     * 
+     * @param extensionConfigs the extensionConfigs value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties
+        withExtensionConfigs(Map<String, Map<String, DeploymentExtensionConfigItem>> extensionConfigs) {
+        this.extensionConfigs = extensionConfigs;
         return this;
     }
 
@@ -262,6 +349,26 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
     }
 
     /**
+     * Get the validationLevel property: The validation level of the deployment.
+     * 
+     * @return the validationLevel value.
+     */
+    public ValidationLevel validationLevel() {
+        return this.validationLevel;
+    }
+
+    /**
+     * Set the validationLevel property: The validation level of the deployment.
+     * 
+     * @param validationLevel the validationLevel value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withValidationLevel(ValidationLevel validationLevel) {
+        this.validationLevel = validationLevel;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -277,8 +384,33 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
                 }
             });
         }
+        if (externalInputs() != null) {
+            externalInputs().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (externalInputDefinitions() != null) {
+            externalInputDefinitions().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
         if (parametersLink() != null) {
             parametersLink().validate();
+        }
+        if (extensionConfigs() != null) {
+            extensionConfigs().values().forEach(e -> {
+                if (e != null) {
+                    e.values().forEach(e1 -> {
+                        if (e1 != null) {
+                            e1.validate();
+                        }
+                    });
+                }
+            });
         }
         if (mode() == null) {
             throw LOGGER.atError()
@@ -304,13 +436,22 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
-        jsonWriter.writeUntypedField("template", this.template);
+        if (this.template != null) {
+            jsonWriter.writeUntypedField("template", this.template);
+        }
         jsonWriter.writeJsonField("templateLink", this.templateLink);
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("externalInputs", this.externalInputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("externalInputDefinitions", this.externalInputDefinitions,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("parametersLink", this.parametersLink);
+        jsonWriter.writeMapField("extensionConfigs", this.extensionConfigs,
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeJson(element1)));
         jsonWriter.writeJsonField("debugSetting", this.debugSetting);
         jsonWriter.writeJsonField("onErrorDeployment", this.onErrorDeployment);
         jsonWriter.writeJsonField("expressionEvaluationOptions", this.expressionEvaluationOptions);
+        jsonWriter.writeStringField("validationLevel",
+            this.validationLevel == null ? null : this.validationLevel.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -340,8 +481,20 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
                     Map<String, DeploymentParameter> parameters
                         = reader.readMap(reader1 -> DeploymentParameter.fromJson(reader1));
                     deserializedDeploymentProperties.parameters = parameters;
+                } else if ("externalInputs".equals(fieldName)) {
+                    Map<String, DeploymentExternalInput> externalInputs
+                        = reader.readMap(reader1 -> DeploymentExternalInput.fromJson(reader1));
+                    deserializedDeploymentProperties.externalInputs = externalInputs;
+                } else if ("externalInputDefinitions".equals(fieldName)) {
+                    Map<String, DeploymentExternalInputDefinition> externalInputDefinitions
+                        = reader.readMap(reader1 -> DeploymentExternalInputDefinition.fromJson(reader1));
+                    deserializedDeploymentProperties.externalInputDefinitions = externalInputDefinitions;
                 } else if ("parametersLink".equals(fieldName)) {
                     deserializedDeploymentProperties.parametersLink = ParametersLink.fromJson(reader);
+                } else if ("extensionConfigs".equals(fieldName)) {
+                    Map<String, Map<String, DeploymentExtensionConfigItem>> extensionConfigs = reader.readMap(
+                        reader1 -> reader1.readMap(reader2 -> DeploymentExtensionConfigItem.fromJson(reader2)));
+                    deserializedDeploymentProperties.extensionConfigs = extensionConfigs;
                 } else if ("debugSetting".equals(fieldName)) {
                     deserializedDeploymentProperties.debugSetting = DebugSetting.fromJson(reader);
                 } else if ("onErrorDeployment".equals(fieldName)) {
@@ -349,6 +502,8 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
                 } else if ("expressionEvaluationOptions".equals(fieldName)) {
                     deserializedDeploymentProperties.expressionEvaluationOptions
                         = ExpressionEvaluationOptions.fromJson(reader);
+                } else if ("validationLevel".equals(fieldName)) {
+                    deserializedDeploymentProperties.validationLevel = ValidationLevel.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -3,16 +3,17 @@
 
 package com.azure.security.keyvault.certificates;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.certificates.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateContentType;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
@@ -56,6 +57,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -63,6 +65,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -147,7 +150,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         StepVerifier.create(certificateAsyncClient.beginCreateCertificate("", CertificatePolicy.getDefault()))
             .verifyErrorSatisfies(
-                e -> assertResponseException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD));
+                e -> assertResponseException(e, HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -155,9 +158,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
     public void createCertificateNullPolicy(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
-        StepVerifier
-            .create(certificateAsyncClient.beginCreateCertificate(testResourceNamer.randomName("tempCert", 20), null))
-            .verifyError(NullPointerException.class);
+        assertThrows(NullPointerException.class,
+            () -> certificateAsyncClient.beginCreateCertificate(testResourceNamer.randomName("tempCert", 20), null));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -165,8 +167,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
     public void createCertificateNull(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
-        StepVerifier.create(certificateAsyncClient.beginCreateCertificate(null, null))
-            .verifyError(NullPointerException.class);
+        assertThrows(NullPointerException.class,
+            () -> certificateAsyncClient.beginCreateCertificate(null, CertificatePolicy.getDefault()));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -499,16 +501,10 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                 .assertNext(certificateOperation -> assertTrue(certificateOperation.getCancellationRequested()))
                 .verifyComplete();
 
-            StepVerifier.create(certPoller
-                .takeUntil(asyncPollResponse -> "cancelled".equalsIgnoreCase(asyncPollResponse.getStatus().toString()))
-                .map(asyncPollResponse -> asyncPollResponse.getStatus().toString())
-                .zipWith(certPoller.last().flatMap(AsyncPollResponse::getFinalResult))).assertNext(tuple -> {
-                    if ("cancelled".equalsIgnoreCase(tuple.getT1())) {
-                        assertFalse(tuple.getT2().getPolicy().isEnabled());
-                    }
-                    // Else, the operation did not reach the expected status, either because it was completed before it
-                    // could be canceled or there was a service timing issue when attempting to cancel the operation.
-                }).verifyComplete();
+            StepVerifier.create(certPoller.last())
+                .assertNext(asyncPollResponse -> assertEquals("cancelled",
+                    asyncPollResponse.getStatus().toString().toLowerCase(Locale.ROOT)))
+                .verifyComplete();
         });
     }
 
@@ -647,7 +643,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         StepVerifier.create(certificateAsyncClient.createIssuer(new CertificateIssuer("", "")))
             .verifyErrorSatisfies(
-                e -> assertResponseException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD));
+                e -> assertResponseException(e, HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -657,7 +653,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         StepVerifier.create(certificateAsyncClient.createIssuer(new CertificateIssuer("", null)))
             .verifyErrorSatisfies(
-                e -> assertResponseException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD));
+                e -> assertResponseException(e, HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -882,9 +878,14 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
             sleepIfRunningAgainstService(30000);
 
-            StepVerifier.create(certificateAsyncClient.listDeletedCertificates()
-                .doOnNext(deletedCertificate -> certificatesToDelete.remove(deletedCertificate.getName()))
-                .last()).assertNext(ignored -> assertEquals(0, certificatesToDelete.size())).verifyComplete();
+            PagedFlux<DeletedCertificate> pagedFlux = certificateAsyncClient.listDeletedCertificates();
+
+            StepVerifier
+                .create(
+                    pagedFlux.doOnNext(deletedCertificate -> certificatesToDelete.remove(deletedCertificate.getName()))
+                        .last())
+                .assertNext(ignored -> assertEquals(0, certificatesToDelete.size()))
+                .verifyComplete();
         });
     }
 
@@ -896,7 +897,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         importCertificateRunner((importCertificateOptions) -> StepVerifier
             .create(certificateAsyncClient.importCertificate(importCertificateOptions))
             .assertNext(importedCertificate -> {
-                assertTrue("73b4319cdf38e0797084535d9c02fd04d4b2b2e6"
+                assertTrue("931dd8219585752bc915684ca3967974c400de28"
                     .equalsIgnoreCase(importedCertificate.getProperties().getX509ThumbprintAsString()));
                 assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
@@ -985,13 +986,12 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
             .create(certificateAsyncClient.mergeCertificate(new MergeCertificateOptions(
                 testResourceNamer.randomName("testCert", 20), Collections.singletonList("test".getBytes()))))
             .verifyErrorSatisfies(
-                e -> assertResponseException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_NOT_FOUND));
+                e -> assertResponseException(e, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void importPemCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion)
-        throws IOException {
+    public void importPemCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
         importPemCertificateRunner((importCertificateOptions) -> StepVerifier

@@ -8,13 +8,14 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.models.FullBackupOperation;
 import com.azure.security.keyvault.administration.implementation.models.Permission;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperation;
@@ -45,15 +46,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils.createKeyVaultErrorFromError;
+import static com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils.toKeyVaultAdministrationError;
 
 /**
  * Internal utility class for KeyVault Administration clients.
  */
 class KeyVaultAdministrationUtil {
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
+
+    static final String VAULT_END_POINT_REQUIRED = "Azure Key Vault endpoint url is required.";
+    static final String PARAMETER_REQUIRED = "%s cannot be null.";
+
+    public static final RequestOptions EMPTY_OPTIONS = new RequestOptions();
 
     /**
      * Deserializes a given {@link Response HTTP response} including headers to a given class.
@@ -86,22 +93,22 @@ class KeyVaultAdministrationUtil {
      */
     static <E extends HttpResponseException> Response<Void> swallowExceptionForStatusCodeSync(int statusCode,
         E httpResponseException, ClientLogger logger) {
+
         HttpResponse httpResponse = httpResponseException.getResponse();
 
         if (httpResponse.getStatusCode() == statusCode) {
             return new SimpleResponse<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
                 httpResponse.getHeaders(), null);
         }
+
         throw logger.logExceptionAsError(httpResponseException);
     }
 
     static RoleAssignmentCreateParameters validateAndGetRoleAssignmentCreateParameters(KeyVaultRoleScope roleScope,
         String roleDefinitionId, String principalId, String roleAssignmentName) {
         validateRoleAssignmentParameters(roleScope, roleAssignmentName);
-        Objects.requireNonNull(principalId,
-            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'principalId'"));
-        Objects.requireNonNull(roleDefinitionId,
-            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleDefinitionId'"));
+        Objects.requireNonNull(principalId, String.format(PARAMETER_REQUIRED, "'principalId'"));
+        Objects.requireNonNull(roleDefinitionId, String.format(PARAMETER_REQUIRED, "'roleDefinitionId'"));
 
         RoleAssignmentProperties roleAssignmentProperties = new RoleAssignmentProperties(roleDefinitionId, principalId);
         return new RoleAssignmentCreateParameters(roleAssignmentProperties);
@@ -109,11 +116,10 @@ class KeyVaultAdministrationUtil {
 
     static RoleDefinitionCreateParameters
         validateAndGetRoleDefinitionCreateParameters(SetRoleDefinitionOptions options) {
-        Objects.requireNonNull(options, String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'options'"));
-        Objects.requireNonNull(options.getRoleScope(),
-            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'options.getRoleScope()'"));
+        Objects.requireNonNull(options, String.format(PARAMETER_REQUIRED, "'options'"));
+        Objects.requireNonNull(options.getRoleScope(), String.format(PARAMETER_REQUIRED, "'options.getRoleScope()'"));
         Objects.requireNonNull(options.getRoleDefinitionName(),
-            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'options.getRoleDefinitionName()'"));
+            String.format(PARAMETER_REQUIRED, "'options.getRoleDefinitionName()'"));
 
         List<Permission> permissions = null;
 
@@ -136,15 +142,13 @@ class KeyVaultAdministrationUtil {
     }
 
     static void validateRoleAssignmentParameters(KeyVaultRoleScope roleScope, String roleAssignmentName) {
-        Objects.requireNonNull(roleScope, String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
-        Objects.requireNonNull(roleAssignmentName,
-            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleAssignmentName'"));
+        Objects.requireNonNull(roleScope, String.format(PARAMETER_REQUIRED, "'roleScope'"));
+        Objects.requireNonNull(roleAssignmentName, String.format(PARAMETER_REQUIRED, "'roleAssignmentName'"));
     }
 
     static void validateRoleDefinitionParameters(KeyVaultRoleScope roleScope, String roleDefinitionName) {
-        Objects.requireNonNull(roleScope, String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
-        Objects.requireNonNull(roleDefinitionName,
-            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleDefinitionName'"));
+        Objects.requireNonNull(roleScope, String.format(PARAMETER_REQUIRED, "'roleScope'"));
+        Objects.requireNonNull(roleDefinitionName, String.format(PARAMETER_REQUIRED, "'roleDefinitionName'"));
     }
 
     @SuppressWarnings("BoundedWildcard")
@@ -160,16 +164,39 @@ class KeyVaultAdministrationUtil {
         return new TransformedPagedResponse<>(keyVaultRoleDefinitions, pagedResponse);
     }
 
-    static Response<KeyVaultRoleDefinition> transformRoleDefinitionResponse(Response<RoleDefinition> response) {
-        KeyVaultRoleDefinition keyVaultRoleDefinition = roleDefinitionToKeyVaultRoleDefinition(response.getValue());
+    static <T> Response<T> transformBinaryDataResponse(Response<BinaryData> response, Class<T> clazz) {
+        if (response == null) {
+            return null;
+        }
 
-        return new TransformedResponse<>(keyVaultRoleDefinition, response);
+        BinaryData binaryData = response.getValue();
+
+        if (binaryData == null) {
+            return new SimpleResponse<>(response, null);
+        }
+
+        return new SimpleResponse<>(response, BinaryData.fromObject(response.getValue()).toObject(clazz));
+    }
+
+    static <T> Response<T> transformBinaryDataResponse(Response<BinaryData> response,
+        Function<BinaryData, T> transformationFunction) {
+        if (response == null) {
+            return null;
+        }
+
+        BinaryData binaryData = response.getValue();
+
+        if (binaryData == null) {
+            return new SimpleResponse<>(response, null);
+        }
+
+        return new SimpleResponse<>(response, transformationFunction.apply(binaryData));
     }
 
     static KeyVaultRoleDefinition roleDefinitionToKeyVaultRoleDefinition(RoleDefinition roleDefinition) {
         List<KeyVaultPermission> keyVaultPermissions = new ArrayList<>();
 
-        for (Permission permission : roleDefinition.getPermissions()) {
+        for (Permission permission : roleDefinition.getProperties().getPermissions()) {
             keyVaultPermissions.add(new KeyVaultPermission(permission.getActions(), permission.getNotActions(),
                 permission.getDataActions()
                     .stream()
@@ -182,31 +209,14 @@ class KeyVaultAdministrationUtil {
         }
 
         return new KeyVaultRoleDefinition(roleDefinition.getId(), roleDefinition.getName(),
-            KeyVaultRoleDefinitionType.fromString(roleDefinition.getType().toString()), roleDefinition.getRoleName(),
-            roleDefinition.getDescription(), KeyVaultRoleType.fromString(roleDefinition.getRoleType().toString()),
-            keyVaultPermissions,
-            roleDefinition.getAssignableScopes()
+            KeyVaultRoleDefinitionType.fromString(roleDefinition.getType().toString()),
+            roleDefinition.getProperties().getRoleName(), roleDefinition.getProperties().getDescription(),
+            KeyVaultRoleType.fromString(roleDefinition.getProperties().getRoleType().toString()), keyVaultPermissions,
+            roleDefinition.getProperties()
+                .getAssignableScopes()
                 .stream()
                 .map(roleScope -> KeyVaultRoleScope.fromString(roleScope.toString()))
                 .collect(Collectors.toList()));
-    }
-
-    static PagedResponse<KeyVaultRoleAssignment>
-        transformRoleAssignmentsPagedResponse(PagedResponse<RoleAssignment> pagedResponse) {
-
-        List<KeyVaultRoleAssignment> keyVaultRoleAssignments = new ArrayList<>();
-
-        for (RoleAssignment roleAssignment : pagedResponse.getValue()) {
-            keyVaultRoleAssignments.add(roleAssignmentToKeyVaultRoleAssignment(roleAssignment));
-        }
-
-        return new TransformedPagedResponse<>(keyVaultRoleAssignments, pagedResponse);
-    }
-
-    static Response<KeyVaultRoleAssignment> transformRoleAssignmentResponse(Response<RoleAssignment> response) {
-        KeyVaultRoleAssignment keyVaultRoleAssignment = roleAssignmentToKeyVaultRoleAssignment(response.getValue());
-
-        return new TransformedResponse<>(keyVaultRoleAssignment, response);
     }
 
     static KeyVaultRoleAssignment roleAssignmentToKeyVaultRoleAssignment(RoleAssignment roleAssignment) {
@@ -262,36 +272,6 @@ class KeyVaultAdministrationUtil {
         }
     }
 
-    private static final class TransformedResponse<T, U> implements Response<T> {
-        private final T output;
-        private final Response<U> response;
-
-        TransformedResponse(T output, Response<U> response) {
-            this.output = output;
-            this.response = response;
-        }
-
-        @Override
-        public int getStatusCode() {
-            return response.getStatusCode();
-        }
-
-        @Override
-        public HttpHeaders getHeaders() {
-            return response.getHeaders();
-        }
-
-        @Override
-        public HttpRequest getRequest() {
-            return response.getRequest();
-        }
-
-        @Override
-        public T getValue() {
-            return output;
-        }
-    }
-
     static LongRunningOperationStatus toLongRunningOperationStatus(String operationStatus) {
         switch (operationStatus) {
             case "inprogress":
@@ -313,30 +293,37 @@ class KeyVaultAdministrationUtil {
         if (operation instanceof RestoreOperation) {
             RestoreOperation restoreOperation = (RestoreOperation) operation;
 
-            return new KeyVaultRestoreOperation(restoreOperation.getStatus(), restoreOperation.getStatusDetails(),
-                createKeyVaultErrorFromError(restoreOperation.getError()), restoreOperation.getJobId(),
-                restoreOperation.getStartTime(), restoreOperation.getEndTime());
+            return new KeyVaultRestoreOperation(restoreOperation.getStatus().getValue(),
+                restoreOperation.getStatusDetails(), toKeyVaultAdministrationError(restoreOperation.getError()),
+                restoreOperation.getJobId(), restoreOperation.getStartTime(), restoreOperation.getEndTime());
         } else if (operation instanceof SelectiveKeyRestoreOperation) {
             SelectiveKeyRestoreOperation selectiveKeyRestoreOperation = (SelectiveKeyRestoreOperation) operation;
 
-            return new KeyVaultSelectiveKeyRestoreOperation(selectiveKeyRestoreOperation.getStatus(),
+            return new KeyVaultSelectiveKeyRestoreOperation(selectiveKeyRestoreOperation.getStatus().getValue(),
                 selectiveKeyRestoreOperation.getStatusDetails(),
-                createKeyVaultErrorFromError(selectiveKeyRestoreOperation.getError()),
+                toKeyVaultAdministrationError(selectiveKeyRestoreOperation.getError()),
                 selectiveKeyRestoreOperation.getJobId(), selectiveKeyRestoreOperation.getStartTime(),
                 selectiveKeyRestoreOperation.getEndTime());
         } else if (operation instanceof FullBackupOperation) {
             FullBackupOperation fullBackupOperation = (FullBackupOperation) operation;
 
-            return new KeyVaultBackupOperation(fullBackupOperation.getStatus(), fullBackupOperation.getStatusDetails(),
-                createKeyVaultErrorFromError(fullBackupOperation.getError()), fullBackupOperation.getJobId(),
-                fullBackupOperation.getStartTime(), fullBackupOperation.getEndTime(),
+            return new KeyVaultBackupOperation(fullBackupOperation.getStatus().getValue(),
+                fullBackupOperation.getStatusDetails(), toKeyVaultAdministrationError(fullBackupOperation.getError()),
+                fullBackupOperation.getJobId(), fullBackupOperation.getStartTime(), fullBackupOperation.getEndTime(),
                 fullBackupOperation.getAzureStorageBlobContainerUri());
         } else {
             throw new UnsupportedOperationException();
         }
     }
 
-    static Context enableSyncRestProxy(Context context) {
-        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+    static <T, R> PagedResponse<R> mapPagedResponse(PagedResponse<T> page, Function<T, R> itemMapper) {
+        List<R> mappedValues = new ArrayList<>(page.getValue().size());
+
+        for (T item : page.getValue()) {
+            mappedValues.add(itemMapper.apply(item));
+        }
+
+        return new PagedResponseBase<>(page.getRequest(), page.getStatusCode(), page.getHeaders(), mappedValues,
+            page.getContinuationToken(), null);
     }
 }

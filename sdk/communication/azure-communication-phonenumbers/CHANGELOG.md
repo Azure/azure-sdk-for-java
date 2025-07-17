@@ -1,5 +1,63 @@
 # Release History
 
+## 1.4.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.2.3 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.10` to version `1.4.0`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
+## 1.3.0 (2025-06-20)
+
+### Features Added
+- GA release of the reservations functionality.
+- GA support for automated purchases of phone numbers from countries requiring a do not resell agreement.
+  - For more information, refer to: https://learn.microsoft.com/azure/communication-services/concepts/numbers/sub-eligibility-number-capability
+
+## 1.3.0-beta.1 (2025-05-21)
+
+### Features Added
+
+- Adds support for the Browse Available Phone Numbers and Reservations APIs
+  - This adds an alternate way to search and purchase phone numbers that allows customers to select which phone numbers they want to reserve and purchase.
+- Adds support for automated purchases of phone numbers from countries requiring a Do Not Resell agreement.
+  - For more information, refer to: https://learn.microsoft.com/azure/communication-services/concepts/numbers/sub-eligibility-number-capability
+- API version `2025-04-01` is the default.
+
+## 1.2.2 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.9` to version `1.3.10`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+
+
+## 1.2.1 (2025-03-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.8` to version `1.15.10`.
+- Upgraded `azure-core` from `1.55.0` to version `1.55.2`.
+
+
 ## 1.2.0 (2025-02-11)
 
 ### Other Changes

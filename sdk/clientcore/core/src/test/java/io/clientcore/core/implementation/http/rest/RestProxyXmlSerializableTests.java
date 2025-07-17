@@ -3,23 +3,23 @@
 
 package io.clientcore.core.implementation.http.rest;
 
-import io.clientcore.core.annotation.ServiceInterface;
-import io.clientcore.core.http.MockHttpResponse;
+import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.http.RestProxy;
-import io.clientcore.core.http.annotation.BodyParam;
-import io.clientcore.core.http.annotation.HttpRequestInformation;
+import io.clientcore.core.http.annotations.BodyParam;
+import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
+import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.StringBinaryData;
 import io.clientcore.core.serialization.xml.XmlSerializable;
-import io.clientcore.core.util.binarydata.StringBinaryData;
+import java.util.function.BiConsumer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import java.util.function.BiConsumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -68,7 +68,7 @@ public class RestProxyXmlSerializableTests {
             } else {
                 assertEquals(doubleQuoteXmlDeclaration + expectedBody, body);
             }
-            return new MockHttpResponse(request, 200);
+            return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
         }).build();
 
         SimpleXmlSerializableProxy proxy = RestProxy.create(SimpleXmlSerializableProxy.class, pipeline);
@@ -82,7 +82,7 @@ public class RestProxyXmlSerializableTests {
             + "<int>10</int><string>10</string></SimpleXml>";
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(request -> new MockHttpResponse(request, 200,
+            .httpClient(request -> new Response<>(request, 200,
                 new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType), new StringBinaryData(response)))
             .build();
 
@@ -103,7 +103,7 @@ public class RestProxyXmlSerializableTests {
             + "<SimpleXml boolean=\"true\" decimal=\"10.0\"></SimpleXml>";
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(request -> new MockHttpResponse(request, 200,
+            .httpClient(request -> new Response<>(request, 200,
                 new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType), new StringBinaryData(response)))
             .build();
 

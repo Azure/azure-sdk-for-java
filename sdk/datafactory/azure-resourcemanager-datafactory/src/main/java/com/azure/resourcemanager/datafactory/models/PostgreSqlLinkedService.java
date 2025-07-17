@@ -51,7 +51,7 @@ public final class PostgreSqlLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private PostgreSqlLinkedServiceTypeProperties innerTypeProperties() {
+    PostgreSqlLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

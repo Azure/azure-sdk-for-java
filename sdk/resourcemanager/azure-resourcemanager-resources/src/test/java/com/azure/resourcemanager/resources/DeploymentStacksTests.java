@@ -6,18 +6,20 @@ package com.azure.resourcemanager.resources;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.fluent.models.DeploymentStackInner;
 import com.azure.resourcemanager.resources.models.ActionOnUnmanage;
 import com.azure.resourcemanager.resources.models.DenySettings;
 import com.azure.resourcemanager.resources.models.DenySettingsMode;
+import com.azure.resourcemanager.resources.models.DeploymentParameter;
 import com.azure.resourcemanager.resources.models.DeploymentStacksDeleteDetachEnum;
-import com.azure.resourcemanager.resources.models.DeploymentStacksParametersLink;
-import com.azure.resourcemanager.resources.models.DeploymentStacksTemplateLink;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DeploymentStacksTests extends ResourceManagementTest {
 
@@ -51,18 +53,21 @@ public class DeploymentStacksTests extends ResourceManagementTest {
     public void testDeploymentStacks() {
         final String dpName = "dpA" + testId;
 
+        Object template
+            = BinaryData.fromStream(DeploymentStacksTests.class.getResourceAsStream("/vnetTwoSubnetsTemplate.json"))
+                .toObject(Object.class);
+        Map<String, DeploymentParameter> templateParameters = new HashMap<>();
+
         DeploymentStackInner deploymentStack = resourceClient.deploymentStackClient()
             .getDeploymentStacks()
-            .createOrUpdateAtResourceGroup(rgName, dpName, new DeploymentStackInner()
-                .withTags(Collections.singletonMap("usage", "test"))
-                .withTemplateLink(
-                    new DeploymentStacksTemplateLink().withUri(TEMPLATE_URI).withContentVersion(CONTENT_VERSION))
-                .withParametersLink(
-                    new DeploymentStacksParametersLink().withUri(PARAMETERS_URI).withContentVersion(CONTENT_VERSION))
-                .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                    .withResourceGroups(DeploymentStacksDeleteDetachEnum.DETACH)
-                    .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
-                .withDenySettings(new DenySettings().withMode(DenySettingsMode.NONE)));
+            .createOrUpdateAtResourceGroup(rgName, dpName,
+                new DeploymentStackInner().withTags(Collections.singletonMap("usage", "test"))
+                    .withTemplate(template)
+                    .withParameters(templateParameters)
+                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
+                        .withResourceGroups(DeploymentStacksDeleteDetachEnum.DETACH)
+                        .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                    .withDenySettings(new DenySettings().withMode(DenySettingsMode.NONE)));
 
         Assertions.assertEquals(dpName, deploymentStack.name());
         Assertions.assertEquals(DeploymentStacksDeleteDetachEnum.DELETE,

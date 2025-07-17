@@ -2350,9 +2350,7 @@ public class UTF8StreamJsonParser extends ParserBase {
             }
             ch = _inputBuffer[_inputPtr++];
             String match;
-            if (ch == 'N') {
-                match = neg ? "-INF" : "+INF";
-            } else if (ch == 'n') {
+            if (ch == 'n') {
                 match = neg ? "-Infinity" : "+Infinity";
             } else {
                 break;

@@ -52,7 +52,7 @@ public final class AzureDataExplorerCommandActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureDataExplorerCommandActivityTypeProperties innerTypeProperties() {
+    AzureDataExplorerCommandActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

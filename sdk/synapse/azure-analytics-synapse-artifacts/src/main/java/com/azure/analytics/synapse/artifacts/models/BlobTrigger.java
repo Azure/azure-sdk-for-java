@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,31 +22,31 @@ public class BlobTrigger extends MultiplePipelineTrigger {
     /*
      * Trigger type.
      */
+    @Generated
     private String type = "BlobTrigger";
 
     /*
      * The path of the container/folder that will trigger the pipeline.
      */
+    @Generated
     private String folderPath;
 
     /*
      * The max number of parallel files to handle when it is triggered.
      */
+    @Generated
     private int maxConcurrency;
 
     /*
      * The Azure Storage linked service reference.
      */
+    @Generated
     private LinkedServiceReference linkedService;
-
-    /*
-     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
-     */
-    private TriggerRuntimeState runtimeState;
 
     /**
      * Creates an instance of BlobTrigger class.
      */
+    @Generated
     public BlobTrigger() {
     }
 
@@ -54,6 +55,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -64,6 +66,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
      * 
      * @return the folderPath value.
      */
+    @Generated
     public String getFolderPath() {
         return this.folderPath;
     }
@@ -74,6 +77,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
      * @param folderPath the folderPath value to set.
      * @return the BlobTrigger object itself.
      */
+    @Generated
     public BlobTrigger setFolderPath(String folderPath) {
         this.folderPath = folderPath;
         return this;
@@ -84,6 +88,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
      * 
      * @return the maxConcurrency value.
      */
+    @Generated
     public int getMaxConcurrency() {
         return this.maxConcurrency;
     }
@@ -94,6 +99,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
      * @param maxConcurrency the maxConcurrency value to set.
      * @return the BlobTrigger object itself.
      */
+    @Generated
     public BlobTrigger setMaxConcurrency(int maxConcurrency) {
         this.maxConcurrency = maxConcurrency;
         return this;
@@ -104,6 +110,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
      * 
      * @return the linkedService value.
      */
+    @Generated
     public LinkedServiceReference getLinkedService() {
         return this.linkedService;
     }
@@ -114,25 +121,16 @@ public class BlobTrigger extends MultiplePipelineTrigger {
      * @param linkedService the linkedService value to set.
      * @return the BlobTrigger object itself.
      */
+    @Generated
     public BlobTrigger setLinkedService(LinkedServiceReference linkedService) {
         this.linkedService = linkedService;
         return this;
     }
 
     /**
-     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
-     * the Trigger.
-     * 
-     * @return the runtimeState value.
-     */
-    @Override
-    public TriggerRuntimeState getRuntimeState() {
-        return this.runtimeState;
-    }
-
-    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BlobTrigger setPipelines(List<TriggerPipelineReference> pipelines) {
         super.setPipelines(pipelines);
@@ -142,6 +140,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BlobTrigger setDescription(String description) {
         super.setDescription(description);
@@ -151,6 +150,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BlobTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -160,6 +160,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -189,6 +190,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BlobTrigger.
      */
+    @Generated
     public static BlobTrigger fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BlobTrigger deserializedBlobTrigger = new BlobTrigger();
@@ -200,7 +202,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
                 if ("description".equals(fieldName)) {
                     deserializedBlobTrigger.setDescription(reader.getString());
                 } else if ("runtimeState".equals(fieldName)) {
-                    deserializedBlobTrigger.runtimeState = TriggerRuntimeState.fromString(reader.getString());
+                    deserializedBlobTrigger.setRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
                 } else if ("annotations".equals(fieldName)) {
                     List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedBlobTrigger.setAnnotations(annotations);

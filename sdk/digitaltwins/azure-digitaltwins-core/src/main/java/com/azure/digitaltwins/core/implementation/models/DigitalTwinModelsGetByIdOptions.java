@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 
 /**
  * Parameter group.
@@ -14,16 +15,19 @@ public final class DigitalTwinModelsGetByIdOptions {
     /*
      * Identifies the request in a distributed tracing system.
      */
+    @Generated
     private String traceparent;
 
     /*
      * Provides vendor-specific trace identification information and is a companion to traceparent.
      */
+    @Generated
     private String tracestate;
 
     /**
      * Creates an instance of DigitalTwinModelsGetByIdOptions class.
      */
+    @Generated
     public DigitalTwinModelsGetByIdOptions() {
     }
 
@@ -32,6 +36,7 @@ public final class DigitalTwinModelsGetByIdOptions {
      * 
      * @return the traceparent value.
      */
+    @Generated
     public String getTraceparent() {
         return this.traceparent;
     }
@@ -42,6 +47,7 @@ public final class DigitalTwinModelsGetByIdOptions {
      * @param traceparent the traceparent value to set.
      * @return the DigitalTwinModelsGetByIdOptions object itself.
      */
+    @Generated
     public DigitalTwinModelsGetByIdOptions setTraceparent(String traceparent) {
         this.traceparent = traceparent;
         return this;
@@ -53,6 +59,7 @@ public final class DigitalTwinModelsGetByIdOptions {
      * 
      * @return the tracestate value.
      */
+    @Generated
     public String getTracestate() {
         return this.tracestate;
     }
@@ -64,6 +71,7 @@ public final class DigitalTwinModelsGetByIdOptions {
      * @param tracestate the tracestate value to set.
      * @return the DigitalTwinModelsGetByIdOptions object itself.
      */
+    @Generated
     public DigitalTwinModelsGetByIdOptions setTracestate(String tracestate) {
         this.tracestate = tracestate;
         return this;

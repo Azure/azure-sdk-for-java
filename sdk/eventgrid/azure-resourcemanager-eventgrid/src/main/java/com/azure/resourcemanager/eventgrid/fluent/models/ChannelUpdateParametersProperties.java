@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.eventgrid.models.PartnerUpdateDestinationInfo;
 import com.azure.resourcemanager.eventgrid.models.PartnerUpdateTopicInfo;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -27,11 +26,6 @@ public final class ChannelUpdateParametersProperties implements JsonSerializable
      * the channel and corresponding partner topic or partner destination are deleted.
      */
     private OffsetDateTime expirationTimeIfNotActivatedUtc;
-
-    /*
-     * Partner destination properties which can be updated if the channel is of type PartnerDestination.
-     */
-    private PartnerUpdateDestinationInfo partnerDestinationInfo;
 
     /*
      * Partner topic properties which can be updated if the channel is of type PartnerTopic.
@@ -70,29 +64,6 @@ public final class ChannelUpdateParametersProperties implements JsonSerializable
     }
 
     /**
-     * Get the partnerDestinationInfo property: Partner destination properties which can be updated if the channel is of
-     * type PartnerDestination.
-     * 
-     * @return the partnerDestinationInfo value.
-     */
-    public PartnerUpdateDestinationInfo partnerDestinationInfo() {
-        return this.partnerDestinationInfo;
-    }
-
-    /**
-     * Set the partnerDestinationInfo property: Partner destination properties which can be updated if the channel is of
-     * type PartnerDestination.
-     * 
-     * @param partnerDestinationInfo the partnerDestinationInfo value to set.
-     * @return the ChannelUpdateParametersProperties object itself.
-     */
-    public ChannelUpdateParametersProperties
-        withPartnerDestinationInfo(PartnerUpdateDestinationInfo partnerDestinationInfo) {
-        this.partnerDestinationInfo = partnerDestinationInfo;
-        return this;
-    }
-
-    /**
      * Get the partnerTopicInfo property: Partner topic properties which can be updated if the channel is of type
      * PartnerTopic.
      * 
@@ -120,9 +91,6 @@ public final class ChannelUpdateParametersProperties implements JsonSerializable
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (partnerDestinationInfo() != null) {
-            partnerDestinationInfo().validate();
-        }
         if (partnerTopicInfo() != null) {
             partnerTopicInfo().validate();
         }
@@ -138,7 +106,6 @@ public final class ChannelUpdateParametersProperties implements JsonSerializable
             this.expirationTimeIfNotActivatedUtc == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationTimeIfNotActivatedUtc));
-        jsonWriter.writeJsonField("partnerDestinationInfo", this.partnerDestinationInfo);
         jsonWriter.writeJsonField("partnerTopicInfo", this.partnerTopicInfo);
         return jsonWriter.writeEndObject();
     }
@@ -162,9 +129,6 @@ public final class ChannelUpdateParametersProperties implements JsonSerializable
                 if ("expirationTimeIfNotActivatedUtc".equals(fieldName)) {
                     deserializedChannelUpdateParametersProperties.expirationTimeIfNotActivatedUtc = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("partnerDestinationInfo".equals(fieldName)) {
-                    deserializedChannelUpdateParametersProperties.partnerDestinationInfo
-                        = PartnerUpdateDestinationInfo.fromJson(reader);
                 } else if ("partnerTopicInfo".equals(fieldName)) {
                     deserializedChannelUpdateParametersProperties.partnerTopicInfo
                         = PartnerUpdateTopicInfo.fromJson(reader);

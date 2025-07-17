@@ -13,27 +13,27 @@ public final class GatewayContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewayContractProperties model = BinaryData.fromString(
-            "{\"locationData\":{\"name\":\"xkf\",\"city\":\"oaqymhcctopuowyr\",\"district\":\"kbyhqu\",\"countryOrRegion\":\"zygxvha\"},\"description\":\"xecxqnwh\"}")
+            "{\"locationData\":{\"name\":\"shksny\",\"city\":\"spamwbwmbnls\",\"district\":\"efiqdktwtkv\",\"countryOrRegion\":\"lpfliwoyn\"},\"description\":\"uzhwvladpcmhjhau\"}")
             .toObject(GatewayContractProperties.class);
-        Assertions.assertEquals("xkf", model.locationData().name());
-        Assertions.assertEquals("oaqymhcctopuowyr", model.locationData().city());
-        Assertions.assertEquals("kbyhqu", model.locationData().district());
-        Assertions.assertEquals("zygxvha", model.locationData().countryOrRegion());
-        Assertions.assertEquals("xecxqnwh", model.description());
+        Assertions.assertEquals("shksny", model.locationData().name());
+        Assertions.assertEquals("spamwbwmbnls", model.locationData().city());
+        Assertions.assertEquals("efiqdktwtkv", model.locationData().district());
+        Assertions.assertEquals("lpfliwoyn", model.locationData().countryOrRegion());
+        Assertions.assertEquals("uzhwvladpcmhjhau", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GatewayContractProperties model
-            = new GatewayContractProperties().withLocationData(new ResourceLocationDataContract().withName("xkf")
-                .withCity("oaqymhcctopuowyr")
-                .withDistrict("kbyhqu")
-                .withCountryOrRegion("zygxvha")).withDescription("xecxqnwh");
+            = new GatewayContractProperties().withLocationData(new ResourceLocationDataContract().withName("shksny")
+                .withCity("spamwbwmbnls")
+                .withDistrict("efiqdktwtkv")
+                .withCountryOrRegion("lpfliwoyn")).withDescription("uzhwvladpcmhjhau");
         model = BinaryData.fromObject(model).toObject(GatewayContractProperties.class);
-        Assertions.assertEquals("xkf", model.locationData().name());
-        Assertions.assertEquals("oaqymhcctopuowyr", model.locationData().city());
-        Assertions.assertEquals("kbyhqu", model.locationData().district());
-        Assertions.assertEquals("zygxvha", model.locationData().countryOrRegion());
-        Assertions.assertEquals("xecxqnwh", model.description());
+        Assertions.assertEquals("shksny", model.locationData().name());
+        Assertions.assertEquals("spamwbwmbnls", model.locationData().city());
+        Assertions.assertEquals("efiqdktwtkv", model.locationData().district());
+        Assertions.assertEquals("lpfliwoyn", model.locationData().countryOrRegion());
+        Assertions.assertEquals("uzhwvladpcmhjhau", model.description());
     }
 }

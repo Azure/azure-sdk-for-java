@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxyBaseResource;
@@ -21,28 +21,28 @@ public final class ResourceGuardProxyOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceGuardResourceId\":\"evsaa\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"caxikhfjqebgl\",\"defaultResourceRequest\":\"kxgzzromvygysem\"},{\"vaultCriticalOperation\":\"esrfsvpinkzpatq\",\"defaultResourceRequest\":\"iswxspv\"}],\"lastUpdatedTime\":\"ojazbbgspfte\",\"description\":\"b\"},\"eTag\":\"vpvdylytcovqse\",\"location\":\"srfjbdxzfxnx\",\"tags\":{\"cy\":\"muoswkjmdih\"},\"id\":\"yzlwhbwzjnufzrf\",\"name\":\"m\",\"type\":\"qgnnbz\"}";
+            = "{\"properties\":{\"resourceGuardResourceId\":\"fcm\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"ode\",\"defaultResourceRequest\":\"esrgvtshuvftwai\"},{\"vaultCriticalOperation\":\"uqk\",\"defaultResourceRequest\":\"zgjypanhxmpdxxz\"},{\"vaultCriticalOperation\":\"wwzjwotnxlkfhglh\",\"defaultResourceRequest\":\"oxqwecrsnhpcse\"},{\"vaultCriticalOperation\":\"xovppqibukklvzr\",\"defaultResourceRequest\":\"mlccmetjscz\"}],\"lastUpdatedTime\":\"fqbqnasd\",\"description\":\"enz\"},\"eTag\":\"euscplhyv\",\"location\":\"gxlyzkxitdshezs\",\"tags\":{\"sayebra\":\"lrupjovmo\",\"ykykip\":\"wzlpzbtz\",\"mbezacfpztg\":\"sdyepfno\"},\"id\":\"zwyqejga\",\"name\":\"okctgkppgkqzkc\",\"type\":\"zmffngdyfcixrh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ResourceGuardProxyBaseResource response = manager.resourceGuardProxyOperations()
-            .getWithResponse("eq", "dynzjahwr", "uomzczfki", com.azure.core.util.Context.NONE)
+            .getWithResponse("grdcgubsrtmdy", "perpi", "ttjzg", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("srfjbdxzfxnx", response.location());
-        Assertions.assertEquals("muoswkjmdih", response.tags().get("cy"));
-        Assertions.assertEquals("evsaa", response.properties().resourceGuardResourceId());
-        Assertions.assertEquals("caxikhfjqebgl",
+        Assertions.assertEquals("gxlyzkxitdshezs", response.location());
+        Assertions.assertEquals("lrupjovmo", response.tags().get("sayebra"));
+        Assertions.assertEquals("fcm", response.properties().resourceGuardResourceId());
+        Assertions.assertEquals("ode",
             response.properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions.assertEquals("kxgzzromvygysem",
+        Assertions.assertEquals("esrgvtshuvftwai",
             response.properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("ojazbbgspfte", response.properties().lastUpdatedTime());
-        Assertions.assertEquals("b", response.properties().description());
-        Assertions.assertEquals("vpvdylytcovqse", response.etag());
+        Assertions.assertEquals("fqbqnasd", response.properties().lastUpdatedTime());
+        Assertions.assertEquals("enz", response.properties().description());
+        Assertions.assertEquals("euscplhyv", response.etag());
     }
 }

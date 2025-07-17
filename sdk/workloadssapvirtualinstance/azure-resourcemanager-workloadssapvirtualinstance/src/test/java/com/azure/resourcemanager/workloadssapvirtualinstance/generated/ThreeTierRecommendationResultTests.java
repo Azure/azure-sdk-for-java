@@ -12,13 +12,13 @@ public final class ThreeTierRecommendationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThreeTierRecommendationResult model = BinaryData.fromString(
-            "{\"deploymentType\":\"ThreeTier\",\"dbVmSku\":\"bzmnvdfznud\",\"databaseInstanceCount\":6737445379863438751,\"centralServerVmSku\":\"zbn\",\"centralServerInstanceCount\":9060277585514790302,\"applicationServerVmSku\":\"pstdbhhxsrzd\",\"applicationServerInstanceCount\":4128477649983650964}")
+            "{\"deploymentType\":\"ThreeTier\",\"dbVmSku\":\"qzvszjf\",\"databaseInstanceCount\":5609959872592066147,\"centralServerVmSku\":\"dxxiv\",\"centralServerInstanceCount\":531591001372230315,\"applicationServerVmSku\":\"qaqtdoqmcbxvwvxy\",\"applicationServerInstanceCount\":196734015305662676}")
             .toObject(ThreeTierRecommendationResult.class);
-        Assertions.assertEquals("bzmnvdfznud", model.dbVmSku());
-        Assertions.assertEquals(6737445379863438751L, model.databaseInstanceCount());
-        Assertions.assertEquals("zbn", model.centralServerVmSku());
-        Assertions.assertEquals(9060277585514790302L, model.centralServerInstanceCount());
-        Assertions.assertEquals("pstdbhhxsrzd", model.applicationServerVmSku());
-        Assertions.assertEquals(4128477649983650964L, model.applicationServerInstanceCount());
+        Assertions.assertEquals("qzvszjf", model.dbVmSku());
+        Assertions.assertEquals(5609959872592066147L, model.databaseInstanceCount());
+        Assertions.assertEquals("dxxiv", model.centralServerVmSku());
+        Assertions.assertEquals(531591001372230315L, model.centralServerInstanceCount());
+        Assertions.assertEquals("qaqtdoqmcbxvwvxy", model.applicationServerVmSku());
+        Assertions.assertEquals(196734015305662676L, model.applicationServerInstanceCount());
     }
 }

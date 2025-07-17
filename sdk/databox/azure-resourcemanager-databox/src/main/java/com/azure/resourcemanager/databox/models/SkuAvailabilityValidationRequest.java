@@ -43,6 +43,12 @@ public final class SkuAvailabilityValidationRequest extends ValidationInputReque
      */
     private String location;
 
+    /*
+     * The customer friendly name of the combination of version and capacity of the device. This field is necessary only
+     * at the time of ordering the newer generation device i.e. AzureDataBox120 and AzureDataBox525 as of Feb/2025
+     */
+    private ModelName model;
+
     /**
      * Creates an instance of SkuAvailabilityValidationRequest class.
      */
@@ -144,6 +150,30 @@ public final class SkuAvailabilityValidationRequest extends ValidationInputReque
     }
 
     /**
+     * Get the model property: The customer friendly name of the combination of version and capacity of the device. This
+     * field is necessary only at the time of ordering the newer generation device i.e. AzureDataBox120 and
+     * AzureDataBox525 as of Feb/2025.
+     * 
+     * @return the model value.
+     */
+    public ModelName model() {
+        return this.model;
+    }
+
+    /**
+     * Set the model property: The customer friendly name of the combination of version and capacity of the device. This
+     * field is necessary only at the time of ordering the newer generation device i.e. AzureDataBox120 and
+     * AzureDataBox525 as of Feb/2025.
+     * 
+     * @param model the model value to set.
+     * @return the SkuAvailabilityValidationRequest object itself.
+     */
+    public SkuAvailabilityValidationRequest withModel(ModelName model) {
+        this.model = model;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -186,6 +216,7 @@ public final class SkuAvailabilityValidationRequest extends ValidationInputReque
         jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeStringField("validationType",
             this.validationType == null ? null : this.validationType.toString());
+        jsonWriter.writeStringField("model", this.model == null ? null : this.model.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -218,6 +249,8 @@ public final class SkuAvailabilityValidationRequest extends ValidationInputReque
                 } else if ("validationType".equals(fieldName)) {
                     deserializedSkuAvailabilityValidationRequest.validationType
                         = ValidationInputDiscriminator.fromString(reader.getString());
+                } else if ("model".equals(fieldName)) {
+                    deserializedSkuAvailabilityValidationRequest.model = ModelName.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

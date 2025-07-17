@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.http.serializer;
 
-import io.clientcore.core.http.exception.HttpResponseException;
+import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.rest.SwaggerMethodParser;
 
@@ -69,7 +69,7 @@ public interface HttpResponseDecodeData {
      * @return The {@link UnexpectedExceptionInformation} to generate an exception to throw or return.
      */
     default UnexpectedExceptionInformation getUnexpectedException(int code) {
-        return new UnexpectedExceptionInformation(null, null);
+        return new UnexpectedExceptionInformation(null);
     }
 
     /**

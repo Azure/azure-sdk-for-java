@@ -51,7 +51,7 @@ public final class CustomActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private CustomActivityTypeProperties innerTypeProperties() {
+    CustomActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

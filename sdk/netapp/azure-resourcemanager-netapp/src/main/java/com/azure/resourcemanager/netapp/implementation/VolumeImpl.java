@@ -17,11 +17,13 @@ import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
 import com.azure.resourcemanager.netapp.models.ClusterPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
+import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
+import com.azure.resourcemanager.netapp.models.LdapServerType;
 import com.azure.resourcemanager.netapp.models.ListQuotaReportResponse;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PeerClusterForVolumeMigrationRequest;
@@ -237,6 +239,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().ldapEnabled();
     }
 
+    public LdapServerType ldapServerType() {
+        return this.innerModel().ldapServerType();
+    }
+
     public Boolean coolAccess() {
         return this.innerModel().coolAccess();
     }
@@ -247,6 +253,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public CoolAccessRetrievalPolicy coolAccessRetrievalPolicy() {
         return this.innerModel().coolAccessRetrievalPolicy();
+    }
+
+    public CoolAccessTieringPolicy coolAccessTieringPolicy() {
+        return this.innerModel().coolAccessTieringPolicy();
     }
 
     public String unixPermissions() {
@@ -737,11 +747,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
-    public VolumeImpl withIsRestoring(Boolean isRestoring) {
-        this.innerModel().withIsRestoring(isRestoring);
-        return this;
-    }
-
     public VolumeImpl withSnapshotDirectoryVisible(Boolean snapshotDirectoryVisible) {
         if (isInCreateMode()) {
             this.innerModel().withSnapshotDirectoryVisible(snapshotDirectoryVisible);
@@ -817,6 +822,11 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
+    public VolumeImpl withLdapServerType(LdapServerType ldapServerType) {
+        this.innerModel().withLdapServerType(ldapServerType);
+        return this;
+    }
+
     public VolumeImpl withCoolAccess(Boolean coolAccess) {
         if (isInCreateMode()) {
             this.innerModel().withCoolAccess(coolAccess);
@@ -843,6 +853,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
             return this;
         } else {
             this.updateBody.withCoolAccessRetrievalPolicy(coolAccessRetrievalPolicy);
+            return this;
+        }
+    }
+
+    public VolumeImpl withCoolAccessTieringPolicy(CoolAccessTieringPolicy coolAccessTieringPolicy) {
+        if (isInCreateMode()) {
+            this.innerModel().withCoolAccessTieringPolicy(coolAccessTieringPolicy);
+            return this;
+        } else {
+            this.updateBody.withCoolAccessTieringPolicy(coolAccessTieringPolicy);
             return this;
         }
     }

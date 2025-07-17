@@ -5,10 +5,9 @@
 package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.resourcemanager.networkcloud.models.AdministrativeCredentials;
+import com.azure.resourcemanager.networkcloud.models.AnalyticsOutputSettings;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineConfigurationData;
 import com.azure.resourcemanager.networkcloud.models.Cluster;
-import com.azure.resourcemanager.networkcloud.models.ClusterSecretArchive;
-import com.azure.resourcemanager.networkcloud.models.ClusterSecretArchiveEnabled;
 import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategy;
 import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategyType;
 import com.azure.resourcemanager.networkcloud.models.CommandOutputSettings;
@@ -19,11 +18,14 @@ import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.networkcloud.models.RackDefinition;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfiguration;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionEnforcementLevel;
+import com.azure.resourcemanager.networkcloud.models.SecretArchiveSettings;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceConfigurationData;
 import com.azure.resourcemanager.networkcloud.models.UserAssignedIdentity;
 import com.azure.resourcemanager.networkcloud.models.ValidationThreshold;
 import com.azure.resourcemanager.networkcloud.models.ValidationThresholdGrouping;
 import com.azure.resourcemanager.networkcloud.models.ValidationThresholdType;
+import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettingsContainerScan;
+import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettingsPatch;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +36,7 @@ import java.util.Map;
 public final class ClustersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
      * Clusters_Patch_UpdateStrategy.json
      */
     /**
@@ -58,7 +60,28 @@ public final class ClustersUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
+     * Clusters_Patch_VulnerabilityScanning.json
+     */
+    /**
+     * Sample code: Patch vulnerability scanning.
+     * 
+     * @param manager Entry point to NetworkCloudManager.
+     */
+    public static void patchVulnerabilityScanning(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+        Cluster resource = manager.clusters()
+            .getByResourceGroupWithResponse("resourceGroupName", "clusterName", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+            .withVulnerabilityScanningSettings(new VulnerabilityScanningSettingsPatch()
+                .withContainerScan(VulnerabilityScanningSettingsContainerScan.ENABLED))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
      * Clusters_Patch_Location.json
      */
     /**
@@ -78,7 +101,7 @@ public final class ClustersUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
      * Clusters_Patch_AggregatorOrSingleRackDefinition.json
      */
     /**
@@ -137,7 +160,7 @@ public final class ClustersUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
      * Clusters_Patch_CommandOutput.json
      */
     /**
@@ -167,7 +190,7 @@ public final class ClustersUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
      * Clusters_Patch_RuntimeProtectionConfiguration.json
      */
     /**
@@ -189,7 +212,7 @@ public final class ClustersUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
      * Clusters_Patch_SecretArchive.json
      */
     /**
@@ -203,8 +226,42 @@ public final class ClustersUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-            .withSecretArchive(new ClusterSecretArchive().withKeyVaultId("fakeTokenPlaceholder")
-                .withUseKeyVault(ClusterSecretArchiveEnabled.TRUE))
+            .withSecretArchiveSettings(new SecretArchiveSettings().withAssociatedIdentity(new IdentitySelector()
+                .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
+                .withUserAssignedIdentityResourceId(
+                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"))
+                .withVaultUri("https://keyvaultname.vault.azure.net/"))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
+     * Clusters_Patch_AnalyticsOutput.json
+     */
+    /**
+     * Sample code: Patch cluster analytics output.
+     * 
+     * @param manager Entry point to NetworkCloudManager.
+     */
+    public static void patchClusterAnalyticsOutput(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+        Cluster resource = manager.clusters()
+            .getByResourceGroupWithResponse("resourceGroupName", "clusterName", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1",
+                    null,
+                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity2",
+                    new UserAssignedIdentity())))
+            .withAnalyticsOutputSettings(new AnalyticsOutputSettings().withAnalyticsWorkspaceId(
+                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName")
+                .withAssociatedIdentity(new IdentitySelector()
+                    .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
+                    .withUserAssignedIdentityResourceId(
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity2")))
             .apply();
     }
 

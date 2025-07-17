@@ -12,27 +12,24 @@ public final class WorkloadProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadProfile model = BinaryData.fromString(
-            "{\"name\":\"zragpg\",\"enableFips\":false,\"workloadProfileType\":\"t\",\"minimumCount\":737806246,\"maximumCount\":135335326}")
+            "{\"name\":\"ynenlsvxeizz\",\"workloadProfileType\":\"wklnsrmffeyc\",\"minimumCount\":794764001,\"maximumCount\":529287579}")
             .toObject(WorkloadProfile.class);
-        Assertions.assertEquals("zragpg", model.name());
-        Assertions.assertEquals(false, model.enableFips());
-        Assertions.assertEquals("t", model.workloadProfileType());
-        Assertions.assertEquals(737806246, model.minimumCount());
-        Assertions.assertEquals(135335326, model.maximumCount());
+        Assertions.assertEquals("ynenlsvxeizz", model.name());
+        Assertions.assertEquals("wklnsrmffeyc", model.workloadProfileType());
+        Assertions.assertEquals(794764001, model.minimumCount());
+        Assertions.assertEquals(529287579, model.maximumCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadProfile model = new WorkloadProfile().withName("zragpg")
-            .withEnableFips(false)
-            .withWorkloadProfileType("t")
-            .withMinimumCount(737806246)
-            .withMaximumCount(135335326);
+        WorkloadProfile model = new WorkloadProfile().withName("ynenlsvxeizz")
+            .withWorkloadProfileType("wklnsrmffeyc")
+            .withMinimumCount(794764001)
+            .withMaximumCount(529287579);
         model = BinaryData.fromObject(model).toObject(WorkloadProfile.class);
-        Assertions.assertEquals("zragpg", model.name());
-        Assertions.assertEquals(false, model.enableFips());
-        Assertions.assertEquals("t", model.workloadProfileType());
-        Assertions.assertEquals(737806246, model.minimumCount());
-        Assertions.assertEquals(135335326, model.maximumCount());
+        Assertions.assertEquals("ynenlsvxeizz", model.name());
+        Assertions.assertEquals("wklnsrmffeyc", model.workloadProfileType());
+        Assertions.assertEquals(794764001, model.minimumCount());
+        Assertions.assertEquals(529287579, model.maximumCount());
     }
 }

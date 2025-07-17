@@ -99,6 +99,14 @@ public interface VolumeGroup {
     Boolean enforceDataIntegrityCheckForIscsi();
 
     /**
+     * Gets the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and its
+     * associated resources.
+     * 
+     * @return the deleteRetentionPolicy value.
+     */
+    DeleteRetentionPolicy deleteRetentionPolicy();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -147,9 +155,10 @@ public interface VolumeGroup {
          * The stage of the VolumeGroup definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithIdentity, DefinitionStages.WithProtocolType,
-            DefinitionStages.WithEncryption, DefinitionStages.WithEncryptionProperties,
-            DefinitionStages.WithNetworkAcls, DefinitionStages.WithEnforceDataIntegrityCheckForIscsi {
+        interface WithCreate
+            extends DefinitionStages.WithIdentity, DefinitionStages.WithProtocolType, DefinitionStages.WithEncryption,
+            DefinitionStages.WithEncryptionProperties, DefinitionStages.WithNetworkAcls,
+            DefinitionStages.WithEnforceDataIntegrityCheckForIscsi, DefinitionStages.WithDeleteRetentionPolicy {
             /**
              * Executes the create request.
              * 
@@ -247,6 +256,21 @@ public interface VolumeGroup {
              */
             WithCreate withEnforceDataIntegrityCheckForIscsi(Boolean enforceDataIntegrityCheckForIscsi);
         }
+
+        /**
+         * The stage of the VolumeGroup definition allowing to specify deleteRetentionPolicy.
+         */
+        interface WithDeleteRetentionPolicy {
+            /**
+             * Specifies the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and
+             * its associated resources..
+             * 
+             * @param deleteRetentionPolicy The retention policy for the soft deleted volume group and its associated
+             * resources.
+             * @return the next definition stage.
+             */
+            WithCreate withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy);
+        }
     }
 
     /**
@@ -261,7 +285,7 @@ public interface VolumeGroup {
      */
     interface Update extends UpdateStages.WithIdentity, UpdateStages.WithProtocolType, UpdateStages.WithEncryption,
         UpdateStages.WithEncryptionProperties, UpdateStages.WithNetworkAcls,
-        UpdateStages.WithEnforceDataIntegrityCheckForIscsi {
+        UpdateStages.WithEnforceDataIntegrityCheckForIscsi, UpdateStages.WithDeleteRetentionPolicy {
         /**
          * Executes the update request.
          * 
@@ -362,6 +386,21 @@ public interface VolumeGroup {
              * @return the next definition stage.
              */
             Update withEnforceDataIntegrityCheckForIscsi(Boolean enforceDataIntegrityCheckForIscsi);
+        }
+
+        /**
+         * The stage of the VolumeGroup update allowing to specify deleteRetentionPolicy.
+         */
+        interface WithDeleteRetentionPolicy {
+            /**
+             * Specifies the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and
+             * its associated resources.
+             * 
+             * @param deleteRetentionPolicy The retention policy for the soft deleted volume group and its associated
+             * resources.
+             * @return the next definition stage.
+             */
+            Update withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy);
         }
     }
 

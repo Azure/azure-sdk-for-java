@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,76 +24,91 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
     /*
      * Application Insights SDK version.
      */
+    @Generated
     private String version;
 
     /*
      * Version/generation of the data contract (MonitoringDataPoint) between SDK and Live Metrics.
      */
+    @Generated
     private int invariantVersion;
 
     /*
      * Service instance name where Application Insights SDK lives.
      */
+    @Generated
     private String instance;
 
     /*
      * Service role name.
      */
+    @Generated
     private String roleName;
 
     /*
      * Computer name where Application Insights SDK lives.
      */
+    @Generated
     private String machineName;
 
     /*
      * Identifies an Application Insights SDK as a trusted agent to report metrics and documents.
      */
+    @Generated
     private String streamId;
 
     /*
      * Data point generation timestamp.
      */
+    @Generated
     private OffsetDateTime timestamp;
 
     /*
      * Timestamp when the client transmits the metrics and documents to Live Metrics.
      */
+    @Generated
     private OffsetDateTime transmissionTime;
 
     /*
      * True if the current application is an Azure Web App.
      */
+    @Generated
     private boolean isWebApp;
 
     /*
      * True if performance counters collection is supported.
      */
+    @Generated
     private boolean performanceCollectionSupported;
 
     /*
      * An array of metric data points.
      */
+    @Generated
     private List<MetricPoint> metrics;
 
     /*
      * An array of documents of a specific type {Request}, {RemoteDependency}, {Exception}, {Event}, or {Trace}
      */
+    @Generated
     private List<DocumentIngress> documents;
 
     /*
      * An array of top cpu consumption data point.
      */
+    @Generated
     private List<ProcessCpuData> topCpuProcesses;
 
     /*
      * An array of error while SDK parses and applies the {CollectionConfigurationInfo} provided by Live Metrics.
      */
+    @Generated
     private List<CollectionConfigurationError> collectionConfigurationErrors;
 
     /**
      * Creates an instance of MonitoringDataPoint class.
      */
+    @Generated
     public MonitoringDataPoint() {
     }
 
@@ -101,6 +117,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * 
      * @return the version value.
      */
+    @Generated
     public String getVersion() {
         return this.version;
     }
@@ -111,6 +128,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * @param version the version value to set.
      * @return the MonitoringDataPoint object itself.
      */
+    @Generated
     public MonitoringDataPoint setVersion(String version) {
         this.version = version;
         return this;
@@ -122,6 +140,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * 
      * @return the invariantVersion value.
      */
+    @Generated
     public int getInvariantVersion() {
         return this.invariantVersion;
     }
@@ -133,6 +152,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * @param invariantVersion the invariantVersion value to set.
      * @return the MonitoringDataPoint object itself.
      */
+    @Generated
     public MonitoringDataPoint setInvariantVersion(int invariantVersion) {
         this.invariantVersion = invariantVersion;
         return this;
@@ -143,6 +163,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * 
      * @return the instance value.
      */
+    @Generated
     public String getInstance() {
         return this.instance;
     }
@@ -153,6 +174,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * @param instance the instance value to set.
      * @return the MonitoringDataPoint object itself.
      */
+    @Generated
     public MonitoringDataPoint setInstance(String instance) {
         this.instance = instance;
         return this;
@@ -163,6 +185,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * 
      * @return the roleName value.
      */
+    @Generated
     public String getRoleName() {
         return this.roleName;
     }
@@ -173,6 +196,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * @param roleName the roleName value to set.
      * @return the MonitoringDataPoint object itself.
      */
+    @Generated
     public MonitoringDataPoint setRoleName(String roleName) {
         this.roleName = roleName;
         return this;
@@ -183,6 +207,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * 
      * @return the machineName value.
      */
+    @Generated
     public String getMachineName() {
         return this.machineName;
     }
@@ -193,6 +218,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * @param machineName the machineName value to set.
      * @return the MonitoringDataPoint object itself.
      */
+    @Generated
     public MonitoringDataPoint setMachineName(String machineName) {
         this.machineName = machineName;
         return this;
@@ -204,6 +230,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * 
      * @return the streamId value.
      */
+    @Generated
     public String getStreamId() {
         return this.streamId;
     }
@@ -215,6 +242,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * @param streamId the streamId value to set.
      * @return the MonitoringDataPoint object itself.
      */
+    @Generated
     public MonitoringDataPoint setStreamId(String streamId) {
         this.streamId = streamId;
         return this;
@@ -225,6 +253,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * 
      * @return the timestamp value.
      */
+    @Generated
     public OffsetDateTime getTimestamp() {
         return this.timestamp;
     }
@@ -235,6 +264,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * @param timestamp the timestamp value to set.
      * @return the MonitoringDataPoint object itself.
      */
+    @Generated
     public MonitoringDataPoint setTimestamp(OffsetDateTime timestamp) {
         this.timestamp = timestamp;
         return this;
@@ -245,6 +275,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * 
      * @return the transmissionTime value.
      */
+    @Generated
     public OffsetDateTime getTransmissionTime() {
         return this.transmissionTime;
     }
@@ -255,6 +286,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * @param transmissionTime the transmissionTime value to set.
      * @return the MonitoringDataPoint object itself.
      */
+    @Generated
     public MonitoringDataPoint setTransmissionTime(OffsetDateTime transmissionTime) {
         this.transmissionTime = transmissionTime;
         return this;
@@ -265,6 +297,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * 
      * @return the isWebApp value.
      */
+    @Generated
     public boolean isWebApp() {
         return this.isWebApp;
     }
@@ -275,6 +308,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * @param isWebApp the isWebApp value to set.
      * @return the MonitoringDataPoint object itself.
      */
+    @Generated
     public MonitoringDataPoint setIsWebApp(boolean isWebApp) {
         this.isWebApp = isWebApp;
         return this;
@@ -285,6 +319,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * 
      * @return the performanceCollectionSupported value.
      */
+    @Generated
     public boolean isPerformanceCollectionSupported() {
         return this.performanceCollectionSupported;
     }
@@ -295,6 +330,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * @param performanceCollectionSupported the performanceCollectionSupported value to set.
      * @return the MonitoringDataPoint object itself.
      */
+    @Generated
     public MonitoringDataPoint setPerformanceCollectionSupported(boolean performanceCollectionSupported) {
         this.performanceCollectionSupported = performanceCollectionSupported;
         return this;
@@ -305,6 +341,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * 
      * @return the metrics value.
      */
+    @Generated
     public List<MetricPoint> getMetrics() {
         return this.metrics;
     }
@@ -315,6 +352,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * @param metrics the metrics value to set.
      * @return the MonitoringDataPoint object itself.
      */
+    @Generated
     public MonitoringDataPoint setMetrics(List<MetricPoint> metrics) {
         this.metrics = metrics;
         return this;
@@ -326,6 +364,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * 
      * @return the documents value.
      */
+    @Generated
     public List<DocumentIngress> getDocuments() {
         return this.documents;
     }
@@ -337,6 +376,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * @param documents the documents value to set.
      * @return the MonitoringDataPoint object itself.
      */
+    @Generated
     public MonitoringDataPoint setDocuments(List<DocumentIngress> documents) {
         this.documents = documents;
         return this;
@@ -347,6 +387,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * 
      * @return the topCpuProcesses value.
      */
+    @Generated
     public List<ProcessCpuData> getTopCpuProcesses() {
         return this.topCpuProcesses;
     }
@@ -357,6 +398,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * @param topCpuProcesses the topCpuProcesses value to set.
      * @return the MonitoringDataPoint object itself.
      */
+    @Generated
     public MonitoringDataPoint setTopCpuProcesses(List<ProcessCpuData> topCpuProcesses) {
         this.topCpuProcesses = topCpuProcesses;
         return this;
@@ -368,6 +410,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * 
      * @return the collectionConfigurationErrors value.
      */
+    @Generated
     public List<CollectionConfigurationError> getCollectionConfigurationErrors() {
         return this.collectionConfigurationErrors;
     }
@@ -379,6 +422,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * @param collectionConfigurationErrors the collectionConfigurationErrors value to set.
      * @return the MonitoringDataPoint object itself.
      */
+    @Generated
     public MonitoringDataPoint
         setCollectionConfigurationErrors(List<CollectionConfigurationError> collectionConfigurationErrors) {
         this.collectionConfigurationErrors = collectionConfigurationErrors;
@@ -388,6 +432,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -423,6 +468,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MonitoringDataPoint.
      */
+    @Generated
     public static MonitoringDataPoint fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MonitoringDataPoint deserializedMonitoringDataPoint = new MonitoringDataPoint();

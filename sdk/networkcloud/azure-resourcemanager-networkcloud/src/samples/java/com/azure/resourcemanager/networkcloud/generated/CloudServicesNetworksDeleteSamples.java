@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class CloudServicesNetworksDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
      * CloudServicesNetworks_Delete.json
      */
     /**
@@ -20,6 +20,6 @@ public final class CloudServicesNetworksDeleteSamples {
      */
     public static void deleteCloudServicesNetwork(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
         manager.cloudServicesNetworks()
-            .delete("resourceGroupName", "cloudServicesNetworkName", com.azure.core.util.Context.NONE);
+            .delete("resourceGroupName", "cloudServicesNetworkName", null, null, com.azure.core.util.Context.NONE);
     }
 }

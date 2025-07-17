@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
@@ -24,26 +24,27 @@ public final class BackupProtectionIntentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"DefaultBackup\",\"sourceResourceId\":\"dsaeuzanhsfnh\",\"itemId\":\"nwph\",\"policyId\":\"fngq\",\"protectionState\":\"Protected\"},\"eTag\":\"dftujwjjufwbeqr\",\"location\":\"uorhtssruqnmdvh\",\"tags\":{\"rzw\":\"vjytiqswbq\"},\"id\":\"iytxt\",\"name\":\"gukvlbpkt\",\"type\":\"dstyouam\"}]}";
+            = "{\"value\":[{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"MAB\",\"sourceResourceId\":\"hykinc\",\"itemId\":\"emehllizh\",\"policyId\":\"umoqodkad\",\"protectionState\":\"Protected\"},\"eTag\":\"bngqladywrx\",\"location\":\"hydt\",\"tags\":{\"uyem\":\"vadswzs\",\"xlnwyrmouvblgmo\":\"owuowh\"},\"id\":\"zkltrfowtdvrfmv\",\"name\":\"ih\",\"type\":\"vjdrqcrjidhftuk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProtectionIntentResource> response = manager.backupProtectionIntents()
-            .list("ktpv", "xqcsehch", "hufmpq", "mqyjgy", com.azure.core.util.Context.NONE);
+            .list("ydkygywezskieca", "ygzmxieqvdsmak", "ixqcahyhxalybxaw", "ijpodtblxpkkwj",
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uorhtssruqnmdvh", response.iterator().next().location());
-        Assertions.assertEquals("vjytiqswbq", response.iterator().next().tags().get("rzw"));
-        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP,
+        Assertions.assertEquals("hydt", response.iterator().next().location());
+        Assertions.assertEquals("vadswzs", response.iterator().next().tags().get("uyem"));
+        Assertions.assertEquals(BackupManagementType.MAB,
             response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("dsaeuzanhsfnh", response.iterator().next().properties().sourceResourceId());
-        Assertions.assertEquals("nwph", response.iterator().next().properties().itemId());
-        Assertions.assertEquals("fngq", response.iterator().next().properties().policyId());
+        Assertions.assertEquals("hykinc", response.iterator().next().properties().sourceResourceId());
+        Assertions.assertEquals("emehllizh", response.iterator().next().properties().itemId());
+        Assertions.assertEquals("umoqodkad", response.iterator().next().properties().policyId());
         Assertions.assertEquals(ProtectionStatus.PROTECTED, response.iterator().next().properties().protectionState());
-        Assertions.assertEquals("dftujwjjufwbeqr", response.iterator().next().etag());
+        Assertions.assertEquals("bngqladywrx", response.iterator().next().etag());
     }
 }

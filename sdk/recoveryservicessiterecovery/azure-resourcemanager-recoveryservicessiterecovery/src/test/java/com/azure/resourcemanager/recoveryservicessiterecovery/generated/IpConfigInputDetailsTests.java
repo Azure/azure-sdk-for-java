@@ -16,8 +16,8 @@ public final class IpConfigInputDetailsTests {
             "{\"ipConfigName\":\"pelmcuvhixbjxyf\",\"isPrimary\":false,\"isSeletedForFailover\":false,\"recoverySubnetName\":\"ool\",\"recoveryStaticIPAddress\":\"tpkiwkkbnujry\",\"recoveryPublicIPAddressId\":\"tylbfpncurdoiw\",\"recoveryLBBackendAddressPoolIds\":[\"htywubxcbihwq\",\"nfdn\"],\"tfoSubnetName\":\"jchrdgoihxumw\",\"tfoStaticIPAddress\":\"ond\",\"tfoPublicIPAddressId\":\"luudfdlwggytsb\",\"tfoLBBackendAddressPoolIds\":[\"vvt\",\"seinqfiuf\",\"qknp\",\"rgnepttwqmsniffc\"]}")
             .toObject(IpConfigInputDetails.class);
         Assertions.assertEquals("pelmcuvhixbjxyf", model.ipConfigName());
-        Assertions.assertEquals(false, model.isPrimary());
-        Assertions.assertEquals(false, model.isSeletedForFailover());
+        Assertions.assertFalse(model.isPrimary());
+        Assertions.assertFalse(model.isSeletedForFailover());
         Assertions.assertEquals("ool", model.recoverySubnetName());
         Assertions.assertEquals("tpkiwkkbnujry", model.recoveryStaticIpAddress());
         Assertions.assertEquals("tylbfpncurdoiw", model.recoveryPublicIpAddressId());
@@ -43,8 +43,8 @@ public final class IpConfigInputDetailsTests {
             .withTfoLBBackendAddressPoolIds(Arrays.asList("vvt", "seinqfiuf", "qknp", "rgnepttwqmsniffc"));
         model = BinaryData.fromObject(model).toObject(IpConfigInputDetails.class);
         Assertions.assertEquals("pelmcuvhixbjxyf", model.ipConfigName());
-        Assertions.assertEquals(false, model.isPrimary());
-        Assertions.assertEquals(false, model.isSeletedForFailover());
+        Assertions.assertFalse(model.isPrimary());
+        Assertions.assertFalse(model.isSeletedForFailover());
         Assertions.assertEquals("ool", model.recoverySubnetName());
         Assertions.assertEquals("tpkiwkkbnujry", model.recoveryStaticIpAddress());
         Assertions.assertEquals("tylbfpncurdoiw", model.recoveryPublicIpAddressId());

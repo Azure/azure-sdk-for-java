@@ -16,7 +16,8 @@ public interface Databases {
      * Gets all databases in the specified Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -28,7 +29,8 @@ public interface Databases {
      * Gets all databases in the specified Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,7 +43,8 @@ public interface Databases {
      * Gets information about a database in a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,7 +59,8 @@ public interface Databases {
      * Gets information about a database in a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,7 +73,8 @@ public interface Databases {
      * Deletes a single database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -81,7 +86,8 @@ public interface Databases {
      * Deletes a single database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -94,7 +100,8 @@ public interface Databases {
      * Retrieves the access keys for the Redis Enterprise database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,7 +116,8 @@ public interface Databases {
      * Retrieves the access keys for the Redis Enterprise database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -122,7 +130,8 @@ public interface Databases {
      * Regenerates the Redis Enterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +146,8 @@ public interface Databases {
      * Regenerates the Redis Enterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
@@ -153,7 +163,8 @@ public interface Databases {
      * Imports database files to target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,7 +178,8 @@ public interface Databases {
      * Imports database files to target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @param context The context to associate with this operation.
@@ -182,7 +194,8 @@ public interface Databases {
      * Exports a database file from target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,7 +208,8 @@ public interface Databases {
      * Exports a database file from target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @param context The context to associate with this operation.
@@ -210,7 +224,8 @@ public interface Databases {
      * Forcibly removes the link to the specified database resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -224,7 +239,8 @@ public interface Databases {
      * Forcibly removes the link to the specified database resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @param context The context to associate with this operation.
@@ -241,7 +257,8 @@ public interface Databases {
      * unavailable while rejoining the replication group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,7 +274,8 @@ public interface Databases {
      * unavailable while rejoining the replication group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @param context The context to associate with this operation.
@@ -272,20 +290,21 @@ public interface Databases {
      * Flushes all the keys in this database and also from its linked databases.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
-     * @param parameters Information identifying the databases to be flushed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void flush(String resourceGroupName, String clusterName, String databaseName, FlushParameters parameters);
+    void flush(String resourceGroupName, String clusterName, String databaseName);
 
     /**
      * Flushes all the keys in this database and also from its linked databases.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the databases to be flushed.
      * @param context The context to associate with this operation.
@@ -300,7 +319,8 @@ public interface Databases {
      * Upgrades the database Redis version to the latest available.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -312,7 +332,8 @@ public interface Databases {
      * Upgrades the database Redis version to the latest available.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

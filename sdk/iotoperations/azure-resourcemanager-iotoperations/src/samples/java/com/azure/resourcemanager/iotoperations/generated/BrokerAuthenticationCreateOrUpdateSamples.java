@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public final class BrokerAuthenticationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01/BrokerAuthentication_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-04-01/BrokerAuthentication_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthentication_CreateOrUpdate.
@@ -61,7 +61,7 @@ public final class BrokerAuthenticationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-11-01/BrokerAuthentication_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2025-04-01/BrokerAuthentication_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: BrokerAuthentication_CreateOrUpdate_Complex.

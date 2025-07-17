@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,33 +22,206 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AzureSqlDatabase";
+
+    /*
+     * The name or network address of the instance of SQL Server to which to connect, used by recommended version. Type:
+     * string (or Expression with resultType string).
+     */
+    @Generated
+    private Object server;
+
+    /*
+     * The name of the database, used by recommended version. Type: string (or Expression with resultType string).
+     */
+    @Generated
+    private Object database;
+
+    /*
+     * Indicate whether TLS encryption is required for all data sent between the client and server, used by recommended
+     * version. Possible values are true/yes/mandatory, false/no/optional and strict. Type: string (or Expression with
+     * resultType string).
+     */
+    @Generated
+    private Object encrypt;
+
+    /*
+     * Indicate whether the channel will be encrypted while bypassing walking the certificate chain to validate trust,
+     * used by recommended version. Type: Boolean (or Expression with resultType boolean).
+     */
+    @Generated
+    private Object trustServerCertificate;
+
+    /*
+     * The host name to use when validating the server certificate for the connection. When not specified, the server
+     * name from the Data Source is used for certificate validation, used by recommended version. Type: string (or
+     * Expression with resultType string).
+     */
+    @Generated
+    private Object hostNameInCertificate;
+
+    /*
+     * The application workload type when connecting to a server, used by recommended version. Possible values are
+     * ReadOnly and ReadWrite. Type: string (or Expression with resultType string).
+     */
+    @Generated
+    private Object applicationIntent;
+
+    /*
+     * The length of time (in seconds) to wait for a connection to the server before terminating the attempt and
+     * generating an error, used by recommended version. Type: integer (or Expression with resultType integer).
+     */
+    @Generated
+    private Object connectTimeout;
+
+    /*
+     * The number of re-connections attempted after identifying that there was an idle connection failure, used by
+     * recommended version. This must be an integer between 0 and 255. Type: integer (or Expression with resultType
+     * integer).
+     */
+    @Generated
+    private Object connectRetryCount;
+
+    /*
+     * The amount of time (in seconds) between each re-connection attempt after identifying that there was an idle
+     * connection failure, used by recommended version. This must be an integer between 1 and 60. Type: integer (or
+     * Expression with resultType integer).
+     */
+    @Generated
+    private Object connectRetryInterval;
+
+    /*
+     * The minimum time, in seconds, for the connection to live in the connection pool before being destroyed, used by
+     * recommended version. Type: integer (or Expression with resultType integer).
+     */
+    @Generated
+    private Object loadBalanceTimeout;
+
+    /*
+     * The default wait time (in seconds) before terminating the attempt to execute a command and generating an error,
+     * used by recommended version. Type: integer (or Expression with resultType integer).
+     */
+    @Generated
+    private Object commandTimeout;
+
+    /*
+     * Indicate whether User ID and Password are specified in the connection (when false) or whether the current Windows
+     * account credentials are used for authentication (when true), used by recommended version. Type: Boolean (or
+     * Expression with resultType boolean).
+     */
+    @Generated
+    private Object integratedSecurity;
+
+    /*
+     * The name or address of the partner server to connect to if the primary server is down, used by recommended
+     * version. Type: string (or Expression with resultType string).
+     */
+    @Generated
+    private Object failoverPartner;
+
+    /*
+     * The maximum number of connections allowed in the connection pool for this specific connection string, used by
+     * recommended version. Type: integer (or Expression with resultType integer).
+     */
+    @Generated
+    private Object maxPoolSize;
+
+    /*
+     * The minimum number of connections allowed in the connection pool for this specific connection string, used by
+     * recommended version. Type: integer (or Expression with resultType integer).
+     */
+    @Generated
+    private Object minPoolSize;
+
+    /*
+     * When true, an application can maintain multiple active result sets (MARS). When false, an application must
+     * process or cancel all result sets from one batch before it can execute any other batch on that connection. Type:
+     * Boolean (or Expression with resultType boolean).
+     */
+    @Generated
+    private Object multipleActiveResultSets;
+
+    /*
+     * If your application is connecting to an AlwaysOn availability group (AG) on different subnets, setting
+     * MultiSubnetFailover=true provides faster detection of and connection to the (currently) active server, used by
+     * recommended version. Type: Boolean (or Expression with resultType boolean).
+     */
+    @Generated
+    private Object multiSubnetFailover;
+
+    /*
+     * The size in bytes of the network packets used to communicate with an instance of server, used by recommended
+     * version. Type: integer (or Expression with resultType integer).
+     */
+    @Generated
+    private Object packetSize;
+
+    /*
+     * Indicate whether the connection will be pooled or explicitly opened every time that the connection is requested,
+     * used by recommended version. Type: Boolean (or Expression with resultType boolean).
+     */
+    @Generated
+    private Object pooling;
 
     /*
      * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
+
+    /*
+     * The type used for authentication. Type: string.
+     */
+    @Generated
+    private AzureSqlDatabaseAuthenticationType authenticationType;
+
+    /*
+     * The user name to be used when connecting to server. Type: string (or Expression with resultType string).
+     */
+    @Generated
+    private Object userName;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
+    @Generated
     private AzureKeyVaultSecretReference password;
 
     /*
      * The ID of the service principal used to authenticate against Azure SQL Database. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object servicePrincipalId;
 
     /*
      * The key of the service principal used to authenticate against Azure SQL Database.
      */
+    @Generated
     private SecretBase servicePrincipalKey;
+
+    /*
+     * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
+     * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
+     */
+    @Generated
+    private Object servicePrincipalCredentialType;
+
+    /*
+     * The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is
+     * 'ServicePrincipalKey', servicePrincipalCredential can be SecureString or AzureKeyVaultSecretReference. If
+     * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
+     * AzureKeyVaultSecretReference.
+     */
+    @Generated
+    private SecretBase servicePrincipalCredential;
 
     /*
      * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object tenant;
 
     /*
@@ -55,27 +229,32 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object azureCloudType;
 
     /*
      * Sql always encrypted properties.
      */
+    @Generated
     private SqlAlwaysEncryptedProperties alwaysEncryptedSettings;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
 
     /**
      * Creates an instance of AzureSqlDatabaseLinkedService class.
      */
+    @Generated
     public AzureSqlDatabaseLinkedService() {
     }
 
@@ -84,9 +263,488 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
+    }
+
+    /**
+     * Get the server property: The name or network address of the instance of SQL Server to which to connect, used by
+     * recommended version. Type: string (or Expression with resultType string).
+     * 
+     * @return the server value.
+     */
+    @Generated
+    public Object getServer() {
+        return this.server;
+    }
+
+    /**
+     * Set the server property: The name or network address of the instance of SQL Server to which to connect, used by
+     * recommended version. Type: string (or Expression with resultType string).
+     * 
+     * @param server the server value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setServer(Object server) {
+        this.server = server;
+        return this;
+    }
+
+    /**
+     * Get the database property: The name of the database, used by recommended version. Type: string (or Expression
+     * with resultType string).
+     * 
+     * @return the database value.
+     */
+    @Generated
+    public Object getDatabase() {
+        return this.database;
+    }
+
+    /**
+     * Set the database property: The name of the database, used by recommended version. Type: string (or Expression
+     * with resultType string).
+     * 
+     * @param database the database value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setDatabase(Object database) {
+        this.database = database;
+        return this;
+    }
+
+    /**
+     * Get the encrypt property: Indicate whether TLS encryption is required for all data sent between the client and
+     * server, used by recommended version. Possible values are true/yes/mandatory, false/no/optional and strict. Type:
+     * string (or Expression with resultType string).
+     * 
+     * @return the encrypt value.
+     */
+    @Generated
+    public Object getEncrypt() {
+        return this.encrypt;
+    }
+
+    /**
+     * Set the encrypt property: Indicate whether TLS encryption is required for all data sent between the client and
+     * server, used by recommended version. Possible values are true/yes/mandatory, false/no/optional and strict. Type:
+     * string (or Expression with resultType string).
+     * 
+     * @param encrypt the encrypt value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setEncrypt(Object encrypt) {
+        this.encrypt = encrypt;
+        return this;
+    }
+
+    /**
+     * Get the trustServerCertificate property: Indicate whether the channel will be encrypted while bypassing walking
+     * the certificate chain to validate trust, used by recommended version. Type: Boolean (or Expression with
+     * resultType boolean).
+     * 
+     * @return the trustServerCertificate value.
+     */
+    @Generated
+    public Object getTrustServerCertificate() {
+        return this.trustServerCertificate;
+    }
+
+    /**
+     * Set the trustServerCertificate property: Indicate whether the channel will be encrypted while bypassing walking
+     * the certificate chain to validate trust, used by recommended version. Type: Boolean (or Expression with
+     * resultType boolean).
+     * 
+     * @param trustServerCertificate the trustServerCertificate value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setTrustServerCertificate(Object trustServerCertificate) {
+        this.trustServerCertificate = trustServerCertificate;
+        return this;
+    }
+
+    /**
+     * Get the hostNameInCertificate property: The host name to use when validating the server certificate for the
+     * connection. When not specified, the server name from the Data Source is used for certificate validation, used by
+     * recommended version. Type: string (or Expression with resultType string).
+     * 
+     * @return the hostNameInCertificate value.
+     */
+    @Generated
+    public Object getHostNameInCertificate() {
+        return this.hostNameInCertificate;
+    }
+
+    /**
+     * Set the hostNameInCertificate property: The host name to use when validating the server certificate for the
+     * connection. When not specified, the server name from the Data Source is used for certificate validation, used by
+     * recommended version. Type: string (or Expression with resultType string).
+     * 
+     * @param hostNameInCertificate the hostNameInCertificate value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setHostNameInCertificate(Object hostNameInCertificate) {
+        this.hostNameInCertificate = hostNameInCertificate;
+        return this;
+    }
+
+    /**
+     * Get the applicationIntent property: The application workload type when connecting to a server, used by
+     * recommended version. Possible values are ReadOnly and ReadWrite. Type: string (or Expression with resultType
+     * string).
+     * 
+     * @return the applicationIntent value.
+     */
+    @Generated
+    public Object getApplicationIntent() {
+        return this.applicationIntent;
+    }
+
+    /**
+     * Set the applicationIntent property: The application workload type when connecting to a server, used by
+     * recommended version. Possible values are ReadOnly and ReadWrite. Type: string (or Expression with resultType
+     * string).
+     * 
+     * @param applicationIntent the applicationIntent value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setApplicationIntent(Object applicationIntent) {
+        this.applicationIntent = applicationIntent;
+        return this;
+    }
+
+    /**
+     * Get the connectTimeout property: The length of time (in seconds) to wait for a connection to the server before
+     * terminating the attempt and generating an error, used by recommended version. Type: integer (or Expression with
+     * resultType integer).
+     * 
+     * @return the connectTimeout value.
+     */
+    @Generated
+    public Object getConnectTimeout() {
+        return this.connectTimeout;
+    }
+
+    /**
+     * Set the connectTimeout property: The length of time (in seconds) to wait for a connection to the server before
+     * terminating the attempt and generating an error, used by recommended version. Type: integer (or Expression with
+     * resultType integer).
+     * 
+     * @param connectTimeout the connectTimeout value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setConnectTimeout(Object connectTimeout) {
+        this.connectTimeout = connectTimeout;
+        return this;
+    }
+
+    /**
+     * Get the connectRetryCount property: The number of re-connections attempted after identifying that there was an
+     * idle connection failure, used by recommended version. This must be an integer between 0 and 255. Type: integer
+     * (or Expression with resultType integer).
+     * 
+     * @return the connectRetryCount value.
+     */
+    @Generated
+    public Object getConnectRetryCount() {
+        return this.connectRetryCount;
+    }
+
+    /**
+     * Set the connectRetryCount property: The number of re-connections attempted after identifying that there was an
+     * idle connection failure, used by recommended version. This must be an integer between 0 and 255. Type: integer
+     * (or Expression with resultType integer).
+     * 
+     * @param connectRetryCount the connectRetryCount value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setConnectRetryCount(Object connectRetryCount) {
+        this.connectRetryCount = connectRetryCount;
+        return this;
+    }
+
+    /**
+     * Get the connectRetryInterval property: The amount of time (in seconds) between each re-connection attempt after
+     * identifying that there was an idle connection failure, used by recommended version. This must be an integer
+     * between 1 and 60. Type: integer (or Expression with resultType integer).
+     * 
+     * @return the connectRetryInterval value.
+     */
+    @Generated
+    public Object getConnectRetryInterval() {
+        return this.connectRetryInterval;
+    }
+
+    /**
+     * Set the connectRetryInterval property: The amount of time (in seconds) between each re-connection attempt after
+     * identifying that there was an idle connection failure, used by recommended version. This must be an integer
+     * between 1 and 60. Type: integer (or Expression with resultType integer).
+     * 
+     * @param connectRetryInterval the connectRetryInterval value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setConnectRetryInterval(Object connectRetryInterval) {
+        this.connectRetryInterval = connectRetryInterval;
+        return this;
+    }
+
+    /**
+     * Get the loadBalanceTimeout property: The minimum time, in seconds, for the connection to live in the connection
+     * pool before being destroyed, used by recommended version. Type: integer (or Expression with resultType integer).
+     * 
+     * @return the loadBalanceTimeout value.
+     */
+    @Generated
+    public Object getLoadBalanceTimeout() {
+        return this.loadBalanceTimeout;
+    }
+
+    /**
+     * Set the loadBalanceTimeout property: The minimum time, in seconds, for the connection to live in the connection
+     * pool before being destroyed, used by recommended version. Type: integer (or Expression with resultType integer).
+     * 
+     * @param loadBalanceTimeout the loadBalanceTimeout value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setLoadBalanceTimeout(Object loadBalanceTimeout) {
+        this.loadBalanceTimeout = loadBalanceTimeout;
+        return this;
+    }
+
+    /**
+     * Get the commandTimeout property: The default wait time (in seconds) before terminating the attempt to execute a
+     * command and generating an error, used by recommended version. Type: integer (or Expression with resultType
+     * integer).
+     * 
+     * @return the commandTimeout value.
+     */
+    @Generated
+    public Object getCommandTimeout() {
+        return this.commandTimeout;
+    }
+
+    /**
+     * Set the commandTimeout property: The default wait time (in seconds) before terminating the attempt to execute a
+     * command and generating an error, used by recommended version. Type: integer (or Expression with resultType
+     * integer).
+     * 
+     * @param commandTimeout the commandTimeout value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setCommandTimeout(Object commandTimeout) {
+        this.commandTimeout = commandTimeout;
+        return this;
+    }
+
+    /**
+     * Get the integratedSecurity property: Indicate whether User ID and Password are specified in the connection (when
+     * false) or whether the current Windows account credentials are used for authentication (when true), used by
+     * recommended version. Type: Boolean (or Expression with resultType boolean).
+     * 
+     * @return the integratedSecurity value.
+     */
+    @Generated
+    public Object getIntegratedSecurity() {
+        return this.integratedSecurity;
+    }
+
+    /**
+     * Set the integratedSecurity property: Indicate whether User ID and Password are specified in the connection (when
+     * false) or whether the current Windows account credentials are used for authentication (when true), used by
+     * recommended version. Type: Boolean (or Expression with resultType boolean).
+     * 
+     * @param integratedSecurity the integratedSecurity value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setIntegratedSecurity(Object integratedSecurity) {
+        this.integratedSecurity = integratedSecurity;
+        return this;
+    }
+
+    /**
+     * Get the failoverPartner property: The name or address of the partner server to connect to if the primary server
+     * is down, used by recommended version. Type: string (or Expression with resultType string).
+     * 
+     * @return the failoverPartner value.
+     */
+    @Generated
+    public Object getFailoverPartner() {
+        return this.failoverPartner;
+    }
+
+    /**
+     * Set the failoverPartner property: The name or address of the partner server to connect to if the primary server
+     * is down, used by recommended version. Type: string (or Expression with resultType string).
+     * 
+     * @param failoverPartner the failoverPartner value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setFailoverPartner(Object failoverPartner) {
+        this.failoverPartner = failoverPartner;
+        return this;
+    }
+
+    /**
+     * Get the maxPoolSize property: The maximum number of connections allowed in the connection pool for this specific
+     * connection string, used by recommended version. Type: integer (or Expression with resultType integer).
+     * 
+     * @return the maxPoolSize value.
+     */
+    @Generated
+    public Object getMaxPoolSize() {
+        return this.maxPoolSize;
+    }
+
+    /**
+     * Set the maxPoolSize property: The maximum number of connections allowed in the connection pool for this specific
+     * connection string, used by recommended version. Type: integer (or Expression with resultType integer).
+     * 
+     * @param maxPoolSize the maxPoolSize value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setMaxPoolSize(Object maxPoolSize) {
+        this.maxPoolSize = maxPoolSize;
+        return this;
+    }
+
+    /**
+     * Get the minPoolSize property: The minimum number of connections allowed in the connection pool for this specific
+     * connection string, used by recommended version. Type: integer (or Expression with resultType integer).
+     * 
+     * @return the minPoolSize value.
+     */
+    @Generated
+    public Object getMinPoolSize() {
+        return this.minPoolSize;
+    }
+
+    /**
+     * Set the minPoolSize property: The minimum number of connections allowed in the connection pool for this specific
+     * connection string, used by recommended version. Type: integer (or Expression with resultType integer).
+     * 
+     * @param minPoolSize the minPoolSize value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setMinPoolSize(Object minPoolSize) {
+        this.minPoolSize = minPoolSize;
+        return this;
+    }
+
+    /**
+     * Get the multipleActiveResultSets property: When true, an application can maintain multiple active result sets
+     * (MARS). When false, an application must process or cancel all result sets from one batch before it can execute
+     * any other batch on that connection. Type: Boolean (or Expression with resultType boolean).
+     * 
+     * @return the multipleActiveResultSets value.
+     */
+    @Generated
+    public Object getMultipleActiveResultSets() {
+        return this.multipleActiveResultSets;
+    }
+
+    /**
+     * Set the multipleActiveResultSets property: When true, an application can maintain multiple active result sets
+     * (MARS). When false, an application must process or cancel all result sets from one batch before it can execute
+     * any other batch on that connection. Type: Boolean (or Expression with resultType boolean).
+     * 
+     * @param multipleActiveResultSets the multipleActiveResultSets value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setMultipleActiveResultSets(Object multipleActiveResultSets) {
+        this.multipleActiveResultSets = multipleActiveResultSets;
+        return this;
+    }
+
+    /**
+     * Get the multiSubnetFailover property: If your application is connecting to an AlwaysOn availability group (AG) on
+     * different subnets, setting MultiSubnetFailover=true provides faster detection of and connection to the
+     * (currently) active server, used by recommended version. Type: Boolean (or Expression with resultType boolean).
+     * 
+     * @return the multiSubnetFailover value.
+     */
+    @Generated
+    public Object getMultiSubnetFailover() {
+        return this.multiSubnetFailover;
+    }
+
+    /**
+     * Set the multiSubnetFailover property: If your application is connecting to an AlwaysOn availability group (AG) on
+     * different subnets, setting MultiSubnetFailover=true provides faster detection of and connection to the
+     * (currently) active server, used by recommended version. Type: Boolean (or Expression with resultType boolean).
+     * 
+     * @param multiSubnetFailover the multiSubnetFailover value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setMultiSubnetFailover(Object multiSubnetFailover) {
+        this.multiSubnetFailover = multiSubnetFailover;
+        return this;
+    }
+
+    /**
+     * Get the packetSize property: The size in bytes of the network packets used to communicate with an instance of
+     * server, used by recommended version. Type: integer (or Expression with resultType integer).
+     * 
+     * @return the packetSize value.
+     */
+    @Generated
+    public Object getPacketSize() {
+        return this.packetSize;
+    }
+
+    /**
+     * Set the packetSize property: The size in bytes of the network packets used to communicate with an instance of
+     * server, used by recommended version. Type: integer (or Expression with resultType integer).
+     * 
+     * @param packetSize the packetSize value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setPacketSize(Object packetSize) {
+        this.packetSize = packetSize;
+        return this;
+    }
+
+    /**
+     * Get the pooling property: Indicate whether the connection will be pooled or explicitly opened every time that the
+     * connection is requested, used by recommended version. Type: Boolean (or Expression with resultType boolean).
+     * 
+     * @return the pooling value.
+     */
+    @Generated
+    public Object getPooling() {
+        return this.pooling;
+    }
+
+    /**
+     * Set the pooling property: Indicate whether the connection will be pooled or explicitly opened every time that the
+     * connection is requested, used by recommended version. Type: Boolean (or Expression with resultType boolean).
+     * 
+     * @param pooling the pooling value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setPooling(Object pooling) {
+        this.pooling = pooling;
+        return this;
     }
 
     /**
@@ -95,6 +753,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -106,8 +765,55 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * @param connectionString the connectionString value to set.
      * @return the AzureSqlDatabaseLinkedService object itself.
      */
+    @Generated
     public AzureSqlDatabaseLinkedService setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: The type used for authentication. Type: string.
+     * 
+     * @return the authenticationType value.
+     */
+    @Generated
+    public AzureSqlDatabaseAuthenticationType getAuthenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: The type used for authentication. Type: string.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setAuthenticationType(AzureSqlDatabaseAuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
+        return this;
+    }
+
+    /**
+     * Get the userName property: The user name to be used when connecting to server. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @return the userName value.
+     */
+    @Generated
+    public Object getUserName() {
+        return this.userName;
+    }
+
+    /**
+     * Set the userName property: The user name to be used when connecting to server. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @param userName the userName value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setUserName(Object userName) {
+        this.userName = userName;
         return this;
     }
 
@@ -116,6 +822,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public AzureKeyVaultSecretReference getPassword() {
         return this.password;
     }
@@ -126,6 +833,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the AzureSqlDatabaseLinkedService object itself.
      */
+    @Generated
     public AzureSqlDatabaseLinkedService setPassword(AzureKeyVaultSecretReference password) {
         this.password = password;
         return this;
@@ -137,6 +845,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalId value.
      */
+    @Generated
     public Object getServicePrincipalId() {
         return this.servicePrincipalId;
     }
@@ -148,6 +857,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the AzureSqlDatabaseLinkedService object itself.
      */
+    @Generated
     public AzureSqlDatabaseLinkedService setServicePrincipalId(Object servicePrincipalId) {
         this.servicePrincipalId = servicePrincipalId;
         return this;
@@ -159,6 +869,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalKey value.
      */
+    @Generated
     public SecretBase getServicePrincipalKey() {
         return this.servicePrincipalKey;
     }
@@ -170,8 +881,63 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureSqlDatabaseLinkedService object itself.
      */
+    @Generated
     public AzureSqlDatabaseLinkedService setServicePrincipalKey(SecretBase servicePrincipalKey) {
         this.servicePrincipalKey = servicePrincipalKey;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the servicePrincipalCredentialType value.
+     */
+    @Generated
+    public Object getServicePrincipalCredentialType() {
+        return this.servicePrincipalCredentialType;
+    }
+
+    /**
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
+        this.servicePrincipalCredentialType = servicePrincipalCredentialType;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalCredential property: The credential of the service principal object in Azure Active
+     * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
+     * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
+     * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
+     * 
+     * @return the servicePrincipalCredential value.
+     */
+    @Generated
+    public SecretBase getServicePrincipalCredential() {
+        return this.servicePrincipalCredential;
+    }
+
+    /**
+     * Set the servicePrincipalCredential property: The credential of the service principal object in Azure Active
+     * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
+     * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
+     * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
+     * 
+     * @param servicePrincipalCredential the servicePrincipalCredential value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    @Generated
+    public AzureSqlDatabaseLinkedService setServicePrincipalCredential(SecretBase servicePrincipalCredential) {
+        this.servicePrincipalCredential = servicePrincipalCredential;
         return this;
     }
 
@@ -181,6 +947,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * 
      * @return the tenant value.
      */
+    @Generated
     public Object getTenant() {
         return this.tenant;
     }
@@ -192,6 +959,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * @param tenant the tenant value to set.
      * @return the AzureSqlDatabaseLinkedService object itself.
      */
+    @Generated
     public AzureSqlDatabaseLinkedService setTenant(Object tenant) {
         this.tenant = tenant;
         return this;
@@ -204,6 +972,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * 
      * @return the azureCloudType value.
      */
+    @Generated
     public Object getAzureCloudType() {
         return this.azureCloudType;
     }
@@ -216,6 +985,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * @param azureCloudType the azureCloudType value to set.
      * @return the AzureSqlDatabaseLinkedService object itself.
      */
+    @Generated
     public AzureSqlDatabaseLinkedService setAzureCloudType(Object azureCloudType) {
         this.azureCloudType = azureCloudType;
         return this;
@@ -226,6 +996,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * 
      * @return the alwaysEncryptedSettings value.
      */
+    @Generated
     public SqlAlwaysEncryptedProperties getAlwaysEncryptedSettings() {
         return this.alwaysEncryptedSettings;
     }
@@ -236,6 +1007,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * @param alwaysEncryptedSettings the alwaysEncryptedSettings value to set.
      * @return the AzureSqlDatabaseLinkedService object itself.
      */
+    @Generated
     public AzureSqlDatabaseLinkedService
         setAlwaysEncryptedSettings(SqlAlwaysEncryptedProperties alwaysEncryptedSettings) {
         this.alwaysEncryptedSettings = alwaysEncryptedSettings;
@@ -248,6 +1020,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -259,6 +1032,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureSqlDatabaseLinkedService object itself.
      */
+    @Generated
     public AzureSqlDatabaseLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -269,6 +1043,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -279,6 +1054,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * @param credential the credential value to set.
      * @return the AzureSqlDatabaseLinkedService object itself.
      */
+    @Generated
     public AzureSqlDatabaseLinkedService setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
@@ -287,6 +1063,17 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public AzureSqlDatabaseLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public AzureSqlDatabaseLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -296,6 +1083,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureSqlDatabaseLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -305,6 +1093,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureSqlDatabaseLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -314,6 +1103,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureSqlDatabaseLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -323,32 +1113,133 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeStringField("type", this.type);
-        if (connectionString != null
+        if (server != null
+            || database != null
+            || encrypt != null
+            || trustServerCertificate != null
+            || hostNameInCertificate != null
+            || applicationIntent != null
+            || connectTimeout != null
+            || connectRetryCount != null
+            || connectRetryInterval != null
+            || loadBalanceTimeout != null
+            || commandTimeout != null
+            || integratedSecurity != null
+            || failoverPartner != null
+            || maxPoolSize != null
+            || minPoolSize != null
+            || multipleActiveResultSets != null
+            || multiSubnetFailover != null
+            || packetSize != null
+            || pooling != null
+            || connectionString != null
+            || authenticationType != null
+            || userName != null
             || password != null
             || servicePrincipalId != null
             || servicePrincipalKey != null
+            || servicePrincipalCredentialType != null
+            || servicePrincipalCredential != null
             || tenant != null
             || azureCloudType != null
             || alwaysEncryptedSettings != null
             || encryptedCredential != null
             || credential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            if (this.server != null) {
+                jsonWriter.writeUntypedField("server", this.server);
+            }
+            if (this.database != null) {
+                jsonWriter.writeUntypedField("database", this.database);
+            }
+            if (this.encrypt != null) {
+                jsonWriter.writeUntypedField("encrypt", this.encrypt);
+            }
+            if (this.trustServerCertificate != null) {
+                jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
+            }
+            if (this.hostNameInCertificate != null) {
+                jsonWriter.writeUntypedField("hostNameInCertificate", this.hostNameInCertificate);
+            }
+            if (this.applicationIntent != null) {
+                jsonWriter.writeUntypedField("applicationIntent", this.applicationIntent);
+            }
+            if (this.connectTimeout != null) {
+                jsonWriter.writeUntypedField("connectTimeout", this.connectTimeout);
+            }
+            if (this.connectRetryCount != null) {
+                jsonWriter.writeUntypedField("connectRetryCount", this.connectRetryCount);
+            }
+            if (this.connectRetryInterval != null) {
+                jsonWriter.writeUntypedField("connectRetryInterval", this.connectRetryInterval);
+            }
+            if (this.loadBalanceTimeout != null) {
+                jsonWriter.writeUntypedField("loadBalanceTimeout", this.loadBalanceTimeout);
+            }
+            if (this.commandTimeout != null) {
+                jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+            }
+            if (this.integratedSecurity != null) {
+                jsonWriter.writeUntypedField("integratedSecurity", this.integratedSecurity);
+            }
+            if (this.failoverPartner != null) {
+                jsonWriter.writeUntypedField("failoverPartner", this.failoverPartner);
+            }
+            if (this.maxPoolSize != null) {
+                jsonWriter.writeUntypedField("maxPoolSize", this.maxPoolSize);
+            }
+            if (this.minPoolSize != null) {
+                jsonWriter.writeUntypedField("minPoolSize", this.minPoolSize);
+            }
+            if (this.multipleActiveResultSets != null) {
+                jsonWriter.writeUntypedField("multipleActiveResultSets", this.multipleActiveResultSets);
+            }
+            if (this.multiSubnetFailover != null) {
+                jsonWriter.writeUntypedField("multiSubnetFailover", this.multiSubnetFailover);
+            }
+            if (this.packetSize != null) {
+                jsonWriter.writeUntypedField("packetSize", this.packetSize);
+            }
+            if (this.pooling != null) {
+                jsonWriter.writeUntypedField("pooling", this.pooling);
+            }
+            if (this.connectionString != null) {
+                jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            }
+            jsonWriter.writeStringField("authenticationType",
+                this.authenticationType == null ? null : this.authenticationType.toString());
+            if (this.userName != null) {
+                jsonWriter.writeUntypedField("userName", this.userName);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            if (this.servicePrincipalId != null) {
+                jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            }
             jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-            jsonWriter.writeUntypedField("tenant", this.tenant);
-            jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+            if (this.servicePrincipalCredentialType != null) {
+                jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+            }
+            jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
+            if (this.tenant != null) {
+                jsonWriter.writeUntypedField("tenant", this.tenant);
+            }
+            if (this.azureCloudType != null) {
+                jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+            }
             jsonWriter.writeJsonField("alwaysEncryptedSettings", this.alwaysEncryptedSettings);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeJsonField("credential", this.credential);
             jsonWriter.writeEndObject();
         }
@@ -366,9 +1257,9 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureSqlDatabaseLinkedService if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureSqlDatabaseLinkedService.
      */
+    @Generated
     public static AzureSqlDatabaseLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureSqlDatabaseLinkedService deserializedAzureSqlDatabaseLinkedService
@@ -378,7 +1269,9 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedAzureSqlDatabaseLinkedService
                         .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
@@ -397,8 +1290,51 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
                         fieldName = reader.getFieldName();
                         reader.nextToken();
 
-                        if ("connectionString".equals(fieldName)) {
+                        if ("server".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.server = reader.readUntyped();
+                        } else if ("database".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.database = reader.readUntyped();
+                        } else if ("encrypt".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.encrypt = reader.readUntyped();
+                        } else if ("trustServerCertificate".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.trustServerCertificate = reader.readUntyped();
+                        } else if ("hostNameInCertificate".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.hostNameInCertificate = reader.readUntyped();
+                        } else if ("applicationIntent".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.applicationIntent = reader.readUntyped();
+                        } else if ("connectTimeout".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.connectTimeout = reader.readUntyped();
+                        } else if ("connectRetryCount".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.connectRetryCount = reader.readUntyped();
+                        } else if ("connectRetryInterval".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.connectRetryInterval = reader.readUntyped();
+                        } else if ("loadBalanceTimeout".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.loadBalanceTimeout = reader.readUntyped();
+                        } else if ("commandTimeout".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.commandTimeout = reader.readUntyped();
+                        } else if ("integratedSecurity".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.integratedSecurity = reader.readUntyped();
+                        } else if ("failoverPartner".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.failoverPartner = reader.readUntyped();
+                        } else if ("maxPoolSize".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.maxPoolSize = reader.readUntyped();
+                        } else if ("minPoolSize".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.minPoolSize = reader.readUntyped();
+                        } else if ("multipleActiveResultSets".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.multipleActiveResultSets = reader.readUntyped();
+                        } else if ("multiSubnetFailover".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.multiSubnetFailover = reader.readUntyped();
+                        } else if ("packetSize".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.packetSize = reader.readUntyped();
+                        } else if ("pooling".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.pooling = reader.readUntyped();
+                        } else if ("connectionString".equals(fieldName)) {
                             deserializedAzureSqlDatabaseLinkedService.connectionString = reader.readUntyped();
+                        } else if ("authenticationType".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.authenticationType
+                                = AzureSqlDatabaseAuthenticationType.fromString(reader.getString());
+                        } else if ("userName".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.userName = reader.readUntyped();
                         } else if ("password".equals(fieldName)) {
                             deserializedAzureSqlDatabaseLinkedService.password
                                 = AzureKeyVaultSecretReference.fromJson(reader);
@@ -406,6 +1342,12 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
                             deserializedAzureSqlDatabaseLinkedService.servicePrincipalId = reader.readUntyped();
                         } else if ("servicePrincipalKey".equals(fieldName)) {
                             deserializedAzureSqlDatabaseLinkedService.servicePrincipalKey = SecretBase.fromJson(reader);
+                        } else if ("servicePrincipalCredentialType".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.servicePrincipalCredentialType
+                                = reader.readUntyped();
+                        } else if ("servicePrincipalCredential".equals(fieldName)) {
+                            deserializedAzureSqlDatabaseLinkedService.servicePrincipalCredential
+                                = SecretBase.fromJson(reader);
                         } else if ("tenant".equals(fieldName)) {
                             deserializedAzureSqlDatabaseLinkedService.tenant = reader.readUntyped();
                         } else if ("azureCloudType".equals(fieldName)) {

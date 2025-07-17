@@ -24,9 +24,9 @@ public final class ManagementPolicyInner extends ProxyResource {
     private ManagementPolicyProperties innerProperties;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -34,9 +34,9 @@ public final class ManagementPolicyInner extends ProxyResource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of ManagementPolicyInner class.
@@ -54,13 +54,13 @@ public final class ManagementPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -74,13 +74,13 @@ public final class ManagementPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -94,7 +94,7 @@ public final class ManagementPolicyInner extends ProxyResource {
 
     /**
      * Get the policy property: The Storage Account ManagementPolicy, in JSON format. See more details in:
-     * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * https://learn.microsoft.com/azure/storage/blobs/lifecycle-management-overview.
      * 
      * @return the policy value.
      */
@@ -104,7 +104,7 @@ public final class ManagementPolicyInner extends ProxyResource {
 
     /**
      * Set the policy property: The Storage Account ManagementPolicy, in JSON format. See more details in:
-     * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * https://learn.microsoft.com/azure/storage/blobs/lifecycle-management-overview.
      * 
      * @param policy the policy value to set.
      * @return the ManagementPolicyInner object itself.

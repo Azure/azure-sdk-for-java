@@ -234,10 +234,14 @@ public final class SybaseLinkedServiceTypeProperties implements JsonSerializable
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("server", this.server);
         jsonWriter.writeUntypedField("database", this.database);
-        jsonWriter.writeUntypedField("schema", this.schema);
+        if (this.schema != null) {
+            jsonWriter.writeUntypedField("schema", this.schema);
+        }
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("username", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();

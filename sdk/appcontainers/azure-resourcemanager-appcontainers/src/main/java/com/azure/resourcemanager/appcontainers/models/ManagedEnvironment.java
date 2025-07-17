@@ -125,27 +125,12 @@ public interface ManagedEnvironment {
     String staticIp();
 
     /**
-     * Gets the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
-     * app logs to a destination. Currently only "log-analytics" is
-     * supported.
+     * Gets the appLogsConfiguration property: Cluster configuration which enables the log daemon to export app logs to
+     * configured destination.
      * 
      * @return the appLogsConfiguration value.
      */
     AppLogsConfiguration appLogsConfiguration();
-
-    /**
-     * Gets the appInsightsConfiguration property: Environment level Application Insights configuration.
-     * 
-     * @return the appInsightsConfiguration value.
-     */
-    AppInsightsConfiguration appInsightsConfiguration();
-
-    /**
-     * Gets the openTelemetryConfiguration property: Environment Open Telemetry configuration.
-     * 
-     * @return the openTelemetryConfiguration value.
-     */
-    OpenTelemetryConfiguration openTelemetryConfiguration();
 
     /**
      * Gets the zoneRedundant property: Whether or not this Managed Environment is zone-redundant.
@@ -211,21 +196,6 @@ public interface ManagedEnvironment {
      * @return the peerTrafficConfiguration value.
      */
     ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration();
-
-    /**
-     * Gets the privateEndpointConnections property: Private endpoint connections to the resource.
-     * 
-     * @return the privateEndpointConnections value.
-     */
-    List<PrivateEndpointConnection> privateEndpointConnections();
-
-    /**
-     * Gets the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
-     * 'Disabled'.
-     * 
-     * @return the publicNetworkAccess value.
-     */
-    PublicNetworkAccess publicNetworkAccess();
 
     /**
      * Gets the region of the resource.
@@ -310,15 +280,14 @@ public interface ManagedEnvironment {
          * The stage of the ManagedEnvironment definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithKind,
-            DefinitionStages.WithIdentity, DefinitionStages.WithDaprAIInstrumentationKey,
-            DefinitionStages.WithDaprAIConnectionString, DefinitionStages.WithVnetConfiguration,
-            DefinitionStages.WithAppLogsConfiguration, DefinitionStages.WithAppInsightsConfiguration,
-            DefinitionStages.WithOpenTelemetryConfiguration, DefinitionStages.WithZoneRedundant,
-            DefinitionStages.WithCustomDomainConfiguration, DefinitionStages.WithWorkloadProfiles,
-            DefinitionStages.WithKedaConfiguration, DefinitionStages.WithDaprConfiguration,
-            DefinitionStages.WithInfrastructureResourceGroup, DefinitionStages.WithPeerAuthentication,
-            DefinitionStages.WithPeerTrafficConfiguration, DefinitionStages.WithPublicNetworkAccess {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithKind, DefinitionStages.WithIdentity,
+            DefinitionStages.WithDaprAIInstrumentationKey, DefinitionStages.WithDaprAIConnectionString,
+            DefinitionStages.WithVnetConfiguration, DefinitionStages.WithAppLogsConfiguration,
+            DefinitionStages.WithZoneRedundant, DefinitionStages.WithCustomDomainConfiguration,
+            DefinitionStages.WithWorkloadProfiles, DefinitionStages.WithKedaConfiguration,
+            DefinitionStages.WithDaprConfiguration, DefinitionStages.WithInfrastructureResourceGroup,
+            DefinitionStages.WithPeerAuthentication, DefinitionStages.WithPeerTrafficConfiguration {
             /**
              * Executes the create request.
              * 
@@ -425,41 +394,13 @@ public interface ManagedEnvironment {
         interface WithAppLogsConfiguration {
             /**
              * Specifies the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
-             * app logs to a destination. Currently only "log-analytics" is
-             * supported.
+             * app logs to configured destination..
              * 
-             * @param appLogsConfiguration Cluster configuration which enables the log daemon to export
-             * app logs to a destination. Currently only "log-analytics" is
-             * supported.
+             * @param appLogsConfiguration Cluster configuration which enables the log daemon to export app logs to
+             * configured destination.
              * @return the next definition stage.
              */
             WithCreate withAppLogsConfiguration(AppLogsConfiguration appLogsConfiguration);
-        }
-
-        /**
-         * The stage of the ManagedEnvironment definition allowing to specify appInsightsConfiguration.
-         */
-        interface WithAppInsightsConfiguration {
-            /**
-             * Specifies the appInsightsConfiguration property: Environment level Application Insights configuration.
-             * 
-             * @param appInsightsConfiguration Environment level Application Insights configuration.
-             * @return the next definition stage.
-             */
-            WithCreate withAppInsightsConfiguration(AppInsightsConfiguration appInsightsConfiguration);
-        }
-
-        /**
-         * The stage of the ManagedEnvironment definition allowing to specify openTelemetryConfiguration.
-         */
-        interface WithOpenTelemetryConfiguration {
-            /**
-             * Specifies the openTelemetryConfiguration property: Environment Open Telemetry configuration.
-             * 
-             * @param openTelemetryConfiguration Environment Open Telemetry configuration.
-             * @return the next definition stage.
-             */
-            WithCreate withOpenTelemetryConfiguration(OpenTelemetryConfiguration openTelemetryConfiguration);
         }
 
         /**
@@ -570,21 +511,6 @@ public interface ManagedEnvironment {
             WithCreate withPeerTrafficConfiguration(
                 ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration);
         }
-
-        /**
-         * The stage of the ManagedEnvironment definition allowing to specify publicNetworkAccess.
-         */
-        interface WithPublicNetworkAccess {
-            /**
-             * Specifies the publicNetworkAccess property: Property to allow or block all public traffic. Allowed
-             * Values: 'Enabled', 'Disabled'..
-             * 
-             * @param publicNetworkAccess Property to allow or block all public traffic. Allowed Values: 'Enabled',
-             * 'Disabled'.
-             * @return the next definition stage.
-             */
-            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
-        }
     }
 
     /**
@@ -600,10 +526,9 @@ public interface ManagedEnvironment {
     interface Update extends UpdateStages.WithTags, UpdateStages.WithKind, UpdateStages.WithIdentity,
         UpdateStages.WithDaprAIInstrumentationKey, UpdateStages.WithDaprAIConnectionString,
         UpdateStages.WithVnetConfiguration, UpdateStages.WithAppLogsConfiguration,
-        UpdateStages.WithAppInsightsConfiguration, UpdateStages.WithOpenTelemetryConfiguration,
         UpdateStages.WithCustomDomainConfiguration, UpdateStages.WithWorkloadProfiles,
         UpdateStages.WithKedaConfiguration, UpdateStages.WithDaprConfiguration, UpdateStages.WithPeerAuthentication,
-        UpdateStages.WithPeerTrafficConfiguration, UpdateStages.WithPublicNetworkAccess {
+        UpdateStages.WithPeerTrafficConfiguration {
         /**
          * Executes the update request.
          * 
@@ -714,41 +639,13 @@ public interface ManagedEnvironment {
         interface WithAppLogsConfiguration {
             /**
              * Specifies the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
-             * app logs to a destination. Currently only "log-analytics" is
-             * supported.
+             * app logs to configured destination..
              * 
-             * @param appLogsConfiguration Cluster configuration which enables the log daemon to export
-             * app logs to a destination. Currently only "log-analytics" is
-             * supported.
+             * @param appLogsConfiguration Cluster configuration which enables the log daemon to export app logs to
+             * configured destination.
              * @return the next definition stage.
              */
             Update withAppLogsConfiguration(AppLogsConfiguration appLogsConfiguration);
-        }
-
-        /**
-         * The stage of the ManagedEnvironment update allowing to specify appInsightsConfiguration.
-         */
-        interface WithAppInsightsConfiguration {
-            /**
-             * Specifies the appInsightsConfiguration property: Environment level Application Insights configuration.
-             * 
-             * @param appInsightsConfiguration Environment level Application Insights configuration.
-             * @return the next definition stage.
-             */
-            Update withAppInsightsConfiguration(AppInsightsConfiguration appInsightsConfiguration);
-        }
-
-        /**
-         * The stage of the ManagedEnvironment update allowing to specify openTelemetryConfiguration.
-         */
-        interface WithOpenTelemetryConfiguration {
-            /**
-             * Specifies the openTelemetryConfiguration property: Environment Open Telemetry configuration.
-             * 
-             * @param openTelemetryConfiguration Environment Open Telemetry configuration.
-             * @return the next definition stage.
-             */
-            Update withOpenTelemetryConfiguration(OpenTelemetryConfiguration openTelemetryConfiguration);
         }
 
         /**
@@ -828,21 +725,6 @@ public interface ManagedEnvironment {
              */
             Update withPeerTrafficConfiguration(
                 ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration);
-        }
-
-        /**
-         * The stage of the ManagedEnvironment update allowing to specify publicNetworkAccess.
-         */
-        interface WithPublicNetworkAccess {
-            /**
-             * Specifies the publicNetworkAccess property: Property to allow or block all public traffic. Allowed
-             * Values: 'Enabled', 'Disabled'..
-             * 
-             * @param publicNetworkAccess Property to allow or block all public traffic. Allowed Values: 'Enabled',
-             * 'Disabled'.
-             * @return the next definition stage.
-             */
-            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
     }
 

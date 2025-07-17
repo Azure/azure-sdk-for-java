@@ -12,18 +12,18 @@ public final class InMageVolumeExclusionOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageVolumeExclusionOptions model
-            = BinaryData.fromString("{\"volumeLabel\":\"vecovsdqhzr\",\"onlyExcludeIfSingleVolume\":\"bakrli\"}")
+            = BinaryData.fromString("{\"volumeLabel\":\"nsm\",\"onlyExcludeIfSingleVolume\":\"fiwjbctvbp\"}")
                 .toObject(InMageVolumeExclusionOptions.class);
-        Assertions.assertEquals("vecovsdqhzr", model.volumeLabel());
-        Assertions.assertEquals("bakrli", model.onlyExcludeIfSingleVolume());
+        Assertions.assertEquals("nsm", model.volumeLabel());
+        Assertions.assertEquals("fiwjbctvbp", model.onlyExcludeIfSingleVolume());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InMageVolumeExclusionOptions model
-            = new InMageVolumeExclusionOptions().withVolumeLabel("vecovsdqhzr").withOnlyExcludeIfSingleVolume("bakrli");
+            = new InMageVolumeExclusionOptions().withVolumeLabel("nsm").withOnlyExcludeIfSingleVolume("fiwjbctvbp");
         model = BinaryData.fromObject(model).toObject(InMageVolumeExclusionOptions.class);
-        Assertions.assertEquals("vecovsdqhzr", model.volumeLabel());
-        Assertions.assertEquals("bakrli", model.onlyExcludeIfSingleVolume());
+        Assertions.assertEquals("nsm", model.volumeLabel());
+        Assertions.assertEquals("fiwjbctvbp", model.onlyExcludeIfSingleVolume());
     }
 }

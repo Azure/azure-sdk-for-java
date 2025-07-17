@@ -4,6 +4,7 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class WarningCodeValue extends ExpandableStringEnum<WarningCodeValu
     /**
      * Static value LongWordsInDocument for WarningCodeValue.
      */
+    @Generated
     public static final WarningCodeValue LONG_WORDS_IN_DOCUMENT = fromString("LongWordsInDocument");
 
     /**
      * Static value DocumentTruncated for WarningCodeValue.
      */
+    @Generated
     public static final WarningCodeValue DOCUMENT_TRUNCATED = fromString("DocumentTruncated");
 
     /**
@@ -26,6 +29,7 @@ public final class WarningCodeValue extends ExpandableStringEnum<WarningCodeValu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public WarningCodeValue() {
     }
@@ -36,6 +40,7 @@ public final class WarningCodeValue extends ExpandableStringEnum<WarningCodeValu
      * @param name a name to look for.
      * @return the corresponding WarningCodeValue.
      */
+    @Generated
     public static WarningCodeValue fromString(String name) {
         return fromString(name, WarningCodeValue.class);
     }
@@ -45,6 +50,7 @@ public final class WarningCodeValue extends ExpandableStringEnum<WarningCodeValu
      * 
      * @return known WarningCodeValue values.
      */
+    @Generated
     public static Collection<WarningCodeValue> values() {
         return values(WarningCodeValue.class);
     }

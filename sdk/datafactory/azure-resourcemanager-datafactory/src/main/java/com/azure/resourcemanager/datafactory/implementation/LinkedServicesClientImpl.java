@@ -28,6 +28,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.LinkedServicesClient;
 import com.azure.resourcemanager.datafactory.fluent.models.LinkedServiceResourceInner;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceListResponse;
@@ -75,10 +76,31 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<LinkedServiceListResponse> listByFactorySync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LinkedServiceResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("linkedServiceName") String linkedServiceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") LinkedServiceResourceInner linkedService,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<LinkedServiceResourceInner> createOrUpdateSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @PathParam("linkedServiceName") String linkedServiceName, @QueryParam("api-version") String apiVersion,
@@ -97,6 +119,16 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
             @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}")
+        @ExpectedResponses({ 200, 304 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<LinkedServiceResourceInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("linkedServiceName") String linkedServiceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -107,10 +139,28 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/linkedservices/{linkedServiceName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("linkedServiceName") String linkedServiceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LinkedServiceListResponse>> listByFactoryNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<LinkedServiceListResponse> listByFactoryNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -158,45 +208,6 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
      * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of linked service resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LinkedServiceResourceInner>> listByFactorySinglePageAsync(String resourceGroupName,
-        String factoryName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByFactory(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Lists linked services.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -213,17 +224,78 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
      * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of linked service resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<LinkedServiceResourceInner> listByFactorySinglePage(String resourceGroupName,
+        String factoryName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<LinkedServiceListResponse> res
+            = service.listByFactorySync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                factoryName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Lists linked services.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of linked service resources as paginated response with {@link PagedFlux}.
+     * @return a list of linked service resources along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LinkedServiceResourceInner> listByFactoryAsync(String resourceGroupName, String factoryName,
-        Context context) {
-        return new PagedFlux<>(() -> listByFactorySinglePageAsync(resourceGroupName, factoryName, context),
-            nextLink -> listByFactoryNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<LinkedServiceResourceInner> listByFactorySinglePage(String resourceGroupName,
+        String factoryName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<LinkedServiceListResponse> res
+            = service.listByFactorySync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                factoryName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -238,7 +310,8 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LinkedServiceResourceInner> listByFactory(String resourceGroupName, String factoryName) {
-        return new PagedIterable<>(listByFactoryAsync(resourceGroupName, factoryName));
+        return new PagedIterable<>(() -> listByFactorySinglePage(resourceGroupName, factoryName),
+            nextLink -> listByFactoryNextSinglePage(nextLink));
     }
 
     /**
@@ -255,7 +328,8 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LinkedServiceResourceInner> listByFactory(String resourceGroupName, String factoryName,
         Context context) {
-        return new PagedIterable<>(listByFactoryAsync(resourceGroupName, factoryName, context));
+        return new PagedIterable<>(() -> listByFactorySinglePage(resourceGroupName, factoryName, context),
+            nextLink -> listByFactoryNextSinglePage(nextLink, context));
     }
 
     /**
@@ -314,55 +388,6 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
      * @param factoryName The factory name.
      * @param linkedServiceName The linked service name.
      * @param linkedService Linked service resource definition.
-     * @param ifMatch ETag of the linkedService entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked service resource type along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LinkedServiceResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String factoryName, String linkedServiceName, LinkedServiceResourceInner linkedService, String ifMatch,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (linkedServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter linkedServiceName is required and cannot be null."));
-        }
-        if (linkedService == null) {
-            return Mono.error(new IllegalArgumentException("Parameter linkedService is required and cannot be null."));
-        } else {
-            linkedService.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            factoryName, linkedServiceName, this.client.getApiVersion(), ifMatch, linkedService, accept, context);
-    }
-
-    /**
-     * Creates or updates a linked service.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param linkedServiceName The linked service name.
-     * @param linkedService Linked service resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -394,8 +419,37 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LinkedServiceResourceInner> createOrUpdateWithResponse(String resourceGroupName, String factoryName,
         String linkedServiceName, LinkedServiceResourceInner linkedService, String ifMatch, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, linkedServiceName, linkedService,
-            ifMatch, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (linkedServiceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter linkedServiceName is required and cannot be null."));
+        }
+        if (linkedService == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter linkedService is required and cannot be null."));
+        } else {
+            linkedService.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, linkedServiceName, this.client.getApiVersion(), ifMatch, linkedService, accept, context);
     }
 
     /**
@@ -467,48 +521,6 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param linkedServiceName The linked service name.
-     * @param ifNoneMatch ETag of the linked service entity. Should only be specified for get. If the ETag matches the
-     * existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LinkedServiceResourceInner>> getWithResponseAsync(String resourceGroupName,
-        String factoryName, String linkedServiceName, String ifNoneMatch, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (linkedServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter linkedServiceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
-            linkedServiceName, this.client.getApiVersion(), ifNoneMatch, accept, context);
-    }
-
-    /**
-     * Gets a linked service.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param linkedServiceName The linked service name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -539,7 +551,31 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LinkedServiceResourceInner> getWithResponse(String resourceGroupName, String factoryName,
         String linkedServiceName, String ifNoneMatch, Context context) {
-        return getWithResponseAsync(resourceGroupName, factoryName, linkedServiceName, ifNoneMatch, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (linkedServiceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter linkedServiceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, linkedServiceName, this.client.getApiVersion(), ifNoneMatch, accept, context);
     }
 
     /**
@@ -605,46 +641,6 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param linkedServiceName The linked service name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String factoryName,
-        String linkedServiceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (linkedServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter linkedServiceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            factoryName, linkedServiceName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Deletes a linked service.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param linkedServiceName The linked service name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -671,7 +667,31 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String linkedServiceName,
         Context context) {
-        return deleteWithResponseAsync(resourceGroupName, factoryName, linkedServiceName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (linkedServiceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter linkedServiceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, linkedServiceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -720,27 +740,56 @@ public final class LinkedServicesClientImpl implements LinkedServicesClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of linked service resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<LinkedServiceResourceInner> listByFactoryNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<LinkedServiceListResponse> res
+            = service.listByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of linked service resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of linked service resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LinkedServiceResourceInner>> listByFactoryNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<LinkedServiceResourceInner> listByFactoryNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByFactoryNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<LinkedServiceListResponse> res
+            = service.listByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LinkedServicesClientImpl.class);
 }

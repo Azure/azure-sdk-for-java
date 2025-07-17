@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.datafactory.fluent.TriggersClient;
@@ -83,10 +85,30 @@ public final class TriggersClientImpl implements TriggersClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TriggerListResponse> listByFactorySync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/querytriggers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TriggerQueryResponseInner>> queryByFactory(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") TriggerFilterParameters filterParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/querytriggers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TriggerQueryResponseInner> queryByFactorySync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @QueryParam("api-version") String apiVersion,
@@ -105,10 +127,31 @@ public final class TriggersClientImpl implements TriggersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TriggerResourceInner> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @BodyParam("application/json") TriggerResourceInner trigger,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}")
         @ExpectedResponses({ 200, 304 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TriggerResourceInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}")
+        @ExpectedResponses({ 200, 304 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TriggerResourceInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion,
@@ -125,10 +168,30 @@ public final class TriggersClientImpl implements TriggersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/subscribeToEvents")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> subscribeToEvents(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/subscribeToEvents")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> subscribeToEventsSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion,
@@ -145,10 +208,30 @@ public final class TriggersClientImpl implements TriggersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/getEventSubscriptionStatus")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TriggerSubscriptionOperationStatusInner> getEventSubscriptionStatusSync(
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/unsubscribeFromEvents")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> unsubscribeFromEvents(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/unsubscribeFromEvents")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> unsubscribeFromEventsSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion,
@@ -165,6 +248,16 @@ public final class TriggersClientImpl implements TriggersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/start")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> startSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/stop")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -175,10 +268,28 @@ public final class TriggersClientImpl implements TriggersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/stop")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> stopSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TriggerListResponse>> listByFactoryNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TriggerListResponse> listByFactoryNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -225,44 +336,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger resources along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TriggerResourceInner>> listByFactorySinglePageAsync(String resourceGroupName,
-        String factoryName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByFactory(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Lists triggers.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -279,17 +352,77 @@ public final class TriggersClientImpl implements TriggersClient {
      * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of trigger resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TriggerResourceInner> listByFactorySinglePage(String resourceGroupName, String factoryName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<TriggerListResponse> res
+            = service.listByFactorySync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                factoryName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Lists triggers.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger resources as paginated response with {@link PagedFlux}.
+     * @return a list of trigger resources along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TriggerResourceInner> listByFactoryAsync(String resourceGroupName, String factoryName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TriggerResourceInner> listByFactorySinglePage(String resourceGroupName, String factoryName,
         Context context) {
-        return new PagedFlux<>(() -> listByFactorySinglePageAsync(resourceGroupName, factoryName, context),
-            nextLink -> listByFactoryNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<TriggerListResponse> res
+            = service.listByFactorySync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                factoryName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -304,7 +437,8 @@ public final class TriggersClientImpl implements TriggersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TriggerResourceInner> listByFactory(String resourceGroupName, String factoryName) {
-        return new PagedIterable<>(listByFactoryAsync(resourceGroupName, factoryName));
+        return new PagedIterable<>(() -> listByFactorySinglePage(resourceGroupName, factoryName),
+            nextLink -> listByFactoryNextSinglePage(nextLink));
     }
 
     /**
@@ -321,7 +455,8 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TriggerResourceInner> listByFactory(String resourceGroupName, String factoryName,
         Context context) {
-        return new PagedIterable<>(listByFactoryAsync(resourceGroupName, factoryName, context));
+        return new PagedIterable<>(() -> listByFactorySinglePage(resourceGroupName, factoryName, context),
+            nextLink -> listByFactoryNextSinglePage(nextLink, context));
     }
 
     /**
@@ -372,48 +507,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param filterParameters Parameters to filter the triggers.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a query of triggers along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TriggerQueryResponseInner>> queryByFactoryWithResponseAsync(String resourceGroupName,
-        String factoryName, TriggerFilterParameters filterParameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (filterParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter filterParameters is required and cannot be null."));
-        } else {
-            filterParameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.queryByFactory(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            factoryName, this.client.getApiVersion(), filterParameters, accept, context);
-    }
-
-    /**
-     * Query triggers.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param filterParameters Parameters to filter the triggers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -441,7 +534,33 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TriggerQueryResponseInner> queryByFactoryWithResponse(String resourceGroupName, String factoryName,
         TriggerFilterParameters filterParameters, Context context) {
-        return queryByFactoryWithResponseAsync(resourceGroupName, factoryName, filterParameters, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (filterParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter filterParameters is required and cannot be null."));
+        } else {
+            filterParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.queryByFactorySync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, this.client.getApiVersion(), filterParameters, accept, context);
     }
 
     /**
@@ -516,53 +635,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
      * @param trigger Trigger resource definition.
-     * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trigger resource type along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TriggerResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String factoryName, String triggerName, TriggerResourceInner trigger, String ifMatch, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (triggerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
-        }
-        if (trigger == null) {
-            return Mono.error(new IllegalArgumentException("Parameter trigger is required and cannot be null."));
-        } else {
-            trigger.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            factoryName, triggerName, this.client.getApiVersion(), ifMatch, trigger, accept, context);
-    }
-
-    /**
-     * Creates or updates a trigger.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param trigger Trigger resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -594,8 +666,37 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TriggerResourceInner> createOrUpdateWithResponse(String resourceGroupName, String factoryName,
         String triggerName, TriggerResourceInner trigger, String ifMatch, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, triggerName, trigger, ifMatch, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (triggerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
+        }
+        if (trigger == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter trigger is required and cannot be null."));
+        } else {
+            trigger.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, triggerName, this.client.getApiVersion(), ifMatch, trigger, accept, context);
     }
 
     /**
@@ -665,47 +766,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
-     * @param ifNoneMatch ETag of the trigger entity. Should only be specified for get. If the ETag matches the existing
-     * entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TriggerResourceInner>> getWithResponseAsync(String resourceGroupName, String factoryName,
-        String triggerName, String ifNoneMatch, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (triggerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
-            triggerName, this.client.getApiVersion(), ifNoneMatch, accept, context);
-    }
-
-    /**
-     * Gets a trigger.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -735,7 +795,31 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TriggerResourceInner> getWithResponse(String resourceGroupName, String factoryName,
         String triggerName, String ifNoneMatch, Context context) {
-        return getWithResponseAsync(resourceGroupName, factoryName, triggerName, ifNoneMatch, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (triggerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, triggerName, this.client.getApiVersion(), ifNoneMatch, accept, context);
     }
 
     /**
@@ -800,45 +884,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String factoryName,
-        String triggerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (triggerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            factoryName, triggerName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Deletes a trigger.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -864,7 +909,31 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String triggerName,
         Context context) {
-        return deleteWithResponseAsync(resourceGroupName, factoryName, triggerName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (triggerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, triggerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -929,38 +998,81 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response of a trigger subscription operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> subscribeToEventsWithResponse(String resourceGroupName, String factoryName,
+        String triggerName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (triggerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.subscribeToEventsSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, factoryName, triggerName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Subscribe event trigger to events.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return defines the response of a trigger subscription operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> subscribeToEventsWithResponseAsync(String resourceGroupName,
-        String factoryName, String triggerName, Context context) {
+    private Response<BinaryData> subscribeToEventsWithResponse(String resourceGroupName, String factoryName,
+        String triggerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (triggerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.subscribeToEvents(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            factoryName, triggerName, this.client.getApiVersion(), accept, context);
+        return service.subscribeToEventsSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, factoryName, triggerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -991,30 +1103,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of defines the response of a trigger subscription operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
-        beginSubscribeToEventsAsync(String resourceGroupName, String factoryName, String triggerName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = subscribeToEventsWithResponseAsync(resourceGroupName, factoryName, triggerName, context);
-        return this.client
-            .<TriggerSubscriptionOperationStatusInner, TriggerSubscriptionOperationStatusInner>getLroResult(mono,
-                this.client.getHttpPipeline(), TriggerSubscriptionOperationStatusInner.class,
-                TriggerSubscriptionOperationStatusInner.class, context);
-    }
-
-    /**
-     * Subscribe event trigger to events.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1023,7 +1111,11 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginSubscribeToEvents(String resourceGroupName, String factoryName, String triggerName) {
-        return this.beginSubscribeToEventsAsync(resourceGroupName, factoryName, triggerName).getSyncPoller();
+        Response<BinaryData> response = subscribeToEventsWithResponse(resourceGroupName, factoryName, triggerName);
+        return this.client
+            .<TriggerSubscriptionOperationStatusInner, TriggerSubscriptionOperationStatusInner>getLroResult(response,
+                TriggerSubscriptionOperationStatusInner.class, TriggerSubscriptionOperationStatusInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1041,7 +1133,11 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginSubscribeToEvents(String resourceGroupName, String factoryName, String triggerName, Context context) {
-        return this.beginSubscribeToEventsAsync(resourceGroupName, factoryName, triggerName, context).getSyncPoller();
+        Response<BinaryData> response
+            = subscribeToEventsWithResponse(resourceGroupName, factoryName, triggerName, context);
+        return this.client
+            .<TriggerSubscriptionOperationStatusInner, TriggerSubscriptionOperationStatusInner>getLroResult(response,
+                TriggerSubscriptionOperationStatusInner.class, TriggerSubscriptionOperationStatusInner.class, context);
     }
 
     /**
@@ -1068,25 +1164,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TriggerSubscriptionOperationStatusInner> subscribeToEventsAsync(String resourceGroupName,
-        String factoryName, String triggerName, Context context) {
-        return beginSubscribeToEventsAsync(resourceGroupName, factoryName, triggerName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Subscribe event trigger to events.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1095,7 +1172,7 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerSubscriptionOperationStatusInner subscribeToEvents(String resourceGroupName, String factoryName,
         String triggerName) {
-        return subscribeToEventsAsync(resourceGroupName, factoryName, triggerName).block();
+        return beginSubscribeToEvents(resourceGroupName, factoryName, triggerName).getFinalResult();
     }
 
     /**
@@ -1113,7 +1190,7 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerSubscriptionOperationStatusInner subscribeToEvents(String resourceGroupName, String factoryName,
         String triggerName, Context context) {
-        return subscribeToEventsAsync(resourceGroupName, factoryName, triggerName, context).block();
+        return beginSubscribeToEvents(resourceGroupName, factoryName, triggerName, context).getFinalResult();
     }
 
     /**
@@ -1163,46 +1240,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger's event subscription status along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TriggerSubscriptionOperationStatusInner>> getEventSubscriptionStatusWithResponseAsync(
-        String resourceGroupName, String factoryName, String triggerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (triggerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getEventSubscriptionStatus(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, factoryName, triggerName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get a trigger's event subscription status.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1230,8 +1267,31 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TriggerSubscriptionOperationStatusInner> getEventSubscriptionStatusWithResponse(
         String resourceGroupName, String factoryName, String triggerName, Context context) {
-        return getEventSubscriptionStatusWithResponseAsync(resourceGroupName, factoryName, triggerName, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (triggerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getEventSubscriptionStatusSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, factoryName, triggerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1299,37 +1359,80 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the response of a trigger subscription operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> unsubscribeFromEventsWithResponse(String resourceGroupName, String factoryName,
+        String triggerName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (triggerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.unsubscribeFromEventsSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, factoryName, triggerName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Unsubscribe event trigger from events.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return defines the response of a trigger subscription operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> unsubscribeFromEventsWithResponseAsync(String resourceGroupName,
-        String factoryName, String triggerName, Context context) {
+    private Response<BinaryData> unsubscribeFromEventsWithResponse(String resourceGroupName, String factoryName,
+        String triggerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (triggerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.unsubscribeFromEvents(this.client.getEndpoint(), this.client.getSubscriptionId(),
+        return service.unsubscribeFromEventsSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
             resourceGroupName, factoryName, triggerName, this.client.getApiVersion(), accept, context);
     }
 
@@ -1361,31 +1464,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of defines the response of a trigger subscription operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
-        beginUnsubscribeFromEventsAsync(String resourceGroupName, String factoryName, String triggerName,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = unsubscribeFromEventsWithResponseAsync(resourceGroupName, factoryName, triggerName, context);
-        return this.client
-            .<TriggerSubscriptionOperationStatusInner, TriggerSubscriptionOperationStatusInner>getLroResult(mono,
-                this.client.getHttpPipeline(), TriggerSubscriptionOperationStatusInner.class,
-                TriggerSubscriptionOperationStatusInner.class, context);
-    }
-
-    /**
-     * Unsubscribe event trigger from events.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1394,7 +1472,11 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginUnsubscribeFromEvents(String resourceGroupName, String factoryName, String triggerName) {
-        return this.beginUnsubscribeFromEventsAsync(resourceGroupName, factoryName, triggerName).getSyncPoller();
+        Response<BinaryData> response = unsubscribeFromEventsWithResponse(resourceGroupName, factoryName, triggerName);
+        return this.client
+            .<TriggerSubscriptionOperationStatusInner, TriggerSubscriptionOperationStatusInner>getLroResult(response,
+                TriggerSubscriptionOperationStatusInner.class, TriggerSubscriptionOperationStatusInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1412,8 +1494,11 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginUnsubscribeFromEvents(String resourceGroupName, String factoryName, String triggerName, Context context) {
-        return this.beginUnsubscribeFromEventsAsync(resourceGroupName, factoryName, triggerName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = unsubscribeFromEventsWithResponse(resourceGroupName, factoryName, triggerName, context);
+        return this.client
+            .<TriggerSubscriptionOperationStatusInner, TriggerSubscriptionOperationStatusInner>getLroResult(response,
+                TriggerSubscriptionOperationStatusInner.class, TriggerSubscriptionOperationStatusInner.class, context);
     }
 
     /**
@@ -1440,25 +1525,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TriggerSubscriptionOperationStatusInner> unsubscribeFromEventsAsync(String resourceGroupName,
-        String factoryName, String triggerName, Context context) {
-        return beginUnsubscribeFromEventsAsync(resourceGroupName, factoryName, triggerName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Unsubscribe event trigger from events.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1467,7 +1533,7 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerSubscriptionOperationStatusInner unsubscribeFromEvents(String resourceGroupName, String factoryName,
         String triggerName) {
-        return unsubscribeFromEventsAsync(resourceGroupName, factoryName, triggerName).block();
+        return beginUnsubscribeFromEvents(resourceGroupName, factoryName, triggerName).getFinalResult();
     }
 
     /**
@@ -1485,7 +1551,7 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerSubscriptionOperationStatusInner unsubscribeFromEvents(String resourceGroupName, String factoryName,
         String triggerName, Context context) {
-        return unsubscribeFromEventsAsync(resourceGroupName, factoryName, triggerName, context).block();
+        return beginUnsubscribeFromEvents(resourceGroupName, factoryName, triggerName, context).getFinalResult();
     }
 
     /**
@@ -1533,37 +1599,80 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> startWithResponse(String resourceGroupName, String factoryName, String triggerName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (triggerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.startSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, triggerName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Starts a trigger.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String factoryName,
-        String triggerName, Context context) {
+    private Response<BinaryData> startWithResponse(String resourceGroupName, String factoryName, String triggerName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (triggerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.start(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
-            triggerName, this.client.getApiVersion(), accept, context);
+        return service.startSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, triggerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1591,28 +1700,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String factoryName,
-        String triggerName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = startWithResponseAsync(resourceGroupName, factoryName, triggerName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Starts a trigger.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1621,7 +1708,8 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String factoryName,
         String triggerName) {
-        return this.beginStartAsync(resourceGroupName, factoryName, triggerName).getSyncPoller();
+        Response<BinaryData> response = startWithResponse(resourceGroupName, factoryName, triggerName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1639,7 +1727,8 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String factoryName,
         String triggerName, Context context) {
-        return this.beginStartAsync(resourceGroupName, factoryName, triggerName, context).getSyncPoller();
+        Response<BinaryData> response = startWithResponse(resourceGroupName, factoryName, triggerName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1665,31 +1754,13 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startAsync(String resourceGroupName, String factoryName, String triggerName, Context context) {
-        return beginStartAsync(resourceGroupName, factoryName, triggerName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Starts a trigger.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String factoryName, String triggerName) {
-        startAsync(resourceGroupName, factoryName, triggerName).block();
+        beginStart(resourceGroupName, factoryName, triggerName).getFinalResult();
     }
 
     /**
@@ -1705,7 +1776,7 @@ public final class TriggersClientImpl implements TriggersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String factoryName, String triggerName, Context context) {
-        startAsync(resourceGroupName, factoryName, triggerName, context).block();
+        beginStart(resourceGroupName, factoryName, triggerName, context).getFinalResult();
     }
 
     /**
@@ -1753,37 +1824,80 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> stopWithResponse(String resourceGroupName, String factoryName, String triggerName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (triggerName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.stopSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, triggerName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Stops a trigger.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String factoryName,
-        String triggerName, Context context) {
+    private Response<BinaryData> stopWithResponse(String resourceGroupName, String factoryName, String triggerName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (triggerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.stop(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
-            triggerName, this.client.getApiVersion(), accept, context);
+        return service.stopSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, triggerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1811,28 +1925,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String factoryName,
-        String triggerName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = stopWithResponseAsync(resourceGroupName, factoryName, triggerName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Stops a trigger.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1841,7 +1933,8 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String factoryName,
         String triggerName) {
-        return this.beginStopAsync(resourceGroupName, factoryName, triggerName).getSyncPoller();
+        Response<BinaryData> response = stopWithResponse(resourceGroupName, factoryName, triggerName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1859,7 +1952,8 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String factoryName,
         String triggerName, Context context) {
-        return this.beginStopAsync(resourceGroupName, factoryName, triggerName, context).getSyncPoller();
+        Response<BinaryData> response = stopWithResponse(resourceGroupName, factoryName, triggerName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1885,31 +1979,13 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> stopAsync(String resourceGroupName, String factoryName, String triggerName, Context context) {
-        return beginStopAsync(resourceGroupName, factoryName, triggerName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Stops a trigger.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String factoryName, String triggerName) {
-        stopAsync(resourceGroupName, factoryName, triggerName).block();
+        beginStop(resourceGroupName, factoryName, triggerName).getFinalResult();
     }
 
     /**
@@ -1925,7 +2001,7 @@ public final class TriggersClientImpl implements TriggersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String factoryName, String triggerName, Context context) {
-        stopAsync(resourceGroupName, factoryName, triggerName, context).block();
+        beginStop(resourceGroupName, factoryName, triggerName, context).getFinalResult();
     }
 
     /**
@@ -1958,26 +2034,56 @@ public final class TriggersClientImpl implements TriggersClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of trigger resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TriggerResourceInner> listByFactoryNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<TriggerListResponse> res
+            = service.listByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger resources along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of trigger resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TriggerResourceInner>> listByFactoryNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<TriggerResourceInner> listByFactoryNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByFactoryNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<TriggerListResponse> res
+            = service.listByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TriggersClientImpl.class);
 }

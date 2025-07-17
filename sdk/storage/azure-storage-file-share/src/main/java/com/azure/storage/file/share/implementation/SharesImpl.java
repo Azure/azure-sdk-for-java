@@ -84,7 +84,7 @@ public final class SharesImpl {
      * REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureFileStorageShar")
+    @ServiceInterface(name = "AzureFileStorageShares")
     public interface SharesService {
 
         @Put("/{shareName}")
@@ -911,7 +911,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param quota Specifies the maximum size of the share, in gigabytes.
@@ -956,7 +956,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param quota Specifies the maximum size of the share, in gigabytes.
@@ -1003,7 +1003,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param quota Specifies the maximum size of the share, in gigabytes.
@@ -1046,7 +1046,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param quota Specifies the maximum size of the share, in gigabytes.
@@ -1090,7 +1090,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param quota Specifies the maximum size of the share, in gigabytes.
@@ -1135,7 +1135,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param quota Specifies the maximum size of the share, in gigabytes.
@@ -1182,7 +1182,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param quota Specifies the maximum size of the share, in gigabytes.
@@ -1233,7 +1233,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param quota Specifies the maximum size of the share, in gigabytes.
@@ -1273,7 +1273,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param quota Specifies the maximum size of the share, in gigabytes.
@@ -1326,7 +1326,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1350,7 +1350,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
@@ -1378,7 +1378,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1401,7 +1401,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
@@ -1426,7 +1426,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1451,7 +1451,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
@@ -1479,7 +1479,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
@@ -1509,7 +1509,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1529,7 +1529,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
@@ -1559,7 +1559,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param deleteSnapshots Specifies the option include to delete the base share and all of its snapshots.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -1584,7 +1584,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param deleteSnapshots Specifies the option include to delete the base share and all of its snapshots.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -1613,7 +1613,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param deleteSnapshots Specifies the option include to delete the base share and all of its snapshots.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -1638,7 +1638,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param deleteSnapshots Specifies the option include to delete the base share and all of its snapshots.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -1664,7 +1664,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param deleteSnapshots Specifies the option include to delete the base share and all of its snapshots.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -1690,7 +1690,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param deleteSnapshots Specifies the option include to delete the base share and all of its snapshots.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -1719,7 +1719,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param deleteSnapshots Specifies the option include to delete the base share and all of its snapshots.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -1751,7 +1751,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param deleteSnapshots Specifies the option include to delete the base share and all of its snapshots.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -1773,7 +1773,7 @@ public final class SharesImpl {
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param deleteSnapshots Specifies the option include to delete the base share and all of its snapshots.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -1803,7 +1803,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never
      * expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or
@@ -1835,7 +1835,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never
      * expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or
@@ -1873,7 +1873,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never
      * expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or
@@ -1904,7 +1904,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never
      * expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or
@@ -1936,7 +1936,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never
      * expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or
@@ -1968,7 +1968,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never
      * expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or
@@ -2006,7 +2006,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never
      * expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or
@@ -2046,7 +2046,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never
      * expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or
@@ -2074,7 +2074,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never
      * expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or
@@ -2115,7 +2115,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2141,7 +2141,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2173,7 +2173,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2199,7 +2199,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2226,7 +2226,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2253,7 +2253,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2285,7 +2285,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2320,7 +2320,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2343,7 +2343,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2378,7 +2378,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request)
      * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
@@ -2408,7 +2408,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request)
      * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
@@ -2444,7 +2444,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request)
      * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
@@ -2473,7 +2473,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request)
      * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
@@ -2503,7 +2503,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request)
      * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
@@ -2533,7 +2533,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request)
      * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
@@ -2569,7 +2569,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request)
      * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
@@ -2607,7 +2607,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request)
      * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
@@ -2633,7 +2633,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request)
      * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
@@ -2671,7 +2671,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2698,7 +2698,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2730,7 +2730,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2756,7 +2756,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2783,7 +2783,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2810,7 +2810,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2842,7 +2842,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2877,7 +2877,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2899,7 +2899,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -2933,7 +2933,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in
      * seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease.
@@ -2966,7 +2966,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in
      * seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease.
@@ -3004,7 +3004,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in
      * seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease.
@@ -3036,7 +3036,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in
      * seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease.
@@ -3069,7 +3069,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in
      * seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease.
@@ -3102,7 +3102,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in
      * seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease.
@@ -3141,7 +3141,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in
      * seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease.
@@ -3182,7 +3182,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in
      * seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease.
@@ -3211,7 +3211,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in
      * seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease.
@@ -3251,7 +3251,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3271,7 +3271,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param context The context to associate with this operation.
@@ -3297,7 +3297,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3317,7 +3317,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param context The context to associate with this operation.
@@ -3339,7 +3339,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3361,7 +3361,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param context The context to associate with this operation.
@@ -3387,7 +3387,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param context The context to associate with this operation.
@@ -3415,7 +3415,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3432,7 +3432,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param context The context to associate with this operation.
@@ -3461,7 +3461,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3482,7 +3482,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3508,7 +3508,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3528,7 +3528,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3550,7 +3550,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3571,7 +3571,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3597,7 +3597,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3625,7 +3625,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3642,7 +3642,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3675,7 +3675,7 @@ public final class SharesImpl {
      * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
      * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3703,7 +3703,7 @@ public final class SharesImpl {
      * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
      * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3736,7 +3736,7 @@ public final class SharesImpl {
      * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
      * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3762,7 +3762,7 @@ public final class SharesImpl {
      * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
      * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3789,7 +3789,7 @@ public final class SharesImpl {
      * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
      * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3817,7 +3817,7 @@ public final class SharesImpl {
      * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
      * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3850,7 +3850,7 @@ public final class SharesImpl {
      * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
      * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3884,7 +3884,7 @@ public final class SharesImpl {
      * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
      * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3913,7 +3913,7 @@ public final class SharesImpl {
      * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
      * permission.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3941,7 +3941,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param quota Specifies the maximum size of the share, in gigabytes.
      * @param accessTier Specifies the access tier of the share.
@@ -3982,7 +3982,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param quota Specifies the maximum size of the share, in gigabytes.
      * @param accessTier Specifies the access tier of the share.
@@ -4028,7 +4028,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param quota Specifies the maximum size of the share, in gigabytes.
      * @param accessTier Specifies the access tier of the share.
@@ -4069,7 +4069,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param quota Specifies the maximum size of the share, in gigabytes.
      * @param accessTier Specifies the access tier of the share.
@@ -4111,7 +4111,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param quota Specifies the maximum size of the share, in gigabytes.
      * @param accessTier Specifies the access tier of the share.
@@ -4153,7 +4153,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param quota Specifies the maximum size of the share, in gigabytes.
      * @param accessTier Specifies the access tier of the share.
@@ -4198,7 +4198,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param quota Specifies the maximum size of the share, in gigabytes.
      * @param accessTier Specifies the access tier of the share.
@@ -4247,7 +4247,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param quota Specifies the maximum size of the share, in gigabytes.
      * @param accessTier Specifies the access tier of the share.
@@ -4285,7 +4285,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param quota Specifies the maximum size of the share, in gigabytes.
      * @param accessTier Specifies the access tier of the share.
@@ -4334,7 +4334,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -4356,7 +4356,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -4383,7 +4383,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -4405,7 +4405,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -4428,7 +4428,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -4451,7 +4451,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -4478,7 +4478,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -4507,7 +4507,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -4525,7 +4525,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param metadata A name-value pair to associate with a file storage object.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -4554,7 +4554,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4575,7 +4575,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
@@ -4602,7 +4602,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4622,7 +4622,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
@@ -4644,7 +4644,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4666,7 +4666,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
@@ -4692,7 +4692,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
@@ -4720,7 +4720,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4742,7 +4742,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
@@ -4770,7 +4770,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareAcl The ACL for the share.
@@ -4792,7 +4792,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareAcl The ACL for the share.
@@ -4820,7 +4820,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareAcl The ACL for the share.
@@ -4842,7 +4842,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareAcl The ACL for the share.
@@ -4865,7 +4865,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareAcl The ACL for the share.
@@ -4887,7 +4887,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareAcl The ACL for the share.
@@ -4914,7 +4914,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareAcl The ACL for the share.
@@ -4945,7 +4945,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareAcl The ACL for the share.
@@ -4964,7 +4964,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param shareAcl The ACL for the share.
@@ -4995,7 +4995,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5015,7 +5015,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
@@ -5041,7 +5041,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5061,7 +5061,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
@@ -5082,7 +5082,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5103,7 +5103,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
@@ -5129,7 +5129,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
@@ -5157,7 +5157,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5179,7 +5179,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
@@ -5207,7 +5207,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -5232,7 +5232,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -5261,7 +5261,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -5285,7 +5285,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -5310,7 +5310,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -5335,7 +5335,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -5364,7 +5364,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -5396,7 +5396,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -5417,7 +5417,7 @@ public final class SharesImpl {
      *
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.

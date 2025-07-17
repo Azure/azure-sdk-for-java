@@ -51,7 +51,7 @@ public final class TeradataLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private TeradataLinkedServiceTypeProperties innerTypeProperties() {
+    TeradataLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -102,7 +102,7 @@ public final class TeradataLinkedService extends LinkedService {
 
     /**
      * Get the connectionString property: Teradata ODBC connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * AzureKeyVaultSecretReference. Only applied for version 1.0.
      * 
      * @return the connectionString value.
      */
@@ -112,7 +112,7 @@ public final class TeradataLinkedService extends LinkedService {
 
     /**
      * Set the connectionString property: Teradata ODBC connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * AzureKeyVaultSecretReference. Only applied for version 1.0.
      * 
      * @param connectionString the connectionString value to set.
      * @return the TeradataLinkedService object itself.
@@ -214,6 +214,160 @@ public final class TeradataLinkedService extends LinkedService {
             this.innerTypeProperties = new TeradataLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the sslMode property: SSL mode for connection. Valid values including: “Disable”, “Allow”, “Prefer”,
+     * “Require”, “Verify-CA”, “Verify-Full”. Default value is “Verify-Full”. Type: string (or Expression with
+     * resultType string). Only applied for version 2.0.
+     * 
+     * @return the sslMode value.
+     */
+    public Object sslMode() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sslMode();
+    }
+
+    /**
+     * Set the sslMode property: SSL mode for connection. Valid values including: “Disable”, “Allow”, “Prefer”,
+     * “Require”, “Verify-CA”, “Verify-Full”. Default value is “Verify-Full”. Type: string (or Expression with
+     * resultType string). Only applied for version 2.0.
+     * 
+     * @param sslMode the sslMode value to set.
+     * @return the TeradataLinkedService object itself.
+     */
+    public TeradataLinkedService withSslMode(Object sslMode) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new TeradataLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSslMode(sslMode);
+        return this;
+    }
+
+    /**
+     * Get the portNumber property: The port numbers when connecting to server through non HTTPS/TLS connections. Type:
+     * integer (or Expression with resultType integer). Only used for V2. Only applied for version 2.0.
+     * 
+     * @return the portNumber value.
+     */
+    public Object portNumber() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().portNumber();
+    }
+
+    /**
+     * Set the portNumber property: The port numbers when connecting to server through non HTTPS/TLS connections. Type:
+     * integer (or Expression with resultType integer). Only used for V2. Only applied for version 2.0.
+     * 
+     * @param portNumber the portNumber value to set.
+     * @return the TeradataLinkedService object itself.
+     */
+    public TeradataLinkedService withPortNumber(Object portNumber) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new TeradataLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPortNumber(portNumber);
+        return this;
+    }
+
+    /**
+     * Get the httpsPortNumber property: The port numbers when connecting to server through HTTPS/TLS connections. Type:
+     * integer (or Expression with resultType integer). Only applied for version 2.0.
+     * 
+     * @return the httpsPortNumber value.
+     */
+    public Object httpsPortNumber() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().httpsPortNumber();
+    }
+
+    /**
+     * Set the httpsPortNumber property: The port numbers when connecting to server through HTTPS/TLS connections. Type:
+     * integer (or Expression with resultType integer). Only applied for version 2.0.
+     * 
+     * @param httpsPortNumber the httpsPortNumber value to set.
+     * @return the TeradataLinkedService object itself.
+     */
+    public TeradataLinkedService withHttpsPortNumber(Object httpsPortNumber) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new TeradataLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withHttpsPortNumber(httpsPortNumber);
+        return this;
+    }
+
+    /**
+     * Get the useDataEncryption property: Specifies whether to encrypt all communication with the Teradata database.
+     * Allowed values are 0 or 1. This setting will be ignored for HTTPS/TLS connections. Type: integer (or Expression
+     * with resultType integer). Only applied for version 2.0.
+     * 
+     * @return the useDataEncryption value.
+     */
+    public Object useDataEncryption() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().useDataEncryption();
+    }
+
+    /**
+     * Set the useDataEncryption property: Specifies whether to encrypt all communication with the Teradata database.
+     * Allowed values are 0 or 1. This setting will be ignored for HTTPS/TLS connections. Type: integer (or Expression
+     * with resultType integer). Only applied for version 2.0.
+     * 
+     * @param useDataEncryption the useDataEncryption value to set.
+     * @return the TeradataLinkedService object itself.
+     */
+    public TeradataLinkedService withUseDataEncryption(Object useDataEncryption) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new TeradataLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUseDataEncryption(useDataEncryption);
+        return this;
+    }
+
+    /**
+     * Get the characterSet property: The character set to use for the connection. Type: string (or Expression with
+     * resultType string). Only applied for version 2.0.
+     * 
+     * @return the characterSet value.
+     */
+    public Object characterSet() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().characterSet();
+    }
+
+    /**
+     * Set the characterSet property: The character set to use for the connection. Type: string (or Expression with
+     * resultType string). Only applied for version 2.0.
+     * 
+     * @param characterSet the characterSet value to set.
+     * @return the TeradataLinkedService object itself.
+     */
+    public TeradataLinkedService withCharacterSet(Object characterSet) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new TeradataLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withCharacterSet(characterSet);
+        return this;
+    }
+
+    /**
+     * Get the maxRespSize property: The maximum size of the response buffer for SQL requests, in bytes. Type: integer.
+     * Only applied for version 2.0.
+     * 
+     * @return the maxRespSize value.
+     */
+    public Object maxRespSize() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().maxRespSize();
+    }
+
+    /**
+     * Set the maxRespSize property: The maximum size of the response buffer for SQL requests, in bytes. Type: integer.
+     * Only applied for version 2.0.
+     * 
+     * @param maxRespSize the maxRespSize value to set.
+     * @return the TeradataLinkedService object itself.
+     */
+    public TeradataLinkedService withMaxRespSize(Object maxRespSize) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new TeradataLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withMaxRespSize(maxRespSize);
         return this;
     }
 

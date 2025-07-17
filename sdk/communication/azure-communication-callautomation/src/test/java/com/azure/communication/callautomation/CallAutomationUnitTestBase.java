@@ -20,15 +20,11 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModelKind;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
-import com.azure.communication.callautomation.implementation.models.DialogStateResponse;
 import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsAppIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
-import com.azure.communication.callautomation.models.MediaStreamingContent;
-import com.azure.communication.callautomation.models.MediaStreamingTransport;
 import com.azure.communication.callautomation.models.TranscriptionOptions;
-import com.azure.communication.callautomation.models.TranscriptionTransport;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -52,21 +48,21 @@ public class CallAutomationUnitTestBase {
     static final CommunicationUserIdentifier USER_1 = new CommunicationUserIdentifier("userId1");
     static final String CALL_CALLER_DISPLAY_NAME = "callerDisplayName";
     static final String CALL_TARGET_ID = "targetId";
+    static final String CALL_PSTN_TARGET_ID = "+11234567890";
     static final String CALL_TRANSFEREE_ID = "transfereeId";
     static final String CALL_CONNECTION_STATE = "connected";
     static final String CALL_SUBJECT = "subject";
     static final String CALL_CALLBACK_URL = "https://REDACTED.com/events";
     static final String CALL_INCOMING_CALL_CONTEXT = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.REDACTED";
     static final String CALL_OPERATION_CONTEXT = "operationContext";
-    static final String DIALOG_ID = "dialogId";
     static final String BOT_APP_ID = "botAppId";
 
     static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION
-        = new MediaStreamingOptions("https://websocket.url.com", MediaStreamingTransport.WEBSOCKET,
-            MediaStreamingContent.AUDIO, MediaStreamingAudioChannel.MIXED, true);
+        = new MediaStreamingOptions(MediaStreamingAudioChannel.MIXED).setTransportUrl("https://websocket.url.com")
+            .setStartMediaStreaming(true);
 
     static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION
-        = new TranscriptionOptions("https://websocket.url.com", TranscriptionTransport.WEBSOCKET, "en-US", true);
+        = new TranscriptionOptions("en-US").setTransportUrl("https://websocket.url.com").setStartTranscription(true);
 
     public static String generateDownloadResult(String content) {
         return content;
@@ -80,8 +76,6 @@ public class CallAutomationUnitTestBase {
                 .setServerCallId(serverCallId)
                 .setCallbackUri(callbackUri)
                 .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
-                .setMediaSubscriptionId(mediaSubscriptionId)
-                .setDataSubscriptionId(dataSubscriptionId)
                 .setSourceDisplayName(callerDisplayName)
                 .setTargets(
                     new ArrayList<>(Collections.singletonList(ModelGenerator.generateUserIdentifierModel(targetId))));
@@ -131,12 +125,6 @@ public class CallAutomationUnitTestBase {
                 .setParticipant(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false, false));
 
         return serializeObject(addParticipantsResponseInternal);
-    }
-
-    public static String generateDialogStateResponse() {
-        DialogStateResponse dialogStateResponse = new DialogStateResponse().setDialogId(DIALOG_ID);
-
-        return serializeObject(dialogStateResponse);
     }
 
     public static CallAutomationAsyncClient

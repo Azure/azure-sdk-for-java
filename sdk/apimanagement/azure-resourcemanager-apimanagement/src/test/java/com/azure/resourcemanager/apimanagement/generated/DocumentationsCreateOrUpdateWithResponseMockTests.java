@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.DocumentationContract;
@@ -21,24 +21,24 @@ public final class DocumentationsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"title\":\"gonysemunv\",\"content\":\"vnbckl\"},\"id\":\"sxuuksvfsukpk\",\"name\":\"ealbckpnnenrcezt\",\"type\":\"razwkcohjxoc\"}";
+            = "{\"properties\":{\"title\":\"amzkuxdgpksgotbu\",\"content\":\"njqldrqqvcugusq\"},\"id\":\"xlxedthfwlnvq\",\"name\":\"cbyfi\",\"type\":\"blnlmpuyypaggpai\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DocumentationContract response = manager.documentations()
-            .define("jfk")
-            .withExistingService("xduwimwn", "vjdywpfxi")
-            .withTitle("tkswmyj")
-            .withContent("cknsojtmpdkcb")
-            .withIfMatch("eysqen")
+            .define("lwceechcayvqbeq")
+            .withExistingService("yahfoyfz", "idyaeprevcjukf")
+            .withTitle("nusnylfhicr")
+            .withContent("iybfbyd")
+            .withIfMatch("ugseiqbroq")
             .create();
 
-        Assertions.assertEquals("gonysemunv", response.title());
-        Assertions.assertEquals("vnbckl", response.content());
+        Assertions.assertEquals("amzkuxdgpksgotbu", response.title());
+        Assertions.assertEquals("njqldrqqvcugusq", response.content());
     }
 }

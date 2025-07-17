@@ -10,7 +10,9 @@ import com.azure.resourcemanager.databox.models.SkuCapacity;
 public final class SkuCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuCapacity model = BinaryData.fromString("{\"usable\":\"zuaejxd\",\"maximum\":\"tskzbbtdzumveek\"}")
+        SkuCapacity model = BinaryData
+            .fromString(
+                "{\"usable\":\"misgwbnb\",\"maximum\":\"ldawkzbaliourqha\",\"individualSkuUsable\":\"uhashsfwx\"}")
             .toObject(SkuCapacity.class);
     }
 

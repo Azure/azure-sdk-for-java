@@ -3,13 +3,13 @@
 
 package com.azure.security.keyvault.jca.implementation.certificates;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.Key;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
@@ -165,8 +165,17 @@ public final class SpecificPathCertificates implements AzureCertificates {
      */
     String getThumbprint(Certificate certificate) {
         try {
-            return DigestUtils.sha1Hex(certificate.getEncoded());
-        } catch (CertificateEncodingException e) {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] hashBytes = md.digest(certificate.getEncoded());
+
+            StringBuilder hexString = new StringBuilder();
+
+            for (byte b : hashBytes) {
+                hexString.append(String.format("%02x", b));
+            }
+
+            return hexString.toString();
+        } catch (CertificateEncodingException | NoSuchAlgorithmException e) {
             LOGGER.log(WARNING, "Unable to get thumbprint for certificate", e);
         }
         return "";

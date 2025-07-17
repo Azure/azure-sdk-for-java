@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.NotificationName;
@@ -22,22 +22,22 @@ public final class NotificationRecipientUsersListByNotificationWithResponseMockT
     @Test
     public void testListByNotificationWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"userId\":\"dmakks\"},\"id\":\"rnaxkczkwohdigey\",\"name\":\"ocft\",\"type\":\"amodw\"},{\"properties\":{\"userId\":\"ktvxerow\"},\"id\":\"zvrnnbegra\",\"name\":\"eonmtojxgdo\",\"type\":\"mazhkqqs\"},{\"properties\":{\"userId\":\"aq\"},\"id\":\"zbwgpmdmwi\",\"name\":\"evveswghhbqqhd\",\"type\":\"dargkwim\"},{\"properties\":{\"userId\":\"eeeuq\"},\"id\":\"uwczzcujwxvbk\",\"name\":\"rgknhfwlajwda\",\"type\":\"y\"}],\"count\":1015416486719648078,\"nextLink\":\"ipvspewyzhydtkbm\"}";
+            = "{\"value\":[{\"properties\":{\"userId\":\"maryywyfcenkbf\"},\"id\":\"qcapg\",\"name\":\"eciradmxokbu\",\"type\":\"bbzcxzayv\"},{\"properties\":{\"userId\":\"jdhrodyiitredd\"},\"id\":\"tgoppybsec\",\"name\":\"gaxmhaszjie\",\"type\":\"fstdwqdvzcnlkv\"},{\"properties\":{\"userId\":\"tkreisojhuswm\"},\"id\":\"rbkobmgwavzm\",\"name\":\"paalwidtebwed\",\"type\":\"r\"}],\"count\":5809813176166589375,\"nextLink\":\"gijncubaicxe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RecipientUserCollection response = manager.notificationRecipientUsers()
-            .listByNotificationWithResponse("ljuepme", "sjpgbmlbxjhgvte", NotificationName.BCC,
-                com.azure.core.util.Context.NONE)
+            .listByNotificationWithResponse("bjuaiu", "emqcbnkiv",
+                NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dmakks", response.value().get(0).userId());
-        Assertions.assertEquals(1015416486719648078L, response.count());
-        Assertions.assertEquals("ipvspewyzhydtkbm", response.nextLink());
+        Assertions.assertEquals("maryywyfcenkbf", response.value().get(0).userId());
+        Assertions.assertEquals(5809813176166589375L, response.count());
+        Assertions.assertEquals("gijncubaicxe", response.nextLink());
     }
 }

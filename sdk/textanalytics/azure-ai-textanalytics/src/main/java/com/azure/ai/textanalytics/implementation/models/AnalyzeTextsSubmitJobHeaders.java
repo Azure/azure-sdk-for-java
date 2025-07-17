@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,6 +17,7 @@ public final class AnalyzeTextsSubmitJobHeaders {
     /*
      * The Operation-Location property.
      */
+    @Generated
     private String operationLocation;
 
     // HttpHeaders containing the raw property values.
@@ -33,6 +35,7 @@ public final class AnalyzeTextsSubmitJobHeaders {
      * 
      * @return the operationLocation value.
      */
+    @Generated
     public String getOperationLocation() {
         return this.operationLocation;
     }
@@ -43,6 +46,7 @@ public final class AnalyzeTextsSubmitJobHeaders {
      * @param operationLocation the operationLocation value to set.
      * @return the AnalyzeTextsSubmitJobHeaders object itself.
      */
+    @Generated
     public AnalyzeTextsSubmitJobHeaders setOperationLocation(String operationLocation) {
         this.operationLocation = operationLocation;
         return this;

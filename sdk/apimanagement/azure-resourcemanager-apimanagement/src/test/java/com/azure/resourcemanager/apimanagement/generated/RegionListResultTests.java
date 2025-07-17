@@ -14,26 +14,25 @@ public final class RegionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"igi\",\"isMasterRegion\":false,\"isDeleted\":true},{\"name\":\"lkq\",\"isMasterRegion\":true,\"isDeleted\":false},{\"name\":\"nmbzmecuy\",\"isMasterRegion\":true,\"isDeleted\":true}],\"count\":3305169102907443602,\"nextLink\":\"spzvrietvfphmd\"}")
+            "{\"value\":[{\"name\":\"ud\",\"isMasterRegion\":false,\"isDeleted\":false},{\"name\":\"tvktjhffecqko\",\"isMasterRegion\":true,\"isDeleted\":true}],\"count\":6316115467009578700,\"nextLink\":\"hpuzxkpye\"}")
             .toObject(RegionListResult.class);
-        Assertions.assertEquals(false, model.value().get(0).isMasterRegion());
-        Assertions.assertEquals(true, model.value().get(0).isDeleted());
-        Assertions.assertEquals(3305169102907443602L, model.count());
-        Assertions.assertEquals("spzvrietvfphmd", model.nextLink());
+        Assertions.assertFalse(model.value().get(0).isMasterRegion());
+        Assertions.assertFalse(model.value().get(0).isDeleted());
+        Assertions.assertEquals(6316115467009578700L, model.count());
+        Assertions.assertEquals("hpuzxkpye", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RegionListResult model = new RegionListResult()
-            .withValue(Arrays.asList(new RegionContractInner().withIsMasterRegion(false).withIsDeleted(true),
-                new RegionContractInner().withIsMasterRegion(true).withIsDeleted(false),
+            .withValue(Arrays.asList(new RegionContractInner().withIsMasterRegion(false).withIsDeleted(false),
                 new RegionContractInner().withIsMasterRegion(true).withIsDeleted(true)))
-            .withCount(3305169102907443602L)
-            .withNextLink("spzvrietvfphmd");
+            .withCount(6316115467009578700L)
+            .withNextLink("hpuzxkpye");
         model = BinaryData.fromObject(model).toObject(RegionListResult.class);
-        Assertions.assertEquals(false, model.value().get(0).isMasterRegion());
-        Assertions.assertEquals(true, model.value().get(0).isDeleted());
-        Assertions.assertEquals(3305169102907443602L, model.count());
-        Assertions.assertEquals("spzvrietvfphmd", model.nextLink());
+        Assertions.assertFalse(model.value().get(0).isMasterRegion());
+        Assertions.assertFalse(model.value().get(0).isDeleted());
+        Assertions.assertEquals(6316115467009578700L, model.count());
+        Assertions.assertEquals("hpuzxkpye", model.nextLink());
     }
 }

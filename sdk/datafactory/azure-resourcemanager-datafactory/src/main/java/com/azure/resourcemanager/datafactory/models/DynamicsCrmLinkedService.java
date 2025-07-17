@@ -51,7 +51,7 @@ public final class DynamicsCrmLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private DynamicsCrmLinkedServiceTypeProperties innerTypeProperties() {
+    DynamicsCrmLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

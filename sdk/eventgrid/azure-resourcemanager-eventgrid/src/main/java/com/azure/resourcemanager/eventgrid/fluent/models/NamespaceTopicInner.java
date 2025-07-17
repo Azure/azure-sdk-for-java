@@ -26,7 +26,7 @@ public final class NamespaceTopicInner extends ProxyResource {
     private NamespaceTopicProperties innerProperties;
 
     /*
-     * The system metadata relating to namespace topic resource.
+     * The system metadata relating to the Event Grid resource.
      */
     private SystemData systemData;
 
@@ -61,7 +61,7 @@ public final class NamespaceTopicInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to namespace topic resource.
+     * Get the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */

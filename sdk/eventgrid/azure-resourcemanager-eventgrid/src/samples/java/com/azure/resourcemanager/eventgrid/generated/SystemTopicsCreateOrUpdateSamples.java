@@ -12,8 +12,7 @@ import java.util.Map;
  */
 public final class SystemTopicsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/
      * SystemTopics_CreateOrUpdate.json
      */
     /**
@@ -28,7 +27,7 @@ public final class SystemTopicsCreateOrUpdateSamples {
             .withExistingResourceGroup("examplerg")
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
             .withSource(
-                "/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/azureeventgridrunnerrgcentraluseuap/providers/microsoft.storage/storageaccounts/pubstgrunnerb71cd29e")
+                "/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/azureeventgridrunnerrgcentraluseuap/providers/microsoft.storage/storageaccounts/pubstgrunnerb71cd29e")
             .withTopicType("microsoft.storage.storageaccounts")
             .create();
     }

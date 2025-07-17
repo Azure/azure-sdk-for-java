@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 /**
  * Chat thread.
@@ -45,6 +46,17 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
      * The timestamp when the chat thread was deleted. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
     private OffsetDateTime deletedOn;
+
+    /*
+     * Contextual metadata for the thread. The metadata consists of name/value pairs. The total size of all metadata
+     * pairs can be up to 1KB in size.
+     */
+    private Map<String, String> metadata;
+
+    /*
+     * Data retention policy for auto deletion.
+     */
+    private ChatRetentionPolicy retentionPolicy;
 
     /**
      * Creates an instance of ChatThreadProperties class.
@@ -162,6 +174,48 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     }
 
     /**
+     * Get the metadata property: Contextual metadata for the thread. The metadata consists of name/value pairs. The
+     * total size of all metadata pairs can be up to 1KB in size.
+     * 
+     * @return the metadata value.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Contextual metadata for the thread. The metadata consists of name/value pairs. The
+     * total size of all metadata pairs can be up to 1KB in size.
+     * 
+     * @param metadata the metadata value to set.
+     * @return the ChatThreadProperties object itself.
+     */
+    public ChatThreadProperties setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the retentionPolicy property: Data retention policy for auto deletion.
+     * 
+     * @return the retentionPolicy value.
+     */
+    public ChatRetentionPolicy getRetentionPolicy() {
+        return this.retentionPolicy;
+    }
+
+    /**
+     * Set the retentionPolicy property: Data retention policy for auto deletion.
+     * 
+     * @param retentionPolicy the retentionPolicy value to set.
+     * @return the ChatThreadProperties object itself.
+     */
+    public ChatThreadProperties setRetentionPolicy(ChatRetentionPolicy retentionPolicy) {
+        this.retentionPolicy = retentionPolicy;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -174,6 +228,8 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
         jsonWriter.writeJsonField("createdByCommunicationIdentifier", this.createdByCommunicationIdentifier);
         jsonWriter.writeStringField("deletedOn",
             this.deletedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deletedOn));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -206,6 +262,11 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
                 } else if ("deletedOn".equals(fieldName)) {
                     deserializedChatThreadProperties.deletedOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedChatThreadProperties.metadata = metadata;
+                } else if ("retentionPolicy".equals(fieldName)) {
+                    deserializedChatThreadProperties.retentionPolicy = ChatRetentionPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

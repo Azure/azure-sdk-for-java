@@ -51,7 +51,7 @@ public final class AmazonS3Dataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private AmazonS3DatasetTypeProperties innerTypeProperties() {
+    AmazonS3DatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -353,8 +353,12 @@ public final class AmazonS3Dataset extends Dataset {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", linkedServiceName());
         jsonWriter.writeStringField("description", description());
-        jsonWriter.writeUntypedField("structure", structure());
-        jsonWriter.writeUntypedField("schema", schema());
+        if (structure() != null) {
+            jsonWriter.writeUntypedField("structure", structure());
+        }
+        if (schema() != null) {
+            jsonWriter.writeUntypedField("schema", schema());
+        }
         jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", folder());

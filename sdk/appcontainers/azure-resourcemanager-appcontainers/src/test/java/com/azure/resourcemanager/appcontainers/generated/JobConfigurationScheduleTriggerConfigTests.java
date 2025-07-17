@@ -12,23 +12,22 @@ public final class JobConfigurationScheduleTriggerConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobConfigurationScheduleTriggerConfig model = BinaryData
-            .fromString(
-                "{\"replicaCompletionCount\":718100150,\"cronExpression\":\"mlwywaeeczg\",\"parallelism\":2069370787}")
+            .fromString("{\"replicaCompletionCount\":81380434,\"cronExpression\":\"jsvg\",\"parallelism\":1047902295}")
             .toObject(JobConfigurationScheduleTriggerConfig.class);
-        Assertions.assertEquals(718100150, model.replicaCompletionCount());
-        Assertions.assertEquals("mlwywaeeczg", model.cronExpression());
-        Assertions.assertEquals(2069370787, model.parallelism());
+        Assertions.assertEquals(81380434, model.replicaCompletionCount());
+        Assertions.assertEquals("jsvg", model.cronExpression());
+        Assertions.assertEquals(1047902295, model.parallelism());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JobConfigurationScheduleTriggerConfig model
-            = new JobConfigurationScheduleTriggerConfig().withReplicaCompletionCount(718100150)
-                .withCronExpression("mlwywaeeczg")
-                .withParallelism(2069370787);
+            = new JobConfigurationScheduleTriggerConfig().withReplicaCompletionCount(81380434)
+                .withCronExpression("jsvg")
+                .withParallelism(1047902295);
         model = BinaryData.fromObject(model).toObject(JobConfigurationScheduleTriggerConfig.class);
-        Assertions.assertEquals(718100150, model.replicaCompletionCount());
-        Assertions.assertEquals("mlwywaeeczg", model.cronExpression());
-        Assertions.assertEquals(2069370787, model.parallelism());
+        Assertions.assertEquals(81380434, model.replicaCompletionCount());
+        Assertions.assertEquals("jsvg", model.cronExpression());
+        Assertions.assertEquals(1047902295, model.parallelism());
     }
 }

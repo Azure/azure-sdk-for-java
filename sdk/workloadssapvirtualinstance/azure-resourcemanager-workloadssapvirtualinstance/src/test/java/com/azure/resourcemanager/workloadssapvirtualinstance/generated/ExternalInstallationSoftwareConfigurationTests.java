@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ExternalInstallationSoftwareConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExternalInstallationSoftwareConfiguration model
-            = BinaryData.fromString("{\"softwareInstallationType\":\"External\",\"centralServerVmId\":\"oayqc\"}")
-                .toObject(ExternalInstallationSoftwareConfiguration.class);
-        Assertions.assertEquals("oayqc", model.centralServerVmId());
+        ExternalInstallationSoftwareConfiguration model = BinaryData
+            .fromString("{\"softwareInstallationType\":\"External\",\"centralServerVmId\":\"wpucwwfvovbv\"}")
+            .toObject(ExternalInstallationSoftwareConfiguration.class);
+        Assertions.assertEquals("wpucwwfvovbv", model.centralServerVmId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExternalInstallationSoftwareConfiguration model
-            = new ExternalInstallationSoftwareConfiguration().withCentralServerVmId("oayqc");
+            = new ExternalInstallationSoftwareConfiguration().withCentralServerVmId("wpucwwfvovbv");
         model = BinaryData.fromObject(model).toObject(ExternalInstallationSoftwareConfiguration.class);
-        Assertions.assertEquals("oayqc", model.centralServerVmId());
+        Assertions.assertEquals("wpucwwfvovbv", model.centralServerVmId());
     }
 }

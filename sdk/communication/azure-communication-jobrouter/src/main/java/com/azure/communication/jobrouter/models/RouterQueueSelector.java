@@ -165,7 +165,9 @@ public final class RouterQueueSelector implements JsonSerializable<RouterQueueSe
             jsonWriter.writeStringField("key", this.key);
             jsonWriter.writeStringField("labelOperator",
                 this.labelOperator == null ? null : this.labelOperator.toString());
-            jsonWriter.writeJsonField("value", this.value);
+            if (this.value != null) {
+                jsonWriter.writeJsonField("value", this.value);
+            }
             return jsonWriter.writeEndObject();
         }
     }

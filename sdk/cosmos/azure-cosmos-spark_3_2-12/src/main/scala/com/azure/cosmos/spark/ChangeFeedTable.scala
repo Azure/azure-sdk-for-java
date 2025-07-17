@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, UUIDs}
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -77,7 +77,7 @@ private class ChangeFeedTable(val session: SparkSession,
   private val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(Some(session))
   private val cosmosClientConfig = CosmosClientConfiguration(
     effectiveUserConfig,
-    useEventualConsistency = readConfig.forceEventualConsistency,
+    readConsistencyStrategy = readConfig.readConsistencyStrategy,
     sparkEnvironmentInfo)
   // This can only be used for data operation against a certain container.
   private lazy val containerStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots] =
@@ -162,7 +162,7 @@ private class ChangeFeedTable(val session: SparkSession,
 
         try {
           container.readItem(
-            UUID.randomUUID().toString, new PartitionKey(UUID.randomUUID().toString), classOf[ObjectNode])
+            UUIDs.nonBlockingRandomUUID().toString, new PartitionKey(UUIDs.nonBlockingRandomUUID().toString), classOf[ObjectNode])
             .block()
         } catch {
           case _: CosmosException =>

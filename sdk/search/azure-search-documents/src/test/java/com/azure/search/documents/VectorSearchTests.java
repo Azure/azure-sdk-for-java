@@ -16,6 +16,7 @@ import com.azure.search.documents.indexes.models.DistanceScoringFunction;
 import com.azure.search.documents.indexes.models.DistanceScoringParameters;
 import com.azure.search.documents.indexes.models.HnswAlgorithmConfiguration;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.RescoringOptions;
 import com.azure.search.documents.indexes.models.ScalarQuantizationCompression;
 import com.azure.search.documents.indexes.models.ScoringFunctionAggregation;
 import com.azure.search.documents.indexes.models.ScoringProfile;
@@ -28,6 +29,7 @@ import com.azure.search.documents.indexes.models.SemanticField;
 import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
 import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.indexes.models.VectorSearch;
+import com.azure.search.documents.indexes.models.VectorSearchCompressionRescoreStorageMethod;
 import com.azure.search.documents.indexes.models.VectorSearchProfile;
 import com.azure.search.documents.models.QueryAnswer;
 import com.azure.search.documents.models.QueryAnswerType;
@@ -626,6 +628,81 @@ public class VectorSearchTests extends SearchTestBase {
         assertEquals(1, results.size());
         assertEquals("1", results.get(0).getDocument(SearchDocument.class).get("HotelId"));
 
+    }
+
+    @Test
+    public void testVectorSearchCompressionsEnableRescoringDiscardOriginalsSync() {
+        String indexName = randomIndexName("compressiontruncationdimension");
+        String compressionName = "vector-compression-100";
+        RescoringOptions rescoringOptions = new RescoringOptions().setEnableRescoring(true)
+            .setRescoreStorageMethod(VectorSearchCompressionRescoreStorageMethod.DISCARD_ORIGINALS);
+
+        SearchIndex searchIndex = new SearchIndex(indexName)
+            .setFields(new SearchField("Id", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("Name", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true),
+                new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
+                    .setSearchable(true)
+                    .setHidden(false)
+                    .setVectorSearchDimensions(1536)
+                    .setVectorSearchProfileName("my-vector-profile"))
+            .setVectorSearch(new VectorSearch()
+                .setProfiles(
+                    Collections.singletonList(new VectorSearchProfile("my-vector-profile", "my-vector-config")))
+                .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config")))
+                .setCompressions(new BinaryQuantizationCompression(compressionName).setTruncationDimension(100)
+                    .setRescoringOptions(rescoringOptions)));
+
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        searchIndexClient.createIndex(searchIndex);
+
+        indexesToDelete.add(indexName);
+
+        SearchIndex retrievedIndex = searchIndexClient.getIndex(indexName);
+        assertEquals(1, retrievedIndex.getVectorSearch().getCompressions().size());
+        BinaryQuantizationCompression compression
+            = (BinaryQuantizationCompression) retrievedIndex.getVectorSearch().getCompressions().get(0);
+        assertEquals(compressionName, compression.getCompressionName());
+        assertEquals(true, compression.getRescoringOptions().isEnableRescoring());
+        assertEquals(VectorSearchCompressionRescoreStorageMethod.DISCARD_ORIGINALS,
+            compression.getRescoringOptions().getRescoreStorageMethod());
+    }
+
+    @Test
+    public void testVectorSearchCompressionsEnableRescoringDiscardOriginalsAsync() {
+        String indexName = randomIndexName("compressiontruncationdimension");
+        String compressionName = "vector-compression-100";
+        RescoringOptions rescoringOptions = new RescoringOptions().setEnableRescoring(true)
+            .setRescoreStorageMethod(VectorSearchCompressionRescoreStorageMethod.DISCARD_ORIGINALS);
+
+        SearchIndex searchIndex = new SearchIndex(indexName)
+            .setFields(new SearchField("Id", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("Name", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true),
+                new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
+                    .setSearchable(true)
+                    .setHidden(false)
+                    .setVectorSearchDimensions(1536)
+                    .setVectorSearchProfileName("my-vector-profile"))
+            .setVectorSearch(new VectorSearch()
+                .setProfiles(
+                    Collections.singletonList(new VectorSearchProfile("my-vector-profile", "my-vector-config")))
+                .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config")))
+                .setCompressions(new BinaryQuantizationCompression(compressionName).setTruncationDimension(100)
+                    .setRescoringOptions(rescoringOptions)));
+
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        searchIndexClient.createIndex(searchIndex).block();
+
+        indexesToDelete.add(indexName);
+
+        SearchIndex retrievedIndex = searchIndexClient.getIndex(indexName).block();
+        assert retrievedIndex != null;
+        assertEquals(1, retrievedIndex.getVectorSearch().getCompressions().size());
+        BinaryQuantizationCompression compression
+            = (BinaryQuantizationCompression) retrievedIndex.getVectorSearch().getCompressions().get(0);
+        assertEquals(compressionName, compression.getCompressionName());
+        assertEquals(true, compression.getRescoringOptions().isEnableRescoring());
+        assertEquals(VectorSearchCompressionRescoreStorageMethod.DISCARD_ORIGINALS,
+            compression.getRescoringOptions().getRescoreStorageMethod());
     }
 
     private static void compareFloatListToDeserializedFloatList(List<Float> expected, List<Number> actual) {

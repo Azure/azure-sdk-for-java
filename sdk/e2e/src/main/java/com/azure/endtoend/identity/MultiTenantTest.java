@@ -23,6 +23,7 @@ import java.util.Locale;
 /**
  * Runs Identity tests across multiple tests.
  */
+@SuppressWarnings("deprecation")
 class MultiTenantTest {
     private static final String AZURE_MULTI_TENANT_TEST_MODE = "AZURE_MULTI_TENANT_TEST_MODE";
     private static final String AZURE_USER_NAME = "AZURE_USER_NAME";

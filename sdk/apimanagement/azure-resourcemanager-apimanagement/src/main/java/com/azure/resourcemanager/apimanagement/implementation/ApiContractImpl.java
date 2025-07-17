@@ -69,6 +69,10 @@ public final class ApiContractImpl implements ApiContract, ApiContract.Definitio
         return this.innerModel().apiVersionSet();
     }
 
+    public String provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
     public String description() {
         return this.innerModel().description();
     }

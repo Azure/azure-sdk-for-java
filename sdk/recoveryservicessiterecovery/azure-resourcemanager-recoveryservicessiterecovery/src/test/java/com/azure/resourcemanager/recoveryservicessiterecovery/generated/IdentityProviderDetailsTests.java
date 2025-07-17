@@ -12,27 +12,27 @@ public final class IdentityProviderDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IdentityProviderDetails model = BinaryData.fromString(
-            "{\"tenantId\":\"brn\",\"applicationId\":\"u\",\"objectId\":\"prafwgckhoc\",\"audience\":\"d\",\"aadAuthority\":\"fwafqrouda\"}")
+            "{\"tenantId\":\"smjbnkppxyn\",\"applicationId\":\"lsvxeizz\",\"objectId\":\"klnsrmffey\",\"audience\":\"ckt\",\"aadAuthority\":\"ymerteeammxq\"}")
             .toObject(IdentityProviderDetails.class);
-        Assertions.assertEquals("brn", model.tenantId());
-        Assertions.assertEquals("u", model.applicationId());
-        Assertions.assertEquals("prafwgckhoc", model.objectId());
-        Assertions.assertEquals("d", model.audience());
-        Assertions.assertEquals("fwafqrouda", model.aadAuthority());
+        Assertions.assertEquals("smjbnkppxyn", model.tenantId());
+        Assertions.assertEquals("lsvxeizz", model.applicationId());
+        Assertions.assertEquals("klnsrmffey", model.objectId());
+        Assertions.assertEquals("ckt", model.audience());
+        Assertions.assertEquals("ymerteeammxq", model.aadAuthority());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityProviderDetails model = new IdentityProviderDetails().withTenantId("brn")
-            .withApplicationId("u")
-            .withObjectId("prafwgckhoc")
-            .withAudience("d")
-            .withAadAuthority("fwafqrouda");
+        IdentityProviderDetails model = new IdentityProviderDetails().withTenantId("smjbnkppxyn")
+            .withApplicationId("lsvxeizz")
+            .withObjectId("klnsrmffey")
+            .withAudience("ckt")
+            .withAadAuthority("ymerteeammxq");
         model = BinaryData.fromObject(model).toObject(IdentityProviderDetails.class);
-        Assertions.assertEquals("brn", model.tenantId());
-        Assertions.assertEquals("u", model.applicationId());
-        Assertions.assertEquals("prafwgckhoc", model.objectId());
-        Assertions.assertEquals("d", model.audience());
-        Assertions.assertEquals("fwafqrouda", model.aadAuthority());
+        Assertions.assertEquals("smjbnkppxyn", model.tenantId());
+        Assertions.assertEquals("lsvxeizz", model.applicationId());
+        Assertions.assertEquals("klnsrmffey", model.objectId());
+        Assertions.assertEquals("ckt", model.audience());
+        Assertions.assertEquals("ymerteeammxq", model.aadAuthority());
     }
 }

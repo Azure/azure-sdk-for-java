@@ -283,7 +283,7 @@ public class RntbdTransportClient extends TransportClient {
                 config.minConnectionPoolSizePerEndpoint() : 1;
 
         final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(
-                request.requestContext.locationEndpointToRoute,
+                request.requestContext.regionalRoutingContextToRoute.getGatewayRegionalEndpoint(),
                 addressUri,
                 this.proactiveOpenConnectionsProcessor,
                 minConnectionPoolSizePerEndpoint,

@@ -64,11 +64,23 @@ parameters:
     values:
       - release
       - canary
+  - name: ReleaseToDevOpsOnly
+    displayName: 'Release package to DevOps feed instead of maven.org'
+    type: boolean
+    default: false
+  - name: AutoApproveRelease
+    displayName: 'Automatically approve the release stage'
+    type: boolean
+    default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     oneESTemplateTag: ${{ parameters.oneESTemplateTag }}
+    ${{ if eq(parameters.ReleaseToDevOpsOnly, true) }}:
+      PublicFeedUrl: 'https://pkgs.dev.azure.com/azure-sdk/public/_packaging/storage-staging/maven/v1'
+    ${{ if eq(parameters.AutoApproveRelease, true) }}:
+      PublicPublishEnvironment: none
     ServiceDirectory: template
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     # If you're copying template for a new pipeline, remove this variable. It is only valid for the template pipeline.

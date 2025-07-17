@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ContainerAppsSessionPoolsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/SessionPools_Get.json
+     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/SessionPools_Get.json
      */
     /**
      * Sample code: Get Session Pool.

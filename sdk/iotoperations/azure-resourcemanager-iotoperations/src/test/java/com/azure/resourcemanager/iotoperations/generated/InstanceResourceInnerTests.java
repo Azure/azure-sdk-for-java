@@ -8,9 +8,12 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.iotoperations.fluent.models.InstanceResourceInner;
 import com.azure.resourcemanager.iotoperations.models.ExtendedLocation;
 import com.azure.resourcemanager.iotoperations.models.ExtendedLocationType;
+import com.azure.resourcemanager.iotoperations.models.InstanceFeature;
+import com.azure.resourcemanager.iotoperations.models.InstanceFeatureMode;
 import com.azure.resourcemanager.iotoperations.models.InstanceProperties;
 import com.azure.resourcemanager.iotoperations.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.iotoperations.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.iotoperations.models.OperationalMode;
 import com.azure.resourcemanager.iotoperations.models.SchemaRegistryRef;
 import com.azure.resourcemanager.iotoperations.models.UserAssignedIdentity;
 import java.util.HashMap;
@@ -21,13 +24,17 @@ public final class InstanceResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InstanceResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"jbpzvgnwzsymg\",\"provisioningState\":\"Accepted\",\"version\":\"cyzkohdbihanuf\",\"schemaRegistryRef\":{\"resourceId\":\"fcbjysagithxqha\"}},\"extendedLocation\":{\"name\":\"ifpikxwczby\",\"type\":\"CustomLocation\"},\"identity\":{\"principalId\":\"q\",\"tenantId\":\"hiv\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"grtfwvu\":{\"principalId\":\"b\",\"clientId\":\"rkxvdum\"},\"jcny\":{\"principalId\":\"gaudcc\",\"clientId\":\"h\"},\"kvnipjoxz\":{\"principalId\":\"hkryhtn\",\"clientId\":\"czwlokjyem\"},\"npmqnjaqwixjspro\":{\"principalId\":\"chgejspodm\",\"clientId\":\"lzydehojwyahux\"}}},\"location\":\"cputegjvwmfdats\",\"tags\":{\"kjozkrwfnd\":\"vpjhulsuuv\",\"vwryoqpso\":\"odjpslwejd\",\"yffdfdos\":\"cctazakljlahbc\",\"hcrzevd\":\"gexpaojakhmsbz\"},\"id\":\"hlxaolthqtr\",\"name\":\"qjbpfzfsin\",\"type\":\"gvfcj\"}")
+            "{\"properties\":{\"description\":\"jbpzvgnwzsymg\",\"provisioningState\":\"Accepted\",\"version\":\"cyzkohdbihanuf\",\"schemaRegistryRef\":{\"resourceId\":\"fcbjysagithxqha\"},\"features\":{\"qniwbybrkxvdumj\":{\"mode\":\"Stable\",\"settings\":{\"czbysc\":\"Enabled\",\"q\":\"Enabled\",\"hiv\":\"Disabled\"}},\"napczwlokjy\":{\"mode\":\"Disabled\",\"settings\":{\"ukxgaud\":\"Enabled\",\"snhsjcnyejhkryh\":\"Enabled\"}},\"ahuxinpm\":{\"mode\":\"Preview\",\"settings\":{\"ipjoxzjnchgejs\":\"Enabled\",\"dmailzydehojw\":\"Disabled\"}}}},\"extendedLocation\":{\"name\":\"njaqwixjspro\",\"type\":\"CustomLocation\"},\"identity\":{\"principalId\":\"utegjvwmfdats\",\"tenantId\":\"dvpjhulsuuvmk\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"psoacctazakljl\":{\"clientId\":\"wfndiodjpsl\",\"principalId\":\"jdpvwryo\"}}},\"location\":\"bcryffdfd\",\"tags\":{\"hcrzevd\":\"gexpaojakhmsbz\",\"qjbpfzfsin\":\"hlxaolthqtr\",\"wzo\":\"gvfcj\",\"np\":\"xjtfelluwfzit\"},\"id\":\"qfpjk\",\"name\":\"lxofpdvhpfxxypin\",\"type\":\"nmayhuybb\"}")
             .toObject(InstanceResourceInner.class);
-        Assertions.assertEquals("cputegjvwmfdats", model.location());
-        Assertions.assertEquals("vpjhulsuuv", model.tags().get("kjozkrwfnd"));
+        Assertions.assertEquals("bcryffdfd", model.location());
+        Assertions.assertEquals("gexpaojakhmsbz", model.tags().get("hcrzevd"));
         Assertions.assertEquals("jbpzvgnwzsymg", model.properties().description());
         Assertions.assertEquals("fcbjysagithxqha", model.properties().schemaRegistryRef().resourceId());
-        Assertions.assertEquals("ifpikxwczby", model.extendedLocation().name());
+        Assertions.assertEquals(InstanceFeatureMode.STABLE,
+            model.properties().features().get("qniwbybrkxvdumj").mode());
+        Assertions.assertEquals(OperationalMode.ENABLED,
+            model.properties().features().get("qniwbybrkxvdumj").settings().get("czbysc"));
+        Assertions.assertEquals("njaqwixjspro", model.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
@@ -35,24 +42,39 @@ public final class InstanceResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InstanceResourceInner model
-            = new InstanceResourceInner().withLocation("cputegjvwmfdats")
-                .withTags(mapOf("kjozkrwfnd", "vpjhulsuuv", "vwryoqpso", "odjpslwejd", "yffdfdos", "cctazakljlahbc",
-                    "hcrzevd", "gexpaojakhmsbz"))
-                .withProperties(new InstanceProperties().withDescription("jbpzvgnwzsymg")
-                    .withSchemaRegistryRef(new SchemaRegistryRef().withResourceId("fcbjysagithxqha")))
+            = new InstanceResourceInner().withLocation("bcryffdfd")
+                .withTags(mapOf("hcrzevd", "gexpaojakhmsbz", "qjbpfzfsin", "hlxaolthqtr", "wzo", "gvfcj", "np",
+                    "xjtfelluwfzit"))
+                .withProperties(
+                    new InstanceProperties().withDescription("jbpzvgnwzsymg")
+                        .withSchemaRegistryRef(new SchemaRegistryRef().withResourceId("fcbjysagithxqha"))
+                        .withFeatures(mapOf("qniwbybrkxvdumj",
+                            new InstanceFeature().withMode(InstanceFeatureMode.STABLE)
+                                .withSettings(mapOf("czbysc", OperationalMode.ENABLED, "q", OperationalMode.ENABLED,
+                                    "hiv", OperationalMode.DISABLED)),
+                            "napczwlokjy",
+                            new InstanceFeature().withMode(InstanceFeatureMode.DISABLED)
+                                .withSettings(mapOf(
+                                    "ukxgaud", OperationalMode.ENABLED, "snhsjcnyejhkryh", OperationalMode.ENABLED)),
+                            "ahuxinpm",
+                            new InstanceFeature().withMode(InstanceFeatureMode.PREVIEW)
+                                .withSettings(mapOf("ipjoxzjnchgejs", OperationalMode.ENABLED, "dmailzydehojw",
+                                    OperationalMode.DISABLED)))))
                 .withExtendedLocation(
-                    new ExtendedLocation().withName("ifpikxwczby").withType(ExtendedLocationType.CUSTOM_LOCATION))
+                    new ExtendedLocation().withName("njaqwixjspro").withType(ExtendedLocationType.CUSTOM_LOCATION))
                 .withIdentity(
                     new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf("grtfwvu", new UserAssignedIdentity(), "jcny",
-                            new UserAssignedIdentity(), "kvnipjoxz", new UserAssignedIdentity(), "npmqnjaqwixjspro",
-                            new UserAssignedIdentity())));
+                        .withUserAssignedIdentities(mapOf("psoacctazakljl", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(InstanceResourceInner.class);
-        Assertions.assertEquals("cputegjvwmfdats", model.location());
-        Assertions.assertEquals("vpjhulsuuv", model.tags().get("kjozkrwfnd"));
+        Assertions.assertEquals("bcryffdfd", model.location());
+        Assertions.assertEquals("gexpaojakhmsbz", model.tags().get("hcrzevd"));
         Assertions.assertEquals("jbpzvgnwzsymg", model.properties().description());
         Assertions.assertEquals("fcbjysagithxqha", model.properties().schemaRegistryRef().resourceId());
-        Assertions.assertEquals("ifpikxwczby", model.extendedLocation().name());
+        Assertions.assertEquals(InstanceFeatureMode.STABLE,
+            model.properties().features().get("qniwbybrkxvdumj").mode());
+        Assertions.assertEquals(OperationalMode.ENABLED,
+            model.properties().features().get("qniwbybrkxvdumj").settings().get("czbysc"));
+        Assertions.assertEquals("njaqwixjspro", model.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }

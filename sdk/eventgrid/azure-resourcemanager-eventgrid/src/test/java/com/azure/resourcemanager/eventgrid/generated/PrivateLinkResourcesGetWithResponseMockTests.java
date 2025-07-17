@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PrivateLinkResource;
@@ -21,25 +21,25 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupId\":\"jiswllu\",\"displayName\":\"xhfwlfxzfwuge\",\"requiredMembers\":[\"knecexkgrv\",\"psjdmng\",\"yt\"],\"requiredZoneNames\":[\"zfyxcnwawoxcg\",\"bejqfbifopfjx\",\"wdrpa\",\"q\"]},\"id\":\"rfm\",\"name\":\"otfcuuugtjigpg\",\"type\":\"iawohfmhn\"}";
+            = "{\"properties\":{\"groupId\":\"klajvcfocz\",\"displayName\":\"pejovt\",\"requiredMembers\":[\"nhwhhnoyrzaao\",\"e\"],\"requiredZoneNames\":[\"jenvjeateaxx\",\"rxoxdjxl\",\"n\"]},\"id\":\"yyi\",\"name\":\"kd\",\"type\":\"rndwdbvxvzaled\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResource response = manager.privateLinkResources()
-            .getWithResponse("icruo", "krjflsgaojb", "qpqsdoctpzpuj", "flmcdsgxc", com.azure.core.util.Context.NONE)
+            .getWithResponse("glqjoxtdahneaoov", "yjz", "ivfwjlofze", "fsr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rfm", response.id());
-        Assertions.assertEquals("otfcuuugtjigpg", response.name());
-        Assertions.assertEquals("iawohfmhn", response.type());
-        Assertions.assertEquals("jiswllu", response.groupId());
-        Assertions.assertEquals("xhfwlfxzfwuge", response.displayName());
-        Assertions.assertEquals("knecexkgrv", response.requiredMembers().get(0));
-        Assertions.assertEquals("zfyxcnwawoxcg", response.requiredZoneNames().get(0));
+        Assertions.assertEquals("yyi", response.id());
+        Assertions.assertEquals("kd", response.name());
+        Assertions.assertEquals("rndwdbvxvzaled", response.type());
+        Assertions.assertEquals("klajvcfocz", response.groupId());
+        Assertions.assertEquals("pejovt", response.displayName());
+        Assertions.assertEquals("nhwhhnoyrzaao", response.requiredMembers().get(0));
+        Assertions.assertEquals("jenvjeateaxx", response.requiredZoneNames().get(0));
     }
 }

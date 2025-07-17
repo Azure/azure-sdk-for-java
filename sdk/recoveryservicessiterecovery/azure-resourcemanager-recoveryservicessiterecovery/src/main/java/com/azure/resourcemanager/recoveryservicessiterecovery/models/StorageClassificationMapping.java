@@ -91,15 +91,15 @@ public interface StorageClassificationMapping {
          */
         interface WithParentResource {
             /**
-             * Specifies resourceName, resourceGroupName, fabricName, storageClassificationName.
+             * Specifies resourceGroupName, resourceName, fabricName, storageClassificationName.
              * 
-             * @param resourceName The name of the recovery services vault.
              * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+             * @param resourceName The name of the recovery services vault.
              * @param fabricName Fabric name.
              * @param storageClassificationName Storage classification name.
              * @return the next definition stage.
              */
-            WithCreate withExistingReplicationStorageClassification(String resourceName, String resourceGroupName,
+            WithCreate withExistingReplicationStorageClassification(String resourceGroupName, String resourceName,
                 String fabricName, String storageClassificationName);
         }
 

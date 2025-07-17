@@ -19,7 +19,8 @@ public interface ApiExports {
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      * revision has ;rev=n as a suffix where n is the revision number.
-     * @param format Format in which to export the Api Details to the Storage Blob with Sas Key valid for 5 minutes.
+     * @param format Format in which to export the Api Details to the Storage Blob with Sas Key valid for 5 minutes. New
+     * formats can be added in the future.
      * @param export Query parameter required to export the API details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -39,7 +40,8 @@ public interface ApiExports {
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      * revision has ;rev=n as a suffix where n is the revision number.
-     * @param format Format in which to export the Api Details to the Storage Blob with Sas Key valid for 5 minutes.
+     * @param format Format in which to export the Api Details to the Storage Blob with Sas Key valid for 5 minutes. New
+     * formats can be added in the future.
      * @param export Query parameter required to export the API details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "2d1781af-3a4c-4d7c-bd0c-e34b19da4e66",
+    "source": "contoso/items",
+    "type": "Contoso.Items.ItemReceived",
+    "subject": "",
+    "data_base64": "c2FtcGxlYmluYXJ5ZGF0YQ==",
+    "time": "2018-01-25T22:12:19.4556811Z",
+    "specversion": "1.0",
+    "foo": "bar"
+  }
+]

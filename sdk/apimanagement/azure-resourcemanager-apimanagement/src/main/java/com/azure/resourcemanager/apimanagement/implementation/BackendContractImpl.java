@@ -7,6 +7,8 @@ package com.azure.resourcemanager.apimanagement.implementation;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.BackendContractInner;
+import com.azure.resourcemanager.apimanagement.models.BackendBaseParametersPool;
+import com.azure.resourcemanager.apimanagement.models.BackendCircuitBreaker;
 import com.azure.resourcemanager.apimanagement.models.BackendContract;
 import com.azure.resourcemanager.apimanagement.models.BackendCredentialsContract;
 import com.azure.resourcemanager.apimanagement.models.BackendProperties;
@@ -14,6 +16,7 @@ import com.azure.resourcemanager.apimanagement.models.BackendProtocol;
 import com.azure.resourcemanager.apimanagement.models.BackendProxyContract;
 import com.azure.resourcemanager.apimanagement.models.BackendReconnectContract;
 import com.azure.resourcemanager.apimanagement.models.BackendTlsProperties;
+import com.azure.resourcemanager.apimanagement.models.BackendType;
 import com.azure.resourcemanager.apimanagement.models.BackendUpdateParameters;
 
 public final class BackendContractImpl implements BackendContract, BackendContract.Definition, BackendContract.Update {
@@ -67,6 +70,18 @@ public final class BackendContractImpl implements BackendContract, BackendContra
 
     public BackendTlsProperties tls() {
         return this.innerModel().tls();
+    }
+
+    public BackendCircuitBreaker circuitBreaker() {
+        return this.innerModel().circuitBreaker();
+    }
+
+    public BackendBaseParametersPool pool() {
+        return this.innerModel().pool();
+    }
+
+    public BackendType typePropertiesType() {
+        return this.innerModel().typePropertiesType();
     }
 
     public String resourceGroupName() {
@@ -271,6 +286,31 @@ public final class BackendContractImpl implements BackendContract, BackendContra
         }
     }
 
+    public BackendContractImpl withCircuitBreaker(BackendCircuitBreaker circuitBreaker) {
+        if (isInCreateMode()) {
+            this.innerModel().withCircuitBreaker(circuitBreaker);
+            return this;
+        } else {
+            this.updateParameters.withCircuitBreaker(circuitBreaker);
+            return this;
+        }
+    }
+
+    public BackendContractImpl withPool(BackendBaseParametersPool pool) {
+        if (isInCreateMode()) {
+            this.innerModel().withPool(pool);
+            return this;
+        } else {
+            this.updateParameters.withPool(pool);
+            return this;
+        }
+    }
+
+    public BackendContractImpl withTypePropertiesType(BackendType typePropertiesType) {
+        this.innerModel().withTypePropertiesType(typePropertiesType);
+        return this;
+    }
+
     public BackendContractImpl withIfMatch(String ifMatch) {
         if (isInCreateMode()) {
             this.createIfMatch = ifMatch;
@@ -279,6 +319,11 @@ public final class BackendContractImpl implements BackendContract, BackendContra
             this.updateIfMatch = ifMatch;
             return this;
         }
+    }
+
+    public BackendContractImpl withType(BackendType type) {
+        this.updateParameters.withType(type);
+        return this;
     }
 
     private boolean isInCreateMode() {

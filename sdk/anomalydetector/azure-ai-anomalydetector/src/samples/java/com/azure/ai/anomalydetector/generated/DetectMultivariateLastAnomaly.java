@@ -19,7 +19,7 @@ public class DetectMultivariateLastAnomaly {
             .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
             .endpoint("{Endpoint}")
             .buildMultivariateClient();
-        // BEGIN:com.azure.ai.anomalydetector.generated.multivariatedetectmultivariatelastanomaly.detectmultivariatelastanomaly
+        // BEGIN:com.azure.ai.anomalydetector.generated.multivariate-detect-multivariate-last-anomaly.detect-multivariate-last-anomaly
         MultivariateLastDetectionResult response = multivariateClient.detectMultivariateLastAnomaly(
             "45aad126-aafd-11ea-b8fb-d89ef3400c5f",
             new MultivariateLastDetectionOptions(Arrays.asList(new VariableValues("Variable_1",
@@ -72,6 +72,6 @@ public class DetectMultivariateLastAnomaly {
                         0.032760268834037376, 0.4485202784055029, 0.8915691008748384, 0.891669051517807,
                         0.9469979353323046, 0.115293087370132, 0.08818772518459506, 0.7426286620589166,
                         0.32372247468990756, 0.936268139507417)))).setTopContributorCount(10));
-        // END:com.azure.ai.anomalydetector.generated.multivariatedetectmultivariatelastanomaly.detectmultivariatelastanomaly
+        // END:com.azure.ai.anomalydetector.generated.multivariate-detect-multivariate-last-anomaly.detect-multivariate-last-anomaly
     }
 }

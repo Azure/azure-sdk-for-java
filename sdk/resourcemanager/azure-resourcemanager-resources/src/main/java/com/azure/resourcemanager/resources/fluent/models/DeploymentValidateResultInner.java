@@ -24,6 +24,21 @@ public final class DeploymentValidateResultInner implements JsonSerializable<Dep
     private ManagementError error;
 
     /*
+     * The ID of the deployment.
+     */
+    private String id;
+
+    /*
+     * The name of the deployment.
+     */
+    private String name;
+
+    /*
+     * The type of the deployment.
+     */
+    private String type;
+
+    /*
      * The template deployment properties.
      */
     private DeploymentPropertiesExtended properties;
@@ -41,6 +56,33 @@ public final class DeploymentValidateResultInner implements JsonSerializable<Dep
      */
     public ManagementError error() {
         return this.error;
+    }
+
+    /**
+     * Get the id property: The ID of the deployment.
+     * 
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the deployment.
+     * 
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the deployment.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -102,6 +144,12 @@ public final class DeploymentValidateResultInner implements JsonSerializable<Dep
 
                 if ("error".equals(fieldName)) {
                     deserializedDeploymentValidateResultInner.error = ManagementError.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedDeploymentValidateResultInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDeploymentValidateResultInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDeploymentValidateResultInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedDeploymentValidateResultInner.properties
                         = DeploymentPropertiesExtended.fromJson(reader);

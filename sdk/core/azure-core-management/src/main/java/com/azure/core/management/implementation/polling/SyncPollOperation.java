@@ -34,7 +34,7 @@ public final class SyncPollOperation {
      * @return the ARM LRO activation Function
      */
     public static <T> Function<PollingContext<PollResult<T>>, PollResponse<PollResult<T>>> activationFunction(
-        SerializerAdapter serializerAdapter, Class<T> pollResultType,
+        SerializerAdapter serializerAdapter, Type pollResultType,
         Supplier<Response<BinaryData>> lroInitialResponseSupplier) {
         return pollingContext -> {
             Response<BinaryData> response = lroInitialResponseSupplier.get();
@@ -57,7 +57,7 @@ public final class SyncPollOperation {
      * @return the ARM poll function
      */
     public static <T> Function<PollingContext<PollResult<T>>, PollResponse<PollResult<T>>> pollFunction(
-        SerializerAdapter serializerAdapter, HttpPipeline httpPipeline, Class<T> pollResultType, Context context) {
+        SerializerAdapter serializerAdapter, HttpPipeline httpPipeline, Type pollResultType, Context context) {
         return pollingContext -> {
             PollingState state = PollingState.from(serializerAdapter, pollingContext);
             if (state.getOperationStatus().isComplete()) {

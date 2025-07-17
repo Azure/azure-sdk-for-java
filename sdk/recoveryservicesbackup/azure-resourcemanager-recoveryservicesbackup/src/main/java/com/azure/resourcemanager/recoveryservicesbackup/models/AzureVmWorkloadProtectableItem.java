@@ -361,7 +361,9 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("SAPAseSystem".equals(discriminatorValue)) {
+                if ("SAPAseDatabase".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSapAseDatabaseProtectableItem.fromJson(readerToUse.reset());
+                } else if ("SAPAseSystem".equals(discriminatorValue)) {
                     return AzureVmWorkloadSapAseSystemProtectableItem.fromJson(readerToUse.reset());
                 } else if ("SAPHanaDatabase".equals(discriminatorValue)) {
                     return AzureVmWorkloadSapHanaDatabaseProtectableItem.fromJson(readerToUse.reset());

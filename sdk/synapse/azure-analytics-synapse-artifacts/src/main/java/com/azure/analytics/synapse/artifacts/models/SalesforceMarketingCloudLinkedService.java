@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,53 +22,62 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "SalesforceMarketingCloud";
 
     /*
      * Properties used to connect to Salesforce Marketing Cloud. It is mutually exclusive with any other properties in
      * the linked service. Type: object.
      */
+    @Generated
     private Object connectionProperties;
 
     /*
      * The client ID associated with the Salesforce Marketing Cloud application. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object clientId;
 
     /*
      * The client secret associated with the Salesforce Marketing Cloud application. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private SecretBase clientSecret;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true. Type: boolean
      * (or Expression with resultType boolean).
      */
+    @Generated
     private Object useEncryptedEndpoints;
 
     /*
      * Specifies whether to require the host name in the server's certificate to match the host name of the server when
      * connecting over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object useHostVerification;
 
     /*
      * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true. Type:
      * boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object usePeerVerification;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of SalesforceMarketingCloudLinkedService class.
      */
+    @Generated
     public SalesforceMarketingCloudLinkedService() {
     }
 
@@ -76,6 +86,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -87,6 +98,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * 
      * @return the connectionProperties value.
      */
+    @Generated
     public Object getConnectionProperties() {
         return this.connectionProperties;
     }
@@ -98,6 +110,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * @param connectionProperties the connectionProperties value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
+    @Generated
     public SalesforceMarketingCloudLinkedService setConnectionProperties(Object connectionProperties) {
         this.connectionProperties = connectionProperties;
         return this;
@@ -109,6 +122,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * 
      * @return the clientId value.
      */
+    @Generated
     public Object getClientId() {
         return this.clientId;
     }
@@ -120,6 +134,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * @param clientId the clientId value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
+    @Generated
     public SalesforceMarketingCloudLinkedService setClientId(Object clientId) {
         this.clientId = clientId;
         return this;
@@ -131,6 +146,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * 
      * @return the clientSecret value.
      */
+    @Generated
     public SecretBase getClientSecret() {
         return this.clientSecret;
     }
@@ -142,6 +158,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * @param clientSecret the clientSecret value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
+    @Generated
     public SalesforceMarketingCloudLinkedService setClientSecret(SecretBase clientSecret) {
         this.clientSecret = clientSecret;
         return this;
@@ -153,6 +170,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * 
      * @return the useEncryptedEndpoints value.
      */
+    @Generated
     public Object getUseEncryptedEndpoints() {
         return this.useEncryptedEndpoints;
     }
@@ -164,6 +182,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
+    @Generated
     public SalesforceMarketingCloudLinkedService setUseEncryptedEndpoints(Object useEncryptedEndpoints) {
         this.useEncryptedEndpoints = useEncryptedEndpoints;
         return this;
@@ -176,6 +195,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * 
      * @return the useHostVerification value.
      */
+    @Generated
     public Object getUseHostVerification() {
         return this.useHostVerification;
     }
@@ -188,6 +208,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * @param useHostVerification the useHostVerification value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
+    @Generated
     public SalesforceMarketingCloudLinkedService setUseHostVerification(Object useHostVerification) {
         this.useHostVerification = useHostVerification;
         return this;
@@ -199,6 +220,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * 
      * @return the usePeerVerification value.
      */
+    @Generated
     public Object getUsePeerVerification() {
         return this.usePeerVerification;
     }
@@ -210,6 +232,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
+    @Generated
     public SalesforceMarketingCloudLinkedService setUsePeerVerification(Object usePeerVerification) {
         this.usePeerVerification = usePeerVerification;
         return this;
@@ -221,6 +244,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -232,6 +256,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
+    @Generated
     public SalesforceMarketingCloudLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -240,6 +265,17 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public SalesforceMarketingCloudLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public SalesforceMarketingCloudLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -249,6 +285,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceMarketingCloudLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -258,6 +295,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceMarketingCloudLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -267,6 +305,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceMarketingCloudLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -276,9 +315,11 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -292,13 +333,23 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
             || usePeerVerification != null
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+            if (this.connectionProperties != null) {
+                jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+            }
             jsonWriter.writeUntypedField("clientId", this.clientId);
             jsonWriter.writeJsonField("clientSecret", this.clientSecret);
-            jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
-            jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
-            jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.useEncryptedEndpoints != null) {
+                jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+            }
+            if (this.useHostVerification != null) {
+                jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+            }
+            if (this.usePeerVerification != null) {
+                jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -318,6 +369,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SalesforceMarketingCloudLinkedService.
      */
+    @Generated
     public static SalesforceMarketingCloudLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SalesforceMarketingCloudLinkedService deserializedSalesforceMarketingCloudLinkedService
@@ -327,7 +379,9 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedSalesforceMarketingCloudLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedSalesforceMarketingCloudLinkedService
                         .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {

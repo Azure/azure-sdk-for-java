@@ -35,6 +35,13 @@
 
 - [Get](#componentfeaturecapabilities_get)
 
+## ComponentLinkedStorageAccountsOperation
+
+- [CreateAndUpdate](#componentlinkedstorageaccountsoperation_createandupdate)
+- [Delete](#componentlinkedstorageaccountsoperation_delete)
+- [Get](#componentlinkedstorageaccountsoperation_get)
+- [Update](#componentlinkedstorageaccountsoperation_update)
+
 ## ComponentQuotaStatus
 
 - [Get](#componentquotastatus_get)
@@ -49,6 +56,10 @@
 - [ListByResourceGroup](#components_listbyresourcegroup)
 - [Purge](#components_purge)
 - [UpdateTags](#components_updatetags)
+
+## DeletedWorkbooks
+
+- [List](#deletedworkbooks_list)
 
 ## ExportConfigurations
 
@@ -69,15 +80,6 @@
 ## LiveToken
 
 - [Get](#livetoken_get)
-
-## MyWorkbooks
-
-- [CreateOrUpdate](#myworkbooks_createorupdate)
-- [Delete](#myworkbooks_delete)
-- [GetByResourceGroup](#myworkbooks_getbyresourcegroup)
-- [List](#myworkbooks_list)
-- [ListByResourceGroup](#myworkbooks_listbyresourcegroup)
-- [Update](#myworkbooks_update)
 
 ## ProactiveDetectionConfigurations
 
@@ -571,6 +573,127 @@ public final class ComponentFeatureCapabilitiesGetSamples {
 }
 ```
 
+### ComponentLinkedStorageAccountsOperation_CreateAndUpdate
+
+```java
+import com.azure.resourcemanager.applicationinsights.models.StorageType;
+
+/**
+ * Samples for ComponentLinkedStorageAccountsOperation CreateAndUpdate.
+ */
+public final class ComponentLinkedStorageAccountsOperationCreateAndUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2020-03-01-preview/examples/
+     * ComponentLinkedStorageAccountsCreateAndUpdate.json
+     */
+    /**
+     * Sample code: ComponentLinkedStorageAccountsCreateAndUpdate.
+     * 
+     * @param manager Entry point to ApplicationInsightsManager.
+     */
+    public static void componentLinkedStorageAccountsCreateAndUpdate(
+        com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
+        manager.componentLinkedStorageAccountsOperations()
+            .define(StorageType.SERVICE_PROFILER)
+            .withExistingComponent("someResourceGroupName", "myComponent")
+            .withLinkedStorageAccount(
+                "/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4918/resourceGroups/someResourceGroupName/providers/Microsoft.Storage/storageAccounts/storageaccountname")
+            .create();
+    }
+}
+```
+
+### ComponentLinkedStorageAccountsOperation_Delete
+
+```java
+import com.azure.resourcemanager.applicationinsights.models.StorageType;
+
+/**
+ * Samples for ComponentLinkedStorageAccountsOperation Delete.
+ */
+public final class ComponentLinkedStorageAccountsOperationDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2020-03-01-preview/examples/
+     * ComponentLinkedStorageAccountsDelete.json
+     */
+    /**
+     * Sample code: ComponentLinkedStorageAccountsDelete.
+     * 
+     * @param manager Entry point to ApplicationInsightsManager.
+     */
+    public static void componentLinkedStorageAccountsDelete(
+        com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
+        manager.componentLinkedStorageAccountsOperations()
+            .deleteWithResponse("someResourceGroupName", "myComponent", StorageType.SERVICE_PROFILER,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ComponentLinkedStorageAccountsOperation_Get
+
+```java
+import com.azure.resourcemanager.applicationinsights.models.StorageType;
+
+/**
+ * Samples for ComponentLinkedStorageAccountsOperation Get.
+ */
+public final class ComponentLinkedStorageAccountsOperationGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2020-03-01-preview/examples/
+     * ComponentLinkedStorageAccountsGet.json
+     */
+    /**
+     * Sample code: ComponentLinkedStorageAccountsGet.
+     * 
+     * @param manager Entry point to ApplicationInsightsManager.
+     */
+    public static void componentLinkedStorageAccountsGet(
+        com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
+        manager.componentLinkedStorageAccountsOperations()
+            .getWithResponse("someResourceGroupName", "myComponent", StorageType.SERVICE_PROFILER,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ComponentLinkedStorageAccountsOperation_Update
+
+```java
+import com.azure.resourcemanager.applicationinsights.models.ComponentLinkedStorageAccounts;
+import com.azure.resourcemanager.applicationinsights.models.StorageType;
+
+/**
+ * Samples for ComponentLinkedStorageAccountsOperation Update.
+ */
+public final class ComponentLinkedStorageAccountsOperationUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2020-03-01-preview/examples/
+     * ComponentLinkedStorageAccountsUpdate.json
+     */
+    /**
+     * Sample code: ComponentLinkedStorageAccountsUpdate.
+     * 
+     * @param manager Entry point to ApplicationInsightsManager.
+     */
+    public static void componentLinkedStorageAccountsUpdate(
+        com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
+        ComponentLinkedStorageAccounts resource = manager.componentLinkedStorageAccountsOperations()
+            .getWithResponse("someResourceGroupName", "myComponent", StorageType.SERVICE_PROFILER,
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withLinkedStorageAccount(
+                "/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4918/resourceGroups/someResourceGroupName/providers/Microsoft.Storage/storageAccounts/storageaccountname")
+            .apply();
+    }
+}
+```
+
 ### ComponentQuotaStatus_Get
 
 ```java
@@ -868,6 +991,31 @@ public final class ComponentsUpdateTagsSamples {
             map.put(key, value);
         }
         return map;
+    }
+}
+```
+
+### DeletedWorkbooks_List
+
+```java
+
+/**
+ * Samples for DeletedWorkbooks List.
+ */
+public final class DeletedWorkbooksListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2024-02-01-preview/examples/
+     * DeletedWorkbooksList.json
+     */
+    /**
+     * Sample code: WorkbooksListSub.
+     * 
+     * @param manager Entry point to ApplicationInsightsManager.
+     */
+    public static void
+        workbooksListSub(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
+        manager.deletedWorkbooks().list(null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1198,218 +1346,6 @@ public final class LiveTokenGetSamples {
             .getWithResponse(
                 "subscriptions/df602c9c-7aa0-407d-a6fb-eb20c8bd1192/resourceGroups/FabrikamFiberApp/providers/microsoft.insights/components/CustomAvailabilityTest/providers/microsoft.insights/generatelivetoken",
                 com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### MyWorkbooks_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.applicationinsights.models.Kind;
-
-/**
- * Samples for MyWorkbooks CreateOrUpdate.
- */
-public final class MyWorkbooksCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookAdd.
-     * json
-     */
-    /**
-     * Sample code: WorkbookAdd.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void workbookAdd(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.myWorkbooks()
-            .define("deadb33f-8bee-4d3b-a059-9be8dac93960")
-            .withRegion("west us")
-            .withExistingResourceGroup("my-resource-group")
-            .withName("deadb33f-8bee-4d3b-a059-9be8dac93960")
-            .withKind(Kind.USER)
-            .withDisplayName("Blah Blah Blah")
-            .withSerializedData(
-                "{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}")
-            .withCategory("workbook")
-            .withSourceId(
-                "/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/MyGroup/providers/Microsoft.Web/sites/MyTestApp-CodeLens")
-            .create();
-    }
-}
-```
-
-### MyWorkbooks_Delete
-
-```java
-/**
- * Samples for MyWorkbooks Delete.
- */
-public final class MyWorkbooksDeleteSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookDelete
-     * .json
-     */
-    /**
-     * Sample code: WorkbookDelete.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbookDelete(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.myWorkbooks()
-            .deleteByResourceGroupWithResponse("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### MyWorkbooks_GetByResourceGroup
-
-```java
-/**
- * Samples for MyWorkbooks GetByResourceGroup.
- */
-public final class MyWorkbooksGetByResourceGroupSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookGet.
-     * json
-     */
-    /**
-     * Sample code: WorkbookGet.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void workbookGet(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.myWorkbooks()
-            .getByResourceGroupWithResponse("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### MyWorkbooks_List
-
-```java
-import com.azure.resourcemanager.applicationinsights.models.CategoryType;
-
-/**
- * Samples for MyWorkbooks List.
- */
-public final class MyWorkbooksListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbooksList.
-     * json
-     */
-    /**
-     * Sample code: WorkbooksList.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void workbooksList(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.myWorkbooks().list(CategoryType.WORKBOOK, null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbooksList2
-     * .json
-     */
-    /**
-     * Sample code: WorkbooksList2.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbooksList2(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.myWorkbooks().list(CategoryType.WORKBOOK, null, null, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### MyWorkbooks_ListByResourceGroup
-
-```java
-import com.azure.resourcemanager.applicationinsights.models.CategoryType;
-
-/**
- * Samples for MyWorkbooks ListByResourceGroup.
- */
-public final class MyWorkbooksListByResourceGroupSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbooksList.
-     * json
-     */
-    /**
-     * Sample code: WorkbooksList.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void workbooksList(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.myWorkbooks()
-            .listByResourceGroup("my-resource-group", CategoryType.WORKBOOK, null, null, null,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbooksList2
-     * .json
-     */
-    /**
-     * Sample code: WorkbooksList2.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbooksList2(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.myWorkbooks()
-            .listByResourceGroup("my-resource-group", CategoryType.WORKBOOK, null, null, null,
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### MyWorkbooks_Update
-
-```java
-import com.azure.resourcemanager.applicationinsights.models.Kind;
-import com.azure.resourcemanager.applicationinsights.models.MyWorkbook;
-
-/**
- * Samples for MyWorkbooks Update.
- */
-public final class MyWorkbooksUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookUpdate
-     * .json
-     */
-    /**
-     * Sample code: WorkbookUpdate.
-     * 
-     * @param manager Entry point to ApplicationInsightsManager.
-     */
-    public static void
-        workbookUpdate(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        MyWorkbook resource = manager.myWorkbooks()
-            .getByResourceGroupWithResponse("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2",
-                com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withKind(Kind.USER)
-            .withDisplayName("Blah Blah Blah")
-            .withSerializedData(
-                "{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}")
-            .withVersion("ME")
-            .withCategory("workbook")
-            .withSourceId(
-                "/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/MyGroup/providers/Microsoft.Web/sites/MyTestApp-CodeLens")
-            .apply();
     }
 }
 ```
@@ -2171,7 +2107,7 @@ import java.util.Map;
 public final class WorkbooksCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
      * WorkbookManagedAdd.json
      */
     /**
@@ -2205,7 +2141,7 @@ public final class WorkbooksCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookAdd.json
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookAdd.json
      */
     /**
      * Sample code: WorkbookAdd.
@@ -2252,7 +2188,7 @@ public final class WorkbooksCreateOrUpdateSamples {
 public final class WorkbooksDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookDelete.
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookDelete.
      * json
      */
     /**
@@ -2278,7 +2214,7 @@ public final class WorkbooksDeleteSamples {
 public final class WorkbooksGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookGet1.
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookGet1.
      * json
      */
     /**
@@ -2294,7 +2230,7 @@ public final class WorkbooksGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
      * WorkbookManagedGet.json
      */
     /**
@@ -2311,7 +2247,7 @@ public final class WorkbooksGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookGet.json
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookGet.json
      */
     /**
      * Sample code: WorkbookGet.
@@ -2337,7 +2273,7 @@ import com.azure.resourcemanager.applicationinsights.models.CategoryType;
 public final class WorkbooksListSamples {
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbooksListSub
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbooksListSub
      * .json
      */
     /**
@@ -2352,7 +2288,7 @@ public final class WorkbooksListSamples {
 
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbooksList2.
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbooksList2.
      * json
      */
     /**
@@ -2378,7 +2314,7 @@ import com.azure.resourcemanager.applicationinsights.models.CategoryType;
 public final class WorkbooksListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
      * WorkbooksManagedList.json
      */
     /**
@@ -2396,7 +2332,7 @@ public final class WorkbooksListByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbooksList.
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbooksList.
      * json
      */
     /**
@@ -2422,7 +2358,7 @@ public final class WorkbooksListByResourceGroupSamples {
 public final class WorkbooksRevisionGetSamples {
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
      * WorkbookRevisionGet.json
      */
     /**
@@ -2448,7 +2384,7 @@ public final class WorkbooksRevisionGetSamples {
 public final class WorkbooksRevisionsListSamples {
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
      * WorkbookRevisionsList.json
      */
     /**
@@ -2476,7 +2412,7 @@ import com.azure.resourcemanager.applicationinsights.models.Workbook;
 public final class WorkbooksUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookUpdate.
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookUpdate.
      * json
      */
     /**
@@ -2498,7 +2434,7 @@ public final class WorkbooksUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
      * WorkbookManagedUpdate.json
      */
     /**

@@ -28,6 +28,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.ManagedPrivateEndpointsClient;
 import com.azure.resourcemanager.datafactory.fluent.models.ManagedPrivateEndpointResourceInner;
 import com.azure.resourcemanager.datafactory.models.ManagedPrivateEndpointListResponse;
@@ -76,10 +77,33 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ManagedPrivateEndpointListResponse> listByFactorySync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("managedVirtualNetworkName") String managedVirtualNetworkName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedPrivateEndpointResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("managedVirtualNetworkName") String managedVirtualNetworkName,
+            @PathParam("managedPrivateEndpointName") String managedPrivateEndpointName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") ManagedPrivateEndpointResourceInner managedPrivateEndpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ManagedPrivateEndpointResourceInner> createOrUpdateSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @PathParam("managedVirtualNetworkName") String managedVirtualNetworkName,
@@ -101,6 +125,18 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ManagedPrivateEndpointResourceInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("managedVirtualNetworkName") String managedVirtualNetworkName,
+            @PathParam("managedPrivateEndpointName") String managedPrivateEndpointName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -112,10 +148,29 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("managedVirtualNetworkName") String managedVirtualNetworkName,
+            @PathParam("managedPrivateEndpointName") String managedPrivateEndpointName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedPrivateEndpointListResponse>> listByFactoryNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ManagedPrivateEndpointListResponse> listByFactoryNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -170,50 +225,6 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param managedVirtualNetworkName Managed virtual network name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed private endpoint resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedPrivateEndpointResourceInner>> listByFactorySinglePageAsync(
-        String resourceGroupName, String factoryName, String managedVirtualNetworkName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (managedVirtualNetworkName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter managedVirtualNetworkName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByFactory(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
-                managedVirtualNetworkName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Lists managed private endpoints.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -233,18 +244,89 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param managedVirtualNetworkName Managed virtual network name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed private endpoint resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ManagedPrivateEndpointResourceInner> listByFactorySinglePage(String resourceGroupName,
+        String factoryName, String managedVirtualNetworkName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (managedVirtualNetworkName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter managedVirtualNetworkName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ManagedPrivateEndpointListResponse> res
+            = service.listByFactorySync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                factoryName, managedVirtualNetworkName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Lists managed private endpoints.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param managedVirtualNetworkName Managed virtual network name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed private endpoint resources as paginated response with {@link PagedFlux}.
+     * @return a list of managed private endpoint resources along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedPrivateEndpointResourceInner> listByFactoryAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ManagedPrivateEndpointResourceInner> listByFactorySinglePage(String resourceGroupName,
         String factoryName, String managedVirtualNetworkName, Context context) {
-        return new PagedFlux<>(
-            () -> listByFactorySinglePageAsync(resourceGroupName, factoryName, managedVirtualNetworkName, context),
-            nextLink -> listByFactoryNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (managedVirtualNetworkName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter managedVirtualNetworkName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ManagedPrivateEndpointListResponse> res
+            = service.listByFactorySync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                factoryName, managedVirtualNetworkName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -261,7 +343,9 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedPrivateEndpointResourceInner> listByFactory(String resourceGroupName,
         String factoryName, String managedVirtualNetworkName) {
-        return new PagedIterable<>(listByFactoryAsync(resourceGroupName, factoryName, managedVirtualNetworkName));
+        return new PagedIterable<>(
+            () -> listByFactorySinglePage(resourceGroupName, factoryName, managedVirtualNetworkName),
+            nextLink -> listByFactoryNextSinglePage(nextLink));
     }
 
     /**
@@ -280,7 +364,8 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
     public PagedIterable<ManagedPrivateEndpointResourceInner> listByFactory(String resourceGroupName,
         String factoryName, String managedVirtualNetworkName, Context context) {
         return new PagedIterable<>(
-            listByFactoryAsync(resourceGroupName, factoryName, managedVirtualNetworkName, context));
+            () -> listByFactorySinglePage(resourceGroupName, factoryName, managedVirtualNetworkName, context),
+            nextLink -> listByFactoryNextSinglePage(nextLink, context));
     }
 
     /**
@@ -348,64 +433,6 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      * @param managedVirtualNetworkName Managed virtual network name.
      * @param managedPrivateEndpointName Managed private endpoint name.
      * @param managedPrivateEndpoint Managed private endpoint resource definition.
-     * @param ifMatch ETag of the managed private endpoint entity. Should only be specified for update, for which it
-     * should match existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed private endpoint resource type along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedPrivateEndpointResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String factoryName, String managedVirtualNetworkName,
-        String managedPrivateEndpointName, ManagedPrivateEndpointResourceInner managedPrivateEndpoint, String ifMatch,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (managedVirtualNetworkName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter managedVirtualNetworkName is required and cannot be null."));
-        }
-        if (managedPrivateEndpointName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter managedPrivateEndpointName is required and cannot be null."));
-        }
-        if (managedPrivateEndpoint == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter managedPrivateEndpoint is required and cannot be null."));
-        } else {
-            managedPrivateEndpoint.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            factoryName, managedVirtualNetworkName, managedPrivateEndpointName, this.client.getApiVersion(), ifMatch,
-            managedPrivateEndpoint, accept, context);
-    }
-
-    /**
-     * Creates or updates a managed private endpoint.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedPrivateEndpointName Managed private endpoint name.
-     * @param managedPrivateEndpoint Managed private endpoint resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -441,8 +468,44 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
     public Response<ManagedPrivateEndpointResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         String factoryName, String managedVirtualNetworkName, String managedPrivateEndpointName,
         ManagedPrivateEndpointResourceInner managedPrivateEndpoint, String ifMatch, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, managedVirtualNetworkName,
-            managedPrivateEndpointName, managedPrivateEndpoint, ifMatch, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (managedVirtualNetworkName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter managedVirtualNetworkName is required and cannot be null."));
+        }
+        if (managedPrivateEndpointName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter managedPrivateEndpointName is required and cannot be null."));
+        }
+        if (managedPrivateEndpoint == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter managedPrivateEndpoint is required and cannot be null."));
+        } else {
+            managedPrivateEndpoint.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, managedVirtualNetworkName, managedPrivateEndpointName, this.client.getApiVersion(), ifMatch,
+            managedPrivateEndpoint, accept, context);
     }
 
     /**
@@ -522,55 +585,6 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      * @param factoryName The factory name.
      * @param managedVirtualNetworkName Managed virtual network name.
      * @param managedPrivateEndpointName Managed private endpoint name.
-     * @param ifNoneMatch ETag of the managed private endpoint entity. Should only be specified for get. If the ETag
-     * matches the existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed private endpoint along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedPrivateEndpointResourceInner>> getWithResponseAsync(String resourceGroupName,
-        String factoryName, String managedVirtualNetworkName, String managedPrivateEndpointName, String ifNoneMatch,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (managedVirtualNetworkName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter managedVirtualNetworkName is required and cannot be null."));
-        }
-        if (managedPrivateEndpointName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter managedPrivateEndpointName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
-            managedVirtualNetworkName, managedPrivateEndpointName, this.client.getApiVersion(), ifNoneMatch, accept,
-            context);
-    }
-
-    /**
-     * Gets a managed private endpoint.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedPrivateEndpointName Managed private endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -602,8 +616,38 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedPrivateEndpointResourceInner> getWithResponse(String resourceGroupName, String factoryName,
         String managedVirtualNetworkName, String managedPrivateEndpointName, String ifNoneMatch, Context context) {
-        return getWithResponseAsync(resourceGroupName, factoryName, managedVirtualNetworkName,
-            managedPrivateEndpointName, ifNoneMatch, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (managedVirtualNetworkName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter managedVirtualNetworkName is required and cannot be null."));
+        }
+        if (managedPrivateEndpointName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter managedPrivateEndpointName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, managedVirtualNetworkName, managedPrivateEndpointName, this.client.getApiVersion(),
+            ifNoneMatch, accept, context);
     }
 
     /**
@@ -679,52 +723,6 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      * @param factoryName The factory name.
      * @param managedVirtualNetworkName Managed virtual network name.
      * @param managedPrivateEndpointName Managed private endpoint name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String factoryName,
-        String managedVirtualNetworkName, String managedPrivateEndpointName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (managedVirtualNetworkName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter managedVirtualNetworkName is required and cannot be null."));
-        }
-        if (managedPrivateEndpointName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter managedPrivateEndpointName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            factoryName, managedVirtualNetworkName, managedPrivateEndpointName, this.client.getApiVersion(), accept,
-            context);
-    }
-
-    /**
-     * Deletes a managed private endpoint.
-     * 
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedPrivateEndpointName Managed private endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -753,8 +751,38 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName,
         String managedVirtualNetworkName, String managedPrivateEndpointName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, factoryName, managedVirtualNetworkName,
-            managedPrivateEndpointName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (managedVirtualNetworkName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter managedVirtualNetworkName is required and cannot be null."));
+        }
+        if (managedPrivateEndpointName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter managedPrivateEndpointName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, managedVirtualNetworkName, managedPrivateEndpointName, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
@@ -806,27 +834,57 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed private endpoint resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ManagedPrivateEndpointResourceInner> listByFactoryNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ManagedPrivateEndpointListResponse> res
+            = service.listByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed private endpoint resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of managed private endpoint resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedPrivateEndpointResourceInner>> listByFactoryNextSinglePageAsync(String nextLink,
+    private PagedResponse<ManagedPrivateEndpointResourceInner> listByFactoryNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByFactoryNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<ManagedPrivateEndpointListResponse> res
+            = service.listByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedPrivateEndpointsClientImpl.class);
 }

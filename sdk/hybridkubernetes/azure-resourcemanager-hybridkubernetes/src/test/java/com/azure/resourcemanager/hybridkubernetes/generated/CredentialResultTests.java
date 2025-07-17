@@ -10,7 +10,7 @@ import com.azure.resourcemanager.hybridkubernetes.models.CredentialResult;
 public final class CredentialResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CredentialResult model = BinaryData.fromString("{\"name\":\"ajpsquc\"}").toObject(CredentialResult.class);
+        CredentialResult model = BinaryData.fromString("{\"name\":\"zkrwfn\"}").toObject(CredentialResult.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -40,14 +40,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 final class WebSocketSessionNettyImpl implements WebSocketSession {
-
     private final AtomicReference<ClientLogger> loggerReference;
     private final MessageEncoder messageEncoder;
     private final MessageDecoder messageDecoder;
     private final String path;
     private final String protocol;
     private final String userAgent;
-    private final Consumer<Object> messageHandler;
+    private final Consumer<WebPubSubMessage> messageHandler;
     private final Consumer<WebSocketSession> openHandler;
     private final Consumer<CloseReason> closeHandler;
 
@@ -76,13 +75,14 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
             if (sslCtx != null) {
                 p.addLast(sslCtx.newHandler(ch.alloc(), host, port));
             }
+
             p.addLast(new HttpClientCodec(), new HttpObjectAggregator(8192), WebSocketClientCompressionHandler.INSTANCE,
                 handler);
         }
     }
 
     WebSocketSessionNettyImpl(ClientEndpointConfiguration cec, String path,
-        AtomicReference<ClientLogger> loggerReference, Consumer<Object> messageHandler,
+        AtomicReference<ClientLogger> loggerReference, Consumer<WebPubSubMessage> messageHandler,
         Consumer<WebSocketSession> openHandler, Consumer<CloseReason> closeHandler) {
         this.path = path;
         this.loggerReference = loggerReference;

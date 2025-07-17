@@ -14,23 +14,24 @@ public final class TagCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TagCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"iprglvawu\"},\"id\":\"z\",\"name\":\"ufypiv\",\"type\":\"sbbjpmcu\"},{\"properties\":{\"displayName\":\"mifoxxkub\"},\"id\":\"phavpmhbrb\",\"name\":\"gvgovpbbttefjo\",\"type\":\"nssqyzqed\"},{\"properties\":{\"displayName\":\"dfrdbi\"},\"id\":\"mrjgeihfqlggwfi\",\"name\":\"zcxmjpbyep\",\"type\":\"mgtvlj\"}],\"count\":5030460959235510617,\"nextLink\":\"fqip\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"kg\"},\"id\":\"fxyfsrucvcrrpcj\",\"name\":\"tbstvjeaqnrmv\",\"type\":\"fkoxmlghktuidvr\"},{\"properties\":{\"displayName\":\"zlpdwwex\"},\"id\":\"mzvlazipbh\",\"name\":\"wvqsgny\",\"type\":\"uuzivensrpmeyyvp\"},{\"properties\":{\"displayName\":\"atlb\"},\"id\":\"jp\",\"name\":\"gsksrfhf\",\"type\":\"olmk\"},{\"properties\":{\"displayName\":\"nxwcdommpv\"},\"id\":\"qa\",\"name\":\"zfgbrttuiaclkie\",\"type\":\"hajlfn\"}],\"count\":764142127512460944,\"nextLink\":\"yuttdiygbpvnwswm\"}")
             .toObject(TagCollection.class);
-        Assertions.assertEquals("iprglvawu", model.value().get(0).displayName());
-        Assertions.assertEquals(5030460959235510617L, model.count());
-        Assertions.assertEquals("fqip", model.nextLink());
+        Assertions.assertEquals("kg", model.value().get(0).displayName());
+        Assertions.assertEquals(764142127512460944L, model.count());
+        Assertions.assertEquals("yuttdiygbpvnwswm", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TagCollection model = new TagCollection()
-            .withValue(Arrays.asList(new TagContractInner().withDisplayName("iprglvawu"),
-                new TagContractInner().withDisplayName("mifoxxkub"), new TagContractInner().withDisplayName("dfrdbi")))
-            .withCount(5030460959235510617L)
-            .withNextLink("fqip");
+            .withValue(Arrays.asList(new TagContractInner().withDisplayName("kg"),
+                new TagContractInner().withDisplayName("zlpdwwex"), new TagContractInner().withDisplayName("atlb"),
+                new TagContractInner().withDisplayName("nxwcdommpv")))
+            .withCount(764142127512460944L)
+            .withNextLink("yuttdiygbpvnwswm");
         model = BinaryData.fromObject(model).toObject(TagCollection.class);
-        Assertions.assertEquals("iprglvawu", model.value().get(0).displayName());
-        Assertions.assertEquals(5030460959235510617L, model.count());
-        Assertions.assertEquals("fqip", model.nextLink());
+        Assertions.assertEquals("kg", model.value().get(0).displayName());
+        Assertions.assertEquals(764142127512460944L, model.count());
+        Assertions.assertEquals("yuttdiygbpvnwswm", model.nextLink());
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 public final class ReplicationFabricsRemoveInfraSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationInfrastructure_Delete.json
      */
     /**

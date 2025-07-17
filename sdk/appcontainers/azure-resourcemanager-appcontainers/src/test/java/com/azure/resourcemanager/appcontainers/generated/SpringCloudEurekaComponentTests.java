@@ -17,34 +17,30 @@ public final class SpringCloudEurekaComponentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SpringCloudEurekaComponent model = BinaryData.fromString(
-            "{\"componentType\":\"SpringCloudEureka\",\"ingress\":{\"fqdn\":\"yyrlhgenu\"},\"provisioningState\":\"Canceled\",\"configurations\":[{\"propertyName\":\"veb\",\"value\":\"szllrzlsmmdqgmi\"},{\"propertyName\":\"pimcqrhn\",\"value\":\"minkl\"},{\"propertyName\":\"xsvtzarhzvqnsqk\",\"value\":\"mbjwzzoslpkyb\"}],\"scale\":{\"minReplicas\":1366421495,\"maxReplicas\":493622397},\"serviceBinds\":[{\"name\":\"jsqjcemqbm\",\"serviceId\":\"vqar\"},{\"name\":\"xuqreblu\",\"serviceId\":\"mbwxsfg\"}]}")
+            "{\"componentType\":\"SpringCloudEureka\",\"ingress\":{\"fqdn\":\"uug\"},\"provisioningState\":\"Failed\",\"configurations\":[{\"propertyName\":\"rfqkfuar\",\"value\":\"lvhhtklnvn\"}],\"scale\":{\"minReplicas\":1300202975,\"maxReplicas\":64736512},\"serviceBinds\":[{\"name\":\"ev\",\"serviceId\":\"oslc\"}]}")
             .toObject(SpringCloudEurekaComponent.class);
-        Assertions.assertEquals("veb", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("szllrzlsmmdqgmi", model.configurations().get(0).value());
-        Assertions.assertEquals(1366421495, model.scale().minReplicas());
-        Assertions.assertEquals(493622397, model.scale().maxReplicas());
-        Assertions.assertEquals("jsqjcemqbm", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("vqar", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("rfqkfuar", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("lvhhtklnvn", model.configurations().get(0).value());
+        Assertions.assertEquals(1300202975, model.scale().minReplicas());
+        Assertions.assertEquals(64736512, model.scale().maxReplicas());
+        Assertions.assertEquals("ev", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("oslc", model.serviceBinds().get(0).serviceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SpringCloudEurekaComponent model = new SpringCloudEurekaComponent()
-            .withConfigurations(Arrays.asList(
-                new JavaComponentConfigurationProperty().withPropertyName("veb").withValue("szllrzlsmmdqgmi"),
-                new JavaComponentConfigurationProperty().withPropertyName("pimcqrhn").withValue("minkl"),
-                new JavaComponentConfigurationProperty().withPropertyName("xsvtzarhzvqnsqk")
-                    .withValue("mbjwzzoslpkyb")))
-            .withScale(new JavaComponentPropertiesScale().withMinReplicas(1366421495).withMaxReplicas(493622397))
-            .withServiceBinds(Arrays.asList(new JavaComponentServiceBind().withName("jsqjcemqbm").withServiceId("vqar"),
-                new JavaComponentServiceBind().withName("xuqreblu").withServiceId("mbwxsfg")))
+            .withConfigurations(Arrays
+                .asList(new JavaComponentConfigurationProperty().withPropertyName("rfqkfuar").withValue("lvhhtklnvn")))
+            .withScale(new JavaComponentPropertiesScale().withMinReplicas(1300202975).withMaxReplicas(64736512))
+            .withServiceBinds(Arrays.asList(new JavaComponentServiceBind().withName("ev").withServiceId("oslc")))
             .withIngress(new JavaComponentIngress());
         model = BinaryData.fromObject(model).toObject(SpringCloudEurekaComponent.class);
-        Assertions.assertEquals("veb", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("szllrzlsmmdqgmi", model.configurations().get(0).value());
-        Assertions.assertEquals(1366421495, model.scale().minReplicas());
-        Assertions.assertEquals(493622397, model.scale().maxReplicas());
-        Assertions.assertEquals("jsqjcemqbm", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("vqar", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("rfqkfuar", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("lvhhtklnvn", model.configurations().get(0).value());
+        Assertions.assertEquals(1300202975, model.scale().minReplicas());
+        Assertions.assertEquals(64736512, model.scale().maxReplicas());
+        Assertions.assertEquals("ev", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("oslc", model.serviceBinds().get(0).serviceId());
     }
 }

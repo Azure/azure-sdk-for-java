@@ -27,8 +27,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.iotoperations.fluent.DataflowProfilesClient;
@@ -68,7 +70,7 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "IoTOperationsManagem")
+    @ServiceInterface(name = "IoTOperationsManagementClientDataflowProfiles")
     public interface DataflowProfilesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}")
@@ -80,10 +82,30 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
             @PathParam("dataflowProfileName") String dataflowProfileName, @HeaderParam("Accept") String accept,
             Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DataflowProfileResourceInner> getSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
+            @PathParam("dataflowProfileName") String dataflowProfileName, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
+            @PathParam("dataflowProfileName") String dataflowProfileName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") DataflowProfileResourceInner resource, Context context);
+
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
             @PathParam("dataflowProfileName") String dataflowProfileName,
@@ -101,6 +123,16 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles/{dataflowProfileName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
+            @PathParam("dataflowProfileName") String dataflowProfileName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -110,10 +142,27 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowProfiles")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DataflowProfileResourceListResult> listByResourceGroupSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("instanceName") String instanceName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataflowProfileResourceListResult>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DataflowProfileResourceListResult> listByResourceGroupNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -164,46 +213,6 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param instanceName Name of instance.
      * @param dataflowProfileName Name of Instance dataflowProfile resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DataflowProfileResource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataflowProfileResourceInner>> getWithResponseAsync(String resourceGroupName,
-        String instanceName, String dataflowProfileName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (instanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
-        }
-        if (dataflowProfileName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dataflowProfileName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, instanceName, dataflowProfileName, accept, context);
-    }
-
-    /**
-     * Get a DataflowProfileResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param dataflowProfileName Name of Instance dataflowProfile resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -231,7 +240,31 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataflowProfileResourceInner> getWithResponse(String resourceGroupName, String instanceName,
         String dataflowProfileName, Context context) {
-        return getWithResponseAsync(resourceGroupName, instanceName, dataflowProfileName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (instanceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+        }
+        if (dataflowProfileName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataflowProfileName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, instanceName, dataflowProfileName, accept, context);
     }
 
     /**
@@ -305,43 +338,96 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
      * @param instanceName Name of instance.
      * @param dataflowProfileName Name of Instance dataflowProfile resource.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance dataflowProfile resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return instance dataflowProfile resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String instanceName, String dataflowProfileName, DataflowProfileResourceInner resource, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String instanceName,
+        String dataflowProfileName, DataflowProfileResourceInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (instanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
         }
         if (dataflowProfileName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dataflowProfileName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataflowProfileName is required and cannot be null."));
         }
         if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
         } else {
             resource.validate();
         }
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, instanceName, dataflowProfileName, contentType, accept,
+            resource, Context.NONE);
+    }
+
+    /**
+     * Create a DataflowProfileResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param instanceName Name of instance.
+     * @param dataflowProfileName Name of Instance dataflowProfile resource.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return instance dataflowProfile resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String instanceName,
+        String dataflowProfileName, DataflowProfileResourceInner resource, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (instanceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+        }
+        if (dataflowProfileName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataflowProfileName is required and cannot be null."));
+        }
+        if (resource == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
+        }
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, instanceName, dataflowProfileName, contentType, accept,
             resource, context);
     }
@@ -376,31 +462,6 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
      * @param instanceName Name of instance.
      * @param dataflowProfileName Name of Instance dataflowProfile resource.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of instance dataflowProfile resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DataflowProfileResourceInner>, DataflowProfileResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String instanceName, String dataflowProfileName,
-        DataflowProfileResourceInner resource, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, instanceName, dataflowProfileName, resource, context);
-        return this.client.<DataflowProfileResourceInner, DataflowProfileResourceInner>getLroResult(mono,
-            this.client.getHttpPipeline(), DataflowProfileResourceInner.class, DataflowProfileResourceInner.class,
-            context);
-    }
-
-    /**
-     * Create a DataflowProfileResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param dataflowProfileName Name of Instance dataflowProfile resource.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -410,8 +471,10 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
     public SyncPoller<PollResult<DataflowProfileResourceInner>, DataflowProfileResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String instanceName, String dataflowProfileName,
         DataflowProfileResourceInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, instanceName, dataflowProfileName, resource)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, instanceName, dataflowProfileName, resource);
+        return this.client.<DataflowProfileResourceInner, DataflowProfileResourceInner>getLroResult(response,
+            DataflowProfileResourceInner.class, DataflowProfileResourceInner.class, Context.NONE);
     }
 
     /**
@@ -431,8 +494,10 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
     public SyncPoller<PollResult<DataflowProfileResourceInner>, DataflowProfileResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String instanceName, String dataflowProfileName,
         DataflowProfileResourceInner resource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, instanceName, dataflowProfileName, resource, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, instanceName, dataflowProfileName, resource, context);
+        return this.client.<DataflowProfileResourceInner, DataflowProfileResourceInner>getLroResult(response,
+            DataflowProfileResourceInner.class, DataflowProfileResourceInner.class, context);
     }
 
     /**
@@ -461,26 +526,6 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
      * @param instanceName Name of instance.
      * @param dataflowProfileName Name of Instance dataflowProfile resource.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance dataflowProfile resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataflowProfileResourceInner> createOrUpdateAsync(String resourceGroupName, String instanceName,
-        String dataflowProfileName, DataflowProfileResourceInner resource, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, instanceName, dataflowProfileName, resource, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a DataflowProfileResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param dataflowProfileName Name of Instance dataflowProfile resource.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -489,7 +534,7 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataflowProfileResourceInner createOrUpdate(String resourceGroupName, String instanceName,
         String dataflowProfileName, DataflowProfileResourceInner resource) {
-        return createOrUpdateAsync(resourceGroupName, instanceName, dataflowProfileName, resource).block();
+        return beginCreateOrUpdate(resourceGroupName, instanceName, dataflowProfileName, resource).getFinalResult();
     }
 
     /**
@@ -508,7 +553,8 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataflowProfileResourceInner createOrUpdate(String resourceGroupName, String instanceName,
         String dataflowProfileName, DataflowProfileResourceInner resource, Context context) {
-        return createOrUpdateAsync(resourceGroupName, instanceName, dataflowProfileName, resource, context).block();
+        return beginCreateOrUpdate(resourceGroupName, instanceName, dataflowProfileName, resource, context)
+            .getFinalResult();
     }
 
     /**
@@ -557,38 +603,82 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param instanceName Name of instance.
      * @param dataflowProfileName Name of Instance dataflowProfile resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String instanceName,
+        String dataflowProfileName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (instanceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+        }
+        if (dataflowProfileName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataflowProfileName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, instanceName, dataflowProfileName, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Delete a DataflowProfileResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param instanceName Name of instance.
+     * @param dataflowProfileName Name of Instance dataflowProfile resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String instanceName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String instanceName,
         String dataflowProfileName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (instanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
         }
         if (dataflowProfileName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dataflowProfileName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter dataflowProfileName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, instanceName, dataflowProfileName, accept, context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, instanceName, dataflowProfileName, accept, context);
     }
 
     /**
@@ -617,28 +707,6 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param instanceName Name of instance.
      * @param dataflowProfileName Name of Instance dataflowProfile resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String instanceName,
-        String dataflowProfileName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, instanceName, dataflowProfileName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Delete a DataflowProfileResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param dataflowProfileName Name of Instance dataflowProfile resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -647,7 +715,8 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instanceName,
         String dataflowProfileName) {
-        return this.beginDeleteAsync(resourceGroupName, instanceName, dataflowProfileName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, instanceName, dataflowProfileName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -665,7 +734,9 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instanceName,
         String dataflowProfileName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, instanceName, dataflowProfileName, context).getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, instanceName, dataflowProfileName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -691,32 +762,13 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param instanceName Name of instance.
      * @param dataflowProfileName Name of Instance dataflowProfile resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String instanceName, String dataflowProfileName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, instanceName, dataflowProfileName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete a DataflowProfileResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param dataflowProfileName Name of Instance dataflowProfile resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instanceName, String dataflowProfileName) {
-        deleteAsync(resourceGroupName, instanceName, dataflowProfileName).block();
+        beginDelete(resourceGroupName, instanceName, dataflowProfileName).getFinalResult();
     }
 
     /**
@@ -732,7 +784,7 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instanceName, String dataflowProfileName, Context context) {
-        deleteAsync(resourceGroupName, instanceName, dataflowProfileName, context).block();
+        beginDelete(resourceGroupName, instanceName, dataflowProfileName, context).getFinalResult();
     }
 
     /**
@@ -778,45 +830,6 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param instanceName Name of instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataflowProfileResource list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataflowProfileResourceInner>>
-        listByResourceGroupSinglePageAsync(String resourceGroupName, String instanceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (instanceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, instanceName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List DataflowProfileResource resources by InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -834,17 +847,78 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param instanceName Name of instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DataflowProfileResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DataflowProfileResourceInner> listByResourceGroupSinglePage(String resourceGroupName,
+        String instanceName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (instanceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DataflowProfileResourceListResult> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, instanceName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List DataflowProfileResource resources by InstanceResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param instanceName Name of instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataflowProfileResource list operation as paginated response with {@link PagedFlux}.
+     * @return the response of a DataflowProfileResource list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataflowProfileResourceInner> listByResourceGroupAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DataflowProfileResourceInner> listByResourceGroupSinglePage(String resourceGroupName,
         String instanceName, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, instanceName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (instanceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter instanceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DataflowProfileResourceListResult> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, instanceName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -861,7 +935,8 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataflowProfileResourceInner> listByResourceGroup(String resourceGroupName,
         String instanceName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, instanceName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, instanceName),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -879,7 +954,8 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataflowProfileResourceInner> listByResourceGroup(String resourceGroupName,
         String instanceName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, instanceName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, instanceName, context),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -914,27 +990,57 @@ public final class DataflowProfilesClientImpl implements DataflowProfilesClient 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DataflowProfileResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DataflowProfileResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DataflowProfileResourceListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataflowProfileResource list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the response of a DataflowProfileResource list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataflowProfileResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+    private PagedResponse<DataflowProfileResourceInner> listByResourceGroupNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DataflowProfileResourceListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataflowProfilesClientImpl.class);
 }

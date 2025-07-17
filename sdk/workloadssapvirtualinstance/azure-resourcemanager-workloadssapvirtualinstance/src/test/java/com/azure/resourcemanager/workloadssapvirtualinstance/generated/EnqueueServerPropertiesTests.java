@@ -11,7 +11,7 @@ public final class EnqueueServerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnqueueServerProperties model = BinaryData.fromString(
-            "{\"hostname\":\"zkzivgvvcnay\",\"ipAddress\":\"yrnxxmueedn\",\"port\":6138574805194332823,\"health\":\"Unhealthy\"}")
+            "{\"hostname\":\"mkcdyhbpkkpwdre\",\"ipAddress\":\"ovvqfovljxywsu\",\"port\":2915197235963092972,\"health\":\"Unhealthy\"}")
             .toObject(EnqueueServerProperties.class);
     }
 

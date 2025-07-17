@@ -9,7 +9,7 @@ import java.util.Collection;
 
 /**
  * Determines if geo-backup is supported in this region. "Enabled" means geo-backup is supported. "Disabled" stands for
- * geo-back is not supported.
+ * geo-back is not supported. Will be deprecated in future, please look to Supported Features for "GeoBackup".
  */
 public final class GeoBackupSupportedEnum extends ExpandableStringEnum<GeoBackupSupportedEnum> {
     /**

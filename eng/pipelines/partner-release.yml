@@ -33,6 +33,14 @@ extends:
           - checkout: azure-sdk-build-tools
             path: azure-sdk-build-tools
 
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            parameters:
+              SkipCheckoutNone: true
+              Repositories:
+                - Name: Azure/azure-sdk-for-java
+                  Commitish: $(Build.SourceVersion)
+                  WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+
           - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
 
           - task: AzurePowerShell@5
@@ -41,18 +49,18 @@ extends:
             inputs:
               azureSubscription: 'azuresdkpartnerdrops - Storage Partner Drops'
               ScriptType: 'InlineScript'
-              azurePowerShellVersion: LatestVersion 
+              azurePowerShellVersion: LatestVersion
               pwsh: true
               Inline: |
                 echo "azcopy copy 'https://azuresdkpartnerdrops.blob.core.windows.net/drops/${{ parameters.BlobPath }}/*' '$(Artifacts)' --recursive=true"
                 azcopy copy 'https://azuresdkpartnerdrops.blob.core.windows.net/drops/${{ parameters.BlobPath }}/*' '$(Artifacts)' --recursive=true
                 $copiedFiles = (dir '$(Artifacts)' -r | % { $_.FullName })
                 echo "Copied files: $copiedFiles"
-                if (!$copiedFiles) { 
+                if (!$copiedFiles) {
                   echo "Failed to copy any files from 'https://azuresdkpartnerdrops.blob.core.windows.net/drops/${{ parameters.BlobPath }}/*' please double check they exist"
                   exit 1
                 }
-            env: 
+            env:
               AZCOPY_AUTO_LOGIN_TYPE: 'PSCRED'
 
           - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
@@ -61,40 +69,55 @@ extends:
 
           - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
             parameters:
-              ArtifactName: packages-signed
               ArtifactPath: $(Artifacts)
+              ArtifactName: packages-signed
 
-        - job: Release
-          dependsOn: Signing
-          pool:
-            name: $(WINDOWSPOOL)
-            image: $(WINDOWSVMIMAGE)
-            os: windows
-          steps:
-          - checkout: self
-            path: azure-sdk-for-java
-
-          - checkout: azure-sdk-build-tools
-            path: azure-sdk-build-tools
-
-          - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
-
+          # Downloading the ESRP signed artifacts
           - download: current
-            displayName: Download Signed Artifacts
+            displayName: 'Download Signed Artifacts'
             artifact: packages-signed
 
+          # gpg-sign and create the flattened directory for ESRP bulk publish
+          # Note: The maven release requires the files to be local GPG signed
+          # Dev feed publishes use the gpg-sign-and-deply to do it in one step
           - template: tools/gpg/gpg.yml@azure-sdk-build-tools
-
-          - template: /eng/pipelines/templates/steps/java-publishing.yml
+          - template: /eng/pipelines/templates/steps/gpg-sign-and-flatten.yml
             parameters:
               ArtifactDirectory: $(Pipeline.Workspace)/packages-signed
-              OutputDirectory: $(EsrpArtifacts)
-              Target: EsrpRelease
-              JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-              ShouldPublish: ${{ parameters.ShouldPublish }}
-              StageOnly: false
+              OutputDirectory: $(Pipeline.Workspace)/packages-esrp-gpg-signed
+              FlattenedESRPDirectory: $(Pipeline.Workspace)/packages-esrp-flattened
 
+          # The packages-esrp-flattened will be used for the ESRP publish
           - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
             parameters:
-              ArtifactName: packages-esrp-$(System.JobAttempt)
-              ArtifactPath: $(EsrpArtifacts)
+              ArtifactPath: '$(Pipeline.Workspace)/packages-esrp-flattened'
+              ArtifactName: 'packages-esrp-flattened'
+
+
+        - deployment: PublishESRPPackage
+          displayName: "Publish to Maven Central via ESRP"
+          condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
+          timeoutInMinutes: 60
+          environment: none # this is satisfy the 1ES requirement for pipelines that shouldn't need the approval step
+          dependsOn: Signing
+
+          templateContext:
+            type: releaseJob
+            isProduction: true
+            inputs:
+            - input: pipelineArtifact
+              artifactName: 'packages-esrp-flattened'
+              targetPath: '$(Pipeline.Workspace)/packages-esrp-flattened'
+
+          pool:
+            name: azsdk-pool
+            image: windows-2022
+            os: windows
+          strategy:
+            runOnce:
+              deploy:
+                steps:
+                  - template: /eng/pipelines/templates/steps/java-esrp-publishing.yml
+                    parameters:
+                      FlattenedDirectory: $(Pipeline.Workspace)/packages-esrp-flattened
+                      ShouldPublish: ${{ parameters.ShouldPublish }}

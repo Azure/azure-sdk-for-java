@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistration;
@@ -24,26 +24,27 @@ public final class PartnerRegistrationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"487da261-ad88-4664-9348-6c29828b1c3c\"},\"location\":\"hggabqbgamklil\",\"tags\":{\"ffhsdpzouhk\":\"d\",\"dfddtullygtav\":\"qrxqwqnjx\",\"phraspifleim\":\"zcxdfweapyfmlxrl\",\"mdbgi\":\"x\"},\"id\":\"ehfgsm\",\"name\":\"rjuqbpxtokl\",\"type\":\"mtznpaxwfqtyyqi\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"0adbab65-218c-421b-9644-8d284a77c803\"},\"location\":\"ttpfsmwgsgh\",\"tags\":{\"thxuarigrjdl\":\"umlddauqmllfe\"},\"id\":\"lkqhvkrbzkua\",\"name\":\"taxklpruu\",\"type\":\"hgltoizwxvs\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PartnerRegistration response = manager.partnerRegistrations()
-            .define("jk")
-            .withRegion("zobuzmsxgamtdtk")
-            .withExistingResourceGroup("loqd")
-            .withTags(mapOf("mrljdpoqfxye", "thuzdprm"))
-            .withPartnerRegistrationImmutableId(UUID.fromString("33204f09-c7e4-49cd-9c30-38bd60191425"))
+            .define("tncwmhjobzrfpr")
+            .withRegion("yftcvbzwgwhg")
+            .withExistingResourceGroup("pyfaofdfp")
+            .withTags(mapOf("uoorssatfybipufd", "o", "q", "xuqbdqnasttuxvz", "xmndztgsqjayqmar", "yopbtsixhgvb", "nh",
+                "neibpgbrhbjdq"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("97bd28ba-280b-4340-9c20-863095acb4c5"))
             .create();
 
-        Assertions.assertEquals("hggabqbgamklil", response.location());
-        Assertions.assertEquals("d", response.tags().get("ffhsdpzouhk"));
-        Assertions.assertEquals(UUID.fromString("487da261-ad88-4664-9348-6c29828b1c3c"),
+        Assertions.assertEquals("ttpfsmwgsgh", response.location());
+        Assertions.assertEquals("umlddauqmllfe", response.tags().get("thxuarigrjdl"));
+        Assertions.assertEquals(UUID.fromString("0adbab65-218c-421b-9644-8d284a77c803"),
             response.partnerRegistrationImmutableId());
     }
 

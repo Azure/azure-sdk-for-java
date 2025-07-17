@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,27 +22,32 @@ public class AzurePostgreSqlTableDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "AzurePostgreSqlTable";
 
     /*
      * The table name of the Azure PostgreSQL database which includes both schema and table. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object tableName;
 
     /*
      * The table name of the Azure PostgreSQL database. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object table;
 
     /*
      * The schema name of the Azure PostgreSQL database. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object schemaTypePropertiesSchema;
 
     /**
      * Creates an instance of AzurePostgreSqlTableDataset class.
      */
+    @Generated
     public AzurePostgreSqlTableDataset() {
     }
 
@@ -50,6 +56,7 @@ public class AzurePostgreSqlTableDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -61,6 +68,7 @@ public class AzurePostgreSqlTableDataset extends Dataset {
      * 
      * @return the tableName value.
      */
+    @Generated
     public Object getTableName() {
         return this.tableName;
     }
@@ -72,6 +80,7 @@ public class AzurePostgreSqlTableDataset extends Dataset {
      * @param tableName the tableName value to set.
      * @return the AzurePostgreSqlTableDataset object itself.
      */
+    @Generated
     public AzurePostgreSqlTableDataset setTableName(Object tableName) {
         this.tableName = tableName;
         return this;
@@ -83,6 +92,7 @@ public class AzurePostgreSqlTableDataset extends Dataset {
      * 
      * @return the table value.
      */
+    @Generated
     public Object getTable() {
         return this.table;
     }
@@ -94,6 +104,7 @@ public class AzurePostgreSqlTableDataset extends Dataset {
      * @param table the table value to set.
      * @return the AzurePostgreSqlTableDataset object itself.
      */
+    @Generated
     public AzurePostgreSqlTableDataset setTable(Object table) {
         this.table = table;
         return this;
@@ -105,6 +116,7 @@ public class AzurePostgreSqlTableDataset extends Dataset {
      * 
      * @return the schemaTypePropertiesSchema value.
      */
+    @Generated
     public Object getSchemaTypePropertiesSchema() {
         return this.schemaTypePropertiesSchema;
     }
@@ -116,6 +128,7 @@ public class AzurePostgreSqlTableDataset extends Dataset {
      * @param schemaTypePropertiesSchema the schemaTypePropertiesSchema value to set.
      * @return the AzurePostgreSqlTableDataset object itself.
      */
+    @Generated
     public AzurePostgreSqlTableDataset setSchemaTypePropertiesSchema(Object schemaTypePropertiesSchema) {
         this.schemaTypePropertiesSchema = schemaTypePropertiesSchema;
         return this;
@@ -124,6 +137,7 @@ public class AzurePostgreSqlTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzurePostgreSqlTableDataset setDescription(String description) {
         super.setDescription(description);
@@ -133,6 +147,7 @@ public class AzurePostgreSqlTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzurePostgreSqlTableDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -142,6 +157,7 @@ public class AzurePostgreSqlTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzurePostgreSqlTableDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -151,6 +167,7 @@ public class AzurePostgreSqlTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzurePostgreSqlTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -160,6 +177,7 @@ public class AzurePostgreSqlTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzurePostgreSqlTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -169,6 +187,7 @@ public class AzurePostgreSqlTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzurePostgreSqlTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -178,6 +197,7 @@ public class AzurePostgreSqlTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzurePostgreSqlTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -187,22 +207,33 @@ public class AzurePostgreSqlTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
         jsonWriter.writeStringField("type", this.type);
         if (tableName != null || table != null || schemaTypePropertiesSchema != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("tableName", this.tableName);
-            jsonWriter.writeUntypedField("table", this.table);
-            jsonWriter.writeUntypedField("schema", this.schemaTypePropertiesSchema);
+            if (this.tableName != null) {
+                jsonWriter.writeUntypedField("tableName", this.tableName);
+            }
+            if (this.table != null) {
+                jsonWriter.writeUntypedField("table", this.table);
+            }
+            if (this.schemaTypePropertiesSchema != null) {
+                jsonWriter.writeUntypedField("schema", this.schemaTypePropertiesSchema);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -222,6 +253,7 @@ public class AzurePostgreSqlTableDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzurePostgreSqlTableDataset.
      */
+    @Generated
     public static AzurePostgreSqlTableDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzurePostgreSqlTableDataset deserializedAzurePostgreSqlTableDataset = new AzurePostgreSqlTableDataset();

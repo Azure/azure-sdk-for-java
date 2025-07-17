@@ -4,6 +4,7 @@
 
 package com.azure.ai.personalizer.administration.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -21,16 +22,19 @@ public final class PersonalizerModelProperties implements JsonSerializable<Perso
     /*
      * Creation time of the model.
      */
+    @Generated
     private OffsetDateTime creationTime;
 
     /*
      * Last time the model was modified.
      */
+    @Generated
     private OffsetDateTime lastModifiedTime;
 
     /**
      * Creates an instance of PersonalizerModelProperties class.
      */
+    @Generated
     public PersonalizerModelProperties() {
     }
 
@@ -39,6 +43,7 @@ public final class PersonalizerModelProperties implements JsonSerializable<Perso
      * 
      * @return the creationTime value.
      */
+    @Generated
     public OffsetDateTime getCreationTime() {
         return this.creationTime;
     }
@@ -48,6 +53,7 @@ public final class PersonalizerModelProperties implements JsonSerializable<Perso
      * 
      * @return the lastModifiedTime value.
      */
+    @Generated
     public OffsetDateTime getLastModifiedTime() {
         return this.lastModifiedTime;
     }
@@ -55,6 +61,7 @@ public final class PersonalizerModelProperties implements JsonSerializable<Perso
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,6 +76,7 @@ public final class PersonalizerModelProperties implements JsonSerializable<Perso
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PersonalizerModelProperties.
      */
+    @Generated
     public static PersonalizerModelProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerModelProperties deserializedPersonalizerModelProperties = new PersonalizerModelProperties();

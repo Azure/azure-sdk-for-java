@@ -26,7 +26,7 @@ public final class VaultCheckNameAvailabilityParameters
     /*
      * The type of resource, Microsoft.KeyVault/vaults
      */
-    private String type = "Microsoft.KeyVault/vaults";
+    private final String type = "Microsoft.KeyVault/vaults";
 
     /**
      * Creates an instance of VaultCheckNameAvailabilityParameters class.
@@ -61,17 +61,6 @@ public final class VaultCheckNameAvailabilityParameters
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: The type of resource, Microsoft.KeyVault/vaults.
-     * 
-     * @param type the type value to set.
-     * @return the VaultCheckNameAvailabilityParameters object itself.
-     */
-    public VaultCheckNameAvailabilityParameters withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ApiExportResult;
@@ -23,22 +23,23 @@ import reactor.core.publisher.Mono;
 public final class ApiExportsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        String responseStr = "{\"id\":\"jiqoq\",\"format\":\"wsdl-link+xml\",\"value\":{\"link\":\"phgxuwudgcyqruv\"}}";
+        String responseStr
+            = "{\"id\":\"cxnouspdyzssjl\",\"format\":\"wsdl-link+xml\",\"value\":{\"link\":\"gjvgspjlfzhjngw\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApiExportResult response = manager.apiExports()
-            .getWithResponse("bxehujcqgzwvx", "iuaoibmjklqrljd", "uky", ExportFormat.fromString("openapi json-link"),
-                ExportApi.TRUE, com.azure.core.util.Context.NONE)
+            .getWithResponse("thpsnxebycymp", "hxu", "nnp", ExportFormat.OPENAPI_LINK, ExportApi.TRUE,
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jiqoq", response.id());
+        Assertions.assertEquals("cxnouspdyzssjl", response.id());
         Assertions.assertEquals(ExportResultFormat.WSDL_LINK_XML, response.exportResultFormat());
-        Assertions.assertEquals("phgxuwudgcyqruv", response.value().link());
+        Assertions.assertEquals("gjvgspjlfzhjngw", response.value().link());
     }
 }

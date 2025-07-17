@@ -41,7 +41,7 @@ import java.util.Set;
  */
 public class EventHubsListenerAnnotationBeanPostProcessor extends AzureListenerAnnotationBeanPostProcessorAdapter<EventHubsListener> {
 
-    private static final String DEFAULT_EVENT_HUBS_LISTENER_ANNOTATION_BPP_BEAN_NAME = "eventHubsListenerAnnotationBeanPostProcessor";
+    public static final String DEFAULT_EVENT_HUBS_LISTENER_ANNOTATION_BPP_BEAN_NAME = "eventHubsListenerAnnotationBeanPostProcessor";
     private static final String DEFAULT_EVENT_HUBS_LISTENER_CONTAINER_FACTORY_BEAN_NAME = "azureEventHubsListenerContainerFactory";
 
     /**

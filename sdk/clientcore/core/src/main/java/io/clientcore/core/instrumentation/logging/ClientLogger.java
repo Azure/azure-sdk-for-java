@@ -3,33 +3,15 @@
 
 package io.clientcore.core.instrumentation.logging;
 
-import io.clientcore.core.annotation.Metadata;
-import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim;
 import io.clientcore.core.implementation.instrumentation.DefaultLogger;
-import io.clientcore.core.instrumentation.InstrumentationContext;
-import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.serialization.json.implementation.DefaultJsonWriter;
-import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.core.utils.configuration.Configuration;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.InvalidPathException;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
-import java.util.function.Supplier;
-
-import static io.clientcore.core.annotation.TypeConditions.FLUENT;
-import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EVENT_NAME_KEY;
-import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EXCEPTION_MESSAGE_KEY;
-import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EXCEPTION_STACKTRACE_KEY;
-import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EXCEPTION_TYPE_KEY;
-import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SPAN_ID_KEY;
-import static io.clientcore.core.implementation.instrumentation.AttributeKeys.TRACE_ID_KEY;
 
 /**
  * This is a fluent logger helper class that wraps an SLF4J Logger (if available) or a default implementation of the
@@ -40,13 +22,14 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.TR
  * logged.</p>
  *
  * <p>A minimum logging level threshold is determined by the
- * {@link Configuration#PROPERTY_LOG_LEVEL LOG_LEVEL} environment configuration. By default logging is
+ * {@link Configuration#LOG_LEVEL LOG_LEVEL} environment configuration. By default logging is
  * <b>disabled</b>.</p>
  *
  * <p>The logger is capable of producing json-formatted messages enriched with key value pairs.
  * Context can be provided in the constructor and populated on every message or added per each log record.</p>
  * @see Configuration
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public class ClientLogger {
     private final Slf4jLoggerShim logger;
     private final Map<String, Object> globalContext;
@@ -90,7 +73,7 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging with context.</p>
-     * * <!-- src_embed io.clientcore.core.util.logging.clientlogger#globalcontext -->
+     * * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger#globalcontext -->
      * <pre>
      * Map&lt;String, Object&gt; context = new HashMap&lt;&gt;&#40;&#41;;
      * context.put&#40;&quot;connectionId&quot;, &quot;95a47cf&quot;&#41;;
@@ -98,7 +81,7 @@ public class ClientLogger {
      * ClientLogger loggerWithContext = new ClientLogger&#40;ClientLoggerJavaDocCodeSnippets.class, context&#41;;
      * loggerWithContext.info&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger#globalcontext -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger#globalcontext -->
      *
      * @param clazz Class creating the logger.
      * @param context Context to be populated on every log record written with this logger.
@@ -113,39 +96,6 @@ public class ClientLogger {
     ClientLogger(DefaultLogger defaultLogger, Map<String, Object> context) {
         logger = new Slf4jLoggerShim(defaultLogger);
         globalContext = context == null ? null : Collections.unmodifiableMap(context);
-    }
-
-    /**
-     * Logs the {@link Throwable} at the warning level and returns it to be thrown.
-     * <p>
-     * This API covers the cases where a checked exception type needs to be thrown and logged.
-     *
-     * @param throwable Throwable to be logged and returned.
-     * @param <T> Type of the Throwable being logged.
-     * @return The passed {@link Throwable}.
-     * @throws NullPointerException If {@code throwable} is {@code null}.
-     */
-    public <T extends Throwable> T logThrowableAsWarning(T throwable) {
-        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        LoggingEvent.create(logger, LogLevel.WARNING, globalContext).log(throwable.getMessage(), throwable);
-
-        return throwable;
-    }
-
-    /**
-     * Logs the {@link Throwable} at the error level and returns it to be thrown.
-     * <p>
-     * This API covers the cases where a checked exception type needs to be thrown and logged.
-     *
-     * @param throwable Throwable to be logged and returned.
-     * @param <T> Type of the Throwable being logged.
-     * @return The passed {@link Throwable}.
-     * @throws NullPointerException If {@code throwable} is {@code null}.
-     */
-    public <T extends Throwable> T logThrowableAsError(T throwable) {
-        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        LoggingEvent.create(logger, LogLevel.ERROR, globalContext).log(throwable.getMessage(), throwable);
-        return throwable;
     }
 
     /**
@@ -165,13 +115,13 @@ public class ClientLogger {
      *
      * <p>Logging with context at error level.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atverbose.addKeyValue#primitive -->
      * <pre>
      * logger.atVerbose&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
      *     .log&#40;&quot;A structured log message.&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEvent}  or no-op if error logging is disabled.
      */
@@ -186,13 +136,14 @@ public class ClientLogger {
      *
      * <p>Logging with context at warning level.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atWarning -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atWarning -->
      * <pre>
      * logger.atWarning&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
-     *     .log&#40;&quot;A structured log message with exception.&quot;, exception&#41;;
+     *     .setThrowable&#40;exception&#41;
+     *     .log&#40;&quot;A structured log message with exception.&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atWarning -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atWarning -->
      *
      * @return instance of {@link LoggingEvent} or no-op if warn logging is disabled.
      */
@@ -208,14 +159,14 @@ public class ClientLogger {
      *
      * <p>Logging with context at info level.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atInfo -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atInfo -->
      * <pre>
      * logger.atInfo&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
      *     .addKeyValue&#40;&quot;hello&quot;, name&#41;
      *     .log&#40;&quot;A structured log message.&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atInfo -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atInfo -->
      *
      * @return instance of {@link LoggingEvent} or no-op if info logging is disabled.
      */
@@ -230,13 +181,13 @@ public class ClientLogger {
      *
      * <p>Logging with context at verbose level.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atverbose.addKeyValue#primitive -->
      * <pre>
      * logger.atVerbose&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
      *     .log&#40;&quot;A structured log message.&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEvent} or no-op if verbose logging is disabled.
      */
@@ -252,15 +203,14 @@ public class ClientLogger {
      *
      * <p>Logging with context at provided level.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atLevel -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atLevel -->
      * <pre>
-     * ClientLogger.LogLevel level = response.getStatusCode&#40;&#41; == 200
-     *     ? ClientLogger.LogLevel.INFORMATIONAL : ClientLogger.LogLevel.WARNING;
+     * LogLevel level = response.getStatusCode&#40;&#41; == 200 ? LogLevel.INFORMATIONAL : LogLevel.WARNING;
      * logger.atLevel&#40;level&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
      *     .log&#40;&quot;message&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atLevel -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atLevel -->
      *
      * @param level log level.
      * @return instance of {@link LoggingEvent} or no-op if logging at provided level is disabled.
@@ -280,402 +230,45 @@ public class ClientLogger {
     }
 
     /**
-     * This class provides fluent API to write logs using {@link ClientLogger} and
-     * enrich them with additional context.
-     *
+     * Creates {@link ExceptionLoggingEvent} that creates and logs the exception augmented with
+     * additional context at the {@link LogLevel#ERROR} level.
      * <p><strong>Code samples</strong></p>
      *
-     * <p>Logging event with context.</p>
-     *
-     * <!-- src_embed io.clientcore.core.util.logging.loggingeventbuilder -->
+     * <p> Creating new exception and logging it with context.</p>
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.message -->
      * <pre>
-     * logger.atInfo&#40;&#41;
-     *     .addKeyValue&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
-     *     .addKeyValue&#40;&quot;key2&quot;, true&#41;
-     *     .addKeyValue&#40;&quot;key3&quot;, this::getName&#41;
-     *     .log&#40;&quot;A structured log message.&quot;&#41;;
+     * throw logger.throwableAtError&#40;&#41;
+     *     .addKeyValue&#40;&quot;url&quot;, url&#41;
+     *     .log&#40;&quot;Invalid URL&quot;, IllegalArgumentException::new&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.loggingeventbuilder -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.message -->
+     *
+     * <p> Creating new exception with cause and logging it with context.</p>
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.cause -->
+     * <pre>
+     * try &#123;
+     *     connect&#40;&quot;xyz.com&quot;&#41;;
+     * &#125; catch &#40;Exception e&#41; &#123;
+     *     throw logger.throwableAtError&#40;&#41;
+     *         .addKeyValue&#40;&quot;requestId&quot;, requestId&#41;
+     *         .log&#40;e, CoreException::from&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.cause -->
+     *
+     * @return {@link ExceptionLoggingEvent}.
      */
-    @Metadata(conditions = FLUENT)
-    public static final class LoggingEvent {
-        private static final LoggingEvent NOOP = new LoggingEvent(null, null, null, false);
-
-        private final Slf4jLoggerShim logger;
-        private final LogLevel level;
-        private final Map<String, Object> globalPairs;
-        private final boolean isEnabled;
-        private Map<String, Object> keyValuePairs;
-        private String eventName;
-        private InstrumentationContext context = null;
-
-        /**
-         * Creates {@code LoggingEvent} for provided level and  {@link ClientLogger}.
-         * If level is disabled, returns no-op instance.
-         */
-        static LoggingEvent create(Slf4jLoggerShim logger, LogLevel level, Map<String, Object> globalContext) {
-            if (logger.canLogAtLevel(level)) {
-                return new LoggingEvent(logger, level, globalContext, true);
-            }
-
-            return NOOP;
-        }
-
-        private LoggingEvent(Slf4jLoggerShim logger, LogLevel level, Map<String, Object> globalContext,
-            boolean isEnabled) {
-            this.logger = logger;
-            this.level = level;
-            this.isEnabled = isEnabled;
-            this.globalPairs = globalContext;
-        }
-
-        /**
-         * Returns true if this logging event will be logged.
-         *
-         * @return true if this logging event will be logged.
-         */
-        public boolean isEnabled() {
-            return isEnabled;
-        }
-
-        /**
-         * Adds key with String value pair to the context of current log being created.
-         *
-         * <p><strong>Code samples</strong></p>
-         *
-         * <p>Adding string value to logging event context.</p>
-         *
-         * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atInfo -->
-         * <pre>
-         * logger.atInfo&#40;&#41;
-         *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
-         *     .addKeyValue&#40;&quot;hello&quot;, name&#41;
-         *     .log&#40;&quot;A structured log message.&quot;&#41;;
-         * </pre>
-         * <!-- end io.clientcore.core.util.logging.clientlogger.atInfo -->
-         *
-         * @param key String key.
-         * @param value String value.
-         * @return The updated {@code LoggingEvent} object.
-         */
-        public LoggingEvent addKeyValue(String key, String value) {
-            if (this.isEnabled) {
-                addKeyValueInternal(key, value);
-            }
-
-            return this;
-        }
-
-        /**
-         * Adds key with Object value to the context of current log being created.
-         * If logging is enabled at given level, and object is not null, uses {@code value.toString()} to
-         * serialize object.
-         *
-         * <p><strong>Code samples</strong></p>
-         *
-         * <p>Adding string value to logging event context.</p>
-         *
-         * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
-         * <pre>
-         * logger.atVerbose&#40;&#41;
-         *     &#47;&#47; equivalent to addKeyValue&#40;&quot;key&quot;, &#40;&#41; -&gt; new LoggableObject&#40;&quot;string representation&quot;&#41;.toString&#40;&#41;
-         *     .addKeyValue&#40;&quot;key&quot;, new LoggableObject&#40;&quot;string representation&quot;&#41;&#41;
-         *     .log&#40;&quot;A structured log message.&quot;&#41;;
-         * </pre>
-         * <!-- end io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
-         *
-         * @param key String key.
-         * @param value Object value.
-         * @return The updated {@code LoggingEvent} object.
-         */
-        public LoggingEvent addKeyValue(String key, Object value) {
-            if (this.isEnabled) {
-                addKeyValueInternal(key, value);
-            }
-
-            return this;
-        }
-
-        /**
-         * Adds a key with a boolean value to the context of the current log being created.
-         *
-         * @param key Key to associate the provided {@code value} with.
-         * @param value The boolean value.
-         * @return The updated {@link LoggingEvent} object.
-         */
-        public LoggingEvent addKeyValue(String key, boolean value) {
-            if (this.isEnabled) {
-                addKeyValueInternal(key, value);
-            }
-            return this;
-        }
-
-        /**
-         * Adds key with long value to the context of current log event being created.
-         *
-         * <p><strong>Code samples</strong></p>
-         *
-         * <p>Adding a long value to the logging event context.</p>
-         *
-         * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
-         * <pre>
-         * logger.atVerbose&#40;&#41;
-         *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
-         *     .log&#40;&quot;A structured log message.&quot;&#41;;
-         * </pre>
-         * <!-- end io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
-         *
-         * @param key Key to associate the provided {@code value} with.
-         * @param value The long value.
-         * @return The updated {@link LoggingEvent} object.
-         */
-        public LoggingEvent addKeyValue(String key, long value) {
-            if (this.isEnabled) {
-                addKeyValueInternal(key, value);
-            }
-            return this;
-        }
-
-        /**
-         * Adds key with String value supplier to the context of current log event being created.
-         *
-         * @param key String key.
-         * @param valueSupplier String value supplier function.
-         * @return The updated {@code LoggingEvent} object.
-         */
-        public LoggingEvent addKeyValue(String key, Supplier<String> valueSupplier) {
-            if (this.isEnabled && valueSupplier != null) {
-                this.addKeyValue(key, valueSupplier.get());
-            }
-            return this;
-        }
-
-        /**
-         * Sets operation context on the log event being created.
-         * It's used to correlate logs between each other and with other telemetry items.
-         *
-         * @param context operation context.
-         * @return The updated {@code LoggingEventBuilder} object.
-         */
-        public LoggingEvent setInstrumentationContext(InstrumentationContext context) {
-            this.context = context;
-            return this;
-        }
-
-        /**
-         * Sets the event name for the current log event. The event name is used to query all logs
-         * that describe the same event. It must not contain any dynamic parts.
-         *
-         * @param eventName The name of the event.
-         * @return The updated {@code LoggingEvent} object.
-         */
-        public LoggingEvent setEventName(String eventName) {
-            this.eventName = eventName;
-            return this;
-        }
-
-        /**
-         * Logs event annotated with context.
-         * Logs event with context.
-         */
-        public void log() {
-            log(null);
-        }
-
-        /**
-         * Logs message annotated with context.
-         *
-         * @param message log message.
-         */
-        public void log(String message) {
-            if (this.isEnabled) {
-                logger.performLogging(level, getMessageWithContext(message), null);
-            }
-        }
-
-        /**
-         * Logs message annotated with context.
-         *
-         * @param message log message.
-         * @param throwable {@link Throwable} for the message.
-         * @param <T> Type of the Throwable being logged.
-         *
-         * @return The passed {@link Throwable}.
-         */
-        public <T extends Throwable> T log(String message, T throwable) {
-            if (this.isEnabled) {
-                boolean isDebugEnabled = logger.canLogAtLevel(LogLevel.VERBOSE);
-                if (throwable != null) {
-                    addKeyValueInternal(EXCEPTION_TYPE_KEY, throwable.getClass().getCanonicalName());
-                    addKeyValueInternal(EXCEPTION_MESSAGE_KEY, throwable.getMessage());
-                    if (isDebugEnabled) {
-                        StringBuilder stackTrace = new StringBuilder();
-                        DefaultLogger.appendThrowable(stackTrace, throwable);
-                        addKeyValue(EXCEPTION_STACKTRACE_KEY, stackTrace.toString());
-                    }
-                }
-                logger.performLogging(level, getMessageWithContext(message), isDebugEnabled ? throwable : null);
-            }
-            return throwable;
-        }
-
-        private String getMessageWithContext(String message) {
-            if (this.context != null && this.context.isValid()) {
-                // TODO (limolkova) we can set context from implicit current span
-                // we should also support OTel as a logging provider and avoid adding redundant
-                // traceId and spanId to the logs
-
-                addKeyValue(TRACE_ID_KEY, context.getTraceId());
-                addKeyValue(SPAN_ID_KEY, context.getSpanId());
-            }
-
-            int pairsCount
-                = (keyValuePairs == null ? 0 : keyValuePairs.size()) + (globalPairs == null ? 0 : globalPairs.size());
-
-            int messageLength = message == null ? 0 : message.length();
-            int speculatedSize = 20 + pairsCount * 20 + messageLength;
-            try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream(speculatedSize);
-                JsonWriter jsonWriter = DefaultJsonWriter.toStream(outputStream, null)) {
-                jsonWriter.writeStartObject();
-
-                if (message != null) {
-                    jsonWriter.writeStringField("message", message);
-                }
-
-                if (globalPairs != null) {
-                    for (Map.Entry<String, Object> kvp : globalPairs.entrySet()) {
-                        jsonWriter.writeUntypedField(kvp.getKey(), kvp.getValue());
-                    }
-                }
-
-                if (keyValuePairs != null) {
-                    for (Map.Entry<String, Object> kvp : keyValuePairs.entrySet()) {
-                        jsonWriter.writeUntypedField(kvp.getKey(), kvp.getValue());
-                    }
-                }
-
-                if (eventName != null) {
-                    jsonWriter.writeStringField(EVENT_NAME_KEY, eventName);
-                }
-
-                jsonWriter.writeEndObject().flush();
-
-                return outputStream.toString(StandardCharsets.UTF_8);
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
-        }
-
-        private void addKeyValueInternal(String key, Object value) {
-            if (this.keyValuePairs == null) {
-                this.keyValuePairs = new HashMap<>();
-            }
-
-            this.keyValuePairs.put(key, value);
-        }
+    public ExceptionLoggingEvent throwableAtError() {
+        return new ExceptionLoggingEvent(new LoggingEvent(logger, LogLevel.ERROR, globalContext, true));
     }
 
     /**
-     * Enum which represent logging levels used.
+     * Creates {@link ExceptionLoggingEvent} that creates and logs the exception augmented with
+     * additional context at the {@link LogLevel#WARNING} level.
+     *
+     * @return {@link ExceptionLoggingEvent}.
      */
-    public enum LogLevel {
-        /**
-         * Indicates that no log level is set.
-         */
-        NOTSET(0, "0", "notSet"),
-
-        /**
-         * Indicates that log level is at verbose level.
-         */
-        VERBOSE(1, "1", "verbose", "debug"),
-
-        /**
-         * Indicates that log level is at information level.
-         */
-        INFORMATIONAL(2, "2", "info", "information", "informational"),
-
-        /**
-         * Indicates that log level is at warning level.
-         */
-        WARNING(3, "3", "warn", "warning"),
-
-        /**
-         * Indicates that log level is at error level.
-         */
-        ERROR(4, "4", "err", "error");
-
-        private final int numericValue;
-        private final String[] allowedLogLevelVariables;
-        private static final HashMap<String, LogLevel> LOG_LEVEL_STRING_MAPPER = new HashMap<>();
-        private final String caseSensitive;
-
-        static {
-            for (LogLevel logLevel : LogLevel.values()) {
-                for (String val : logLevel.allowedLogLevelVariables) {
-                    LOG_LEVEL_STRING_MAPPER.put(val, logLevel);
-                }
-            }
-        }
-
-        LogLevel(int numericValue, String... allowedLogLevelVariables) {
-            this.numericValue = numericValue;
-            this.allowedLogLevelVariables = allowedLogLevelVariables;
-            this.caseSensitive = allowedLogLevelVariables[0];
-        }
-
-        /**
-         * Converts the log level into a numeric representation used for comparisons.
-         *
-         * @return The numeric representation of the log level.
-         */
-        private int getLevelCode() {
-            return numericValue;
-        }
-
-        /**
-         * Compares the passed log level with the configured log level and returns true if the passed log level is greater
-         * @param level The log level to compare.
-         * @param configuredLevel The configured log level.
-         * @return True if the passed log level is greater or equal to the configured log level, false otherwise.
-         */
-        public static boolean isGreaterOrEqual(LogLevel level, LogLevel configuredLevel) {
-            return level.getLevelCode() >= configuredLevel.getLevelCode();
-        }
-
-        /**
-         * Converts the passed log level string to the corresponding {@link LogLevel}.
-         *
-         * @param logLevelVal The log level value which needs to convert
-         * @return The LogLevel Enum if pass in the valid string.
-         * The valid strings for {@link LogLevel} are:
-         * <ul>
-         * <li>VERBOSE: "verbose", "debug"</li>
-         * <li>INFO: "info", "information", "informational"</li>
-         * <li>WARNING: "warn", "warning"</li>
-         * <li>ERROR: "err", "error"</li>
-         * </ul>
-         * Returns NOT_SET if null is passed in.
-         * @throws IllegalArgumentException if the log level value is invalid.
-         */
-        public static LogLevel fromString(String logLevelVal) {
-            if (logLevelVal == null) {
-                return LogLevel.NOTSET;
-            }
-            String caseInsensitiveLogLevel = logLevelVal.toLowerCase(Locale.ROOT);
-            if (!LOG_LEVEL_STRING_MAPPER.containsKey(caseInsensitiveLogLevel)) {
-                throw new IllegalArgumentException(
-                    "We currently do not support the log level you set. LogLevel: " + logLevelVal);
-            }
-            return LOG_LEVEL_STRING_MAPPER.get(caseInsensitiveLogLevel);
-        }
-
-        /**
-         * Converts the log level to a string representation.
-         *
-         * @return The string representation of the log level.
-         */
-        public String toString() {
-            return caseSensitive;
-        }
+    public ExceptionLoggingEvent throwableAtWarning() {
+        return new ExceptionLoggingEvent(new LoggingEvent(logger, LogLevel.WARNING, globalContext, true));
     }
 }

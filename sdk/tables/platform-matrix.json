@@ -7,7 +7,7 @@
   "matrix": {
     "Agent": {
       "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" },
-      "ubuntu-2004": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" },
+      "ubuntu-2204": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" },
       "macos-latest": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" }
     },
     "ArmTemplateParameters": [ "@{endpointType='storage'}", "@{endpointType='cosmos'}" ],
@@ -35,7 +35,7 @@
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "JavaTestVersion": "1.21",
       "Agent": {
-        "ubuntu-2004": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+        "ubuntu-2204": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "ArmTemplateParameters": "@{endpointType='storage'}",
       "TestFromSource": true

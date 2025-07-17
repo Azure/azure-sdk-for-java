@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,41 +20,50 @@ public final class PrecipitationSummary implements JsonSerializable<Precipitatio
     /*
      * The amount of precipitation (liquid equivalent) that has fallen in the past hour.
      */
+    @Generated
     private WeatherUnitDetails pastHour;
 
     /*
      * The amount of precipitation (liquid equivalent) that has fallen in the past three hours.
      */
+    @Generated
     private WeatherUnitDetails past3Hours;
 
     /*
-     * The amount of precipitation (liquid equivalent) that has fallen in the past six hours. Contains Metric and Imperial Values.
+     * The amount of precipitation (liquid equivalent) that has fallen in the past six hours. Contains Metric and
+     * Imperial Values.
      */
+    @Generated
     private WeatherUnitDetails past6Hours;
 
     /*
      * The amount of precipitation (liquid equivalent) that has fallen in the past nine hours.
      */
+    @Generated
     private WeatherUnitDetails past9Hours;
 
     /*
      * The amount of precipitation (liquid equivalent) that has fallen in the past 12 hours.
      */
+    @Generated
     private WeatherUnitDetails past12Hours;
 
     /*
      * The amount of precipitation (liquid equivalent) that has fallen in the past 18 hours.
      */
+    @Generated
     private WeatherUnitDetails past18Hours;
 
     /*
      * The amount of precipitation (liquid equivalent) that has fallen in the past 24 hours.
      */
+    @Generated
     private WeatherUnitDetails past24Hours;
 
     /**
      * Set default PrecipitationSummary constructor to private
      */
+    @Generated
     private PrecipitationSummary() {
     }
 
@@ -62,6 +72,7 @@ public final class PrecipitationSummary implements JsonSerializable<Precipitatio
      *
      * @return the pastHour value.
      */
+    @Generated
     public WeatherUnitDetails getPastHour() {
         return this.pastHour;
     }
@@ -72,6 +83,7 @@ public final class PrecipitationSummary implements JsonSerializable<Precipitatio
      *
      * @return the past3Hours value.
      */
+    @Generated
     public WeatherUnitDetails getPast3Hours() {
         return this.past3Hours;
     }
@@ -82,6 +94,7 @@ public final class PrecipitationSummary implements JsonSerializable<Precipitatio
      *
      * @return the past6Hours value.
      */
+    @Generated
     public WeatherUnitDetails getPast6Hours() {
         return this.past6Hours;
     }
@@ -92,6 +105,7 @@ public final class PrecipitationSummary implements JsonSerializable<Precipitatio
      *
      * @return the past9Hours value.
      */
+    @Generated
     public WeatherUnitDetails getPast9Hours() {
         return this.past9Hours;
     }
@@ -102,6 +116,7 @@ public final class PrecipitationSummary implements JsonSerializable<Precipitatio
      *
      * @return the past12Hours value.
      */
+    @Generated
     public WeatherUnitDetails getPast12Hours() {
         return this.past12Hours;
     }
@@ -112,6 +127,7 @@ public final class PrecipitationSummary implements JsonSerializable<Precipitatio
      *
      * @return the past18Hours value.
      */
+    @Generated
     public WeatherUnitDetails getPast18Hours() {
         return this.past18Hours;
     }
@@ -122,6 +138,7 @@ public final class PrecipitationSummary implements JsonSerializable<Precipitatio
      *
      * @return the past24Hours value.
      */
+    @Generated
     public WeatherUnitDetails getPast24Hours() {
         return this.past24Hours;
     }
@@ -129,6 +146,7 @@ public final class PrecipitationSummary implements JsonSerializable<Precipitatio
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -150,6 +168,7 @@ public final class PrecipitationSummary implements JsonSerializable<Precipitatio
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PrecipitationSummary.
      */
+    @Generated
     public static PrecipitationSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PrecipitationSummary deserializedPrecipitationSummary = new PrecipitationSummary();

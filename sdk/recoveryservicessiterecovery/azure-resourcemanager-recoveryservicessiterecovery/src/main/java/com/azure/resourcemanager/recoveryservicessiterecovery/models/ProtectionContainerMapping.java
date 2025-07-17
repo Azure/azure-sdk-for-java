@@ -98,15 +98,15 @@ public interface ProtectionContainerMapping {
          */
         interface WithParentResource {
             /**
-             * Specifies resourceName, resourceGroupName, fabricName, protectionContainerName.
+             * Specifies resourceGroupName, resourceName, fabricName, protectionContainerName.
              * 
-             * @param resourceName The name of the recovery services vault.
              * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+             * @param resourceName The name of the recovery services vault.
              * @param fabricName Fabric name.
              * @param protectionContainerName Protection container name.
              * @return the next definition stage.
              */
-            WithCreate withExistingReplicationProtectionContainer(String resourceName, String resourceGroupName,
+            WithCreate withExistingReplicationProtectionContainer(String resourceGroupName, String resourceName,
                 String fabricName, String protectionContainerName);
         }
 

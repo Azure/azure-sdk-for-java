@@ -13,9 +13,11 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.AcceptGrowCapacityPoolForShortTermCloneSplit;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
+import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
+import com.azure.resourcemanager.netapp.models.LdapServerType;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
@@ -52,7 +54,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     /*
      * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. For
      * regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes, valid values are in the range
-     * 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples
+     * 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples
      * of 1 GiB.
      */
     private long usageThreshold;
@@ -212,6 +214,11 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     private Boolean ldapEnabled;
 
     /*
+     * Specifies the type of LDAP server for a given NFS volume.
+     */
+    private LdapServerType ldapServerType;
+
+    /*
      * Specifies whether Cool Access(tiering) is enabled for the volume.
      */
     private Boolean coolAccess;
@@ -230,6 +237,14 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      * Never - No client-driven data is pulled from cool tier to standard storage.
      */
     private CoolAccessRetrievalPolicy coolAccessRetrievalPolicy;
+
+    /*
+     * coolAccessTieringPolicy determines which cold data blocks are moved to cool tier. The possible values for this
+     * field are: Auto - Moves cold user data blocks in both the Snapshot copies and the active file system to the cool
+     * tier tier. This policy is the default. SnapshotOnly - Moves user data blocks of the Volume Snapshot copies that
+     * are not associated with the active file system to the cool tier.
+     */
+    private CoolAccessTieringPolicy coolAccessTieringPolicy;
 
     /*
      * UNIX permissions for NFS volume accepted in octal 4 digit format. First digit selects the set user ID(4), set
@@ -412,7 +427,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     /**
      * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
      * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
      * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
@@ -424,7 +439,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     /**
      * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
      * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
      * expressed in bytes as multiples of 1 GiB.
      * 
      * @param usageThreshold the usageThreshold value to set.
@@ -719,17 +734,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Set the isRestoring property: Restoring.
-     * 
-     * @param isRestoring the isRestoring value to set.
-     * @return the VolumeProperties object itself.
-     */
-    public VolumeProperties withIsRestoring(Boolean isRestoring) {
-        this.isRestoring = isRestoring;
-        return this;
-    }
-
-    /**
      * Get the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
      * directory which provides access to each of the volume's snapshots (defaults to true).
      * 
@@ -982,6 +986,26 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
+     * Get the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
+     * 
+     * @return the ldapServerType value.
+     */
+    public LdapServerType ldapServerType() {
+        return this.ldapServerType;
+    }
+
+    /**
+     * Set the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
+     * 
+     * @param ldapServerType the ldapServerType value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withLdapServerType(LdapServerType ldapServerType) {
+        this.ldapServerType = ldapServerType;
+        return this;
+    }
+
+    /**
      * Get the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
      * 
      * @return the coolAccess value.
@@ -1052,6 +1076,32 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      */
     public VolumeProperties withCoolAccessRetrievalPolicy(CoolAccessRetrievalPolicy coolAccessRetrievalPolicy) {
         this.coolAccessRetrievalPolicy = coolAccessRetrievalPolicy;
+        return this;
+    }
+
+    /**
+     * Get the coolAccessTieringPolicy property: coolAccessTieringPolicy determines which cold data blocks are moved to
+     * cool tier. The possible values for this field are: Auto - Moves cold user data blocks in both the Snapshot copies
+     * and the active file system to the cool tier tier. This policy is the default. SnapshotOnly - Moves user data
+     * blocks of the Volume Snapshot copies that are not associated with the active file system to the cool tier.
+     * 
+     * @return the coolAccessTieringPolicy value.
+     */
+    public CoolAccessTieringPolicy coolAccessTieringPolicy() {
+        return this.coolAccessTieringPolicy;
+    }
+
+    /**
+     * Set the coolAccessTieringPolicy property: coolAccessTieringPolicy determines which cold data blocks are moved to
+     * cool tier. The possible values for this field are: Auto - Moves cold user data blocks in both the Snapshot copies
+     * and the active file system to the cool tier tier. This policy is the default. SnapshotOnly - Moves user data
+     * blocks of the Volume Snapshot copies that are not associated with the active file system to the cool tier.
+     * 
+     * @param coolAccessTieringPolicy the coolAccessTieringPolicy value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withCoolAccessTieringPolicy(CoolAccessTieringPolicy coolAccessTieringPolicy) {
+        this.coolAccessTieringPolicy = coolAccessTieringPolicy;
         return this;
     }
 
@@ -1467,7 +1517,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
             this.acceptGrowCapacityPoolForShortTermCloneSplit == null
                 ? null
                 : this.acceptGrowCapacityPoolForShortTermCloneSplit.toString());
-        jsonWriter.writeBooleanField("isRestoring", this.isRestoring);
         jsonWriter.writeBooleanField("snapshotDirectoryVisible", this.snapshotDirectoryVisible);
         jsonWriter.writeBooleanField("kerberosEnabled", this.kerberosEnabled);
         jsonWriter.writeStringField("securityStyle", this.securityStyle == null ? null : this.securityStyle.toString());
@@ -1482,10 +1531,14 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
             this.encryptionKeySource == null ? null : this.encryptionKeySource.toString());
         jsonWriter.writeStringField("keyVaultPrivateEndpointResourceId", this.keyVaultPrivateEndpointResourceId);
         jsonWriter.writeBooleanField("ldapEnabled", this.ldapEnabled);
+        jsonWriter.writeStringField("ldapServerType",
+            this.ldapServerType == null ? null : this.ldapServerType.toString());
         jsonWriter.writeBooleanField("coolAccess", this.coolAccess);
         jsonWriter.writeNumberField("coolnessPeriod", this.coolnessPeriod);
         jsonWriter.writeStringField("coolAccessRetrievalPolicy",
             this.coolAccessRetrievalPolicy == null ? null : this.coolAccessRetrievalPolicy.toString());
+        jsonWriter.writeStringField("coolAccessTieringPolicy",
+            this.coolAccessTieringPolicy == null ? null : this.coolAccessTieringPolicy.toString());
         jsonWriter.writeStringField("unixPermissions", this.unixPermissions);
         jsonWriter.writeStringField("avsDataStore", this.avsDataStore == null ? null : this.avsDataStore.toString());
         jsonWriter.writeBooleanField("isDefaultQuotaEnabled", this.isDefaultQuotaEnabled);
@@ -1593,6 +1646,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     deserializedVolumeProperties.keyVaultPrivateEndpointResourceId = reader.getString();
                 } else if ("ldapEnabled".equals(fieldName)) {
                     deserializedVolumeProperties.ldapEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ldapServerType".equals(fieldName)) {
+                    deserializedVolumeProperties.ldapServerType = LdapServerType.fromString(reader.getString());
                 } else if ("coolAccess".equals(fieldName)) {
                     deserializedVolumeProperties.coolAccess = reader.getNullable(JsonReader::getBoolean);
                 } else if ("coolnessPeriod".equals(fieldName)) {
@@ -1600,6 +1655,9 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                 } else if ("coolAccessRetrievalPolicy".equals(fieldName)) {
                     deserializedVolumeProperties.coolAccessRetrievalPolicy
                         = CoolAccessRetrievalPolicy.fromString(reader.getString());
+                } else if ("coolAccessTieringPolicy".equals(fieldName)) {
+                    deserializedVolumeProperties.coolAccessTieringPolicy
+                        = CoolAccessTieringPolicy.fromString(reader.getString());
                 } else if ("unixPermissions".equals(fieldName)) {
                     deserializedVolumeProperties.unixPermissions = reader.getString();
                 } else if ("cloneProgress".equals(fieldName)) {

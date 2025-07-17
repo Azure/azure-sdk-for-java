@@ -7,8 +7,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.ResourceRegionType;
@@ -25,29 +25,30 @@ public final class TopicTypesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provider\":\"deepfhgan\",\"displayName\":\"wxqhpjhubo\",\"description\":\"vzgaybvr\",\"resourceRegionType\":\"RegionalResource\",\"provisioningState\":\"Creating\",\"supportedLocations\":[\"xnwfmzvzt\",\"uebpamq\",\"fcssanybzzghvd\"],\"sourceResourceFormat\":\"umyjsvcd\",\"supportedScopesForSource\":[\"ResourceGroup\",\"Resource\",\"ResourceGroup\"],\"areRegionalAndGlobalSourcesSupported\":false,\"additionalEnforcedPermissions\":[{\"permissionName\":\"nzxezriwgo\",\"isDataAction\":true},{\"permissionName\":\"cqksaaapxjh\",\"isDataAction\":false},{\"permissionName\":\"benwsdfp\",\"isDataAction\":false}]},\"id\":\"ahlfrcqk\",\"name\":\"pmvzpireszya\",\"type\":\"gomlb\"}]}";
+            = "{\"value\":[{\"properties\":{\"provider\":\"gtf\",\"displayName\":\"erscdx\",\"description\":\"rnjr\",\"resourceRegionType\":\"RegionalResource\",\"provisioningState\":\"Creating\",\"supportedLocations\":[\"cnrgfdtnc\",\"spsanmameubkq\",\"qmlfv\",\"lqcskkqjmxptueip\"],\"sourceResourceFormat\":\"gkwdr\",\"supportedScopesForSource\":[\"Resource\",\"ManagementGroup\",\"AzureSubscription\",\"ManagementGroup\"],\"areRegionalAndGlobalSourcesSupported\":true,\"additionalEnforcedPermissions\":[{\"permissionName\":\"kxukguehvvpxjoe\",\"isDataAction\":false},{\"permissionName\":\"j\",\"isDataAction\":false}]},\"id\":\"uidpmtonvhg\",\"name\":\"htmep\",\"type\":\"hbpjbapmummmkv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TopicTypeInfo> response = manager.topicTypes().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("deepfhgan", response.iterator().next().provider());
-        Assertions.assertEquals("wxqhpjhubo", response.iterator().next().displayName());
-        Assertions.assertEquals("vzgaybvr", response.iterator().next().description());
+        Assertions.assertEquals("gtf", response.iterator().next().provider());
+        Assertions.assertEquals("erscdx", response.iterator().next().displayName());
+        Assertions.assertEquals("rnjr", response.iterator().next().description());
         Assertions.assertEquals(ResourceRegionType.REGIONAL_RESOURCE, response.iterator().next().resourceRegionType());
         Assertions.assertEquals(TopicTypeProvisioningState.CREATING, response.iterator().next().provisioningState());
-        Assertions.assertEquals("xnwfmzvzt", response.iterator().next().supportedLocations().get(0));
-        Assertions.assertEquals("umyjsvcd", response.iterator().next().sourceResourceFormat());
-        Assertions.assertEquals(TopicTypeSourceScope.RESOURCE_GROUP,
+        Assertions.assertEquals("cnrgfdtnc", response.iterator().next().supportedLocations().get(0));
+        Assertions.assertEquals("gkwdr", response.iterator().next().sourceResourceFormat());
+        Assertions.assertEquals(TopicTypeSourceScope.RESOURCE,
             response.iterator().next().supportedScopesForSource().get(0));
-        Assertions.assertEquals(false, response.iterator().next().areRegionalAndGlobalSourcesSupported());
-        Assertions.assertEquals("nzxezriwgo",
+        Assertions.assertEquals(true, response.iterator().next().areRegionalAndGlobalSourcesSupported());
+        Assertions.assertEquals("kxukguehvvpxjoe",
             response.iterator().next().additionalEnforcedPermissions().get(0).permissionName());
-        Assertions.assertEquals(true, response.iterator().next().additionalEnforcedPermissions().get(0).isDataAction());
+        Assertions.assertEquals(false,
+            response.iterator().next().additionalEnforcedPermissions().get(0).isDataAction());
     }
 }

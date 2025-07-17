@@ -16,7 +16,6 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.maps.weather.models.ActiveStormResult;
 import com.azure.maps.weather.models.AirQualityResult;
@@ -80,7 +79,7 @@ public class WeatherTestBase extends TestProxyTestBase {
         } else if (interceptorManager.isPlaybackMode()) {
             builder.credential(new MockTokenCredential()).weatherClientId("weatherClientId");
         } else {
-            builder.credential(new AzurePowerShellCredentialBuilder().build())
+            builder.credential(new DefaultAzureCredentialBuilder().build())
                 .weatherClientId(Configuration.getGlobalConfiguration().get("MAPS_CLIENT_ID"));
         }
 
@@ -228,7 +227,6 @@ public class WeatherTestBase extends TestProxyTestBase {
         assertNotNull(expected);
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
-        assertEquals(expected.getNextLink(), actual.getNextLink());
     }
 
     static void validateGetSearchTropicalStormWithResponse(StormSearchResult expected,
@@ -241,7 +239,6 @@ public class WeatherTestBase extends TestProxyTestBase {
     static void validateGetTropicalStormForecast(StormForecastResult expected, StormForecastResult actual) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.getNextLink(), actual.getNextLink());
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }
@@ -256,7 +253,6 @@ public class WeatherTestBase extends TestProxyTestBase {
     static void validateGetTropicalStormLocations(StormLocationsResult expected, StormLocationsResult actual) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.getNextLink(), actual.getNextLink());
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }
@@ -272,7 +268,6 @@ public class WeatherTestBase extends TestProxyTestBase {
         assertNotNull(actual);
         assertNotNull(expected);
         assertEquals(expected.getAirQualityResults().size(), actual.getAirQualityResults().size());
-        assertEquals(expected.getNextLink(), actual.getNextLink());
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }
@@ -284,42 +279,39 @@ public class WeatherTestBase extends TestProxyTestBase {
         validateGetCurrentAirQuality(expected, response.getValue());
     }
 
-    static void validateGetAirQualityDailyForecasts(DailyAirQualityForecastResult expected,
+    static void validateGetDailyAirQualityForecast(DailyAirQualityForecastResult expected,
         DailyAirQualityForecastResult actual) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.getNextLink(), actual.getNextLink());
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }
 
-    static void validateGetAirQualityDailyForecastsWithResponse(DailyAirQualityForecastResult expected,
+    static void validateGetDailyAirQualityForecastWithResponse(DailyAirQualityForecastResult expected,
         Response<DailyAirQualityForecastResult> response) {
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        validateGetAirQualityDailyForecasts(expected, response.getValue());
+        validateGetDailyAirQualityForecast(expected, response.getValue());
     }
 
-    static void validateGetAirQualityHourlyForecasts(AirQualityResult expected, AirQualityResult actual) {
+    static void validateGetHourlyAirQualityForecast(AirQualityResult expected, AirQualityResult actual) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.getNextLink(), actual.getNextLink());
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }
 
-    static void validateGetAirQualityHourlyForecastsWithResponse(AirQualityResult expected,
+    static void validateGetHourlyAirQualityForecastWithResponse(AirQualityResult expected,
         Response<AirQualityResult> response) {
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        validateGetAirQualityHourlyForecasts(expected, response.getValue());
+        validateGetHourlyAirQualityForecast(expected, response.getValue());
     }
 
     static void validateGetDailyHistoricalRecords(DailyHistoricalRecordsResult expected,
         DailyHistoricalRecordsResult actual) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.getNextLink(), actual.getNextLink());
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }
@@ -335,7 +327,6 @@ public class WeatherTestBase extends TestProxyTestBase {
         DailyHistoricalActualsResult actual) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.getNextLink(), actual.getNextLink());
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }
@@ -351,7 +342,6 @@ public class WeatherTestBase extends TestProxyTestBase {
         DailyHistoricalNormalsResult actual) {
         assertNotNull(actual);
         assertNotNull(expected);
-        assertEquals(expected.getNextLink(), actual.getNextLink());
         assertEquals(expected.getClass().getName(), actual.getClass().getName());
         assertEquals(expected.getClass().getSimpleName(), actual.getClass().getSimpleName());
     }

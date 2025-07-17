@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.9.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,13 +10,49 @@
 
 ### Other Changes
 
+## 1.8.1 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
+## 1.8.0 (2025-03-12)
+
+### Features Added
+
+- Added support for specifying the token credential's Microsoft Entra audience when creating a client.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+
+## 1.7.4 (2025-02-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
+- Upgraded `azure-json` from `1.3.0` to version `1.4.0`.
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+
+
 ## 1.7.3 (2024-12-04)
 
 ### Other Changes
 
 #### Dependency Updates
+
 - Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
 - Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+
 
 ## 1.7.2 (2024-10-27)
 
@@ -36,6 +72,7 @@
 - Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
 - Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
 - Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+
 
 ## 1.7.0 (2024-08-07)
 

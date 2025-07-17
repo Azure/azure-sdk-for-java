@@ -102,8 +102,15 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
     private static final ClientLogger LOGGER = new ClientLogger(SecretClientBuilder.class);
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_SECRETS = "azure-key-vault-secrets.properties";
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
+
+    private static final String CLIENT_NAME;
+    private static final String CLIENT_VERSION;
+
+    static {
+        Map<String, String> properties = CoreUtils.getProperties("azure-security-keyvault-secrets.properties");
+        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+    }
 
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
@@ -114,6 +121,7 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
     private final Map<String, String> properties;
     private TokenCredential credential;
     private HttpPipeline pipeline;
+    private HttpPipeline builtPipeline;
     private String vaultUrl;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
@@ -153,7 +161,7 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretClient buildClient() {
-        return new SecretClient(buildInnerClient(), vaultUrl);
+        return new SecretClient(getClientImpl(), vaultUrl);
     }
 
     /**
@@ -175,10 +183,10 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretAsyncClient buildAsyncClient() {
-        return new SecretAsyncClient(buildInnerClient(), vaultUrl);
+        return new SecretAsyncClient(getClientImpl(), vaultUrl);
     }
 
-    private SecretClientImpl buildInnerClient() {
+    private SecretClientImpl getClientImpl() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         String buildEndpoint = getBuildEndpoint(buildConfiguration);
@@ -188,10 +196,12 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
                 .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
-        SecretServiceVersion serviceVersion = version != null ? version : SecretServiceVersion.getLatest();
+        if (version == null) {
+            version = SecretServiceVersion.getLatest();
+        }
 
         if (pipeline != null) {
-            return new SecretClientImpl(pipeline, serviceVersion.getVersion());
+            return new SecretClientImpl(pipeline, vaultUrl, version);
         }
 
         if (credential == null) {
@@ -201,15 +211,12 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-
         httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
         ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
 
-        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), clientName,
-            clientVersion, buildConfiguration));
+        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), CLIENT_NAME,
+            CLIENT_VERSION, buildConfiguration));
 
         List<HttpHeader> httpHeaderList = new ArrayList<>();
         localClientOptions.getHeaders()
@@ -233,15 +240,15 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
 
         TracingOptions tracingOptions = localClientOptions.getTracingOptions();
         Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
+            .createTracer(CLIENT_NAME, CLIENT_VERSION, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+        builtPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(localClientOptions)
             .tracer(tracer)
             .build();
 
-        return new SecretClientImpl(pipeline, serviceVersion.getVersion());
+        return new SecretClientImpl(builtPipeline, vaultUrl, version);
     }
 
     /**
@@ -513,5 +520,10 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
         } catch (MalformedURLException ex) {
             return null;
         }
+    }
+
+    // For testing purposes
+    HttpPipeline getPipelineForTest() {
+        return pipeline != null ? pipeline : builtPipeline;
     }
 }

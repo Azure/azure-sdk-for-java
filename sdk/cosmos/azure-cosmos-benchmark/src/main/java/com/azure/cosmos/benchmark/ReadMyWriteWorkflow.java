@@ -59,7 +59,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
     @Override
     protected void init() {
         // TODO: move read my writes to use v4 APIs
-        this.client =  CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient);
+        this.client =  CosmosBridgeInternal.getAsyncDocumentClient(benchmarkWorkloadClient);
         Database database = DocDBUtils.getDatabase(client, configuration.getDatabaseId());
         this.collection = DocDBUtils.getCollection(client, database.getSelfLink(), configuration.getCollectionId());
         this.nameCollectionLink = String.format("dbs/%s/colls/%s", database.getId(), collection.getId());
@@ -282,7 +282,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         options.setMaxDegreeOfParallelism(-1);
 
         QueryFeedOperationState state = new QueryFeedOperationState(
-            cosmosClient,
+                benchmarkWorkloadClient,
             "xPartitionQuery",
             configuration.getDatabaseId(),
             configuration.getCollectionId(),
@@ -313,7 +313,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
                                                                    d.getString(QUERY_FIELD_NAME)));
 
         QueryFeedOperationState state = new QueryFeedOperationState(
-            cosmosClient,
+                benchmarkWorkloadClient,
             "singlePartitionQuery",
             configuration.getDatabaseId(),
             configuration.getCollectionId(),

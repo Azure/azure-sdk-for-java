@@ -16,7 +16,12 @@ public enum InstanceViewTypes {
     /**
      * Enum value userData.
      */
-    USER_DATA("userData");
+    USER_DATA("userData"),
+
+    /**
+     * Enum value resiliencyView.
+     */
+    RESILIENCY_VIEW("resiliencyView");
 
     /**
      * The actual serialized value for a InstanceViewTypes instance.

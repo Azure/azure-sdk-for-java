@@ -13,27 +13,27 @@ public final class ApiVersionSetUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiVersionSetUpdateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"a\",\"versioningScheme\":\"Query\",\"description\":\"qcahyhxal\",\"versionQueryName\":\"xawoijpodtblxp\",\"versionHeaderName\":\"wjdjodqhykin\"}}")
+            "{\"properties\":{\"displayName\":\"n\",\"versioningScheme\":\"Header\",\"description\":\"iii\",\"versionQueryName\":\"pfoh\",\"versionHeaderName\":\"fkx\"}}")
             .toObject(ApiVersionSetUpdateParameters.class);
-        Assertions.assertEquals("a", model.displayName());
-        Assertions.assertEquals(VersioningScheme.QUERY, model.versioningScheme());
-        Assertions.assertEquals("qcahyhxal", model.description());
-        Assertions.assertEquals("xawoijpodtblxp", model.versionQueryName());
-        Assertions.assertEquals("wjdjodqhykin", model.versionHeaderName());
+        Assertions.assertEquals("n", model.displayName());
+        Assertions.assertEquals(VersioningScheme.HEADER, model.versioningScheme());
+        Assertions.assertEquals("iii", model.description());
+        Assertions.assertEquals("pfoh", model.versionQueryName());
+        Assertions.assertEquals("fkx", model.versionHeaderName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiVersionSetUpdateParameters model = new ApiVersionSetUpdateParameters().withDisplayName("a")
-            .withVersioningScheme(VersioningScheme.QUERY)
-            .withDescription("qcahyhxal")
-            .withVersionQueryName("xawoijpodtblxp")
-            .withVersionHeaderName("wjdjodqhykin");
+        ApiVersionSetUpdateParameters model = new ApiVersionSetUpdateParameters().withDisplayName("n")
+            .withVersioningScheme(VersioningScheme.HEADER)
+            .withDescription("iii")
+            .withVersionQueryName("pfoh")
+            .withVersionHeaderName("fkx");
         model = BinaryData.fromObject(model).toObject(ApiVersionSetUpdateParameters.class);
-        Assertions.assertEquals("a", model.displayName());
-        Assertions.assertEquals(VersioningScheme.QUERY, model.versioningScheme());
-        Assertions.assertEquals("qcahyhxal", model.description());
-        Assertions.assertEquals("xawoijpodtblxp", model.versionQueryName());
-        Assertions.assertEquals("wjdjodqhykin", model.versionHeaderName());
+        Assertions.assertEquals("n", model.displayName());
+        Assertions.assertEquals(VersioningScheme.HEADER, model.versioningScheme());
+        Assertions.assertEquals("iii", model.description());
+        Assertions.assertEquals("pfoh", model.versionQueryName());
+        Assertions.assertEquals("fkx", model.versionHeaderName());
     }
 }

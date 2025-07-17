@@ -54,4 +54,10 @@ public final class ApiResponseFormat extends ExpandableStringEnum<ApiResponseFor
     public static Collection<ApiResponseFormat> values() {
         return values(ApiResponseFormat.class);
     }
+
+    /**
+     * Using `json_schema` format will ensure the model matches the supplied JSON schema.
+     */
+    @Generated
+    public static final ApiResponseFormat JSON_SCHEMA = fromString("json_schema");
 }

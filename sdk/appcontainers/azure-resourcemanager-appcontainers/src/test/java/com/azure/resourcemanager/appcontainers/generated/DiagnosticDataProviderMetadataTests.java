@@ -13,23 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class DiagnosticDataProviderMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiagnosticDataProviderMetadata model = BinaryData.fromString(
-            "{\"providerName\":\"lpjrtwsz\",\"propertyBag\":[{\"name\":\"icphvtrrmhw\",\"value\":\"fdpyflubh\"},{\"name\":\"glrocuy\",\"value\":\"whhmemhooc\"}]}")
+        DiagnosticDataProviderMetadata model = BinaryData
+            .fromString(
+                "{\"providerName\":\"yefrpmpdnqqska\",\"propertyBag\":[{\"name\":\"vmm\",\"value\":\"pqfrtqlkz\"}]}")
             .toObject(DiagnosticDataProviderMetadata.class);
-        Assertions.assertEquals("lpjrtwsz", model.providerName());
-        Assertions.assertEquals("icphvtrrmhw", model.propertyBag().get(0).name());
-        Assertions.assertEquals("fdpyflubh", model.propertyBag().get(0).value());
+        Assertions.assertEquals("yefrpmpdnqqska", model.providerName());
+        Assertions.assertEquals("vmm", model.propertyBag().get(0).name());
+        Assertions.assertEquals("pqfrtqlkz", model.propertyBag().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticDataProviderMetadata model = new DiagnosticDataProviderMetadata().withProviderName("lpjrtwsz")
-            .withPropertyBag(Arrays.asList(
-                new DiagnosticDataProviderMetadataPropertyBagItem().withName("icphvtrrmhw").withValue("fdpyflubh"),
-                new DiagnosticDataProviderMetadataPropertyBagItem().withName("glrocuy").withValue("whhmemhooc")));
+        DiagnosticDataProviderMetadata model = new DiagnosticDataProviderMetadata().withProviderName("yefrpmpdnqqska")
+            .withPropertyBag(Arrays
+                .asList(new DiagnosticDataProviderMetadataPropertyBagItem().withName("vmm").withValue("pqfrtqlkz")));
         model = BinaryData.fromObject(model).toObject(DiagnosticDataProviderMetadata.class);
-        Assertions.assertEquals("lpjrtwsz", model.providerName());
-        Assertions.assertEquals("icphvtrrmhw", model.propertyBag().get(0).name());
-        Assertions.assertEquals("fdpyflubh", model.propertyBag().get(0).value());
+        Assertions.assertEquals("yefrpmpdnqqska", model.providerName());
+        Assertions.assertEquals("vmm", model.propertyBag().get(0).name());
+        Assertions.assertEquals("pqfrtqlkz", model.propertyBag().get(0).value());
     }
 }

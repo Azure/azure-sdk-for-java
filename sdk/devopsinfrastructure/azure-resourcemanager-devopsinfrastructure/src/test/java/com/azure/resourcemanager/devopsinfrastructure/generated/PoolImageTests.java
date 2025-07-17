@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.devopsinfrastructure.models.EphemeralType;
 import com.azure.resourcemanager.devopsinfrastructure.models.PoolImage;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -13,24 +14,27 @@ public final class PoolImageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolImage model = BinaryData.fromString(
-            "{\"resourceId\":\"tumkdosvqwhbm\",\"wellKnownImageName\":\"bbjfddgmbmbexp\",\"aliases\":[\"tq\",\"rolfpfp\",\"algbquxigjyjg\"],\"buffer\":\"aoyfhrtxilnerkuj\"}")
+            "{\"resourceId\":\"nkzsmodmglou\",\"wellKnownImageName\":\"b\",\"aliases\":[\"mutduqktaps\"],\"buffer\":\"gcue\",\"ephemeralType\":\"ResourceDisk\"}")
             .toObject(PoolImage.class);
-        Assertions.assertEquals("tumkdosvqwhbm", model.resourceId());
-        Assertions.assertEquals("bbjfddgmbmbexp", model.wellKnownImageName());
-        Assertions.assertEquals("tq", model.aliases().get(0));
-        Assertions.assertEquals("aoyfhrtxilnerkuj", model.buffer());
+        Assertions.assertEquals("nkzsmodmglou", model.resourceId());
+        Assertions.assertEquals("b", model.wellKnownImageName());
+        Assertions.assertEquals("mutduqktaps", model.aliases().get(0));
+        Assertions.assertEquals("gcue", model.buffer());
+        Assertions.assertEquals(EphemeralType.RESOURCE_DISK, model.ephemeralType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolImage model = new PoolImage().withResourceId("tumkdosvqwhbm")
-            .withWellKnownImageName("bbjfddgmbmbexp")
-            .withAliases(Arrays.asList("tq", "rolfpfp", "algbquxigjyjg"))
-            .withBuffer("aoyfhrtxilnerkuj");
+        PoolImage model = new PoolImage().withResourceId("nkzsmodmglou")
+            .withWellKnownImageName("b")
+            .withAliases(Arrays.asList("mutduqktaps"))
+            .withBuffer("gcue")
+            .withEphemeralType(EphemeralType.RESOURCE_DISK);
         model = BinaryData.fromObject(model).toObject(PoolImage.class);
-        Assertions.assertEquals("tumkdosvqwhbm", model.resourceId());
-        Assertions.assertEquals("bbjfddgmbmbexp", model.wellKnownImageName());
-        Assertions.assertEquals("tq", model.aliases().get(0));
-        Assertions.assertEquals("aoyfhrtxilnerkuj", model.buffer());
+        Assertions.assertEquals("nkzsmodmglou", model.resourceId());
+        Assertions.assertEquals("b", model.wellKnownImageName());
+        Assertions.assertEquals("mutduqktaps", model.aliases().get(0));
+        Assertions.assertEquals("gcue", model.buffer());
+        Assertions.assertEquals(EphemeralType.RESOURCE_DISK, model.ephemeralType());
     }
 }

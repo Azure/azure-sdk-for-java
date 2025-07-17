@@ -51,7 +51,7 @@ public final class WarehouseLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private WarehouseLinkedServiceTypeProperties innerTypeProperties() {
+    WarehouseLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

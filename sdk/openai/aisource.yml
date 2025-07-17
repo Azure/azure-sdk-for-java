@@ -1,0 +1,23 @@
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: openai
+    DisableAzureResourceCreation: true
+    PreSteps:
+      - template: /sdk/openai/openai-build.yml
+    Artifacts:
+      - name: azure-ai-openai-stainless
+        groupId: com.azure
+        safeName: azureaiopenaistainless
+    CloudConfig:
+      Public:
+        ServiceConnection: azure-sdk-tests-openai
+    EnvVars:
+      AZURE_OPENAI_ENDPOINT: $(AOAI-ENDPOINT-SWEDENCENTRAL)
+      AZURE_OPENAI_KEY: $(AOAI-API-KEY-SWEDENCENTRAL)
+      NON_AZURE_OPENAI_KEY: $(OPENAI-API-KEY)
+      AZURE_TEST_RUN_LIVE: 'true'
+    MatrixFilters:
+      - TestFromSource=^$|false
+      - AZURE_TEST_HTTP_CLIENTS=netty|okhttp
+      - pool=^(?!.*(win)).*

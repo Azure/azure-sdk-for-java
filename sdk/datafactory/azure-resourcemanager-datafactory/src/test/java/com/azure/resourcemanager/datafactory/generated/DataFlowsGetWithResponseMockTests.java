@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.DataFlowResource;
@@ -21,21 +21,21 @@ public final class DataFlowsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"DataFlow\",\"description\":\"vmfosfpgqux\",\"annotations\":[\"datauuyehmnvfhyiax\",\"datazpwhczqjoov\",\"datapsgug\"],\"folder\":{\"name\":\"kbw\"}},\"name\":\"x\",\"type\":\"bvhhkabeoxh\",\"etag\":\"et\",\"id\":\"mtqnsigrqcxhwvz\"}";
+            = "{\"properties\":{\"type\":\"DataFlow\",\"description\":\"hgrgiu\",\"annotations\":[\"dataykvo\",\"datakjixbrdam\",\"dataneb\",\"dataonflknmzaih\"],\"folder\":{\"name\":\"scseuhh\"}},\"name\":\"hspvbwjmtlavuecm\",\"type\":\"corydjsaki\",\"etag\":\"lmiglnqrmqefdq\",\"id\":\"sfebhvkkpd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataFlowResource response = manager.dataFlows()
-            .getWithResponse("wlejcxc", "xu", "orhrtihzwd", "flwlmh", com.azure.core.util.Context.NONE)
+            .getWithResponse("hxjwiggca", "mkoxpay", "zqgsaegaah", "ger", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mtqnsigrqcxhwvz", response.id());
-        Assertions.assertEquals("vmfosfpgqux", response.properties().description());
-        Assertions.assertEquals("kbw", response.properties().folder().name());
+        Assertions.assertEquals("sfebhvkkpd", response.id());
+        Assertions.assertEquals("hgrgiu", response.properties().description());
+        Assertions.assertEquals("scseuhh", response.properties().folder().name());
     }
 }

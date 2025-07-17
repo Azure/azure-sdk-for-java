@@ -1,5 +1,39 @@
 # Release History
 
+## 1.2.36 (2025-06-30)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+- Added ARM libraries to the BOM.
+
+## 1.2.35 (2025-05-27)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.34 (2025-04-28)
+
+### Dependency Updates
+
+- Added a new libary entry to the BOM:
+  - [azure-health-deidentification](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/README.md)
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.33 (2025-03-28)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.32 (2025-03-06)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
 ## 1.2.31 (2025-01-28)
 
 ### Dependency Updates
@@ -33,7 +67,7 @@
 
 - Added new library entries to the BOM:
   - `azure-data-schemaregistry-jsonschema`
-  - `azure-health-deidentification`
+  - `azure-health-insights-radiologyinsights`
 
 - Updated Azure SDK dependency versions to the latest releases.
 

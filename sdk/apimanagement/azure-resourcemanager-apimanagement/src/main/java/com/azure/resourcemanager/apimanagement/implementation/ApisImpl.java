@@ -72,14 +72,13 @@ public final class ApisImpl implements Apis {
         }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String ifMatch,
-        Boolean deleteRevisions, Context context) {
-        return this.serviceClient()
-            .deleteWithResponse(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions, context);
-    }
-
     public void delete(String resourceGroupName, String serviceName, String apiId, String ifMatch) {
         this.serviceClient().delete(resourceGroupName, serviceName, apiId, ifMatch);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String apiId, String ifMatch,
+        Boolean deleteRevisions, Context context) {
+        this.serviceClient().delete(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions, context);
     }
 
     public PagedIterable<TagResourceContract> listByTags(String resourceGroupName, String serviceName) {
@@ -150,11 +149,10 @@ public final class ApisImpl implements Apis {
         }
         String localIfMatch = null;
         Boolean localDeleteRevisions = null;
-        this.deleteWithResponse(resourceGroupName, serviceName, apiId, localIfMatch, localDeleteRevisions,
-            Context.NONE);
+        this.delete(resourceGroupName, serviceName, apiId, localIfMatch, localDeleteRevisions, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Boolean deleteRevisions, Context context) {
+    public void deleteByIdWithResponse(String id, String ifMatch, Boolean deleteRevisions, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -170,7 +168,7 @@ public final class ApisImpl implements Apis {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions, context);
+        this.delete(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions, context);
     }
 
     private ApisClient serviceClient() {

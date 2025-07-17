@@ -11,21 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class PartnerDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PartnerDetails model
-            = BinaryData.fromString("{\"description\":\"rqpjiy\",\"longDescription\":\"jc\",\"setupUri\":\"a\"}")
-                .toObject(PartnerDetails.class);
-        Assertions.assertEquals("rqpjiy", model.description());
-        Assertions.assertEquals("jc", model.longDescription());
-        Assertions.assertEquals("a", model.setupUri());
+        PartnerDetails model = BinaryData
+            .fromString("{\"description\":\"fhfv\",\"longDescription\":\"mknbnxwcdommpv\",\"setupUri\":\"awz\"}")
+            .toObject(PartnerDetails.class);
+        Assertions.assertEquals("fhfv", model.description());
+        Assertions.assertEquals("mknbnxwcdommpv", model.longDescription());
+        Assertions.assertEquals("awz", model.setupUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartnerDetails model
-            = new PartnerDetails().withDescription("rqpjiy").withLongDescription("jc").withSetupUri("a");
+            = new PartnerDetails().withDescription("fhfv").withLongDescription("mknbnxwcdommpv").withSetupUri("awz");
         model = BinaryData.fromObject(model).toObject(PartnerDetails.class);
-        Assertions.assertEquals("rqpjiy", model.description());
-        Assertions.assertEquals("jc", model.longDescription());
-        Assertions.assertEquals("a", model.setupUri());
+        Assertions.assertEquals("fhfv", model.description());
+        Assertions.assertEquals("mknbnxwcdommpv", model.longDescription());
+        Assertions.assertEquals("awz", model.setupUri());
     }
 }

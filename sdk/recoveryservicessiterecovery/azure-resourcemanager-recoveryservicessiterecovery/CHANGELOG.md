@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,318 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0 (2025-04-23)
+
+- Azure Resource Manager SiteRecovery client library for Java. This package contains Microsoft Azure SDK for SiteRecovery Management SDK.  Package tag package-2025-01-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ClusterRecoveryPointCollection` was added
+
+* `models.DiskState` was added
+
+* `models.A2ASharedDiskReplicationDetails` was added
+
+* `models.ApplyClusterRecoveryPointProviderSpecificInput` was added
+
+* `models.SharedDiskReplicationProviderSpecificSettings` was added
+
+* `models.InMageRcmAddDisksInput` was added
+
+* `models.FailoverDirection` was added
+
+* `models.RegisteredClusterNodes` was added
+
+* `models.ClusterSwitchProtectionJobDetails` was added
+
+* `models.SwitchClusterProtectionProviderSpecificInput` was added
+
+* `models.A2AClusterRecoveryPointDetails` was added
+
+* `models.ClusterRecoveryPoints` was added
+
+* `models.ClusterTestFailoverProviderSpecificInput` was added
+
+* `models.LinuxLicenseType` was added
+
+* `models.ManagedRunCommandScriptInput` was added
+
+* `models.ClusterProviderSpecificRecoveryPointDetails` was added
+
+* `models.ReplicationProtectionCluster$Definition` was added
+
+* `models.SecurityProfileProperties` was added
+
+* `models.ClusterUnplannedFailoverInputProperties` was added
+
+* `models.ClusterTestFailoverInputProperties` was added
+
+* `models.SwitchClusterProtectionInputProperties` was added
+
+* `models.ReplicationProtectionCluster$DefinitionStages` was added
+
+* `models.A2AApplyClusterRecoveryPointInput` was added
+
+* `models.ClusterRecoveryPointOperations` was added
+
+* `models.ApplyClusterRecoveryPointInput` was added
+
+* `models.ClusterRecoveryPointProperties` was added
+
+* `models.A2AClusterUnplannedFailoverInput` was added
+
+* `models.SwitchClusterProtectionInput` was added
+
+* `models.ClusterTestFailoverCleanupInput` was added
+
+* `models.A2AClusterTestFailoverInput` was added
+
+* `models.ClusterRecoveryPointType` was added
+
+* `models.SecurityConfiguration` was added
+
+* `models.A2ASwitchClusterProtectionInput` was added
+
+* `models.ClusterUnplannedFailoverProviderSpecificInput` was added
+
+* `models.ReplicationClusterProviderSpecificSettings` was added
+
+* `models.ReplicationProtectionCluster` was added
+
+* `models.ClusterTestFailoverCleanupInputProperties` was added
+
+* `models.A2ASharedDiskIRErrorDetails` was added
+
+* `models.SharedDiskReplicationItemProperties` was added
+
+* `models.ApplyClusterRecoveryPointInputProperties` was added
+
+* `models.ClusterRecoveryPoint` was added
+
+* `models.ReplicationProtectionClusterProperties` was added
+
+* `models.ReplicationProtectionClusters` was added
+
+* `models.A2AProtectedItemDetail` was added
+
+* `models.UserCreatedResourceTag` was added
+
+* `models.InMageRcmUnProtectedDiskDetails` was added
+
+* `models.ReplicationProtectionClusterCollection` was added
+
+* `models.ClusterTestFailoverInput` was added
+
+* `models.ClusterUnplannedFailoverInput` was added
+
+* `models.ClusterTestFailoverJobDetails` was added
+
+* `models.A2AReplicationProtectionClusterDetails` was added
+
+* `models.ClusterFailoverJobDetails` was added
+
+#### `models.OSDetails` was modified
+
+* `userSelectedOSName()` was added
+* `withUserSelectedOSName(java.lang.String)` was added
+
+#### `models.InMageRcmDiskInput` was modified
+
+* `withSectorSizeInBytes(java.lang.Integer)` was added
+* `sectorSizeInBytes()` was added
+
+#### `SiteRecoveryManager` was modified
+
+* `replicationProtectionClusters()` was added
+* `clusterRecoveryPointOperations()` was added
+* `clusterRecoveryPoints()` was added
+
+#### `models.VMwareCbtUpdateMigrationItemInput` was modified
+
+* `userSelectedOSName()` was added
+* `linuxLicenseType()` was added
+* `withLinuxLicenseType(models.LinuxLicenseType)` was added
+* `withUserSelectedOSName(java.lang.String)` was added
+
+#### `models.HyperVReplicaAzureReplicationDetails` was modified
+
+* `withLinuxLicenseType(models.LinuxLicenseType)` was added
+* `linuxLicenseType()` was added
+* `withTargetVmSecurityProfile(models.SecurityProfileProperties)` was added
+* `targetVmSecurityProfile()` was added
+
+#### `models.InMageRcmProtectedDiskDetails` was modified
+
+* `customTargetDiskName()` was added
+* `withSectorSizeInBytes(java.lang.Integer)` was added
+* `diskState()` was added
+* `withCustomTargetDiskName(java.lang.String)` was added
+* `sectorSizeInBytes()` was added
+
+#### `models.InMageRcmNicDetails` was modified
+
+* `targetNicName()` was added
+* `withTargetNicName(java.lang.String)` was added
+
+#### `models.InMageRcmUpdateReplicationProtectedItemInput` was modified
+
+* `targetManagedDiskTags()` was added
+* `withTargetManagedDiskTags(java.util.List)` was added
+* `sqlServerLicenseType()` was added
+* `withLinuxLicenseType(models.LinuxLicenseType)` was added
+* `withSqlServerLicenseType(models.SqlServerLicenseType)` was added
+* `targetVmTags()` was added
+* `withTargetNicTags(java.util.List)` was added
+* `linuxLicenseType()` was added
+* `withTargetVmTags(java.util.List)` was added
+* `targetNicTags()` was added
+* `userSelectedOSName()` was added
+* `withUserSelectedOSName(java.lang.String)` was added
+
+#### `models.ProtectionContainer` was modified
+
+* `switchClusterProtection(models.SwitchClusterProtectionInput)` was added
+* `switchClusterProtection(models.SwitchClusterProtectionInput,com.azure.core.util.Context)` was added
+
+#### `models.A2AReplicationDetails` was modified
+
+* `withProtectionClusterId(java.lang.String)` was added
+* `protectionClusterId()` was added
+* `isClusterInfraReady()` was added
+* `withIsClusterInfraReady(java.lang.Boolean)` was added
+
+#### `models.VMwareCbtDiskInput` was modified
+
+* `sectorSizeInBytes()` was added
+* `withSectorSizeInBytes(java.lang.Integer)` was added
+
+#### `models.VMwareCbtProtectedDiskDetails` was modified
+
+* `sectorSizeInBytes()` was added
+* `withSectorSizeInBytes(java.lang.Integer)` was added
+
+#### `models.VMwareCbtTestMigrateInput` was modified
+
+* `withPostMigrationSteps(java.util.List)` was added
+* `postMigrationSteps()` was added
+
+#### `models.VMwareCbtEnableMigrationInput` was modified
+
+* `withUserSelectedOSName(java.lang.String)` was added
+* `withLinuxLicenseType(models.LinuxLicenseType)` was added
+* `userSelectedOSName()` was added
+* `linuxLicenseType()` was added
+
+#### `models.InMageRcmTestFailoverInput` was modified
+
+* `withOsUpgradeVersion(java.lang.String)` was added
+* `osUpgradeVersion()` was added
+
+#### `models.InMageRcmReplicationDetails` was modified
+
+* `withTargetVmTags(java.util.List)` was added
+* `seedManagedDiskTags()` was added
+* `targetVmSecurityProfile()` was added
+* `withOsName(java.lang.String)` was added
+* `withSupportedOSVersions(java.util.List)` was added
+* `osName()` was added
+* `targetNicTags()` was added
+* `withSeedManagedDiskTags(java.util.List)` was added
+* `withTargetVmSecurityProfile(models.SecurityProfileProperties)` was added
+* `sqlServerLicenseType()` was added
+* `withTargetManagedDiskTags(java.util.List)` was added
+* `unprotectedDisks()` was added
+* `linuxLicenseType()` was added
+* `supportedOSVersions()` was added
+* `withUnprotectedDisks(java.util.List)` was added
+* `withSqlServerLicenseType(java.lang.String)` was added
+* `withTargetNicTags(java.util.List)` was added
+* `targetVmTags()` was added
+* `withLinuxLicenseType(models.LinuxLicenseType)` was added
+* `targetManagedDiskTags()` was added
+
+#### `models.InMageRcmDisksDefaultInput` was modified
+
+* `sectorSizeInBytes()` was added
+* `withSectorSizeInBytes(java.lang.Integer)` was added
+
+#### `models.VMwareCbtMigrateInput` was modified
+
+* `withPostMigrationSteps(java.util.List)` was added
+* `postMigrationSteps()` was added
+
+#### `models.HyperVReplicaAzureEnableProtectionInput` was modified
+
+* `targetVmSecurityProfile()` was added
+* `withLinuxLicenseType(models.LinuxLicenseType)` was added
+* `userSelectedOSName()` was added
+* `withUserSelectedOSName(java.lang.String)` was added
+* `linuxLicenseType()` was added
+* `withTargetVmSecurityProfile(models.SecurityProfileProperties)` was added
+
+#### `models.ReplicationProtectionContainers` was modified
+
+* `switchClusterProtection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.SwitchClusterProtectionInput,com.azure.core.util.Context)` was added
+* `switchClusterProtection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.SwitchClusterProtectionInput)` was added
+
+#### `models.A2AEnableProtectionInput` was modified
+
+* `protectionClusterId()` was added
+* `withProtectionClusterId(java.lang.String)` was added
+
+#### `models.HyperVReplicaAzureUpdateReplicationProtectedItemInput` was modified
+
+* `withUserSelectedOSName(java.lang.String)` was added
+* `linuxLicenseType()` was added
+* `userSelectedOSName()` was added
+* `withLinuxLicenseType(models.LinuxLicenseType)` was added
+
+#### `models.HyperVReplicaAzureDiskInputDetails` was modified
+
+* `withSectorSizeInBytes(java.lang.Integer)` was added
+* `sectorSizeInBytes()` was added
+
+#### `models.HyperVReplicaAzureManagedDiskDetails` was modified
+
+* `withTargetDiskAccountType(models.DiskAccountType)` was added
+* `withSectorSizeInBytes(java.lang.Integer)` was added
+* `targetDiskAccountType()` was added
+* `sectorSizeInBytes()` was added
+
+#### `models.InMageRcmEnableProtectionInput` was modified
+
+* `withTargetManagedDiskTags(java.util.List)` was added
+* `withUserSelectedOSName(java.lang.String)` was added
+* `withTargetVmTags(java.util.List)` was added
+* `seedManagedDiskTags()` was added
+* `userSelectedOSName()` was added
+* `targetManagedDiskTags()` was added
+* `linuxLicenseType()` was added
+* `sqlServerLicenseType()` was added
+* `withSeedManagedDiskTags(java.util.List)` was added
+* `withTargetVmSecurityProfile(models.SecurityProfileProperties)` was added
+* `targetNicTags()` was added
+* `targetVmTags()` was added
+* `targetVmSecurityProfile()` was added
+* `withTargetNicTags(java.util.List)` was added
+* `withLinuxLicenseType(models.LinuxLicenseType)` was added
+* `withSqlServerLicenseType(models.SqlServerLicenseType)` was added
+
+#### `models.InMageRcmNicInput` was modified
+
+* `withTargetNicName(java.lang.String)` was added
+* `targetNicName()` was added
+
+#### `models.InMageRcmUnplannedFailoverInput` was modified
+
+* `withOsUpgradeVersion(java.lang.String)` was added
+* `osUpgradeVersion()` was added
+
+#### `models.VMwareCbtMigrationDetails` was modified
+
+* `linuxLicenseType()` was added
+* `withLinuxLicenseType(models.LinuxLicenseType)` was added
 
 ## 1.2.0 (2024-12-23)
 

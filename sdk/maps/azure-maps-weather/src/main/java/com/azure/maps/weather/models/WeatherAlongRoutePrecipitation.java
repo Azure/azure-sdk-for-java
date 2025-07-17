@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,20 @@ public final class WeatherAlongRoutePrecipitation implements JsonSerializable<We
     /*
      * The forecasted precipitation intensity in dBZ (decibels relative to Z) from 0.0 to 100.0.
      */
+    @Generated
     private Double dbz;
 
     /*
-     * Precipitation type. If precipitation should occur, the type that it will be: "RAIN," "HAIL," "SNOW," "ICE," or "MIX."
+     * Precipitation type. If precipitation should occur, the type that it will be: "RAIN," "HAIL," "SNOW," "ICE," or
+     * "MIX."
      */
+    @Generated
     private String type;
 
     /**
      * Set default WeatherAlongRoutePrecipitation constructor to private
      */
+    @Generated
     private WeatherAlongRoutePrecipitation() {
     }
 
@@ -37,6 +42,7 @@ public final class WeatherAlongRoutePrecipitation implements JsonSerializable<We
      *
      * @return the dbz value.
      */
+    @Generated
     public Double getDeciblesRelativeToZ() {
         return this.dbz;
     }
@@ -47,6 +53,7 @@ public final class WeatherAlongRoutePrecipitation implements JsonSerializable<We
      *
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -54,6 +61,7 @@ public final class WeatherAlongRoutePrecipitation implements JsonSerializable<We
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -70,6 +78,7 @@ public final class WeatherAlongRoutePrecipitation implements JsonSerializable<We
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the WeatherAlongRoutePrecipitation.
      */
+    @Generated
     public static WeatherAlongRoutePrecipitation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WeatherAlongRoutePrecipitation deserializedWeatherAlongRoutePrecipitation

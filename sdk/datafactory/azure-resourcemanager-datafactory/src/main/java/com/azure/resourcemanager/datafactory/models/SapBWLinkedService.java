@@ -51,7 +51,7 @@ public final class SapBWLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SapBWLinkedServiceTypeProperties innerTypeProperties() {
+    SapBWLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

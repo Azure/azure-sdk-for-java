@@ -7,15 +7,13 @@ package com.azure.resourcemanager.trustedsigning.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.trustedsigning.TrustedSigningManager;
-import com.azure.resourcemanager.trustedsigning.models.ActionType;
 import com.azure.resourcemanager.trustedsigning.models.Operation;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -23,17 +21,16 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"s\",\"isDataAction\":false,\"display\":{\"provider\":\"uxig\",\"resource\":\"jgzjaoyfhrtx\",\"operation\":\"n\",\"description\":\"kujysvlejuvfq\"},\"origin\":\"system\",\"actionType\":\"Internal\"}]}";
+            = "{\"value\":[{\"name\":\"ndlik\",\"isDataAction\":true,\"display\":{\"provider\":\"fgibmadgakeq\",\"resource\":\"xybz\",\"operation\":\"e\",\"description\":\"ytb\"},\"origin\":\"system\",\"actionType\":\"Internal\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         TrustedSigningManager manager = TrustedSigningManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ActionType.INTERNAL, response.iterator().next().actionType());
     }
 }

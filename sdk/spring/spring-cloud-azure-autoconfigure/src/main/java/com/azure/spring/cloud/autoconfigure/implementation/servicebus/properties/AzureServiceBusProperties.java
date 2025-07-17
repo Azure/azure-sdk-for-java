@@ -268,6 +268,11 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
          */
         private boolean autoStartup = true;
 
+        /**
+         * Sets the maximum amount of time to wait for a message to be received for the currently active session.
+         */
+        private Duration sessionIdleTimeout;
+
         public Integer getMaxConcurrentCalls() {
             return maxConcurrentCalls;
         }
@@ -290,6 +295,14 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
 
         public void setAutoStartup(boolean autoStartup) {
             this.autoStartup = autoStartup;
+        }
+
+        public Duration getSessionIdleTimeout() {
+            return sessionIdleTimeout;
+        }
+
+        public void setSessionIdleTimeout(Duration sessionIdleTimeout) {
+            this.sessionIdleTimeout = sessionIdleTimeout;
         }
     }
 

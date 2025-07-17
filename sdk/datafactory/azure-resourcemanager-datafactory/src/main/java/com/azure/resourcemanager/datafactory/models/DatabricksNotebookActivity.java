@@ -52,7 +52,7 @@ public final class DatabricksNotebookActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private DatabricksNotebookActivityTypeProperties innerTypeProperties() {
+    DatabricksNotebookActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

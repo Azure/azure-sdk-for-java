@@ -6,10 +6,12 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,7 +28,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
 
     private final String stringContent;
 
-    private final List<ChatMessageContentItem> chatMessageContentItem;
+    private final List<ChatMessageContentItem> chatMessageContentItems;
 
     /*
      * An optional name for the participant.
@@ -56,6 +58,38 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     @Generated
     public BinaryData getContent() {
         return this.content;
+    }
+
+    /**
+     * Get the content property: The contents of the user message, with available input types varying by selected model.
+     * If the result of this method is `null`, it means that the content could be a String or null altogether.
+     *
+     * @return the content value if defined as a list
+     */
+    public List<ChatMessageContentItem> getListContent() {
+        return this.chatMessageContentItems;
+    }
+
+    /**
+     * Get the content property: The contents of the user message, with available input types varying by selected model.
+     * If the result of this method is `null`, it means that the content could be a String or null altogether.
+     *
+     * @return the content value if defined as an array
+     */
+    public ChatMessageContentItem[] getArrayContent() {
+        return this.chatMessageContentItems == null
+            ? null
+            : this.chatMessageContentItems.toArray(new ChatMessageContentItem[0]);
+    }
+
+    /**
+     * Get the content property: The contents of the user message, with available input types varying by selected model.
+     * If the result of this method is `null`, it means that the content could be a list or null altogether.
+     *
+     * @return the content value if defined as a string
+     */
+    public String getStringContent() {
+        return this.stringContent;
     }
 
     /**
@@ -157,8 +191,10 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
         jsonWriter.writeStartObject();
         if (stringContent != null) {
             jsonWriter.writeStringField("content", stringContent);
-        } else if (chatMessageContentItem != null) {
-            jsonWriter.writeArrayField("content", chatMessageContentItem, JsonWriter::writeJson);
+        } else if (chatMessageContentItems != null) {
+            jsonWriter.writeArrayField("content", chatMessageContentItems, JsonWriter::writeJson);
+        } else {
+            jsonWriter.writeNullField("content");
         }
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("refusal", this.refusal);
@@ -180,6 +216,8 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     public static ChatRequestAssistantMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BinaryData content = null;
+            String stringContent = null;
+            List<ChatMessageContentItem> chatMessageContentItems = null;
             ChatRole role = ChatRole.ASSISTANT;
             String refusal = null;
             String name = null;
@@ -190,10 +228,10 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
                 reader.nextToken();
                 if ("content".equals(fieldName)) {
                     if (reader.currentToken() == JsonToken.STRING) {
-                        content = BinaryData.fromString(reader.getString());
+                        stringContent = reader.getString();
                     } else if (reader.currentToken() == JsonToken.START_ARRAY) {
-                        content = BinaryData.fromObject(
-                            reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson)));
+                        chatMessageContentItems
+                            = reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson));
                     } else if (reader.currentToken() == JsonToken.NULL) {
                         content = null;
                     } else {
@@ -214,8 +252,14 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
                     reader.skipChildren();
                 }
             }
-            ChatRequestAssistantMessage deserializedChatRequestAssistantMessage
-                = new ChatRequestAssistantMessage(content);
+            ChatRequestAssistantMessage deserializedChatRequestAssistantMessage;
+            if (CoreUtils.isNullOrEmpty(stringContent) && chatMessageContentItems == null) {
+                deserializedChatRequestAssistantMessage = new ChatRequestAssistantMessage(content);
+            } else {
+                deserializedChatRequestAssistantMessage = CoreUtils.isNullOrEmpty(stringContent)
+                    ? new ChatRequestAssistantMessage(chatMessageContentItems)
+                    : new ChatRequestAssistantMessage(stringContent);
+            }
             deserializedChatRequestAssistantMessage.role = role;
             deserializedChatRequestAssistantMessage.setRefusal(refusal)
                 .setName(name)
@@ -233,7 +277,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     private ChatRequestAssistantMessage(BinaryData content) {
         this.content = content;
         this.stringContent = null;
-        this.chatMessageContentItem = null;
+        this.chatMessageContentItems = null;
     }
 
     /**
@@ -244,7 +288,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     public ChatRequestAssistantMessage(String content) {
         this.content = content == null ? null : BinaryData.fromString(content);
         this.stringContent = content;
-        this.chatMessageContentItem = null;
+        this.chatMessageContentItems = null;
     }
 
     /**
@@ -255,7 +299,18 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     public ChatRequestAssistantMessage(List<ChatMessageContentItem> content) {
         this.content = BinaryData.fromObject(content);
         this.stringContent = null;
-        this.chatMessageContentItem = content;
+        this.chatMessageContentItems = content;
+    }
+
+    /**
+     * Creates a new instance of ChatRequestAssistantMessage using a collection of structured content.
+     *
+     * @param content The collection of structured content associated with the message.
+     */
+    public ChatRequestAssistantMessage(ChatMessageContentItem[] content) {
+        this.content = BinaryData.fromObject(content);
+        this.chatMessageContentItems = Arrays.asList(content);
+        this.stringContent = null;
     }
 
     /*

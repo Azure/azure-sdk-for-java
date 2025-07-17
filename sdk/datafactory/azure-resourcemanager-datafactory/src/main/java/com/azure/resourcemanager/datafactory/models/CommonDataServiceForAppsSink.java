@@ -40,6 +40,18 @@ public final class CommonDataServiceForAppsSink extends CopySink {
      */
     private Object alternateKeyName;
 
+    /*
+     * Controls the bypass of Dataverse custom business logic. Type: string (or Expression with resultType string).
+     * Type: string (or Expression with resultType string).
+     */
+    private Object bypassBusinessLogicExecution;
+
+    /*
+     * Controls the bypass of Power Automate flows. Default is false. Type: boolean (or Expression with resultType
+     * boolean).
+     */
+    private Object bypassPowerAutomateFlows;
+
     /**
      * Creates an instance of CommonDataServiceForAppsSink class.
      */
@@ -121,6 +133,50 @@ public final class CommonDataServiceForAppsSink extends CopySink {
     }
 
     /**
+     * Get the bypassBusinessLogicExecution property: Controls the bypass of Dataverse custom business logic. Type:
+     * string (or Expression with resultType string). Type: string (or Expression with resultType string).
+     * 
+     * @return the bypassBusinessLogicExecution value.
+     */
+    public Object bypassBusinessLogicExecution() {
+        return this.bypassBusinessLogicExecution;
+    }
+
+    /**
+     * Set the bypassBusinessLogicExecution property: Controls the bypass of Dataverse custom business logic. Type:
+     * string (or Expression with resultType string). Type: string (or Expression with resultType string).
+     * 
+     * @param bypassBusinessLogicExecution the bypassBusinessLogicExecution value to set.
+     * @return the CommonDataServiceForAppsSink object itself.
+     */
+    public CommonDataServiceForAppsSink withBypassBusinessLogicExecution(Object bypassBusinessLogicExecution) {
+        this.bypassBusinessLogicExecution = bypassBusinessLogicExecution;
+        return this;
+    }
+
+    /**
+     * Get the bypassPowerAutomateFlows property: Controls the bypass of Power Automate flows. Default is false. Type:
+     * boolean (or Expression with resultType boolean).
+     * 
+     * @return the bypassPowerAutomateFlows value.
+     */
+    public Object bypassPowerAutomateFlows() {
+        return this.bypassPowerAutomateFlows;
+    }
+
+    /**
+     * Set the bypassPowerAutomateFlows property: Controls the bypass of Power Automate flows. Default is false. Type:
+     * boolean (or Expression with resultType boolean).
+     * 
+     * @param bypassPowerAutomateFlows the bypassPowerAutomateFlows value to set.
+     * @return the CommonDataServiceForAppsSink object itself.
+     */
+    public CommonDataServiceForAppsSink withBypassPowerAutomateFlows(Object bypassPowerAutomateFlows) {
+        this.bypassPowerAutomateFlows = bypassPowerAutomateFlows;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -196,16 +252,38 @@ public final class CommonDataServiceForAppsSink extends CopySink {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        if (writeBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        }
+        if (writeBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        }
+        if (sinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        }
+        if (sinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        }
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
         jsonWriter.writeStringField("writeBehavior", this.writeBehavior == null ? null : this.writeBehavior.toString());
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("ignoreNullValues", this.ignoreNullValues);
-        jsonWriter.writeUntypedField("alternateKeyName", this.alternateKeyName);
+        if (this.ignoreNullValues != null) {
+            jsonWriter.writeUntypedField("ignoreNullValues", this.ignoreNullValues);
+        }
+        if (this.alternateKeyName != null) {
+            jsonWriter.writeUntypedField("alternateKeyName", this.alternateKeyName);
+        }
+        if (this.bypassBusinessLogicExecution != null) {
+            jsonWriter.writeUntypedField("bypassBusinessLogicExecution", this.bypassBusinessLogicExecution);
+        }
+        if (this.bypassPowerAutomateFlows != null) {
+            jsonWriter.writeUntypedField("bypassPowerAutomateFlows", this.bypassPowerAutomateFlows);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -252,6 +330,10 @@ public final class CommonDataServiceForAppsSink extends CopySink {
                     deserializedCommonDataServiceForAppsSink.ignoreNullValues = reader.readUntyped();
                 } else if ("alternateKeyName".equals(fieldName)) {
                     deserializedCommonDataServiceForAppsSink.alternateKeyName = reader.readUntyped();
+                } else if ("bypassBusinessLogicExecution".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsSink.bypassBusinessLogicExecution = reader.readUntyped();
+                } else if ("bypassPowerAutomateFlows".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsSink.bypassPowerAutomateFlows = reader.readUntyped();
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

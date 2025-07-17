@@ -12,14 +12,14 @@ public final class BodyDiagnosticSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BodyDiagnosticSettings model
-            = BinaryData.fromString("{\"bytes\":925211968}").toObject(BodyDiagnosticSettings.class);
-        Assertions.assertEquals(925211968, model.bytes());
+            = BinaryData.fromString("{\"bytes\":582357329}").toObject(BodyDiagnosticSettings.class);
+        Assertions.assertEquals(582357329, model.bytes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BodyDiagnosticSettings model = new BodyDiagnosticSettings().withBytes(925211968);
+        BodyDiagnosticSettings model = new BodyDiagnosticSettings().withBytes(582357329);
         model = BinaryData.fromObject(model).toObject(BodyDiagnosticSettings.class);
-        Assertions.assertEquals(925211968, model.bytes());
+        Assertions.assertEquals(582357329, model.bytes());
     }
 }

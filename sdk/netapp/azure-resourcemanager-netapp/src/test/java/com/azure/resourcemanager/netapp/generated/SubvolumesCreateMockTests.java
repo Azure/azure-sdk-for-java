@@ -6,8 +6,8 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.SubvolumeInfo;
@@ -21,25 +21,25 @@ public final class SubvolumesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"path\":\"vwwskondcbr\",\"size\":4473926182933643908,\"parentPath\":\"qejo\",\"provisioningState\":\"Succeeded\"},\"id\":\"jqo\",\"name\":\"bpihehcecybmrqbr\",\"type\":\"bbmpxdlvykfre\"}";
+            = "{\"properties\":{\"path\":\"f\",\"size\":4673485853004861736,\"parentPath\":\"pqthehnmnaoya\",\"provisioningState\":\"Succeeded\"},\"id\":\"roznnhdrlktgj\",\"name\":\"sggux\",\"type\":\"eml\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SubvolumeInfo response = manager.subvolumes()
-            .define("fhjirwgdnqzbrfk")
-            .withExistingVolume("rbgjekglkl", "yulidwcwvm", "eg", "o")
-            .withPath("hzmtksjc")
-            .withSize(650585422726036151L)
-            .withParentPath("sxcdgljplkeuach")
+            .define("gkkumuikjcj")
+            .withExistingVolume("fbvfbhdy", "rhpw", "gddeimaw", "o")
+            .withPath("tbw")
+            .withSize(7467140163227745505L)
+            .withParentPath("wxwcomli")
             .create();
 
-        Assertions.assertEquals("vwwskondcbr", response.path());
-        Assertions.assertEquals(4473926182933643908L, response.size());
-        Assertions.assertEquals("qejo", response.parentPath());
+        Assertions.assertEquals("f", response.path());
+        Assertions.assertEquals(4673485853004861736L, response.size());
+        Assertions.assertEquals("pqthehnmnaoya", response.parentPath());
     }
 }

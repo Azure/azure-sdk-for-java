@@ -218,9 +218,13 @@ public final class MicrosoftAccessLinkedServiceTypeProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("connectionString", this.connectionString);
-        jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+        if (this.authenticationType != null) {
+            jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+        }
         jsonWriter.writeJsonField("credential", this.credential);
-        jsonWriter.writeUntypedField("userName", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("userName", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();

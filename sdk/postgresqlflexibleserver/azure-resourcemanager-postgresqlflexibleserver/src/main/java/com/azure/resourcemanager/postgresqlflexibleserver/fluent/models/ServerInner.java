@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.AuthConfig;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.Cluster;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
@@ -605,6 +606,29 @@ public final class ServerInner extends Resource {
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
         return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the cluster property: Cluster properties of a server.
+     * 
+     * @return the cluster value.
+     */
+    public Cluster cluster() {
+        return this.innerProperties() == null ? null : this.innerProperties().cluster();
+    }
+
+    /**
+     * Set the cluster property: Cluster properties of a server.
+     * 
+     * @param cluster the cluster value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withCluster(Cluster cluster) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withCluster(cluster);
+        return this;
     }
 
     /**

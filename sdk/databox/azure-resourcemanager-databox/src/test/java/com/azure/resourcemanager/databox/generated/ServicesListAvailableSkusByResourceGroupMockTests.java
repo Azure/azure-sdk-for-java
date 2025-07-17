@@ -7,8 +7,8 @@ package com.azure.resourcemanager.databox.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.databox.DataBoxManager;
 import com.azure.resourcemanager.databox.models.AvailableSkuRequest;
@@ -25,22 +25,21 @@ public final class ServicesListAvailableSkusByResourceGroupMockTests {
     @Test
     public void testListAvailableSkusByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"sku\":{\"name\":\"DataBoxDisk\",\"displayName\":\"aays\",\"family\":\"ixqtn\"},\"enabled\":false,\"properties\":{\"dataLocationToServiceLocationMap\":[{\"dataLocation\":\"fffiak\",\"serviceLocation\":\"pqqmted\"},{\"dataLocation\":\"mmji\",\"serviceLocation\":\"eozphv\"}],\"capacity\":{\"usable\":\"y\",\"maximum\":\"c\"},\"costs\":[{\"meterId\":\"kvi\",\"meterType\":\"dscwxqupevzhf\",\"multiplier\":56.8025581094299},{\"meterId\":\"hojujbypelmcuv\",\"meterType\":\"xbjxyfwnylrcools\",\"multiplier\":3.439577780004288},{\"meterId\":\"w\",\"meterType\":\"bnujrywvtylbf\",\"multiplier\":74.74401634440316}],\"apiVersions\":[\"oiwiithtywub\",\"cbihwqk\"],\"disabledReason\":\"Feature\",\"disabledReasonMessage\":\"twjchrdg\",\"requiredFeature\":\"hxumwctondzj\",\"countriesWithinCommerceBoundary\":[\"dfdlwggyts\",\"wtovvtgsein\"]}}]}";
+            = "{\"value\":[{\"sku\":{\"name\":\"DataBoxDisk\",\"displayName\":\"oqkag\",\"family\":\"sxtta\",\"model\":\"DataBoxHeavy\"},\"enabled\":true,\"properties\":{\"dataLocationToServiceLocationMap\":[{\"dataLocation\":\"pxdtnkdmkq\",\"serviceLocation\":\"lwuenvrkp\"},{\"dataLocation\":\"uaibrebqaaysj\",\"serviceLocation\":\"xqtnq\"},{\"dataLocation\":\"ezl\",\"serviceLocation\":\"ffiakp\"},{\"dataLocation\":\"qqmtedltmmji\",\"serviceLocation\":\"eozphv\"}],\"capacity\":{\"usable\":\"y\",\"maximum\":\"c\",\"individualSkuUsable\":\"upkvipmdsc\"},\"costs\":[{\"meterId\":\"pevzhfst\",\"meterType\":\"xhojuj\",\"multiplier\":93.60903040035382},{\"meterId\":\"mc\",\"meterType\":\"hixbjxyfwnyl\",\"multiplier\":16.99641354040682}],\"apiVersions\":[\"ttpkiwkkbnujrywv\"],\"disabledReason\":\"Region\",\"disabledReasonMessage\":\"fpncurdo\",\"requiredFeature\":\"iithtywu\",\"countriesWithinCommerceBoundary\":[\"bihwqknfdnt\",\"jchrdgoihxumw\"]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataBoxManager manager = DataBoxManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SkuInformation> response = manager.services()
-            .listAvailableSkusByResourceGroup("oqkag", "hsxttaugzxnf",
-                new AvailableSkuRequest().withTransferType(TransferType.EXPORT_FROM_AZURE)
-                    .withCountry("zpxdt")
-                    .withLocation("kdmkqjjlwuenvrkp")
-                    .withSkuNames(Arrays.asList(SkuName.DATA_BOX_CUSTOMER_DISK, SkuName.DATA_BOX_DISK, SkuName.DATA_BOX,
-                        SkuName.DATA_BOX_HEAVY)),
+            .listAvailableSkusByResourceGroup("lcrpw", "xeznoi",
+                new AvailableSkuRequest().withTransferType(TransferType.IMPORT_TO_AZURE)
+                    .withCountry("rnjwmw")
+                    .withLocation("pn")
+                    .withSkuNames(Arrays.asList(SkuName.DATA_BOX_DISK)),
                 com.azure.core.util.Context.NONE);
 
     }

@@ -52,7 +52,7 @@ public final class AzureMLUpdateResourceActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureMLUpdateResourceActivityTypeProperties innerTypeProperties() {
+    AzureMLUpdateResourceActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

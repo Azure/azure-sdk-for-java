@@ -1,16 +1,47 @@
 ## Release History
 
-### 5.20.0-beta.1 (Unreleased)
+### 5.23.0-beta.1 (Unreleased)
 
 #### Features Added
-* Improved the Exception Handling of 'azure-spring-data-cosmos' to throw more detailed exceptions and not always the same exception - See [PR 42902](https://github.com/Azure/azure-sdk-for-java/pull/42902).
-* Implemented sum() support for annotated queries - See [PR 43239](https://github.com/Azure/azure-sdk-for-java/pull/43239).
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 5.22.0 (2025-04-08)
+
+#### Bugs Fixed
+* Fixing bug when the PartitionKey is on a parent entity that was introduced when bulk support was added - See [PR 43801](https://github.com/Azure/azure-sdk-for-java/pull/43801).
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.68.0`.
+
+### 5.21.0 (2025-03-20)
+
+#### Features Added
+* Added `readMany()` API support to `findAllByIds()` - See [PR 43759](https://github.com/Azure/azure-sdk-for-java/pull/43759).
+
+#### Bugs Fixed
+* Fixing bug when the PartitionKey is on a parent entity that was introduced when bulk support was added - See [PR 43801](https://github.com/Azure/azure-sdk-for-java/pull/43801).
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.67.0`.
+
+### 5.20.1 (2025-03-03)
+
+#### Other Changes
+* Upgrade `azure-sdk-bom` to 1.2.31.
+
+### 5.20.0 (2025-02-12)
+
+#### Features Added
+* Improved the Exception Handling of 'azure-spring-data-cosmos' to throw more detailed exceptions and not always the same exception - See [PR 42902](https://github.com/Azure/azure-sdk-for-java/pull/42902).
+* Implemented sum() support for annotated queries - See [PR 43239](https://github.com/Azure/azure-sdk-for-java/pull/43239).
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.66.0`.
 
 ### 5.19.0 (2024-12-17)
 

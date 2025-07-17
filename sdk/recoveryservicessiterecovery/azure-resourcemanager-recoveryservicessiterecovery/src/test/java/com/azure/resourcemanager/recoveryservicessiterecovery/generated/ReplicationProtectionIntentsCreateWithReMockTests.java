@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.CreateProtectionIntentProperties;
@@ -23,23 +23,23 @@ public final class ReplicationProtectionIntentsCreateWithReMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"friendlyName\":\"txytja\",\"jobId\":\"j\",\"jobState\":\"jlijkk\",\"isActive\":true,\"creationTimeUTC\":\"ehjjirvjqxavqm\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}},\"location\":\"ac\",\"id\":\"sffdralihhssc\",\"name\":\"gyzhcv\",\"type\":\"avyrjlnd\"}";
+            = "{\"properties\":{\"friendlyName\":\"vcknglffnozzf\",\"jobId\":\"ffrpjfxsyxcdos\",\"jobState\":\"hwpu\",\"isActive\":true,\"creationTimeUTC\":\"re\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}},\"location\":\"qc\",\"id\":\"kxkteoykqrqtxqog\",\"name\":\"ddimnacklyrb\",\"type\":\"mbdgexpnphtq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ReplicationProtectionIntent response = manager.replicationProtectionIntents()
-            .define("amzmzfnt")
-            .withExistingVault("gvejhmnaph", "skmpeajzzypa")
+            .define("xfuhxyk")
+            .withExistingVault("dhnhs", "nfgzmx")
             .withProperties(new CreateProtectionIntentProperties()
                 .withProviderSpecificDetails(new CreateProtectionIntentProviderSpecificDetails()))
             .create();
 
-        Assertions.assertEquals("txytja", response.properties().friendlyName());
-        Assertions.assertEquals("ac", response.location());
+        Assertions.assertEquals("vcknglffnozzf", response.properties().friendlyName());
+        Assertions.assertEquals("qc", response.location());
     }
 }

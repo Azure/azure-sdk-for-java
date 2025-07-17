@@ -14,7 +14,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtRe
 public final class ReplicationMigrationItemsResumeReplicationSampl {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationMigrationItems_ResumeReplication.json
      */
     /**
@@ -25,7 +25,7 @@ public final class ReplicationMigrationItemsResumeReplicationSampl {
     public static void
         resumeReplication(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationMigrationItems()
-            .resumeReplication("migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1",
+            .resumeReplication("resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1",
                 "virtualmachine1",
                 new ResumeReplicationInput()
                     .withProperties(new ResumeReplicationInputProperties().withProviderSpecificDetails(

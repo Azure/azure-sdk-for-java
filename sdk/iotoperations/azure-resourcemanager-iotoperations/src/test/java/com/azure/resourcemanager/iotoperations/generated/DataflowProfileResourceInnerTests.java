@@ -18,31 +18,32 @@ public final class DataflowProfileResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowProfileResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"diagnostics\":{\"logs\":{\"level\":\"olbgycduiertgccy\"},\"metrics\":{\"prometheusPort\":50940581}},\"instanceCount\":76010479,\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"name\":\"lqlfm\",\"type\":\"CustomLocation\"},\"id\":\"bbglzpswiydmc\",\"name\":\"yhz\",\"type\":\"xssadbzmnvdf\"}")
+            "{\"properties\":{\"diagnostics\":{\"logs\":{\"level\":\"shqjohxcrsbf\"},\"metrics\":{\"prometheusPort\":1966093769}},\"instanceCount\":1060545026,\"provisioningState\":\"Provisioning\"},\"extendedLocation\":{\"name\":\"wbhsqfsub\",\"type\":\"CustomLocation\"},\"id\":\"birx\",\"name\":\"pybsrfbjfdtw\",\"type\":\"sotftpvj\"}")
             .toObject(DataflowProfileResourceInner.class);
-        Assertions.assertEquals("olbgycduiertgccy", model.properties().diagnostics().logs().level());
-        Assertions.assertEquals(50940581, model.properties().diagnostics().metrics().prometheusPort());
-        Assertions.assertEquals(76010479, model.properties().instanceCount());
-        Assertions.assertEquals("lqlfm", model.extendedLocation().name());
+        Assertions.assertEquals("shqjohxcrsbf", model.properties().diagnostics().logs().level());
+        Assertions.assertEquals(1966093769, model.properties().diagnostics().metrics().prometheusPort());
+        Assertions.assertEquals(1060545026, model.properties().instanceCount());
+        Assertions.assertEquals("wbhsqfsub", model.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowProfileResourceInner model = new DataflowProfileResourceInner()
-            .withProperties(
-                new DataflowProfileProperties()
-                    .withDiagnostics(
-                        new ProfileDiagnostics().withLogs(new DiagnosticsLogs().withLevel("olbgycduiertgccy"))
-                            .withMetrics(new Metrics().withPrometheusPort(50940581)))
-                    .withInstanceCount(76010479))
-            .withExtendedLocation(
-                new ExtendedLocation().withName("lqlfm").withType(ExtendedLocationType.CUSTOM_LOCATION));
+        DataflowProfileResourceInner model
+            = new DataflowProfileResourceInner()
+                .withProperties(
+                    new DataflowProfileProperties()
+                        .withDiagnostics(
+                            new ProfileDiagnostics().withLogs(new DiagnosticsLogs().withLevel("shqjohxcrsbf"))
+                                .withMetrics(new Metrics().withPrometheusPort(1966093769)))
+                        .withInstanceCount(1060545026))
+                .withExtendedLocation(
+                    new ExtendedLocation().withName("wbhsqfsub").withType(ExtendedLocationType.CUSTOM_LOCATION));
         model = BinaryData.fromObject(model).toObject(DataflowProfileResourceInner.class);
-        Assertions.assertEquals("olbgycduiertgccy", model.properties().diagnostics().logs().level());
-        Assertions.assertEquals(50940581, model.properties().diagnostics().metrics().prometheusPort());
-        Assertions.assertEquals(76010479, model.properties().instanceCount());
-        Assertions.assertEquals("lqlfm", model.extendedLocation().name());
+        Assertions.assertEquals("shqjohxcrsbf", model.properties().diagnostics().logs().level());
+        Assertions.assertEquals(1966093769, model.properties().diagnostics().metrics().prometheusPort());
+        Assertions.assertEquals(1060545026, model.properties().instanceCount());
+        Assertions.assertEquals("wbhsqfsub", model.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
     }
 }

@@ -42,6 +42,12 @@ public final class DataTransferDetailsValidationRequest extends ValidationInputR
      */
     private TransferType transferType;
 
+    /*
+     * The customer friendly name of the combination of version and capacity of the device. This field is necessary only
+     * at the time of ordering the newer generation device i.e. AzureDataBox120 and AzureDataBox525 as of Feb/2025
+     */
+    private ModelName model;
+
     /**
      * Creates an instance of DataTransferDetailsValidationRequest class.
      */
@@ -139,6 +145,30 @@ public final class DataTransferDetailsValidationRequest extends ValidationInputR
     }
 
     /**
+     * Get the model property: The customer friendly name of the combination of version and capacity of the device. This
+     * field is necessary only at the time of ordering the newer generation device i.e. AzureDataBox120 and
+     * AzureDataBox525 as of Feb/2025.
+     * 
+     * @return the model value.
+     */
+    public ModelName model() {
+        return this.model;
+    }
+
+    /**
+     * Set the model property: The customer friendly name of the combination of version and capacity of the device. This
+     * field is necessary only at the time of ordering the newer generation device i.e. AzureDataBox120 and
+     * AzureDataBox525 as of Feb/2025.
+     * 
+     * @param model the model value to set.
+     * @return the DataTransferDetailsValidationRequest object itself.
+     */
+    public DataTransferDetailsValidationRequest withModel(ModelName model) {
+        this.model = model;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -179,6 +209,7 @@ public final class DataTransferDetailsValidationRequest extends ValidationInputR
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("dataImportDetails", this.dataImportDetails,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("model", this.model == null ? null : this.model.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -216,6 +247,8 @@ public final class DataTransferDetailsValidationRequest extends ValidationInputR
                     List<DataImportDetails> dataImportDetails
                         = reader.readArray(reader1 -> DataImportDetails.fromJson(reader1));
                     deserializedDataTransferDetailsValidationRequest.dataImportDetails = dataImportDetails;
+                } else if ("model".equals(fieldName)) {
+                    deserializedDataTransferDetailsValidationRequest.model = ModelName.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
