@@ -338,15 +338,7 @@
 
   <build>
     <plugins>
-      <!--
-      Used to extract PMD report metrics for the recipes
-      * Run with mvn pmd:pmd
-      -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.15.0</version>
-      </plugin>
+
       <!-- generate sources jar -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

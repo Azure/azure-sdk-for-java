@@ -5,11 +5,13 @@ package com.azure.communication.callautomation.implementation.accesshelpers;
 
 import com.azure.communication.callautomation.implementation.models.TranscriptionSubscriptionInternal;
 import com.azure.communication.callautomation.models.TranscriptionSubscription;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Helper class to access private values of {@link TranscriptionSubscriptionInternal} across package boundaries.
  */
 public final class TranscriptionSubscriptionConstructorProxy {
+    private static final ClientLogger LOGGER = new ClientLogger(TranscriptionSubscriptionConstructorProxy.class);
     private static TranscriptionSubscriptionConstructorAccessor accessor;
 
     private TranscriptionSubscriptionConstructorProxy() {
@@ -51,7 +53,12 @@ public final class TranscriptionSubscriptionConstructorProxy {
         // application accesses TranscriptionSubscription which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
-            new TranscriptionSubscription();
+            try {
+                Class.forName(TranscriptionSubscription.class.getName(), true,
+                    TranscriptionSubscriptionConstructorAccessor.class.getClassLoader());
+            } catch (ClassNotFoundException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
         }
 
         assert accessor != null;

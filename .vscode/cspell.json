@@ -280,6 +280,7 @@
     "endtoend",
     "entra",
     "Entra",
+    "ESRP",
     "Esto",
     "etag",
     "euap",
@@ -299,6 +300,7 @@
     "hdfs",
     "hdinsight",
     "healthdataaiservices",
+    "HKLM",
     "hudha",
     "hvac",
     "hybridkubernetes",
@@ -363,6 +365,7 @@
     "Onco",
     "onenote",
     "openai",
+    "ossrh",
     "passthrough",
     "Pnative",
     "premf",
@@ -873,12 +876,6 @@
       ]
     },
     {
-      "filename": "sdk/storage/CONTRIBUTING.md",
-      "words": [
-        "HKLM"
-      ]
-    },
-    {
       "filename": "sdk/storage/azure-storage-common/**",
       "words": [
         "alzimmer",
@@ -1143,6 +1140,7 @@
         "rabbitmq",
         "reactivex",
         "remoting",
+        "rocketmq",
         "rocksdb",
         "rsocket",
         "rxtx",
@@ -1185,6 +1183,7 @@
         "yasson",
         "yugabytedb",
         "zaxxer",
+        "zjsonpatch",
         "LINUXVMIMAGE",
         "LINUXPOOL",
         "OSVmImage"

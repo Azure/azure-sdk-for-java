@@ -29,12 +29,6 @@ public final class RedirectCallRequestInternal implements JsonSerializable<Redir
     @Generated
     private CommunicationIdentifierModel target;
 
-    /*
-     * Used by customer to send custom calling context to targets
-     */
-    @Generated
-    private CustomCallingContext customCallingContext;
-
     /**
      * Creates an instance of RedirectCallRequestInternal class.
      */
@@ -87,28 +81,6 @@ public final class RedirectCallRequestInternal implements JsonSerializable<Redir
     }
 
     /**
-     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
-     * 
-     * @return the customCallingContext value.
-     */
-    @Generated
-    public CustomCallingContext getCustomCallingContext() {
-        return this.customCallingContext;
-    }
-
-    /**
-     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
-     * 
-     * @param customCallingContext the customCallingContext value to set.
-     * @return the RedirectCallRequestInternal object itself.
-     */
-    @Generated
-    public RedirectCallRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
-        this.customCallingContext = customCallingContext;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -117,7 +89,6 @@ public final class RedirectCallRequestInternal implements JsonSerializable<Redir
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("incomingCallContext", this.incomingCallContext);
         jsonWriter.writeJsonField("target", this.target);
-        jsonWriter.writeJsonField("customCallingContext", this.customCallingContext);
         return jsonWriter.writeEndObject();
     }
 
@@ -142,9 +113,6 @@ public final class RedirectCallRequestInternal implements JsonSerializable<Redir
                     deserializedRedirectCallRequestInternal.incomingCallContext = reader.getString();
                 } else if ("target".equals(fieldName)) {
                     deserializedRedirectCallRequestInternal.target = CommunicationIdentifierModel.fromJson(reader);
-                } else if ("customCallingContext".equals(fieldName)) {
-                    deserializedRedirectCallRequestInternal.customCallingContext
-                        = CustomCallingContext.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
