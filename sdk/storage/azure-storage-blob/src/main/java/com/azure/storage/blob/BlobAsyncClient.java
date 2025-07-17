@@ -736,7 +736,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         return UploadUtils.computeChecksum(data, computeMd5, storageChecksumAlgorithm, length, LOGGER)
             .map(
                 fluxContentValidationWrapper -> new BlockBlobSimpleUploadOptions(fluxContentValidationWrapper.getData(),
-                    length).setHeaders(headers)
+                    fluxContentValidationWrapper.getDataLength()).setHeaders(headers)
                         .setMetadata(metadata)
                         .setTags(tags)
                         .setTier(tier)
@@ -789,7 +789,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     .computeChecksum(chunkData, computeMd5, storageChecksumAlgorithm, bufferAggregator.length(), LOGGER)
                     .flatMap(fluxContentValidationWrapper -> {
                         BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(blockId,
-                            fluxContentValidationWrapper.getData(), bufferAggregator.length())
+                            fluxContentValidationWrapper.getData(), fluxContentValidationWrapper.getDataLength())
                                 .setContentValidationInfo(fluxContentValidationWrapper.getContentValidationInfo())
                                 .setLeaseId(requestConditions.getLeaseId());
                         Mono<Response<Void>> responseMono = blockBlobAsyncClient.stageBlockWithResponse(options);

@@ -258,7 +258,7 @@ public class StructuredMessageEncoder {
      *
      * @return The length of the message.
      */
-    public String getEncodedMessageLength() {
-        return String.valueOf(messageLength);
+    public long getEncodedMessageLength() {
+        return messageLength;
     }
 }

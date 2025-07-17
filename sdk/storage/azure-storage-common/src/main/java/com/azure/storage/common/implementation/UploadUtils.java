@@ -30,7 +30,7 @@ import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STATIC_MAXIMUM_ENCODED_DATA_LENGTH;
-import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STRUCTURED_BODY_TYPE;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE;
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_DEFAULT_SEGMENT_CONTENT_LENGTH;
 
 /**
@@ -157,16 +157,16 @@ public class UploadUtils {
     public static Mono<FluxContentValidationWrapper> computeChecksum(Flux<ByteBuffer> data, boolean computeMd5,
         StorageChecksumAlgorithm storageChecksumAlgorithm, long length, ClientLogger logger) {
         if (computeMd5) {
-            return computeMd5(data, true, logger);
+            return computeMd5(data, true, length, logger);
         }
         if (storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
-            if (length <= STATIC_MAXIMUM_ENCODED_DATA_LENGTH) {
-                return computeCRC64(data, logger);
+            if (length < STATIC_MAXIMUM_ENCODED_DATA_LENGTH) {
+                return computeCRC64(data, length, logger);
             } else {
                 return applyStructuredMessage(data, length);
             }
         }
-        return Mono.just(new FluxContentValidationWrapper(data, new ContentValidationInfo()));
+        return Mono.just(new FluxContentValidationWrapper(data, new ContentValidationInfo(), length));
     }
 
     public static Mono<FluxContentValidationWrapper> applyStructuredMessage(Flux<ByteBuffer> data, long length) {
@@ -182,10 +182,13 @@ public class UploadUtils {
             .flatMap(bufferAggregator -> bufferAggregator.asFlux().map(structuredMessageEncoder::encode));
 
         return Mono.just(new FluxContentValidationWrapper(encodedBody,
-            new ContentValidationInfo().setStructuredBodyType(STRUCTURED_BODY_TYPE).setOriginalContentLength(length)));
+            new ContentValidationInfo().setStructuredBodyType(STRUCTURED_BODY_TYPE_VALUE)
+                .setOriginalContentLength(length),
+            structuredMessageEncoder.getEncodedMessageLength()));
     }
 
-    public static Mono<FluxContentValidationWrapper> computeCRC64(Flux<ByteBuffer> data, ClientLogger logger) {
+    public static Mono<FluxContentValidationWrapper> computeCRC64(Flux<ByteBuffer> data, long length,
+        ClientLogger logger) {
         try {
             return data.reduce(0L, (crc, buffer) -> {
                 // Use ByteBuffer.duplicate to create a read-only view that won't mutate the original buffer
@@ -201,14 +204,15 @@ public class UploadUtils {
                 for (int i = 0; i < 8; i++) {
                     crc64Bytes[i] = (byte) (finalCrc >>> (i * 8));
                 }
-                return new FluxContentValidationWrapper(data, new ContentValidationInfo().setCRC64checksum(crc64Bytes));
+                return new FluxContentValidationWrapper(data, new ContentValidationInfo().setCRC64checksum(crc64Bytes),
+                    length);
             });
         } catch (Exception e) {
             return monoError(logger, new RuntimeException(e));
         }
     }
 
-    public static Mono<FluxContentValidationWrapper> computeMd5(Flux<ByteBuffer> data, boolean computeMd5,
+    public static Mono<FluxContentValidationWrapper> computeMd5(Flux<ByteBuffer> data, boolean computeMd5, long length,
         ClientLogger logger) {
         if (computeMd5) {
             try {
@@ -220,12 +224,12 @@ public class UploadUtils {
                     return digest;
                 })
                     .map(messageDigest -> new FluxContentValidationWrapper(data,
-                        new ContentValidationInfo().setMD5checksum(messageDigest.digest())));
+                        new ContentValidationInfo().setMD5checksum(messageDigest.digest()), length));
             } catch (NoSuchAlgorithmException e) {
                 return monoError(logger, new RuntimeException(e));
             }
         } else {
-            return Mono.just(new FluxContentValidationWrapper(data, new ContentValidationInfo()));
+            return Mono.just(new FluxContentValidationWrapper(data, new ContentValidationInfo(), length));
         }
     }
 
@@ -283,10 +287,13 @@ public class UploadUtils {
     public static class FluxContentValidationWrapper {
         private final Flux<ByteBuffer> data;
         private final ContentValidationInfo contentValidationInfo;
+        private final long dataLength;
 
-        public FluxContentValidationWrapper(Flux<ByteBuffer> data, ContentValidationInfo contentValidationInfo) {
+        public FluxContentValidationWrapper(Flux<ByteBuffer> data, ContentValidationInfo contentValidationInfo,
+            long dataLength) {
             this.data = data;
             this.contentValidationInfo = contentValidationInfo;
+            this.dataLength = dataLength;
         }
 
         public final Flux<ByteBuffer> getData() {
@@ -295,6 +302,10 @@ public class UploadUtils {
 
         public final ContentValidationInfo getContentValidationInfo() {
             return contentValidationInfo;
+        }
+
+        public final long getDataLength() {
+            return dataLength;
         }
     }
 

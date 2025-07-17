@@ -20,8 +20,8 @@ import reactor.core.publisher.Flux;
 import java.io.ByteArrayInputStream;
 
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME;
-import static com.azure.storage.common.implementation.Constants.HeaderConstants.STRUCTURED_BODY_TYPE;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -50,7 +50,7 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
                 .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
 
         Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
-        assertEquals(STRUCTURED_BODY_TYPE,
+        assertEquals(STRUCTURED_BODY_TYPE_VALUE,
             response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
     }
 
@@ -64,9 +64,7 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
 
         assertDoesNotThrow(() -> bc.uploadWithResponse(options, null, Context.NONE));
 
-        //        Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
-        //        assertEquals(STRUCTURED_BODY_TYPE,
-        //            response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
+        // response contains data from commit block, not the upload
     }
 
     @Test
@@ -86,7 +84,7 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
             = new BlobParallelUploadOptions(input).setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
 
         Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
-        assertEquals(STRUCTURED_BODY_TYPE,
+        assertEquals(STRUCTURED_BODY_TYPE_VALUE,
             response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
     }
 
@@ -100,9 +98,7 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
                     new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
 
         assertDoesNotThrow(() -> bc.uploadWithResponse(options, null, Context.NONE));
-        //        Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
-        //        assertEquals(STRUCTURED_BODY_TYPE,
-        //            response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
+        // response contains data from commit block, not the upload
     }
 
     @Test
@@ -120,7 +116,7 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
             .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
 
         Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
-        assertEquals(STRUCTURED_BODY_TYPE,
+        assertEquals(STRUCTURED_BODY_TYPE_VALUE,
             response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
     }
 
@@ -132,8 +128,6 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
                 new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
 
         assertDoesNotThrow(() -> bc.uploadWithResponse(options, null, Context.NONE));
-        //        Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
-        //        assertEquals(STRUCTURED_BODY_TYPE,
-        //            response.getRequest().getHeaders().getValue(STRUCTURED_BODY_TYPE_HEADER_NAME));
+        // response contains data from commit block, not the upload
     }
 }
