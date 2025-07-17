@@ -51,6 +51,10 @@ public class TestUtil {
             new TestProxySanitizer("resourceGroups\\/.*?\\/", "resourceGroups/REDACTED/", TestProxySanitizerType.URL),
             new TestProxySanitizer("Namespaces\\/.*\\/providers", "Namespaces/REDACTED/providers",
                 TestProxySanitizerType.URL),
+            // For resource based queries, the resource id is url encoded string (/ is encoded to %2F).
+            // The regex checks for anything starting with subscriptions and ending with /query ignoring the actual resource id in playback mode
+            new TestProxySanitizer("subscriptions.*?\\/query", "subscriptions/IGNORED/query",
+                TestProxySanitizerType.URL),
             new TestProxySanitizer("workspaces\\/.*?\\/", "workspaces/REDACTED/", TestProxySanitizerType.URL));
         interceptorManager.addMatchers(
             new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
