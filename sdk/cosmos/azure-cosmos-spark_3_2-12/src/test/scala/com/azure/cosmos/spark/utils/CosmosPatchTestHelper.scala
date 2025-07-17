@@ -176,7 +176,7 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
     container,
     partitionKeyDefinition,
     writeConfigForPatch,
-    DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+    DiagnosticsConfig(),
     metricsPublisher,
     1)
  }
@@ -196,7 +196,7 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
        container,
        partitionKeyDefinition,
        writeConfigForPatch,
-       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+       DiagnosticsConfig(),
        new TestOutputMetricsPublisher,
        1)
  }
@@ -218,7 +218,7 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
    container,
     partitionKeyDefinition,
     writeConfigForPatch,
-    DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+    DiagnosticsConfig(),
     MockTaskContext.mockTaskContext(),
     metricsPublisher)
  }
@@ -239,7 +239,7 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
          container,
        partitionKeyDefinition,
        writeConfigForPatch,
-       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+       DiagnosticsConfig(),
        MockTaskContext.mockTaskContext(),
        new TestOutputMetricsPublisher)
  }
