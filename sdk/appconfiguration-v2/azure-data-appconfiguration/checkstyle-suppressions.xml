@@ -7,8 +7,6 @@
   <suppress files="sdk/appconfiguration-v2/azure-data-appconfiguration/target/generated-sources/com/azure/v2/data/appconfiguration/implementation/AzureAppConfigurationClientServiceImpl.java" checks="FinalClassCheck" />
   <suppress files="sdk/appconfiguration-v2/azure-data-appconfiguration/target/generated-sources/com/azure/v2/data/appconfiguration/implementation/AzureAppConfigurationClientServiceImpl.java" checks="JavadocPackageCheck" />
   <suppress files="com.azure.v2.data.appconfiguration.models.KeyValue.java" checks="RedundantModifierCheck" />
-  <suppress files="com.azure.v2.data.appconfiguration.ConfigurationClient.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.data.appconfiguration.ConfigurationClientBuilder.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.v2.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.java" checks="io.clientcore.lintingextensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="sdk/appconfiguration-v2/azure-data-appconfiguration/target/generated-sources/com/azure/v2/data/appconfiguration/implementation/AzureAppConfigurationClientServiceImpl.java" checks="io.clientcore.lintingextensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.v2.data.appconfiguration.implementation.ConfigurationCredentialsPolicy.java" checks="io.clientcore.lintingextensions.checkstyle.checks.HttpPipelinePolicyCheck" />

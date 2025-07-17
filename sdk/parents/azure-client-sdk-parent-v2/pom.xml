@@ -718,7 +718,7 @@
           </dependencies>
           <configuration>
             <skip>${checkstyle.skip}</skip>
-            <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/checkstyle/clientcore/checkstyle.xml</configLocation>
+            <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/checkstyle/vnext/checkstyle.xml</configLocation>
             <suppressionsLocation>${checkstyle.suppressionsLocation}</suppressionsLocation>
             <headerLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/checkstyle/java.header</headerLocation>
             <excludes>${checkstyle.excludes}</excludes>

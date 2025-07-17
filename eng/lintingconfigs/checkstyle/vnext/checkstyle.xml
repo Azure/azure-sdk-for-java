@@ -24,8 +24,7 @@
   </module>
 
   <module name="Header">
-    <property name="header"
-              value="// Copyright (c) Microsoft Corporation. All rights reserved.\n// Licensed under the MIT License."/>
+    <property name="header" value="// Copyright (c) Microsoft Corporation. All rights reserved.\n// Licensed under the MIT License."/>
     <property name="fileExtensions" value="java"/>
   </module>
 
@@ -276,11 +275,11 @@
     <!-- See http://checkstyle.sf.net/config_misc.html -->
     <module name="ArrayTypeStyle"/>
 
-    <!--Checks for package naming and name length limit. Package names have to starting with either 'com.azure' or-->
-    <!--'com.microsoft.azure' and then the extension names start with characters 'a' to 'z' and only contains 'a' to 'z'-->
-    <!--or '0' to '9' with no more than 32 characters and the package names should be no more than 80 characters.-->
+    <!--Checks for package naming and name length limit. Package names have to starting with 'com.azure.v2' and then-->
+    <!--the extension names start with characters 'a' to 'z' and only contains 'a' to 'z' or '0' to '9' with no more-->
+    <!--than 32 characters and the package names should be no more than 80 characters.-->
     <module name="PackageName">
-      <property name="format" value="^(?=.{9,80}$)((com.microsoft|com.azure)(\.[a-z][a-z0-9]{1,31})*)+$"/>
+      <property name="format" value="^(?=.{12,80}$)(com.azure.v2(\.[a-z][a-z0-9]{1,31})*)+$"/>
     </module>
 
     <!-- Javadoc checks                                   -->
@@ -320,11 +319,11 @@
     <module name="io.clientcore.lintingextensions.checkstyle.checks.ServiceClientCheck"/>
 
     <!-- CUSTOM CHECKS -->
-    <!-- Checks for no external dependency exposed in the public API.
-    We should only return types, and accept argument types, that are from the com.azure namespace.
-    All other types should have suppression added if required. -->
+    <!-- Checks for no external dependency exposed in the public API. We should only return types and accept-->
+    <!--argument types, that are from the com.azure.v2 and io.clientcore namespaces. All other types should have-->
+    <!--suppression added if required. -->
     <module name="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck">
-      <property name="allowedDependencyPrefixes" value="com.azure.,reactor.,org.reactivestreams."/>
+      <property name="allowedDependencyPrefixes" value="com.azure.v2.,io.clientcore."/>
     </module>
 
     <!-- CUSTOM CHECKS -->
@@ -356,8 +355,16 @@
     <module name="io.clientcore.lintingextensions.checkstyle.checks.JavadocFormatting"/>
 
     <!-- CUSTOM CHECKS -->
-    <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
-    <module name="io.clientcore.lintingextensions.checkstyle.checks.ThrowFromClientLoggerCheck"/>
+    <!-- Don't format exception messages -->
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.StringFormattedExceptionMessageCheck"/>
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Log exceptions at creation time -->
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.RawExceptionThrowCheck"/>
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Throw created and logged exceptions -->
+    <module name="io.clientcore.lintingextensions.checkstyle.checks.ExceptionCreatedButNotThrownCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Any class that implements the HttpPipelinePolicy interface should:
@@ -392,7 +399,7 @@
       'System.out' and 'System.err' is not allowed as well.
     4) All classes should use ClientLogger as logger only but except ClientLogger itself -->
     <module name="io.clientcore.lintingextensions.checkstyle.checks.GoodLoggingCheck">
-      <property name="fullyQualifiedLoggerName" value="com.azure.core.util.logging.ClientLogger"/>
+      <property name="fullyQualifiedLoggerName" value="io.clientcore.core.instrumentation.logging.ClientLogger"/>
       <property name="simpleClassName" value="ClientLogger"/>
       <property name="loggerName" value="logger"/>
     </module>
@@ -418,7 +425,5 @@
     <!-- CUSTOM CHECKS -->
     <!-- Ensures caught exceptions are included as exception cause in subsequently thrown exception -->
     <module name="io.clientcore.lintingextensions.checkstyle.checks.UseCaughtExceptionCauseCheck"/>
-
-    <module name="io.clientcore.lintingextensions.checkstyle.checks.StepVerifierCheck"/>
   </module>
 </module>

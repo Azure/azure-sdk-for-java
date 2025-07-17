@@ -8,30 +8,5 @@
   <suppress files="com.azure.v2.identity.implementation.client.LinuxKeyRingAccessor.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.v2.identity.implementation.client.PowershellManager.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.v2.identity.implementation.client.LinuxKeyRingAccessor.java" checks="io.clientcore.lintingextensions.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.v2.identity.AuthenticationRequiredException.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.AuthorizationCodeCredential.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.AzureCliCredential.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.AzureDeveloperCliCredential.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.AzurePipelinesCredential.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.AzurePipelinesCredentialBuilder.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.AzurePowerShellCredential.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.AzureToolkitCredential.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.ChainedTokenCredential.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.ChainedTokenCredentialBuilder.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.ClientAssertionCredential.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.ClientAssertionCredentialBuilder.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.ClientCertificateCredential.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.ClientCertificateCredentialBuilder.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.ClientSecretCredential.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.ClientSecretCredentialBuilder.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.DeviceCodeCredential.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.DeviceCodeCredentialBuilder.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.EnvironmentCredential.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.InteractiveBrowserCredential.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.InteractiveBrowserCredentialBuilder.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.ManagedIdentityCredential.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.OnBehalfOfCredential.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.OnBehalfOfCredentialBuilder.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.v2.identity.WorkloadIdentityCredential.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.v2.identity.implementation.models.PublicClientOptions.java" checks="io.clientcore.lintingextensions.checkstyle.checks.GoodLoggingCheck" />
 </suppressions>
