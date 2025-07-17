@@ -17,49 +17,46 @@ public final class InMageAzureV2UpdateReplicationProtectedItemInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageAzureV2UpdateReplicationProtectedItemInput model = BinaryData.fromString(
-            "{\"instanceType\":\"InMageAzureV2\",\"recoveryAzureV1ResourceGroupId\":\"llrqmtlpbyxro\",\"recoveryAzureV2ResourceGroupId\":\"uyqyp\",\"useManagedDisks\":\"mnoiicsudy\",\"targetProximityPlacementGroupId\":\"rjjtalxrdsjrho\",\"targetAvailabilityZone\":\"qwgusxxhdo\",\"targetVmTags\":{\"bdmvsby\":\"wyblv\",\"kmkwjfbo\":\"daelqpv\",\"v\":\"loggdusxursu\",\"qrizfwihvaan\":\"xcjkcoqwczsy\"},\"targetManagedDiskTags\":{\"bbaex\":\"nhjrfdmfd\",\"vmuafmc\":\"jfwtgdfkkaui\",\"vpltidajjvy\":\"fedyuep\"},\"targetNicTags\":{\"yelsyasvfnk\":\"cfkumcfjxo\",\"jekrknfd\":\"myg\",\"lcr\":\"ugjqyckgtxkrdt\",\"tcsubmzoo\":\"jdkl\"},\"sqlServerLicenseType\":\"NotSpecified\",\"vmDisks\":[{\"diskId\":\"chkxfpwhdysl\",\"targetDiskName\":\"lglmnnkkwayqsh\"}]}")
+            "{\"instanceType\":\"InMageAzureV2\",\"recoveryAzureV1ResourceGroupId\":\"hsxrznmgsdaluyc\",\"recoveryAzureV2ResourceGroupId\":\"efrbhseuerbg\",\"useManagedDisks\":\"ebjludc\",\"targetProximityPlacementGroupId\":\"tujraxdtpryjm\",\"targetAvailabilityZone\":\"nsewouxl\",\"targetVmTags\":{\"qqylmpctwjwds\":\"vvyljurkepose\"},\"targetManagedDiskTags\":{\"howgomvvhxo\":\"mkxerxxxoteeh\"},\"targetNicTags\":{\"pxraqaw\":\"bap\"},\"sqlServerLicenseType\":\"PAYG\",\"vmDisks\":[{\"diskId\":\"fey\",\"targetDiskName\":\"locvvujexayglx\"}]}")
             .toObject(InMageAzureV2UpdateReplicationProtectedItemInput.class);
-        Assertions.assertEquals("llrqmtlpbyxro", model.recoveryAzureV1ResourceGroupId());
-        Assertions.assertEquals("uyqyp", model.recoveryAzureV2ResourceGroupId());
-        Assertions.assertEquals("mnoiicsudy", model.useManagedDisks());
-        Assertions.assertEquals("rjjtalxrdsjrho", model.targetProximityPlacementGroupId());
-        Assertions.assertEquals("qwgusxxhdo", model.targetAvailabilityZone());
-        Assertions.assertEquals("wyblv", model.targetVmTags().get("bdmvsby"));
-        Assertions.assertEquals("nhjrfdmfd", model.targetManagedDiskTags().get("bbaex"));
-        Assertions.assertEquals("cfkumcfjxo", model.targetNicTags().get("yelsyasvfnk"));
-        Assertions.assertEquals(SqlServerLicenseType.NOT_SPECIFIED, model.sqlServerLicenseType());
-        Assertions.assertEquals("chkxfpwhdysl", model.vmDisks().get(0).diskId());
-        Assertions.assertEquals("lglmnnkkwayqsh", model.vmDisks().get(0).targetDiskName());
+        Assertions.assertEquals("hsxrznmgsdaluyc", model.recoveryAzureV1ResourceGroupId());
+        Assertions.assertEquals("efrbhseuerbg", model.recoveryAzureV2ResourceGroupId());
+        Assertions.assertEquals("ebjludc", model.useManagedDisks());
+        Assertions.assertEquals("tujraxdtpryjm", model.targetProximityPlacementGroupId());
+        Assertions.assertEquals("nsewouxl", model.targetAvailabilityZone());
+        Assertions.assertEquals("vvyljurkepose", model.targetVmTags().get("qqylmpctwjwds"));
+        Assertions.assertEquals("mkxerxxxoteeh", model.targetManagedDiskTags().get("howgomvvhxo"));
+        Assertions.assertEquals("bap", model.targetNicTags().get("pxraqaw"));
+        Assertions.assertEquals(SqlServerLicenseType.PAYG, model.sqlServerLicenseType());
+        Assertions.assertEquals("fey", model.vmDisks().get(0).diskId());
+        Assertions.assertEquals("locvvujexayglx", model.vmDisks().get(0).targetDiskName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InMageAzureV2UpdateReplicationProtectedItemInput model = new InMageAzureV2UpdateReplicationProtectedItemInput()
-            .withRecoveryAzureV1ResourceGroupId("llrqmtlpbyxro")
-            .withRecoveryAzureV2ResourceGroupId("uyqyp")
-            .withUseManagedDisks("mnoiicsudy")
-            .withTargetProximityPlacementGroupId("rjjtalxrdsjrho")
-            .withTargetAvailabilityZone("qwgusxxhdo")
-            .withTargetVmTags(
-                mapOf("bdmvsby", "wyblv", "kmkwjfbo", "daelqpv", "v", "loggdusxursu", "qrizfwihvaan", "xcjkcoqwczsy"))
-            .withTargetManagedDiskTags(mapOf("bbaex", "nhjrfdmfd", "vmuafmc", "jfwtgdfkkaui", "vpltidajjvy", "fedyuep"))
-            .withTargetNicTags(
-                mapOf("yelsyasvfnk", "cfkumcfjxo", "jekrknfd", "myg", "lcr", "ugjqyckgtxkrdt", "tcsubmzoo", "jdkl"))
-            .withSqlServerLicenseType(SqlServerLicenseType.NOT_SPECIFIED)
-            .withVmDisks(
-                Arrays.asList(new UpdateDiskInput().withDiskId("chkxfpwhdysl").withTargetDiskName("lglmnnkkwayqsh")));
+            .withRecoveryAzureV1ResourceGroupId("hsxrznmgsdaluyc")
+            .withRecoveryAzureV2ResourceGroupId("efrbhseuerbg")
+            .withUseManagedDisks("ebjludc")
+            .withTargetProximityPlacementGroupId("tujraxdtpryjm")
+            .withTargetAvailabilityZone("nsewouxl")
+            .withTargetVmTags(mapOf("qqylmpctwjwds", "vvyljurkepose"))
+            .withTargetManagedDiskTags(mapOf("howgomvvhxo", "mkxerxxxoteeh"))
+            .withTargetNicTags(mapOf("pxraqaw", "bap"))
+            .withSqlServerLicenseType(SqlServerLicenseType.PAYG)
+            .withVmDisks(Arrays.asList(new UpdateDiskInput().withDiskId("fey").withTargetDiskName("locvvujexayglx")));
         model = BinaryData.fromObject(model).toObject(InMageAzureV2UpdateReplicationProtectedItemInput.class);
-        Assertions.assertEquals("llrqmtlpbyxro", model.recoveryAzureV1ResourceGroupId());
-        Assertions.assertEquals("uyqyp", model.recoveryAzureV2ResourceGroupId());
-        Assertions.assertEquals("mnoiicsudy", model.useManagedDisks());
-        Assertions.assertEquals("rjjtalxrdsjrho", model.targetProximityPlacementGroupId());
-        Assertions.assertEquals("qwgusxxhdo", model.targetAvailabilityZone());
-        Assertions.assertEquals("wyblv", model.targetVmTags().get("bdmvsby"));
-        Assertions.assertEquals("nhjrfdmfd", model.targetManagedDiskTags().get("bbaex"));
-        Assertions.assertEquals("cfkumcfjxo", model.targetNicTags().get("yelsyasvfnk"));
-        Assertions.assertEquals(SqlServerLicenseType.NOT_SPECIFIED, model.sqlServerLicenseType());
-        Assertions.assertEquals("chkxfpwhdysl", model.vmDisks().get(0).diskId());
-        Assertions.assertEquals("lglmnnkkwayqsh", model.vmDisks().get(0).targetDiskName());
+        Assertions.assertEquals("hsxrznmgsdaluyc", model.recoveryAzureV1ResourceGroupId());
+        Assertions.assertEquals("efrbhseuerbg", model.recoveryAzureV2ResourceGroupId());
+        Assertions.assertEquals("ebjludc", model.useManagedDisks());
+        Assertions.assertEquals("tujraxdtpryjm", model.targetProximityPlacementGroupId());
+        Assertions.assertEquals("nsewouxl", model.targetAvailabilityZone());
+        Assertions.assertEquals("vvyljurkepose", model.targetVmTags().get("qqylmpctwjwds"));
+        Assertions.assertEquals("mkxerxxxoteeh", model.targetManagedDiskTags().get("howgomvvhxo"));
+        Assertions.assertEquals("bap", model.targetNicTags().get("pxraqaw"));
+        Assertions.assertEquals(SqlServerLicenseType.PAYG, model.sqlServerLicenseType());
+        Assertions.assertEquals("fey", model.vmDisks().get(0).diskId());
+        Assertions.assertEquals("locvvujexayglx", model.vmDisks().get(0).targetDiskName());
     }
 
     // Use "Map.of" if available

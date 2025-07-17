@@ -5,17 +5,18 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.CosmosOperationPolicy;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
@@ -92,6 +93,7 @@ public interface AsyncDocumentClient {
         Configs configs = new Configs();
         ConnectionPolicy connectionPolicy;
         ConsistencyLevel desiredConsistencyLevel;
+        ReadConsistencyStrategy readConsistencyStrategy;
         List<Permission> permissionFeed;
         String masterKeyOrResourceToken;
         URI serviceEndpoint;
@@ -110,6 +112,7 @@ public interface AsyncDocumentClient {
         private CosmosContainerProactiveInitConfig containerProactiveInitConfig;
         private CosmosItemSerializer defaultCustomSerializer;
         private boolean isRegionScopedSessionCapturingEnabled;
+        private boolean isPerPartitionAutomaticFailoverEnabled;
         private List<CosmosOperationPolicy> operationPolicies;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
@@ -183,6 +186,11 @@ public interface AsyncDocumentClient {
 
         public Builder withConsistencyLevel(ConsistencyLevel desiredConsistencyLevel) {
             this.desiredConsistencyLevel = desiredConsistencyLevel;
+            return this;
+        }
+
+        public Builder withReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+            this.readConsistencyStrategy = readConsistencyStrategy;
             return this;
         }
 
@@ -273,6 +281,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withPerPartitionAutomaticFailoverEnabled(boolean isPerPartitionAutomaticFailoverEnabled) {
+            this.isPerPartitionAutomaticFailoverEnabled = isPerPartitionAutomaticFailoverEnabled;
+            return this;
+        }
+
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -295,6 +308,7 @@ public interface AsyncDocumentClient {
                     permissionFeed,
                     connectionPolicy,
                     desiredConsistencyLevel,
+                    readConsistencyStrategy,
                     configs,
                     cosmosAuthorizationTokenResolver,
                     credential,
@@ -311,8 +325,8 @@ public interface AsyncDocumentClient {
                     containerProactiveInitConfig,
                     defaultCustomSerializer,
                     isRegionScopedSessionCapturingEnabled,
-                    operationPolicies
-            );
+                    operationPolicies,
+                    isPerPartitionAutomaticFailoverEnabled);
 
             client.init(state, null);
             return client;
@@ -337,6 +351,8 @@ public interface AsyncDocumentClient {
         public ConsistencyLevel getDesiredConsistencyLevel() {
             return desiredConsistencyLevel;
         }
+
+        public ReadConsistencyStrategy getReadConsistencyStrategy() { return this.readConsistencyStrategy; }
 
         public URI getServiceEndpoint() {
             return serviceEndpoint;
@@ -369,6 +385,8 @@ public interface AsyncDocumentClient {
      * @return the consistency level
      */
     ConsistencyLevel getConsistencyLevel();
+
+    ReadConsistencyStrategy getReadConsistencyStrategy();
 
     /**
      * Gets the client telemetry
@@ -1592,7 +1610,9 @@ public interface AsyncDocumentClient {
      */
     GlobalEndpointManager getGlobalEndpointManager();
 
-    GlobalPartitionEndpointManagerForCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker();
+    GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker();
+
+    GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover getGlobalPartitionEndpointManagerForPerPartitionAutomaticFailover();
 
     /***
      * Get the address selector.

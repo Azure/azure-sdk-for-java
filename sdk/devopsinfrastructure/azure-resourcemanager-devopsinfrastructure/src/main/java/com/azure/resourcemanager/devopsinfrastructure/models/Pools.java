@@ -104,6 +104,30 @@ public interface Pools {
     PagedIterable<Pool> list(Context context);
 
     /**
+     * Checks that the pool name is valid and is not already in use.
+     * 
+     * @param body The CheckAvailability request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the CheckNameAvailability operation response along with {@link Response}.
+     */
+    Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(CheckNameAvailability body,
+        Context context);
+
+    /**
+     * Checks that the pool name is valid and is not already in use.
+     * 
+     * @param body The CheckAvailability request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the CheckNameAvailability operation response.
+     */
+    CheckNameAvailabilityResult checkNameAvailability(CheckNameAvailability body);
+
+    /**
      * Get a Pool.
      * 
      * @param id the resource ID.

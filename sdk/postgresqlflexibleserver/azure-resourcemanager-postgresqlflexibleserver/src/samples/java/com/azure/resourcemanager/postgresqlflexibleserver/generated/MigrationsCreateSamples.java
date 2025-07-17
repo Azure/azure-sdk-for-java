@@ -20,7 +20,7 @@ import java.util.Arrays;
 public final class MigrationsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * Migrations_Create_With_PrivateEndpoint_Servers.json
      */
     /**
@@ -49,7 +49,7 @@ public final class MigrationsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * Migrations_Create_With_Roles.json
      */
     /**
@@ -77,7 +77,36 @@ public final class MigrationsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
+     * Migrations_Create_With_FullyQualifiedDomainName.json
+     */
+    /**
+     * Sample code: Migrations Create with fully qualified domain name.
+     * 
+     * @param manager Entry point to PostgreSqlManager.
+     */
+    public static void migrationsCreateWithFullyQualifiedDomainName(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.migrations()
+            .define("testmigration")
+            .withRegion("westus")
+            .withExistingFlexibleServer("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget")
+            .withMigrationMode(MigrationMode.OFFLINE)
+            .withSourceDbServerResourceId(
+                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource")
+            .withSourceDbServerFullyQualifiedDomainName("testsourcefqdn.example.com")
+            .withTargetDbServerFullyQualifiedDomainName("test-target-fqdn.example.com")
+            .withSecretParameters(new MigrationSecretParameters()
+                .withAdminCredentials(new AdminCredentials().withSourceServerPassword("fakeTokenPlaceholder")
+                    .withTargetServerPassword("fakeTokenPlaceholder")))
+            .withDbsToMigrate(Arrays.asList("db1", "db2", "db3", "db4"))
+            .withOverwriteDbsInTarget(OverwriteDbsInTargetEnum.TRUE)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * Migrations_Create_Validate_Only.json
      */
     /**
@@ -105,7 +134,7 @@ public final class MigrationsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * Migrations_Create_With_Other_Users.json
      */
     /**
@@ -133,8 +162,8 @@ public final class MigrationsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/Migrations_Create.
-     * json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
+     * Migrations_Create.json
      */
     /**
      * Sample code: Migrations_Create.
@@ -146,8 +175,6 @@ public final class MigrationsCreateSamples {
             .define("testmigration")
             .withRegion("westus")
             .withExistingFlexibleServer("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget")
-            .withMigrationInstanceResourceId(
-                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testsourcemigration")
             .withMigrationMode(MigrationMode.OFFLINE)
             .withSourceDbServerResourceId(
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource")
@@ -161,7 +188,7 @@ public final class MigrationsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
      * Migrations_Create_Other_SourceTypes_Validate_Migrate.json
      */
     /**

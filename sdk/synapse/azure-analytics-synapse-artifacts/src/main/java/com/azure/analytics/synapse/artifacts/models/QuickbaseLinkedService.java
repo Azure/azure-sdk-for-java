@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,27 +22,32 @@ public class QuickbaseLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Quickbase";
 
     /*
      * The url to connect Quickbase source. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object url;
 
     /*
      * The user token for the Quickbase source.
      */
+    @Generated
     private SecretBase userToken;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of QuickbaseLinkedService class.
      */
+    @Generated
     public QuickbaseLinkedService() {
     }
 
@@ -50,6 +56,7 @@ public class QuickbaseLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -60,6 +67,7 @@ public class QuickbaseLinkedService extends LinkedService {
      * 
      * @return the url value.
      */
+    @Generated
     public Object getUrl() {
         return this.url;
     }
@@ -70,6 +78,7 @@ public class QuickbaseLinkedService extends LinkedService {
      * @param url the url value to set.
      * @return the QuickbaseLinkedService object itself.
      */
+    @Generated
     public QuickbaseLinkedService setUrl(Object url) {
         this.url = url;
         return this;
@@ -80,6 +89,7 @@ public class QuickbaseLinkedService extends LinkedService {
      * 
      * @return the userToken value.
      */
+    @Generated
     public SecretBase getUserToken() {
         return this.userToken;
     }
@@ -90,6 +100,7 @@ public class QuickbaseLinkedService extends LinkedService {
      * @param userToken the userToken value to set.
      * @return the QuickbaseLinkedService object itself.
      */
+    @Generated
     public QuickbaseLinkedService setUserToken(SecretBase userToken) {
         this.userToken = userToken;
         return this;
@@ -101,6 +112,7 @@ public class QuickbaseLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -112,6 +124,7 @@ public class QuickbaseLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the QuickbaseLinkedService object itself.
      */
+    @Generated
     public QuickbaseLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -120,6 +133,17 @@ public class QuickbaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public QuickbaseLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public QuickbaseLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -129,6 +153,7 @@ public class QuickbaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public QuickbaseLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -138,6 +163,7 @@ public class QuickbaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public QuickbaseLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -147,6 +173,7 @@ public class QuickbaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public QuickbaseLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -156,9 +183,11 @@ public class QuickbaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -168,7 +197,9 @@ public class QuickbaseLinkedService extends LinkedService {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("url", this.url);
             jsonWriter.writeJsonField("userToken", this.userToken);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -188,6 +219,7 @@ public class QuickbaseLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the QuickbaseLinkedService.
      */
+    @Generated
     public static QuickbaseLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             QuickbaseLinkedService deserializedQuickbaseLinkedService = new QuickbaseLinkedService();
@@ -196,7 +228,9 @@ public class QuickbaseLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedQuickbaseLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedQuickbaseLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedQuickbaseLinkedService.setDescription(reader.getString());

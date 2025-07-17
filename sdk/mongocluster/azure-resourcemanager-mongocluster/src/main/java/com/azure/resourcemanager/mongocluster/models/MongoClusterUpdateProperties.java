@@ -58,9 +58,19 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     private BackupProperties backup;
 
     /*
+     * The Data API properties of the mongo cluster.
+     */
+    private DataApiProperties dataApi;
+
+    /*
      * List of private endpoint connections.
      */
     private List<PreviewFeature> previewFeatures;
+
+    /*
+     * The authentication configuration for the cluster.
+     */
+    private AuthConfigProperties authConfig;
 
     /**
      * Creates an instance of MongoClusterUpdateProperties class.
@@ -231,6 +241,26 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
+     * Get the dataApi property: The Data API properties of the mongo cluster.
+     * 
+     * @return the dataApi value.
+     */
+    public DataApiProperties dataApi() {
+        return this.dataApi;
+    }
+
+    /**
+     * Set the dataApi property: The Data API properties of the mongo cluster.
+     * 
+     * @param dataApi the dataApi value to set.
+     * @return the MongoClusterUpdateProperties object itself.
+     */
+    public MongoClusterUpdateProperties withDataApi(DataApiProperties dataApi) {
+        this.dataApi = dataApi;
+        return this;
+    }
+
+    /**
      * Get the previewFeatures property: List of private endpoint connections.
      * 
      * @return the previewFeatures value.
@@ -247,6 +277,26 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      */
     public MongoClusterUpdateProperties withPreviewFeatures(List<PreviewFeature> previewFeatures) {
         this.previewFeatures = previewFeatures;
+        return this;
+    }
+
+    /**
+     * Get the authConfig property: The authentication configuration for the cluster.
+     * 
+     * @return the authConfig value.
+     */
+    public AuthConfigProperties authConfig() {
+        return this.authConfig;
+    }
+
+    /**
+     * Set the authConfig property: The authentication configuration for the cluster.
+     * 
+     * @param authConfig the authConfig value to set.
+     * @return the MongoClusterUpdateProperties object itself.
+     */
+    public MongoClusterUpdateProperties withAuthConfig(AuthConfigProperties authConfig) {
+        this.authConfig = authConfig;
         return this;
     }
 
@@ -274,6 +324,12 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
         if (backup() != null) {
             backup().validate();
         }
+        if (dataApi() != null) {
+            dataApi().validate();
+        }
+        if (authConfig() != null) {
+            authConfig().validate();
+        }
     }
 
     /**
@@ -291,8 +347,10 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
         jsonWriter.writeJsonField("sharding", this.sharding);
         jsonWriter.writeJsonField("compute", this.compute);
         jsonWriter.writeJsonField("backup", this.backup);
+        jsonWriter.writeJsonField("dataApi", this.dataApi);
         jsonWriter.writeArrayField("previewFeatures", this.previewFeatures,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("authConfig", this.authConfig);
         return jsonWriter.writeEndObject();
     }
 
@@ -329,10 +387,14 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
                     deserializedMongoClusterUpdateProperties.compute = ComputeProperties.fromJson(reader);
                 } else if ("backup".equals(fieldName)) {
                     deserializedMongoClusterUpdateProperties.backup = BackupProperties.fromJson(reader);
+                } else if ("dataApi".equals(fieldName)) {
+                    deserializedMongoClusterUpdateProperties.dataApi = DataApiProperties.fromJson(reader);
                 } else if ("previewFeatures".equals(fieldName)) {
                     List<PreviewFeature> previewFeatures
                         = reader.readArray(reader1 -> PreviewFeature.fromString(reader1.getString()));
                     deserializedMongoClusterUpdateProperties.previewFeatures = previewFeatures;
+                } else if ("authConfig".equals(fieldName)) {
+                    deserializedMongoClusterUpdateProperties.authConfig = AuthConfigProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

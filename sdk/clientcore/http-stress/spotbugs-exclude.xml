@@ -21,4 +21,8 @@
       <Class name="io.clientcore.http.stress.HttpPatch" />
     </Or>
   </Match>
+  <Match>
+    <Bug pattern="REC_CATCH_EXCEPTION" />
+    <Class name="io.clientcore.http.stress.HttpGet" />
+  </Match>
 </FindBugsFilter>

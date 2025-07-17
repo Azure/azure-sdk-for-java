@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class DataFlowFolder implements JsonSerializable<DataFlowFolder> {
     /*
      * The name of the folder that this data flow is in.
      */
+    @Generated
     private String name;
 
     /**
      * Creates an instance of DataFlowFolder class.
      */
+    @Generated
     public DataFlowFolder() {
     }
 
@@ -32,6 +35,7 @@ public final class DataFlowFolder implements JsonSerializable<DataFlowFolder> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -42,6 +46,7 @@ public final class DataFlowFolder implements JsonSerializable<DataFlowFolder> {
      * @param name the name value to set.
      * @return the DataFlowFolder object itself.
      */
+    @Generated
     public DataFlowFolder setName(String name) {
         this.name = name;
         return this;
@@ -50,6 +55,7 @@ public final class DataFlowFolder implements JsonSerializable<DataFlowFolder> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class DataFlowFolder implements JsonSerializable<DataFlowFolder> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataFlowFolder.
      */
+    @Generated
     public static DataFlowFolder fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowFolder deserializedDataFlowFolder = new DataFlowFolder();

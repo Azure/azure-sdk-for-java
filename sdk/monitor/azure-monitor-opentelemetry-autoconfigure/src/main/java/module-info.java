@@ -18,7 +18,6 @@ module com.azure.monitor.opentelemetry.autoconfigure {
     requires io.opentelemetry.sdk.metrics;
     requires io.opentelemetry.sdk.trace;
     requires io.opentelemetry.semconv;
-    requires io.opentelemetry.semconv.incubating;
 
     opens com.azure.monitor.opentelemetry.autoconfigure.implementation.models to com.azure.core;
     opens com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models to com.azure.core;

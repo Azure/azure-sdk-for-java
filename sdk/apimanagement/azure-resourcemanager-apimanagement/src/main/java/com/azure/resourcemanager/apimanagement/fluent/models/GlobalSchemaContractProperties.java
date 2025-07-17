@@ -38,6 +38,11 @@ public final class GlobalSchemaContractProperties implements JsonSerializable<Gl
      */
     private Object document;
 
+    /*
+     * The provisioning state
+     */
+    private String provisioningState;
+
     /**
      * Creates an instance of GlobalSchemaContractProperties class.
      */
@@ -125,6 +130,15 @@ public final class GlobalSchemaContractProperties implements JsonSerializable<Gl
     }
 
     /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -177,6 +191,8 @@ public final class GlobalSchemaContractProperties implements JsonSerializable<Gl
                     deserializedGlobalSchemaContractProperties.value = reader.readUntyped();
                 } else if ("document".equals(fieldName)) {
                     deserializedGlobalSchemaContractProperties.document = reader.readUntyped();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedGlobalSchemaContractProperties.provisioningState = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

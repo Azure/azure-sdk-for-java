@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databox.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.databox.models.ModelName;
 import com.azure.resourcemanager.databox.models.Sku;
 import com.azure.resourcemanager.databox.models.SkuName;
 import org.junit.jupiter.api.Assertions;
@@ -12,23 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Sku model = BinaryData
-            .fromString(
-                "{\"name\":\"DataBoxCustomerDisk\",\"displayName\":\"ciwwzjuqkhr\",\"family\":\"jiwkuofoskghsau\"}")
+        Sku model = BinaryData.fromString(
+            "{\"name\":\"DataBoxCustomerDisk\",\"displayName\":\"ciwwzjuqkhr\",\"family\":\"jiwkuofoskghsau\",\"model\":\"DataBox\"}")
             .toObject(Sku.class);
         Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.name());
         Assertions.assertEquals("ciwwzjuqkhr", model.displayName());
         Assertions.assertEquals("jiwkuofoskghsau", model.family());
+        Assertions.assertEquals(ModelName.DATA_BOX, model.model());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Sku model = new Sku().withName(SkuName.DATA_BOX_CUSTOMER_DISK)
             .withDisplayName("ciwwzjuqkhr")
-            .withFamily("jiwkuofoskghsau");
+            .withFamily("jiwkuofoskghsau")
+            .withModel(ModelName.DATA_BOX);
         model = BinaryData.fromObject(model).toObject(Sku.class);
         Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.name());
         Assertions.assertEquals("ciwwzjuqkhr", model.displayName());
         Assertions.assertEquals("jiwkuofoskghsau", model.family());
+        Assertions.assertEquals(ModelName.DATA_BOX, model.model());
     }
 }

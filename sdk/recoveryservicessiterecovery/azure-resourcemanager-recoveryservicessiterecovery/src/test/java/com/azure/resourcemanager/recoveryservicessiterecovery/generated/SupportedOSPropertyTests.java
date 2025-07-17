@@ -15,42 +15,44 @@ public final class SupportedOSPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SupportedOSProperty model = BinaryData.fromString(
-            "{\"instanceType\":\"vzrrryveimi\",\"supportedOs\":[{\"osName\":\"yzatvfuzkaft\",\"osType\":\"vru\",\"osVersions\":[{\"version\":\"syeipqd\",\"servicePack\":\"jtgrqgdgkkileplk\"},{\"version\":\"mknhwtbbaedor\",\"servicePack\":\"mqfl\"},{\"version\":\"gbdg\",\"servicePack\":\"mgxdgdhpabgd\"},{\"version\":\"jddvjsaqw\",\"servicePack\":\"mmwllc\"}]},{\"osName\":\"srsxaptefh\",\"osType\":\"cgjokjljnhvlq\",\"osVersions\":[{\"version\":\"peeksnbksdqhjv\",\"servicePack\":\"lxeslkhh\"}]},{\"osName\":\"tcpoqma\",\"osType\":\"wqjwgok\",\"osVersions\":[{\"version\":\"jj\",\"servicePack\":\"ybwfdbkjb\"},{\"version\":\"ensvkzykjtj\",\"servicePack\":\"sxfwushcdp\"},{\"version\":\"pn\",\"servicePack\":\"mgjfbpkuwxeoio\"}]}]}")
+            "{\"instanceType\":\"tjo\",\"supportedOs\":[{\"osName\":\"ovjufycsjmlbe\",\"osType\":\"ej\",\"osVersions\":[{\"version\":\"xeg\",\"servicePack\":\"ortudawlpjfel\"},{\"version\":\"rpptcbgqnzmnhiil\",\"servicePack\":\"lwcjgckbbcccgzpr\"}]},{\"osName\":\"xnyuffatsgftipwc\",\"osType\":\"yubhiqdx\",\"osVersions\":[{\"version\":\"pnuhzafccnu\",\"servicePack\":\"i\"},{\"version\":\"yl\",\"servicePack\":\"igvxvatvcrk\"},{\"version\":\"b\",\"servicePack\":\"qxvhcsyhzlwxa\"},{\"version\":\"ov\",\"servicePack\":\"exdnd\"}]},{\"osName\":\"dwead\",\"osType\":\"zmwntopagt\",\"osVersions\":[{\"version\":\"magoaqylkjz\",\"servicePack\":\"iua\"}]}]}")
             .toObject(SupportedOSProperty.class);
-        Assertions.assertEquals("vzrrryveimi", model.instanceType());
-        Assertions.assertEquals("yzatvfuzkaft", model.supportedOs().get(0).osName());
-        Assertions.assertEquals("vru", model.supportedOs().get(0).osType());
-        Assertions.assertEquals("syeipqd", model.supportedOs().get(0).osVersions().get(0).version());
-        Assertions.assertEquals("jtgrqgdgkkileplk", model.supportedOs().get(0).osVersions().get(0).servicePack());
+        Assertions.assertEquals("tjo", model.instanceType());
+        Assertions.assertEquals("ovjufycsjmlbe", model.supportedOs().get(0).osName());
+        Assertions.assertEquals("ej", model.supportedOs().get(0).osType());
+        Assertions.assertEquals("xeg", model.supportedOs().get(0).osVersions().get(0).version());
+        Assertions.assertEquals("ortudawlpjfel", model.supportedOs().get(0).osVersions().get(0).servicePack());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SupportedOSProperty model
-            = new SupportedOSProperty().withInstanceType("vzrrryveimi")
-                .withSupportedOs(Arrays.asList(
-                    new SupportedOSDetails().withOsName("yzatvfuzkaft")
-                        .withOsType("vru")
-                        .withOsVersions(Arrays.asList(
-                            new OSVersionWrapper().withVersion("syeipqd").withServicePack("jtgrqgdgkkileplk"),
-                            new OSVersionWrapper().withVersion("mknhwtbbaedor").withServicePack("mqfl"),
-                            new OSVersionWrapper().withVersion("gbdg").withServicePack("mgxdgdhpabgd"),
-                            new OSVersionWrapper().withVersion("jddvjsaqw").withServicePack("mmwllc"))),
-                    new SupportedOSDetails().withOsName("srsxaptefh")
-                        .withOsType("cgjokjljnhvlq")
-                        .withOsVersions(Arrays
-                            .asList(new OSVersionWrapper().withVersion("peeksnbksdqhjv").withServicePack("lxeslkhh"))),
-                    new SupportedOSDetails().withOsName("tcpoqma")
-                        .withOsType("wqjwgok")
-                        .withOsVersions(
-                            Arrays.asList(new OSVersionWrapper().withVersion("jj").withServicePack("ybwfdbkjb"),
-                                new OSVersionWrapper().withVersion("ensvkzykjtj").withServicePack("sxfwushcdp"),
-                                new OSVersionWrapper().withVersion("pn").withServicePack("mgjfbpkuwxeoio")))));
+            = new SupportedOSProperty().withInstanceType("tjo")
+                .withSupportedOs(
+                    Arrays
+                        .asList(
+                            new SupportedOSDetails().withOsName("ovjufycsjmlbe")
+                                .withOsType("ej")
+                                .withOsVersions(Arrays
+                                    .asList(new OSVersionWrapper().withVersion("xeg").withServicePack("ortudawlpjfel"),
+                                        new OSVersionWrapper().withVersion("rpptcbgqnzmnhiil")
+                                            .withServicePack("lwcjgckbbcccgzpr"))),
+                            new SupportedOSDetails().withOsName("xnyuffatsgftipwc")
+                                .withOsType("yubhiqdx")
+                                .withOsVersions(Arrays.asList(
+                                    new OSVersionWrapper().withVersion("pnuhzafccnu").withServicePack("i"),
+                                    new OSVersionWrapper().withVersion("yl").withServicePack("igvxvatvcrk"),
+                                    new OSVersionWrapper().withVersion("b").withServicePack("qxvhcsyhzlwxa"),
+                                    new OSVersionWrapper().withVersion("ov").withServicePack("exdnd"))),
+                            new SupportedOSDetails().withOsName("dwead")
+                                .withOsType("zmwntopagt")
+                                .withOsVersions(Arrays.asList(
+                                    new OSVersionWrapper().withVersion("magoaqylkjz").withServicePack("iua")))));
         model = BinaryData.fromObject(model).toObject(SupportedOSProperty.class);
-        Assertions.assertEquals("vzrrryveimi", model.instanceType());
-        Assertions.assertEquals("yzatvfuzkaft", model.supportedOs().get(0).osName());
-        Assertions.assertEquals("vru", model.supportedOs().get(0).osType());
-        Assertions.assertEquals("syeipqd", model.supportedOs().get(0).osVersions().get(0).version());
-        Assertions.assertEquals("jtgrqgdgkkileplk", model.supportedOs().get(0).osVersions().get(0).servicePack());
+        Assertions.assertEquals("tjo", model.instanceType());
+        Assertions.assertEquals("ovjufycsjmlbe", model.supportedOs().get(0).osName());
+        Assertions.assertEquals("ej", model.supportedOs().get(0).osType());
+        Assertions.assertEquals("xeg", model.supportedOs().get(0).osVersions().get(0).version());
+        Assertions.assertEquals("ortudawlpjfel", model.supportedOs().get(0).osVersions().get(0).servicePack());
     }
 }

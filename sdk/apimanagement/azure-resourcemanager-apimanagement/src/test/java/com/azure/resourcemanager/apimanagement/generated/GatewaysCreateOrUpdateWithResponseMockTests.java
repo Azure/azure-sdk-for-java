@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.GatewayContract;
@@ -22,30 +22,30 @@ public final class GatewaysCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"locationData\":{\"name\":\"nubr\",\"city\":\"jfkxnwtzsroeqcr\",\"district\":\"cjskqsfnmiwa\",\"countryOrRegion\":\"unhdikatzmtuv\"},\"description\":\"hitjkbibxlwz\"},\"id\":\"vkcmcuiaunlo\",\"name\":\"in\",\"type\":\"fbaoboiahkp\"}";
+            = "{\"properties\":{\"locationData\":{\"name\":\"jmfjjfexuvsveam\",\"city\":\"auuuvhxiohg\",\"district\":\"ufzu\",\"countryOrRegion\":\"szhaeemtyosd\"},\"description\":\"tsdywfge\"},\"id\":\"vwgwphwxiav\",\"name\":\"mixaqgfpuhhzwr\",\"type\":\"jumlkjsvkbt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GatewayContract response = manager.gateways()
-            .define("pdncokq")
-            .withExistingService("ehojvmazu", "lfpiuuf")
-            .withLocationData(new ResourceLocationDataContract().withName("vbhmnimjlyhb")
-                .withCity("n")
-                .withDistrict("ibgwcduy")
-                .withCountryOrRegion("caygumqeob"))
-            .withDescription("reud")
-            .withIfMatch("xjkc")
+            .define("qbeyxwrmu")
+            .withExistingService("bn", "glquarbru")
+            .withLocationData(new ResourceLocationDataContract().withName("exzbhgjajkvwko")
+                .withCity("fbdzllv")
+                .withDistrict("tbgvlpgfyg")
+                .withCountryOrRegion("faky"))
+            .withDescription("psihzqieoympp")
+            .withIfMatch("uoyrbdkgqdm")
             .create();
 
-        Assertions.assertEquals("nubr", response.locationData().name());
-        Assertions.assertEquals("jfkxnwtzsroeqcr", response.locationData().city());
-        Assertions.assertEquals("cjskqsfnmiwa", response.locationData().district());
-        Assertions.assertEquals("unhdikatzmtuv", response.locationData().countryOrRegion());
-        Assertions.assertEquals("hitjkbibxlwz", response.description());
+        Assertions.assertEquals("jmfjjfexuvsveam", response.locationData().name());
+        Assertions.assertEquals("auuuvhxiohg", response.locationData().city());
+        Assertions.assertEquals("ufzu", response.locationData().district());
+        Assertions.assertEquals("szhaeemtyosd", response.locationData().countryOrRegion());
+        Assertions.assertEquals("tsdywfge", response.description());
     }
 }

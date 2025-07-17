@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,22 +22,26 @@ public class DynamicsAXLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "DynamicsAX";
 
     /*
      * The Dynamics AX (or Dynamics 365 Finance and Operations) instance OData endpoint.
      */
+    @Generated
     private Object url;
 
     /*
      * Specify the application's client ID. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object servicePrincipalId;
 
     /*
      * Specify the application's key. Mark this field as a SecureString to store it securely in Data Factory, or
      * reference a secret stored in Azure Key Vault. Type: string (or Expression with resultType string).
      */
+    @Generated
     private SecretBase servicePrincipalKey;
 
     /*
@@ -44,22 +49,26 @@ public class DynamicsAXLinkedService extends LinkedService {
      * hovering the mouse in the top-right corner of the Azure portal. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object tenant;
 
     /*
      * Specify the resource you are requesting authorization. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object aadResourceId;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of DynamicsAXLinkedService class.
      */
+    @Generated
     public DynamicsAXLinkedService() {
     }
 
@@ -68,6 +77,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -78,6 +88,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * 
      * @return the url value.
      */
+    @Generated
     public Object getUrl() {
         return this.url;
     }
@@ -88,6 +99,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * @param url the url value to set.
      * @return the DynamicsAXLinkedService object itself.
      */
+    @Generated
     public DynamicsAXLinkedService setUrl(Object url) {
         this.url = url;
         return this;
@@ -99,6 +111,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalId value.
      */
+    @Generated
     public Object getServicePrincipalId() {
         return this.servicePrincipalId;
     }
@@ -110,6 +123,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the DynamicsAXLinkedService object itself.
      */
+    @Generated
     public DynamicsAXLinkedService setServicePrincipalId(Object servicePrincipalId) {
         this.servicePrincipalId = servicePrincipalId;
         return this;
@@ -122,6 +136,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalKey value.
      */
+    @Generated
     public SecretBase getServicePrincipalKey() {
         return this.servicePrincipalKey;
     }
@@ -134,6 +149,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the DynamicsAXLinkedService object itself.
      */
+    @Generated
     public DynamicsAXLinkedService setServicePrincipalKey(SecretBase servicePrincipalKey) {
         this.servicePrincipalKey = servicePrincipalKey;
         return this;
@@ -146,6 +162,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * 
      * @return the tenant value.
      */
+    @Generated
     public Object getTenant() {
         return this.tenant;
     }
@@ -158,6 +175,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * @param tenant the tenant value to set.
      * @return the DynamicsAXLinkedService object itself.
      */
+    @Generated
     public DynamicsAXLinkedService setTenant(Object tenant) {
         this.tenant = tenant;
         return this;
@@ -169,6 +187,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * 
      * @return the aadResourceId value.
      */
+    @Generated
     public Object getAadResourceId() {
         return this.aadResourceId;
     }
@@ -180,6 +199,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * @param aadResourceId the aadResourceId value to set.
      * @return the DynamicsAXLinkedService object itself.
      */
+    @Generated
     public DynamicsAXLinkedService setAadResourceId(Object aadResourceId) {
         this.aadResourceId = aadResourceId;
         return this;
@@ -191,6 +211,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -202,6 +223,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the DynamicsAXLinkedService object itself.
      */
+    @Generated
     public DynamicsAXLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -210,6 +232,17 @@ public class DynamicsAXLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public DynamicsAXLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public DynamicsAXLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -219,6 +252,7 @@ public class DynamicsAXLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsAXLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -228,6 +262,7 @@ public class DynamicsAXLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsAXLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -237,6 +272,7 @@ public class DynamicsAXLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DynamicsAXLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -246,9 +282,11 @@ public class DynamicsAXLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -266,7 +304,9 @@ public class DynamicsAXLinkedService extends LinkedService {
             jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
             jsonWriter.writeUntypedField("tenant", this.tenant);
             jsonWriter.writeUntypedField("aadResourceId", this.aadResourceId);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -286,6 +326,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DynamicsAXLinkedService.
      */
+    @Generated
     public static DynamicsAXLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DynamicsAXLinkedService deserializedDynamicsAXLinkedService = new DynamicsAXLinkedService();
@@ -294,7 +335,9 @@ public class DynamicsAXLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedDynamicsAXLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedDynamicsAXLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedDynamicsAXLinkedService.setDescription(reader.getString());

@@ -121,6 +121,16 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
     private BatchJobScheduleStatistics stats;
 
     /**
+     * Creates an instance of BatchJobSchedule class.
+     *
+     * @param jobSpecification the jobSpecification value to set.
+     */
+    @Generated
+    public BatchJobSchedule(BatchJobSpecification jobSpecification) {
+        this.jobSpecification = jobSpecification;
+    }
+
+    /**
      * Get the id property: A string that uniquely identifies the schedule within the Account.
      *
      * @return the id value.
@@ -239,6 +249,19 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
     }
 
     /**
+     * Set the schedule property: The schedule according to which Jobs will be created. All times are fixed respective
+     * to UTC and are not impacted by daylight saving time.
+     *
+     * @param schedule the schedule value to set.
+     * @return the BatchJobSchedule object itself.
+     */
+    @Generated
+    public BatchJobSchedule setSchedule(BatchJobScheduleConfiguration schedule) {
+        this.schedule = schedule;
+        return this;
+    }
+
+    /**
      * Get the jobSpecification property: The details of the Jobs to be created on this schedule.
      *
      * @return the jobSpecification value.
@@ -292,29 +315,6 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
     @Generated
     public BatchJobScheduleStatistics getStats() {
         return this.stats;
-    }
-
-    /**
-     * Creates an instance of BatchJobSchedule class.
-     *
-     * @param jobSpecification the jobSpecification value to set.
-     */
-    @Generated
-    public BatchJobSchedule(BatchJobSpecification jobSpecification) {
-        this.jobSpecification = jobSpecification;
-    }
-
-    /**
-     * Set the schedule property: The schedule according to which Jobs will be created. All times are fixed respective
-     * to UTC and are not impacted by daylight saving time.
-     *
-     * @param schedule the schedule value to set.
-     * @return the BatchJobSchedule object itself.
-     */
-    @Generated
-    public BatchJobSchedule setSchedule(BatchJobScheduleConfiguration schedule) {
-        this.schedule = schedule;
-        return this;
     }
 
     /**

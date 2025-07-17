@@ -11,7 +11,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Parameters for reconfiguring active geo-replication, of an existing database that was previously unlinked from a
@@ -20,16 +19,9 @@ import java.util.List;
 @Fluent
 public final class ForceLinkParameters implements JsonSerializable<ForceLinkParameters> {
     /*
-     * The name of the group of linked database resources. This should match the existing replication group name.
+     * Properties to configure geo replication for this database.
      */
-    private String groupNickname;
-
-    /*
-     * The resource IDs of the databases that are expected to be linked and included in the replication group. This
-     * parameter is used to validate that the linking is to the expected (unlinked) part of the replication group, if it
-     * is splintered.
-     */
-    private List<LinkedDatabase> linkedDatabases;
+    private ForceLinkParametersGeoReplication geoReplication;
 
     /**
      * Creates an instance of ForceLinkParameters class.
@@ -38,48 +30,22 @@ public final class ForceLinkParameters implements JsonSerializable<ForceLinkPara
     }
 
     /**
-     * Get the groupNickname property: The name of the group of linked database resources. This should match the
-     * existing replication group name.
+     * Get the geoReplication property: Properties to configure geo replication for this database.
      * 
-     * @return the groupNickname value.
+     * @return the geoReplication value.
      */
-    public String groupNickname() {
-        return this.groupNickname;
+    public ForceLinkParametersGeoReplication geoReplication() {
+        return this.geoReplication;
     }
 
     /**
-     * Set the groupNickname property: The name of the group of linked database resources. This should match the
-     * existing replication group name.
+     * Set the geoReplication property: Properties to configure geo replication for this database.
      * 
-     * @param groupNickname the groupNickname value to set.
+     * @param geoReplication the geoReplication value to set.
      * @return the ForceLinkParameters object itself.
      */
-    public ForceLinkParameters withGroupNickname(String groupNickname) {
-        this.groupNickname = groupNickname;
-        return this;
-    }
-
-    /**
-     * Get the linkedDatabases property: The resource IDs of the databases that are expected to be linked and included
-     * in the replication group. This parameter is used to validate that the linking is to the expected (unlinked) part
-     * of the replication group, if it is splintered.
-     * 
-     * @return the linkedDatabases value.
-     */
-    public List<LinkedDatabase> linkedDatabases() {
-        return this.linkedDatabases;
-    }
-
-    /**
-     * Set the linkedDatabases property: The resource IDs of the databases that are expected to be linked and included
-     * in the replication group. This parameter is used to validate that the linking is to the expected (unlinked) part
-     * of the replication group, if it is splintered.
-     * 
-     * @param linkedDatabases the linkedDatabases value to set.
-     * @return the ForceLinkParameters object itself.
-     */
-    public ForceLinkParameters withLinkedDatabases(List<LinkedDatabase> linkedDatabases) {
-        this.linkedDatabases = linkedDatabases;
+    public ForceLinkParameters withGeoReplication(ForceLinkParametersGeoReplication geoReplication) {
+        this.geoReplication = geoReplication;
         return this;
     }
 
@@ -89,17 +55,12 @@ public final class ForceLinkParameters implements JsonSerializable<ForceLinkPara
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (groupNickname() == null) {
+        if (geoReplication() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
-                    "Missing required property groupNickname in model ForceLinkParameters"));
-        }
-        if (linkedDatabases() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property linkedDatabases in model ForceLinkParameters"));
+                    "Missing required property geoReplication in model ForceLinkParameters"));
         } else {
-            linkedDatabases().forEach(e -> e.validate());
+            geoReplication().validate();
         }
     }
 
@@ -111,9 +72,7 @@ public final class ForceLinkParameters implements JsonSerializable<ForceLinkPara
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("groupNickname", this.groupNickname);
-        jsonWriter.writeArrayField("linkedDatabases", this.linkedDatabases,
-            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("geoReplication", this.geoReplication);
         return jsonWriter.writeEndObject();
     }
 
@@ -133,12 +92,8 @@ public final class ForceLinkParameters implements JsonSerializable<ForceLinkPara
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("groupNickname".equals(fieldName)) {
-                    deserializedForceLinkParameters.groupNickname = reader.getString();
-                } else if ("linkedDatabases".equals(fieldName)) {
-                    List<LinkedDatabase> linkedDatabases
-                        = reader.readArray(reader1 -> LinkedDatabase.fromJson(reader1));
-                    deserializedForceLinkParameters.linkedDatabases = linkedDatabases;
+                if ("geoReplication".equals(fieldName)) {
+                    deserializedForceLinkParameters.geoReplication = ForceLinkParametersGeoReplication.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -1,6 +1,5 @@
 parameters:
   Artifacts: []
-  ArtifactName: 'not-specified'
   EnableIntegrationStage: true
 
 stages:
@@ -10,36 +9,63 @@ stages:
   # is protected by an approval check but this may be removed in the future.
   - stage: Signing
     dependsOn: ${{parameters.DependsOn}}
+    variables:
+      - template: /eng/pipelines/templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/image.yml
     jobs:
-      - deployment: SignPackage
-        environment: esrp
+      - job: SignPackage
         timeoutInMinutes: 20
-        variables:
-          - template: ../variables/globals.yml
         pool:
-          name: azsdk-pool-mms-ubuntu-2004-general
-          image: azsdk-pool-mms-ubuntu-2004-1espt
-          os: linux
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - checkout: none
-                - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
+          name: $(WINDOWSPOOL)
+          image: $(WINDOWSVMIMAGE)
+          os: windows
+        steps:
+          - checkout: azure-sdk-build-tools
+            path: azure-sdk-build-tools
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            parameters:
+              SkipCheckoutNone: true
+              Repositories:
+                - Name: Azure/azure-sdk-for-java
+                  Commitish: $(Build.SourceVersion)
+                  WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+          - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
 
-                - download: current
-                  displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
-                  artifact: ${{parameters.ArtifactName}}
+          - download: current
+            displayName: 'Download Artifact: packages'
+            artifact: packages
 
-                - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
-                  parameters:
-                    Artifacts: ${{parameters.Artifacts}}
-                    ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
+          - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
+            parameters:
+              Artifacts: ${{parameters.Artifacts}}
+              ArtifactDirectory: $(Pipeline.Workspace)/packages
 
-                - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-                  parameters:
-                    ArtifactPath: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}'
-                    ArtifactName: '${{parameters.ArtifactName}}-signed'
+          # Publish the ESRP signed directory.
+          - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+            parameters:
+              ArtifactPath: '$(Pipeline.Workspace)/packages'
+              ArtifactName: 'packages-signed'
+
+          # Downloading the ESRP signed artifacts
+          - download: current
+            displayName: 'Download Signed Artifacts'
+            artifact: packages-signed
+
+          # gpg-sign and create the flattened directory for ESRP bulk publish
+          # Note: The maven release requires the files to be local GPG signed
+          # Dev feed publishes use the gpg-sign-and-deply to do it in one step
+          - template: tools/gpg/gpg.yml@azure-sdk-build-tools
+          - template: /eng/pipelines/templates/steps/gpg-sign-and-flatten.yml
+            parameters:
+              ArtifactDirectory: $(Pipeline.Workspace)/packages-signed
+              OutputDirectory: $(Pipeline.Workspace)/packages-esrp-gpg-signed
+              FlattenedESRPDirectory: $(Pipeline.Workspace)/packages-esrp-flattened
+
+          # The packages-esrp-flattened will be used for the ESRP publish
+          - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+            parameters:
+              ArtifactPath: '$(Pipeline.Workspace)/packages-esrp-flattened'
+              ArtifactName: 'packages-esrp-flattened'
 
   # We generate two interdepdent stages for each artifact listed in the ci.yml file, creates the release
   # in GitHub. The Release stage publishes to Maven Central. Both stages require approval since they
@@ -51,89 +77,87 @@ stages:
       - stage:
         displayName: 'Release: ${{artifact.name}}'
         dependsOn: Signing
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
         condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
         jobs:
-          - deployment: TagRepository
+          - job: TagRepository
             displayName: "Create release tag"
             condition: ne(variables['Skip.TagRepository'], 'true')
-            environment: maven
-            variables:
-              - template: ../variables/globals.yml
             pool:
-              name: azsdk-pool-mms-win-2022-general
-              image: azsdk-pool-mms-win-2022-1espt
+              name: $(WINDOWSPOOL)
+              image: $(WINDOWSVMIMAGE)
+              os: windows
+            steps:
+              - download: current
+                displayName: 'Download Artifact: packages-signed'
+                artifact: packages-signed
+                patterns: ${{artifact.groupId}}/${{artifact.name}}/**
+              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+              - template: /eng/common/pipelines/templates/steps/retain-run.yml
+              - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
+                parameters:
+                  ArtifactLocation: $(Pipeline.Workspace)/packages-signed/${{artifact.groupId}}/${{artifact.name}}
+                  PackageRepository: Maven
+                  ReleaseSha: $(Build.SourceVersion)
+
+          - deployment: PublishESRPPackage
+            displayName: "Publish to Maven Central via ESRP"
+            condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
+            environment: package-publish
+            dependsOn: TagRepository
+
+            templateContext:
+              type: releaseJob
+              isProduction: true
+              inputs:
+              - input: pipelineArtifact
+                artifactName: 'packages-esrp-flattened'
+                targetPath: '$(Pipeline.Workspace)/packages-esrp-flattened'
+
+            pool:
+              name: azsdk-pool
+              image: windows-2022
               os: windows
             strategy:
               runOnce:
                 deploy:
                   steps:
-                    - download: current
-                      displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
-                      artifact: ${{parameters.ArtifactName}}-signed
-                      patterns: ${{artifact.groupId}}/${{artifact.name}}/**
-                    - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                    - template: /eng/common/pipelines/templates/steps/retain-run.yml
-                    - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
+                    - template: /eng/pipelines/templates/steps/java-esrp-publishing.yml
                       parameters:
-                        ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
-                        PackageRepository: Maven
-                        ReleaseSha: $(Build.SourceVersion)
+                        FlattenedDirectory: $(Pipeline.Workspace)/packages-esrp-flattened
 
-          - ${{if ne(artifact.options.skipPublishPackage, 'true')}}:
-            - deployment: PublishPackage
-              displayName: "Publish to Maven Central"
-              condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
-              environment: maven
-              dependsOn: TagRepository
-              variables:
-                - template: ../variables/globals.yml
-              pool:
-                name: azsdk-pool-mms-win-2022-general
-                image: azsdk-pool-mms-win-2022-1espt
-                os: windows
-              strategy:
-                runOnce:
-                  deploy:
-                    steps:
-                      - download: current
-                        displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
-                        artifact: ${{parameters.ArtifactName}}-signed
-                        patterns: ${{artifact.groupId}}/${{artifact.name}}/**
-                      - checkout: azure-sdk-build-tools
-                        path: azure-sdk-build-tools
-                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                        parameters:
-                          SkipCheckoutNone: true
-                          Repositories:
-                            - Name: Azure/azure-sdk-for-java
-                              Commitish: $(Build.SourceVersion)
-                              WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
-                      - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
-                      - template: tools/gpg/gpg.yml@azure-sdk-build-tools
-                      - template: /eng/pipelines/templates/steps/java-publishing.yml
-                        parameters:
-                          ArtifactID: ${{artifact.name}}
-                          GroupID: ${{artifact.groupId}}
-                          ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                          OutputDirectory: $(Pipeline.Workspace)/EsrpPackages
-                          Target: EsrpRelease
-                          JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-                        parameters:
-                          ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-esrp-$(System.JobAttempt)
-                          ArtifactPath: $(Pipeline.Workspace)/EsrpPackages
-                      # After publishing to Maven, publish to the azure-sdk-for-java feed. The reason for
-                      # this is that the azure-sdk-for-java feed will have the package available immediately
-                      # whereas Maven can take several hours for the package to become available.
-                      - template: /eng/pipelines/templates/steps/java-publishing.yml
-                        parameters:
-                          ArtifactID: ${{artifact.name}}
-                          GroupID: ${{artifact.groupId}}
-                          ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                          RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
-                          Target: JavaDevFeed
-                          JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-                        parameters:
-                          ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
-                          ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+          - job: PublishDevFeedPackage
+            displayName: "Publish to Java Dev feed"
+            condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
+            dependsOn: PublishESRPPackage
+            pool:
+              name: $(WINDOWSPOOL)
+              image: $(WINDOWSVMIMAGE)
+              os: windows
+            steps:
+              - download: current
+                displayName: 'Download Artifact: packages-signed'
+                artifact: packages-signed
+                patterns: ${{artifact.groupId}}/${{artifact.name}}/**
+              - checkout: azure-sdk-build-tools
+                path: azure-sdk-build-tools
+              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                parameters:
+                  SkipCheckoutNone: true
+                  Repositories:
+                    - Name: Azure/azure-sdk-for-java
+                      Commitish: $(Build.SourceVersion)
+                      WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+              - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
+              - template: tools/gpg/gpg.yml@azure-sdk-build-tools
+              # Publish to the azure-sdk-for-java feed.
+              - template: /eng/pipelines/templates/steps/java-dev-feed-publishing.yml
+                parameters:
+                  ArtifactID: ${{artifact.name}}
+                  GroupID: ${{artifact.groupId}}
+              - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+                parameters:
+                  ArtifactName: packages-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
+                  ArtifactPath: $(Pipeline.Workspace)/packages-signed

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplate;
@@ -22,26 +22,26 @@ public final class WorkbookTemplatesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"priority\":1529964299,\"author\":\"ty\",\"templateData\":\"datajbmzyospspsh\",\"galleries\":[{\"name\":\"kyjpmspbps\",\"category\":\"fppyogtieyujtvcz\",\"type\":\"n\",\"order\":845990154,\"resourceType\":\"munjdxvglnkvx\"},{\"name\":\"paglqivbgk\",\"category\":\"khpzvuqdflv\",\"type\":\"iypfp\",\"order\":38455799,\"resourceType\":\"zgp\"}],\"localized\":{\"gpnrhgov\":[{\"templateData\":\"dataj\",\"galleries\":[{},{},{}]},{\"templateData\":\"dataibg\",\"galleries\":[{},{}]}],\"mzvupor\":[{\"templateData\":\"dataik\",\"galleries\":[{}]},{\"templateData\":\"dataao\",\"galleries\":[{},{}]}],\"tglxx\":[{\"templateData\":\"datafuyd\",\"galleries\":[{},{}]},{\"templateData\":\"datavxcnqmxqps\",\"galleries\":[{},{}]},{\"templateData\":\"datavkhlggdhbemz\",\"galleries\":[{},{},{}]},{\"templateData\":\"datazu\",\"galleries\":[{},{}]}]}},\"location\":\"ljfp\",\"tags\":{\"vpqcb\":\"crmnzhrgmqgjs\",\"s\":\"rmbodt\"},\"id\":\"qgvriibakcla\",\"name\":\"jfrnxousxauzlwv\",\"type\":\"gmwohqfzizvu\"}]}";
+            = "{\"value\":[{\"properties\":{\"priority\":835008707,\"author\":\"jgicgaao\",\"templateData\":\"datapttaqutd\",\"galleries\":[{\"name\":\"mxswvruunzz\",\"category\":\"ehkfkimrtixok\",\"type\":\"qyinl\",\"order\":980930736,\"resourceType\":\"qwhix\"},{\"name\":\"nstshi\",\"category\":\"gvelfc\",\"type\":\"uccbirdsvuw\",\"order\":228727125,\"resourceType\":\"egstmninwjizci\"},{\"name\":\"ghgshejjtbxqmu\",\"category\":\"xlxqzvn\",\"type\":\"sbycucrwnamikz\",\"order\":401745323,\"resourceType\":\"bsmswziqgf\"},{\"name\":\"okzrus\",\"category\":\"vhczznvfby\",\"type\":\"sxjwwixz\",\"order\":1659306080,\"resourceType\":\"mxqhndvnoamldse\"}],\"localized\":{\"g\":[{\"templateData\":\"datajhhflzokxcoxpel\",\"galleries\":[{}]},{\"templateData\":\"dataagltsxoa\",\"galleries\":[{},{}]}],\"aykggnoxu\":[{\"templateData\":\"datapbswvefloccsrm\",\"galleries\":[{},{},{},{}]},{\"templateData\":\"datam\",\"galleries\":[{}]},{\"templateData\":\"datawtxxpkyjcx\",\"galleries\":[{},{}]},{\"templateData\":\"datarytfmpcycil\",\"galleries\":[{},{},{}]}],\"fnznth\":[{\"templateData\":\"dataksxwpnd\",\"galleries\":[{},{},{}]}]}},\"location\":\"twk\",\"tags\":{\"tcqiosmg\":\"srxuzvoam\",\"xqdlyrtltlapr\":\"zah\",\"atbhjmznn\":\"tz\"},\"id\":\"s\",\"name\":\"qeqala\",\"type\":\"vlagun\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<WorkbookTemplate> response
-            = manager.workbookTemplates().listByResourceGroup("huxy", com.azure.core.util.Context.NONE);
+            = manager.workbookTemplates().listByResourceGroup("xs", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ljfp", response.iterator().next().location());
-        Assertions.assertEquals("crmnzhrgmqgjs", response.iterator().next().tags().get("vpqcb"));
-        Assertions.assertEquals(1529964299, response.iterator().next().priority());
-        Assertions.assertEquals("ty", response.iterator().next().author());
-        Assertions.assertEquals("kyjpmspbps", response.iterator().next().galleries().get(0).name());
-        Assertions.assertEquals("fppyogtieyujtvcz", response.iterator().next().galleries().get(0).category());
-        Assertions.assertEquals("n", response.iterator().next().galleries().get(0).type());
-        Assertions.assertEquals(845990154, response.iterator().next().galleries().get(0).order());
-        Assertions.assertEquals("munjdxvglnkvx", response.iterator().next().galleries().get(0).resourceType());
+        Assertions.assertEquals("twk", response.iterator().next().location());
+        Assertions.assertEquals("srxuzvoam", response.iterator().next().tags().get("tcqiosmg"));
+        Assertions.assertEquals(835008707, response.iterator().next().priority());
+        Assertions.assertEquals("jgicgaao", response.iterator().next().author());
+        Assertions.assertEquals("mxswvruunzz", response.iterator().next().galleries().get(0).name());
+        Assertions.assertEquals("ehkfkimrtixok", response.iterator().next().galleries().get(0).category());
+        Assertions.assertEquals("qyinl", response.iterator().next().galleries().get(0).type());
+        Assertions.assertEquals(980930736, response.iterator().next().galleries().get(0).order());
+        Assertions.assertEquals("qwhix", response.iterator().next().galleries().get(0).resourceType());
     }
 }

@@ -100,7 +100,7 @@ class ChangeFeedPartitionReaderITest
 
   val diagnosticContext = DiagnosticsContext(UUID.randomUUID(), "")
   val cosmosClientStateHandles = initializeAndBroadcastCosmosClientStatesForContainer(changeFeedCfg)
-  val diagnosticsConfig = new DiagnosticsConfig(None, false, None)
+  val diagnosticsConfig = DiagnosticsConfig()
   val cosmosInputPartition = new CosmosInputPartition(NormalizedRange("", "FF"), Some(lsn1),
    Some(continuationStateEncoded))
   val changeFeedPartitionReader = new ChangeFeedPartitionReader(
@@ -189,7 +189,7 @@ class ChangeFeedPartitionReaderITest
 
   val diagnosticContext = DiagnosticsContext(UUID.randomUUID(), "")
   val cosmosClientStateHandles = initializeAndBroadcastCosmosClientStatesForContainer(changeFeedCfg)
-  val diagnosticsConfig = new DiagnosticsConfig(None, false, None)
+  val diagnosticsConfig = DiagnosticsConfig()
   val cosmosInputPartition = new CosmosInputPartition(NormalizedRange("", "FF"), Some(Math.max(lsn1, lsn2) + 1)
    , Some(continuationStateEncoded))
   val changeFeedPartitionReader = new ChangeFeedPartitionReader(
@@ -235,7 +235,7 @@ class ChangeFeedPartitionReaderITest
   val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
   val cosmosClientConfig = CosmosClientConfiguration(
    effectiveUserConfig,
-   useEventualConsistency = readConfig.forceEventualConsistency,
+   readConsistencyStrategy = readConfig.readConsistencyStrategy,
    "")
   val calledFrom = s"ChangeFeedPartitionReaderTest.initializeAndBroadcastCosmosClientStateForContainer"
   Loan(

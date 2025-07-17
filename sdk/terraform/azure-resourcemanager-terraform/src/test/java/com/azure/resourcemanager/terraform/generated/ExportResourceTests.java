@@ -14,33 +14,33 @@ public final class ExportResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExportResource model = BinaryData.fromString(
-            "{\"type\":\"ExportResource\",\"resourceIds\":[\"bj\"],\"resourceName\":\"a\",\"resourceType\":\"th\",\"namePattern\":\"hab\",\"targetProvider\":\"azapi\",\"fullProperties\":true,\"maskSensitive\":false}")
+            "{\"type\":\"ExportResource\",\"resourceIds\":[\"s\"],\"resourceName\":\"ithxqhabifpi\",\"resourceType\":\"wczbys\",\"namePattern\":\"pqxu\",\"targetProvider\":\"azurerm\",\"fullProperties\":true,\"maskSensitive\":true}")
             .toObject(ExportResource.class);
-        Assertions.assertEquals(TargetProvider.AZAPI, model.targetProvider());
+        Assertions.assertEquals(TargetProvider.AZURERM, model.targetProvider());
         Assertions.assertEquals(true, model.fullProperties());
-        Assertions.assertEquals(false, model.maskSensitive());
-        Assertions.assertEquals("bj", model.resourceIds().get(0));
-        Assertions.assertEquals("a", model.resourceName());
-        Assertions.assertEquals("th", model.resourceType());
-        Assertions.assertEquals("hab", model.namePattern());
+        Assertions.assertEquals(true, model.maskSensitive());
+        Assertions.assertEquals("s", model.resourceIds().get(0));
+        Assertions.assertEquals("ithxqhabifpi", model.resourceName());
+        Assertions.assertEquals("wczbys", model.resourceType());
+        Assertions.assertEquals("pqxu", model.namePattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExportResource model = new ExportResource().withTargetProvider(TargetProvider.AZAPI)
+        ExportResource model = new ExportResource().withTargetProvider(TargetProvider.AZURERM)
             .withFullProperties(true)
-            .withMaskSensitive(false)
-            .withResourceIds(Arrays.asList("bj"))
-            .withResourceName("a")
-            .withResourceType("th")
-            .withNamePattern("hab");
+            .withMaskSensitive(true)
+            .withResourceIds(Arrays.asList("s"))
+            .withResourceName("ithxqhabifpi")
+            .withResourceType("wczbys")
+            .withNamePattern("pqxu");
         model = BinaryData.fromObject(model).toObject(ExportResource.class);
-        Assertions.assertEquals(TargetProvider.AZAPI, model.targetProvider());
+        Assertions.assertEquals(TargetProvider.AZURERM, model.targetProvider());
         Assertions.assertEquals(true, model.fullProperties());
-        Assertions.assertEquals(false, model.maskSensitive());
-        Assertions.assertEquals("bj", model.resourceIds().get(0));
-        Assertions.assertEquals("a", model.resourceName());
-        Assertions.assertEquals("th", model.resourceType());
-        Assertions.assertEquals("hab", model.namePattern());
+        Assertions.assertEquals(true, model.maskSensitive());
+        Assertions.assertEquals("s", model.resourceIds().get(0));
+        Assertions.assertEquals("ithxqhabifpi", model.resourceName());
+        Assertions.assertEquals("wczbys", model.resourceType());
+        Assertions.assertEquals("pqxu", model.namePattern());
     }
 }

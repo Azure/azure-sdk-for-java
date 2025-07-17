@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class KubernetesClusterFeaturesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
      * KubernetesClusterFeatures_Delete.json
      */
     /**
@@ -21,6 +21,7 @@ public final class KubernetesClusterFeaturesDeleteSamples {
     public static void
         deleteKubernetesClusterFeature(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
         manager.kubernetesClusterFeatures()
-            .delete("resourceGroupName", "kubernetesClusterName", "featureName", com.azure.core.util.Context.NONE);
+            .delete("resourceGroupName", "kubernetesClusterName", "featureName", null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

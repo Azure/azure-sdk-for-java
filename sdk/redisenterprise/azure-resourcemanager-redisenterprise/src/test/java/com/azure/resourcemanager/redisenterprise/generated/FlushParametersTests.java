@@ -12,15 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class FlushParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FlushParameters model = BinaryData.fromString("{\"ids\":[\"cohslkev\",\"eggzfb\",\"hfmvfaxkffe\"]}")
-            .toObject(FlushParameters.class);
-        Assertions.assertEquals("cohslkev", model.ids().get(0));
+        FlushParameters model
+            = BinaryData.fromString("{\"ids\":[\"xw\",\"ywqsmbsurexim\",\"ryocfsfksymdd\",\"stkiiuxhqyud\"]}")
+                .toObject(FlushParameters.class);
+        Assertions.assertEquals("xw", model.ids().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FlushParameters model = new FlushParameters().withIds(Arrays.asList("cohslkev", "eggzfb", "hfmvfaxkffe"));
+        FlushParameters model
+            = new FlushParameters().withIds(Arrays.asList("xw", "ywqsmbsurexim", "ryocfsfksymdd", "stkiiuxhqyud"));
         model = BinaryData.fromObject(model).toObject(FlushParameters.class);
-        Assertions.assertEquals("cohslkev", model.ids().get(0));
+        Assertions.assertEquals("xw", model.ids().get(0));
     }
 }

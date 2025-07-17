@@ -10,7 +10,7 @@ package com.azure.resourcemanager.dnsresolver.generated;
 public final class OutboundEndpointsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/OutboundEndpoint_Delete.
+     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/OutboundEndpoint_Delete.
      * json
      */
     /**

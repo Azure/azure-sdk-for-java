@@ -18,7 +18,6 @@ import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
-import com.azure.resourcemanager.eventgrid.models.ResourceSku;
 import com.azure.resourcemanager.eventgrid.models.TlsVersion;
 import java.io.IOException;
 import java.util.List;
@@ -35,17 +34,12 @@ public final class DomainInner extends Resource {
     private DomainProperties innerProperties;
 
     /*
-     * The Sku pricing tier for the Event Grid Domain resource.
-     */
-    private ResourceSku sku;
-
-    /*
      * Identity information for the Event Grid Domain resource.
      */
     private IdentityInfo identity;
 
     /*
-     * The system metadata relating to the Event Grid Domain resource.
+     * The system metadata relating to the Event Grid resource.
      */
     private SystemData systemData;
 
@@ -80,26 +74,6 @@ public final class DomainInner extends Resource {
     }
 
     /**
-     * Get the sku property: The Sku pricing tier for the Event Grid Domain resource.
-     * 
-     * @return the sku value.
-     */
-    public ResourceSku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: The Sku pricing tier for the Event Grid Domain resource.
-     * 
-     * @param sku the sku value to set.
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withSku(ResourceSku sku) {
-        this.sku = sku;
-        return this;
-    }
-
-    /**
      * Get the identity property: Identity information for the Event Grid Domain resource.
      * 
      * @return the identity value.
@@ -120,7 +94,7 @@ public final class DomainInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to the Event Grid Domain resource.
+     * Get the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */
@@ -521,9 +495,6 @@ public final class DomainInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
-        if (sku() != null) {
-            sku().validate();
-        }
         if (identity() != null) {
             identity().validate();
         }
@@ -538,7 +509,6 @@ public final class DomainInner extends Resource {
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
@@ -572,8 +542,6 @@ public final class DomainInner extends Resource {
                     deserializedDomainInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedDomainInner.innerProperties = DomainProperties.fromJson(reader);
-                } else if ("sku".equals(fieldName)) {
-                    deserializedDomainInner.sku = ResourceSku.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedDomainInner.identity = IdentityInfo.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

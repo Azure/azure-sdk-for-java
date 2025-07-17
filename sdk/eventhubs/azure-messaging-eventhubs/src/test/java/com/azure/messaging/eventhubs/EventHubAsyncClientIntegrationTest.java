@@ -109,7 +109,7 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         // Wait for all the events we sent to be received by each of the consumers.
-        Assertions.assertTrue(countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS));
+        Assertions.assertTrue(countDownLatch.await(TIMEOUT.getSeconds() * 2, TimeUnit.SECONDS));
 
         logger.info("Completed successfully.");
     }

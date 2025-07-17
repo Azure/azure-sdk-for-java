@@ -5,6 +5,7 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +22,25 @@ public final class GeocodingBatchResponse implements JsonSerializable<GeocodingB
     /*
      * Summary for the batch request
      */
+    @Generated
     private GeocodingBatchResponseSummary summary;
 
     /*
      * Array containing the batch results.
      */
+    @Generated
     private List<GeocodingBatchResponseItem> batchItems;
 
     /*
      * The is the link to the next page of the features returned. If it's the last page, no this field.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of GeocodingBatchResponse class.
      */
+    @Generated
     public GeocodingBatchResponse() {
     }
 
@@ -44,6 +49,7 @@ public final class GeocodingBatchResponse implements JsonSerializable<GeocodingB
      * 
      * @return the summary value.
      */
+    @Generated
     public GeocodingBatchResponseSummary getSummary() {
         return this.summary;
     }
@@ -54,6 +60,7 @@ public final class GeocodingBatchResponse implements JsonSerializable<GeocodingB
      * @param summary the summary value to set.
      * @return the GeocodingBatchResponse object itself.
      */
+    @Generated
     public GeocodingBatchResponse setSummary(GeocodingBatchResponseSummary summary) {
         this.summary = summary;
         return this;
@@ -64,6 +71,7 @@ public final class GeocodingBatchResponse implements JsonSerializable<GeocodingB
      * 
      * @return the batchItems value.
      */
+    @Generated
     public List<GeocodingBatchResponseItem> getBatchItems() {
         return this.batchItems;
     }
@@ -74,6 +82,7 @@ public final class GeocodingBatchResponse implements JsonSerializable<GeocodingB
      * @param batchItems the batchItems value to set.
      * @return the GeocodingBatchResponse object itself.
      */
+    @Generated
     public GeocodingBatchResponse setBatchItems(List<GeocodingBatchResponseItem> batchItems) {
         this.batchItems = batchItems;
         return this;
@@ -85,6 +94,7 @@ public final class GeocodingBatchResponse implements JsonSerializable<GeocodingB
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -96,6 +106,7 @@ public final class GeocodingBatchResponse implements JsonSerializable<GeocodingB
      * @param nextLink the nextLink value to set.
      * @return the GeocodingBatchResponse object itself.
      */
+    @Generated
     public GeocodingBatchResponse setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -104,6 +115,7 @@ public final class GeocodingBatchResponse implements JsonSerializable<GeocodingB
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -121,6 +133,7 @@ public final class GeocodingBatchResponse implements JsonSerializable<GeocodingB
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the GeocodingBatchResponse.
      */
+    @Generated
     public static GeocodingBatchResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeocodingBatchResponse deserializedGeocodingBatchResponse = new GeocodingBatchResponse();

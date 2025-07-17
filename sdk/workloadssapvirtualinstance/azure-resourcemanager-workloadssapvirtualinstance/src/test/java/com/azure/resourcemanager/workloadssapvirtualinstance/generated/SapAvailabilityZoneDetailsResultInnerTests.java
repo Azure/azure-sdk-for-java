@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class SapAvailabilityZoneDetailsResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapAvailabilityZoneDetailsResultInner model = BinaryData.fromString(
-            "{\"availabilityZonePairs\":[{\"zoneA\":7531360938997310338,\"zoneB\":7223658773172576143},{\"zoneA\":4981825817562607947,\"zoneB\":3818166820966607100}]}")
+        SapAvailabilityZoneDetailsResultInner model = BinaryData
+            .fromString("{\"availabilityZonePairs\":[{\"zoneA\":6262179068899223005,\"zoneB\":521986009678696393}]}")
             .toObject(SapAvailabilityZoneDetailsResultInner.class);
-        Assertions.assertEquals(7531360938997310338L, model.availabilityZonePairs().get(0).zoneA());
-        Assertions.assertEquals(7223658773172576143L, model.availabilityZonePairs().get(0).zoneB());
+        Assertions.assertEquals(6262179068899223005L, model.availabilityZonePairs().get(0).zoneA());
+        Assertions.assertEquals(521986009678696393L, model.availabilityZonePairs().get(0).zoneB());
     }
 }

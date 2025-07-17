@@ -5,26 +5,53 @@
 package com.azure.resourcemanager.iotoperations.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.iotoperations.models.InstanceFeature;
+import com.azure.resourcemanager.iotoperations.models.InstanceFeatureMode;
 import com.azure.resourcemanager.iotoperations.models.InstanceProperties;
+import com.azure.resourcemanager.iotoperations.models.OperationalMode;
 import com.azure.resourcemanager.iotoperations.models.SchemaRegistryRef;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class InstancePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InstanceProperties model = BinaryData.fromString(
-            "{\"description\":\"zoxxjtf\",\"provisioningState\":\"Accepted\",\"version\":\"wfzitonpeqfpjk\",\"schemaRegistryRef\":{\"resourceId\":\"lxofpdvhpfxxypin\"}}")
+            "{\"description\":\"odepoogin\",\"provisioningState\":\"Deleting\",\"version\":\"iheogna\",\"schemaRegistryRef\":{\"resourceId\":\"xzxtheo\"},\"features\":{\"fjaeq\":{\"mode\":\"Preview\",\"settings\":{\"cciqihnhungbwjz\":\"Enabled\",\"fygxgispemvtzfk\":\"Disabled\",\"ubljofxqe\":\"Enabled\"}}}}")
             .toObject(InstanceProperties.class);
-        Assertions.assertEquals("zoxxjtf", model.description());
-        Assertions.assertEquals("lxofpdvhpfxxypin", model.schemaRegistryRef().resourceId());
+        Assertions.assertEquals("odepoogin", model.description());
+        Assertions.assertEquals("xzxtheo", model.schemaRegistryRef().resourceId());
+        Assertions.assertEquals(InstanceFeatureMode.PREVIEW, model.features().get("fjaeq").mode());
+        Assertions.assertEquals(OperationalMode.ENABLED,
+            model.features().get("fjaeq").settings().get("cciqihnhungbwjz"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InstanceProperties model = new InstanceProperties().withDescription("zoxxjtf")
-            .withSchemaRegistryRef(new SchemaRegistryRef().withResourceId("lxofpdvhpfxxypin"));
+        InstanceProperties model = new InstanceProperties().withDescription("odepoogin")
+            .withSchemaRegistryRef(new SchemaRegistryRef().withResourceId("xzxtheo"))
+            .withFeatures(mapOf("fjaeq",
+                new InstanceFeature().withMode(InstanceFeatureMode.PREVIEW)
+                    .withSettings(mapOf("cciqihnhungbwjz", OperationalMode.ENABLED, "fygxgispemvtzfk",
+                        OperationalMode.DISABLED, "ubljofxqe", OperationalMode.ENABLED))));
         model = BinaryData.fromObject(model).toObject(InstanceProperties.class);
-        Assertions.assertEquals("zoxxjtf", model.description());
-        Assertions.assertEquals("lxofpdvhpfxxypin", model.schemaRegistryRef().resourceId());
+        Assertions.assertEquals("odepoogin", model.description());
+        Assertions.assertEquals("xzxtheo", model.schemaRegistryRef().resourceId());
+        Assertions.assertEquals(InstanceFeatureMode.PREVIEW, model.features().get("fjaeq").mode());
+        Assertions.assertEquals(OperationalMode.ENABLED,
+            model.features().get("fjaeq").settings().get("cciqihnhungbwjz"));
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

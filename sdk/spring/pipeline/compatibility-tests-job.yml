@@ -12,28 +12,40 @@ jobs:
       maxParallel: ${{ parameters.MaxParallel }}
       matrix: $[ ${{ parameters.Matrix }} ]
     variables:
-      - template: ../../../eng/pipelines/templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/image.yml
       - name: SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION
         value: ${{ parameters.Matrix.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION }}
     pool:
-      name: azsdk-pool-mms-ubuntu-2204-general
-      vmImage: ubuntu-22.04
+      name: $(LINUXPOOL)
+      image: $(LINUXVMIMAGE)
+      os: linux
     steps:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           Paths:
+            - 'common/perf-test-core'
+            - 'eng/code-quality-reports'
+            - 'sdk/appconfiguration/azure-data-appconfiguration'
+            - 'sdk/appcontainers/azure-resourcemanager-appcontainers'
+            - 'sdk/core'
+            - 'sdk/cosmos/azure-cosmos'
+            - 'sdk/boms/spring-cloud-azure-dependencies'
+            - 'sdk/eventgrid/azure-messaging-eventgrid'
+            - 'sdk/eventhubs'
+            - 'sdk/identity'
+            - 'sdk/jdbc'
+            - 'sdk/keyvault'
+            - 'sdk/monitor'
             - 'sdk/spring'
             - 'sdk/parents/azure-client-sdk-parent'
-            - 'sdk/boms/spring-cloud-azure-dependencies'
             - 'sdk/parents/azure-client-sdk-parent'
-            - 'sdk/jdbc'
-            - 'sdk/servicebus'
-            - 'sdk/eventhubs'
-            - 'common/perf-test-core'
-            - 'sdk/monitor/azure-monitor-opentelemetry-autoconfigure'
             - 'sdk/parents/azure-perf-test-parent'
             - 'sdk/parents/azure-sdk-parent'
-            - 'eng/code-quality-reports'
+            - 'sdk/resourcemanager'
+            - 'sdk/serialization'
+            - 'sdk/servicebus'
+            - 'sdk/storage'
       - task: Maven@4
         displayName: 'Install Unreleased Dependencies'
         inputs:
@@ -66,9 +78,9 @@ jobs:
       - task: Maven@4
         displayName: 'Run tests'
         inputs:
-          options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}} -Dcompiler.failondeprecatedstatus=-'
+          options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}} -Dcompiler.failondeprecatedstatus=- --fail-at-end'
           mavenPomFile: sdk/spring/pom.xml
-          mavenOptions: '$(MemoryOptions)'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'

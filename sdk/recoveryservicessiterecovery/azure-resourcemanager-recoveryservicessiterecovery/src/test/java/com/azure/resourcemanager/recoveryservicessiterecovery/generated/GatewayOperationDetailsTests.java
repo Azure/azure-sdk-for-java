@@ -11,7 +11,7 @@ public final class GatewayOperationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewayOperationDetails model = BinaryData.fromString(
-            "{\"state\":\"g\",\"progressPercentage\":2029904789,\"timeElapsed\":322502128306108788,\"timeRemaining\":7668781915393184343,\"uploadSpeed\":826381918369159803,\"hostName\":\"ilaywkdcwm\",\"dataStores\":[\"ri\",\"mhxdqaolfy\",\"nkkbjpjvlywltmfw\",\"bbjwhlw\"],\"vmwareReadThroughput\":8018197232244540786}")
+            "{\"state\":\"enmvcebxeetq\",\"progressPercentage\":1520987150,\"timeElapsed\":4583927048019094075,\"timeRemaining\":7057026420350516791,\"uploadSpeed\":2051583075223159829,\"hostName\":\"e\",\"dataStores\":[\"urcgojmrvvxwj\",\"ngz\",\"ehqqrsilcchs\"],\"vmwareReadThroughput\":1201535684542960591}")
             .toObject(GatewayOperationDetails.class);
     }
 

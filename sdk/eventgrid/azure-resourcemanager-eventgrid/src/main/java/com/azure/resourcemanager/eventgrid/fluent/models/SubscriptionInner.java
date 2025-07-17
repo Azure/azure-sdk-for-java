@@ -28,7 +28,7 @@ public final class SubscriptionInner extends ProxyResource {
     private SubscriptionProperties innerProperties;
 
     /*
-     * The system metadata relating to Event Subscription resource.
+     * The system metadata relating to the Event Grid resource.
      */
     private SystemData systemData;
 
@@ -63,7 +63,7 @@ public final class SubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to Event Subscription resource.
+     * Get the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */

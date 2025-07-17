@@ -320,9 +320,9 @@ public class PoolTests extends BatchClientTestBase {
 
         if (!poolExists(batchClient, poolId)) {
             // Define the image reference
-            ImageReference imageReference = new ImageReference().setPublisher("Canonical")
-                .setOffer("0001-com-ubuntu-server-jammy")
-                .setSku("22_04-lts");
+            ImageReference imageReference = new ImageReference().setPublisher("microsoftwindowsserver")
+                .setOffer("windowsserver")
+                .setSku("2022-datacenter-smalldisk-g2");
 
             // Set the security profile for the Confidential VM
             SecurityProfile securityProfile = new SecurityProfile(true, SecurityTypes.CONFIDENTIAL_VM,
@@ -339,7 +339,7 @@ public class PoolTests extends BatchClientTestBase {
 
             // Define the virtual machine configuration
             VirtualMachineConfiguration vmConfiguration
-                = new VirtualMachineConfiguration(imageReference, "batch.node.ubuntu 22.04")
+                = new VirtualMachineConfiguration(imageReference, "batch.node.windows amd64")
                     .setSecurityProfile(securityProfile)
                     .setOsDisk(osDisk);
 
@@ -425,7 +425,8 @@ public class PoolTests extends BatchClientTestBase {
                 = new BatchNodeDeallocateContent().setNodeDeallocateOption(BatchNodeDeallocateOption.TERMINATE);
             DeallocateBatchNodeOptions options = new DeallocateBatchNodeOptions();
             options.setTimeOutInSeconds(30);
-            batchClient.deallocateNode(poolId, nodeId, options, deallocateContent);
+            options.setParameters(deallocateContent);
+            batchClient.deallocateNode(poolId, nodeId, options);
 
             // Wait for the node to be deallocated
             boolean isDeallocated = false;

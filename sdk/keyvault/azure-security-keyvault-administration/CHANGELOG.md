@@ -1,9 +1,8 @@
 # Release History
 
-## 4.7.0-beta.1 (Unreleased)
+## 4.8.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added support for pre-backup and pre-restore operations in `KeyVaultBackupClient` and `KeyVaultBackupAsyncClient`. These are long-running operations that check whether it is possible to perform a full key backup or a full key restore from a backup.
 
 ### Breaking Changes
 
@@ -11,6 +10,62 @@
 
 ### Other Changes
 
+## 4.7.0 (2025-06-13)
+
+### Features Added
+
+> Compared to the last stable release - `4.6.4`
+- Added support for service version `7.6`.
+- Added support for pre-backup and pre-restore operations in `KeyVaultBackupClient` and `KeyVaultBackupAsyncClient`. These are long-running operations that check whether it is possible to perform a full key backup or a full key restore from a backup. ([#39878](https://github.com/Azure/azure-sdk-for-java/pull/39878))
+
+### Breaking Changes
+
+> Compared to the latest release - `4.7.0-beta.1`
+- Removed support for service version `7.6-preview.2`.
+- Changed final result types in pollers returned by methods in `KeyVaultBackupClient` and `KeyVaultBackupAsyncClient`:
+  - `beginPreBackup()` now returns `Void` instead of `String`.
+  - `beginPreRestore()` now returns `Void` instead of `KeyVaultRestoreResult`.
+
+### Other Changes
+
+#### Dependency Updates
+
+> Compared to the latest release - `4.7.0-beta.1`
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+
+## 4.7.0-beta.1 (2025-04-10)
+
+### Features Added
+- Added support for pre-backup and pre-restore operations in `KeyVaultBackupClient` and `KeyVaultBackupAsyncClient`. These are long-running operations that check whether it is possible to perform a full key backup or a full key restore from a backup. ([#39878](https://github.com/Azure/azure-sdk-for-java/pull/39878))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+
+## 4.6.4 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+
+## 4.6.3 (2025-03-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+- Upgraded `azure-json` from `1.3.0` to version `1.4.0`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
 
 ## 4.6.2 (2025-01-14)
 

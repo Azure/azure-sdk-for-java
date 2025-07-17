@@ -70,8 +70,9 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyDefinitionInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("policyDefinitionName") String policyDefinitionName,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") PolicyDefinitionInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -80,18 +81,18 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("policyDefinitionName") String policyDefinitionName,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyDefinitionInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("policyDefinitionName") String policyDefinitionName,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}")
@@ -106,8 +107,9 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyDefinitionInner>> createOrUpdateAtManagementGroup(@HostParam("$host") String endpoint,
+            @PathParam("managementGroupId") String managementGroupId,
             @PathParam("policyDefinitionName") String policyDefinitionName,
-            @QueryParam("api-version") String apiVersion, @PathParam("managementGroupId") String managementGroupId,
+            @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") PolicyDefinitionInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -116,18 +118,18 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> deleteAtManagementGroup(@HostParam("$host") String endpoint,
+            @PathParam("managementGroupId") String managementGroupId,
             @PathParam("policyDefinitionName") String policyDefinitionName,
-            @QueryParam("api-version") String apiVersion, @PathParam("managementGroupId") String managementGroupId,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyDefinitionInner>> getAtManagementGroup(@HostParam("$host") String endpoint,
+            @PathParam("managementGroupId") String managementGroupId,
             @PathParam("policyDefinitionName") String policyDefinitionName,
-            @QueryParam("api-version") String apiVersion, @PathParam("managementGroupId") String managementGroupId,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions")
@@ -199,24 +201,24 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (policyDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (policyDefinitionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), policyDefinitionName, apiVersion,
-                this.client.getSubscriptionId(), parameters, accept, context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                policyDefinitionName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -240,24 +242,24 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (policyDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (policyDefinitionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), policyDefinitionName, apiVersion,
-            this.client.getSubscriptionId(), parameters, accept, context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), policyDefinitionName,
+            apiVersion, parameters, accept, context);
     }
 
     /**
@@ -332,19 +334,19 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (policyDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        if (policyDefinitionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
+        }
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), policyDefinitionName, apiVersion,
-                this.client.getSubscriptionId(), accept, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                policyDefinitionName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -366,19 +368,19 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (policyDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        if (policyDefinitionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
+        }
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), policyDefinitionName, apiVersion,
-            this.client.getSubscriptionId(), accept, context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), policyDefinitionName,
+            apiVersion, accept, context);
     }
 
     /**
@@ -446,19 +448,19 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (policyDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        if (policyDefinitionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
+        }
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), policyDefinitionName, apiVersion,
-                this.client.getSubscriptionId(), accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                policyDefinitionName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -480,18 +482,18 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (policyDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        if (policyDefinitionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
+        }
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), policyDefinitionName, apiVersion, this.client.getSubscriptionId(),
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), policyDefinitionName, apiVersion,
             accept, context);
     }
 
@@ -565,7 +567,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.getBuiltIn(this.client.getEndpoint(), policyDefinitionName, apiVersion, accept, context))
@@ -595,7 +597,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getBuiltIn(this.client.getEndpoint(), policyDefinitionName, apiVersion, accept, context);
@@ -655,8 +657,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * 
      * This operation creates or updates a policy definition in the given management group with the given name.
      * 
-     * @param policyDefinitionName The name of the policy definition to create.
      * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to create.
      * @param parameters The policy definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -665,29 +667,29 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyDefinitionInner>> createOrUpdateAtManagementGroupWithResponseAsync(
-        String policyDefinitionName, String managementGroupId, PolicyDefinitionInner parameters) {
+        String managementGroupId, String policyDefinitionName, PolicyDefinitionInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (policyDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
-        }
         if (managementGroupId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
+        }
+        if (policyDefinitionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdateAtManagementGroup(this.client.getEndpoint(),
-                policyDefinitionName, apiVersion, managementGroupId, parameters, accept, context))
+                managementGroupId, policyDefinitionName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -696,8 +698,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * 
      * This operation creates or updates a policy definition in the given management group with the given name.
      * 
-     * @param policyDefinitionName The name of the policy definition to create.
      * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to create.
      * @param parameters The policy definition properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -707,29 +709,29 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyDefinitionInner>> createOrUpdateAtManagementGroupWithResponseAsync(
-        String policyDefinitionName, String managementGroupId, PolicyDefinitionInner parameters, Context context) {
+        String managementGroupId, String policyDefinitionName, PolicyDefinitionInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (policyDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
-        }
         if (managementGroupId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
+        }
+        if (policyDefinitionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdateAtManagementGroup(this.client.getEndpoint(), policyDefinitionName, apiVersion,
-            managementGroupId, parameters, accept, context);
+        return service.createOrUpdateAtManagementGroup(this.client.getEndpoint(), managementGroupId,
+            policyDefinitionName, apiVersion, parameters, accept, context);
     }
 
     /**
@@ -737,8 +739,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * 
      * This operation creates or updates a policy definition in the given management group with the given name.
      * 
-     * @param policyDefinitionName The name of the policy definition to create.
      * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to create.
      * @param parameters The policy definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -746,9 +748,9 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * @return the policy definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyDefinitionInner> createOrUpdateAtManagementGroupAsync(String policyDefinitionName,
-        String managementGroupId, PolicyDefinitionInner parameters) {
-        return createOrUpdateAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId, parameters)
+    public Mono<PolicyDefinitionInner> createOrUpdateAtManagementGroupAsync(String managementGroupId,
+        String policyDefinitionName, PolicyDefinitionInner parameters) {
+        return createOrUpdateAtManagementGroupWithResponseAsync(managementGroupId, policyDefinitionName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -757,8 +759,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * 
      * This operation creates or updates a policy definition in the given management group with the given name.
      * 
-     * @param policyDefinitionName The name of the policy definition to create.
      * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to create.
      * @param parameters The policy definition properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -767,9 +769,9 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * @return the policy definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyDefinitionInner> createOrUpdateAtManagementGroupWithResponse(String policyDefinitionName,
-        String managementGroupId, PolicyDefinitionInner parameters, Context context) {
-        return createOrUpdateAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId, parameters,
+    public Response<PolicyDefinitionInner> createOrUpdateAtManagementGroupWithResponse(String managementGroupId,
+        String policyDefinitionName, PolicyDefinitionInner parameters, Context context) {
+        return createOrUpdateAtManagementGroupWithResponseAsync(managementGroupId, policyDefinitionName, parameters,
             context).block();
     }
 
@@ -778,8 +780,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * 
      * This operation creates or updates a policy definition in the given management group with the given name.
      * 
-     * @param policyDefinitionName The name of the policy definition to create.
      * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to create.
      * @param parameters The policy definition properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -787,9 +789,9 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyDefinitionInner createOrUpdateAtManagementGroup(String policyDefinitionName, String managementGroupId,
+    public PolicyDefinitionInner createOrUpdateAtManagementGroup(String managementGroupId, String policyDefinitionName,
         PolicyDefinitionInner parameters) {
-        return createOrUpdateAtManagementGroupWithResponse(policyDefinitionName, managementGroupId, parameters,
+        return createOrUpdateAtManagementGroupWithResponse(managementGroupId, policyDefinitionName, parameters,
             Context.NONE).getValue();
     }
 
@@ -798,33 +800,33 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * 
      * This operation deletes the policy definition in the given management group with the given name.
      * 
-     * @param policyDefinitionName The name of the policy definition to delete.
      * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteAtManagementGroupWithResponseAsync(String policyDefinitionName,
-        String managementGroupId) {
+    public Mono<Response<Void>> deleteAtManagementGroupWithResponseAsync(String managementGroupId,
+        String policyDefinitionName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (policyDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
         if (managementGroupId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        if (policyDefinitionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
+        }
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.deleteAtManagementGroup(this.client.getEndpoint(), policyDefinitionName,
-                apiVersion, managementGroupId, accept, context))
+            .withContext(context -> service.deleteAtManagementGroup(this.client.getEndpoint(), managementGroupId,
+                policyDefinitionName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -833,8 +835,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * 
      * This operation deletes the policy definition in the given management group with the given name.
      * 
-     * @param policyDefinitionName The name of the policy definition to delete.
      * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -842,25 +844,25 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteAtManagementGroupWithResponseAsync(String policyDefinitionName,
-        String managementGroupId, Context context) {
+    private Mono<Response<Void>> deleteAtManagementGroupWithResponseAsync(String managementGroupId,
+        String policyDefinitionName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (policyDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
         if (managementGroupId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        if (policyDefinitionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
+        }
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.deleteAtManagementGroup(this.client.getEndpoint(), policyDefinitionName, apiVersion,
-            managementGroupId, accept, context);
+        return service.deleteAtManagementGroup(this.client.getEndpoint(), managementGroupId, policyDefinitionName,
+            apiVersion, accept, context);
     }
 
     /**
@@ -868,16 +870,16 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * 
      * This operation deletes the policy definition in the given management group with the given name.
      * 
-     * @param policyDefinitionName The name of the policy definition to delete.
      * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAtManagementGroupAsync(String policyDefinitionName, String managementGroupId) {
-        return deleteAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId)
+    public Mono<Void> deleteAtManagementGroupAsync(String managementGroupId, String policyDefinitionName) {
+        return deleteAtManagementGroupWithResponseAsync(managementGroupId, policyDefinitionName)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -886,8 +888,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * 
      * This operation deletes the policy definition in the given management group with the given name.
      * 
-     * @param policyDefinitionName The name of the policy definition to delete.
      * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -895,9 +897,9 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteAtManagementGroupWithResponse(String policyDefinitionName, String managementGroupId,
+    public Response<Void> deleteAtManagementGroupWithResponse(String managementGroupId, String policyDefinitionName,
         Context context) {
-        return deleteAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId, context).block();
+        return deleteAtManagementGroupWithResponseAsync(managementGroupId, policyDefinitionName, context).block();
     }
 
     /**
@@ -905,15 +907,15 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * 
      * This operation deletes the policy definition in the given management group with the given name.
      * 
-     * @param policyDefinitionName The name of the policy definition to delete.
      * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAtManagementGroup(String policyDefinitionName, String managementGroupId) {
-        deleteAtManagementGroupWithResponse(policyDefinitionName, managementGroupId, Context.NONE);
+    public void deleteAtManagementGroup(String managementGroupId, String policyDefinitionName) {
+        deleteAtManagementGroupWithResponse(managementGroupId, policyDefinitionName, Context.NONE);
     }
 
     /**
@@ -921,33 +923,33 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * 
      * This operation retrieves the policy definition in the given management group with the given name.
      * 
-     * @param policyDefinitionName The name of the policy definition to get.
      * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyDefinitionInner>> getAtManagementGroupWithResponseAsync(String policyDefinitionName,
-        String managementGroupId) {
+    public Mono<Response<PolicyDefinitionInner>> getAtManagementGroupWithResponseAsync(String managementGroupId,
+        String policyDefinitionName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (policyDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
         if (managementGroupId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        if (policyDefinitionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
+        }
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getAtManagementGroup(this.client.getEndpoint(), policyDefinitionName,
-                apiVersion, managementGroupId, accept, context))
+            .withContext(context -> service.getAtManagementGroup(this.client.getEndpoint(), managementGroupId,
+                policyDefinitionName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -956,8 +958,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * 
      * This operation retrieves the policy definition in the given management group with the given name.
      * 
-     * @param policyDefinitionName The name of the policy definition to get.
      * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -965,25 +967,25 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * @return the policy definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyDefinitionInner>> getAtManagementGroupWithResponseAsync(String policyDefinitionName,
-        String managementGroupId, Context context) {
+    private Mono<Response<PolicyDefinitionInner>> getAtManagementGroupWithResponseAsync(String managementGroupId,
+        String policyDefinitionName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (policyDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
         if (managementGroupId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        if (policyDefinitionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
+        }
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getAtManagementGroup(this.client.getEndpoint(), policyDefinitionName, apiVersion,
-            managementGroupId, accept, context);
+        return service.getAtManagementGroup(this.client.getEndpoint(), managementGroupId, policyDefinitionName,
+            apiVersion, accept, context);
     }
 
     /**
@@ -991,17 +993,17 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * 
      * This operation retrieves the policy definition in the given management group with the given name.
      * 
-     * @param policyDefinitionName The name of the policy definition to get.
      * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyDefinitionInner> getAtManagementGroupAsync(String policyDefinitionName,
-        String managementGroupId) {
-        return getAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId)
+    public Mono<PolicyDefinitionInner> getAtManagementGroupAsync(String managementGroupId,
+        String policyDefinitionName) {
+        return getAtManagementGroupWithResponseAsync(managementGroupId, policyDefinitionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1010,8 +1012,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * 
      * This operation retrieves the policy definition in the given management group with the given name.
      * 
-     * @param policyDefinitionName The name of the policy definition to get.
      * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1019,9 +1021,9 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * @return the policy definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyDefinitionInner> getAtManagementGroupWithResponse(String policyDefinitionName,
-        String managementGroupId, Context context) {
-        return getAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId, context).block();
+    public Response<PolicyDefinitionInner> getAtManagementGroupWithResponse(String managementGroupId,
+        String policyDefinitionName, Context context) {
+        return getAtManagementGroupWithResponseAsync(managementGroupId, policyDefinitionName, context).block();
     }
 
     /**
@@ -1029,16 +1031,16 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * 
      * This operation retrieves the policy definition in the given management group with the given name.
      * 
-     * @param policyDefinitionName The name of the policy definition to get.
      * @param managementGroupId The ID of the management group.
+     * @param policyDefinitionName The name of the policy definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyDefinitionInner getAtManagementGroup(String policyDefinitionName, String managementGroupId) {
-        return getAtManagementGroupWithResponse(policyDefinitionName, managementGroupId, Context.NONE).getValue();
+    public PolicyDefinitionInner getAtManagementGroup(String managementGroupId, String policyDefinitionName) {
+        return getAtManagementGroupWithResponse(managementGroupId, policyDefinitionName, Context.NONE).getValue();
     }
 
     /**
@@ -1077,7 +1079,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1125,7 +1127,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1306,7 +1308,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1346,7 +1348,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listBuiltIn(this.client.getEndpoint(), apiVersion, filter, top, accept, context)
@@ -1518,7 +1520,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByManagementGroup(this.client.getEndpoint(), apiVersion,
@@ -1567,7 +1569,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

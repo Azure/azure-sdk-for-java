@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class AccountsChangeKeyVaultSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
      * Accounts_ChangeKeyVault.json
      */
     /**
@@ -27,9 +27,9 @@ public final class AccountsChangeKeyVaultSamples {
                 .withKeyName("fakeTokenPlaceholder")
                 .withKeyVaultResourceId("fakeTokenPlaceholder")
                 .withKeyVaultPrivateEndpoints(Arrays.asList(new KeyVaultPrivateEndpoint().withVirtualNetworkId(
-                    "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworks/vnet1")
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworks/vnet1")
                     .withPrivateEndpointId(
-                        "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.Network/privateEndpoints/privip1"))),
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/privateEndpoints/privip1"))),
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -15,21 +15,20 @@ public final class OperationStatusJobsExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationStatusJobsExtendedInfo model = BinaryData.fromString(
-            "{\"objectType\":\"OperationStatusJobsExtendedInfo\",\"jobIds\":[\"niylyly\",\"wxzut\",\"qztw\"],\"failedJobsError\":{\"tcdxabbujftaben\":\"mupgxy\",\"cafeddw\":\"bklqpxz\",\"ookrtalvnbw\":\"nlzafwxudgnh\",\"uclvdjj\":\"pbeme\"}}")
+            "{\"objectType\":\"OperationStatusJobsExtendedInfo\",\"jobIds\":[\"ljdjuskbrreqy\",\"kceysfaqegplw\",\"ysh\"],\"failedJobsError\":{\"gkqu\":\"kvb\"}}")
             .toObject(OperationStatusJobsExtendedInfo.class);
-        Assertions.assertEquals("niylyly", model.jobIds().get(0));
-        Assertions.assertEquals("mupgxy", model.failedJobsError().get("tcdxabbujftaben"));
+        Assertions.assertEquals("ljdjuskbrreqy", model.jobIds().get(0));
+        Assertions.assertEquals("kvb", model.failedJobsError().get("gkqu"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationStatusJobsExtendedInfo model
-            = new OperationStatusJobsExtendedInfo().withJobIds(Arrays.asList("niylyly", "wxzut", "qztw"))
-                .withFailedJobsError(mapOf("tcdxabbujftaben", "mupgxy", "cafeddw", "bklqpxz", "ookrtalvnbw",
-                    "nlzafwxudgnh", "uclvdjj", "pbeme"));
+            = new OperationStatusJobsExtendedInfo().withJobIds(Arrays.asList("ljdjuskbrreqy", "kceysfaqegplw", "ysh"))
+                .withFailedJobsError(mapOf("gkqu", "kvb"));
         model = BinaryData.fromObject(model).toObject(OperationStatusJobsExtendedInfo.class);
-        Assertions.assertEquals("niylyly", model.jobIds().get(0));
-        Assertions.assertEquals("mupgxy", model.failedJobsError().get("tcdxabbujftaben"));
+        Assertions.assertEquals("ljdjuskbrreqy", model.jobIds().get(0));
+        Assertions.assertEquals("kvb", model.failedJobsError().get("gkqu"));
     }
 
     // Use "Map.of" if available

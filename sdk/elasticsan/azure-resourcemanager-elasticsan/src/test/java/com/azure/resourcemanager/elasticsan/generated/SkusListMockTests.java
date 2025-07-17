@@ -7,8 +7,8 @@ package com.azure.resourcemanager.elasticsan.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.SkuInformation;
@@ -24,16 +24,16 @@ public final class SkusListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"Premium_LRS\",\"tier\":\"Premium\",\"resourceType\":\"nelixhnrztfo\",\"locations\":[\"nxknalaulp\",\"ggdtpnapnyiro\",\"uhpigvp\",\"ylgqgitxmedjvcsl\"],\"locationInfo\":[{\"location\":\"wncwzzhxgktrmg\",\"zones\":[\"apkteoellwptfdyg\",\"fqbuaceopzf\",\"rhhuaopppcqeqx\"]},{\"location\":\"z\",\"zones\":[\"zxctobgb\",\"dmoizpostmg\"]}],\"capabilities\":[{\"name\":\"unrmfqjhhkxb\",\"value\":\"jy\"},{\"name\":\"hx\",\"value\":\"yngudivk\"},{\"name\":\"swbxqz\",\"value\":\"zjf\"}]}]}";
+            = "{\"value\":[{\"name\":\"Premium_LRS\",\"tier\":\"Premium\",\"resourceType\":\"gjb\",\"locations\":[\"bpybsrfbjf\"],\"locationInfo\":[{\"location\":\"sotftpvj\",\"zones\":[\"xilzznf\",\"q\",\"vwpm\",\"taruoujmkcj\"]}],\"capabilities\":[{\"name\":\"tjrybnwjewgdr\",\"value\":\"rvnaenqpeh\"},{\"name\":\"doy\",\"value\":\"ifthnz\"},{\"name\":\"dslgnayqigynduh\",\"value\":\"hqlkthumaqo\"},{\"name\":\"gycdu\",\"value\":\"r\"}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticSanManager manager = ElasticSanManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<SkuInformation> response = manager.skus().list("slyjpkiid", com.azure.core.util.Context.NONE);
+        PagedIterable<SkuInformation> response = manager.skus().list("rruvwbhsq", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(SkuName.PREMIUM_LRS, response.iterator().next().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.iterator().next().tier());

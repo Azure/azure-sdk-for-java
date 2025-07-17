@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,28 +22,33 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "DatabricksNotebook";
 
     /*
      * The absolute path of the notebook to be run in the Databricks Workspace. This path must begin with a slash. Type:
      * string (or Expression with resultType string).
      */
+    @Generated
     private Object notebookPath;
 
     /*
      * Base parameters to be used for each run of this job.If the notebook takes a parameter that is not specified, the
      * default value from the notebook will be used.
      */
+    @Generated
     private Map<String, Object> baseParameters;
 
     /*
      * A list of libraries to be installed on the cluster that will execute the job.
      */
+    @Generated
     private List<Map<String, Object>> libraries;
 
     /**
      * Creates an instance of DatabricksNotebookActivity class.
      */
+    @Generated
     public DatabricksNotebookActivity() {
     }
 
@@ -51,6 +57,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -62,6 +69,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
      * 
      * @return the notebookPath value.
      */
+    @Generated
     public Object getNotebookPath() {
         return this.notebookPath;
     }
@@ -73,6 +81,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
      * @param notebookPath the notebookPath value to set.
      * @return the DatabricksNotebookActivity object itself.
      */
+    @Generated
     public DatabricksNotebookActivity setNotebookPath(Object notebookPath) {
         this.notebookPath = notebookPath;
         return this;
@@ -84,6 +93,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
      * 
      * @return the baseParameters value.
      */
+    @Generated
     public Map<String, Object> getBaseParameters() {
         return this.baseParameters;
     }
@@ -95,6 +105,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
      * @param baseParameters the baseParameters value to set.
      * @return the DatabricksNotebookActivity object itself.
      */
+    @Generated
     public DatabricksNotebookActivity setBaseParameters(Map<String, Object> baseParameters) {
         this.baseParameters = baseParameters;
         return this;
@@ -105,6 +116,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
      * 
      * @return the libraries value.
      */
+    @Generated
     public List<Map<String, Object>> getLibraries() {
         return this.libraries;
     }
@@ -115,6 +127,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
      * @param libraries the libraries value to set.
      * @return the DatabricksNotebookActivity object itself.
      */
+    @Generated
     public DatabricksNotebookActivity setLibraries(List<Map<String, Object>> libraries) {
         this.libraries = libraries;
         return this;
@@ -123,6 +136,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksNotebookActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -132,6 +146,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksNotebookActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -141,6 +156,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksNotebookActivity setName(String name) {
         super.setName(name);
@@ -150,6 +166,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksNotebookActivity setDescription(String description) {
         super.setDescription(description);
@@ -159,6 +176,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksNotebookActivity setState(ActivityState state) {
         super.setState(state);
@@ -168,6 +186,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksNotebookActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -177,6 +196,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksNotebookActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -186,6 +206,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksNotebookActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -195,6 +216,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -235,6 +257,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DatabricksNotebookActivity.
      */
+    @Generated
     public static DatabricksNotebookActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DatabricksNotebookActivity deserializedDatabricksNotebookActivity = new DatabricksNotebookActivity();

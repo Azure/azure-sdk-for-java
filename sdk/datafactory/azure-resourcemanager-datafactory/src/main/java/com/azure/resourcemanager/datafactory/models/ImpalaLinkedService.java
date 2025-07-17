@@ -51,7 +51,7 @@ public final class ImpalaLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private ImpalaLinkedServiceTypeProperties innerTypeProperties() {
+    ImpalaLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -220,6 +220,31 @@ public final class ImpalaLinkedService extends LinkedService {
     }
 
     /**
+     * Get the thriftTransportProtocol property: The transport protocol to use in the Thrift layer (for V2 only).
+     * Default value is Binary.
+     * 
+     * @return the thriftTransportProtocol value.
+     */
+    public ImpalaThriftTransportProtocol thriftTransportProtocol() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().thriftTransportProtocol();
+    }
+
+    /**
+     * Set the thriftTransportProtocol property: The transport protocol to use in the Thrift layer (for V2 only).
+     * Default value is Binary.
+     * 
+     * @param thriftTransportProtocol the thriftTransportProtocol value to set.
+     * @return the ImpalaLinkedService object itself.
+     */
+    public ImpalaLinkedService withThriftTransportProtocol(ImpalaThriftTransportProtocol thriftTransportProtocol) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ImpalaLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withThriftTransportProtocol(thriftTransportProtocol);
+        return this;
+    }
+
+    /**
      * Get the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
      * value is false.
      * 
@@ -241,6 +266,33 @@ public final class ImpalaLinkedService extends LinkedService {
             this.innerTypeProperties = new ImpalaLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withEnableSsl(enableSsl);
+        return this;
+    }
+
+    /**
+     * Get the enableServerCertificateValidation property: Specify whether to enable server SSL certificate validation
+     * when you connect.Always use System Trust Store (for V2 only). The default value is true.
+     * 
+     * @return the enableServerCertificateValidation value.
+     */
+    public Object enableServerCertificateValidation() {
+        return this.innerTypeProperties() == null
+            ? null
+            : this.innerTypeProperties().enableServerCertificateValidation();
+    }
+
+    /**
+     * Set the enableServerCertificateValidation property: Specify whether to enable server SSL certificate validation
+     * when you connect.Always use System Trust Store (for V2 only). The default value is true.
+     * 
+     * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
+     * @return the ImpalaLinkedService object itself.
+     */
+    public ImpalaLinkedService withEnableServerCertificateValidation(Object enableServerCertificateValidation) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ImpalaLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEnableServerCertificateValidation(enableServerCertificateValidation);
         return this;
     }
 

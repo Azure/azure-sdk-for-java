@@ -18,57 +18,60 @@ public final class ContainerAppProbeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContainerAppProbe model = BinaryData.fromString(
-            "{\"failureThreshold\":884290238,\"httpGet\":{\"host\":\"mcwaekrrjr\",\"httpHeaders\":[{\"name\":\"xt\",\"value\":\"gumhjglikkxws\"},{\"name\":\"olbq\",\"value\":\"vuzlm\"}],\"path\":\"elfk\",\"port\":2091794134,\"scheme\":\"HTTP\"},\"initialDelaySeconds\":556961865,\"periodSeconds\":763625934,\"successThreshold\":1477595722,\"tcpSocket\":{\"host\":\"noigbrnjwmwk\",\"port\":1312335759},\"terminationGracePeriodSeconds\":2791971078148352021,\"timeoutSeconds\":1740415327,\"type\":\"Readiness\"}")
+            "{\"failureThreshold\":914097739,\"httpGet\":{\"host\":\"rhvoods\",\"httpHeaders\":[{\"name\":\"obzdopcjwvnhdl\",\"value\":\"wmgxcxrsl\"},{\"name\":\"mutwuoe\",\"value\":\"rpkhjwn\"},{\"name\":\"yqsluic\",\"value\":\"dggkzzlvmbmpa\"},{\"name\":\"modfvuefywsbpfvm\",\"value\":\"yhrfouyftaakcpw\"}],\"path\":\"zvqtmnubexkp\",\"port\":1583015875,\"scheme\":\"HTTP\"},\"initialDelaySeconds\":487764269,\"periodSeconds\":848558030,\"successThreshold\":1007666972,\"tcpSocket\":{\"host\":\"vypomgkopkwho\",\"port\":10985850},\"terminationGracePeriodSeconds\":6001931503510388868,\"timeoutSeconds\":1403476628,\"type\":\"Startup\"}")
             .toObject(ContainerAppProbe.class);
-        Assertions.assertEquals(884290238, model.failureThreshold());
-        Assertions.assertEquals("mcwaekrrjr", model.httpGet().host());
-        Assertions.assertEquals("xt", model.httpGet().httpHeaders().get(0).name());
-        Assertions.assertEquals("gumhjglikkxws", model.httpGet().httpHeaders().get(0).value());
-        Assertions.assertEquals("elfk", model.httpGet().path());
-        Assertions.assertEquals(2091794134, model.httpGet().port());
+        Assertions.assertEquals(914097739, model.failureThreshold());
+        Assertions.assertEquals("rhvoods", model.httpGet().host());
+        Assertions.assertEquals("obzdopcjwvnhdl", model.httpGet().httpHeaders().get(0).name());
+        Assertions.assertEquals("wmgxcxrsl", model.httpGet().httpHeaders().get(0).value());
+        Assertions.assertEquals("zvqtmnubexkp", model.httpGet().path());
+        Assertions.assertEquals(1583015875, model.httpGet().port());
         Assertions.assertEquals(Scheme.HTTP, model.httpGet().scheme());
-        Assertions.assertEquals(556961865, model.initialDelaySeconds());
-        Assertions.assertEquals(763625934, model.periodSeconds());
-        Assertions.assertEquals(1477595722, model.successThreshold());
-        Assertions.assertEquals("noigbrnjwmwk", model.tcpSocket().host());
-        Assertions.assertEquals(1312335759, model.tcpSocket().port());
-        Assertions.assertEquals(2791971078148352021L, model.terminationGracePeriodSeconds());
-        Assertions.assertEquals(1740415327, model.timeoutSeconds());
-        Assertions.assertEquals(Type.READINESS, model.type());
+        Assertions.assertEquals(487764269, model.initialDelaySeconds());
+        Assertions.assertEquals(848558030, model.periodSeconds());
+        Assertions.assertEquals(1007666972, model.successThreshold());
+        Assertions.assertEquals("vypomgkopkwho", model.tcpSocket().host());
+        Assertions.assertEquals(10985850, model.tcpSocket().port());
+        Assertions.assertEquals(6001931503510388868L, model.terminationGracePeriodSeconds());
+        Assertions.assertEquals(1403476628, model.timeoutSeconds());
+        Assertions.assertEquals(Type.STARTUP, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContainerAppProbe model = new ContainerAppProbe().withFailureThreshold(884290238)
-            .withHttpGet(new ContainerAppProbeHttpGet().withHost("mcwaekrrjr")
+        ContainerAppProbe model = new ContainerAppProbe().withFailureThreshold(914097739)
+            .withHttpGet(new ContainerAppProbeHttpGet().withHost("rhvoods")
                 .withHttpHeaders(Arrays.asList(
-                    new ContainerAppProbeHttpGetHttpHeadersItem().withName("xt").withValue("gumhjglikkxws"),
-                    new ContainerAppProbeHttpGetHttpHeadersItem().withName("olbq").withValue("vuzlm")))
-                .withPath("elfk")
-                .withPort(2091794134)
+                    new ContainerAppProbeHttpGetHttpHeadersItem().withName("obzdopcjwvnhdl").withValue("wmgxcxrsl"),
+                    new ContainerAppProbeHttpGetHttpHeadersItem().withName("mutwuoe").withValue("rpkhjwn"),
+                    new ContainerAppProbeHttpGetHttpHeadersItem().withName("yqsluic").withValue("dggkzzlvmbmpa"),
+                    new ContainerAppProbeHttpGetHttpHeadersItem().withName("modfvuefywsbpfvm")
+                        .withValue("yhrfouyftaakcpw")))
+                .withPath("zvqtmnubexkp")
+                .withPort(1583015875)
                 .withScheme(Scheme.HTTP))
-            .withInitialDelaySeconds(556961865)
-            .withPeriodSeconds(763625934)
-            .withSuccessThreshold(1477595722)
-            .withTcpSocket(new ContainerAppProbeTcpSocket().withHost("noigbrnjwmwk").withPort(1312335759))
-            .withTerminationGracePeriodSeconds(2791971078148352021L)
-            .withTimeoutSeconds(1740415327)
-            .withType(Type.READINESS);
+            .withInitialDelaySeconds(487764269)
+            .withPeriodSeconds(848558030)
+            .withSuccessThreshold(1007666972)
+            .withTcpSocket(new ContainerAppProbeTcpSocket().withHost("vypomgkopkwho").withPort(10985850))
+            .withTerminationGracePeriodSeconds(6001931503510388868L)
+            .withTimeoutSeconds(1403476628)
+            .withType(Type.STARTUP);
         model = BinaryData.fromObject(model).toObject(ContainerAppProbe.class);
-        Assertions.assertEquals(884290238, model.failureThreshold());
-        Assertions.assertEquals("mcwaekrrjr", model.httpGet().host());
-        Assertions.assertEquals("xt", model.httpGet().httpHeaders().get(0).name());
-        Assertions.assertEquals("gumhjglikkxws", model.httpGet().httpHeaders().get(0).value());
-        Assertions.assertEquals("elfk", model.httpGet().path());
-        Assertions.assertEquals(2091794134, model.httpGet().port());
+        Assertions.assertEquals(914097739, model.failureThreshold());
+        Assertions.assertEquals("rhvoods", model.httpGet().host());
+        Assertions.assertEquals("obzdopcjwvnhdl", model.httpGet().httpHeaders().get(0).name());
+        Assertions.assertEquals("wmgxcxrsl", model.httpGet().httpHeaders().get(0).value());
+        Assertions.assertEquals("zvqtmnubexkp", model.httpGet().path());
+        Assertions.assertEquals(1583015875, model.httpGet().port());
         Assertions.assertEquals(Scheme.HTTP, model.httpGet().scheme());
-        Assertions.assertEquals(556961865, model.initialDelaySeconds());
-        Assertions.assertEquals(763625934, model.periodSeconds());
-        Assertions.assertEquals(1477595722, model.successThreshold());
-        Assertions.assertEquals("noigbrnjwmwk", model.tcpSocket().host());
-        Assertions.assertEquals(1312335759, model.tcpSocket().port());
-        Assertions.assertEquals(2791971078148352021L, model.terminationGracePeriodSeconds());
-        Assertions.assertEquals(1740415327, model.timeoutSeconds());
-        Assertions.assertEquals(Type.READINESS, model.type());
+        Assertions.assertEquals(487764269, model.initialDelaySeconds());
+        Assertions.assertEquals(848558030, model.periodSeconds());
+        Assertions.assertEquals(1007666972, model.successThreshold());
+        Assertions.assertEquals("vypomgkopkwho", model.tcpSocket().host());
+        Assertions.assertEquals(10985850, model.tcpSocket().port());
+        Assertions.assertEquals(6001931503510388868L, model.terminationGracePeriodSeconds());
+        Assertions.assertEquals(1403476628, model.timeoutSeconds());
+        Assertions.assertEquals(Type.STARTUP, model.type());
     }
 }

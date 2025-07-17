@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservices.generated;
 public final class VaultsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/GETVault.
+     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/GETVault.
      * json
      */
     /**

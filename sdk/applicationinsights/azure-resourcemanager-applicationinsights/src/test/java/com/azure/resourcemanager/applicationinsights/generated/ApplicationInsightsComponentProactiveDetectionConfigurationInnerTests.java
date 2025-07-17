@@ -14,7 +14,7 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationInsightsComponentProactiveDetectionConfigurationInner model = BinaryData.fromString(
-            "{\"Name\":\"kdkexxp\",\"Enabled\":false,\"SendEmailsToSubscriptionOwners\":true,\"CustomEmails\":[\"c\"],\"LastUpdatedTime\":\"pg\",\"RuleDefinitions\":{\"Name\":\"ocjjxhvpmouexh\",\"DisplayName\":\"xibqeojnx\",\"Description\":\"zvddntwndeicbtwn\",\"HelpUrl\":\"aoqvuh\",\"IsHidden\":true,\"IsEnabledByDefault\":false,\"IsInPreview\":false,\"SupportsEmailNotifications\":true}}")
+            "{\"name\":\"kdkexxp\",\"enabled\":false,\"sendEmailsToSubscriptionOwners\":true,\"customEmails\":[\"c\"],\"lastUpdatedTime\":\"pg\",\"ruleDefinitions\":{\"Name\":\"ocjjxhvpmouexh\",\"DisplayName\":\"xibqeojnx\",\"Description\":\"zvddntwndeicbtwn\",\"HelpUrl\":\"aoqvuh\",\"IsHidden\":true,\"IsEnabledByDefault\":false,\"IsInPreview\":false,\"SupportsEmailNotifications\":true}}")
             .toObject(ApplicationInsightsComponentProactiveDetectionConfigurationInner.class);
         Assertions.assertEquals("kdkexxp", model.name());
         Assertions.assertEquals(false, model.enabled());

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupRequest;
@@ -29,15 +29,14 @@ public final class BackupsTriggerWithResponseMockTests {
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.backups()
-            .triggerWithResponse("ayfluiyuosnu", "dtelvhyibdrqrs", "hbuubpy", "owtjo", "ztfwfqchvcz",
-                new BackupRequestResource().withLocation("qpemh")
-                    .withTags(
-                        mapOf("xqabckmzeoxi", "krepdqhqyhwqwem", "pceeznzangprbf", "hgreohtwhlpuz", "bcip", "xyxz"))
+            .triggerWithResponse("mvpsimioyo", "glkmiqwnnr", "clibbfqpsp", "ladydgnhautwu", "exzgpmnmabedd",
+                new BackupRequestResource().withLocation("fpfqf")
+                    .withTags(mapOf("qrvwerfwxbsm", "stcl", "ifkwdvbtbrekqhs", "bljjehh"))
                     .withProperties(new BackupRequest())
-                    .withEtag("nnctagfyvrt"),
+                    .withEtag("wg"),
                 com.azure.core.util.Context.NONE);
 
     }

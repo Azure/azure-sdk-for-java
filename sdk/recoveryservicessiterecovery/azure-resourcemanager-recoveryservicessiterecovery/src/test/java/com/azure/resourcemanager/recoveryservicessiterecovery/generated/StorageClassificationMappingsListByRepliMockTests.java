@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.StorageClassificationMapping;
@@ -22,21 +22,20 @@ public final class StorageClassificationMappingsListByRepliMockTests {
     @Test
     public void testListByReplicationStorageClassifications() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"targetStorageClassificationId\":\"wgiitvjcmimbms\"},\"location\":\"kbbbjoypplod\",\"id\":\"qr\",\"name\":\"kp\",\"type\":\"zf\"}]}";
+            = "{\"value\":[{\"properties\":{\"targetStorageClassificationId\":\"ltf\"},\"location\":\"qoqiaklqakpsti\",\"id\":\"mftwrphmriipzgfo\",\"name\":\"u\",\"type\":\"dcjqneaqkgttbarg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<StorageClassificationMapping> response = manager.storageClassificationMappings()
-            .listByReplicationStorageClassifications("ijtickzovguzp", "pxhhboigzxkop", "lrzhtocjzfppexu", "atzw",
+            .listByReplicationStorageClassifications("rza", "siznymwz", "dpkihqhnfubev", "adxcez",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wgiitvjcmimbms",
-            response.iterator().next().properties().targetStorageClassificationId());
-        Assertions.assertEquals("kbbbjoypplod", response.iterator().next().location());
+        Assertions.assertEquals("ltf", response.iterator().next().properties().targetStorageClassificationId());
+        Assertions.assertEquals("qoqiaklqakpsti", response.iterator().next().location());
     }
 }

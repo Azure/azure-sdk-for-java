@@ -57,7 +57,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-email</artifactId>
-    <version>1.0.4</version>
+    <version>1.2.0-beta.1</version>
 </dependency>
 ```
 
@@ -166,6 +166,27 @@ SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(mess
 PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
 System.out.println("Operation Id: " + response.getValue().getId());
+```
+
+### Create a Poller from an Existing Operation ID
+
+If you have an operation ID from a previous send email request, you can create a poller to check the status of that operation at a later time.
+
+```java readme-sample-beginSendFromExistingOperationId
+EmailMessage message = new EmailMessage()
+    .setSenderAddress("<sender-email-address>")
+    .setToRecipients("<recipient-email-address>")
+    .setSubject("test subject")
+    .setBodyPlainText("test message");
+
+SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
+PollResponse<EmailSendResult> response = poller.waitForCompletion();
+String operationId = response.getValue().getId();
+
+SyncPoller<EmailSendResult, EmailSendResult> poller2 = emailClient.beginSend(operationId);
+PollResponse<EmailSendResult> response2 = poller2.waitForCompletion();
+
+System.out.println("Status: " + response2.getValue().getStatus());
 ```
 
 ### Send Email with Attachments

@@ -51,7 +51,7 @@ public final class Db2LinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private Db2LinkedServiceTypeProperties innerTypeProperties() {
+    Db2LinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -38,7 +38,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       MockTaskContext.mockTaskContext(),
       metricsPublisher)
 
@@ -80,7 +80,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       MockTaskContext.mockTaskContext(),
       metricsPublisher)
 
@@ -113,7 +113,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container,
       partitionKeyDefinition,
       deleteConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       MockTaskContext.mockTaskContext(),
       new TestOutputMetricsPublisher)
 
@@ -139,7 +139,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       MockTaskContext.mockTaskContext(),
       new TestOutputMetricsPublisher)
 
@@ -160,7 +160,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       MockTaskContext.mockTaskContext(),
       new TestOutputMetricsPublisher)
 
@@ -198,7 +198,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container,
       partitionKeyDefinition,
       deleteConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       MockTaskContext.mockTaskContext(),
       new TestOutputMetricsPublisher)
 
@@ -222,7 +222,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       MockTaskContext.mockTaskContext(),
       new TestOutputMetricsPublisher)
     val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
@@ -260,7 +260,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       MockTaskContext.mockTaskContext(),
       metricsPublisher)
 
@@ -285,7 +285,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       MockTaskContext.mockTaskContext(),
       metricsPublisher)
 
@@ -324,7 +324,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       MockTaskContext.mockTaskContext(),
       metricsPublisher)
     // now modify the items read back from DB after the first write
@@ -379,7 +379,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       MockTaskContext.mockTaskContext(),
       metricsPublisher)
 
@@ -507,7 +507,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       MockTaskContext.mockTaskContext(),
       new TestOutputMetricsPublisher)
 
@@ -584,7 +584,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       MockTaskContext.mockTaskContext(),
       new TestOutputMetricsPublisher)
 
@@ -643,7 +643,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       MockTaskContext.mockTaskContext(),
       new TestOutputMetricsPublisher)
 
@@ -724,7 +724,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       MockTaskContext.mockTaskContext(),
       new TestOutputMetricsPublisher)
 
@@ -800,7 +800,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
           container,
           partitionKeyDefinition,
           writeConfig,
-          DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+          DiagnosticsConfig(),
           new TestOutputMetricsPublisher,
           1)
 
@@ -864,7 +864,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       MockTaskContext.mockTaskContext(),
       new TestOutputMetricsPublisher)
 
@@ -970,7 +970,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
               container,
               partitionKeyDefinition,
               writeConfig,
-              DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+              DiagnosticsConfig(),
               MockTaskContext.mockTaskContext(),
               metricsPublisher)
 
@@ -1018,7 +1018,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
               container,
               partitionKeyDefinition,
               writeConfig,
-              DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+              DiagnosticsConfig(),
               MockTaskContext.mockTaskContext(),
             new TestOutputMetricsPublisher)
 
@@ -1063,7 +1063,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
         container,
       partitionKeyDefinition,
       writeConfig,
-      DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+      DiagnosticsConfig(),
       MockTaskContext.mockTaskContext(),
       new TestOutputMetricsPublisher)
 
@@ -1136,7 +1136,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
           container,
         partitionKeyDefinition,
         writeConfig,
-        DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+        DiagnosticsConfig(),
         MockTaskContext.mockTaskContext(),
         new TestOutputMetricsPublisher)
 
@@ -1183,7 +1183,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
           container,
         partitionKeyDefinition,
         writeConfig,
-        DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+        DiagnosticsConfig(),
         MockTaskContext.mockTaskContext(),
         new TestOutputMetricsPublisher)
 
@@ -1242,7 +1242,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
           container,
         partitionKeyDefinition,
         writeConfig,
-        DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+        DiagnosticsConfig(),
         MockTaskContext.mockTaskContext(),
         new TestOutputMetricsPublisher)
 
@@ -1318,7 +1318,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
                 container,
                 partitionKeyDefinition,
                 writeConfig,
-                DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+                DiagnosticsConfig(),
                 new TestOutputMetricsPublisher,
                 1)
 

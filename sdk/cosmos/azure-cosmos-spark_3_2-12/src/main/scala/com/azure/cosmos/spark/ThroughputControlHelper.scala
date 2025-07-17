@@ -6,7 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.{CosmosQueryRequestOptionsBase, ImplementationBridgeHelpers}
 import com.azure.cosmos.models.{CosmosBulkExecutionOptions, CosmosChangeFeedRequestOptions, CosmosItemRequestOptions, PriorityLevel}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.{CosmosAsyncContainer, ThroughputControlGroupConfigBuilder}
+import com.azure.cosmos.{CosmosAsyncContainer, ReadConsistencyStrategy, ThroughputControlGroupConfigBuilder}
 import org.apache.spark.broadcast.Broadcast
 import reactor.core.scala.publisher.SMono
 
@@ -198,7 +198,7 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
                 CosmosClientConfiguration.apply(
                   throughputControlConfigOpt.get.cosmosAccountConfig,
                   diagnosticConfig,
-                  false,
+                  ReadConsistencyStrategy.DEFAULT,
                   sparkEnvironmentInfo)
 
             val throughputControlClientMetadata =

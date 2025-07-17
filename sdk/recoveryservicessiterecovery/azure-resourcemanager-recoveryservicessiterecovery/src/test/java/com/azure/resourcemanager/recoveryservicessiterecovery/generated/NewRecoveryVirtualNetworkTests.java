@@ -12,19 +12,19 @@ public final class NewRecoveryVirtualNetworkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NewRecoveryVirtualNetwork model = BinaryData.fromString(
-            "{\"resourceType\":\"New\",\"recoveryVirtualNetworkResourceGroupName\":\"vfpsj\",\"recoveryVirtualNetworkName\":\"ngsy\"}")
+            "{\"resourceType\":\"New\",\"recoveryVirtualNetworkResourceGroupName\":\"sewrzne\",\"recoveryVirtualNetworkName\":\"qynttwknh\"}")
             .toObject(NewRecoveryVirtualNetwork.class);
-        Assertions.assertEquals("vfpsj", model.recoveryVirtualNetworkResourceGroupName());
-        Assertions.assertEquals("ngsy", model.recoveryVirtualNetworkName());
+        Assertions.assertEquals("sewrzne", model.recoveryVirtualNetworkResourceGroupName());
+        Assertions.assertEquals("qynttwknh", model.recoveryVirtualNetworkName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NewRecoveryVirtualNetwork model
-            = new NewRecoveryVirtualNetwork().withRecoveryVirtualNetworkResourceGroupName("vfpsj")
-                .withRecoveryVirtualNetworkName("ngsy");
+            = new NewRecoveryVirtualNetwork().withRecoveryVirtualNetworkResourceGroupName("sewrzne")
+                .withRecoveryVirtualNetworkName("qynttwknh");
         model = BinaryData.fromObject(model).toObject(NewRecoveryVirtualNetwork.class);
-        Assertions.assertEquals("vfpsj", model.recoveryVirtualNetworkResourceGroupName());
-        Assertions.assertEquals("ngsy", model.recoveryVirtualNetworkName());
+        Assertions.assertEquals("sewrzne", model.recoveryVirtualNetworkResourceGroupName());
+        Assertions.assertEquals("qynttwknh", model.recoveryVirtualNetworkName());
     }
 }

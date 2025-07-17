@@ -994,10 +994,17 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         final UUID activityId = response.getActivityId();
         final int statusCode = status.code();
 
+        final String requestUriAsString = requestRecord.args().physicalAddressUri() != null ?
+            requestRecord.args().physicalAddressUri().getURI().toString() : null;
+
         if ((HttpResponseStatus.OK.code() <= statusCode && statusCode < HttpResponseStatus.MULTIPLE_CHOICES.code()) ||
             statusCode == HttpResponseStatus.NOT_MODIFIED.code()) {
 
-            final StoreResponse storeResponse = response.toStoreResponse(this.contextFuture.getNow(null));
+            RntbdContext rntbdCtx = this.contextFuture.getNow(null);
+            if (rntbdCtx == null) {
+                throw new IllegalStateException("Expecting non-null rntbd context.");
+            }
+            final StoreResponse storeResponse = response.toStoreResponse(rntbdCtx.serverVersion(), requestUriAsString);
 
             if (this.serverErrorInjector != null) {
                 Consumer<Duration> completeWithInjectedDelayConsumer =
@@ -1031,13 +1038,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             // ..Map RNTBD response headers to HTTP response headers
 
             final Map<String, String> responseHeaders = response.getHeaders().asMap(
-                this.rntbdContext().orElseThrow(IllegalStateException::new), activityId
+                this.rntbdContext().orElseThrow(IllegalStateException::new).serverVersion(), activityId
             );
 
             // ..Create CosmosException based on status and sub-status codes
-
-            final String resourceAddress = requestRecord.args().physicalAddressUri() != null ?
-                requestRecord.args().physicalAddressUri().getURI().toString() : null;
 
             switch (status.code()) {
 
@@ -1114,7 +1118,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
                 case StatusCodes.REQUEST_TIMEOUT:
                     Exception inner = new RequestTimeoutException(error, lsn, partitionKeyRangeId, responseHeaders);
-                    cause = new GoneException(resourceAddress, error, lsn, partitionKeyRangeId, responseHeaders, inner,
+                    cause = new GoneException(requestUriAsString, error, lsn, partitionKeyRangeId, responseHeaders, inner,
                         SubStatusCodes.SERVER_GENERATED_408);
                     break;
 
@@ -1136,10 +1140,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     break;
 
                 default:
-                    cause = BridgeInternal.createCosmosException(resourceAddress, status.code(), error, responseHeaders);
+                    cause = BridgeInternal.createCosmosException(requestUriAsString, status.code(), error, responseHeaders);
                     break;
             }
-            BridgeInternal.setResourceAddress(cause, resourceAddress);
+            BridgeInternal.setResourceAddress(cause, requestUriAsString);
 
             if (this.serverErrorInjector != null) {
                 Consumer<Duration> completeWithInjectedDelayConsumer =

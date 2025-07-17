@@ -13,7 +13,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.IdentityPro
 public final class ReplicationRecoveryServicesProvidersCreateSampl {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationRecoveryServicesProviders_Create.json
      */
     /**
@@ -25,7 +25,7 @@ public final class ReplicationRecoveryServicesProvidersCreateSampl {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationRecoveryServicesProviders()
             .define("vmwareprovider1")
-            .withExistingReplicationFabric("migrationvault", "resourcegroup1", "vmwarefabric1")
+            .withExistingReplicationFabric("resourcegroup1", "migrationvault", "vmwarefabric1")
             .withProperties(new AddRecoveryServicesProviderInputProperties().withMachineName("vmwareprovider1")
                 .withAuthenticationIdentityInput(
                     new IdentityProviderInput().withTenantId("72f988bf-86f1-41af-91ab-2d7cd011db47")

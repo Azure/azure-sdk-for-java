@@ -16,24 +16,23 @@ import org.junit.jupiter.api.Assertions;
 public final class AssociationUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssociationUpdate model = BinaryData
-            .fromString(
-                "{\"tags\":{\"fp\":\"c\"},\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"t\"}}}")
+        AssociationUpdate model = BinaryData.fromString(
+            "{\"tags\":{\"fp\":\"c\"},\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"cqqjnqglhqgn\"}}}")
             .toObject(AssociationUpdate.class);
         Assertions.assertEquals("c", model.tags().get("fp"));
         Assertions.assertEquals(AssociationType.SUBNETS, model.properties().associationType());
-        Assertions.assertEquals("t", model.properties().subnet().id());
+        Assertions.assertEquals("cqqjnqglhqgn", model.properties().subnet().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AssociationUpdate model = new AssociationUpdate().withTags(mapOf("fp", "c"))
             .withProperties(new AssociationUpdateProperties().withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnetUpdate().withId("t")));
+                .withSubnet(new AssociationSubnetUpdate().withId("cqqjnqglhqgn")));
         model = BinaryData.fromObject(model).toObject(AssociationUpdate.class);
         Assertions.assertEquals("c", model.tags().get("fp"));
         Assertions.assertEquals(AssociationType.SUBNETS, model.properties().associationType());
-        Assertions.assertEquals("t", model.properties().subnet().id());
+        Assertions.assertEquals("cqqjnqglhqgn", model.properties().subnet().id());
     }
 
     // Use "Map.of" if available

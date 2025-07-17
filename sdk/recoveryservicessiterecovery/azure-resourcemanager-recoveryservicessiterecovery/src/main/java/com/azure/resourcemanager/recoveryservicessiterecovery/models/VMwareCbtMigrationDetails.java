@@ -60,6 +60,11 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
     private String sqlServerLicenseType;
 
     /*
+     * The license type for Linux VM's.
+     */
+    private LinuxLicenseType linuxLicenseType;
+
+    /*
      * The data mover run as account Id.
      */
     private String dataMoverRunAsAccountId;
@@ -362,6 +367,26 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
      */
     public VMwareCbtMigrationDetails withSqlServerLicenseType(String sqlServerLicenseType) {
         this.sqlServerLicenseType = sqlServerLicenseType;
+        return this;
+    }
+
+    /**
+     * Get the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @return the linuxLicenseType value.
+     */
+    public LinuxLicenseType linuxLicenseType() {
+        return this.linuxLicenseType;
+    }
+
+    /**
+     * Set the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @param linuxLicenseType the linuxLicenseType value to set.
+     * @return the VMwareCbtMigrationDetails object itself.
+     */
+    public VMwareCbtMigrationDetails withLinuxLicenseType(LinuxLicenseType linuxLicenseType) {
+        this.linuxLicenseType = linuxLicenseType;
         return this;
     }
 
@@ -979,6 +1004,8 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
         jsonWriter.writeStringField("instanceType", this.instanceType);
         jsonWriter.writeStringField("licenseType", this.licenseType);
         jsonWriter.writeStringField("sqlServerLicenseType", this.sqlServerLicenseType);
+        jsonWriter.writeStringField("linuxLicenseType",
+            this.linuxLicenseType == null ? null : this.linuxLicenseType.toString());
         jsonWriter.writeStringField("targetVmName", this.targetVmName);
         jsonWriter.writeStringField("targetVmSize", this.targetVmSize);
         jsonWriter.writeStringField("targetResourceGroupId", this.targetResourceGroupId);
@@ -1036,6 +1063,9 @@ public final class VMwareCbtMigrationDetails extends MigrationProviderSpecificSe
                     deserializedVMwareCbtMigrationDetails.licenseType = reader.getString();
                 } else if ("sqlServerLicenseType".equals(fieldName)) {
                     deserializedVMwareCbtMigrationDetails.sqlServerLicenseType = reader.getString();
+                } else if ("linuxLicenseType".equals(fieldName)) {
+                    deserializedVMwareCbtMigrationDetails.linuxLicenseType
+                        = LinuxLicenseType.fromString(reader.getString());
                 } else if ("dataMoverRunAsAccountId".equals(fieldName)) {
                     deserializedVMwareCbtMigrationDetails.dataMoverRunAsAccountId = reader.getString();
                 } else if ("snapshotRunAsAccountId".equals(fieldName)) {

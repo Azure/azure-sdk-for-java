@@ -1,10 +1,8 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added support for `socketIO` when generating client access URI.
 
 ### Breaking Changes
 
@@ -12,6 +10,42 @@
 
 ### Other Changes
 
+## 1.5.0 (2025-07-07)
+
+### Features Added
+- Add "listConnectionsInGroup" API.
+
+## 1.4.2 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
+## 1.4.1 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+
+
+## 1.4.0 (2025-02-24)
+
+### Features Added
+
+- Added support for `socketIO` when generating client access URI. ([#42797](https://github.com/Azure/azure-sdk-for-java/pull/42797))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
 
 ## 1.3.3 (2024-12-04)
 
@@ -242,7 +276,7 @@
 ### Bugs Fixed
 
 - Fixed incorrect "audience" from `getClientAccessToken` method in `WebPubSubServiceAsyncClient`. ([#24741](https://github.com/Azure/azure-sdk-for-java/issues/24741))
-- Fixed bug of getting incorrect token in `getClientAccessToken` method from Azure token credential. 
+- Fixed bug of getting incorrect token in `getClientAccessToken` method from Azure token credential.
 
 ### Features Added
 
@@ -410,7 +444,7 @@
 
 ### Features Added
 - Added support for [Azure Active Directory](https://docs.microsoft.com/azure/active-directory/authentication/) based authentication.
-- Added support for API management by configuring `reverseProxyEndpoint` on the client builder. 
+- Added support for API management by configuring `reverseProxyEndpoint` on the client builder.
   https://github.com/Azure/azure-webpubsub/issues/194 describes how to integrate with the API Management service.
 
 ## 1.0.0-beta.3 (2021-07-29)
@@ -429,9 +463,9 @@
 - Fixed issue with generating token that included only the last role in the input list.
 
 ## 1.0.0-beta.1 (2021-04-22)
-Version 1.0.0-beta.1 is a preview of our efforts in creating a client library for Azure Web PubSub that is 
-developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as 
-possible. The principles that guide our efforts can be found in the 
+Version 1.0.0-beta.1 is a preview of our efforts in creating a client library for Azure Web PubSub that is
+developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as
+possible. The principles that guide our efforts can be found in the
 [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html).
 
 - Initial release. Please see the README and wiki for information on using the new library.

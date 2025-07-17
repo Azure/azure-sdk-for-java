@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ReplicationProviderContainerUnmappingInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicationProviderContainerUnmappingInput model = BinaryData.fromString("{\"instanceType\":\"jvlpjxxkzbr\"}")
+        ReplicationProviderContainerUnmappingInput model = BinaryData.fromString("{\"instanceType\":\"gncxykxhdj\"}")
             .toObject(ReplicationProviderContainerUnmappingInput.class);
-        Assertions.assertEquals("jvlpjxxkzbr", model.instanceType());
+        Assertions.assertEquals("gncxykxhdj", model.instanceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicationProviderContainerUnmappingInput model
-            = new ReplicationProviderContainerUnmappingInput().withInstanceType("jvlpjxxkzbr");
+            = new ReplicationProviderContainerUnmappingInput().withInstanceType("gncxykxhdj");
         model = BinaryData.fromObject(model).toObject(ReplicationProviderContainerUnmappingInput.class);
-        Assertions.assertEquals("jvlpjxxkzbr", model.instanceType());
+        Assertions.assertEquals("gncxykxhdj", model.instanceType());
     }
 }

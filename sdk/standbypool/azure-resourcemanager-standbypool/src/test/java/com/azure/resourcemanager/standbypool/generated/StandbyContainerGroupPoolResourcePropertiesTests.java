@@ -18,34 +18,35 @@ public final class StandbyContainerGroupPoolResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StandbyContainerGroupPoolResourceProperties model = BinaryData.fromString(
-            "{\"elasticityProfile\":{\"maxReadyCapacity\":1314224972042297481,\"refillPolicy\":\"always\"},\"containerGroupProperties\":{\"containerGroupProfile\":{\"id\":\"znorcj\",\"revision\":3202297530026478124},\"subnetIds\":[{\"id\":\"xqabnmocpcysh\"},{\"id\":\"rzafbljjgpbtoqcj\"},{\"id\":\"klj\"},{\"id\":\"vbqid\"}]},\"provisioningState\":\"Failed\"}")
+            "{\"elasticityProfile\":{\"maxReadyCapacity\":4001606914042880577,\"refillPolicy\":\"always\"},\"containerGroupProperties\":{\"containerGroupProfile\":{\"id\":\"f\",\"revision\":1403536085047342017},\"subnetIds\":[{\"id\":\"nguitnwuizgazxu\"},{\"id\":\"izuckyfihrfidfvz\"}]},\"zones\":[\"uht\",\"mwisdkfthwxmnt\",\"i\",\"aop\"],\"provisioningState\":\"Deleting\"}")
             .toObject(StandbyContainerGroupPoolResourceProperties.class);
-        Assertions.assertEquals(1314224972042297481L, model.elasticityProfile().maxReadyCapacity());
+        Assertions.assertEquals(4001606914042880577L, model.elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(RefillPolicy.ALWAYS, model.elasticityProfile().refillPolicy());
-        Assertions.assertEquals("znorcj", model.containerGroupProperties().containerGroupProfile().id());
-        Assertions.assertEquals(3202297530026478124L,
+        Assertions.assertEquals("f", model.containerGroupProperties().containerGroupProfile().id());
+        Assertions.assertEquals(1403536085047342017L,
             model.containerGroupProperties().containerGroupProfile().revision());
-        Assertions.assertEquals("xqabnmocpcysh", model.containerGroupProperties().subnetIds().get(0).id());
+        Assertions.assertEquals("nguitnwuizgazxu", model.containerGroupProperties().subnetIds().get(0).id());
+        Assertions.assertEquals("uht", model.zones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StandbyContainerGroupPoolResourceProperties model = new StandbyContainerGroupPoolResourceProperties()
             .withElasticityProfile(
-                new StandbyContainerGroupPoolElasticityProfile().withMaxReadyCapacity(1314224972042297481L)
+                new StandbyContainerGroupPoolElasticityProfile().withMaxReadyCapacity(4001606914042880577L)
                     .withRefillPolicy(RefillPolicy.ALWAYS))
             .withContainerGroupProperties(new ContainerGroupProperties()
-                .withContainerGroupProfile(
-                    new ContainerGroupProfile().withId("znorcj").withRevision(3202297530026478124L))
+                .withContainerGroupProfile(new ContainerGroupProfile().withId("f").withRevision(1403536085047342017L))
                 .withSubnetIds(
-                    Arrays.asList(new Subnet().withId("xqabnmocpcysh"), new Subnet().withId("rzafbljjgpbtoqcj"),
-                        new Subnet().withId("klj"), new Subnet().withId("vbqid"))));
+                    Arrays.asList(new Subnet().withId("nguitnwuizgazxu"), new Subnet().withId("izuckyfihrfidfvz"))))
+            .withZones(Arrays.asList("uht", "mwisdkfthwxmnt", "i", "aop"));
         model = BinaryData.fromObject(model).toObject(StandbyContainerGroupPoolResourceProperties.class);
-        Assertions.assertEquals(1314224972042297481L, model.elasticityProfile().maxReadyCapacity());
+        Assertions.assertEquals(4001606914042880577L, model.elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(RefillPolicy.ALWAYS, model.elasticityProfile().refillPolicy());
-        Assertions.assertEquals("znorcj", model.containerGroupProperties().containerGroupProfile().id());
-        Assertions.assertEquals(3202297530026478124L,
+        Assertions.assertEquals("f", model.containerGroupProperties().containerGroupProfile().id());
+        Assertions.assertEquals(1403536085047342017L,
             model.containerGroupProperties().containerGroupProfile().revision());
-        Assertions.assertEquals("xqabnmocpcysh", model.containerGroupProperties().subnetIds().get(0).id());
+        Assertions.assertEquals("nguitnwuizgazxu", model.containerGroupProperties().subnetIds().get(0).id());
+        Assertions.assertEquals("uht", model.zones().get(0));
     }
 }

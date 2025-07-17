@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class BatchResultSummary implements JsonSerializable<BatchResultSum
     /*
      * Number of successful requests in the batch
      */
+    @Generated
     private Integer successfulRequests;
 
     /*
      * Total number of requests in the batch
      */
+    @Generated
     private Integer totalRequests;
 
     /**
      * Creates an instance of BatchResultSummary class.
      */
+    @Generated
     public BatchResultSummary() {
     }
 
@@ -37,6 +41,7 @@ public final class BatchResultSummary implements JsonSerializable<BatchResultSum
      * 
      * @return the successfulRequests value.
      */
+    @Generated
     public Integer getSuccessfulRequests() {
         return this.successfulRequests;
     }
@@ -46,6 +51,7 @@ public final class BatchResultSummary implements JsonSerializable<BatchResultSum
      * 
      * @return the totalRequests value.
      */
+    @Generated
     public Integer getTotalRequests() {
         return this.totalRequests;
     }
@@ -53,6 +59,7 @@ public final class BatchResultSummary implements JsonSerializable<BatchResultSum
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +74,7 @@ public final class BatchResultSummary implements JsonSerializable<BatchResultSum
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the BatchResultSummary.
      */
+    @Generated
     public static BatchResultSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BatchResultSummary deserializedBatchResultSummary = new BatchResultSummary();

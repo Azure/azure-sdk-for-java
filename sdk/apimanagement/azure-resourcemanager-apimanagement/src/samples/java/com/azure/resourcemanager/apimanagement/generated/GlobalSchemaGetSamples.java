@@ -10,7 +10,7 @@ package com.azure.resourcemanager.apimanagement.generated;
 public final class GlobalSchemaGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetGlobalSchema2.json
      */
     /**
@@ -24,7 +24,7 @@ public final class GlobalSchemaGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetGlobalSchema1.json
      */
     /**

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.StorageClassificationMapping;
@@ -22,22 +22,22 @@ public final class StorageClassificationMappingsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"targetStorageClassificationId\":\"shoxfzzjd\"},\"location\":\"pbusxy\",\"id\":\"gozwplxzgzumno\",\"name\":\"iixkkbygbgiqkw\",\"type\":\"shy\"}";
+            = "{\"properties\":{\"targetStorageClassificationId\":\"cquajpoipdjxy\"},\"location\":\"gvraxhntoiw\",\"id\":\"szk\",\"name\":\"lk\",\"type\":\"sjwrretsluqfgksd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StorageClassificationMapping response = manager.storageClassificationMappings()
-            .define("k")
-            .withExistingReplicationStorageClassification("wn", "wckzeb", "bvwdxgyypmxq", "lmlnxrcatkuh")
-            .withProperties(new StorageMappingInputProperties().withTargetStorageClassificationId("kvvii"))
+            .define("feudbobmoljirch")
+            .withExistingReplicationStorageClassification("ebdltniui", "merf", "hgvcy", "ddoeilhgga")
+            .withProperties(new StorageMappingInputProperties().withTargetStorageClassificationId("zi"))
             .create();
 
-        Assertions.assertEquals("shoxfzzjd", response.properties().targetStorageClassificationId());
-        Assertions.assertEquals("pbusxy", response.location());
+        Assertions.assertEquals("cquajpoipdjxy", response.properties().targetStorageClassificationId());
+        Assertions.assertEquals("gvraxhntoiw", response.location());
     }
 }

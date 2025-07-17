@@ -67,10 +67,9 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplianceCollection>> list(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -85,8 +84,8 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
      * 
      * Gets the list of Azure Site Recovery appliances for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param filter OData filter options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -95,18 +94,18 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicationApplianceInner>> listSinglePageAsync(String resourceName,
-        String resourceGroupName, String filter) {
+    private Mono<PagedResponse<ReplicationApplianceInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -114,8 +113,8 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), filter, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), filter, accept, context))
             .<PagedResponse<ReplicationApplianceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -126,8 +125,8 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
      * 
      * Gets the list of Azure Site Recovery appliances for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param filter OData filter options.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,18 +136,18 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicationApplianceInner>> listSinglePageAsync(String resourceName,
-        String resourceGroupName, String filter, Context context) {
+    private Mono<PagedResponse<ReplicationApplianceInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -157,7 +156,7 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
                 this.client.getSubscriptionId(), filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -168,8 +167,8 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
      * 
      * Gets the list of Azure Site Recovery appliances for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param filter OData filter options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -177,9 +176,9 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
      * @return the list of Azure Site Recovery appliances for the vault as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReplicationApplianceInner> listAsync(String resourceName, String resourceGroupName,
+    private PagedFlux<ReplicationApplianceInner> listAsync(String resourceGroupName, String resourceName,
         String filter) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, filter),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -188,17 +187,17 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
      * 
      * Gets the list of Azure Site Recovery appliances for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Azure Site Recovery appliances for the vault as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReplicationApplianceInner> listAsync(String resourceName, String resourceGroupName) {
+    private PagedFlux<ReplicationApplianceInner> listAsync(String resourceGroupName, String resourceName) {
         final String filter = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, filter),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -207,8 +206,8 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
      * 
      * Gets the list of Azure Site Recovery appliances for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param filter OData filter options.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -217,9 +216,9 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
      * @return the list of Azure Site Recovery appliances for the vault as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReplicationApplianceInner> listAsync(String resourceName, String resourceGroupName, String filter,
+    private PagedFlux<ReplicationApplianceInner> listAsync(String resourceGroupName, String resourceName, String filter,
         Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, filter, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, filter, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -228,8 +227,8 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
      * 
      * Gets the list of Azure Site Recovery appliances for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -237,9 +236,9 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReplicationApplianceInner> list(String resourceName, String resourceGroupName) {
+    public PagedIterable<ReplicationApplianceInner> list(String resourceGroupName, String resourceName) {
         final String filter = null;
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName, filter));
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName, filter));
     }
 
     /**
@@ -247,8 +246,8 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
      * 
      * Gets the list of Azure Site Recovery appliances for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param filter OData filter options.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -258,9 +257,9 @@ public final class ReplicationAppliancesClientImpl implements ReplicationApplian
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReplicationApplianceInner> list(String resourceName, String resourceGroupName, String filter,
+    public PagedIterable<ReplicationApplianceInner> list(String resourceGroupName, String resourceName, String filter,
         Context context) {
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName, filter, context));
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName, filter, context));
     }
 
     /**

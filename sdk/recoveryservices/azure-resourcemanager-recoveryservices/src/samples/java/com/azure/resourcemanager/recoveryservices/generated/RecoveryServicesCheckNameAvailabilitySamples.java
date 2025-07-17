@@ -12,7 +12,7 @@ import com.azure.resourcemanager.recoveryservices.models.CheckNameAvailabilityPa
 public final class RecoveryServicesCheckNameAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * CheckNameAvailability_Available.json
      */
     /**
@@ -33,7 +33,7 @@ public final class RecoveryServicesCheckNameAvailabilitySamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * CheckNameAvailability_NotAvailable.json
      */
     /**

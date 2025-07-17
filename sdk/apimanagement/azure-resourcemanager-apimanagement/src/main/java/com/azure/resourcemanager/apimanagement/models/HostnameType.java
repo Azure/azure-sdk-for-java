@@ -37,6 +37,11 @@ public final class HostnameType extends ExpandableStringEnum<HostnameType> {
     public static final HostnameType DEVELOPER_PORTAL = fromString("DeveloperPortal");
 
     /**
+     * Static value ConfigurationApi for HostnameType.
+     */
+    public static final HostnameType CONFIGURATION_API = fromString("ConfigurationApi");
+
+    /**
      * Creates a new instance of HostnameType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

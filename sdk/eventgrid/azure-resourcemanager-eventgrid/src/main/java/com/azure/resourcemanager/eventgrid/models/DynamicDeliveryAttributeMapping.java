@@ -47,7 +47,7 @@ public final class DynamicDeliveryAttributeMapping extends DeliveryAttributeMapp
      * 
      * @return the innerProperties value.
      */
-    private DynamicDeliveryAttributeMappingProperties innerProperties() {
+    DynamicDeliveryAttributeMappingProperties innerProperties() {
         return this.innerProperties;
     }
 

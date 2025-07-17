@@ -52,7 +52,7 @@ public final class MicrosoftAccessLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private MicrosoftAccessLinkedServiceTypeProperties innerTypeProperties() {
+    MicrosoftAccessLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

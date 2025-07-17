@@ -245,8 +245,8 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
             .forceLinkToReplicationGroup(resourceGroupName, clusterName, databaseName, parameters, context);
     }
 
-    public void flush(FlushParameters parameters) {
-        serviceManager.databases().flush(resourceGroupName, clusterName, databaseName, parameters);
+    public void flush() {
+        serviceManager.databases().flush(resourceGroupName, clusterName, databaseName);
     }
 
     public void flush(FlushParameters parameters, Context context) {
@@ -277,8 +277,13 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     public DatabaseImpl withClusteringPolicy(ClusteringPolicy clusteringPolicy) {
-        this.innerModel().withClusteringPolicy(clusteringPolicy);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withClusteringPolicy(clusteringPolicy);
+            return this;
+        } else {
+            this.updateParameters.withClusteringPolicy(clusteringPolicy);
+            return this;
+        }
     }
 
     public DatabaseImpl withEvictionPolicy(EvictionPolicy evictionPolicy) {

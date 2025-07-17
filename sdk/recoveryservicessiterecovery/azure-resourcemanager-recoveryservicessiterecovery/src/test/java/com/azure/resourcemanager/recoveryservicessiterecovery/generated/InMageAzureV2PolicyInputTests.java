@@ -13,27 +13,27 @@ public final class InMageAzureV2PolicyInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageAzureV2PolicyInput model = BinaryData.fromString(
-            "{\"instanceType\":\"InMageAzureV2\",\"recoveryPointThresholdInMinutes\":1444761559,\"recoveryPointHistory\":2116742025,\"crashConsistentFrequencyInMinutes\":852718126,\"appConsistentFrequencyInMinutes\":1922243610,\"multiVmSyncStatus\":\"Enable\"}")
+            "{\"instanceType\":\"InMageAzureV2\",\"recoveryPointThresholdInMinutes\":915963453,\"recoveryPointHistory\":2080584469,\"crashConsistentFrequencyInMinutes\":177286985,\"appConsistentFrequencyInMinutes\":437237916,\"multiVmSyncStatus\":\"Disable\"}")
             .toObject(InMageAzureV2PolicyInput.class);
-        Assertions.assertEquals(1444761559, model.recoveryPointThresholdInMinutes());
-        Assertions.assertEquals(2116742025, model.recoveryPointHistory());
-        Assertions.assertEquals(852718126, model.crashConsistentFrequencyInMinutes());
-        Assertions.assertEquals(1922243610, model.appConsistentFrequencyInMinutes());
-        Assertions.assertEquals(SetMultiVmSyncStatus.ENABLE, model.multiVmSyncStatus());
+        Assertions.assertEquals(915963453, model.recoveryPointThresholdInMinutes());
+        Assertions.assertEquals(2080584469, model.recoveryPointHistory());
+        Assertions.assertEquals(177286985, model.crashConsistentFrequencyInMinutes());
+        Assertions.assertEquals(437237916, model.appConsistentFrequencyInMinutes());
+        Assertions.assertEquals(SetMultiVmSyncStatus.DISABLE, model.multiVmSyncStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageAzureV2PolicyInput model = new InMageAzureV2PolicyInput().withRecoveryPointThresholdInMinutes(1444761559)
-            .withRecoveryPointHistory(2116742025)
-            .withCrashConsistentFrequencyInMinutes(852718126)
-            .withAppConsistentFrequencyInMinutes(1922243610)
-            .withMultiVmSyncStatus(SetMultiVmSyncStatus.ENABLE);
+        InMageAzureV2PolicyInput model = new InMageAzureV2PolicyInput().withRecoveryPointThresholdInMinutes(915963453)
+            .withRecoveryPointHistory(2080584469)
+            .withCrashConsistentFrequencyInMinutes(177286985)
+            .withAppConsistentFrequencyInMinutes(437237916)
+            .withMultiVmSyncStatus(SetMultiVmSyncStatus.DISABLE);
         model = BinaryData.fromObject(model).toObject(InMageAzureV2PolicyInput.class);
-        Assertions.assertEquals(1444761559, model.recoveryPointThresholdInMinutes());
-        Assertions.assertEquals(2116742025, model.recoveryPointHistory());
-        Assertions.assertEquals(852718126, model.crashConsistentFrequencyInMinutes());
-        Assertions.assertEquals(1922243610, model.appConsistentFrequencyInMinutes());
-        Assertions.assertEquals(SetMultiVmSyncStatus.ENABLE, model.multiVmSyncStatus());
+        Assertions.assertEquals(915963453, model.recoveryPointThresholdInMinutes());
+        Assertions.assertEquals(2080584469, model.recoveryPointHistory());
+        Assertions.assertEquals(177286985, model.crashConsistentFrequencyInMinutes());
+        Assertions.assertEquals(437237916, model.appConsistentFrequencyInMinutes());
+        Assertions.assertEquals(SetMultiVmSyncStatus.DISABLE, model.multiVmSyncStatus());
     }
 }

@@ -435,6 +435,29 @@ public final class ApiManagementServiceUpdateParameters extends ApimResource {
     }
 
     /**
+     * Get the configurationApi property: Configuration API configuration of the API Management service.
+     * 
+     * @return the configurationApi value.
+     */
+    public ConfigurationApi configurationApi() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationApi();
+    }
+
+    /**
+     * Set the configurationApi property: Configuration API configuration of the API Management service.
+     * 
+     * @param configurationApi the configurationApi value to set.
+     * @return the ApiManagementServiceUpdateParameters object itself.
+     */
+    public ApiManagementServiceUpdateParameters withConfigurationApi(ConfigurationApi configurationApi) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withConfigurationApi(configurationApi);
+        return this;
+    }
+
+    /**
      * Get the virtualNetworkConfiguration property: Virtual network configuration of the API Management service.
      * 
      * @return the virtualNetworkConfiguration value.
@@ -766,6 +789,52 @@ public final class ApiManagementServiceUpdateParameters extends ApimResource {
      */
     public PlatformVersion platformVersion() {
         return this.innerProperties() == null ? null : this.innerProperties().platformVersion();
+    }
+
+    /**
+     * Get the legacyPortalStatus property: Status of legacy portal in the API Management service.
+     * 
+     * @return the legacyPortalStatus value.
+     */
+    public LegacyPortalStatus legacyPortalStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().legacyPortalStatus();
+    }
+
+    /**
+     * Set the legacyPortalStatus property: Status of legacy portal in the API Management service.
+     * 
+     * @param legacyPortalStatus the legacyPortalStatus value to set.
+     * @return the ApiManagementServiceUpdateParameters object itself.
+     */
+    public ApiManagementServiceUpdateParameters withLegacyPortalStatus(LegacyPortalStatus legacyPortalStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withLegacyPortalStatus(legacyPortalStatus);
+        return this;
+    }
+
+    /**
+     * Get the developerPortalStatus property: Status of developer portal in this API Management service.
+     * 
+     * @return the developerPortalStatus value.
+     */
+    public DeveloperPortalStatus developerPortalStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().developerPortalStatus();
+    }
+
+    /**
+     * Set the developerPortalStatus property: Status of developer portal in this API Management service.
+     * 
+     * @param developerPortalStatus the developerPortalStatus value to set.
+     * @return the ApiManagementServiceUpdateParameters object itself.
+     */
+    public ApiManagementServiceUpdateParameters withDeveloperPortalStatus(DeveloperPortalStatus developerPortalStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withDeveloperPortalStatus(developerPortalStatus);
+        return this;
     }
 
     /**

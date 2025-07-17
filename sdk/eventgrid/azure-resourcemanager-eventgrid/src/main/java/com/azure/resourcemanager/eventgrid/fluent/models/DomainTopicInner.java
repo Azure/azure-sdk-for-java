@@ -24,7 +24,7 @@ public final class DomainTopicInner extends ProxyResource {
     private DomainTopicProperties innerProperties;
 
     /*
-     * The system metadata relating to Domain Topic resource.
+     * The system metadata relating to the Event Grid resource.
      */
     private SystemData systemData;
 
@@ -59,7 +59,7 @@ public final class DomainTopicInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to Domain Topic resource.
+     * Get the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */

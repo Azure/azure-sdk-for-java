@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,53 +22,63 @@ public class HubspotLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Hubspot";
 
     /*
      * The client ID associated with your Hubspot application.
      */
+    @Generated
     private Object clientId;
 
     /*
      * The client secret associated with your Hubspot application.
      */
+    @Generated
     private SecretBase clientSecret;
 
     /*
      * The access token obtained when initially authenticating your OAuth integration.
      */
+    @Generated
     private SecretBase accessToken;
 
     /*
      * The refresh token obtained when initially authenticating your OAuth integration.
      */
+    @Generated
     private SecretBase refreshToken;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
+    @Generated
     private Object useEncryptedEndpoints;
 
     /*
      * Specifies whether to require the host name in the server's certificate to match the host name of the server when
      * connecting over SSL. The default value is true.
      */
+    @Generated
     private Object useHostVerification;
 
     /*
      * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
+    @Generated
     private Object usePeerVerification;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of HubspotLinkedService class.
      */
+    @Generated
     public HubspotLinkedService() {
     }
 
@@ -76,6 +87,7 @@ public class HubspotLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -86,6 +98,7 @@ public class HubspotLinkedService extends LinkedService {
      * 
      * @return the clientId value.
      */
+    @Generated
     public Object getClientId() {
         return this.clientId;
     }
@@ -96,6 +109,7 @@ public class HubspotLinkedService extends LinkedService {
      * @param clientId the clientId value to set.
      * @return the HubspotLinkedService object itself.
      */
+    @Generated
     public HubspotLinkedService setClientId(Object clientId) {
         this.clientId = clientId;
         return this;
@@ -106,6 +120,7 @@ public class HubspotLinkedService extends LinkedService {
      * 
      * @return the clientSecret value.
      */
+    @Generated
     public SecretBase getClientSecret() {
         return this.clientSecret;
     }
@@ -116,6 +131,7 @@ public class HubspotLinkedService extends LinkedService {
      * @param clientSecret the clientSecret value to set.
      * @return the HubspotLinkedService object itself.
      */
+    @Generated
     public HubspotLinkedService setClientSecret(SecretBase clientSecret) {
         this.clientSecret = clientSecret;
         return this;
@@ -126,6 +142,7 @@ public class HubspotLinkedService extends LinkedService {
      * 
      * @return the accessToken value.
      */
+    @Generated
     public SecretBase getAccessToken() {
         return this.accessToken;
     }
@@ -136,6 +153,7 @@ public class HubspotLinkedService extends LinkedService {
      * @param accessToken the accessToken value to set.
      * @return the HubspotLinkedService object itself.
      */
+    @Generated
     public HubspotLinkedService setAccessToken(SecretBase accessToken) {
         this.accessToken = accessToken;
         return this;
@@ -146,6 +164,7 @@ public class HubspotLinkedService extends LinkedService {
      * 
      * @return the refreshToken value.
      */
+    @Generated
     public SecretBase getRefreshToken() {
         return this.refreshToken;
     }
@@ -156,6 +175,7 @@ public class HubspotLinkedService extends LinkedService {
      * @param refreshToken the refreshToken value to set.
      * @return the HubspotLinkedService object itself.
      */
+    @Generated
     public HubspotLinkedService setRefreshToken(SecretBase refreshToken) {
         this.refreshToken = refreshToken;
         return this;
@@ -167,6 +187,7 @@ public class HubspotLinkedService extends LinkedService {
      * 
      * @return the useEncryptedEndpoints value.
      */
+    @Generated
     public Object getUseEncryptedEndpoints() {
         return this.useEncryptedEndpoints;
     }
@@ -178,6 +199,7 @@ public class HubspotLinkedService extends LinkedService {
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the HubspotLinkedService object itself.
      */
+    @Generated
     public HubspotLinkedService setUseEncryptedEndpoints(Object useEncryptedEndpoints) {
         this.useEncryptedEndpoints = useEncryptedEndpoints;
         return this;
@@ -189,6 +211,7 @@ public class HubspotLinkedService extends LinkedService {
      * 
      * @return the useHostVerification value.
      */
+    @Generated
     public Object getUseHostVerification() {
         return this.useHostVerification;
     }
@@ -200,6 +223,7 @@ public class HubspotLinkedService extends LinkedService {
      * @param useHostVerification the useHostVerification value to set.
      * @return the HubspotLinkedService object itself.
      */
+    @Generated
     public HubspotLinkedService setUseHostVerification(Object useHostVerification) {
         this.useHostVerification = useHostVerification;
         return this;
@@ -211,6 +235,7 @@ public class HubspotLinkedService extends LinkedService {
      * 
      * @return the usePeerVerification value.
      */
+    @Generated
     public Object getUsePeerVerification() {
         return this.usePeerVerification;
     }
@@ -222,6 +247,7 @@ public class HubspotLinkedService extends LinkedService {
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the HubspotLinkedService object itself.
      */
+    @Generated
     public HubspotLinkedService setUsePeerVerification(Object usePeerVerification) {
         this.usePeerVerification = usePeerVerification;
         return this;
@@ -233,6 +259,7 @@ public class HubspotLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -244,6 +271,7 @@ public class HubspotLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HubspotLinkedService object itself.
      */
+    @Generated
     public HubspotLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -252,6 +280,17 @@ public class HubspotLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public HubspotLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public HubspotLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -261,6 +300,7 @@ public class HubspotLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HubspotLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -270,6 +310,7 @@ public class HubspotLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HubspotLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -279,6 +320,7 @@ public class HubspotLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HubspotLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -288,9 +330,11 @@ public class HubspotLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -309,10 +353,18 @@ public class HubspotLinkedService extends LinkedService {
             jsonWriter.writeJsonField("clientSecret", this.clientSecret);
             jsonWriter.writeJsonField("accessToken", this.accessToken);
             jsonWriter.writeJsonField("refreshToken", this.refreshToken);
-            jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
-            jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
-            jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.useEncryptedEndpoints != null) {
+                jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+            }
+            if (this.useHostVerification != null) {
+                jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+            }
+            if (this.usePeerVerification != null) {
+                jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -332,6 +384,7 @@ public class HubspotLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HubspotLinkedService.
      */
+    @Generated
     public static HubspotLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HubspotLinkedService deserializedHubspotLinkedService = new HubspotLinkedService();
@@ -340,7 +393,9 @@ public class HubspotLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedHubspotLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedHubspotLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedHubspotLinkedService.setDescription(reader.getString());

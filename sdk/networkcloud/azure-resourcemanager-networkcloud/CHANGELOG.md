@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 2.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,1329 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.0.0 (2025-06-17)
+
+- Azure Resource Manager NetworkCloud client library for Java. This package contains Microsoft Azure SDK for NetworkCloud Management SDK. The Network Cloud APIs provide management of the Azure Operator Nexus compute resources such as on-premises clusters, hardware resources, and workload infrastructure resources. Package tag package-2025-02-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.BareMetalMachineKeySets` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Racks` was modified
+
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.StorageAppliances` was modified
+
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Clusters` was modified
+
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.MetricsConfigurations` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Volumes` was modified
+
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.KubernetesClusters` was modified
+
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.KubernetesClusterFeatures` was modified
+
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Consoles` was modified
+
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.L3Networks` was modified
+
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.CloudServicesNetworks` was modified
+
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.ClusterManagers` was modified
+
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.AgentPools` was modified
+
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.BmcKeySets` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.BareMetalMachines` was modified
+
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.VirtualMachines` was modified
+
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.TrunkedNetworks` was modified
+
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.L2Networks` was modified
+
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.VulnerabilityScanningSettingsPatch` was added
+
+* `models.VulnerabilityScanningSettingsContainerScan` was added
+
+* `models.VulnerabilityScanningSettings` was added
+
+* `models.SecretArchiveSettings` was added
+
+* `models.AnalyticsOutputSettings` was added
+
+#### `models.L3Network$Definition` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.Rack` was modified
+
+* `etag()` was added
+
+#### `models.AgentPool$Update` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.BareMetalMachine` was modified
+
+* `etag()` was added
+
+#### `models.BmcKeySet$Update` was modified
+
+* `withIfNoneMatch(java.lang.String)` was added
+* `withIfMatch(java.lang.String)` was added
+
+#### `models.L2Network$Definition` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.KubernetesCluster$Definition` was modified
+
+* `withIfNoneMatch(java.lang.String)` was added
+* `withIfMatch(java.lang.String)` was added
+
+#### `models.AgentPool` was modified
+
+* `etag()` was added
+
+#### `models.L3Network$Update` was modified
+
+* `withIfNoneMatch(java.lang.String)` was added
+* `withIfMatch(java.lang.String)` was added
+
+#### `models.BareMetalMachineKeySets` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.L2Network$Update` was modified
+
+* `withIfNoneMatch(java.lang.String)` was added
+* `withIfMatch(java.lang.String)` was added
+
+#### `models.AgentPool$Definition` was modified
+
+* `withIfNoneMatch(java.lang.String)` was added
+* `withIfMatch(java.lang.String)` was added
+
+#### `models.Console$Definition` was modified
+
+* `withIfNoneMatch(java.lang.String)` was added
+* `withIfMatch(java.lang.String)` was added
+
+#### `models.Racks` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Console$Update` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.KubernetesClusterFeature$Update` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.StorageAppliances` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Cluster` was modified
+
+* `secretArchiveSettings()` was added
+* `vulnerabilityScanningSettings()` was added
+* `etag()` was added
+* `analyticsOutputSettings()` was added
+
+#### `models.Clusters` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.BareMetalMachineKeySet$Definition` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.Volume` was modified
+
+* `etag()` was added
+
+#### `models.StorageAppliance$Update` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.StorageAppliance` was modified
+
+* `etag()` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withIfNoneMatch(java.lang.String)` was added
+* `withIfMatch(java.lang.String)` was added
+
+#### `models.ClusterMetricsConfiguration$Definition` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.MetricsConfigurations` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Console` was modified
+
+* `etag()` was added
+
+#### `models.TrunkedNetwork` was modified
+
+* `etag()` was added
+
+#### `models.L3Network` was modified
+
+* `etag()` was added
+
+#### `models.Volumes` was modified
+
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.KubernetesClusters` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.BareMetalMachine$Definition` was modified
+
+* `withIfNoneMatch(java.lang.String)` was added
+* `withIfMatch(java.lang.String)` was added
+
+#### `models.BareMetalMachine$Update` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.KubernetesClusterFeatures` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.KubernetesClusterFeature$Definition` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.Consoles` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.L2Network` was modified
+
+* `etag()` was added
+
+#### `models.CloudServicesNetwork` was modified
+
+* `etag()` was added
+
+#### `models.L3Networks` was modified
+
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ClusterPatchParameters` was modified
+
+* `secretArchiveSettings()` was added
+* `vulnerabilityScanningSettings()` was added
+* `withSecretArchiveSettings(models.SecretArchiveSettings)` was added
+* `withAnalyticsOutputSettings(models.AnalyticsOutputSettings)` was added
+* `withVulnerabilityScanningSettings(models.VulnerabilityScanningSettingsPatch)` was added
+* `analyticsOutputSettings()` was added
+
+#### `models.VirtualMachine$Definition` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withConsoleExtendedLocation(models.ExtendedLocation)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.ClusterManager$Update` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.VirtualMachine$Update` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.ClusterMetricsConfiguration$Update` was modified
+
+* `withIfNoneMatch(java.lang.String)` was added
+* `withIfMatch(java.lang.String)` was added
+
+#### `models.CloudServicesNetworks` was modified
+
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ClusterManagers` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.AgentPools` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.KubernetesClusterFeature` was modified
+
+* `etag()` was added
+
+#### `models.ClusterManager$Definition` was modified
+
+* `withIfNoneMatch(java.lang.String)` was added
+* `withIfMatch(java.lang.String)` was added
+
+#### `models.VirtualMachine` was modified
+
+* `consoleExtendedLocation()` was added
+* `etag()` was added
+
+#### `models.BmcKeySet` was modified
+
+* `etag()` was added
+
+#### `models.KubernetesCluster$Update` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withAnalyticsOutputSettings(models.AnalyticsOutputSettings)` was added
+* `withVulnerabilityScanningSettings(models.VulnerabilityScanningSettings)` was added
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+* `withSecretArchiveSettings(models.SecretArchiveSettings)` was added
+
+#### `models.Cluster$Update` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withVulnerabilityScanningSettings(models.VulnerabilityScanningSettingsPatch)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+* `withAnalyticsOutputSettings(models.AnalyticsOutputSettings)` was added
+* `withSecretArchiveSettings(models.SecretArchiveSettings)` was added
+
+#### `models.ClusterMetricsConfiguration` was modified
+
+* `etag()` was added
+
+#### `models.CloudServicesNetwork$Definition` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.BmcKeySets` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.BareMetalMachines` was modified
+
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Rack$Update` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.VirtualMachines` was modified
+
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.KubernetesCluster` was modified
+
+* `etag()` was added
+
+#### `models.BareMetalMachineKeySet` was modified
+
+* `etag()` was added
+
+#### `models.TrunkedNetwork$Definition` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.TrunkedNetwork$Update` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.ClusterManager` was modified
+
+* `etag()` was added
+
+#### `models.BareMetalMachineKeySet$Update` was modified
+
+* `withIfNoneMatch(java.lang.String)` was added
+* `withIfMatch(java.lang.String)` was added
+
+#### `models.BmcKeySet$Definition` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.Rack$Definition` was modified
+
+* `withIfNoneMatch(java.lang.String)` was added
+* `withIfMatch(java.lang.String)` was added
+
+#### `models.TrunkedNetworks` was modified
+
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Volume$Update` was modified
+
+* `withIfNoneMatch(java.lang.String)` was added
+* `withIfMatch(java.lang.String)` was added
+
+#### `models.StorageAppliance$Definition` was modified
+
+* `withIfMatch(java.lang.String)` was added
+* `withIfNoneMatch(java.lang.String)` was added
+
+#### `models.CloudServicesNetwork$Update` was modified
+
+* `withIfNoneMatch(java.lang.String)` was added
+* `withIfMatch(java.lang.String)` was added
+
+#### `models.L2Networks` was modified
+
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+## 1.2.0-beta.1 (2025-04-21)
+
+- Azure Resource Manager NetworkCloud client library for Java. This package contains Microsoft Azure SDK for NetworkCloud Management SDK. The Network Cloud APIs provide management of the Azure Operator Nexus compute resources such as on-premises clusters, hardware resources, and workload infrastructure resources. Package tag package-2024-10-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.VulnerabilityScanningSettingsPatch` was added
+
+* `models.VulnerabilityScanningSettingsContainerScan` was added
+
+* `models.VulnerabilityScanningSettings` was added
+
+* `models.SecretArchiveSettings` was added
+
+* `models.AnalyticsOutputSettings` was added
+
+#### `models.Cluster` was modified
+
+* `analyticsOutputSettings()` was added
+* `secretArchiveSettings()` was added
+* `vulnerabilityScanningSettings()` was added
+
+#### `models.ClusterPatchParameters` was modified
+
+* `vulnerabilityScanningSettings()` was added
+* `withVulnerabilityScanningSettings(models.VulnerabilityScanningSettingsPatch)` was added
+* `withAnalyticsOutputSettings(models.AnalyticsOutputSettings)` was added
+* `secretArchiveSettings()` was added
+* `analyticsOutputSettings()` was added
+* `withSecretArchiveSettings(models.SecretArchiveSettings)` was added
+
+#### `models.VirtualMachine$Definition` was modified
+
+* `withConsoleExtendedLocation(models.ExtendedLocation)` was added
+
+#### `models.VirtualMachine` was modified
+
+* `consoleExtendedLocation()` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withAnalyticsOutputSettings(models.AnalyticsOutputSettings)` was added
+* `withVulnerabilityScanningSettings(models.VulnerabilityScanningSettings)` was added
+* `withSecretArchiveSettings(models.SecretArchiveSettings)` was added
+
+#### `models.Cluster$Update` was modified
+
+* `withVulnerabilityScanningSettings(models.VulnerabilityScanningSettingsPatch)` was added
+* `withSecretArchiveSettings(models.SecretArchiveSettings)` was added
+* `withAnalyticsOutputSettings(models.AnalyticsOutputSettings)` was added
+
+## 1.1.0 (2025-02-21)
+
+- Azure Resource Manager NetworkCloud client library for Java. This package contains Microsoft Azure SDK for NetworkCloud Management SDK. The Network Cloud APIs provide management of the Azure Operator Nexus compute resources such as on-premises clusters, hardware resources, and workload infrastructure resources. Package tag package-2024-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.BareMetalMachineKeySets` was modified
+
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `void delete(java.lang.String,java.lang.String,java.lang.String)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String)`
+* `void deleteById(java.lang.String)` -> `models.OperationStatusResult deleteById(java.lang.String)`
+* `void delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+
+#### `models.Racks` was modified
+
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `void deleteByResourceGroup(java.lang.String,java.lang.String)` -> `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)`
+* `void delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void deleteById(java.lang.String)` -> `models.OperationStatusResult deleteById(java.lang.String)`
+
+#### `models.StorageAppliances` was modified
+
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `void deleteById(java.lang.String)` -> `models.OperationStatusResult deleteById(java.lang.String)`
+* `void deleteByResourceGroup(java.lang.String,java.lang.String)` -> `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)`
+* `void delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+
+#### `models.Clusters` was modified
+
+* `void delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void deleteById(java.lang.String)` -> `models.OperationStatusResult deleteById(java.lang.String)`
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `void deleteByResourceGroup(java.lang.String,java.lang.String)` -> `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)`
+
+#### `models.MetricsConfigurations` was modified
+
+* `void deleteById(java.lang.String)` -> `models.OperationStatusResult deleteById(java.lang.String)`
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `void delete(java.lang.String,java.lang.String,java.lang.String)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String)`
+* `void delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+
+#### `models.Volumes` was modified
+
+* `void delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void deleteById(java.lang.String)` -> `models.OperationStatusResult deleteById(java.lang.String)`
+* `void deleteByResourceGroup(java.lang.String,java.lang.String)` -> `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)`
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+
+#### `models.KubernetesClusters` was modified
+
+* `void deleteByResourceGroup(java.lang.String,java.lang.String)` -> `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)`
+* `void delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `void deleteById(java.lang.String)` -> `models.OperationStatusResult deleteById(java.lang.String)`
+
+#### `models.Consoles` was modified
+
+* `void deleteById(java.lang.String)` -> `models.OperationStatusResult deleteById(java.lang.String)`
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `void delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void delete(java.lang.String,java.lang.String,java.lang.String)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String)`
+
+#### `models.L3Networks` was modified
+
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `void delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void deleteById(java.lang.String)` -> `models.OperationStatusResult deleteById(java.lang.String)`
+* `void deleteByResourceGroup(java.lang.String,java.lang.String)` -> `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)`
+
+#### `models.CloudServicesNetworks` was modified
+
+* `void deleteByResourceGroup(java.lang.String,java.lang.String)` -> `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)`
+* `void deleteById(java.lang.String)` -> `models.OperationStatusResult deleteById(java.lang.String)`
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `void delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+
+#### `models.ClusterManagers` was modified
+
+* `void deleteById(java.lang.String)` -> `models.OperationStatusResult deleteById(java.lang.String)`
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `void deleteByResourceGroup(java.lang.String,java.lang.String)` -> `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)`
+* `void delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+
+#### `models.AgentPools` was modified
+
+* `void delete(java.lang.String,java.lang.String,java.lang.String)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String)`
+* `void delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `void deleteById(java.lang.String)` -> `models.OperationStatusResult deleteById(java.lang.String)`
+
+#### `models.BmcKeySets` was modified
+
+* `void delete(java.lang.String,java.lang.String,java.lang.String)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String)`
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `void delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void deleteById(java.lang.String)` -> `models.OperationStatusResult deleteById(java.lang.String)`
+
+#### `models.BareMetalMachines` was modified
+
+* `void deleteByResourceGroup(java.lang.String,java.lang.String)` -> `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)`
+* `void deleteById(java.lang.String)` -> `models.OperationStatusResult deleteById(java.lang.String)`
+* `void delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+
+#### `models.VirtualMachines` was modified
+
+* `void deleteById(java.lang.String)` -> `models.OperationStatusResult deleteById(java.lang.String)`
+* `void deleteByResourceGroup(java.lang.String,java.lang.String)` -> `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)`
+* `void delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+
+#### `models.TrunkedNetworks` was modified
+
+* `void deleteByResourceGroup(java.lang.String,java.lang.String)` -> `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)`
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `void delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void deleteById(java.lang.String)` -> `models.OperationStatusResult deleteById(java.lang.String)`
+
+#### `models.L2Networks` was modified
+
+* `void delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult delete(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `void deleteById(java.lang.String)` -> `models.OperationStatusResult deleteById(java.lang.String)`
+* `void deleteByResourceGroup(java.lang.String,java.lang.String)` -> `models.OperationStatusResult deleteByResourceGroup(java.lang.String,java.lang.String)`
+
+### Features Added
+
+* `models.ClusterContinueUpdateVersionParameters` was added
+
+* `models.KubernetesClusterFeatureProvisioningState` was added
+
+* `models.ClusterUpdateStrategyType` was added
+
+* `models.RuntimeProtectionConfiguration` was added
+
+* `models.NodePoolAdministratorConfigurationPatch` was added
+
+* `models.KubernetesClusterFeature$Update` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.KubernetesClusterFeatureAvailabilityLifecycle` was added
+
+* `models.AdministratorConfigurationPatch` was added
+
+* `models.IdentitySelector` was added
+
+* `models.ClusterScanRuntimeParametersScanActivity` was added
+
+* `models.L2ServiceLoadBalancerConfiguration` was added
+
+* `models.KubernetesClusterFeatureRequired` was added
+
+* `models.KubernetesClusterFeatureDetailedStatus` was added
+
+* `models.KubernetesClusterFeatures` was added
+
+* `models.ClusterUpdateStrategy` was added
+
+* `models.KubernetesClusterFeaturePatchParameters` was added
+
+* `models.KubernetesClusterFeature$Definition` was added
+
+* `models.KubernetesClusterFeature$UpdateStages` was added
+
+* `models.KubernetesClusterFeature$DefinitionStages` was added
+
+* `models.ManagedServiceIdentitySelectorType` was added
+
+* `models.ManagedServiceIdentity` was added
+
+* `models.RuntimeProtectionEnforcementLevel` was added
+
+* `models.ClusterScanRuntimeParameters` was added
+
+* `models.SecretRotationStatus` was added
+
+* `models.KubernetesClusterFeature` was added
+
+* `models.StringKeyValuePair` was added
+
+* `models.SecretArchiveReference` was added
+
+* `models.KubernetesClusterFeatureList` was added
+
+* `models.CommandOutputSettings` was added
+
+* `models.ClusterContinueUpdateVersionMachineGroupTargetingMode` was added
+
+* `models.RuntimeProtectionStatus` was added
+
+* `models.ClusterSecretArchive` was added
+
+* `models.ManagedServiceIdentityType` was added
+
+* `models.ClusterSecretArchiveEnabled` was added
+
+#### `models.VirtualMachinePatchParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.EndpointDependency` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.BareMetalMachineKeySetList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BareMetalMachinePowerOffParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.BareMetalMachineCordonParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Nic` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AgentPool$Update` was modified
+
+* `withAdministratorConfiguration(models.NodePoolAdministratorConfigurationPatch)` was added
+
+#### `models.ServicePrincipalInformation` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterMetricsConfigurationList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BareMetalMachine` was modified
+
+* `secretRotationStatus()` was added
+* `machineClusterVersion()` was added
+* `machineRoles()` was added
+* `runtimeProtectionStatus()` was added
+
+#### `models.TrunkedNetworkAttachmentConfiguration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.BmcKeySetList` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.StorageApplianceEnableRemoteVendorManagementParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterManagerList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.KeySetUserStatus` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterDeployParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterCapacity` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterAvailableUpgradeVersion` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.StorageProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.MachineDisk` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.KubernetesClusterList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.CloudServicesNetworkList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BareMetalMachineKeySetPatchParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.NetworkConfiguration` was modified
+
+* `l2ServiceLoadBalancerConfiguration()` was added
+* `withL2ServiceLoadBalancerConfiguration(models.L2ServiceLoadBalancerConfiguration)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.IpAddressPool` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AgentOptions` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.RackPatchParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterManagerPatchParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `identity()` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.BareMetalMachineCommandSpecification` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Cluster` was modified
+
+* `identity()` was added
+* `continueUpdateVersion(models.ClusterContinueUpdateVersionParameters)` was added
+* `runtimeProtectionConfiguration()` was added
+* `updateStrategy()` was added
+* `scanRuntime()` was added
+* `commandOutputSettings()` was added
+* `continueUpdateVersion(models.ClusterContinueUpdateVersionParameters,com.azure.core.util.Context)` was added
+* `scanRuntime(models.ClusterScanRuntimeParameters,com.azure.core.util.Context)` was added
+* `secretArchive()` was added
+
+#### `models.AadConfiguration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.BareMetalMachineRunReadCommandsParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ConsolePatchParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Clusters` was modified
+
+* `scanRuntime(java.lang.String,java.lang.String)` was added
+* `scanRuntime(java.lang.String,java.lang.String,models.ClusterScanRuntimeParameters,com.azure.core.util.Context)` was added
+* `continueUpdateVersion(java.lang.String,java.lang.String,models.ClusterContinueUpdateVersionParameters,com.azure.core.util.Context)` was added
+* `continueUpdateVersion(java.lang.String,java.lang.String,models.ClusterContinueUpdateVersionParameters)` was added
+
+#### `models.HardwareValidationStatus` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ControlPlaneNodeConfiguration` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BgpAdvertisement` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.KubernetesLabel` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.BareMetalMachineReplaceParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.OperationStatusResult` was modified
+
+* `outputHead()` was added
+* `exitCode()` was added
+* `resultRef()` was added
+* `resultUrl()` was added
+
+#### `models.BareMetalMachineList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.LldpNeighbor` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.StorageAppliance` was modified
+
+* `manufacturer()` was added
+* `secretRotationStatus()` was added
+* `model()` was added
+* `version()` was added
+
+#### `models.AgentPoolPatchParameters` was modified
+
+* `administratorConfiguration()` was added
+* `withAdministratorConfiguration(models.NodePoolAdministratorConfigurationPatch)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.VirtualMachinePowerOffParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.CloudServicesNetworkPatchParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.StorageApplianceList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ValidationThreshold` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.OperationListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.FeatureStatus` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BareMetalMachinePatchParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ExtendedLocation` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BareMetalMachine$Definition` was modified
+
+* `withMachineClusterVersion(java.lang.String)` was added
+
+#### `models.TrunkedNetworkList` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ManagedResourceGroupConfiguration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.TrunkedNetworkPatchParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.HardwareInventory` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ImageRepositoryCredentials` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BareMetalMachineRunDataExtractsParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BareMetalMachineRunCommandParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterPatchParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `secretArchive()` was added
+* `withRuntimeProtectionConfiguration(models.RuntimeProtectionConfiguration)` was added
+* `withUpdateStrategy(models.ClusterUpdateStrategy)` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `commandOutputSettings()` was added
+* `updateStrategy()` was added
+* `identity()` was added
+* `runtimeProtectionConfiguration()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `withCommandOutputSettings(models.CommandOutputSettings)` was added
+* `withSecretArchive(models.ClusterSecretArchive)` was added
+
+#### `models.OsDisk` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterManager$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.ControlPlaneNodePatchConfiguration` was modified
+
+* `withAdministratorConfiguration(models.AdministratorConfigurationPatch)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `administratorConfiguration()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.RackList` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.L3NetworkPatchParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `NetworkCloudManager` was modified
+
+* `kubernetesClusterFeatures()` was added
+
+#### `models.BgpServiceLoadBalancerConfiguration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AdministratorConfiguration` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.VolumeList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterAvailableVersion` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.StorageApplianceSkuSlot` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AdministrativeCredentials` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.VirtualMachineList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BareMetalMachineConfigurationData` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BmcKeySetPatchParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SshPublicKey` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.RackSkuList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterUpdateVersionParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ConsoleList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AgentPoolUpgradeSettings` was modified
+
+* `drainTimeout()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `withDrainTimeout(java.lang.Long)` was added
+* `withMaxUnavailable(java.lang.String)` was added
+* `maxUnavailable()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterManager$Definition` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.KeySetUser` was modified
+
+* `withUserPrincipalName(java.lang.String)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `userPrincipalName()` was added
+
+#### `models.VolumePatchParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AgentPoolList` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.NetworkAttachment` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.HardwareInventoryNetworkInterface` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.KubernetesCluster$Update` was modified
+
+* `withAdministratorConfiguration(models.AdministratorConfigurationPatch)` was added
+
+#### `models.AvailableUpgrade` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withRuntimeProtectionConfiguration(models.RuntimeProtectionConfiguration)` was added
+* `withCommandOutputSettings(models.CommandOutputSettings)` was added
+* `withSecretArchive(models.ClusterSecretArchive)` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `withUpdateStrategy(models.ClusterUpdateStrategy)` was added
+
+#### `models.KubernetesClusterRestartNodeParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.EgressEndpoint` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.L3NetworkAttachmentConfiguration` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Cluster$Update` was modified
+
+* `withSecretArchive(models.ClusterSecretArchive)` was added
+* `withUpdateStrategy(models.ClusterUpdateStrategy)` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `withCommandOutputSettings(models.CommandOutputSettings)` was added
+* `withRuntimeProtectionConfiguration(models.RuntimeProtectionConfiguration)` was added
+
+#### `models.StorageApplianceConfigurationData` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AttachedNetworkConfiguration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.L3NetworkList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.MachineSkuSlot` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.L2NetworkPatchParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.StorageAppliancePatchParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.KubernetesClusterPatchParameters` was modified
+
+* `withAdministratorConfiguration(models.AdministratorConfigurationPatch)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `administratorConfiguration()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.RackDefinition` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.VirtualMachinePlacementHint` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterMetricsConfigurationPatchParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.L2NetworkAttachmentConfiguration` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.L2NetworkList` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.KubernetesClusterNode` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.NetworkInterface` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.OperationDisplay` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterManager` was modified
+
+* `identity()` was added
+
+#### `models.ServiceLoadBalancerBgpPeer` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.InitialAgentPoolConfiguration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 ## 1.1.0-beta.1 (2024-11-21)
 

@@ -94,6 +94,11 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
     private String licenseType;
 
     /*
+     * The license type for Linux VM's.
+     */
+    private LinuxLicenseType linuxLicenseType;
+
+    /*
      * The replication storage account ARM Id. This is applicable only for the blob based replication test hook.
      */
     private String storageAccountId;
@@ -252,6 +257,11 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
     private List<InMageRcmProtectedDiskDetails> protectedDisks;
 
     /*
+     * The list of unprotected disks.
+     */
+    private List<InMageRcmUnProtectedDiskDetails> unprotectedDisks;
+
+    /*
      * A value indicating whether last agent upgrade was successful or not.
      */
     private String isLastUpgradeSuccessful;
@@ -285,6 +295,46 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
      * The discovered VM details.
      */
     private InMageRcmDiscoveredProtectedVmDetails discoveredVmDetails;
+
+    /*
+     * The target VM tags.
+     */
+    private List<UserCreatedResourceTag> targetVmTags;
+
+    /*
+     * The tags for the seed managed disks.
+     */
+    private List<UserCreatedResourceTag> seedManagedDiskTags;
+
+    /*
+     * The tags for the target managed disks.
+     */
+    private List<UserCreatedResourceTag> targetManagedDiskTags;
+
+    /*
+     * The tags for the target NICs.
+     */
+    private List<UserCreatedResourceTag> targetNicTags;
+
+    /*
+     * The SQL Server license type.
+     */
+    private String sqlServerLicenseType;
+
+    /*
+     * A value indicating the inplace OS Upgrade version.
+     */
+    private List<String> supportedOSVersions;
+
+    /*
+     * The OS name associated with VM.
+     */
+    private String osName;
+
+    /*
+     * The target VM security profile.
+     */
+    private SecurityProfileProperties targetVmSecurityProfile;
 
     /**
      * Creates an instance of InMageRcmReplicationDetails class.
@@ -436,6 +486,26 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
      */
     public InMageRcmReplicationDetails withLicenseType(String licenseType) {
         this.licenseType = licenseType;
+        return this;
+    }
+
+    /**
+     * Get the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @return the linuxLicenseType value.
+     */
+    public LinuxLicenseType linuxLicenseType() {
+        return this.linuxLicenseType;
+    }
+
+    /**
+     * Set the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @param linuxLicenseType the linuxLicenseType value to set.
+     * @return the InMageRcmReplicationDetails object itself.
+     */
+    public InMageRcmReplicationDetails withLinuxLicenseType(LinuxLicenseType linuxLicenseType) {
+        this.linuxLicenseType = linuxLicenseType;
         return this;
     }
 
@@ -848,6 +918,26 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
     }
 
     /**
+     * Get the unprotectedDisks property: The list of unprotected disks.
+     * 
+     * @return the unprotectedDisks value.
+     */
+    public List<InMageRcmUnProtectedDiskDetails> unprotectedDisks() {
+        return this.unprotectedDisks;
+    }
+
+    /**
+     * Set the unprotectedDisks property: The list of unprotected disks.
+     * 
+     * @param unprotectedDisks the unprotectedDisks value to set.
+     * @return the InMageRcmReplicationDetails object itself.
+     */
+    public InMageRcmReplicationDetails withUnprotectedDisks(List<InMageRcmUnProtectedDiskDetails> unprotectedDisks) {
+        this.unprotectedDisks = unprotectedDisks;
+        return this;
+    }
+
+    /**
      * Get the isLastUpgradeSuccessful property: A value indicating whether last agent upgrade was successful or not.
      * 
      * @return the isLastUpgradeSuccessful value.
@@ -970,6 +1060,166 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
     }
 
     /**
+     * Get the targetVmTags property: The target VM tags.
+     * 
+     * @return the targetVmTags value.
+     */
+    public List<UserCreatedResourceTag> targetVmTags() {
+        return this.targetVmTags;
+    }
+
+    /**
+     * Set the targetVmTags property: The target VM tags.
+     * 
+     * @param targetVmTags the targetVmTags value to set.
+     * @return the InMageRcmReplicationDetails object itself.
+     */
+    public InMageRcmReplicationDetails withTargetVmTags(List<UserCreatedResourceTag> targetVmTags) {
+        this.targetVmTags = targetVmTags;
+        return this;
+    }
+
+    /**
+     * Get the seedManagedDiskTags property: The tags for the seed managed disks.
+     * 
+     * @return the seedManagedDiskTags value.
+     */
+    public List<UserCreatedResourceTag> seedManagedDiskTags() {
+        return this.seedManagedDiskTags;
+    }
+
+    /**
+     * Set the seedManagedDiskTags property: The tags for the seed managed disks.
+     * 
+     * @param seedManagedDiskTags the seedManagedDiskTags value to set.
+     * @return the InMageRcmReplicationDetails object itself.
+     */
+    public InMageRcmReplicationDetails withSeedManagedDiskTags(List<UserCreatedResourceTag> seedManagedDiskTags) {
+        this.seedManagedDiskTags = seedManagedDiskTags;
+        return this;
+    }
+
+    /**
+     * Get the targetManagedDiskTags property: The tags for the target managed disks.
+     * 
+     * @return the targetManagedDiskTags value.
+     */
+    public List<UserCreatedResourceTag> targetManagedDiskTags() {
+        return this.targetManagedDiskTags;
+    }
+
+    /**
+     * Set the targetManagedDiskTags property: The tags for the target managed disks.
+     * 
+     * @param targetManagedDiskTags the targetManagedDiskTags value to set.
+     * @return the InMageRcmReplicationDetails object itself.
+     */
+    public InMageRcmReplicationDetails withTargetManagedDiskTags(List<UserCreatedResourceTag> targetManagedDiskTags) {
+        this.targetManagedDiskTags = targetManagedDiskTags;
+        return this;
+    }
+
+    /**
+     * Get the targetNicTags property: The tags for the target NICs.
+     * 
+     * @return the targetNicTags value.
+     */
+    public List<UserCreatedResourceTag> targetNicTags() {
+        return this.targetNicTags;
+    }
+
+    /**
+     * Set the targetNicTags property: The tags for the target NICs.
+     * 
+     * @param targetNicTags the targetNicTags value to set.
+     * @return the InMageRcmReplicationDetails object itself.
+     */
+    public InMageRcmReplicationDetails withTargetNicTags(List<UserCreatedResourceTag> targetNicTags) {
+        this.targetNicTags = targetNicTags;
+        return this;
+    }
+
+    /**
+     * Get the sqlServerLicenseType property: The SQL Server license type.
+     * 
+     * @return the sqlServerLicenseType value.
+     */
+    public String sqlServerLicenseType() {
+        return this.sqlServerLicenseType;
+    }
+
+    /**
+     * Set the sqlServerLicenseType property: The SQL Server license type.
+     * 
+     * @param sqlServerLicenseType the sqlServerLicenseType value to set.
+     * @return the InMageRcmReplicationDetails object itself.
+     */
+    public InMageRcmReplicationDetails withSqlServerLicenseType(String sqlServerLicenseType) {
+        this.sqlServerLicenseType = sqlServerLicenseType;
+        return this;
+    }
+
+    /**
+     * Get the supportedOSVersions property: A value indicating the inplace OS Upgrade version.
+     * 
+     * @return the supportedOSVersions value.
+     */
+    public List<String> supportedOSVersions() {
+        return this.supportedOSVersions;
+    }
+
+    /**
+     * Set the supportedOSVersions property: A value indicating the inplace OS Upgrade version.
+     * 
+     * @param supportedOSVersions the supportedOSVersions value to set.
+     * @return the InMageRcmReplicationDetails object itself.
+     */
+    public InMageRcmReplicationDetails withSupportedOSVersions(List<String> supportedOSVersions) {
+        this.supportedOSVersions = supportedOSVersions;
+        return this;
+    }
+
+    /**
+     * Get the osName property: The OS name associated with VM.
+     * 
+     * @return the osName value.
+     */
+    public String osName() {
+        return this.osName;
+    }
+
+    /**
+     * Set the osName property: The OS name associated with VM.
+     * 
+     * @param osName the osName value to set.
+     * @return the InMageRcmReplicationDetails object itself.
+     */
+    public InMageRcmReplicationDetails withOsName(String osName) {
+        this.osName = osName;
+        return this;
+    }
+
+    /**
+     * Get the targetVmSecurityProfile property: The target VM security profile.
+     * 
+     * @return the targetVmSecurityProfile value.
+     */
+    public SecurityProfileProperties targetVmSecurityProfile() {
+        return this.targetVmSecurityProfile;
+    }
+
+    /**
+     * Set the targetVmSecurityProfile property: The target VM security profile.
+     * 
+     * @param targetVmSecurityProfile the targetVmSecurityProfile value to set.
+     * @return the InMageRcmReplicationDetails object itself.
+     */
+    public InMageRcmReplicationDetails withTargetVmSecurityProfile(SecurityProfileProperties targetVmSecurityProfile) {
+        this.targetVmSecurityProfile = targetVmSecurityProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -978,6 +1228,9 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
     public void validate() {
         if (protectedDisks() != null) {
             protectedDisks().forEach(e -> e.validate());
+        }
+        if (unprotectedDisks() != null) {
+            unprotectedDisks().forEach(e -> e.validate());
         }
         if (mobilityAgentDetails() != null) {
             mobilityAgentDetails().validate();
@@ -994,6 +1247,21 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
         if (discoveredVmDetails() != null) {
             discoveredVmDetails().validate();
         }
+        if (targetVmTags() != null) {
+            targetVmTags().forEach(e -> e.validate());
+        }
+        if (seedManagedDiskTags() != null) {
+            seedManagedDiskTags().forEach(e -> e.validate());
+        }
+        if (targetManagedDiskTags() != null) {
+            targetManagedDiskTags().forEach(e -> e.validate());
+        }
+        if (targetNicTags() != null) {
+            targetNicTags().forEach(e -> e.validate());
+        }
+        if (targetVmSecurityProfile() != null) {
+            targetVmSecurityProfile().validate();
+        }
     }
 
     /**
@@ -1004,6 +1272,8 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("instanceType", this.instanceType);
         jsonWriter.writeStringField("licenseType", this.licenseType);
+        jsonWriter.writeStringField("linuxLicenseType",
+            this.linuxLicenseType == null ? null : this.linuxLicenseType.toString());
         jsonWriter.writeStringField("targetVmName", this.targetVmName);
         jsonWriter.writeStringField("targetVmSize", this.targetVmSize);
         jsonWriter.writeStringField("targetResourceGroupId", this.targetResourceGroupId);
@@ -1017,6 +1287,8 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
         jsonWriter.writeStringField("testNetworkId", this.testNetworkId);
         jsonWriter.writeArrayField("protectedDisks", this.protectedDisks,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("unprotectedDisks", this.unprotectedDisks,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("mobilityAgentDetails", this.mobilityAgentDetails);
         jsonWriter.writeArrayField("lastAgentUpgradeErrorDetails", this.lastAgentUpgradeErrorDetails,
             (writer, element) -> writer.writeJson(element));
@@ -1024,6 +1296,17 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("vmNics", this.vmNics, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("discoveredVmDetails", this.discoveredVmDetails);
+        jsonWriter.writeArrayField("targetVmTags", this.targetVmTags, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("seedManagedDiskTags", this.seedManagedDiskTags,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("targetManagedDiskTags", this.targetManagedDiskTags,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("targetNicTags", this.targetNicTags, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("sqlServerLicenseType", this.sqlServerLicenseType);
+        jsonWriter.writeArrayField("supportedOSVersions", this.supportedOSVersions,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("osName", this.osName);
+        jsonWriter.writeJsonField("targetVmSecurityProfile", this.targetVmSecurityProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -1073,6 +1356,9 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
                     deserializedInMageRcmReplicationDetails.targetGeneration = reader.getString();
                 } else if ("licenseType".equals(fieldName)) {
                     deserializedInMageRcmReplicationDetails.licenseType = reader.getString();
+                } else if ("linuxLicenseType".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.linuxLicenseType
+                        = LinuxLicenseType.fromString(reader.getString());
                 } else if ("storageAccountId".equals(fieldName)) {
                     deserializedInMageRcmReplicationDetails.storageAccountId = reader.getString();
                 } else if ("targetVmName".equals(fieldName)) {
@@ -1148,6 +1434,10 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
                     List<InMageRcmProtectedDiskDetails> protectedDisks
                         = reader.readArray(reader1 -> InMageRcmProtectedDiskDetails.fromJson(reader1));
                     deserializedInMageRcmReplicationDetails.protectedDisks = protectedDisks;
+                } else if ("unprotectedDisks".equals(fieldName)) {
+                    List<InMageRcmUnProtectedDiskDetails> unprotectedDisks
+                        = reader.readArray(reader1 -> InMageRcmUnProtectedDiskDetails.fromJson(reader1));
+                    deserializedInMageRcmReplicationDetails.unprotectedDisks = unprotectedDisks;
                 } else if ("isLastUpgradeSuccessful".equals(fieldName)) {
                     deserializedInMageRcmReplicationDetails.isLastUpgradeSuccessful = reader.getString();
                 } else if ("isAgentRegistrationSuccessfulAfterFailover".equals(fieldName)) {
@@ -1172,6 +1462,32 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
                 } else if ("discoveredVmDetails".equals(fieldName)) {
                     deserializedInMageRcmReplicationDetails.discoveredVmDetails
                         = InMageRcmDiscoveredProtectedVmDetails.fromJson(reader);
+                } else if ("targetVmTags".equals(fieldName)) {
+                    List<UserCreatedResourceTag> targetVmTags
+                        = reader.readArray(reader1 -> UserCreatedResourceTag.fromJson(reader1));
+                    deserializedInMageRcmReplicationDetails.targetVmTags = targetVmTags;
+                } else if ("seedManagedDiskTags".equals(fieldName)) {
+                    List<UserCreatedResourceTag> seedManagedDiskTags
+                        = reader.readArray(reader1 -> UserCreatedResourceTag.fromJson(reader1));
+                    deserializedInMageRcmReplicationDetails.seedManagedDiskTags = seedManagedDiskTags;
+                } else if ("targetManagedDiskTags".equals(fieldName)) {
+                    List<UserCreatedResourceTag> targetManagedDiskTags
+                        = reader.readArray(reader1 -> UserCreatedResourceTag.fromJson(reader1));
+                    deserializedInMageRcmReplicationDetails.targetManagedDiskTags = targetManagedDiskTags;
+                } else if ("targetNicTags".equals(fieldName)) {
+                    List<UserCreatedResourceTag> targetNicTags
+                        = reader.readArray(reader1 -> UserCreatedResourceTag.fromJson(reader1));
+                    deserializedInMageRcmReplicationDetails.targetNicTags = targetNicTags;
+                } else if ("sqlServerLicenseType".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.sqlServerLicenseType = reader.getString();
+                } else if ("supportedOSVersions".equals(fieldName)) {
+                    List<String> supportedOSVersions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInMageRcmReplicationDetails.supportedOSVersions = supportedOSVersions;
+                } else if ("osName".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.osName = reader.getString();
+                } else if ("targetVmSecurityProfile".equals(fieldName)) {
+                    deserializedInMageRcmReplicationDetails.targetVmSecurityProfile
+                        = SecurityProfileProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

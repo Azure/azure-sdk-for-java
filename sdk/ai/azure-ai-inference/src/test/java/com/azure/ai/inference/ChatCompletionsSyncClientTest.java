@@ -32,10 +32,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
+import com.azure.json.*;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
@@ -51,7 +48,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
@@ -61,6 +60,8 @@ import static com.azure.ai.inference.ChatCompletionClientTracerTest.assertChatSp
 import static com.azure.ai.inference.ChatCompletionClientTracerTest.assertNoChatEventsCaptured;
 import static com.azure.ai.inference.ChatCompletionClientTracerTest.getChatSpan;
 import static com.azure.ai.inference.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.ai.inference.TestUtils.TEST_IMAGE_PATH;
+import static com.azure.ai.inference.TestUtils.TEST_IMAGE_FORMAT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -72,8 +73,6 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
     private static final String FUNCTION_RETURN = "-7";
     private static final String TEST_URL
         = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg";
-    private static final String TEST_IMAGE_PATH = "./src/samples/resources/sample-images/sample.png";
-    private static final String TEST_IMAGE_FORMAT = "png";
 
     private ChatCompletionsClientBuilder getBuilder(HttpClient httpClient) {
         return getChatCompletionsClientBuilder(
@@ -82,6 +81,10 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
 
     private ChatCompletionsClient getChatCompletionsClient(HttpClient httpClient) {
         return getBuilder(httpClient).buildClient();
+    }
+
+    private ChatCompletionsClient getChatCompletionsClientForStructuredJSON(HttpClient httpClient) {
+        return getBuilder(httpClient).serviceVersion(ModelServiceVersion.V2024_08_01_PREVIEW).buildClient();
     }
 
     private ChatCompletionsClient getChatCompletionsClientWithTracing(HttpClient httpClient,
@@ -212,6 +215,38 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.inference.TestUtils#getTestParameters")
+    public void testGetCompletionsWithStructuredJSON(HttpClient httpClient) {
+        String jsonSchema = "{ \"ingredients\": {" + "\"type\": \"array\"," + "\"items\": { \"type\": \"string\" } },"
+            + "\"steps\": { \"type\": \"array\", \"items\": {" + "\"type\": \"object\", \"properties\": {"
+            + "\"ingredients\": {" + "\"type\": \"array\"," + "\"items\": {" + "\"type\": \"string\"" + "}" + "},"
+            + "\"directions\": {" + "\"type\": \"string\"" + "}" + "}" + "}" + "}," + "\"prep_time\": {"
+            + "\"type\": \"string\"" + "}," + "\"bake_time\": {" + "\"type\": \"string\"" + "} }";
+
+        Map<String, BinaryData> recipeSchema = new HashMap<String, BinaryData>() {
+            {
+                put("type", BinaryData.fromString("\"object\""));
+                put("properties", BinaryData.fromString(jsonSchema));
+                put("required", BinaryData.fromString("[\"ingredients\", \"steps\", \"bake_time\"]"));
+                put("additionalProperties", BinaryData.fromString("false"));
+            }
+        };
+        client = getChatCompletionsClientForStructuredJSON(httpClient);
+
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant."));
+        chatMessages
+            .add(new ChatRequestUserMessage("Please give me directions and ingredients to bake a chocolate cake."));
+
+        ChatCompletionsOptions chatCompletionsOptions
+            = new ChatCompletionsOptions(chatMessages).setJsonFormat("cakeBakingDirections", recipeSchema);
+
+        ChatCompletions completions = client.complete(chatCompletionsOptions);
+
+        assertCompletions(1, completions);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.inference.TestUtils#getTestParameters")
     public void testGetCompletionsStreamWithFunctionCalls(HttpClient httpClient) {
         client = getChatCompletionsClient(httpClient);
         String location = "Berlin";
@@ -288,7 +323,8 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
             String functionCallResult = futureTemperature(parameters.locationName, parameters.date);
 
             // This message contains the information that will allow the LLM to resume the text generation
-            ChatRequestToolMessage toolRequestMessage = new ChatRequestToolMessage(functionCallResult, toolCallId);
+            ChatRequestToolMessage toolRequestMessage
+                = new ChatRequestToolMessage(toolCallId).setContent(functionCallResult);
             List<ChatRequestMessage> followUpMessages = Arrays.asList(
                 // We add the original messages from the request
                 chatMessages.get(0), chatMessages.get(1), assistantRequestMessage, toolRequestMessage);

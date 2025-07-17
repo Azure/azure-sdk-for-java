@@ -4,31 +4,113 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
-import com.azure.resourcemanager.apimanagement.fluent.models.PortalConfigCollectionInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.apimanagement.fluent.models.PortalConfigContractInner;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * An immutable client-side representation of PortalConfigCollection.
+ * The collection of the developer portal configurations.
  */
-public interface PortalConfigCollection {
+@Fluent
+public final class PortalConfigCollection implements JsonSerializable<PortalConfigCollection> {
+    /*
+     * The developer portal configurations.
+     */
+    private List<PortalConfigContractInner> value;
+
+    /*
+     * Next page link if any.
+     */
+    private String nextLink;
+
     /**
-     * Gets the value property: The developer portal configurations.
+     * Creates an instance of PortalConfigCollection class.
+     */
+    public PortalConfigCollection() {
+    }
+
+    /**
+     * Get the value property: The developer portal configurations.
      * 
      * @return the value value.
      */
-    List<PortalConfigContract> value();
+    public List<PortalConfigContractInner> value() {
+        return this.value;
+    }
 
     /**
-     * Gets the nextLink property: Next page link if any.
+     * Set the value property: The developer portal configurations.
+     * 
+     * @param value the value value to set.
+     * @return the PortalConfigCollection object itself.
+     */
+    public PortalConfigCollection withValue(List<PortalConfigContractInner> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: Next page link if any.
      * 
      * @return the nextLink value.
      */
-    String nextLink();
+    public String nextLink() {
+        return this.nextLink;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.PortalConfigCollectionInner object.
+     * Validates the instance.
      * 
-     * @return the inner object.
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    PortalConfigCollectionInner innerModel();
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PortalConfigCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PortalConfigCollection if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PortalConfigCollection.
+     */
+    public static PortalConfigCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PortalConfigCollection deserializedPortalConfigCollection = new PortalConfigCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PortalConfigContractInner> value
+                        = reader.readArray(reader1 -> PortalConfigContractInner.fromJson(reader1));
+                    deserializedPortalConfigCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPortalConfigCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPortalConfigCollection;
+        });
+    }
 }

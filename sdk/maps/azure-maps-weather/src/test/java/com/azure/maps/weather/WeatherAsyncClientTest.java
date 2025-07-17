@@ -161,7 +161,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     public void testAsyncGetCurrentConditions(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier
-            .create(client.getCurrentConditions(new GeoPosition(-122.125679, 47.641268), null, null, null, null))
+            .create(client.getCurrentConditions(new GeoPosition(-122.125679, 47.641268), null, true, null, null))
             .assertNext(
                 actualResults -> validateGetCurrentConditions(TestUtils.getExpectedCurrentConditions(), actualResults))
             .expectComplete()
@@ -175,7 +175,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     public void testAsyncGetCurrentConditionsWithResponse(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier
-            .create(client.getCurrentConditionsWithResponse(new GeoPosition(-122.125679, 47.641268), null, null, null,
+            .create(client.getCurrentConditionsWithResponse(new GeoPosition(-122.125679, 47.641268), null, true, null,
                 null, null))
             .assertNext(response -> validateGetCurrentConditionsWithResponse(TestUtils.getExpectedCurrentConditions(),
                 response))
@@ -407,7 +407,8 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         ActiveStormResult result = client.getTropicalStormActive().block();
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
-            StepVerifier.create(client.searchTropicalStorm(storm.getYear(), storm.getBasinId(), storm.getGovId()))
+            StepVerifier
+                .create(client.searchTropicalStorm(storm.getYear(), storm.getBasinId(), storm.getGovernmentId()))
                 .assertNext(actualResults -> validateGetSearchTropicalStorm(TestUtils.getExpectedSearchTropicalStorm(),
                     actualResults))
                 .expectComplete()
@@ -425,7 +426,8 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             StepVerifier
-                .create(client.searchTropicalStormWithResponse(storm.getYear(), storm.getBasinId(), storm.getGovId()))
+                .create(client.searchTropicalStormWithResponse(storm.getYear(), storm.getBasinId(),
+                    storm.getGovernmentId()))
                 .assertNext(response -> validateGetSearchTropicalStormWithResponse(
                     TestUtils.getExpectedSearchTropicalStorm(), response))
                 .expectComplete()
@@ -442,7 +444,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         ActiveStormResult result = client.getTropicalStormActive().block();
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
-            StepVerifier.create(client.searchTropicalStormWithResponse(-1, storm.getBasinId(), storm.getGovId()))
+            StepVerifier.create(client.searchTropicalStormWithResponse(-1, storm.getBasinId(), storm.getGovernmentId()))
                 .expectErrorSatisfies(ex -> {
                     final HttpResponseException httpResponseException = (HttpResponseException) ex;
                     assertEquals(400, httpResponseException.getResponse().getStatusCode());
@@ -460,7 +462,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormForecastOptions forecastOptions
-                = new TropicalStormForecastOptions(storm.getYear(), storm.getBasinId(), storm.getGovId())
+                = new TropicalStormForecastOptions(storm.getYear(), storm.getBasinId(), storm.getGovernmentId())
                     .setIncludeWindowGeometry(true);
             StepVerifier.create(client.getTropicalStormForecast(forecastOptions))
                 .assertNext(actualResults -> validateGetTropicalStormForecast(
@@ -481,7 +483,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormForecastOptions forecastOptions
-                = new TropicalStormForecastOptions(storm.getYear(), storm.getBasinId(), storm.getGovId())
+                = new TropicalStormForecastOptions(storm.getYear(), storm.getBasinId(), storm.getGovernmentId())
                     .setIncludeWindowGeometry(true);
             StepVerifier.create(client.getTropicalStormForecastWithResponse(forecastOptions, null))
                 .assertNext(response -> validateGetTropicalStormForecastWithResponse(
@@ -501,7 +503,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormForecastOptions forecastOptions
-                = new TropicalStormForecastOptions(-1, storm.getBasinId(), storm.getGovId())
+                = new TropicalStormForecastOptions(-1, storm.getBasinId(), storm.getGovernmentId())
                     .setIncludeWindowGeometry(true);
             StepVerifier.create(client.getTropicalStormForecastWithResponse(forecastOptions, null))
                 .expectErrorSatisfies(ex -> {
@@ -521,7 +523,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormLocationOptions locationOptions
-                = new TropicalStormLocationOptions(storm.getYear(), storm.getBasinId(), storm.getGovId());
+                = new TropicalStormLocationOptions(storm.getYear(), storm.getBasinId(), storm.getGovernmentId());
             StepVerifier.create(client.getTropicalStormLocations(locationOptions))
                 .assertNext(actualResults -> validateGetTropicalStormLocations(
                     TestUtils.getExpectedTropicalStormLocations(), actualResults))
@@ -541,7 +543,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormLocationOptions locationOptions
-                = new TropicalStormLocationOptions(storm.getYear(), storm.getBasinId(), storm.getGovId());
+                = new TropicalStormLocationOptions(storm.getYear(), storm.getBasinId(), storm.getGovernmentId());
             StepVerifier.create(client.getTropicalStormLocationsWithResponse(locationOptions, null))
                 .assertNext(response -> validateGetTropicalStormLocationsWithResponse(
                     TestUtils.getExpectedTropicalStormLocations(), response))
@@ -560,7 +562,7 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         if (!result.getActiveStorms().isEmpty()) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormLocationOptions locationOptions
-                = new TropicalStormLocationOptions(-1, storm.getBasinId(), storm.getGovId());
+                = new TropicalStormLocationOptions(-1, storm.getBasinId(), storm.getGovernmentId());
             StepVerifier.create(client.getTropicalStormLocationsWithResponse(locationOptions, null))
                 .expectErrorSatisfies(ex -> {
                     final HttpResponseException httpResponseException = (HttpResponseException) ex;
@@ -614,13 +616,13 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     // Test async get air quality daily forecasts
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetAirQualityDailyForecasts(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
+    public void testAsyncGetDailyAirQualityForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier
-            .create(client.getAirQualityDailyForecasts(new GeoPosition(-122.138874, 47.632346), "en",
+            .create(client.getDailyAirQualityForecast(new GeoPosition(-122.138874, 47.632346), "en",
                 DailyDuration.TWO_DAYS))
-            .assertNext(actualResults -> validateGetAirQualityDailyForecasts(
-                TestUtils.getExpectedAirQualityDailyForecasts(), actualResults))
+            .assertNext(actualResults -> validateGetDailyAirQualityForecast(
+                TestUtils.getExpectedDailyAirQualityForecast(), actualResults))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -629,14 +631,14 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetAirQualityDailyForecastsWithResponse(HttpClient httpClient,
+    public void testAsyncGetDailyAirQualityForecastWithResponse(HttpClient httpClient,
         WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier
-            .create(client.getAirQualityDailyForecastsWithResponse(new GeoPosition(-122.138874, 47.632346), "en",
+            .create(client.getDailyAirQualityForecastWithResponse(new GeoPosition(-122.138874, 47.632346), "en",
                 DailyDuration.TWO_DAYS, null))
-            .assertNext(response -> validateGetAirQualityDailyForecastsWithResponse(
-                TestUtils.getExpectedAirQualityDailyForecasts(), response))
+            .assertNext(response -> validateGetDailyAirQualityForecastWithResponse(
+                TestUtils.getExpectedDailyAirQualityForecast(), response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -644,10 +646,10 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     // Case 2: 400 invalid input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncInvalidGetAirQualityDailyForecastsWithResponse(HttpClient httpClient,
+    public void testAsyncInvalidGetDailyAirQualityForecastWithResponse(HttpClient httpClient,
         WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getAirQualityDailyForecastsWithResponse(new GeoPosition(-100000, 47.632346), "en",
+        StepVerifier.create(client.getDailyAirQualityForecastWithResponse(new GeoPosition(-100000, 47.632346), "en",
             DailyDuration.TWO_DAYS, null)).expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
@@ -657,13 +659,13 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     // Test async get air quality hourly forecasts
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetAirQualityHourlyForecasts(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
+    public void testAsyncGetHourlyAirQualityForecast(HttpClient httpClient, WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier
-            .create(client.getAirQualityHourlyForecasts(new GeoPosition(-122.138874, 47.632346), "fr",
+            .create(client.getHourlyAirQualityForecast(new GeoPosition(-122.138874, 47.632346), "fr",
                 HourlyDuration.ONE_HOUR, false))
-            .assertNext(actualResults -> validateGetAirQualityHourlyForecasts(
-                TestUtils.getExpectedAirQualityHourlyForecasts(), actualResults))
+            .assertNext(actualResults -> validateGetHourlyAirQualityForecast(
+                TestUtils.getExpectedHourlyAirQualityForecast(), actualResults))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -672,14 +674,14 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncGetAirQualityHourlyForecastsWithResponse(HttpClient httpClient,
+    public void testAsyncGetHourlyAirQualityForecastWithResponse(HttpClient httpClient,
         WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier
-            .create(client.getAirQualityHourlyForecastsWithResponse(new GeoPosition(-122.138874, 47.632346), "fr",
+            .create(client.getHourlyAirQualityForecastWithResponse(new GeoPosition(-122.138874, 47.632346), "fr",
                 HourlyDuration.ONE_HOUR, false, null))
-            .assertNext(response -> validateGetAirQualityHourlyForecastsWithResponse(
-                TestUtils.getExpectedAirQualityHourlyForecasts(), response))
+            .assertNext(response -> validateGetHourlyAirQualityForecastWithResponse(
+                TestUtils.getExpectedHourlyAirQualityForecast(), response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -687,10 +689,10 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
     // Case 2: 400 invalid input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.weather.TestUtils#getTestParameters")
-    public void testAsyncInvalidGetAirQualityHourlyForecastsWithResponse(HttpClient httpClient,
+    public void testAsyncInvalidGetHourlyAirQualityForecastWithResponse(HttpClient httpClient,
         WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getAirQualityHourlyForecastsWithResponse(new GeoPosition(-100000, 47.632346), "fr",
+        StepVerifier.create(client.getHourlyAirQualityForecastWithResponse(new GeoPosition(-100000, 47.632346), "fr",
             HourlyDuration.ONE_HOUR, false, null)).expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());

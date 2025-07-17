@@ -1,6 +1,6 @@
 # Release History
 
-## 2.48.0-beta.1 (Unreleased)
+## 2.53.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,44 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.52.0 (2025-06-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated code from `api-version` `2024-01-01`.
+
+## 2.51.0 (2025-05-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.50.0 (2025-04-24)
+
+### Breaking Changes
+
+- Added `Accepted` to `ProvisioningState` enum.
+
+## 2.49.0 (2025-03-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.48.0 (2025-02-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-01-01`.
 
 ## 2.47.0 (2025-01-24)
 

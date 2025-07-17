@@ -54,14 +54,6 @@ extends:
         NonSparseParameters: Agent
         GenerateVMJobs: true
 
-    # Run separate version override tests using a different artifacts list
-    # This matrix config overrides the ArtifactsJson variable
-    AdditionalMatrixConfigs:
-      - Name: version_overrides_tests
-        Path: sdk/serialization/version-overrides-matrix.json
-        Selection: all
-        GenerateVMJobs: true
-
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:

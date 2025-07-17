@@ -80,6 +80,16 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     private String managementId;
 
     /*
+     * The replication protection cluster Id.
+     */
+    private String protectionClusterId;
+
+    /*
+     * A value indicating if the cluster infra is ready or not.
+     */
+    private Boolean isClusterInfraReady;
+
+    /*
      * The list of protected disks.
      */
     private List<A2AProtectedDiskDetails> protectedDisks;
@@ -485,6 +495,46 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
      */
     public A2AReplicationDetails withManagementId(String managementId) {
         this.managementId = managementId;
+        return this;
+    }
+
+    /**
+     * Get the protectionClusterId property: The replication protection cluster Id.
+     * 
+     * @return the protectionClusterId value.
+     */
+    public String protectionClusterId() {
+        return this.protectionClusterId;
+    }
+
+    /**
+     * Set the protectionClusterId property: The replication protection cluster Id.
+     * 
+     * @param protectionClusterId the protectionClusterId value to set.
+     * @return the A2AReplicationDetails object itself.
+     */
+    public A2AReplicationDetails withProtectionClusterId(String protectionClusterId) {
+        this.protectionClusterId = protectionClusterId;
+        return this;
+    }
+
+    /**
+     * Get the isClusterInfraReady property: A value indicating if the cluster infra is ready or not.
+     * 
+     * @return the isClusterInfraReady value.
+     */
+    public Boolean isClusterInfraReady() {
+        return this.isClusterInfraReady;
+    }
+
+    /**
+     * Set the isClusterInfraReady property: A value indicating if the cluster infra is ready or not.
+     * 
+     * @param isClusterInfraReady the isClusterInfraReady value to set.
+     * @return the A2AReplicationDetails object itself.
+     */
+    public A2AReplicationDetails withIsClusterInfraReady(Boolean isClusterInfraReady) {
+        this.isClusterInfraReady = isClusterInfraReady;
         return this;
     }
 
@@ -1372,6 +1422,8 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
         jsonWriter.writeStringField("multiVmGroupCreateOption",
             this.multiVmGroupCreateOption == null ? null : this.multiVmGroupCreateOption.toString());
         jsonWriter.writeStringField("managementId", this.managementId);
+        jsonWriter.writeStringField("protectionClusterId", this.protectionClusterId);
+        jsonWriter.writeBooleanField("isClusterInfraReady", this.isClusterInfraReady);
         jsonWriter.writeArrayField("protectedDisks", this.protectedDisks,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("unprotectedDisks", this.unprotectedDisks,
@@ -1466,6 +1518,10 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
                         = MultiVmGroupCreateOption.fromString(reader.getString());
                 } else if ("managementId".equals(fieldName)) {
                     deserializedA2AReplicationDetails.managementId = reader.getString();
+                } else if ("protectionClusterId".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.protectionClusterId = reader.getString();
+                } else if ("isClusterInfraReady".equals(fieldName)) {
+                    deserializedA2AReplicationDetails.isClusterInfraReady = reader.getNullable(JsonReader::getBoolean);
                 } else if ("protectedDisks".equals(fieldName)) {
                     List<A2AProtectedDiskDetails> protectedDisks
                         = reader.readArray(reader1 -> A2AProtectedDiskDetails.fromJson(reader1));

@@ -5,6 +5,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,21 +18,25 @@ public final class SplitSkillEncoderModelName extends ExpandableStringEnum<Split
      * Refers to a base model trained with a 50,000 token vocabulary, often used in general natural language processing
      * tasks.
      */
+    @Generated
     public static final SplitSkillEncoderModelName R_50K_BASE = fromString("r50k_base");
 
     /**
      * A base model with a 50,000 token vocabulary, optimized for prompt-based tasks.
      */
+    @Generated
     public static final SplitSkillEncoderModelName P_50K_BASE = fromString("p50k_base");
 
     /**
      * Similar to p50k_base but fine-tuned for editing or rephrasing tasks with a 50,000 token vocabulary.
      */
+    @Generated
     public static final SplitSkillEncoderModelName P_50K_EDIT = fromString("p50k_edit");
 
     /**
      * A base model with a 100,000 token vocabulary.
      */
+    @Generated
     public static final SplitSkillEncoderModelName CL_100K_BASE = fromString("cl100k_base");
 
     /**
@@ -39,6 +44,7 @@ public final class SplitSkillEncoderModelName extends ExpandableStringEnum<Split
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SplitSkillEncoderModelName() {
     }
@@ -49,6 +55,7 @@ public final class SplitSkillEncoderModelName extends ExpandableStringEnum<Split
      * @param name a name to look for.
      * @return the corresponding SplitSkillEncoderModelName.
      */
+    @Generated
     public static SplitSkillEncoderModelName fromString(String name) {
         return fromString(name, SplitSkillEncoderModelName.class);
     }
@@ -58,6 +65,7 @@ public final class SplitSkillEncoderModelName extends ExpandableStringEnum<Split
      *
      * @return known SplitSkillEncoderModelName values.
      */
+    @Generated
     public static Collection<SplitSkillEncoderModelName> values() {
         return values(SplitSkillEncoderModelName.class);
     }

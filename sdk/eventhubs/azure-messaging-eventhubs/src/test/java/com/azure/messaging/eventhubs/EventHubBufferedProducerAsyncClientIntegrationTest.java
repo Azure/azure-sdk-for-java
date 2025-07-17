@@ -114,11 +114,14 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         final List<EventData> eventsToPublish = IntStream.range(0, numberOfEvents)
             .mapToObj(index -> new EventData(String.valueOf(index)))
             .collect(Collectors.toList());
+        final int expectedBufferSize = eventsToPublish.size();
 
         // Waiting for at least maxWaitTime because events will get published by then.
-        StepVerifier.create(producer.enqueueEvents(eventsToPublish)).assertNext(integer -> {
-            assertEquals(0, integer, "Do not expect anymore events in queue.");
-        }).thenAwait(maxWaitTime).expectComplete().verify(TIMEOUT);
+        StepVerifier.create(producer.enqueueEvents(eventsToPublish))
+            .assertNext(actual -> assertEquals(expectedBufferSize, actual))
+            .thenAwait(maxWaitTime)
+            .expectComplete()
+            .verify(TIMEOUT);
 
         assertTrue(countDownLatch.await(TIMEOUT.toMillis(), TimeUnit.MILLISECONDS), "Did not get enough messages.");
 
@@ -137,6 +140,97 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
 
         // Check that the offsets have increased because we have published some events.
         assertPropertiesUpdated(partitionPropertiesMap, propertiesAfterMap);
+    }
+
+    /**
+     * Checks that sending an iterable with multiple partition keys is successful.
+     */
+    @Test
+    public void publishWithPartitionId() throws InterruptedException {
+        // Arrange
+        final int numberOfEvents = partitionPropertiesMap.size() * 4;
+
+        final AtomicBoolean anyFailures = new AtomicBoolean(false);
+        final List<SendBatchSucceededContext> succeededContexts = new ArrayList<>();
+        final CountDownLatch eventCountdown = new CountDownLatch(numberOfEvents);
+
+        final Duration maxWaitTime = Duration.ofSeconds(15);
+        final int queueSize = 10;
+
+        final EventHubClientBuilder builder = createBuilder();
+        producer = new EventHubBufferedProducerClientBuilder()
+            .credential(builder.getFullyQualifiedNamespace(), builder.getEventHubName(), builder.getCredentials())
+            .retryOptions(builder.getRetryOptions())
+            .onSendBatchFailed(failed -> {
+                anyFailures.set(true);
+                fail("Exception occurred while sending messages." + failed.getThrowable());
+            })
+            .onSendBatchSucceeded(succeeded -> {
+                succeededContexts.add(succeeded);
+                succeeded.getEvents().forEach(e -> eventCountdown.countDown());
+            })
+            .maxEventBufferLengthPerPartition(queueSize)
+            .maxWaitTime(maxWaitTime)
+            .buildAsyncClient();
+
+        final Random randomInterval = new Random(10);
+        final Map<String, List<String>> expectedPartitionIdsMap = new HashMap<>();
+
+        final List<Mono<Integer>> publishEventMono = IntStream.range(0, numberOfEvents).mapToObj(index -> {
+            final int partitionId = index % this.partitionIds.length;
+            final String partitionIdString = String.valueOf(partitionId);
+            final String body = "-" + index + " Event sent to partition-" + partitionId;
+            final EventData eventData = new EventData(body);
+            eventData.getRawAmqpMessage()
+                .getMessageAnnotations()
+                .put(PARTITION_KEY_ANNOTATION_NAME.getValue(), "old partition key - should not be used");
+
+            final SendOptions sendOptions = new SendOptions().setPartitionId(partitionIdString);
+            final int delay = randomInterval.nextInt(20);
+
+            expectedPartitionIdsMap.compute(partitionIdString, (key, existing) -> {
+                if (existing == null) {
+                    List<String> events = new ArrayList<>();
+                    events.add(body);
+                    return events;
+                } else {
+                    existing.add(body);
+                    return existing;
+                }
+            });
+
+            return Mono.delay(Duration.ofSeconds(delay))
+                .then(producer.enqueueEvent(eventData, sendOptions)
+                    .doFinally(signal -> logger.log(LogLevel.VERBOSE, () -> String
+                        .format("\t[%s] %s Published event.%n", partitionIdString, formatter.format(Instant.now())))));
+        }).collect(Collectors.toList());
+
+        // Waiting for at least maxWaitTime because events will get published by then.
+        StepVerifier.create(Mono.when(publishEventMono)).expectComplete().verify(TIMEOUT);
+
+        final boolean await = eventCountdown.await(TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
+
+        assertTrue(await);
+        assertFalse(anyFailures.get(), "Should not have encountered any failures.");
+        assertFalse(succeededContexts.isEmpty(), "Should have successfully sent some messages.");
+
+        for (SendBatchSucceededContext context : succeededContexts) {
+            final List<String> expected = expectedPartitionIdsMap.get(context.getPartitionId());
+            assertNotNull(expected, "Did not find any expected for partitionId: " + context.getPartitionId());
+
+            context.getEvents().forEach(eventData -> {
+                final boolean success = expected.removeIf(key -> key.equals(eventData.getBodyAsString()));
+                assertTrue(success,
+                    "Unable to find key " + eventData.getBodyAsString() + " in partition id: " + context.getEvents());
+            });
+        }
+
+        expectedPartitionIdsMap.forEach((key, value) -> {
+            assertTrue(value.isEmpty(), key + ": There should be no more partition keys. " + String.join(",", value));
+        });
+
+        final Map<String, PartitionProperties> finalProperties = getPartitionProperties();
+        assertPropertiesUpdated(partitionPropertiesMap, finalProperties);
     }
 
     /**
@@ -280,7 +374,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         }).subscribe());
 
         StepVerifier.create(producer.enqueueEvent(eventData, sendOptions))
-            .expectNext(0)
+            .expectNext(1)
             .expectComplete()
             .verify(TIMEOUT);
 

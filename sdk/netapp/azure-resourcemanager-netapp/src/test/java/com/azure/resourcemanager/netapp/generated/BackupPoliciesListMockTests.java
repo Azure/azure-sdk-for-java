@@ -7,8 +7,8 @@ package com.azure.resourcemanager.netapp.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.BackupPolicy;
@@ -22,23 +22,23 @@ public final class BackupPoliciesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"qpswokmvkhlggdhb\",\"properties\":{\"backupPolicyId\":\"zqkzszuwi\",\"provisioningState\":\"glxxhljfpgpic\",\"dailyBackupsToKeep\":1974760632,\"weeklyBackupsToKeep\":285978627,\"monthlyBackupsToKeep\":1409620818,\"volumesAssigned\":1972611629,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"pqcbfrmbodthsq\",\"volumeResourceId\":\"vriibakclacjfr\",\"backupsCount\":1419015231,\"policyEnabled\":true}]},\"location\":\"au\",\"tags\":{\"wohqfzizvu\":\"vsg\",\"vmribiat\":\"mmkjsvthnwpztek\",\"zcugswvxwlmzqw\":\"gplucfotangcfhny\",\"cvclxynpdk\":\"vtxnjmxmcuqud\"},\"id\":\"gfabuiyjibuzphdu\",\"name\":\"neiknpg\",\"type\":\"xgjiuqh\"}]}";
+            = "{\"value\":[{\"etag\":\"nw\",\"properties\":{\"backupPolicyId\":\"gajinnixjawrtmj\",\"provisioningState\":\"myccx\",\"dailyBackupsToKeep\":1452842923,\"weeklyBackupsToKeep\":1559080880,\"monthlyBackupsToKeep\":963389591,\"volumesAssigned\":1682316966,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"lusfnrdtjxtxrdcq\",\"volumeResourceId\":\"vidttgepuslvyjt\",\"backupsCount\":1750462834,\"policyEnabled\":false},{\"volumeName\":\"s\",\"volumeResourceId\":\"iesfuug\",\"backupsCount\":1608993191,\"policyEnabled\":true}]},\"location\":\"cjxeygt\",\"tags\":{\"jlxuz\":\"uicbuewmrsw\"},\"id\":\"hwpusxj\",\"name\":\"aqehg\",\"type\":\"dohzjq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<BackupPolicy> response
-            = manager.backupPolicies().list("zvuporqzdfuydz", "kfvxcnq", com.azure.core.util.Context.NONE);
+            = manager.backupPolicies().list("olbauirop", "ons", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("au", response.iterator().next().location());
-        Assertions.assertEquals("vsg", response.iterator().next().tags().get("wohqfzizvu"));
-        Assertions.assertEquals(1974760632, response.iterator().next().dailyBackupsToKeep());
-        Assertions.assertEquals(285978627, response.iterator().next().weeklyBackupsToKeep());
-        Assertions.assertEquals(1409620818, response.iterator().next().monthlyBackupsToKeep());
-        Assertions.assertEquals(false, response.iterator().next().enabled());
+        Assertions.assertEquals("cjxeygt", response.iterator().next().location());
+        Assertions.assertEquals("uicbuewmrsw", response.iterator().next().tags().get("jlxuz"));
+        Assertions.assertEquals(1452842923, response.iterator().next().dailyBackupsToKeep());
+        Assertions.assertEquals(1559080880, response.iterator().next().weeklyBackupsToKeep());
+        Assertions.assertEquals(963389591, response.iterator().next().monthlyBackupsToKeep());
+        Assertions.assertFalse(response.iterator().next().enabled());
     }
 }

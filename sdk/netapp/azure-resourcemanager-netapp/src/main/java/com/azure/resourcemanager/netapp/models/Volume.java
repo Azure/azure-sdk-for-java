@@ -97,7 +97,7 @@ public interface Volume {
     /**
      * Gets the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
      * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
      * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
@@ -330,6 +330,13 @@ public interface Volume {
     Boolean ldapEnabled();
 
     /**
+     * Gets the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
+     * 
+     * @return the ldapServerType value.
+     */
+    LdapServerType ldapServerType();
+
+    /**
      * Gets the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
      * 
      * @return the coolAccess value.
@@ -356,6 +363,16 @@ public interface Volume {
      * @return the coolAccessRetrievalPolicy value.
      */
     CoolAccessRetrievalPolicy coolAccessRetrievalPolicy();
+
+    /**
+     * Gets the coolAccessTieringPolicy property: coolAccessTieringPolicy determines which cold data blocks are moved to
+     * cool tier. The possible values for this field are: Auto - Moves cold user data blocks in both the Snapshot copies
+     * and the active file system to the cool tier tier. This policy is the default. SnapshotOnly - Moves user data
+     * blocks of the Volume Snapshot copies that are not associated with the active file system to the cool tier.
+     * 
+     * @return the coolAccessTieringPolicy value.
+     */
+    CoolAccessTieringPolicy coolAccessTieringPolicy();
 
     /**
      * Gets the unixPermissions property: UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
@@ -632,12 +649,12 @@ public interface Volume {
             /**
              * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
              * a soft quota used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
-             * For large volumes, valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to
+             * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
              * 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB..
              * 
              * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
              * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-             * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
+             * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
              * Values expressed in bytes as multiples of 1 GiB.
              * @return the next definition stage.
              */
@@ -667,14 +684,15 @@ public interface Volume {
             DefinitionStages.WithServiceLevel, DefinitionStages.WithExportPolicy, DefinitionStages.WithProtocolTypes,
             DefinitionStages.WithSnapshotId, DefinitionStages.WithDeleteBaseSnapshot, DefinitionStages.WithBackupId,
             DefinitionStages.WithNetworkFeatures, DefinitionStages.WithVolumeType, DefinitionStages.WithDataProtection,
-            DefinitionStages.WithAcceptGrowCapacityPoolForShortTermCloneSplit, DefinitionStages.WithIsRestoring,
+            DefinitionStages.WithAcceptGrowCapacityPoolForShortTermCloneSplit,
             DefinitionStages.WithSnapshotDirectoryVisible, DefinitionStages.WithKerberosEnabled,
             DefinitionStages.WithSecurityStyle, DefinitionStages.WithSmbEncryption,
             DefinitionStages.WithSmbAccessBasedEnumeration, DefinitionStages.WithSmbNonBrowsable,
             DefinitionStages.WithSmbContinuouslyAvailable, DefinitionStages.WithThroughputMibps,
             DefinitionStages.WithEncryptionKeySource, DefinitionStages.WithKeyVaultPrivateEndpointResourceId,
-            DefinitionStages.WithLdapEnabled, DefinitionStages.WithCoolAccess, DefinitionStages.WithCoolnessPeriod,
-            DefinitionStages.WithCoolAccessRetrievalPolicy, DefinitionStages.WithUnixPermissions,
+            DefinitionStages.WithLdapEnabled, DefinitionStages.WithLdapServerType, DefinitionStages.WithCoolAccess,
+            DefinitionStages.WithCoolnessPeriod, DefinitionStages.WithCoolAccessRetrievalPolicy,
+            DefinitionStages.WithCoolAccessTieringPolicy, DefinitionStages.WithUnixPermissions,
             DefinitionStages.WithAvsDataStore, DefinitionStages.WithIsDefaultQuotaEnabled,
             DefinitionStages.WithDefaultUserQuotaInKiBs, DefinitionStages.WithDefaultGroupQuotaInKiBs,
             DefinitionStages.WithCapacityPoolResourceId, DefinitionStages.WithProximityPlacementGroup,
@@ -868,19 +886,6 @@ public interface Volume {
         }
 
         /**
-         * The stage of the Volume definition allowing to specify isRestoring.
-         */
-        interface WithIsRestoring {
-            /**
-             * Specifies the isRestoring property: Restoring.
-             * 
-             * @param isRestoring Restoring.
-             * @return the next definition stage.
-             */
-            WithCreate withIsRestoring(Boolean isRestoring);
-        }
-
-        /**
          * The stage of the Volume definition allowing to specify snapshotDirectoryVisible.
          */
         interface WithSnapshotDirectoryVisible {
@@ -1047,6 +1052,19 @@ public interface Volume {
         }
 
         /**
+         * The stage of the Volume definition allowing to specify ldapServerType.
+         */
+        interface WithLdapServerType {
+            /**
+             * Specifies the ldapServerType property: Specifies the type of LDAP server for a given NFS volume..
+             * 
+             * @param ldapServerType Specifies the type of LDAP server for a given NFS volume.
+             * @return the next definition stage.
+             */
+            WithCreate withLdapServerType(LdapServerType ldapServerType);
+        }
+
+        /**
          * The stage of the Volume definition allowing to specify coolAccess.
          */
         interface WithCoolAccess {
@@ -1099,6 +1117,27 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withCoolAccessRetrievalPolicy(CoolAccessRetrievalPolicy coolAccessRetrievalPolicy);
+        }
+
+        /**
+         * The stage of the Volume definition allowing to specify coolAccessTieringPolicy.
+         */
+        interface WithCoolAccessTieringPolicy {
+            /**
+             * Specifies the coolAccessTieringPolicy property: coolAccessTieringPolicy determines which cold data blocks
+             * are moved to cool tier. The possible values for this field are: Auto - Moves cold user data blocks in
+             * both the Snapshot copies and the active file system to the cool tier tier. This policy is the default.
+             * SnapshotOnly - Moves user data blocks of the Volume Snapshot copies that are not associated with the
+             * active file system to the cool tier..
+             * 
+             * @param coolAccessTieringPolicy coolAccessTieringPolicy determines which cold data blocks are moved to
+             * cool tier. The possible values for this field are: Auto - Moves cold user data blocks in both the
+             * Snapshot copies and the active file system to the cool tier tier. This policy is the default.
+             * SnapshotOnly - Moves user data blocks of the Volume Snapshot copies that are not associated with the
+             * active file system to the cool tier.
+             * @return the next definition stage.
+             */
+            WithCreate withCoolAccessTieringPolicy(CoolAccessTieringPolicy coolAccessTieringPolicy);
         }
 
         /**
@@ -1297,8 +1336,9 @@ public interface Volume {
         UpdateStages.WithDataProtection, UpdateStages.WithIsDefaultQuotaEnabled,
         UpdateStages.WithDefaultUserQuotaInKiBs, UpdateStages.WithDefaultGroupQuotaInKiBs,
         UpdateStages.WithUnixPermissions, UpdateStages.WithCoolAccess, UpdateStages.WithCoolnessPeriod,
-        UpdateStages.WithCoolAccessRetrievalPolicy, UpdateStages.WithSnapshotDirectoryVisible,
-        UpdateStages.WithSmbAccessBasedEnumeration, UpdateStages.WithSmbNonBrowsable {
+        UpdateStages.WithCoolAccessRetrievalPolicy, UpdateStages.WithCoolAccessTieringPolicy,
+        UpdateStages.WithSnapshotDirectoryVisible, UpdateStages.WithSmbAccessBasedEnumeration,
+        UpdateStages.WithSmbNonBrowsable {
         /**
          * Executes the update request.
          * 
@@ -1352,12 +1392,12 @@ public interface Volume {
             /**
              * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
              * a soft quota used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
-             * For large volumes, valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to
+             * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
              * 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB..
              * 
              * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
              * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-             * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
+             * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
              * Values expressed in bytes as multiples of 1 GiB.
              * @return the next definition stage.
              */
@@ -1537,6 +1577,27 @@ public interface Volume {
              * @return the next definition stage.
              */
             Update withCoolAccessRetrievalPolicy(CoolAccessRetrievalPolicy coolAccessRetrievalPolicy);
+        }
+
+        /**
+         * The stage of the Volume update allowing to specify coolAccessTieringPolicy.
+         */
+        interface WithCoolAccessTieringPolicy {
+            /**
+             * Specifies the coolAccessTieringPolicy property: coolAccessTieringPolicy determines which cold data blocks
+             * are moved to cool tier. The possible values for this field are: Auto - Moves cold user data blocks in
+             * both the Snapshot copies and the active file system to the cool tier tier. This policy is the default.
+             * SnapshotOnly - Moves user data blocks of the Volume Snapshot copies that are not associated with the
+             * active file system to the cool tier..
+             * 
+             * @param coolAccessTieringPolicy coolAccessTieringPolicy determines which cold data blocks are moved to
+             * cool tier. The possible values for this field are: Auto - Moves cold user data blocks in both the
+             * Snapshot copies and the active file system to the cool tier tier. This policy is the default.
+             * SnapshotOnly - Moves user data blocks of the Volume Snapshot copies that are not associated with the
+             * active file system to the cool tier.
+             * @return the next definition stage.
+             */
+            Update withCoolAccessTieringPolicy(CoolAccessTieringPolicy coolAccessTieringPolicy);
         }
 
         /**

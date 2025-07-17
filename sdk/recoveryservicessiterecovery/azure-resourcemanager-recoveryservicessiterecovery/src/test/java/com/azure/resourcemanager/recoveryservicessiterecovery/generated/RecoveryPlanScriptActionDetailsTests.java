@@ -13,21 +13,21 @@ public final class RecoveryPlanScriptActionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPlanScriptActionDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"ScriptActionDetails\",\"path\":\"kyvscbgngcrus\",\"timeout\":\"ircpgcvsvkk\",\"fabricLocation\":\"Recovery\"}")
+            "{\"instanceType\":\"ScriptActionDetails\",\"path\":\"b\",\"timeout\":\"lmcvrjaznotdofq\",\"fabricLocation\":\"Primary\"}")
             .toObject(RecoveryPlanScriptActionDetails.class);
-        Assertions.assertEquals("kyvscbgngcrus", model.path());
-        Assertions.assertEquals("ircpgcvsvkk", model.timeout());
-        Assertions.assertEquals(RecoveryPlanActionLocation.RECOVERY, model.fabricLocation());
+        Assertions.assertEquals("b", model.path());
+        Assertions.assertEquals("lmcvrjaznotdofq", model.timeout());
+        Assertions.assertEquals(RecoveryPlanActionLocation.PRIMARY, model.fabricLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPlanScriptActionDetails model = new RecoveryPlanScriptActionDetails().withPath("kyvscbgngcrus")
-            .withTimeout("ircpgcvsvkk")
-            .withFabricLocation(RecoveryPlanActionLocation.RECOVERY);
+        RecoveryPlanScriptActionDetails model = new RecoveryPlanScriptActionDetails().withPath("b")
+            .withTimeout("lmcvrjaznotdofq")
+            .withFabricLocation(RecoveryPlanActionLocation.PRIMARY);
         model = BinaryData.fromObject(model).toObject(RecoveryPlanScriptActionDetails.class);
-        Assertions.assertEquals("kyvscbgngcrus", model.path());
-        Assertions.assertEquals("ircpgcvsvkk", model.timeout());
-        Assertions.assertEquals(RecoveryPlanActionLocation.RECOVERY, model.fabricLocation());
+        Assertions.assertEquals("b", model.path());
+        Assertions.assertEquals("lmcvrjaznotdofq", model.timeout());
+        Assertions.assertEquals(RecoveryPlanActionLocation.PRIMARY, model.fabricLocation());
     }
 }

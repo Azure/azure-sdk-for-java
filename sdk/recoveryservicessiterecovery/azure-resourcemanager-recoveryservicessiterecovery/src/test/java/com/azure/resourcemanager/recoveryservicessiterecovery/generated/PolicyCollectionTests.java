@@ -16,11 +16,11 @@ public final class PolicyCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"friendlyName\":\"ulaiywzejywhs\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"ojpllndnpdwrpqaf\",\"id\":\"fugsnnfhyetefy\",\"name\":\"oc\",\"type\":\"ctfjgtixr\"},{\"properties\":{\"friendlyName\":\"uyturml\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"wolba\",\"id\":\"iropionszon\",\"name\":\"pngajin\",\"type\":\"ixjawrtm\"},{\"properties\":{\"friendlyName\":\"myccx\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"coxovn\",\"id\":\"khenlus\",\"name\":\"nrd\",\"type\":\"jxtxrdc\"},{\"properties\":{\"friendlyName\":\"vidttgepuslvyjt\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"wkasiziesf\",\"id\":\"ughtuqfecjxeygtu\",\"name\":\"xu\",\"type\":\"cbuewmrswnjlxuz\"}],\"nextLink\":\"wpusxjbaqehg\"}")
+            "{\"value\":[{\"properties\":{\"friendlyName\":\"jlpjrtwszhv\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"c\",\"id\":\"hvtrrmhwrbfdpyf\",\"name\":\"ubhvj\",\"type\":\"lrocuyzlwh\"},{\"properties\":{\"friendlyName\":\"mhoocl\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"pqmem\",\"id\":\"zjkmmykyujxs\",\"name\":\"lhsrrry\",\"type\":\"jylmbkzudnigr\"},{\"properties\":{\"friendlyName\":\"otjewlpxuzzjgnre\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"hqo\",\"id\":\"oihiqak\",\"name\":\"diw\",\"type\":\"brkwpzdqt\"},{\"properties\":{\"friendlyName\":\"spodaqax\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"ietgbebjfu\",\"id\":\"bmoichd\",\"name\":\"pnfpubntnbat\",\"type\":\"viqsowsaaelcattc\"}],\"nextLink\":\"hplrvkmjcwmjvlg\"}")
             .toObject(PolicyCollection.class);
-        Assertions.assertEquals("ulaiywzejywhs", model.value().get(0).properties().friendlyName());
-        Assertions.assertEquals("ojpllndnpdwrpqaf", model.value().get(0).location());
-        Assertions.assertEquals("wpusxjbaqehg", model.nextLink());
+        Assertions.assertEquals("jlpjrtwszhv", model.value().get(0).properties().friendlyName());
+        Assertions.assertEquals("c", model.value().get(0).location());
+        Assertions.assertEquals("hplrvkmjcwmjvlg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,27 +28,28 @@ public final class PolicyCollectionTests {
         PolicyCollection model
             = new PolicyCollection()
                 .withValue(
-                    Arrays.asList(
-                        new PolicyInner()
-                            .withProperties(new PolicyProperties().withFriendlyName("ulaiywzejywhs")
-                                .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
-                            .withLocation("ojpllndnpdwrpqaf"),
-                        new PolicyInner()
-                            .withProperties(new PolicyProperties().withFriendlyName("uyturml")
-                                .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
-                            .withLocation("wolba"),
-                        new PolicyInner()
-                            .withProperties(new PolicyProperties().withFriendlyName("myccx")
-                                .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
-                            .withLocation("coxovn"),
-                        new PolicyInner()
-                            .withProperties(new PolicyProperties().withFriendlyName("vidttgepuslvyjt")
-                                .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
-                            .withLocation("wkasiziesf")))
-                .withNextLink("wpusxjbaqehg");
+                    Arrays
+                        .asList(
+                            new PolicyInner()
+                                .withProperties(new PolicyProperties().withFriendlyName("jlpjrtwszhv")
+                                    .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
+                                .withLocation("c"),
+                            new PolicyInner()
+                                .withProperties(new PolicyProperties().withFriendlyName("mhoocl")
+                                    .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
+                                .withLocation("pqmem"),
+                            new PolicyInner()
+                                .withProperties(new PolicyProperties().withFriendlyName("otjewlpxuzzjgnre")
+                                    .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
+                                .withLocation("hqo"),
+                            new PolicyInner()
+                                .withProperties(new PolicyProperties().withFriendlyName("spodaqax")
+                                    .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
+                                .withLocation("ietgbebjfu")))
+                .withNextLink("hplrvkmjcwmjvlg");
         model = BinaryData.fromObject(model).toObject(PolicyCollection.class);
-        Assertions.assertEquals("ulaiywzejywhs", model.value().get(0).properties().friendlyName());
-        Assertions.assertEquals("ojpllndnpdwrpqaf", model.value().get(0).location());
-        Assertions.assertEquals("wpusxjbaqehg", model.nextLink());
+        Assertions.assertEquals("jlpjrtwszhv", model.value().get(0).properties().friendlyName());
+        Assertions.assertEquals("c", model.value().get(0).location());
+        Assertions.assertEquals("hplrvkmjcwmjvlg", model.nextLink());
     }
 }

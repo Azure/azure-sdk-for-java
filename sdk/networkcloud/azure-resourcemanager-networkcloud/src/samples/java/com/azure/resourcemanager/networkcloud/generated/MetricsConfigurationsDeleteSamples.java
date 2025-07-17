@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class MetricsConfigurationsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
      * ClusterMetricsConfigurations_Delete.json
      */
     /**
@@ -21,6 +21,6 @@ public final class MetricsConfigurationsDeleteSamples {
     public static void
         deleteMetricsConfigurationOfCluster(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
         manager.metricsConfigurations()
-            .delete("resourceGroupName", "clusterName", "default", com.azure.core.util.Context.NONE);
+            .delete("resourceGroupName", "clusterName", "default", null, null, com.azure.core.util.Context.NONE);
     }
 }

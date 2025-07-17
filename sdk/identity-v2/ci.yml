@@ -1,0 +1,79 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/identity-v2/ci.yml
+      - sdk/identity-v2/azure-identity/
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/identity-v2/ci.yml
+      - sdk/identity-v2/azure-identity/
+
+parameters:
+  - name: release_dependsonlivetests
+    displayName: 'Release depends on live tests'
+    type: boolean
+    default: true
+  - name: release_azureidentity
+    displayName: 'com.azure.v2:azure-identity'
+    type: boolean
+    default: true
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: identity-v2
+    TimeoutInMinutes: 90
+    ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
+    Artifacts:
+      - name: azure-identity
+        groupId: com.azure.v2
+        safeName: azureidentityv2
+        skipPublishDocMs: true
+        releaseInBatch: ${{ parameters.release_azureidentity }}
+    LiveTestStages:
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
+          PreTestRunSteps:
+            - task: AzureCLI@2
+              displayName: Refresh OIDC token
+              env:
+                ARM_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
+              inputs:
+                azureSubscription: azure-sdk-tests-public
+                addSpnToEnvironment: true
+                scriptLocation: inlineScript
+                scriptType: pscore
+                inlineScript: |
+                  Write-Host "##vso[task.setvariable variable=ARM_OIDC_TOKEN;issecret=true]$($env:idToken)"
+          PersistOidcToken: true
+          Location: 'westus2'
+          CalledFromClient: true
+          ServiceDirectory: identity
+          EnvVars:
+            AZ_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
+            AZURE_IDENTITY_MULTI_TENANT_CLIENT_SECRET: $(AZURE-IDENTITY-MULTI-TENANT-CLIENT-SECRET)
+          CloudConfig:
+            Public:
+              SubscriptionConfigurations:
+                - $(sub-config-identity-test-resources)
+          Artifacts:
+            - name: azure-identity
+              groupId: com.azure.v2
+              safeName: azureidentityv2
+              skipPublishDocMs: true
+

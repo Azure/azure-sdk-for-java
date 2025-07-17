@@ -15,25 +15,23 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.deviceregistry.fluent.AssetEndpointProfilesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.AssetsClient;
 import com.azure.resourcemanager.deviceregistry.fluent.BillingContainersClient;
 import com.azure.resourcemanager.deviceregistry.fluent.DeviceRegistryManagementClient;
-import com.azure.resourcemanager.deviceregistry.fluent.DiscoveredAssetEndpointProfilesClient;
-import com.azure.resourcemanager.deviceregistry.fluent.DiscoveredAssetsClient;
 import com.azure.resourcemanager.deviceregistry.fluent.OperationStatusClient;
 import com.azure.resourcemanager.deviceregistry.fluent.OperationsClient;
-import com.azure.resourcemanager.deviceregistry.fluent.SchemaRegistriesClient;
-import com.azure.resourcemanager.deviceregistry.fluent.SchemaVersionsClient;
-import com.azure.resourcemanager.deviceregistry.fluent.SchemasClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -203,76 +201,6 @@ public final class DeviceRegistryManagementClientImpl implements DeviceRegistryM
     }
 
     /**
-     * The DiscoveredAssetsClient object to access its operations.
-     */
-    private final DiscoveredAssetsClient discoveredAssets;
-
-    /**
-     * Gets the DiscoveredAssetsClient object to access its operations.
-     * 
-     * @return the DiscoveredAssetsClient object.
-     */
-    public DiscoveredAssetsClient getDiscoveredAssets() {
-        return this.discoveredAssets;
-    }
-
-    /**
-     * The DiscoveredAssetEndpointProfilesClient object to access its operations.
-     */
-    private final DiscoveredAssetEndpointProfilesClient discoveredAssetEndpointProfiles;
-
-    /**
-     * Gets the DiscoveredAssetEndpointProfilesClient object to access its operations.
-     * 
-     * @return the DiscoveredAssetEndpointProfilesClient object.
-     */
-    public DiscoveredAssetEndpointProfilesClient getDiscoveredAssetEndpointProfiles() {
-        return this.discoveredAssetEndpointProfiles;
-    }
-
-    /**
-     * The SchemaRegistriesClient object to access its operations.
-     */
-    private final SchemaRegistriesClient schemaRegistries;
-
-    /**
-     * Gets the SchemaRegistriesClient object to access its operations.
-     * 
-     * @return the SchemaRegistriesClient object.
-     */
-    public SchemaRegistriesClient getSchemaRegistries() {
-        return this.schemaRegistries;
-    }
-
-    /**
-     * The SchemasClient object to access its operations.
-     */
-    private final SchemasClient schemas;
-
-    /**
-     * Gets the SchemasClient object to access its operations.
-     * 
-     * @return the SchemasClient object.
-     */
-    public SchemasClient getSchemas() {
-        return this.schemas;
-    }
-
-    /**
-     * The SchemaVersionsClient object to access its operations.
-     */
-    private final SchemaVersionsClient schemaVersions;
-
-    /**
-     * Gets the SchemaVersionsClient object to access its operations.
-     * 
-     * @return the SchemaVersionsClient object.
-     */
-    public SchemaVersionsClient getSchemaVersions() {
-        return this.schemaVersions;
-    }
-
-    /**
      * Initializes an instance of DeviceRegistryManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -289,17 +217,12 @@ public final class DeviceRegistryManagementClientImpl implements DeviceRegistryM
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-09-01-preview";
+        this.apiVersion = "2024-11-01";
         this.operations = new OperationsClientImpl(this);
         this.operationStatus = new OperationStatusClientImpl(this);
         this.assets = new AssetsClientImpl(this);
         this.assetEndpointProfiles = new AssetEndpointProfilesClientImpl(this);
         this.billingContainers = new BillingContainersClientImpl(this);
-        this.discoveredAssets = new DiscoveredAssetsClientImpl(this);
-        this.discoveredAssetEndpointProfiles = new DiscoveredAssetEndpointProfilesClientImpl(this);
-        this.schemaRegistries = new SchemaRegistriesClientImpl(this);
-        this.schemas = new SchemasClientImpl(this);
-        this.schemaVersions = new SchemaVersionsClientImpl(this);
     }
 
     /**
@@ -337,6 +260,23 @@ public final class DeviceRegistryManagementClientImpl implements DeviceRegistryM
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

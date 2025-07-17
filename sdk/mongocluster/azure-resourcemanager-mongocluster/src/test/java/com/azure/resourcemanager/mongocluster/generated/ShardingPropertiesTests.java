@@ -12,14 +12,14 @@ public final class ShardingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ShardingProperties model
-            = BinaryData.fromString("{\"shardCount\":1511051439}").toObject(ShardingProperties.class);
-        Assertions.assertEquals(1511051439, model.shardCount());
+            = BinaryData.fromString("{\"shardCount\":1876507017}").toObject(ShardingProperties.class);
+        Assertions.assertEquals(1876507017, model.shardCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ShardingProperties model = new ShardingProperties().withShardCount(1511051439);
+        ShardingProperties model = new ShardingProperties().withShardCount(1876507017);
         model = BinaryData.fromObject(model).toObject(ShardingProperties.class);
-        Assertions.assertEquals(1511051439, model.shardCount());
+        Assertions.assertEquals(1876507017, model.shardCount());
     }
 }

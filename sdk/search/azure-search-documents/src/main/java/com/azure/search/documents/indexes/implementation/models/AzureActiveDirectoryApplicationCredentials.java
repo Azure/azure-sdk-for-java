@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,16 +26,19 @@ public final class AzureActiveDirectoryApplicationCredentials
      * when encrypting your data at rest. The Application ID should not be confused with the Object ID for your AAD
      * Application.
      */
+    @Generated
     private String applicationId;
 
     /*
      * The authentication key of the specified AAD application.
      */
+    @Generated
     private String applicationSecret;
 
     /**
      * Creates an instance of AzureActiveDirectoryApplicationCredentials class.
      */
+    @Generated
     public AzureActiveDirectoryApplicationCredentials() {
     }
 
@@ -45,6 +49,7 @@ public final class AzureActiveDirectoryApplicationCredentials
      * 
      * @return the applicationId value.
      */
+    @Generated
     public String getApplicationId() {
         return this.applicationId;
     }
@@ -57,6 +62,7 @@ public final class AzureActiveDirectoryApplicationCredentials
      * @param applicationId the applicationId value to set.
      * @return the AzureActiveDirectoryApplicationCredentials object itself.
      */
+    @Generated
     public AzureActiveDirectoryApplicationCredentials setApplicationId(String applicationId) {
         this.applicationId = applicationId;
         return this;
@@ -67,6 +73,7 @@ public final class AzureActiveDirectoryApplicationCredentials
      * 
      * @return the applicationSecret value.
      */
+    @Generated
     public String getApplicationSecret() {
         return this.applicationSecret;
     }
@@ -77,6 +84,7 @@ public final class AzureActiveDirectoryApplicationCredentials
      * @param applicationSecret the applicationSecret value to set.
      * @return the AzureActiveDirectoryApplicationCredentials object itself.
      */
+    @Generated
     public AzureActiveDirectoryApplicationCredentials setApplicationSecret(String applicationSecret) {
         this.applicationSecret = applicationSecret;
         return this;
@@ -85,6 +93,7 @@ public final class AzureActiveDirectoryApplicationCredentials
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -101,6 +110,7 @@ public final class AzureActiveDirectoryApplicationCredentials
      * of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureActiveDirectoryApplicationCredentials.
      */
+    @Generated
     public static AzureActiveDirectoryApplicationCredentials fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureActiveDirectoryApplicationCredentials deserializedAzureActiveDirectoryApplicationCredentials

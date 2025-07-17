@@ -32,10 +32,30 @@ public final class BatchJobNetworkConfiguration implements JsonSerializable<Batc
      * must be enabled for inbound communication from the Azure Batch service. For Pools created with a Virtual Machine
      * configuration, enable ports 29876 and 29877, as well as port 22 for Linux and port 3389 for Windows. Port 443 is
      * also required to be open for outbound connections for communications to Azure Storage. For more details see:
-     * https://docs.microsoft.com/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+     * https://learn.microsoft.com/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      */
     @Generated
     private final String subnetId;
+
+    /*
+     * Whether to withdraw Compute Nodes from the virtual network to DNC when the job is terminated or deleted. If true,
+     * nodes will remain joined to the virtual network to DNC. If false, nodes will automatically withdraw when the job
+     * ends. Defaults to false.
+     */
+    @Generated
+    private final boolean skipWithdrawFromVNet;
+
+    /**
+     * Creates an instance of BatchJobNetworkConfiguration class.
+     *
+     * @param subnetId the subnetId value to set.
+     * @param skipWithdrawFromVNet the skipWithdrawFromVNet value to set.
+     */
+    @Generated
+    public BatchJobNetworkConfiguration(String subnetId, boolean skipWithdrawFromVNet) {
+        this.subnetId = subnetId;
+        this.skipWithdrawFromVNet = skipWithdrawFromVNet;
+    }
 
     /**
      * Get the subnetId property: The ARM resource identifier of the virtual network subnet which Compute Nodes running
@@ -52,13 +72,25 @@ public final class BatchJobNetworkConfiguration implements JsonSerializable<Batc
      * enabled for inbound communication from the Azure Batch service. For Pools created with a Virtual Machine
      * configuration, enable ports 29876 and 29877, as well as port 22 for Linux and port 3389 for Windows. Port 443 is
      * also required to be open for outbound connections for communications to Azure Storage. For more details see:
-     * https://docs.microsoft.com/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+     * https://learn.microsoft.com/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      *
      * @return the subnetId value.
      */
     @Generated
     public String getSubnetId() {
         return this.subnetId;
+    }
+
+    /**
+     * Get the skipWithdrawFromVNet property: Whether to withdraw Compute Nodes from the virtual network to DNC when the
+     * job is terminated or deleted. If true, nodes will remain joined to the virtual network to DNC. If false, nodes
+     * will automatically withdraw when the job ends. Defaults to false.
+     *
+     * @return the skipWithdrawFromVNet value.
+     */
+    @Generated
+    public boolean isSkipWithdrawFromVNet() {
+        return this.skipWithdrawFromVNet;
     }
 
     /**
@@ -100,37 +132,5 @@ public final class BatchJobNetworkConfiguration implements JsonSerializable<Batc
             }
             return new BatchJobNetworkConfiguration(subnetId, skipWithdrawFromVNet);
         });
-    }
-
-    /*
-     * Whether to withdraw Compute Nodes from the virtual network to DNC when the job is terminated or deleted. If true,
-     * nodes will remain joined to the virtual network to DNC. If false, nodes will automatically withdraw when the job
-     * ends. Defaults to false.
-     */
-    @Generated
-    private final boolean skipWithdrawFromVNet;
-
-    /**
-     * Creates an instance of BatchJobNetworkConfiguration class.
-     *
-     * @param subnetId the subnetId value to set.
-     * @param skipWithdrawFromVNet the skipWithdrawFromVNet value to set.
-     */
-    @Generated
-    public BatchJobNetworkConfiguration(String subnetId, boolean skipWithdrawFromVNet) {
-        this.subnetId = subnetId;
-        this.skipWithdrawFromVNet = skipWithdrawFromVNet;
-    }
-
-    /**
-     * Get the skipWithdrawFromVNet property: Whether to withdraw Compute Nodes from the virtual network to DNC when the
-     * job is terminated or deleted. If true, nodes will remain joined to the virtual network to DNC. If false, nodes
-     * will automatically withdraw when the job ends. Defaults to false.
-     *
-     * @return the skipWithdrawFromVNet value.
-     */
-    @Generated
-    public boolean isSkipWithdrawFromVNet() {
-        return this.skipWithdrawFromVNet;
     }
 }

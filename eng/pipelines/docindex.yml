@@ -21,12 +21,15 @@ parameters:
 
 variables:
   - template: /eng/pipelines/templates/variables/globals.yml
+  - template: /eng/pipelines/templates/variables/image.yml
 jobs:
   - template: /eng/common/pipelines/templates/jobs/docindex.yml
 
   - job: UpdateDocsMsBuildConfig
     pool:
-      vmImage: ubuntu-20.04
+      name: $(LINUXPOOL)
+      demands: ImageOverride -equals $(LINUXVMIMAGE)
+
     timeoutInMinutes: 180
     variables:
       DocRepoLocation: $(Pipeline.Workspace)/docs

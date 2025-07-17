@@ -39,7 +39,7 @@ Azure AI Face supports both [multi-service][azure_cognitive_service_account] and
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-vision-face</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -89,7 +89,7 @@ To use the [DefaultAzureCredential][azure_sdk_java_default_azure_credential] typ
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.14.2</version>
+    <version>1.15.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

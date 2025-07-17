@@ -52,6 +52,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
      * Creates a {@link KeyVaultCredentialPolicy}.
      *
      * @param credential The token credential to authenticate the request.
+     * @param disableChallengeResourceVerification A boolean indicating whether to disable the challenge resource
+     * verification.
      */
     public KeyVaultCredentialPolicy(TokenCredential credential, boolean disableChallengeResourceVerification) {
         super(credential);

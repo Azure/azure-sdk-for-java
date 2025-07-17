@@ -203,7 +203,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
         if (category == null) {
             return Mono.error(new IllegalArgumentException("Parameter category is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         String tagsConverted = (tags == null)
             ? null
@@ -246,7 +246,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
         if (category == null) {
             return Mono.error(new IllegalArgumentException("Parameter category is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         String tagsConverted = (tags == null)
             ? null
@@ -389,7 +389,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
         if (category == null) {
             return Mono.error(new IllegalArgumentException("Parameter category is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         String tagsConverted = (tags == null)
             ? null
@@ -439,7 +439,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
         if (category == null) {
             return Mono.error(new IllegalArgumentException("Parameter category is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         String tagsConverted = (tags == null)
             ? null
@@ -568,7 +568,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Get a single workbook by its resourceName.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
      * false, only return summary content for workbooks.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -595,7 +595,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -608,7 +608,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Get a single workbook by its resourceName.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
      * false, only return summary content for workbooks.
      * @param context The context to associate with this operation.
@@ -636,7 +636,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -647,7 +647,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Get a single workbook by its resourceName.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -664,7 +664,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Get a single workbook by its resourceName.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
      * false, only return summary content for workbooks.
      * @param context The context to associate with this operation.
@@ -683,7 +683,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Get a single workbook by its resourceName.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -700,7 +700,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Delete a workbook.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -723,7 +723,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -735,7 +735,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Delete a workbook.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
@@ -760,7 +760,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -771,7 +771,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Delete a workbook.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -786,7 +786,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Delete a workbook.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
@@ -802,7 +802,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Delete a workbook.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -816,7 +816,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Create a new workbook.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @param sourceId Azure Resource Id that will fetch all linked workbooks.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -848,7 +848,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
         } else {
             workbookProperties.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -860,7 +860,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Create a new workbook.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @param sourceId Azure Resource Id that will fetch all linked workbooks.
      * @param context The context to associate with this operation.
@@ -893,7 +893,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
         } else {
             workbookProperties.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -904,7 +904,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Create a new workbook.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
@@ -923,7 +923,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Create a new workbook.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @param sourceId Azure Resource Id that will fetch all linked workbooks.
      * @param context The context to associate with this operation.
@@ -943,7 +943,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Create a new workbook.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
@@ -962,7 +962,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Updates a workbook that has already been added.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param sourceId Azure Resource Id that will fetch all linked workbooks.
      * @param workbookUpdateParameters Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -991,7 +991,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
         if (workbookUpdateParameters != null) {
             workbookUpdateParameters.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -1003,7 +1003,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Updates a workbook that has already been added.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param sourceId Azure Resource Id that will fetch all linked workbooks.
      * @param workbookUpdateParameters Properties that need to be specified to create a new workbook.
      * @param context The context to associate with this operation.
@@ -1033,7 +1033,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
         if (workbookUpdateParameters != null) {
             workbookUpdateParameters.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -1044,7 +1044,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Updates a workbook that has already been added.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1062,7 +1062,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Updates a workbook that has already been added.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param sourceId Azure Resource Id that will fetch all linked workbooks.
      * @param workbookUpdateParameters Properties that need to be specified to create a new workbook.
      * @param context The context to associate with this operation.
@@ -1082,7 +1082,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Updates a workbook that has already been added.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1100,7 +1100,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Get the revisions for the workbook defined by its resourceName.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1125,7 +1125,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.revisionsList(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -1139,7 +1139,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Get the revisions for the workbook defined by its resourceName.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
@@ -1165,7 +1165,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1179,7 +1179,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Get the revisions for the workbook defined by its resourceName.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1195,7 +1195,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Get the revisions for the workbook defined by its resourceName.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
@@ -1213,7 +1213,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Get the revisions for the workbook defined by its resourceName.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1229,7 +1229,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Get the revisions for the workbook defined by its resourceName.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
@@ -1246,7 +1246,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Get a single workbook revision defined by its revisionId.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param revisionId The id of the workbook's revision.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
@@ -1275,7 +1275,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
         if (revisionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter revisionId is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.revisionGet(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -1287,7 +1287,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Get a single workbook revision defined by its revisionId.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param revisionId The id of the workbook's revision.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1317,7 +1317,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
         if (revisionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter revisionId is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.revisionGet(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -1328,7 +1328,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Get a single workbook revision defined by its revisionId.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param revisionId The id of the workbook's revision.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
@@ -1345,7 +1345,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Get a single workbook revision defined by its revisionId.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param revisionId The id of the workbook's revision.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1363,7 +1363,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      * Get a single workbook revision defined by its revisionId.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource.
+     * @param resourceName The name of the workbook resource. The value must be an UUID.
      * @param revisionId The id of the workbook's revision.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.

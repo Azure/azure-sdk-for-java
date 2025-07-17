@@ -18,9 +18,9 @@ public class WorkflowsList {
             = new WorkflowsClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.workflow.generated.workflowslist.workflowslist
+        // BEGIN:com.azure.analytics.purview.workflow.generated.workflows-list.workflows-list
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = workflowsClient.list(requestOptions);
-        // END:com.azure.analytics.purview.workflow.generated.workflowslist.workflowslist
+        // END:com.azure.analytics.purview.workflow.generated.workflows-list.workflows-list
     }
 }

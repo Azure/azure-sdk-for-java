@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.DataFlow;
@@ -24,26 +24,26 @@ public final class DataFlowsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"DataFlow\",\"description\":\"lcekonmcxriqfrrx\",\"annotations\":[\"datavrhcjhszmymfr\",\"dataosmic\",\"datakizqqdawmrk\"],\"folder\":{\"name\":\"xbbhjgnjlzdjzhx\"}},\"name\":\"bxsok\",\"type\":\"awr\",\"etag\":\"rodrtkw\",\"id\":\"gllnyohnhfu\"}";
+            = "{\"properties\":{\"type\":\"DataFlow\",\"description\":\"ojtryrdzogtrycbm\",\"annotations\":[\"datawmavgdztdjs\"],\"folder\":{\"name\":\"kbcwymbpredcl\"}},\"name\":\"lvuzqsv\",\"type\":\"rkpswasveymdrbm\",\"etag\":\"cryyykwwhscubgwz\",\"id\":\"nplzbzc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataFlowResource response = manager.dataFlows()
-            .define("ya")
-            .withExistingFactory("iixnx", "cvyi")
-            .withProperties(new DataFlow().withDescription("wegijdejs")
-                .withAnnotations(Arrays.asList("datacggoqmblhcba"))
-                .withFolder(new DataFlowFolder().withName("waathdrbaaqt")))
-            .withIfMatch("exxn")
+            .define("mouxspkxapqgyh")
+            .withExistingFactory("jsyors", "jvztqragq")
+            .withProperties(new DataFlow().withDescription("qkkwzbgbwwop")
+                .withAnnotations(Arrays.asList("datawse", "datarzcnlqs"))
+                .withFolder(new DataFlowFolder().withName("kbt")))
+            .withIfMatch("lbflbax")
             .create();
 
-        Assertions.assertEquals("gllnyohnhfu", response.id());
-        Assertions.assertEquals("lcekonmcxriqfrrx", response.properties().description());
-        Assertions.assertEquals("xbbhjgnjlzdjzhx", response.properties().folder().name());
+        Assertions.assertEquals("nplzbzc", response.id());
+        Assertions.assertEquals("ojtryrdzogtrycbm", response.properties().description());
+        Assertions.assertEquals("kbcwymbpredcl", response.properties().folder().name());
     }
 }

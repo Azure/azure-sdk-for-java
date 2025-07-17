@@ -19,7 +19,6 @@ import java.util.List;
  * <li>{@link EnvironmentCredential}</li>
  * <li>{@link WorkloadIdentityCredential}</li>
  * <li>{@link ManagedIdentityCredential}</li>
- * <li>{@link SharedTokenCacheCredential}</li>
  * <li>{@link IntelliJCredential}</li>
  * <li>{@link AzureCliCredential}</li>
  * <li>{@link AzurePowerShellCredential}</li>

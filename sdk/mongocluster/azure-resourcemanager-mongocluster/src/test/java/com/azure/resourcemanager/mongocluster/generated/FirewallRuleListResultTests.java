@@ -12,10 +12,10 @@ public final class FirewallRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FirewallRuleListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"startIpAddress\":\"kdosvqw\",\"endIpAddress\":\"bmdg\"},\"id\":\"jfddgmbmbe\",\"name\":\"ppbhtqqrolfp\",\"type\":\"psalgbqux\"},{\"properties\":{\"provisioningState\":\"Failed\",\"startIpAddress\":\"jgzjaoyfhrtx\",\"endIpAddress\":\"lnerkujysvleju\"},\"id\":\"qawrlyxwj\",\"name\":\"cpr\",\"type\":\"nwbxgjvtbvpyssz\"},{\"properties\":{\"provisioningState\":\"Failed\",\"startIpAddress\":\"jq\",\"endIpAddress\":\"uhmuouqfprwzwbn\"},\"id\":\"itnwuizgazxufi\",\"name\":\"uckyf\",\"type\":\"hr\"}],\"nextLink\":\"dfvzwdzuhty\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Dropping\",\"startIpAddress\":\"ytb\",\"endIpAddress\":\"iqfouflmmnkz\"},\"id\":\"odmgl\",\"name\":\"ugpbkw\",\"type\":\"mutduqktaps\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"startIpAddress\":\"uertumk\",\"endIpAddress\":\"o\"},\"id\":\"qw\",\"name\":\"bmdg\",\"type\":\"bjf\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"startIpAddress\":\"bmbexppbhtqqro\",\"endIpAddress\":\"fpfpsalgbquxigj\"},\"id\":\"gzjaoyfhrtxilne\",\"name\":\"kujysvlejuvfq\",\"type\":\"wrlyxwjkcprb\"},{\"properties\":{\"provisioningState\":\"Dropping\",\"startIpAddress\":\"gjvtbv\",\"endIpAddress\":\"ysszdnrujqguh\"},\"id\":\"ouqfprwz\",\"name\":\"bngui\",\"type\":\"nwui\"}],\"nextLink\":\"a\"}")
             .toObject(FirewallRuleListResult.class);
-        Assertions.assertEquals("kdosvqw", model.value().get(0).properties().startIpAddress());
-        Assertions.assertEquals("bmdg", model.value().get(0).properties().endIpAddress());
-        Assertions.assertEquals("dfvzwdzuhty", model.nextLink());
+        Assertions.assertEquals("ytb", model.value().get(0).properties().startIpAddress());
+        Assertions.assertEquals("iqfouflmmnkz", model.value().get(0).properties().endIpAddress());
+        Assertions.assertEquals("a", model.nextLink());
     }
 }

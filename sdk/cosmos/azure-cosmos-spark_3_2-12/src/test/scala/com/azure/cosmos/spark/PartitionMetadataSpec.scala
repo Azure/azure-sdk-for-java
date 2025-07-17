@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.core.management.AzureEnvironment
-import com.azure.cosmos.spark
+import com.azure.cosmos.{ReadConsistencyStrategy, spark}
 
 import java.nio.charset.StandardCharsets
 import java.time.Instant
@@ -25,10 +25,8 @@ class PartitionMetadataSpec extends UnitSpec {
     proactiveConnectionInitialization = None,
     proactiveConnectionInitializationDurationInSeconds = 120,
     httpConnectionPoolSize = 1000,
-    useEventualConsistency = true,
-    enableClientTelemetry = false,
+    readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
     disableTcpConnectionEndpointRediscovery = false,
-    clientTelemetryEndpoint = None,
     preferredRegionsList = Option.empty,
     subscriptionId = None,
     tenantId = None,
@@ -36,7 +34,9 @@ class PartitionMetadataSpec extends UnitSpec {
     azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
     sparkEnvironmentInfo = "",
     clientBuilderInterceptors = None,
-    clientInterceptors = None
+    clientInterceptors = None,
+    sampledDiagnosticsLoggerConfig = None,
+    azureMonitorConfig = None
   )
 
   private[this] val contCfg = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -71,10 +71,8 @@ class PartitionMetadataSpec extends UnitSpec {
       proactiveConnectionInitialization = None,
       proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
-      useEventualConsistency = true,
-      enableClientTelemetry = false,
+      readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
       disableTcpConnectionEndpointRediscovery = false,
-      clientTelemetryEndpoint = None,
       preferredRegionsList = Option.empty,
       subscriptionId = None,
       tenantId = None,
@@ -82,7 +80,9 @@ class PartitionMetadataSpec extends UnitSpec {
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = "",
       clientBuilderInterceptors = None,
-      clientInterceptors = None
+      clientInterceptors = None,
+      sampledDiagnosticsLoggerConfig = None,
+      azureMonitorConfig = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -156,10 +156,8 @@ class PartitionMetadataSpec extends UnitSpec {
       proactiveConnectionInitialization = None,
       proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
-      useEventualConsistency = true,
-      enableClientTelemetry = false,
+      readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
       disableTcpConnectionEndpointRediscovery = false,
-      clientTelemetryEndpoint = None,
       preferredRegionsList = Option.empty,
       subscriptionId = None,
       tenantId = None,
@@ -167,7 +165,9 @@ class PartitionMetadataSpec extends UnitSpec {
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = "",
       clientBuilderInterceptors = None,
-      clientInterceptors = None
+      clientInterceptors = None,
+      sampledDiagnosticsLoggerConfig = None,
+      azureMonitorConfig = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -241,10 +241,8 @@ class PartitionMetadataSpec extends UnitSpec {
       proactiveConnectionInitialization = None,
       proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
-      useEventualConsistency = true,
-      enableClientTelemetry = false,
+      readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
       disableTcpConnectionEndpointRediscovery = false,
-      clientTelemetryEndpoint = None,
       preferredRegionsList = Option.empty,
       subscriptionId = None,
       tenantId = None,
@@ -252,7 +250,9 @@ class PartitionMetadataSpec extends UnitSpec {
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = "",
       clientBuilderInterceptors = None,
-      clientInterceptors = None
+      clientInterceptors = None,
+      sampledDiagnosticsLoggerConfig = None,
+      azureMonitorConfig = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -308,10 +308,8 @@ class PartitionMetadataSpec extends UnitSpec {
       proactiveConnectionInitialization = None,
       proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
-      useEventualConsistency = true,
-      enableClientTelemetry = false,
+      readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
       disableTcpConnectionEndpointRediscovery = false,
-      clientTelemetryEndpoint = None,
       preferredRegionsList = Option.empty,
       subscriptionId = None,
       tenantId = None,
@@ -319,7 +317,9 @@ class PartitionMetadataSpec extends UnitSpec {
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = "",
       clientBuilderInterceptors = None,
-      clientInterceptors = None
+      clientInterceptors = None,
+      sampledDiagnosticsLoggerConfig = None,
+      azureMonitorConfig = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -370,10 +370,8 @@ class PartitionMetadataSpec extends UnitSpec {
       proactiveConnectionInitialization = None,
       proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
-      useEventualConsistency = true,
-      enableClientTelemetry = false,
+      readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
       disableTcpConnectionEndpointRediscovery = false,
-      clientTelemetryEndpoint = None,
       preferredRegionsList = Option.empty,
       subscriptionId = None,
       tenantId = None,
@@ -381,7 +379,9 @@ class PartitionMetadataSpec extends UnitSpec {
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = "",
       clientBuilderInterceptors = None,
-      clientInterceptors = None
+      clientInterceptors = None,
+      sampledDiagnosticsLoggerConfig = None,
+      azureMonitorConfig = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -426,10 +426,8 @@ class PartitionMetadataSpec extends UnitSpec {
       proactiveConnectionInitialization = None,
       proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
-      useEventualConsistency = true,
-      enableClientTelemetry = false,
+      readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
       disableTcpConnectionEndpointRediscovery = false,
-      clientTelemetryEndpoint = None,
       preferredRegionsList = Option.empty,
       subscriptionId = None,
       tenantId = None,
@@ -437,7 +435,9 @@ class PartitionMetadataSpec extends UnitSpec {
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = "",
       clientBuilderInterceptors = None,
-      clientInterceptors = None
+      clientInterceptors = None,
+      sampledDiagnosticsLoggerConfig = None,
+      azureMonitorConfig = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -482,10 +482,8 @@ class PartitionMetadataSpec extends UnitSpec {
       proactiveConnectionInitialization = None,
       proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
-      useEventualConsistency = true,
-      enableClientTelemetry = false,
+      readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
       disableTcpConnectionEndpointRediscovery = false,
-      clientTelemetryEndpoint = None,
       preferredRegionsList = Option.empty,
       subscriptionId = None,
       tenantId = None,
@@ -493,7 +491,9 @@ class PartitionMetadataSpec extends UnitSpec {
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = "",
       clientBuilderInterceptors = None,
-      clientInterceptors = None
+      clientInterceptors = None,
+      sampledDiagnosticsLoggerConfig = None,
+      azureMonitorConfig = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -538,10 +538,8 @@ class PartitionMetadataSpec extends UnitSpec {
       proactiveConnectionInitialization = None,
       proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
-      useEventualConsistency = true,
-      enableClientTelemetry = false,
+      readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
       disableTcpConnectionEndpointRediscovery = false,
-      clientTelemetryEndpoint = None,
       preferredRegionsList = Option.empty,
       subscriptionId = None,
       tenantId = None,
@@ -549,7 +547,9 @@ class PartitionMetadataSpec extends UnitSpec {
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = "",
       clientBuilderInterceptors = None,
-      clientInterceptors = None
+      clientInterceptors = None,
+      sampledDiagnosticsLoggerConfig = None,
+      azureMonitorConfig = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -594,10 +594,8 @@ class PartitionMetadataSpec extends UnitSpec {
       proactiveConnectionInitialization = None,
       proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
-      useEventualConsistency = true,
-      enableClientTelemetry = false,
+      readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
       disableTcpConnectionEndpointRediscovery = false,
-      clientTelemetryEndpoint = None,
       preferredRegionsList = Option.empty,
       subscriptionId = None,
       tenantId = None,
@@ -605,7 +603,9 @@ class PartitionMetadataSpec extends UnitSpec {
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = "",
       clientBuilderInterceptors = None,
-      clientInterceptors = None
+      clientInterceptors = None,
+      sampledDiagnosticsLoggerConfig = None,
+      azureMonitorConfig = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -650,10 +650,8 @@ class PartitionMetadataSpec extends UnitSpec {
       proactiveConnectionInitialization = None,
       proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
-      useEventualConsistency = true,
-      enableClientTelemetry = false,
+      readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
       disableTcpConnectionEndpointRediscovery = false,
-      clientTelemetryEndpoint = None,
       preferredRegionsList = Option.empty,
       subscriptionId = None,
       tenantId = None,
@@ -661,7 +659,9 @@ class PartitionMetadataSpec extends UnitSpec {
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = "",
       clientBuilderInterceptors = None,
-      clientInterceptors = None
+      clientInterceptors = None,
+      sampledDiagnosticsLoggerConfig = None,
+      azureMonitorConfig = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -723,10 +723,8 @@ class PartitionMetadataSpec extends UnitSpec {
       proactiveConnectionInitialization = None,
       proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
-      useEventualConsistency = true,
-      enableClientTelemetry = false,
+      readConsistencyStrategy = ReadConsistencyStrategy.EVENTUAL,
       disableTcpConnectionEndpointRediscovery = false,
-      clientTelemetryEndpoint = None,
       preferredRegionsList = Option.empty,
       subscriptionId = None,
       tenantId = None,
@@ -734,7 +732,9 @@ class PartitionMetadataSpec extends UnitSpec {
       azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = "",
       clientBuilderInterceptors = None,
-      clientInterceptors = None
+      clientInterceptors = None,
+      sampledDiagnosticsLoggerConfig = None,
+      azureMonitorConfig = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)

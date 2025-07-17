@@ -66,4 +66,11 @@ public final class ChatRole extends ExpandableStringEnum<ChatRole> {
     public static Collection<ChatRole> values() {
         return values(ChatRole.class);
     }
+
+    /**
+     * The role that instructs or sets the behavior of the assistant. Some AI models support this role instead of the
+     * 'system' role.
+     */
+    @Generated
+    public static final ChatRole DEVELOPER = fromString("developer");
 }

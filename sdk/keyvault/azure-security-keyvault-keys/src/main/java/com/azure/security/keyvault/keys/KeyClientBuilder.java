@@ -98,7 +98,7 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
     private static final String CLIENT_VERSION;
 
     static {
-        Map<String, String> properties = CoreUtils.getProperties("azure-key-vault-keys.properties");
+        Map<String, String> properties = CoreUtils.getProperties("azure-security-keyvault-keys.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
     }
@@ -150,7 +150,7 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyClient buildClient() {
-        return new KeyClient(buildInnerClient(), vaultUrl, version != null ? version : KeyServiceVersion.getLatest());
+        return new KeyClient(buildImplClient(), vaultUrl, version);
     }
 
     /**
@@ -171,11 +171,10 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyAsyncClient buildAsyncClient() {
-        return new KeyAsyncClient(buildInnerClient(), vaultUrl,
-            version != null ? version : KeyServiceVersion.getLatest());
+        return new KeyAsyncClient(buildImplClient(), vaultUrl, version);
     }
 
-    private KeyClientImpl buildInnerClient() {
+    private KeyClientImpl buildImplClient() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         String buildEndpoint = getBuildEndpoint(buildConfiguration);
@@ -185,10 +184,12 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
                 .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
-        KeyServiceVersion serviceVersion = version != null ? version : KeyServiceVersion.getLatest();
+        if (version == null) {
+            version = KeyServiceVersion.getLatest();
+        }
 
         if (pipeline != null) {
-            return new KeyClientImpl(pipeline, serviceVersion.getVersion());
+            return new KeyClientImpl(pipeline, vaultUrl, version);
         }
 
         if (credential == null) {
@@ -228,13 +229,13 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+        HttpPipeline builtPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(tracer)
             .clientOptions(localClientOptions)
             .build();
 
-        return new KeyClientImpl(pipeline, serviceVersion.getVersion());
+        return new KeyClientImpl(builtPipeline, vaultUrl, version);
     }
 
     /**

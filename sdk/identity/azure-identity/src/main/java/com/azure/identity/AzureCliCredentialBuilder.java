@@ -24,7 +24,7 @@ import java.util.Objects;
  * logged-in user or service principal in Azure CLI. It acts as the Azure CLI logged in user or service principal
  * and executes an Azure CLI command underneath to authenticate the application against Microsoft Entra ID.</p>
  *
- * <p><strong>Sample: Construct IntelliJCredential</strong></p>
+ * <p><strong>Sample: Construct AzureCliCredential</strong></p>
  *
  * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.AzureCliCredential},
  * using the {@link com.azure.identity.AzureCliCredentialBuilder} to configure it. Once this credential is
@@ -43,6 +43,7 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
     private static final ClientLogger LOGGER = new ClientLogger(AzureCliCredentialBuilder.class);
 
     private String tenantId;
+    private String subscription;
 
     /**
      * Constructs an instance of AzureCliCredentialBuilder.
@@ -113,6 +114,19 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
     public AzureCliCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
         identityClientOptions
             .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        return this;
+    }
+
+    /**
+     * Specifies the name or ID of a subscription. This is used to acquire tokens for a specific
+     * Azure subscription when using Azure CLI authentication.
+     *
+     * @param subscription The subscription name or ID.
+     * @return An updated instance of this builder with the subscription configured.
+     */
+    public AzureCliCredentialBuilder subscription(String subscription) {
+        ValidationUtil.validateSubscriptionCharacterRange(subscription, LOGGER);
+        this.identityClientOptions.subscription(subscription);
         return this;
     }
 }

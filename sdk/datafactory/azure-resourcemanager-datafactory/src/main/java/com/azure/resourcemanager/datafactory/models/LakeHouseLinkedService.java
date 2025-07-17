@@ -16,17 +16,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Microsoft Fabric LakeHouse linked service.
+ * Microsoft Fabric Lakehouse linked service.
  */
 @Fluent
 public final class LakeHouseLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
-    private String type = "LakeHouse";
+    private String type = "Lakehouse";
 
     /*
-     * Microsoft Fabric LakeHouse linked service properties.
+     * Microsoft Fabric Lakehouse linked service properties.
      */
     private LakeHouseLinkedServiceTypeProperties innerTypeProperties = new LakeHouseLinkedServiceTypeProperties();
 
@@ -47,11 +47,11 @@ public final class LakeHouseLinkedService extends LinkedService {
     }
 
     /**
-     * Get the innerTypeProperties property: Microsoft Fabric LakeHouse linked service properties.
+     * Get the innerTypeProperties property: Microsoft Fabric Lakehouse linked service properties.
      * 
      * @return the innerTypeProperties value.
      */
-    private LakeHouseLinkedServiceTypeProperties innerTypeProperties() {
+    LakeHouseLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -126,7 +126,7 @@ public final class LakeHouseLinkedService extends LinkedService {
     }
 
     /**
-     * Get the artifactId property: The ID of Microsoft Fabric LakeHouse artifact. Type: string (or Expression with
+     * Get the artifactId property: The ID of Microsoft Fabric Lakehouse artifact. Type: string (or Expression with
      * resultType string).
      * 
      * @return the artifactId value.
@@ -136,7 +136,7 @@ public final class LakeHouseLinkedService extends LinkedService {
     }
 
     /**
-     * Set the artifactId property: The ID of Microsoft Fabric LakeHouse artifact. Type: string (or Expression with
+     * Set the artifactId property: The ID of Microsoft Fabric Lakehouse artifact. Type: string (or Expression with
      * resultType string).
      * 
      * @param artifactId the artifactId value to set.
@@ -152,7 +152,7 @@ public final class LakeHouseLinkedService extends LinkedService {
 
     /**
      * Get the servicePrincipalId property: The ID of the application used to authenticate against Microsoft Fabric
-     * LakeHouse. Type: string (or Expression with resultType string).
+     * Lakehouse. Type: string (or Expression with resultType string).
      * 
      * @return the servicePrincipalId value.
      */
@@ -162,7 +162,7 @@ public final class LakeHouseLinkedService extends LinkedService {
 
     /**
      * Set the servicePrincipalId property: The ID of the application used to authenticate against Microsoft Fabric
-     * LakeHouse. Type: string (or Expression with resultType string).
+     * Lakehouse. Type: string (or Expression with resultType string).
      * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the LakeHouseLinkedService object itself.
@@ -177,7 +177,7 @@ public final class LakeHouseLinkedService extends LinkedService {
 
     /**
      * Get the servicePrincipalKey property: The Key of the application used to authenticate against Microsoft Fabric
-     * LakeHouse.
+     * Lakehouse.
      * 
      * @return the servicePrincipalKey value.
      */
@@ -187,7 +187,7 @@ public final class LakeHouseLinkedService extends LinkedService {
 
     /**
      * Set the servicePrincipalKey property: The Key of the application used to authenticate against Microsoft Fabric
-     * LakeHouse.
+     * Lakehouse.
      * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the LakeHouseLinkedService object itself.

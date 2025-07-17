@@ -131,16 +131,6 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
         Assertions.assertNotNull(kubernetesCluster.tags().get("tag1"));
 
-        // stop
-        kubernetesCluster.stop();
-        kubernetesCluster.refresh();
-        Assertions.assertEquals(Code.STOPPED, kubernetesCluster.powerState().code());
-
-        // start
-        kubernetesCluster.start();
-        kubernetesCluster.refresh();
-        Assertions.assertEquals(Code.RUNNING, kubernetesCluster.powerState().code());
-
         Map<String, String> nodeLables = new HashMap<>(2);
         nodeLables.put("environment", "dev");
         nodeLables.put("app.1", "spring");
@@ -196,6 +186,15 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertEquals("value2", kubernetesCluster.tags().get("tag2"));
         Assertions.assertFalse(kubernetesCluster.tags().containsKey("tag1"));
 
+        // stop
+        kubernetesCluster.stop();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(Code.STOPPED, kubernetesCluster.powerState().code());
+
+        // start
+        kubernetesCluster.start();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(Code.RUNNING, kubernetesCluster.powerState().code());
         // preview feature
         //        // stop agent pool
         //        agentPool.stop();
@@ -572,7 +571,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .define(generateRandomResourceName("aks", 15))
             .withRegion(Region.US_WEST2)
             .withExistingResourceGroup(rgName)
-            .withVersion("1.29.7")
+            .withVersion("1.31.8")
             .withRootUsername("testaks")
             .withSshKey(SSH_KEY)
             .withSystemAssignedManagedServiceIdentity()
@@ -586,11 +585,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .create();
 
         kubernetesCluster.refresh();
-        Assertions.assertEquals("1.29.7", kubernetesCluster.version());
+        Assertions.assertEquals("1.31.8", kubernetesCluster.version());
 
-        kubernetesCluster.update().withVersion("1.30.3").apply();
+        kubernetesCluster.update().withVersion("1.32.4").apply();
         kubernetesCluster.refresh();
-        Assertions.assertEquals("1.30.3", kubernetesCluster.version());
+        Assertions.assertEquals("1.32.4", kubernetesCluster.version());
     }
 
     @Test

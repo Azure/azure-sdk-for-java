@@ -10,6 +10,41 @@
 
 ### Other Changes
 
+## 1.55.5 (2025-06-26)
+
+### Other Changes
+
+- Upgraded Jackson Core from `2.18.3` to `2.18.4.1` to resolve multi-release JAR issues with Android projects.
+
+## 1.55.4 (2025-06-05)
+
+### Other Changes
+
+- Updated Jackson dependencies from `2.17.2` to `2.18.3`.
+
+## 1.55.3 (2025-03-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `azure-json` from `1.4.0` to `1.5.0`.
+
+## 1.55.2 (2025-02-20)
+
+### Other Changes
+
+- Fix for the `1.55.1` release as Netty dependencies weren't updated.
+
+## 1.55.1 (2025-02-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Netty dependencies from `4.1.115.Final` to `4.1.118.Final` to resolve a CVE.
+- Upgraded Netty TcNative dependencies from `2.0.69.Final` to `2.0.70.Final` to resolve a CVE.
+
 ## 1.55.0 (2025-02-06)
 
 ### Features Added

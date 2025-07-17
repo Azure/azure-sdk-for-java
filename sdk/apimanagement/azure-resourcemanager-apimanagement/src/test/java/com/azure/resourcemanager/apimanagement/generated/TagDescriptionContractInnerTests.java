@@ -12,27 +12,27 @@ public final class TagDescriptionContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TagDescriptionContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"tagId\":\"rnpnuhzafccnuh\",\"displayName\":\"gbylbuig\",\"description\":\"vatvcrkd\",\"externalDocsUrl\":\"nbqxvhcsyhzlwxae\",\"externalDocsDescription\":\"vurex\"},\"id\":\"ndsbdw\",\"name\":\"aderzmw\",\"type\":\"t\"}")
+            "{\"properties\":{\"tagId\":\"djodqhy\",\"displayName\":\"ncn\",\"description\":\"mehllizhceu\",\"externalDocsUrl\":\"qodkadppyibngql\",\"externalDocsDescription\":\"ywrxw\"},\"id\":\"yd\",\"name\":\"luvvad\",\"type\":\"wzsnuy\"}")
             .toObject(TagDescriptionContractInner.class);
-        Assertions.assertEquals("rnpnuhzafccnuh", model.tagId());
-        Assertions.assertEquals("gbylbuig", model.displayName());
-        Assertions.assertEquals("vatvcrkd", model.description());
-        Assertions.assertEquals("nbqxvhcsyhzlwxae", model.externalDocsUrl());
-        Assertions.assertEquals("vurex", model.externalDocsDescription());
+        Assertions.assertEquals("djodqhy", model.tagId());
+        Assertions.assertEquals("ncn", model.displayName());
+        Assertions.assertEquals("mehllizhceu", model.description());
+        Assertions.assertEquals("qodkadppyibngql", model.externalDocsUrl());
+        Assertions.assertEquals("ywrxw", model.externalDocsDescription());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagDescriptionContractInner model = new TagDescriptionContractInner().withTagId("rnpnuhzafccnuh")
-            .withDisplayName("gbylbuig")
-            .withDescription("vatvcrkd")
-            .withExternalDocsUrl("nbqxvhcsyhzlwxae")
-            .withExternalDocsDescription("vurex");
+        TagDescriptionContractInner model = new TagDescriptionContractInner().withTagId("djodqhy")
+            .withDisplayName("ncn")
+            .withDescription("mehllizhceu")
+            .withExternalDocsUrl("qodkadppyibngql")
+            .withExternalDocsDescription("ywrxw");
         model = BinaryData.fromObject(model).toObject(TagDescriptionContractInner.class);
-        Assertions.assertEquals("rnpnuhzafccnuh", model.tagId());
-        Assertions.assertEquals("gbylbuig", model.displayName());
-        Assertions.assertEquals("vatvcrkd", model.description());
-        Assertions.assertEquals("nbqxvhcsyhzlwxae", model.externalDocsUrl());
-        Assertions.assertEquals("vurex", model.externalDocsDescription());
+        Assertions.assertEquals("djodqhy", model.tagId());
+        Assertions.assertEquals("ncn", model.displayName());
+        Assertions.assertEquals("mehllizhceu", model.description());
+        Assertions.assertEquals("qodkadppyibngql", model.externalDocsUrl());
+        Assertions.assertEquals("ywrxw", model.externalDocsDescription());
     }
 }

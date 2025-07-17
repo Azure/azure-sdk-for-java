@@ -12,31 +12,31 @@ public final class HyperVReplicaAzurePolicyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HyperVReplicaAzurePolicyDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"HyperVReplicaAzure\",\"recoveryPointHistoryDurationInHours\":779585791,\"applicationConsistentSnapshotFrequencyInHours\":1492620534,\"replicationInterval\":2041507399,\"onlineReplicationStartTime\":\"igjsugswhgs\",\"encryption\":\"dkwwn\",\"activeStorageAccountId\":\"foct\"}")
+            "{\"instanceType\":\"HyperVReplicaAzure\",\"recoveryPointHistoryDurationInHours\":811287506,\"applicationConsistentSnapshotFrequencyInHours\":1031258499,\"replicationInterval\":1327385429,\"onlineReplicationStartTime\":\"byejuwyqwdqigm\",\"encryption\":\"ginz\",\"activeStorageAccountId\":\"lujkhn\"}")
             .toObject(HyperVReplicaAzurePolicyDetails.class);
-        Assertions.assertEquals(779585791, model.recoveryPointHistoryDurationInHours());
-        Assertions.assertEquals(1492620534, model.applicationConsistentSnapshotFrequencyInHours());
-        Assertions.assertEquals(2041507399, model.replicationInterval());
-        Assertions.assertEquals("igjsugswhgs", model.onlineReplicationStartTime());
-        Assertions.assertEquals("dkwwn", model.encryption());
-        Assertions.assertEquals("foct", model.activeStorageAccountId());
+        Assertions.assertEquals(811287506, model.recoveryPointHistoryDurationInHours());
+        Assertions.assertEquals(1031258499, model.applicationConsistentSnapshotFrequencyInHours());
+        Assertions.assertEquals(1327385429, model.replicationInterval());
+        Assertions.assertEquals("byejuwyqwdqigm", model.onlineReplicationStartTime());
+        Assertions.assertEquals("ginz", model.encryption());
+        Assertions.assertEquals("lujkhn", model.activeStorageAccountId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HyperVReplicaAzurePolicyDetails model
-            = new HyperVReplicaAzurePolicyDetails().withRecoveryPointHistoryDurationInHours(779585791)
-                .withApplicationConsistentSnapshotFrequencyInHours(1492620534)
-                .withReplicationInterval(2041507399)
-                .withOnlineReplicationStartTime("igjsugswhgs")
-                .withEncryption("dkwwn")
-                .withActiveStorageAccountId("foct");
+            = new HyperVReplicaAzurePolicyDetails().withRecoveryPointHistoryDurationInHours(811287506)
+                .withApplicationConsistentSnapshotFrequencyInHours(1031258499)
+                .withReplicationInterval(1327385429)
+                .withOnlineReplicationStartTime("byejuwyqwdqigm")
+                .withEncryption("ginz")
+                .withActiveStorageAccountId("lujkhn");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzurePolicyDetails.class);
-        Assertions.assertEquals(779585791, model.recoveryPointHistoryDurationInHours());
-        Assertions.assertEquals(1492620534, model.applicationConsistentSnapshotFrequencyInHours());
-        Assertions.assertEquals(2041507399, model.replicationInterval());
-        Assertions.assertEquals("igjsugswhgs", model.onlineReplicationStartTime());
-        Assertions.assertEquals("dkwwn", model.encryption());
-        Assertions.assertEquals("foct", model.activeStorageAccountId());
+        Assertions.assertEquals(811287506, model.recoveryPointHistoryDurationInHours());
+        Assertions.assertEquals(1031258499, model.applicationConsistentSnapshotFrequencyInHours());
+        Assertions.assertEquals(1327385429, model.replicationInterval());
+        Assertions.assertEquals("byejuwyqwdqigm", model.onlineReplicationStartTime());
+        Assertions.assertEquals("ginz", model.encryption());
+        Assertions.assertEquals("lujkhn", model.activeStorageAccountId());
     }
 }

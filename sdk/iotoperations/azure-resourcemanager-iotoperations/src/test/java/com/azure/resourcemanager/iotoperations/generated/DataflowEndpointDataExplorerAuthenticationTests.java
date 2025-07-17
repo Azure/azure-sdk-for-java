@@ -15,13 +15,13 @@ public final class DataflowEndpointDataExplorerAuthenticationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowEndpointDataExplorerAuthentication model = BinaryData.fromString(
-            "{\"method\":\"SystemAssignedManagedIdentity\",\"systemAssignedManagedIdentitySettings\":{\"audience\":\"kqb\"},\"userAssignedManagedIdentitySettings\":{\"clientId\":\"ubpaxhe\",\"scope\":\"i\",\"tenantId\":\"ivpdtiir\"}}")
+            "{\"method\":\"SystemAssignedManagedIdentity\",\"systemAssignedManagedIdentitySettings\":{\"audience\":\"yrnxxmueedn\"},\"userAssignedManagedIdentitySettings\":{\"clientId\":\"dvstkw\",\"scope\":\"tchealmf\",\"tenantId\":\"tdaaygdvwvg\"}}")
             .toObject(DataflowEndpointDataExplorerAuthentication.class);
         Assertions.assertEquals(DataExplorerAuthMethod.SYSTEM_ASSIGNED_MANAGED_IDENTITY, model.method());
-        Assertions.assertEquals("kqb", model.systemAssignedManagedIdentitySettings().audience());
-        Assertions.assertEquals("ubpaxhe", model.userAssignedManagedIdentitySettings().clientId());
-        Assertions.assertEquals("i", model.userAssignedManagedIdentitySettings().scope());
-        Assertions.assertEquals("ivpdtiir", model.userAssignedManagedIdentitySettings().tenantId());
+        Assertions.assertEquals("yrnxxmueedn", model.systemAssignedManagedIdentitySettings().audience());
+        Assertions.assertEquals("dvstkw", model.userAssignedManagedIdentitySettings().clientId());
+        Assertions.assertEquals("tchealmf", model.userAssignedManagedIdentitySettings().scope());
+        Assertions.assertEquals("tdaaygdvwvg", model.userAssignedManagedIdentitySettings().tenantId());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,16 +29,16 @@ public final class DataflowEndpointDataExplorerAuthenticationTests {
         DataflowEndpointDataExplorerAuthentication model = new DataflowEndpointDataExplorerAuthentication()
             .withMethod(DataExplorerAuthMethod.SYSTEM_ASSIGNED_MANAGED_IDENTITY)
             .withSystemAssignedManagedIdentitySettings(
-                new DataflowEndpointAuthenticationSystemAssignedManagedIdentity().withAudience("kqb"))
+                new DataflowEndpointAuthenticationSystemAssignedManagedIdentity().withAudience("yrnxxmueedn"))
             .withUserAssignedManagedIdentitySettings(
-                new DataflowEndpointAuthenticationUserAssignedManagedIdentity().withClientId("ubpaxhe")
-                    .withScope("i")
-                    .withTenantId("ivpdtiir"));
+                new DataflowEndpointAuthenticationUserAssignedManagedIdentity().withClientId("dvstkw")
+                    .withScope("tchealmf")
+                    .withTenantId("tdaaygdvwvg"));
         model = BinaryData.fromObject(model).toObject(DataflowEndpointDataExplorerAuthentication.class);
         Assertions.assertEquals(DataExplorerAuthMethod.SYSTEM_ASSIGNED_MANAGED_IDENTITY, model.method());
-        Assertions.assertEquals("kqb", model.systemAssignedManagedIdentitySettings().audience());
-        Assertions.assertEquals("ubpaxhe", model.userAssignedManagedIdentitySettings().clientId());
-        Assertions.assertEquals("i", model.userAssignedManagedIdentitySettings().scope());
-        Assertions.assertEquals("ivpdtiir", model.userAssignedManagedIdentitySettings().tenantId());
+        Assertions.assertEquals("yrnxxmueedn", model.systemAssignedManagedIdentitySettings().audience());
+        Assertions.assertEquals("dvstkw", model.userAssignedManagedIdentitySettings().clientId());
+        Assertions.assertEquals("tchealmf", model.userAssignedManagedIdentitySettings().scope());
+        Assertions.assertEquals("tdaaygdvwvg", model.userAssignedManagedIdentitySettings().tenantId());
     }
 }

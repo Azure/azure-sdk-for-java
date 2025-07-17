@@ -7,6 +7,7 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayContractInner;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of GatewayContract.
@@ -308,4 +309,70 @@ public interface GatewayContract {
      * @return the Shared Access Authorization Token for the gateway.
      */
     GatewayTokenContract generateToken(GatewayTokenRequestContract parameters);
+
+    /**
+     * Action is invalidating all debug credentials issued for gateway.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> invalidateDebugCredentialsWithResponse(Context context);
+
+    /**
+     * Action is invalidating all debug credentials issued for gateway.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void invalidateDebugCredentials();
+
+    /**
+     * Create new debug credentials for gateway.
+     * 
+     * @param parameters List debug credentials properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway debug credentials along with {@link Response}.
+     */
+    Response<GatewayDebugCredentialsContract>
+        listDebugCredentialsWithResponse(GatewayListDebugCredentialsContract parameters, Context context);
+
+    /**
+     * Create new debug credentials for gateway.
+     * 
+     * @param parameters List debug credentials properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway debug credentials.
+     */
+    GatewayDebugCredentialsContract listDebugCredentials(GatewayListDebugCredentialsContract parameters);
+
+    /**
+     * Fetches trace collected by gateway.
+     * 
+     * @param parameters List trace properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return trace collected in gateway along with {@link Response}.
+     */
+    Response<Map<String, Object>> listTraceWithResponse(GatewayListTraceContract parameters, Context context);
+
+    /**
+     * Fetches trace collected by gateway.
+     * 
+     * @param parameters List trace properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return trace collected in gateway.
+     */
+    Map<String, Object> listTrace(GatewayListTraceContract parameters);
 }

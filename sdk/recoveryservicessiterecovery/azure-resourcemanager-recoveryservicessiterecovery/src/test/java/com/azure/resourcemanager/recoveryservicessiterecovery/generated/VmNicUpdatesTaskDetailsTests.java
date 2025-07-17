@@ -12,20 +12,20 @@ public final class VmNicUpdatesTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmNicUpdatesTaskDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"VmNicUpdatesTaskDetails\",\"vmId\":\"zertkounz\",\"nicId\":\"ywhubymfpopik\",\"name\":\"b\"}")
+            "{\"instanceType\":\"VmNicUpdatesTaskDetails\",\"vmId\":\"bav\",\"nicId\":\"vxwve\",\"name\":\"nlrjcsmwevguyfln\"}")
             .toObject(VmNicUpdatesTaskDetails.class);
-        Assertions.assertEquals("zertkounz", model.vmId());
-        Assertions.assertEquals("ywhubymfpopik", model.nicId());
-        Assertions.assertEquals("b", model.name());
+        Assertions.assertEquals("bav", model.vmId());
+        Assertions.assertEquals("vxwve", model.nicId());
+        Assertions.assertEquals("nlrjcsmwevguyfln", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VmNicUpdatesTaskDetails model
-            = new VmNicUpdatesTaskDetails().withVmId("zertkounz").withNicId("ywhubymfpopik").withName("b");
+            = new VmNicUpdatesTaskDetails().withVmId("bav").withNicId("vxwve").withName("nlrjcsmwevguyfln");
         model = BinaryData.fromObject(model).toObject(VmNicUpdatesTaskDetails.class);
-        Assertions.assertEquals("zertkounz", model.vmId());
-        Assertions.assertEquals("ywhubymfpopik", model.nicId());
-        Assertions.assertEquals("b", model.name());
+        Assertions.assertEquals("bav", model.vmId());
+        Assertions.assertEquals("vxwve", model.nicId());
+        Assertions.assertEquals("nlrjcsmwevguyfln", model.name());
     }
 }

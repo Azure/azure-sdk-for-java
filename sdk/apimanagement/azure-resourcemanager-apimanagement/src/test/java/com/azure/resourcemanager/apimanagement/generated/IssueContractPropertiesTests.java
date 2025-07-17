@@ -14,31 +14,31 @@ public final class IssueContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IssueContractProperties model = BinaryData.fromString(
-            "{\"title\":\"hzr\",\"description\":\"qalsxkd\",\"userId\":\"wqapfgsdp\",\"createdDate\":\"2021-04-22T07:14:35Z\",\"state\":\"open\",\"apiId\":\"zhhkuuipldqqc\"}")
+            "{\"title\":\"aadl\",\"description\":\"nwf\",\"userId\":\"anniyopetxivcnr\",\"createdDate\":\"2021-06-10T00:54:20Z\",\"state\":\"proposed\",\"apiId\":\"aephblkw\"}")
             .toObject(IssueContractProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-22T07:14:35Z"), model.createdDate());
-        Assertions.assertEquals(State.OPEN, model.state());
-        Assertions.assertEquals("zhhkuuipldqqc", model.apiId());
-        Assertions.assertEquals("hzr", model.title());
-        Assertions.assertEquals("qalsxkd", model.description());
-        Assertions.assertEquals("wqapfgsdp", model.userId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T00:54:20Z"), model.createdDate());
+        Assertions.assertEquals(State.PROPOSED, model.state());
+        Assertions.assertEquals("aephblkw", model.apiId());
+        Assertions.assertEquals("aadl", model.title());
+        Assertions.assertEquals("nwf", model.description());
+        Assertions.assertEquals("anniyopetxivcnr", model.userId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IssueContractProperties model
-            = new IssueContractProperties().withCreatedDate(OffsetDateTime.parse("2021-04-22T07:14:35Z"))
-                .withState(State.OPEN)
-                .withApiId("zhhkuuipldqqc")
-                .withTitle("hzr")
-                .withDescription("qalsxkd")
-                .withUserId("wqapfgsdp");
+            = new IssueContractProperties().withCreatedDate(OffsetDateTime.parse("2021-06-10T00:54:20Z"))
+                .withState(State.PROPOSED)
+                .withApiId("aephblkw")
+                .withTitle("aadl")
+                .withDescription("nwf")
+                .withUserId("anniyopetxivcnr");
         model = BinaryData.fromObject(model).toObject(IssueContractProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-22T07:14:35Z"), model.createdDate());
-        Assertions.assertEquals(State.OPEN, model.state());
-        Assertions.assertEquals("zhhkuuipldqqc", model.apiId());
-        Assertions.assertEquals("hzr", model.title());
-        Assertions.assertEquals("qalsxkd", model.description());
-        Assertions.assertEquals("wqapfgsdp", model.userId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T00:54:20Z"), model.createdDate());
+        Assertions.assertEquals(State.PROPOSED, model.state());
+        Assertions.assertEquals("aephblkw", model.apiId());
+        Assertions.assertEquals("aadl", model.title());
+        Assertions.assertEquals("nwf", model.description());
+        Assertions.assertEquals("anniyopetxivcnr", model.userId());
     }
 }

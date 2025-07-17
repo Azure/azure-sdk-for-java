@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.http.rest;
 
-import io.clientcore.core.annotation.ServiceInterface;
+import io.clientcore.core.annotations.ServiceInterface;
 
 import java.lang.reflect.Method;
 import java.util.Map;

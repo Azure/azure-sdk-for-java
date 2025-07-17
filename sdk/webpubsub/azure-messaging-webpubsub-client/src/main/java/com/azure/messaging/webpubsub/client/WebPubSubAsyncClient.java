@@ -529,16 +529,6 @@ final class WebPubSubAsyncClient implements Closeable {
 
     private Mono<Void> sendMessage(WebPubSubMessage message) {
         return checkStateBeforeSend().then(Mono.create(sink -> {
-            //            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-            //                try {
-            //                    String json = JacksonAdapter.createDefaultSerializerAdapter()
-            //                        .serialize(message, SerializerEncoding.JSON);
-            //                    logger.atVerbose().addKeyValue("message", json).log("Send message");
-            //                } catch (IOException e) {
-            //                    sink.error(new UncheckedIOException("Failed to serialize message for VERBOSE logging", e));
-            //                }
-            //            }
-
             webSocketSession.sendObjectAsync(message, sendResult -> {
                 if (sendResult.isOK()) {
                     sink.success();
@@ -758,18 +748,7 @@ final class WebPubSubAsyncClient implements Closeable {
         }
     }
 
-    private void handleMessage(Object webPubSubMessage) {
-        //        if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-        //            try {
-        //                String json = JacksonAdapter.createDefaultSerializerAdapter()
-        //                    .serialize(webPubSubMessage, SerializerEncoding.JSON);
-        //                logger.atVerbose().addKeyValue("message", json).log("Received message");
-        //            } catch (IOException e) {
-        //                throw logger.logExceptionAsError(
-        //                    new UncheckedIOException("Failed to serialize received message for VERBOSE logging", e));
-        //            }
-        //        }
-
+    private void handleMessage(WebPubSubMessage webPubSubMessage) {
         if (webPubSubMessage instanceof GroupDataMessage) {
             final GroupDataMessage groupDataMessage = (GroupDataMessage) webPubSubMessage;
 
@@ -783,6 +762,7 @@ final class WebPubSubAsyncClient implements Closeable {
                         groupDataMessage.getDataType(), groupDataMessage.getFromUserId(),
                         groupDataMessage.getSequenceId()));
             }
+
         } else if (webPubSubMessage instanceof ServerDataMessage) {
             final ServerDataMessage serverDataMessage = (ServerDataMessage) webPubSubMessage;
 
@@ -815,6 +795,14 @@ final class WebPubSubAsyncClient implements Closeable {
             final DisconnectedMessage disconnectedMessage = (DisconnectedMessage) webPubSubMessage;
             // send DisconnectedEvent, but connection close will be handled in handleSessionClose
             handleConnectionClose(new DisconnectedEvent(this.getConnectionId(), disconnectedMessage.getReason()));
+        } else {
+            final ClientLogger logger = loggerReference.get();
+            if (logger != null) {
+                logger.atWarning()
+                    .addKeyValue("type", webPubSubMessage.getClass())
+                    .addKeyValue("message", webPubSubMessage)
+                    .log("Unknown message type. Skipping decode.");
+            }
         }
     }
 

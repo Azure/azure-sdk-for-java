@@ -10,6 +10,18 @@
 
 ### Other Changes
 
+## 4.1.13 (2025-02-24)
+
+### Bugs Fixed
+- Fixed a bug to set the code currency and symbol for CurrencyValue correctly.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` from `1.15.6` to version `1.15.10`.
+
 ## 4.1.12 (2024-11-08)
 
 ### Bugs Fixed

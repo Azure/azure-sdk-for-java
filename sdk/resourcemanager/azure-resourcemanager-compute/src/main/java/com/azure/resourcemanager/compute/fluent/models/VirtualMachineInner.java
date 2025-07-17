@@ -19,6 +19,7 @@ import com.azure.resourcemanager.compute.models.ExtendedLocation;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
 import com.azure.resourcemanager.compute.models.OSProfile;
+import com.azure.resourcemanager.compute.models.Placement;
 import com.azure.resourcemanager.compute.models.Plan;
 import com.azure.resourcemanager.compute.models.ScheduledEventsPolicy;
 import com.azure.resourcemanager.compute.models.ScheduledEventsProfile;
@@ -81,6 +82,12 @@ public final class VirtualMachineInner extends Resource {
      * to ensure optimistic updates.
      */
     private String etag;
+
+    /*
+     * Placement section specifies the user-defined constraints for virtual machine hardware placement. This property
+     * cannot be changed once VM is provisioned. Minimum api-version: 2024-11-01.
+     */
+    private Placement placement;
 
     /*
      * The type of the resource.
@@ -227,6 +234,28 @@ public final class VirtualMachineInner extends Resource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the placement property: Placement section specifies the user-defined constraints for virtual machine hardware
+     * placement. This property cannot be changed once VM is provisioned. Minimum api-version: 2024-11-01.
+     * 
+     * @return the placement value.
+     */
+    public Placement placement() {
+        return this.placement;
+    }
+
+    /**
+     * Set the placement property: Placement section specifies the user-defined constraints for virtual machine hardware
+     * placement. This property cannot be changed once VM is provisioned. Minimum api-version: 2024-11-01.
+     * 
+     * @param placement the placement value to set.
+     * @return the VirtualMachineInner object itself.
+     */
+    public VirtualMachineInner withPlacement(Placement placement) {
+        this.placement = placement;
+        return this;
     }
 
     /**
@@ -947,6 +976,9 @@ public final class VirtualMachineInner extends Resource {
         if (extendedLocation() != null) {
             extendedLocation().validate();
         }
+        if (placement() != null) {
+            placement().validate();
+        }
     }
 
     /**
@@ -962,6 +994,7 @@ public final class VirtualMachineInner extends Resource {
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("placement", this.placement);
         return jsonWriter.writeEndObject();
     }
 
@@ -1011,6 +1044,8 @@ public final class VirtualMachineInner extends Resource {
                     deserializedVirtualMachineInner.managedBy = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     deserializedVirtualMachineInner.etag = reader.getString();
+                } else if ("placement".equals(fieldName)) {
+                    deserializedVirtualMachineInner.placement = Placement.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

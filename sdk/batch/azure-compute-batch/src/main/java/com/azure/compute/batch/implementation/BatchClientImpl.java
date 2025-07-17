@@ -165,7 +165,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listApplicationsInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listApplications(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -175,7 +175,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listApplicationsInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listApplicationsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -185,7 +185,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getApplicationInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getApplication(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("applicationId") String applicationId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -195,7 +195,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getApplicationInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getApplicationSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("applicationId") String applicationId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -205,7 +205,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listPoolUsageMetricsInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listPoolUsageMetrics(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -215,7 +215,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listPoolUsageMetricsInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listPoolUsageMetricsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -225,7 +225,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> createPoolInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> createPool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
             RequestOptions requestOptions, Context context);
@@ -236,7 +236,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> createPoolInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> createPoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
             RequestOptions requestOptions, Context context);
@@ -247,7 +247,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listPoolsInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listPools(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -257,7 +257,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listPoolsInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listPoolsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -267,7 +267,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deletePoolInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> deletePool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -277,7 +277,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deletePoolInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> deletePoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -286,7 +286,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Boolean>> poolExistsInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Boolean>> poolExists(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -295,7 +295,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Boolean> poolExistsInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Boolean> poolExistsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -305,7 +305,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getPoolInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getPool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -315,7 +315,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getPoolInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getPoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -325,7 +325,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> updatePoolInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> updatePool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
@@ -337,7 +337,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> updatePoolInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> updatePoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
@@ -349,7 +349,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> disablePoolAutoScaleInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> disablePoolAutoScale(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -359,7 +359,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> disablePoolAutoScaleInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> disablePoolAutoScaleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -369,9 +369,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> enablePoolAutoScaleInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+        Mono<Response<Void>> enablePoolAutoScale(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -381,19 +381,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> enablePoolAutoScaleInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
-            Context context);
-
-        @Post("/pools/{poolId}/evaluateautoscale")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> evaluatePoolAutoScaleInternal(@HostParam("endpoint") String endpoint,
+        Response<Void> enablePoolAutoScaleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
@@ -405,7 +393,19 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> evaluatePoolAutoScaleInternalSync(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> evaluatePoolAutoScale(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/pools/{poolId}/evaluateautoscale")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> evaluatePoolAutoScaleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
@@ -417,9 +417,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> resizePoolInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+        Mono<Response<Void>> resizePool(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -429,9 +429,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> resizePoolInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+        Response<Void> resizePoolSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -441,7 +441,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> stopPoolResizeInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> stopPoolResize(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -451,7 +451,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> stopPoolResizeInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> stopPoolResizeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -461,7 +461,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> replacePoolPropertiesInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> replacePoolProperties(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
@@ -473,7 +473,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> replacePoolPropertiesInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> replacePoolPropertiesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
@@ -485,9 +485,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> removeNodesInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+        Mono<Response<Void>> removeNodes(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -497,9 +497,9 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> removeNodesInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+        Response<Void> removeNodesSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
@@ -509,7 +509,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listSupportedImagesInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listSupportedImages(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -519,7 +519,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listSupportedImagesInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listSupportedImagesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -529,7 +529,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listPoolNodeCountsInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listPoolNodeCounts(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -539,7 +539,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listPoolNodeCountsInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listPoolNodeCountsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -549,7 +549,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteJobInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> deleteJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -559,7 +559,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteJobInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> deleteJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -569,7 +569,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getJobInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -579,7 +579,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getJobInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -589,7 +589,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> updateJobInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> updateJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
@@ -601,7 +601,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> updateJobInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> updateJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
@@ -613,7 +613,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> replaceJobInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> replaceJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
@@ -625,7 +625,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> replaceJobInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> replaceJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
@@ -637,7 +637,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> disableJobInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> disableJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
@@ -649,7 +649,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> disableJobInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> disableJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
@@ -661,7 +661,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> enableJobInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> enableJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -671,7 +671,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> enableJobInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> enableJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -681,7 +681,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> terminateJobInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> terminateJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -691,7 +691,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> terminateJobInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> terminateJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -701,7 +701,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> createJobInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> createJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
             RequestOptions requestOptions, Context context);
@@ -712,7 +712,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> createJobInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> createJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
             RequestOptions requestOptions, Context context);
@@ -723,7 +723,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listJobsInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listJobs(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -733,7 +733,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listJobsInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listJobsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -743,7 +743,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listJobsFromScheduleInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listJobsFromSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -753,7 +753,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listJobsFromScheduleInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listJobsFromScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -763,47 +763,156 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listJobPreparationAndReleaseTaskStatusInternal(
-            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+        Mono<Response<BinaryData>> listJobPreparationAndReleaseTaskStatus(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/jobs/{jobId}/jobpreparationandreleasetaskstatus")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listJobPreparationAndReleaseTaskStatusSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/jobs/{jobId}/taskcounts")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getJobTaskCounts(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/jobs/{jobId}/taskcounts")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getJobTaskCountsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/certificates")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> createCertificate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData certificate, RequestOptions requestOptions,
             Context context);
 
-        @Get("/jobs/{jobId}/jobpreparationandreleasetaskstatus")
-        @ExpectedResponses({ 200 })
+        @Post("/certificates")
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listJobPreparationAndReleaseTaskStatusInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+        Response<Void> createCertificateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData certificate, RequestOptions requestOptions,
+            Context context);
 
-        @Get("/jobs/{jobId}/taskcounts")
+        @Get("/certificates")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getJobTaskCountsInternal(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> listCertificates(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Get("/jobs/{jobId}/taskcounts")
+        @Get("/certificates")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getJobTaskCountsInternalSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+        Response<BinaryData> listCertificatesSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})/canceldelete")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> cancelCertificateDeletion(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
+            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})/canceldelete")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> cancelCertificateDeletionSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
+            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Delete("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteCertificate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
+            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Delete("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteCertificateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
+            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getCertificate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
+            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getCertificateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
+            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Head("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200, 404 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Boolean>> jobScheduleExistsInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Boolean>> jobScheduleExists(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -812,7 +921,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Boolean> jobScheduleExistsInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Boolean> jobScheduleExistsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -822,7 +931,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteJobScheduleInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> deleteJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -832,7 +941,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> deleteJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -842,7 +951,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getJobScheduleInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -852,7 +961,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -862,7 +971,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> updateJobScheduleInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> updateJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
@@ -874,7 +983,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> updateJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> updateJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
@@ -886,7 +995,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> replaceJobScheduleInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> replaceJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
@@ -898,7 +1007,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> replaceJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> replaceJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
@@ -910,7 +1019,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> disableJobScheduleInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> disableJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -920,7 +1029,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> disableJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> disableJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -930,7 +1039,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> enableJobScheduleInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> enableJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -940,7 +1049,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> enableJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> enableJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -950,7 +1059,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> terminateJobScheduleInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> terminateJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -960,7 +1069,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> terminateJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> terminateJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -970,7 +1079,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> createJobScheduleInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> createJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
@@ -982,7 +1091,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> createJobScheduleInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> createJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
@@ -994,7 +1103,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listJobSchedulesInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listJobSchedules(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -1004,7 +1113,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listJobSchedulesInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listJobSchedulesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -1014,7 +1123,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> createTaskInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> createTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
@@ -1026,7 +1135,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> createTaskInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> createTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
@@ -1038,7 +1147,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listTasksInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listTasks(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -1048,7 +1157,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listTasksInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listTasksSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -1058,7 +1167,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createTaskCollectionInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> createTaskCollection(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData taskCollection,
@@ -1070,7 +1179,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createTaskCollectionInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> createTaskCollectionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData taskCollection,
@@ -1082,7 +1191,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteTaskInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> deleteTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1093,7 +1202,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteTaskInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> deleteTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1104,7 +1213,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTaskInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1115,7 +1224,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getTaskInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1126,7 +1235,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> replaceTaskInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> replaceTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
@@ -1138,7 +1247,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> replaceTaskInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> replaceTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
@@ -1150,7 +1259,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listSubTasksInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listSubTasks(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1161,7 +1270,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listSubTasksInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listSubTasksSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1172,7 +1281,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> terminateTaskInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> terminateTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1183,7 +1292,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> terminateTaskInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> terminateTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1194,7 +1303,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> reactivateTaskInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> reactivateTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1205,7 +1314,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> reactivateTaskInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> reactivateTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1216,7 +1325,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteTaskFileInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> deleteTaskFile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -1227,7 +1336,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteTaskFileInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> deleteTaskFileSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -1238,7 +1347,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTaskFileInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getTaskFile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -1249,7 +1358,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getTaskFileInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getTaskFileSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -1260,7 +1369,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> getTaskFilePropertiesInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> getTaskFileProperties(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -1271,7 +1380,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> getTaskFilePropertiesInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> getTaskFilePropertiesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -1282,7 +1391,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listTaskFilesInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listTaskFiles(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1293,7 +1402,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listTaskFilesInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listTaskFilesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1304,7 +1413,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> createNodeUserInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> createNodeUser(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData user,
@@ -1316,7 +1425,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> createNodeUserInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> createNodeUserSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData user,
@@ -1328,7 +1437,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteNodeUserInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> deleteNodeUser(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("userName") String userName,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -1339,7 +1448,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteNodeUserInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> deleteNodeUserSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("userName") String userName,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -1350,7 +1459,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> replaceNodeUserInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> replaceNodeUser(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @PathParam("userName") String userName, @HeaderParam("Accept") String accept,
@@ -1363,7 +1472,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> replaceNodeUserInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> replaceNodeUserSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @PathParam("userName") String userName, @HeaderParam("Accept") String accept,
@@ -1376,7 +1485,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getNodeInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1387,7 +1496,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getNodeInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1398,7 +1507,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> rebootNodeInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> rebootNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1409,7 +1518,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> rebootNodeInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> rebootNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1420,7 +1529,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> startNodeInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> startNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1431,7 +1540,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> startNodeInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> startNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1442,7 +1551,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> reimageNodeInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> reimageNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1453,7 +1562,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> reimageNodeInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> reimageNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1464,7 +1573,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deallocateNodeInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> deallocateNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1475,7 +1584,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deallocateNodeInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> deallocateNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1486,7 +1595,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> disableNodeSchedulingInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> disableNodeScheduling(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1497,7 +1606,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> disableNodeSchedulingInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> disableNodeSchedulingSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1508,7 +1617,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> enableNodeSchedulingInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> enableNodeScheduling(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1519,7 +1628,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> enableNodeSchedulingInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> enableNodeSchedulingSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1530,7 +1639,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getNodeRemoteLoginSettingsInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getNodeRemoteLoginSettings(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1541,7 +1650,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getNodeRemoteLoginSettingsInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getNodeRemoteLoginSettingsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1552,7 +1661,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> uploadNodeLogsInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> uploadNodeLogs(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("Accept") String accept,
@@ -1565,7 +1674,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> uploadNodeLogsInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> uploadNodeLogsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("Accept") String accept,
@@ -1578,7 +1687,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listNodesInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listNodes(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -1588,7 +1697,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listNodesInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listNodesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -1598,7 +1707,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getNodeExtensionInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getNodeExtension(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("extensionName") String extensionName,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -1609,7 +1718,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getNodeExtensionInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getNodeExtensionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("extensionName") String extensionName,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -1620,7 +1729,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listNodeExtensionsInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listNodeExtensions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1631,7 +1740,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listNodeExtensionsInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listNodeExtensionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1642,7 +1751,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteNodeFileInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> deleteNodeFile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -1653,7 +1762,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteNodeFileInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> deleteNodeFileSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -1664,7 +1773,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getNodeFileInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getNodeFile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -1675,7 +1784,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getNodeFileInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getNodeFileSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -1686,7 +1795,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> getNodeFilePropertiesInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<Void>> getNodeFileProperties(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -1697,7 +1806,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> getNodeFilePropertiesInternalSync(@HostParam("endpoint") String endpoint,
+        Response<Void> getNodeFilePropertiesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -1708,7 +1817,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listNodeFilesInternal(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listNodeFiles(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1719,7 +1828,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listNodeFilesInternalSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listNodeFilesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1730,47 +1839,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listApplicationsInternalNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listApplicationsInternalNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listPoolUsageMetricsInternalNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listPoolUsageMetricsInternalNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listPoolsInternalNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listApplicationsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -1780,7 +1849,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listPoolsInternalNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<BinaryData> listApplicationsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -1790,7 +1859,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listSupportedImagesInternalNext(
+        Mono<Response<BinaryData>> listPoolUsageMetricsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -1800,7 +1869,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listSupportedImagesInternalNextSync(
+        Response<BinaryData> listPoolUsageMetricsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -1810,27 +1879,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listPoolNodeCountsInternalNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listPoolNodeCountsInternalNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listJobsInternalNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listPoolsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -1840,7 +1889,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listJobsInternalNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<BinaryData> listPoolsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -1850,7 +1899,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listJobsFromScheduleInternalNext(
+        Mono<Response<BinaryData>> listSupportedImagesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -1860,57 +1909,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listJobsFromScheduleInternalNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listJobPreparationAndReleaseTaskStatusInternalNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listJobPreparationAndReleaseTaskStatusInternalNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listJobSchedulesInternalNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listJobSchedulesInternalNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listTasksInternalNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<BinaryData> listSupportedImagesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -1920,7 +1919,17 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listTasksInternalNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listPoolNodeCountsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listPoolNodeCountsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -1930,47 +1939,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listSubTasksInternalNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listSubTasksInternalNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listTaskFilesInternalNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listTaskFilesInternalNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listNodesInternalNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listJobsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -1980,7 +1949,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listNodesInternalNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<BinaryData> listJobsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -1990,7 +1959,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listNodeExtensionsInternalNext(
+        Mono<Response<BinaryData>> listJobsFromScheduleNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -2000,7 +1969,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listNodeExtensionsInternalNextSync(
+        Response<BinaryData> listJobsFromScheduleNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -2010,7 +1979,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listNodeFilesInternalNext(
+        Mono<Response<BinaryData>> listJobPreparationAndReleaseTaskStatusNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -2020,9 +1989,169 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listNodeFilesInternalNextSync(
+        Response<BinaryData> listJobPreparationAndReleaseTaskStatusNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listCertificatesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listCertificatesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listJobSchedulesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listJobSchedulesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listTasksNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listTasksNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listSubTasksNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listSubTasksNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listTaskFilesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listTaskFilesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listNodesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listNodesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listNodeExtensionsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listNodeExtensionsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listNodeFilesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listNodeFilesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -2068,11 +2197,11 @@ public final class BatchClientImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listApplicationsInternalSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listApplicationsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listApplicationsInternal(this.getEndpoint(),
-                this.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .withContext(context -> service.listApplications(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -2120,7 +2249,7 @@ public final class BatchClientImpl {
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listApplicationsInternalAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listApplicationsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -2133,7 +2262,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listApplicationsInternalSinglePageAsync(requestOptionsLocal);
+            return listApplicationsSinglePageAsync(requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -2144,7 +2273,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listApplicationsInternalNextSinglePageAsync(nextLink, requestOptionsLocal);
+            return listApplicationsNextSinglePageAsync(nextLink, requestOptionsLocal);
         });
     }
 
@@ -2190,9 +2319,9 @@ public final class BatchClientImpl {
      * @return the result of listing the applications available in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listApplicationsInternalSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listApplicationsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listApplicationsInternalSync(this.getEndpoint(),
+        Response<BinaryData> res = service.listApplicationsSync(this.getEndpoint(),
             this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
@@ -2241,7 +2370,7 @@ public final class BatchClientImpl {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listApplicationsInternal(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listApplications(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -2254,7 +2383,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listApplicationsInternalSinglePage(requestOptionsLocal);
+            return listApplicationsSinglePage(requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -2265,7 +2394,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listApplicationsInternalNextSinglePage(nextLink, requestOptionsLocal);
+            return listApplicationsNextSinglePage(nextLink, requestOptionsLocal);
         });
     }
 
@@ -2313,10 +2442,10 @@ public final class BatchClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getApplicationInternalWithResponseAsync(String applicationId,
+    public Mono<Response<BinaryData>> getApplicationWithResponseAsync(String applicationId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getApplicationInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getApplication(this.getEndpoint(),
             this.getServiceVersion().getVersion(), applicationId, accept, requestOptions, context));
     }
 
@@ -2363,11 +2492,10 @@ public final class BatchClientImpl {
      * use on Compute Nodes; that is, that can be used in an Package reference along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getApplicationInternalWithResponse(String applicationId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getApplicationWithResponse(String applicationId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getApplicationInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            applicationId, accept, requestOptions, Context.NONE);
+        return service.getApplicationSync(this.getEndpoint(), this.getServiceVersion().getVersion(), applicationId,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2400,7 +2528,7 @@ public final class BatchClientImpl {
      * last aggregation interval currently available.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2426,10 +2554,10 @@ public final class BatchClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listPoolUsageMetricsInternalSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listPoolUsageMetricsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listPoolUsageMetricsInternal(this.getEndpoint(),
+            .withContext(context -> service.listPoolUsageMetrics(this.getEndpoint(),
                 this.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
@@ -2465,7 +2593,7 @@ public final class BatchClientImpl {
      * last aggregation interval currently available.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2490,7 +2618,7 @@ public final class BatchClientImpl {
      * @return the result of a listing the usage metrics for an Account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listPoolUsageMetricsInternalAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listPoolUsageMetricsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -2503,7 +2631,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listPoolUsageMetricsInternalSinglePageAsync(requestOptionsLocal);
+            return listPoolUsageMetricsSinglePageAsync(requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -2514,7 +2642,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listPoolUsageMetricsInternalNextSinglePageAsync(nextLink, requestOptionsLocal);
+            return listPoolUsageMetricsNextSinglePageAsync(nextLink, requestOptionsLocal);
         });
     }
 
@@ -2548,7 +2676,7 @@ public final class BatchClientImpl {
      * last aggregation interval currently available.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2573,9 +2701,9 @@ public final class BatchClientImpl {
      * @return the result of a listing the usage metrics for an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listPoolUsageMetricsInternalSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listPoolUsageMetricsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listPoolUsageMetricsInternalSync(this.getEndpoint(),
+        Response<BinaryData> res = service.listPoolUsageMetricsSync(this.getEndpoint(),
             this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
@@ -2611,7 +2739,7 @@ public final class BatchClientImpl {
      * last aggregation interval currently available.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2637,7 +2765,7 @@ public final class BatchClientImpl {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listPoolUsageMetricsInternal(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listPoolUsageMetrics(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -2650,7 +2778,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listPoolUsageMetricsInternalSinglePage(requestOptionsLocal);
+            return listPoolUsageMetricsSinglePage(requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -2661,7 +2789,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listPoolUsageMetricsInternalNextSinglePage(nextLink, requestOptionsLocal);
+            return listPoolUsageMetricsNextSinglePage(nextLink, requestOptionsLocal);
         });
     }
 
@@ -2864,6 +2992,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -2959,10 +3098,10 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createPoolInternalWithResponseAsync(BinaryData pool, RequestOptions requestOptions) {
+    public Mono<Response<Void>> createPoolWithResponseAsync(BinaryData pool, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createPoolInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.createPool(this.getEndpoint(),
             this.getServiceVersion().getVersion(), contentType, accept, pool, requestOptions, context));
     }
 
@@ -3165,6 +3304,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -3260,11 +3410,11 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createPoolInternalWithResponse(BinaryData pool, RequestOptions requestOptions) {
+    public Response<Void> createPoolWithResponse(BinaryData pool, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.createPoolInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            accept, pool, requestOptions, Context.NONE);
+        return service.createPoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            pool, requestOptions, Context.NONE);
     }
 
     /**
@@ -3281,7 +3431,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -3505,6 +3655,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -3636,11 +3797,11 @@ public final class BatchClientImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listPoolsInternalSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listPoolsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listPoolsInternal(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, requestOptions, context))
+            .withContext(context -> service.listPools(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -3659,7 +3820,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -3883,6 +4044,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -4013,7 +4185,7 @@ public final class BatchClientImpl {
      * @return the result of listing the Pools in an Account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listPoolsInternalAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listPoolsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -4026,7 +4198,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listPoolsInternalSinglePageAsync(requestOptionsLocal);
+            return listPoolsSinglePageAsync(requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -4037,7 +4209,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listPoolsInternalNextSinglePageAsync(nextLink, requestOptionsLocal);
+            return listPoolsNextSinglePageAsync(nextLink, requestOptionsLocal);
         });
     }
 
@@ -4055,7 +4227,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -4279,6 +4451,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -4409,10 +4592,10 @@ public final class BatchClientImpl {
      * @return the result of listing the Pools in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listPoolsInternalSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listPoolsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listPoolsInternalSync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listPoolsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -4431,7 +4614,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-pools.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -4655,6 +4838,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -4785,7 +4979,7 @@ public final class BatchClientImpl {
      * @return the result of listing the Pools in an Account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listPoolsInternal(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listPools(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -4798,7 +4992,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listPoolsInternalSinglePage(requestOptionsLocal);
+            return listPoolsSinglePage(requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -4809,7 +5003,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listPoolsInternalNextSinglePage(nextLink, requestOptionsLocal);
+            return listPoolsNextSinglePage(nextLink, requestOptionsLocal);
         });
     }
 
@@ -4869,9 +5063,9 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deletePoolInternalWithResponseAsync(String poolId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deletePoolWithResponseAsync(String poolId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deletePoolInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.deletePool(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, accept, requestOptions, context));
     }
 
@@ -4931,9 +5125,9 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deletePoolInternalWithResponse(String poolId, RequestOptions requestOptions) {
+    public Response<Void> deletePoolWithResponse(String poolId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deletePoolInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, accept,
+        return service.deletePoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, accept,
             requestOptions, Context.NONE);
     }
 
@@ -4986,9 +5180,9 @@ public final class BatchClientImpl {
      * @return basic properties of a Pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> poolExistsInternalWithResponseAsync(String poolId, RequestOptions requestOptions) {
+    public Mono<Response<Boolean>> poolExistsWithResponseAsync(String poolId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.poolExistsInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.poolExists(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, accept, requestOptions, context));
     }
 
@@ -5041,9 +5235,9 @@ public final class BatchClientImpl {
      * @return basic properties of a Pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Boolean> poolExistsInternalWithResponse(String poolId, RequestOptions requestOptions) {
+    public Response<Boolean> poolExistsWithResponse(String poolId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.poolExistsInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, accept,
+        return service.poolExistsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, accept,
             requestOptions, Context.NONE);
     }
 
@@ -5301,6 +5495,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -5433,9 +5638,9 @@ public final class BatchClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getPoolInternalWithResponseAsync(String poolId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getPoolWithResponseAsync(String poolId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getPoolInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getPool(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, accept, requestOptions, context));
     }
 
@@ -5693,6 +5898,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -5824,9 +6040,9 @@ public final class BatchClientImpl {
      * @return information about the specified Pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getPoolInternalWithResponse(String poolId, RequestOptions requestOptions) {
+    public Response<BinaryData> getPoolWithResponse(String poolId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getPoolInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, accept,
+        return service.getPoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, accept,
             requestOptions, Context.NONE);
     }
 
@@ -5923,6 +6139,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -6140,11 +6367,11 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updatePoolInternalWithResponseAsync(String poolId, BinaryData pool,
+    public Mono<Response<Void>> updatePoolWithResponseAsync(String poolId, BinaryData pool,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updatePoolInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.updatePool(this.getEndpoint(),
             this.getServiceVersion().getVersion(), contentType, poolId, accept, pool, requestOptions, context));
     }
 
@@ -6241,6 +6468,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -6458,12 +6696,11 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updatePoolInternalWithResponse(String poolId, BinaryData pool,
-        RequestOptions requestOptions) {
+    public Response<Void> updatePoolWithResponse(String poolId, BinaryData pool, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.updatePoolInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, accept, pool, requestOptions, Context.NONE);
+        return service.updatePoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, poolId,
+            accept, pool, requestOptions, Context.NONE);
     }
 
     /**
@@ -6487,10 +6724,9 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disablePoolAutoScaleInternalWithResponseAsync(String poolId,
-        RequestOptions requestOptions) {
+    public Mono<Response<Void>> disablePoolAutoScaleWithResponseAsync(String poolId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.disablePoolAutoScaleInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.disablePoolAutoScale(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, accept, requestOptions, context));
     }
 
@@ -6515,10 +6751,10 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> disablePoolAutoScaleInternalWithResponse(String poolId, RequestOptions requestOptions) {
+    public Response<Void> disablePoolAutoScaleWithResponse(String poolId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.disablePoolAutoScaleInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            poolId, accept, requestOptions, Context.NONE);
+        return service.disablePoolAutoScaleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -6582,12 +6818,12 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> enablePoolAutoScaleInternalWithResponseAsync(String poolId, BinaryData content,
+    public Mono<Response<Void>> enablePoolAutoScaleWithResponseAsync(String poolId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.enablePoolAutoScaleInternal(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, contentType, accept, content, requestOptions, context));
+        return FluxUtil.withContext(context -> service.enablePoolAutoScale(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), contentType, poolId, accept, content, requestOptions, context));
     }
 
     /**
@@ -6651,12 +6887,12 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> enablePoolAutoScaleInternalWithResponse(String poolId, BinaryData content,
+    public Response<Void> enablePoolAutoScaleWithResponse(String poolId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.enablePoolAutoScaleInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            poolId, contentType, accept, content, requestOptions, Context.NONE);
+        return service.enablePoolAutoScaleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            poolId, accept, content, requestOptions, Context.NONE);
     }
 
     /**
@@ -6719,11 +6955,11 @@ public final class BatchClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> evaluatePoolAutoScaleInternalWithResponseAsync(String poolId, BinaryData content,
+    public Mono<Response<BinaryData>> evaluatePoolAutoScaleWithResponseAsync(String poolId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.evaluatePoolAutoScaleInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.evaluatePoolAutoScale(this.getEndpoint(),
             this.getServiceVersion().getVersion(), contentType, poolId, accept, content, requestOptions, context));
     }
 
@@ -6786,12 +7022,12 @@ public final class BatchClientImpl {
      * the result without applying the formula to the Pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> evaluatePoolAutoScaleInternalWithResponse(String poolId, BinaryData content,
+    public Response<BinaryData> evaluatePoolAutoScaleWithResponse(String poolId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.evaluatePoolAutoScaleInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            contentType, poolId, accept, content, requestOptions, Context.NONE);
+        return service.evaluatePoolAutoScaleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            poolId, accept, content, requestOptions, Context.NONE);
     }
 
     /**
@@ -6858,12 +7094,12 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resizePoolInternalWithResponseAsync(String poolId, BinaryData content,
+    public Mono<Response<Void>> resizePoolWithResponseAsync(String poolId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.resizePoolInternal(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, contentType, accept, content, requestOptions, context));
+        return FluxUtil.withContext(context -> service.resizePool(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), contentType, poolId, accept, content, requestOptions, context));
     }
 
     /**
@@ -6930,12 +7166,11 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resizePoolInternalWithResponse(String poolId, BinaryData content,
-        RequestOptions requestOptions) {
+    public Response<Void> resizePoolWithResponse(String poolId, BinaryData content, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.resizePoolInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
-            contentType, accept, content, requestOptions, Context.NONE);
+        return service.resizePoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, poolId,
+            accept, content, requestOptions, Context.NONE);
     }
 
     /**
@@ -6989,9 +7224,9 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopPoolResizeInternalWithResponseAsync(String poolId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> stopPoolResizeWithResponseAsync(String poolId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.stopPoolResizeInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.stopPoolResize(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, accept, requestOptions, context));
     }
 
@@ -7046,10 +7281,10 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopPoolResizeInternalWithResponse(String poolId, RequestOptions requestOptions) {
+    public Response<Void> stopPoolResizeWithResponse(String poolId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.stopPoolResizeInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
-            accept, requestOptions, Context.NONE);
+        return service.stopPoolResizeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -7120,6 +7355,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Required): [
+     *          (Required){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Required): [
      *          (Required){
      *             applicationId: String (Required)
@@ -7147,11 +7393,11 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> replacePoolPropertiesInternalWithResponseAsync(String poolId, BinaryData pool,
+    public Mono<Response<Void>> replacePoolPropertiesWithResponseAsync(String poolId, BinaryData pool,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.replacePoolPropertiesInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.replacePoolProperties(this.getEndpoint(),
             this.getServiceVersion().getVersion(), contentType, poolId, accept, pool, requestOptions, context));
     }
 
@@ -7223,6 +7469,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Required): [
+     *          (Required){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Required): [
      *          (Required){
      *             applicationId: String (Required)
@@ -7250,12 +7507,12 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> replacePoolPropertiesInternalWithResponse(String poolId, BinaryData pool,
+    public Response<Void> replacePoolPropertiesWithResponse(String poolId, BinaryData pool,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.replacePoolPropertiesInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            contentType, poolId, accept, pool, requestOptions, Context.NONE);
+        return service.replacePoolPropertiesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            poolId, accept, pool, requestOptions, Context.NONE);
     }
 
     /**
@@ -7319,12 +7576,12 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeNodesInternalWithResponseAsync(String poolId, BinaryData content,
+    public Mono<Response<Void>> removeNodesWithResponseAsync(String poolId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.removeNodesInternal(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, contentType, accept, content, requestOptions, context));
+        return FluxUtil.withContext(context -> service.removeNodes(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), contentType, poolId, accept, content, requestOptions, context));
     }
 
     /**
@@ -7388,12 +7645,11 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeNodesInternalWithResponse(String poolId, BinaryData content,
-        RequestOptions requestOptions) {
+    public Response<Void> removeNodesWithResponse(String poolId, BinaryData content, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.removeNodesInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
-            contentType, accept, content, requestOptions, Context.NONE);
+        return service.removeNodesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, poolId,
+            accept, content, requestOptions, Context.NONE);
     }
 
     /**
@@ -7410,7 +7666,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -7448,10 +7704,10 @@ public final class BatchClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listSupportedImagesInternalSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSupportedImagesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSupportedImagesInternal(this.getEndpoint(),
+            .withContext(context -> service.listSupportedImages(this.getEndpoint(),
                 this.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
@@ -7471,7 +7727,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -7508,7 +7764,7 @@ public final class BatchClientImpl {
      * @return the result of listing the supported Virtual Machine Images as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listSupportedImagesInternalAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listSupportedImagesAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -7521,7 +7777,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listSupportedImagesInternalSinglePageAsync(requestOptionsLocal);
+            return listSupportedImagesSinglePageAsync(requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -7532,7 +7788,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listSupportedImagesInternalNextSinglePageAsync(nextLink, requestOptionsLocal);
+            return listSupportedImagesNextSinglePageAsync(nextLink, requestOptionsLocal);
         });
     }
 
@@ -7550,7 +7806,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -7587,9 +7843,9 @@ public final class BatchClientImpl {
      * @return the result of listing the supported Virtual Machine Images along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listSupportedImagesInternalSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listSupportedImagesSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listSupportedImagesInternalSync(this.getEndpoint(),
+        Response<BinaryData> res = service.listSupportedImagesSync(this.getEndpoint(),
             this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
@@ -7609,7 +7865,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -7647,7 +7903,7 @@ public final class BatchClientImpl {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listSupportedImagesInternal(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listSupportedImages(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -7660,7 +7916,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listSupportedImagesInternalSinglePage(requestOptionsLocal);
+            return listSupportedImagesSinglePage(requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -7671,7 +7927,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listSupportedImagesInternalNextSinglePage(nextLink, requestOptionsLocal);
+            return listSupportedImagesNextSinglePage(nextLink, requestOptionsLocal);
         });
     }
 
@@ -7691,7 +7947,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -7733,10 +7989,10 @@ public final class BatchClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listPoolNodeCountsInternalSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listPoolNodeCountsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listPoolNodeCountsInternal(this.getEndpoint(),
+            .withContext(context -> service.listPoolNodeCounts(this.getEndpoint(),
                 this.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
@@ -7758,7 +8014,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -7799,7 +8055,7 @@ public final class BatchClientImpl {
      * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listPoolNodeCountsInternalAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listPoolNodeCountsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -7812,7 +8068,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listPoolNodeCountsInternalSinglePageAsync(requestOptionsLocal);
+            return listPoolNodeCountsSinglePageAsync(requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -7823,7 +8079,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listPoolNodeCountsInternalNextSinglePageAsync(nextLink, requestOptionsLocal);
+            return listPoolNodeCountsNextSinglePageAsync(nextLink, requestOptionsLocal);
         });
     }
 
@@ -7843,7 +8099,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -7884,9 +8140,9 @@ public final class BatchClientImpl {
      * @return the number of Compute Nodes in each state, grouped by Pool along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listPoolNodeCountsInternalSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listPoolNodeCountsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listPoolNodeCountsInternalSync(this.getEndpoint(),
+        Response<BinaryData> res = service.listPoolNodeCountsSync(this.getEndpoint(),
             this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
@@ -7908,7 +8164,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-support-images.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -7950,7 +8206,7 @@ public final class BatchClientImpl {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listPoolNodeCountsInternal(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listPoolNodeCounts(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -7963,7 +8219,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listPoolNodeCountsInternalSinglePage(requestOptionsLocal);
+            return listPoolNodeCountsSinglePage(requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -7974,7 +8230,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listPoolNodeCountsInternalNextSinglePage(nextLink, requestOptionsLocal);
+            return listPoolNodeCountsNextSinglePage(nextLink, requestOptionsLocal);
         });
     }
 
@@ -8032,9 +8288,9 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteJobInternalWithResponseAsync(String jobId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteJobInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.deleteJob(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobId, accept, requestOptions, context));
     }
 
@@ -8092,9 +8348,9 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteJobInternalWithResponse(String jobId, RequestOptions requestOptions) {
+    public Response<Void> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteJobInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
+        return service.deleteJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
             requestOptions, Context.NONE);
     }
 
@@ -8431,6 +8687,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -8564,10 +8831,10 @@ public final class BatchClientImpl {
      * @return information about the specified Job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getJobInternalWithResponseAsync(String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getJobInternal(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getJob(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            jobId, accept, requestOptions, context));
     }
 
     /**
@@ -8903,6 +9170,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -9036,9 +9314,9 @@ public final class BatchClientImpl {
      * @return information about the specified Job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getJobInternalWithResponse(String jobId, RequestOptions requestOptions) {
+    public Response<BinaryData> getJobWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getJobInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
+        return service.getJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
             requestOptions, Context.NONE);
     }
 
@@ -9278,6 +9556,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                      (Optional){
      *                         applicationId: String (Required)
@@ -9381,11 +9670,11 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateJobInternalWithResponseAsync(String jobId, BinaryData job,
+    public Mono<Response<Void>> updateJobWithResponseAsync(String jobId, BinaryData job,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateJobInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.updateJob(this.getEndpoint(),
             this.getServiceVersion().getVersion(), contentType, jobId, accept, job, requestOptions, context));
     }
 
@@ -9625,6 +9914,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                      (Optional){
      *                         applicationId: String (Required)
@@ -9728,11 +10028,11 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateJobInternalWithResponse(String jobId, BinaryData job, RequestOptions requestOptions) {
+    public Response<Void> updateJobWithResponse(String jobId, BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.updateJobInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            jobId, accept, job, requestOptions, Context.NONE);
+        return service.updateJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId,
+            accept, job, requestOptions, Context.NONE);
     }
 
     /**
@@ -10068,6 +10368,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -10202,11 +10513,11 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> replaceJobInternalWithResponseAsync(String jobId, BinaryData job,
+    public Mono<Response<Void>> replaceJobWithResponseAsync(String jobId, BinaryData job,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.replaceJobInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.replaceJob(this.getEndpoint(),
             this.getServiceVersion().getVersion(), contentType, jobId, accept, job, requestOptions, context));
     }
 
@@ -10543,6 +10854,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -10677,11 +10999,11 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> replaceJobInternalWithResponse(String jobId, BinaryData job, RequestOptions requestOptions) {
+    public Response<Void> replaceJobWithResponse(String jobId, BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.replaceJobInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            jobId, accept, job, requestOptions, Context.NONE);
+        return service.replaceJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId,
+            accept, job, requestOptions, Context.NONE);
     }
 
     /**
@@ -10746,11 +11068,11 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableJobInternalWithResponseAsync(String jobId, BinaryData content,
+    public Mono<Response<Void>> disableJobWithResponseAsync(String jobId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.disableJobInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.disableJob(this.getEndpoint(),
             this.getServiceVersion().getVersion(), contentType, jobId, accept, content, requestOptions, context));
     }
 
@@ -10816,12 +11138,11 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> disableJobInternalWithResponse(String jobId, BinaryData content,
-        RequestOptions requestOptions) {
+    public Response<Void> disableJobWithResponse(String jobId, BinaryData content, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.disableJobInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            jobId, accept, content, requestOptions, Context.NONE);
+        return service.disableJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId,
+            accept, content, requestOptions, Context.NONE);
     }
 
     /**
@@ -10874,9 +11195,9 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> enableJobInternalWithResponseAsync(String jobId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> enableJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.enableJobInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.enableJob(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobId, accept, requestOptions, context));
     }
 
@@ -10930,9 +11251,9 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> enableJobInternalWithResponse(String jobId, RequestOptions requestOptions) {
+    public Response<Void> enableJobWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.enableJobInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
+        return service.enableJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
             requestOptions, Context.NONE);
     }
 
@@ -10999,7 +11320,7 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> terminateJobInternalWithResponseAsync(String jobId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> terminateJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -11007,7 +11328,7 @@ public final class BatchClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
             }
         });
-        return FluxUtil.withContext(context -> service.terminateJobInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.terminateJob(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobId, accept, requestOptionsLocal, context));
     }
 
@@ -11074,7 +11395,7 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> terminateJobInternalWithResponse(String jobId, RequestOptions requestOptions) {
+    public Response<Void> terminateJobWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -11082,8 +11403,8 @@ public final class BatchClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
             }
         });
-        return service.terminateJobInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId,
-            accept, requestOptionsLocal, Context.NONE);
+        return service.terminateJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
+            requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -11395,6 +11716,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -11495,10 +11827,10 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createJobInternalWithResponseAsync(BinaryData job, RequestOptions requestOptions) {
+    public Mono<Response<Void>> createJobWithResponseAsync(BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createJobInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.createJob(this.getEndpoint(),
             this.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, context));
     }
 
@@ -11811,6 +12143,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -11911,11 +12254,11 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createJobInternalWithResponse(BinaryData job, RequestOptions requestOptions) {
+    public Response<Void> createJobWithResponse(BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.createJobInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            accept, job, requestOptions, Context.NONE);
+        return service.createJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+            job, requestOptions, Context.NONE);
     }
 
     /**
@@ -11932,7 +12275,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -12235,6 +12578,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -12368,11 +12722,11 @@ public final class BatchClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listJobsInternalSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listJobsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listJobsInternal(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, requestOptions, context))
+            .withContext(context -> service.listJobs(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -12391,7 +12745,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -12694,6 +13048,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -12826,7 +13191,7 @@ public final class BatchClientImpl {
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listJobsInternalAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listJobsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -12839,7 +13204,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobsInternalSinglePageAsync(requestOptionsLocal);
+            return listJobsSinglePageAsync(requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -12850,7 +13215,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobsInternalNextSinglePageAsync(nextLink, requestOptionsLocal);
+            return listJobsNextSinglePageAsync(nextLink, requestOptionsLocal);
         });
     }
 
@@ -12868,7 +13233,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -13171,6 +13536,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -13303,10 +13679,10 @@ public final class BatchClientImpl {
      * @return the result of listing the Jobs in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listJobsInternalSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listJobsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listJobsInternalSync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listJobsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -13325,7 +13701,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -13628,6 +14004,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -13760,7 +14147,7 @@ public final class BatchClientImpl {
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listJobsInternal(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listJobs(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -13773,7 +14160,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobsInternalSinglePage(requestOptionsLocal);
+            return listJobsSinglePage(requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -13784,7 +14171,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobsInternalNextSinglePage(nextLink, requestOptionsLocal);
+            return listJobsNextSinglePage(nextLink, requestOptionsLocal);
         });
     }
 
@@ -13802,7 +14189,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -14105,6 +14492,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -14239,11 +14637,11 @@ public final class BatchClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listJobsFromScheduleInternalSinglePageAsync(String jobScheduleId,
+    private Mono<PagedResponse<BinaryData>> listJobsFromScheduleSinglePageAsync(String jobScheduleId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listJobsFromScheduleInternal(this.getEndpoint(),
+            .withContext(context -> service.listJobsFromSchedule(this.getEndpoint(),
                 this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
@@ -14263,7 +14661,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -14566,6 +14964,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -14699,8 +15108,7 @@ public final class BatchClientImpl {
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listJobsFromScheduleInternalAsync(String jobScheduleId,
-        RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listJobsFromScheduleAsync(String jobScheduleId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -14713,7 +15121,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobsFromScheduleInternalSinglePageAsync(jobScheduleId, requestOptionsLocal);
+            return listJobsFromScheduleSinglePageAsync(jobScheduleId, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -14724,7 +15132,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobsFromScheduleInternalNextSinglePageAsync(nextLink, requestOptionsLocal);
+            return listJobsFromScheduleNextSinglePageAsync(nextLink, requestOptionsLocal);
         });
     }
 
@@ -14742,7 +15150,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -15045,6 +15453,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -15178,10 +15597,10 @@ public final class BatchClientImpl {
      * @return the result of listing the Jobs in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listJobsFromScheduleInternalSinglePage(String jobScheduleId,
+    private PagedResponse<BinaryData> listJobsFromScheduleSinglePage(String jobScheduleId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listJobsFromScheduleInternalSync(this.getEndpoint(),
+        Response<BinaryData> res = service.listJobsFromScheduleSync(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
@@ -15201,7 +15620,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -15504,6 +15923,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -15637,7 +16067,7 @@ public final class BatchClientImpl {
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listJobsFromScheduleInternal(String jobScheduleId, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listJobsFromSchedule(String jobScheduleId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -15650,7 +16080,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobsFromScheduleInternalSinglePage(jobScheduleId, requestOptionsLocal);
+            return listJobsFromScheduleSinglePage(jobScheduleId, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -15661,7 +16091,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobsFromScheduleInternalNextSinglePage(nextLink, requestOptionsLocal);
+            return listJobsFromScheduleNextSinglePage(nextLink, requestOptionsLocal);
         });
     }
 
@@ -15687,7 +16117,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -15752,11 +16182,11 @@ public final class BatchClientImpl {
      * for a Job along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listJobPreparationAndReleaseTaskStatusInternalSinglePageAsync(String jobId,
+    private Mono<PagedResponse<BinaryData>> listJobPreparationAndReleaseTaskStatusSinglePageAsync(String jobId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listJobPreparationAndReleaseTaskStatusInternal(this.getEndpoint(),
+            .withContext(context -> service.listJobPreparationAndReleaseTaskStatus(this.getEndpoint(),
                 this.getServiceVersion().getVersion(), jobId, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
@@ -15784,7 +16214,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -15849,7 +16279,7 @@ public final class BatchClientImpl {
      * for a Job as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listJobPreparationAndReleaseTaskStatusInternalAsync(String jobId,
+    public PagedFlux<BinaryData> listJobPreparationAndReleaseTaskStatusAsync(String jobId,
         RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
@@ -15863,7 +16293,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobPreparationAndReleaseTaskStatusInternalSinglePageAsync(jobId, requestOptionsLocal);
+            return listJobPreparationAndReleaseTaskStatusSinglePageAsync(jobId, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -15874,7 +16304,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobPreparationAndReleaseTaskStatusInternalNextSinglePageAsync(nextLink, requestOptionsLocal);
+            return listJobPreparationAndReleaseTaskStatusNextSinglePageAsync(nextLink, requestOptionsLocal);
         });
     }
 
@@ -15900,7 +16330,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -15965,10 +16395,10 @@ public final class BatchClientImpl {
      * for a Job along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listJobPreparationAndReleaseTaskStatusInternalSinglePage(String jobId,
+    private PagedResponse<BinaryData> listJobPreparationAndReleaseTaskStatusSinglePage(String jobId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listJobPreparationAndReleaseTaskStatusInternalSync(this.getEndpoint(),
+        Response<BinaryData> res = service.listJobPreparationAndReleaseTaskStatusSync(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobId, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
@@ -15996,7 +16426,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -16061,7 +16491,7 @@ public final class BatchClientImpl {
      * for a Job as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listJobPreparationAndReleaseTaskStatusInternal(String jobId,
+    public PagedIterable<BinaryData> listJobPreparationAndReleaseTaskStatus(String jobId,
         RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
@@ -16075,7 +16505,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobPreparationAndReleaseTaskStatusInternalSinglePage(jobId, requestOptionsLocal);
+            return listJobPreparationAndReleaseTaskStatusSinglePage(jobId, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -16086,7 +16516,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobPreparationAndReleaseTaskStatusInternalNextSinglePage(nextLink, requestOptionsLocal);
+            return listJobPreparationAndReleaseTaskStatusNextSinglePage(nextLink, requestOptionsLocal);
         });
     }
 
@@ -16142,10 +16572,9 @@ public final class BatchClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getJobTaskCountsInternalWithResponseAsync(String jobId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getJobTaskCountsWithResponseAsync(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getJobTaskCountsInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getJobTaskCounts(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobId, accept, requestOptions, context));
     }
 
@@ -16200,10 +16629,700 @@ public final class BatchClientImpl {
      * state, and a count of Tasks which succeeded or failed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getJobTaskCountsInternalWithResponse(String jobId, RequestOptions requestOptions) {
+    public Response<BinaryData> getJobTaskCountsWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getJobTaskCountsInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId,
-            accept, requestOptions, Context.NONE);
+        return service.getJobTaskCountsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
+            requestOptions, Context.NONE);
+    }
+
+    /**
+     * Creates a Certificate to the specified Account.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param certificate The Certificate to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createCertificateWithResponseAsync(BinaryData certificate,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createCertificate(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), contentType, accept, certificate, requestOptions, context));
+    }
+
+    /**
+     * Creates a Certificate to the specified Account.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param certificate The Certificate to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> createCertificateWithResponse(BinaryData certificate, RequestOptions requestOptions) {
+        final String contentType = "application/json; odata=minimalmetadata";
+        final String accept = "application/json";
+        return service.createCertificateSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            accept, certificate, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Certificates in the Account along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listCertificatesSinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listCertificates(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listCertificatesAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>((pageSize) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
+                });
+            }
+            return listCertificatesSinglePageAsync(requestOptionsLocal);
+        }, (nextLink, pageSize) -> {
+            RequestOptions requestOptionsLocal = new RequestOptions();
+            requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
+                });
+            }
+            return listCertificatesNextSinglePageAsync(nextLink, requestOptionsLocal);
+        });
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Certificates in the Account along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listCertificatesSinglePage(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listCertificatesSync(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
+     * maximum of 1000
+     * applications can be returned.</td></tr>
+     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
+     * this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listCertificates(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>((pageSize) -> {
+            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
+                });
+            }
+            return listCertificatesSinglePage(requestOptionsLocal);
+        }, (nextLink, pageSize) -> {
+            RequestOptions requestOptionsLocal = new RequestOptions();
+            requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+            if (pageSize != null) {
+                requestOptionsLocal.addRequestCallback(requestLocal -> {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                    requestLocal.setUrl(urlBuilder.toString());
+                });
+            }
+            return listCertificatesNextSinglePage(nextLink, requestOptionsLocal);
+        });
+    }
+
+    /**
+     * Cancels a failed deletion of a Certificate from the specified Account.
+     * 
+     * If you try to delete a Certificate that is being used by a Pool or Compute
+     * Node, the status of the Certificate changes to deleteFailed. If you decide that
+     * you want to continue using the Certificate, you can use this operation to set
+     * the status of the Certificate back to active. If you intend to delete the
+     * Certificate, you do not need to run this operation after the deletion failed.
+     * You must make sure that the Certificate is not being used by any resources, and
+     * then you can try again to delete the Certificate.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * 
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate being deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> cancelCertificateDeletionWithResponseAsync(String thumbprintAlgorithm,
+        String thumbprint, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.cancelCertificateDeletion(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), thumbprintAlgorithm, thumbprint, accept, requestOptions, context));
+    }
+
+    /**
+     * Cancels a failed deletion of a Certificate from the specified Account.
+     * 
+     * If you try to delete a Certificate that is being used by a Pool or Compute
+     * Node, the status of the Certificate changes to deleteFailed. If you decide that
+     * you want to continue using the Certificate, you can use this operation to set
+     * the status of the Certificate back to active. If you intend to delete the
+     * Certificate, you do not need to run this operation after the deletion failed.
+     * You must make sure that the Certificate is not being used by any resources, and
+     * then you can try again to delete the Certificate.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * 
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate being deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelCertificateDeletionWithResponse(String thumbprintAlgorithm, String thumbprint,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.cancelCertificateDeletionSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            thumbprintAlgorithm, thumbprint, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Deletes a Certificate from the specified Account.
+     * 
+     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
+     * it. Before you can delete a Certificate, you must therefore make sure that the
+     * Certificate is not associated with any existing Pools, the Certificate is not
+     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
+     * removed from existing Compute Nodes in that Pool until they restart), and no
+     * running Tasks depend on the Certificate. If you try to delete a Certificate
+     * that is in use, the deletion fails. The Certificate status changes to
+     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
+     * active if you decide that you want to continue using the Certificate.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * 
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to be deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteCertificateWithResponseAsync(String thumbprintAlgorithm, String thumbprint,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.deleteCertificate(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), thumbprintAlgorithm, thumbprint, accept, requestOptions, context));
+    }
+
+    /**
+     * Deletes a Certificate from the specified Account.
+     * 
+     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
+     * it. Before you can delete a Certificate, you must therefore make sure that the
+     * Certificate is not associated with any existing Pools, the Certificate is not
+     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
+     * removed from existing Compute Nodes in that Pool until they restart), and no
+     * running Tasks depend on the Certificate. If you try to delete a Certificate
+     * that is in use, the deletion fails. The Certificate status changes to
+     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
+     * active if you decide that you want to continue using the Certificate.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * 
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to be deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteCertificateWithResponse(String thumbprintAlgorithm, String thumbprint,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteCertificateSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            thumbprintAlgorithm, thumbprint, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Gets information about the specified Certificate.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to get.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about the specified Certificate along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getCertificateWithResponseAsync(String thumbprintAlgorithm, String thumbprint,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getCertificate(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), thumbprintAlgorithm, thumbprint, accept, requestOptions, context));
+    }
+
+    /**
+     * Gets information about the specified Certificate.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
+     * separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the Certificate to get.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return information about the specified Certificate along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getCertificateWithResponse(String thumbprintAlgorithm, String thumbprint,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getCertificateSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            thumbprintAlgorithm, thumbprint, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -16255,10 +17374,10 @@ public final class BatchClientImpl {
      * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Boolean>> jobScheduleExistsInternalWithResponseAsync(String jobScheduleId,
+    public Mono<Response<Boolean>> jobScheduleExistsWithResponseAsync(String jobScheduleId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.jobScheduleExistsInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.jobScheduleExists(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, context));
     }
 
@@ -16311,11 +17430,10 @@ public final class BatchClientImpl {
      * @return whether resource exists along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Boolean> jobScheduleExistsInternalWithResponse(String jobScheduleId,
-        RequestOptions requestOptions) {
+    public Response<Boolean> jobScheduleExistsWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.jobScheduleExistsInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            jobScheduleId, accept, requestOptions, Context.NONE);
+        return service.jobScheduleExistsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobScheduleId,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -16369,10 +17487,10 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteJobScheduleInternalWithResponseAsync(String jobScheduleId,
+    public Mono<Response<Void>> deleteJobScheduleWithResponseAsync(String jobScheduleId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteJobScheduleInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.deleteJobSchedule(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, context));
     }
 
@@ -16427,10 +17545,10 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteJobScheduleInternalWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+    public Response<Void> deleteJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteJobScheduleInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            jobScheduleId, accept, requestOptions, Context.NONE);
+        return service.deleteJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobScheduleId,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -16780,6 +17898,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -16903,10 +18032,10 @@ public final class BatchClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getJobScheduleInternalWithResponseAsync(String jobScheduleId,
+    public Mono<Response<BinaryData>> getJobScheduleWithResponseAsync(String jobScheduleId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getJobScheduleInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getJobSchedule(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, context));
     }
 
@@ -17257,6 +18386,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -17379,11 +18519,10 @@ public final class BatchClientImpl {
      * @return information about the specified Job Schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getJobScheduleInternalWithResponse(String jobScheduleId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getJobScheduleInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            jobScheduleId, accept, requestOptions, Context.NONE);
+        return service.getJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobScheduleId,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -17725,6 +18864,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -17824,12 +18974,12 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateJobScheduleInternalWithResponseAsync(String jobScheduleId, BinaryData jobSchedule,
+    public Mono<Response<Void>> updateJobScheduleWithResponseAsync(String jobScheduleId, BinaryData jobSchedule,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.updateJobScheduleInternal(this.getEndpoint(), this.getServiceVersion().getVersion(),
+        return FluxUtil
+            .withContext(context -> service.updateJobSchedule(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 contentType, jobScheduleId, accept, jobSchedule, requestOptions, context));
     }
 
@@ -18172,6 +19322,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -18271,12 +19432,12 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateJobScheduleInternalWithResponse(String jobScheduleId, BinaryData jobSchedule,
+    public Response<Void> updateJobScheduleWithResponse(String jobScheduleId, BinaryData jobSchedule,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.updateJobScheduleInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            contentType, jobScheduleId, accept, jobSchedule, requestOptions, Context.NONE);
+        return service.updateJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            jobScheduleId, accept, jobSchedule, requestOptions, Context.NONE);
     }
 
     /**
@@ -18628,6 +19789,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -18751,12 +19923,12 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> replaceJobScheduleInternalWithResponseAsync(String jobScheduleId,
-        BinaryData jobSchedule, RequestOptions requestOptions) {
+    public Mono<Response<Void>> replaceJobScheduleWithResponseAsync(String jobScheduleId, BinaryData jobSchedule,
+        RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.replaceJobScheduleInternal(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            context -> service.replaceJobSchedule(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 contentType, jobScheduleId, accept, jobSchedule, requestOptions, context));
     }
 
@@ -19109,6 +20281,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -19232,12 +20415,12 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> replaceJobScheduleInternalWithResponse(String jobScheduleId, BinaryData jobSchedule,
+    public Response<Void> replaceJobScheduleWithResponse(String jobScheduleId, BinaryData jobSchedule,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.replaceJobScheduleInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            contentType, jobScheduleId, accept, jobSchedule, requestOptions, Context.NONE);
+        return service.replaceJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            jobScheduleId, accept, jobSchedule, requestOptions, Context.NONE);
     }
 
     /**
@@ -19285,10 +20468,10 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableJobScheduleInternalWithResponseAsync(String jobScheduleId,
+    public Mono<Response<Void>> disableJobScheduleWithResponseAsync(String jobScheduleId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.disableJobScheduleInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.disableJobSchedule(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, context));
     }
 
@@ -19337,10 +20520,10 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> disableJobScheduleInternalWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+    public Response<Void> disableJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.disableJobScheduleInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            jobScheduleId, accept, requestOptions, Context.NONE);
+        return service.disableJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobScheduleId,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -19386,10 +20569,10 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> enableJobScheduleInternalWithResponseAsync(String jobScheduleId,
+    public Mono<Response<Void>> enableJobScheduleWithResponseAsync(String jobScheduleId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.enableJobScheduleInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.enableJobSchedule(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, context));
     }
 
@@ -19436,10 +20619,10 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> enableJobScheduleInternalWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+    public Response<Void> enableJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.enableJobScheduleInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            jobScheduleId, accept, requestOptions, Context.NONE);
+        return service.enableJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobScheduleId,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -19487,10 +20670,10 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> terminateJobScheduleInternalWithResponseAsync(String jobScheduleId,
+    public Mono<Response<Void>> terminateJobScheduleWithResponseAsync(String jobScheduleId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.terminateJobScheduleInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.terminateJobSchedule(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, context));
     }
 
@@ -19539,10 +20722,9 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> terminateJobScheduleInternalWithResponse(String jobScheduleId,
-        RequestOptions requestOptions) {
+    public Response<Void> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.terminateJobScheduleInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+        return service.terminateJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             jobScheduleId, accept, requestOptions, Context.NONE);
     }
 
@@ -19859,6 +21041,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -19957,11 +21150,11 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createJobScheduleInternalWithResponseAsync(BinaryData jobSchedule,
+    public Mono<Response<Void>> createJobScheduleWithResponseAsync(BinaryData jobSchedule,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createJobScheduleInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.createJobSchedule(this.getEndpoint(),
             this.getServiceVersion().getVersion(), contentType, accept, jobSchedule, requestOptions, context));
     }
 
@@ -20278,6 +21471,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -20376,11 +21580,11 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createJobScheduleInternalWithResponse(BinaryData jobSchedule, RequestOptions requestOptions) {
+    public Response<Void> createJobScheduleWithResponse(BinaryData jobSchedule, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.createJobScheduleInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            contentType, accept, jobSchedule, requestOptions, Context.NONE);
+        return service.createJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            accept, jobSchedule, requestOptions, Context.NONE);
     }
 
     /**
@@ -20397,7 +21601,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -20714,6 +21918,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -20836,11 +22051,11 @@ public final class BatchClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listJobSchedulesInternalSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listJobSchedulesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listJobSchedulesInternal(this.getEndpoint(),
-                this.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .withContext(context -> service.listJobSchedules(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -20859,7 +22074,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -21176,6 +22391,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -21297,7 +22523,7 @@ public final class BatchClientImpl {
      * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listJobSchedulesInternalAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listJobSchedulesAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -21310,7 +22536,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobSchedulesInternalSinglePageAsync(requestOptionsLocal);
+            return listJobSchedulesSinglePageAsync(requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -21321,7 +22547,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobSchedulesInternalNextSinglePageAsync(nextLink, requestOptionsLocal);
+            return listJobSchedulesNextSinglePageAsync(nextLink, requestOptionsLocal);
         });
     }
 
@@ -21339,7 +22565,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -21656,6 +22882,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -21777,9 +23014,9 @@ public final class BatchClientImpl {
      * @return the result of listing the Job Schedules in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listJobSchedulesInternalSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listJobSchedulesSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listJobSchedulesInternalSync(this.getEndpoint(),
+        Response<BinaryData> res = service.listJobSchedulesSync(this.getEndpoint(),
             this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
@@ -21799,7 +23036,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -22116,6 +23353,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -22237,7 +23485,7 @@ public final class BatchClientImpl {
      * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listJobSchedulesInternal(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listJobSchedules(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -22250,7 +23498,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobSchedulesInternalSinglePage(requestOptionsLocal);
+            return listJobSchedulesSinglePage(requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -22261,7 +23509,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listJobSchedulesInternalNextSinglePage(nextLink, requestOptionsLocal);
+            return listJobSchedulesNextSinglePage(nextLink, requestOptionsLocal);
         });
     }
 
@@ -22425,11 +23673,11 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createTaskInternalWithResponseAsync(String jobId, BinaryData task,
+    public Mono<Response<Void>> createTaskWithResponseAsync(String jobId, BinaryData task,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createTaskInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.createTask(this.getEndpoint(),
             this.getServiceVersion().getVersion(), contentType, jobId, accept, task, requestOptions, context));
     }
 
@@ -22593,11 +23841,11 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createTaskInternalWithResponse(String jobId, BinaryData task, RequestOptions requestOptions) {
+    public Response<Void> createTaskWithResponse(String jobId, BinaryData task, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.createTaskInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            jobId, accept, task, requestOptions, Context.NONE);
+        return service.createTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId,
+            accept, task, requestOptions, Context.NONE);
     }
 
     /**
@@ -22618,7 +23866,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -22825,12 +24073,11 @@ public final class BatchClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listTasksInternalSinglePageAsync(String jobId,
-        RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listTasksSinglePageAsync(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listTasksInternal(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                jobId, accept, requestOptions, context))
+            .withContext(context -> service.listTasks(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId,
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -22853,7 +24100,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -23059,7 +24306,7 @@ public final class BatchClientImpl {
      * @return the result of listing the Tasks in a Job as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listTasksInternalAsync(String jobId, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listTasksAsync(String jobId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -23072,7 +24319,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listTasksInternalSinglePageAsync(jobId, requestOptionsLocal);
+            return listTasksSinglePageAsync(jobId, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -23083,7 +24330,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listTasksInternalNextSinglePageAsync(nextLink, requestOptionsLocal);
+            return listTasksNextSinglePageAsync(nextLink, requestOptionsLocal);
         });
     }
 
@@ -23105,7 +24352,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -23311,10 +24558,10 @@ public final class BatchClientImpl {
      * @return the result of listing the Tasks in a Job along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listTasksInternalSinglePage(String jobId, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listTasksSinglePage(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listTasksInternalSync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listTasksSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            jobId, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -23337,7 +24584,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-tasks.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * <tr><td>$expand</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $expand clause. In the form of ","
@@ -23543,7 +24790,7 @@ public final class BatchClientImpl {
      * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listTasksInternal(String jobId, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listTasks(String jobId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -23556,7 +24803,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listTasksInternalSinglePage(jobId, requestOptionsLocal);
+            return listTasksSinglePage(jobId, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -23567,7 +24814,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listTasksInternalNextSinglePage(nextLink, requestOptionsLocal);
+            return listTasksNextSinglePage(nextLink, requestOptionsLocal);
         });
     }
 
@@ -23778,12 +25025,12 @@ public final class BatchClientImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createTaskCollectionInternalWithResponseAsync(String jobId,
-        BinaryData taskCollection, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createTaskCollectionWithResponseAsync(String jobId, BinaryData taskCollection,
+        RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.createTaskCollectionInternal(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            context -> service.createTaskCollection(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 contentType, jobId, accept, taskCollection, requestOptions, context));
     }
 
@@ -23993,12 +25240,12 @@ public final class BatchClientImpl {
      * @return the result of adding a collection of Tasks to a Job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createTaskCollectionInternalWithResponse(String jobId, BinaryData taskCollection,
+    public Response<BinaryData> createTaskCollectionWithResponse(String jobId, BinaryData taskCollection,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.createTaskCollectionInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            contentType, jobId, accept, taskCollection, requestOptions, Context.NONE);
+        return service.createTaskCollectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            jobId, accept, taskCollection, requestOptions, Context.NONE);
     }
 
     /**
@@ -24051,10 +25298,10 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteTaskInternalWithResponseAsync(String jobId, String taskId,
+    public Mono<Response<Void>> deleteTaskWithResponseAsync(String jobId, String taskId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteTaskInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.deleteTask(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobId, taskId, accept, requestOptions, context));
     }
 
@@ -24108,10 +25355,10 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteTaskInternalWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
+    public Response<Void> deleteTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteTaskInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId,
-            accept, requestOptions, Context.NONE);
+        return service.deleteTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -24358,10 +25605,10 @@ public final class BatchClientImpl {
      * nodeInfo refer to the primary Task along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTaskInternalWithResponseAsync(String jobId, String taskId,
+    public Mono<Response<BinaryData>> getTaskWithResponseAsync(String jobId, String taskId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getTaskInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getTask(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobId, taskId, accept, requestOptions, context));
     }
 
@@ -24609,11 +25856,10 @@ public final class BatchClientImpl {
      * nodeInfo refer to the primary Task along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTaskInternalWithResponse(String jobId, String taskId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getTaskInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId,
-            accept, requestOptions, Context.NONE);
+        return service.getTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -24850,11 +26096,11 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> replaceTaskInternalWithResponseAsync(String jobId, String taskId, BinaryData task,
+    public Mono<Response<Void>> replaceTaskWithResponseAsync(String jobId, String taskId, BinaryData task,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.replaceTaskInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.replaceTask(this.getEndpoint(),
             this.getServiceVersion().getVersion(), contentType, jobId, taskId, accept, task, requestOptions, context));
     }
 
@@ -25092,12 +26338,12 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> replaceTaskInternalWithResponse(String jobId, String taskId, BinaryData task,
+    public Response<Void> replaceTaskWithResponse(String jobId, String taskId, BinaryData task,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.replaceTaskInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            jobId, taskId, accept, task, requestOptions, Context.NONE);
+        return service.replaceTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId,
+            taskId, accept, task, requestOptions, Context.NONE);
     }
 
     /**
@@ -25169,12 +26415,12 @@ public final class BatchClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listSubTasksInternalSinglePageAsync(String jobId, String taskId,
+    private Mono<PagedResponse<BinaryData>> listSubTasksSinglePageAsync(String jobId, String taskId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSubTasksInternal(this.getEndpoint(),
-                this.getServiceVersion().getVersion(), jobId, taskId, accept, requestOptions, context))
+            .withContext(context -> service.listSubTasks(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                jobId, taskId, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -25247,12 +26493,12 @@ public final class BatchClientImpl {
      * @return the result of listing the subtasks of a Task as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listSubTasksInternalAsync(String jobId, String taskId, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listSubTasksAsync(String jobId, String taskId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listSubTasksInternalSinglePageAsync(jobId, taskId, requestOptions),
-            nextLink -> listSubTasksInternalNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listSubTasksSinglePageAsync(jobId, taskId, requestOptions),
+            nextLink -> listSubTasksNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -25323,11 +26569,11 @@ public final class BatchClientImpl {
      * @return the result of listing the subtasks of a Task along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listSubTasksInternalSinglePage(String jobId, String taskId,
+    private PagedResponse<BinaryData> listSubTasksSinglePage(String jobId, String taskId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listSubTasksInternalSync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, taskId, accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listSubTasksSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            jobId, taskId, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -25400,12 +26646,12 @@ public final class BatchClientImpl {
      * @return the result of listing the subtasks of a Task as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listSubTasksInternal(String jobId, String taskId, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listSubTasks(String jobId, String taskId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listSubTasksInternalSinglePage(jobId, taskId, requestOptions),
-            nextLink -> listSubTasksInternalNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listSubTasksSinglePage(jobId, taskId, requestOptions),
+            nextLink -> listSubTasksNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -25456,10 +26702,10 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> terminateTaskInternalWithResponseAsync(String jobId, String taskId,
+    public Mono<Response<Void>> terminateTaskWithResponseAsync(String jobId, String taskId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.terminateTaskInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.terminateTask(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobId, taskId, accept, requestOptions, context));
     }
 
@@ -25511,11 +26757,10 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> terminateTaskInternalWithResponse(String jobId, String taskId,
-        RequestOptions requestOptions) {
+    public Response<Void> terminateTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.terminateTaskInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId,
-            taskId, accept, requestOptions, Context.NONE);
+        return service.terminateTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -25571,10 +26816,10 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> reactivateTaskInternalWithResponseAsync(String jobId, String taskId,
+    public Mono<Response<Void>> reactivateTaskWithResponseAsync(String jobId, String taskId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.reactivateTaskInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.reactivateTask(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobId, taskId, accept, requestOptions, context));
     }
 
@@ -25631,11 +26876,10 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> reactivateTaskInternalWithResponse(String jobId, String taskId,
-        RequestOptions requestOptions) {
+    public Response<Void> reactivateTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.reactivateTaskInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId,
-            taskId, accept, requestOptions, Context.NONE);
+        return service.reactivateTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -25666,10 +26910,10 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteTaskFileInternalWithResponseAsync(String jobId, String taskId, String filePath,
+    public Mono<Response<Void>> deleteTaskFileWithResponseAsync(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteTaskFileInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.deleteTaskFile(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobId, taskId, filePath, accept, requestOptions, context));
     }
 
@@ -25701,11 +26945,11 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteTaskFileInternalWithResponse(String jobId, String taskId, String filePath,
+    public Response<Void> deleteTaskFileWithResponse(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteTaskFileInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId,
-            taskId, filePath, accept, requestOptions, Context.NONE);
+        return service.deleteTaskFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId,
+            filePath, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -25755,10 +26999,10 @@ public final class BatchClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTaskFileInternalWithResponseAsync(String jobId, String taskId, String filePath,
+    public Mono<Response<BinaryData>> getTaskFileWithResponseAsync(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
-        return FluxUtil.withContext(context -> service.getTaskFileInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getTaskFile(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobId, taskId, filePath, accept, requestOptions, context));
     }
 
@@ -25809,10 +27053,10 @@ public final class BatchClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTaskFileInternalWithResponse(String jobId, String taskId, String filePath,
+    public Response<BinaryData> getTaskFileWithResponse(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
-        return service.getTaskFileInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId,
+        return service.getTaskFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId,
             filePath, accept, requestOptions, Context.NONE);
     }
 
@@ -25854,10 +27098,10 @@ public final class BatchClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getTaskFilePropertiesInternalWithResponseAsync(String jobId, String taskId,
-        String filePath, RequestOptions requestOptions) {
+    public Mono<Response<Void>> getTaskFilePropertiesWithResponseAsync(String jobId, String taskId, String filePath,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getTaskFilePropertiesInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getTaskFileProperties(this.getEndpoint(),
             this.getServiceVersion().getVersion(), jobId, taskId, filePath, accept, requestOptions, context));
     }
 
@@ -25898,11 +27142,11 @@ public final class BatchClientImpl {
      * @return the properties of the specified Task file along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getTaskFilePropertiesInternalWithResponse(String jobId, String taskId, String filePath,
+    public Response<Void> getTaskFilePropertiesWithResponse(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getTaskFilePropertiesInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            jobId, taskId, filePath, accept, requestOptions, Context.NONE);
+        return service.getTaskFilePropertiesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId,
+            taskId, filePath, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -25919,7 +27163,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of the Task directory. This
      * parameter can be used in
      * combination with the filter parameter to list specific type of files.</td></tr>
@@ -25936,7 +27180,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: String (Required)
+     *         contentLength: long (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -25955,12 +27199,12 @@ public final class BatchClientImpl {
      * a Task on a Compute Node along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listTaskFilesInternalSinglePageAsync(String jobId, String taskId,
+    private Mono<PagedResponse<BinaryData>> listTaskFilesSinglePageAsync(String jobId, String taskId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listTaskFilesInternal(this.getEndpoint(),
-                this.getServiceVersion().getVersion(), jobId, taskId, accept, requestOptions, context))
+            .withContext(context -> service.listTaskFiles(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                jobId, taskId, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -25979,7 +27223,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of the Task directory. This
      * parameter can be used in
      * combination with the filter parameter to list specific type of files.</td></tr>
@@ -25996,7 +27240,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: String (Required)
+     *         contentLength: long (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -26015,8 +27259,7 @@ public final class BatchClientImpl {
      * a Task on a Compute Node as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listTaskFilesInternalAsync(String jobId, String taskId,
-        RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listTaskFilesAsync(String jobId, String taskId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -26029,7 +27272,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listTaskFilesInternalSinglePageAsync(jobId, taskId, requestOptionsLocal);
+            return listTaskFilesSinglePageAsync(jobId, taskId, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -26040,7 +27283,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listTaskFilesInternalNextSinglePageAsync(nextLink, requestOptionsLocal);
+            return listTaskFilesNextSinglePageAsync(nextLink, requestOptionsLocal);
         });
     }
 
@@ -26058,7 +27301,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of the Task directory. This
      * parameter can be used in
      * combination with the filter parameter to list specific type of files.</td></tr>
@@ -26075,7 +27318,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: String (Required)
+     *         contentLength: long (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -26094,11 +27337,11 @@ public final class BatchClientImpl {
      * a Task on a Compute Node along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listTaskFilesInternalSinglePage(String jobId, String taskId,
+    private PagedResponse<BinaryData> listTaskFilesSinglePage(String jobId, String taskId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listTaskFilesInternalSync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, taskId, accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listTaskFilesSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            jobId, taskId, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -26117,7 +27360,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of the Task directory. This
      * parameter can be used in
      * combination with the filter parameter to list specific type of files.</td></tr>
@@ -26134,7 +27377,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: String (Required)
+     *         contentLength: long (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -26153,7 +27396,7 @@ public final class BatchClientImpl {
      * a Task on a Compute Node as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listTaskFilesInternal(String jobId, String taskId, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listTaskFiles(String jobId, String taskId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -26166,7 +27409,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listTaskFilesInternalSinglePage(jobId, taskId, requestOptionsLocal);
+            return listTaskFilesSinglePage(jobId, taskId, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -26177,7 +27420,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listTaskFilesInternalNextSinglePage(nextLink, requestOptionsLocal);
+            return listTaskFilesNextSinglePage(nextLink, requestOptionsLocal);
         });
     }
 
@@ -26220,11 +27463,11 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createNodeUserInternalWithResponseAsync(String poolId, String nodeId, BinaryData user,
+    public Mono<Response<Void>> createNodeUserWithResponseAsync(String poolId, String nodeId, BinaryData user,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createNodeUserInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.createNodeUser(this.getEndpoint(),
             this.getServiceVersion().getVersion(), contentType, poolId, nodeId, accept, user, requestOptions, context));
     }
 
@@ -26267,12 +27510,12 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createNodeUserInternalWithResponse(String poolId, String nodeId, BinaryData user,
+    public Response<Void> createNodeUserWithResponse(String poolId, String nodeId, BinaryData user,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.createNodeUserInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            contentType, poolId, nodeId, accept, user, requestOptions, Context.NONE);
+        return service.createNodeUserSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            poolId, nodeId, accept, user, requestOptions, Context.NONE);
     }
 
     /**
@@ -26301,10 +27544,10 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteNodeUserInternalWithResponseAsync(String poolId, String nodeId, String userName,
+    public Mono<Response<Void>> deleteNodeUserWithResponseAsync(String poolId, String nodeId, String userName,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteNodeUserInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.deleteNodeUser(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, nodeId, userName, accept, requestOptions, context));
     }
 
@@ -26334,11 +27577,11 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteNodeUserInternalWithResponse(String poolId, String nodeId, String userName,
+    public Response<Void> deleteNodeUserWithResponse(String poolId, String nodeId, String userName,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteNodeUserInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
-            nodeId, userName, accept, requestOptions, Context.NONE);
+        return service.deleteNodeUserSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
+            userName, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -26381,12 +27624,12 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> replaceNodeUserInternalWithResponseAsync(String poolId, String nodeId, String userName,
+    public Mono<Response<Void>> replaceNodeUserWithResponseAsync(String poolId, String nodeId, String userName,
         BinaryData content, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.replaceNodeUserInternal(this.getEndpoint(), this.getServiceVersion().getVersion(),
+        return FluxUtil
+            .withContext(context -> service.replaceNodeUser(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 contentType, poolId, nodeId, userName, accept, content, requestOptions, context));
     }
 
@@ -26430,12 +27673,12 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> replaceNodeUserInternalWithResponse(String poolId, String nodeId, String userName,
-        BinaryData content, RequestOptions requestOptions) {
+    public Response<Void> replaceNodeUserWithResponse(String poolId, String nodeId, String userName, BinaryData content,
+        RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.replaceNodeUserInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            contentType, poolId, nodeId, userName, accept, content, requestOptions, Context.NONE);
+        return service.replaceNodeUserSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            poolId, nodeId, userName, accept, content, requestOptions, Context.NONE);
     }
 
     /**
@@ -26564,6 +27807,17 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -26618,10 +27872,10 @@ public final class BatchClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getNodeInternalWithResponseAsync(String poolId, String nodeId,
+    public Mono<Response<BinaryData>> getNodeWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getNodeInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getNode(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptions, context));
     }
 
@@ -26751,6 +28005,17 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -26804,11 +28069,10 @@ public final class BatchClientImpl {
      * @return information about the specified Compute Node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getNodeInternalWithResponse(String poolId, String nodeId,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getNodeInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
-            accept, requestOptions, Context.NONE);
+        return service.getNodeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -26852,7 +28116,7 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rebootNodeInternalWithResponseAsync(String poolId, String nodeId,
+    public Mono<Response<Void>> rebootNodeWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -26861,7 +28125,7 @@ public final class BatchClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
             }
         });
-        return FluxUtil.withContext(context -> service.rebootNodeInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.rebootNode(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptionsLocal, context));
     }
 
@@ -26906,7 +28170,7 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> rebootNodeInternalWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    public Response<Void> rebootNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -26914,183 +28178,183 @@ public final class BatchClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
             }
         });
-        return service.rebootNodeInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
+        return service.rebootNodeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId, accept,
+            requestOptionsLocal, Context.NONE);
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     * 
+     * You can start a Compute Node only if it has been deallocated.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * 
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> startNodeWithResponseAsync(String poolId, String nodeId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.startNode(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptions, context));
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     * 
+     * You can start a Compute Node only if it has been deallocated.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * 
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> startNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.startNodeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId, accept,
+            requestOptions, Context.NONE);
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     * 
+     * You can reinstall the operating system on a Compute Node only if it is in an
+     * idle or running state. This API can be invoked only on Pools created with the
+     * cloud service configuration property.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     nodeReimageOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> reimageNodeWithResponseAsync(String poolId, String nodeId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        requestOptionsLocal.addRequestCallback(requestLocal -> {
+            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
+            }
+        });
+        return FluxUtil.withContext(context -> service.reimageNode(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptionsLocal, context));
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     * 
+     * You can reinstall the operating system on a Compute Node only if it is in an
+     * idle or running state. This API can be invoked only on Pools created with the
+     * cloud service configuration property.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
+     * instead.".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
+     * odata=minimalmetadata".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     nodeReimageOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> reimageNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        requestOptionsLocal.addRequestCallback(requestLocal -> {
+            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
+            }
+        });
+        return service.reimageNodeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
             accept, requestOptionsLocal, Context.NONE);
     }
 
     /**
-     * Starts the specified Compute Node.
-     * 
-     * You can start a Compute Node only if it has been deallocated.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node that you want to restart.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> startNodeInternalWithResponseAsync(String poolId, String nodeId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.startNodeInternal(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptions, context));
-    }
-
-    /**
-     * Starts the specified Compute Node.
-     * 
-     * You can start a Compute Node only if it has been deallocated.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node that you want to restart.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> startNodeInternalWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.startNodeInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
-            accept, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Reinstalls the operating system on the specified Compute Node.
-     * 
-     * You can reinstall the operating system on a Compute Node only if it is in an
-     * idle or running state. This API can be invoked only on Pools created with the
-     * cloud service configuration property.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
-     * odata=minimalmetadata".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     nodeReimageOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node that you want to restart.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> reimageNodeInternalWithResponseAsync(String poolId, String nodeId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(requestLocal -> {
-            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
-            }
-        });
-        return FluxUtil.withContext(context -> service.reimageNodeInternal(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptionsLocal, context));
-    }
-
-    /**
-     * Reinstalls the operating system on the specified Compute Node.
-     * 
-     * You can reinstall the operating system on a Compute Node only if it is in an
-     * idle or running state. This API can be invoked only on Pools created with the
-     * cloud service configuration property.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json;
-     * odata=minimalmetadata".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     nodeReimageOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node that you want to restart.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> reimageNodeInternalWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-        requestOptionsLocal.addRequestCallback(requestLocal -> {
-            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
-            }
-        });
-        return service.reimageNodeInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
-            nodeId, accept, requestOptionsLocal, Context.NONE);
-    }
-
-    /**
      * Deallocates the specified Compute Node.
      * 
      * You can deallocate a Compute Node only if it is in an idle or running state.
@@ -27131,7 +28395,7 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deallocateNodeInternalWithResponseAsync(String poolId, String nodeId,
+    public Mono<Response<Void>> deallocateNodeWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -27140,7 +28404,7 @@ public final class BatchClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
             }
         });
-        return FluxUtil.withContext(context -> service.deallocateNodeInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.deallocateNode(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptionsLocal, context));
     }
 
@@ -27185,8 +28449,7 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deallocateNodeInternalWithResponse(String poolId, String nodeId,
-        RequestOptions requestOptions) {
+    public Response<Void> deallocateNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -27194,8 +28457,8 @@ public final class BatchClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
             }
         });
-        return service.deallocateNodeInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
-            nodeId, accept, requestOptionsLocal, Context.NONE);
+        return service.deallocateNodeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
+            accept, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -27240,7 +28503,7 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableNodeSchedulingInternalWithResponseAsync(String poolId, String nodeId,
+    public Mono<Response<Void>> disableNodeSchedulingWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -27249,7 +28512,7 @@ public final class BatchClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
             }
         });
-        return FluxUtil.withContext(context -> service.disableNodeSchedulingInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.disableNodeScheduling(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptionsLocal, context));
     }
 
@@ -27295,7 +28558,7 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> disableNodeSchedulingInternalWithResponse(String poolId, String nodeId,
+    public Response<Void> disableNodeSchedulingWithResponse(String poolId, String nodeId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -27304,8 +28567,8 @@ public final class BatchClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
             }
         });
-        return service.disableNodeSchedulingInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            poolId, nodeId, accept, requestOptionsLocal, Context.NONE);
+        return service.disableNodeSchedulingSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
+            nodeId, accept, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -27333,10 +28596,10 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> enableNodeSchedulingInternalWithResponseAsync(String poolId, String nodeId,
+    public Mono<Response<Void>> enableNodeSchedulingWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.enableNodeSchedulingInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.enableNodeScheduling(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptions, context));
     }
 
@@ -27365,11 +28628,11 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> enableNodeSchedulingInternalWithResponse(String poolId, String nodeId,
+    public Response<Void> enableNodeSchedulingWithResponse(String poolId, String nodeId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.enableNodeSchedulingInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            poolId, nodeId, accept, requestOptions, Context.NONE);
+        return service.enableNodeSchedulingSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
+            nodeId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -27411,10 +28674,10 @@ public final class BatchClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getNodeRemoteLoginSettingsInternalWithResponseAsync(String poolId, String nodeId,
+    public Mono<Response<BinaryData>> getNodeRemoteLoginSettingsWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getNodeRemoteLoginSettingsInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getNodeRemoteLoginSettings(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptions, context));
     }
 
@@ -27456,11 +28719,11 @@ public final class BatchClientImpl {
      * you must create a user Account on the Compute Node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getNodeRemoteLoginSettingsInternalWithResponse(String poolId, String nodeId,
+    public Response<BinaryData> getNodeRemoteLoginSettingsWithResponse(String poolId, String nodeId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getNodeRemoteLoginSettingsInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            poolId, nodeId, accept, requestOptions, Context.NONE);
+        return service.getNodeRemoteLoginSettingsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
+            nodeId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -27519,12 +28782,12 @@ public final class BatchClientImpl {
      * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadNodeLogsInternalWithResponseAsync(String poolId, String nodeId,
-        BinaryData content, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> uploadNodeLogsWithResponseAsync(String poolId, String nodeId, BinaryData content,
+        RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.uploadNodeLogsInternal(this.getEndpoint(), this.getServiceVersion().getVersion(),
+        return FluxUtil
+            .withContext(context -> service.uploadNodeLogs(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 contentType, poolId, nodeId, accept, content, requestOptions, context));
     }
 
@@ -27583,12 +28846,12 @@ public final class BatchClientImpl {
      * @return the result of uploading Batch service log files from a specific Compute Node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadNodeLogsInternalWithResponse(String poolId, String nodeId, BinaryData content,
+    public Response<BinaryData> uploadNodeLogsWithResponse(String poolId, String nodeId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
-        return service.uploadNodeLogsInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            contentType, poolId, nodeId, accept, content, requestOptions, Context.NONE);
+        return service.uploadNodeLogsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            poolId, nodeId, accept, content, requestOptions, Context.NONE);
     }
 
     /**
@@ -27605,7 +28868,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -27723,6 +28986,17 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -27776,12 +29050,11 @@ public final class BatchClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listNodesInternalSinglePageAsync(String poolId,
-        RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listNodesSinglePageAsync(String poolId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNodesInternal(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                poolId, accept, requestOptions, context))
+            .withContext(context -> service.listNodes(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -27800,7 +29073,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -27918,6 +29191,17 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -27970,7 +29254,7 @@ public final class BatchClientImpl {
      * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listNodesInternalAsync(String poolId, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listNodesAsync(String poolId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -27983,7 +29267,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listNodesInternalSinglePageAsync(poolId, requestOptionsLocal);
+            return listNodesSinglePageAsync(poolId, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -27994,7 +29278,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listNodesInternalNextSinglePageAsync(nextLink, requestOptionsLocal);
+            return listNodesNextSinglePageAsync(nextLink, requestOptionsLocal);
         });
     }
 
@@ -28012,7 +29296,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -28130,6 +29414,17 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -28182,10 +29477,10 @@ public final class BatchClientImpl {
      * @return the result of listing the Compute Nodes in a Pool along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listNodesInternalSinglePage(String poolId, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listNodesSinglePage(String poolId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listNodesInternalSync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listNodesSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            poolId, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -28204,7 +29499,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
      * separated string.</td></tr>
      * </table>
@@ -28322,6 +29617,17 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -28374,7 +29680,7 @@ public final class BatchClientImpl {
      * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listNodesInternal(String poolId, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listNodes(String poolId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -28387,7 +29693,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listNodesInternalSinglePage(poolId, requestOptionsLocal);
+            return listNodesSinglePage(poolId, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -28398,7 +29704,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listNodesInternalNextSinglePage(nextLink, requestOptionsLocal);
+            return listNodesNextSinglePage(nextLink, requestOptionsLocal);
         });
     }
 
@@ -28469,10 +29775,10 @@ public final class BatchClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getNodeExtensionInternalWithResponseAsync(String poolId, String nodeId,
+    public Mono<Response<BinaryData>> getNodeExtensionWithResponseAsync(String poolId, String nodeId,
         String extensionName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getNodeExtensionInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getNodeExtension(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, nodeId, extensionName, accept, requestOptions, context));
     }
 
@@ -28542,11 +29848,11 @@ public final class BatchClientImpl {
      * @return information about the specified Compute Node Extension along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getNodeExtensionInternalWithResponse(String poolId, String nodeId, String extensionName,
+    public Response<BinaryData> getNodeExtensionWithResponse(String poolId, String nodeId, String extensionName,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getNodeExtensionInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
-            nodeId, extensionName, accept, requestOptions, Context.NONE);
+        return service.getNodeExtensionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
+            extensionName, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -28618,11 +29924,11 @@ public final class BatchClientImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listNodeExtensionsInternalSinglePageAsync(String poolId, String nodeId,
+    private Mono<PagedResponse<BinaryData>> listNodeExtensionsSinglePageAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNodeExtensionsInternal(this.getEndpoint(),
+            .withContext(context -> service.listNodeExtensions(this.getEndpoint(),
                 this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
@@ -28696,8 +30002,7 @@ public final class BatchClientImpl {
      * @return the result of listing the Compute Node extensions in a Node as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listNodeExtensionsInternalAsync(String poolId, String nodeId,
-        RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listNodeExtensionsAsync(String poolId, String nodeId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -28710,7 +30015,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listNodeExtensionsInternalSinglePageAsync(poolId, nodeId, requestOptionsLocal);
+            return listNodeExtensionsSinglePageAsync(poolId, nodeId, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -28721,7 +30026,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listNodeExtensionsInternalNextSinglePageAsync(nextLink, requestOptionsLocal);
+            return listNodeExtensionsNextSinglePageAsync(nextLink, requestOptionsLocal);
         });
     }
 
@@ -28793,10 +30098,10 @@ public final class BatchClientImpl {
      * @return the result of listing the Compute Node extensions in a Node along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listNodeExtensionsInternalSinglePage(String poolId, String nodeId,
+    private PagedResponse<BinaryData> listNodeExtensionsSinglePage(String poolId, String nodeId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listNodeExtensionsInternalSync(this.getEndpoint(),
+        Response<BinaryData> res = service.listNodeExtensionsSync(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
@@ -28871,8 +30176,7 @@ public final class BatchClientImpl {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listNodeExtensionsInternal(String poolId, String nodeId,
-        RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listNodeExtensions(String poolId, String nodeId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -28885,7 +30189,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listNodeExtensionsInternalSinglePage(poolId, nodeId, requestOptionsLocal);
+            return listNodeExtensionsSinglePage(poolId, nodeId, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -28896,7 +30200,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listNodeExtensionsInternalNextSinglePage(nextLink, requestOptionsLocal);
+            return listNodeExtensionsNextSinglePage(nextLink, requestOptionsLocal);
         });
     }
 
@@ -28928,10 +30232,10 @@ public final class BatchClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteNodeFileInternalWithResponseAsync(String poolId, String nodeId, String filePath,
+    public Mono<Response<Void>> deleteNodeFileWithResponseAsync(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteNodeFileInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.deleteNodeFile(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, nodeId, filePath, accept, requestOptions, context));
     }
 
@@ -28963,11 +30267,11 @@ public final class BatchClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteNodeFileInternalWithResponse(String poolId, String nodeId, String filePath,
+    public Response<Void> deleteNodeFileWithResponse(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteNodeFileInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
-            nodeId, filePath, accept, requestOptions, Context.NONE);
+        return service.deleteNodeFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
+            filePath, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -29017,10 +30321,10 @@ public final class BatchClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getNodeFileInternalWithResponseAsync(String poolId, String nodeId,
-        String filePath, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getNodeFileWithResponseAsync(String poolId, String nodeId, String filePath,
+        RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
-        return FluxUtil.withContext(context -> service.getNodeFileInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getNodeFile(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, nodeId, filePath, accept, requestOptions, context));
     }
 
@@ -29071,11 +30375,11 @@ public final class BatchClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getNodeFileInternalWithResponse(String poolId, String nodeId, String filePath,
+    public Response<BinaryData> getNodeFileWithResponse(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
-        return service.getNodeFileInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
-            nodeId, filePath, accept, requestOptions, Context.NONE);
+        return service.getNodeFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
+            filePath, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -29116,10 +30420,10 @@ public final class BatchClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getNodeFilePropertiesInternalWithResponseAsync(String poolId, String nodeId,
-        String filePath, RequestOptions requestOptions) {
+    public Mono<Response<Void>> getNodeFilePropertiesWithResponseAsync(String poolId, String nodeId, String filePath,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getNodeFilePropertiesInternal(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getNodeFileProperties(this.getEndpoint(),
             this.getServiceVersion().getVersion(), poolId, nodeId, filePath, accept, requestOptions, context));
     }
 
@@ -29160,11 +30464,11 @@ public final class BatchClientImpl {
      * @return the properties of the specified Compute Node file along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getNodeFilePropertiesInternalWithResponse(String poolId, String nodeId, String filePath,
+    public Response<Void> getNodeFilePropertiesWithResponse(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getNodeFilePropertiesInternalSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            poolId, nodeId, filePath, accept, requestOptions, Context.NONE);
+        return service.getNodeFilePropertiesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
+            nodeId, filePath, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -29181,7 +30485,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -29196,7 +30500,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: String (Required)
+     *         contentLength: long (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -29215,12 +30519,12 @@ public final class BatchClientImpl {
      * a Task on a Compute Node along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listNodeFilesInternalSinglePageAsync(String poolId, String nodeId,
+    private Mono<PagedResponse<BinaryData>> listNodeFilesSinglePageAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNodeFilesInternal(this.getEndpoint(),
-                this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptions, context))
+            .withContext(context -> service.listNodeFiles(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                poolId, nodeId, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -29239,7 +30543,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -29254,7 +30558,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: String (Required)
+     *         contentLength: long (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -29273,8 +30577,7 @@ public final class BatchClientImpl {
      * a Task on a Compute Node as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listNodeFilesInternalAsync(String poolId, String nodeId,
-        RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listNodeFilesAsync(String poolId, String nodeId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -29287,7 +30590,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listNodeFilesInternalSinglePageAsync(poolId, nodeId, requestOptionsLocal);
+            return listNodeFilesSinglePageAsync(poolId, nodeId, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -29298,7 +30601,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listNodeFilesInternalNextSinglePageAsync(nextLink, requestOptionsLocal);
+            return listNodeFilesNextSinglePageAsync(nextLink, requestOptionsLocal);
         });
     }
 
@@ -29316,7 +30619,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -29331,7 +30634,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: String (Required)
+     *         contentLength: long (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -29350,11 +30653,11 @@ public final class BatchClientImpl {
      * a Task on a Compute Node along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listNodeFilesInternalSinglePage(String poolId, String nodeId,
+    private PagedResponse<BinaryData> listNodeFilesSinglePage(String poolId, String nodeId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listNodeFilesInternalSync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listNodeFilesSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            poolId, nodeId, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -29373,7 +30676,7 @@ public final class BatchClientImpl {
      * applications can be returned.</td></tr>
      * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
      * this filter, see
-     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
+     * https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -29388,7 +30691,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: String (Required)
+     *         contentLength: long (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -29407,8 +30710,7 @@ public final class BatchClientImpl {
      * a Task on a Compute Node as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listNodeFilesInternal(String poolId, String nodeId,
-        RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listNodeFiles(String poolId, String nodeId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
@@ -29421,7 +30723,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listNodeFilesInternalSinglePage(poolId, nodeId, requestOptionsLocal);
+            return listNodeFilesSinglePage(poolId, nodeId, requestOptionsLocal);
         }, (nextLink, pageSize) -> {
             RequestOptions requestOptionsLocal = new RequestOptions();
             requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
@@ -29432,7 +30734,7 @@ public final class BatchClientImpl {
                     requestLocal.setUrl(urlBuilder.toString());
                 });
             }
-            return listNodeFilesInternalNextSinglePage(nextLink, requestOptionsLocal);
+            return listNodeFilesNextSinglePage(nextLink, requestOptionsLocal);
         });
     }
 
@@ -29464,12 +30766,12 @@ public final class BatchClientImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listApplicationsInternalNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listApplicationsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listApplicationsInternalNext(nextLink, this.getEndpoint(), accept,
-                requestOptions, context))
+            .withContext(
+                context -> service.listApplicationsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -29501,11 +30803,10 @@ public final class BatchClientImpl {
      * @return the result of listing the applications available in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listApplicationsInternalNextSinglePage(String nextLink,
-        RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listApplicationsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listApplicationsInternalNextSync(nextLink, this.getEndpoint(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res
+            = service.listApplicationsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -29539,12 +30840,11 @@ public final class BatchClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listPoolUsageMetricsInternalNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listPoolUsageMetricsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listPoolUsageMetricsInternalNext(nextLink, this.getEndpoint(), accept,
-                requestOptions, context))
+        return FluxUtil.withContext(
+            context -> service.listPoolUsageMetricsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -29577,11 +30877,11 @@ public final class BatchClientImpl {
      * @return the result of a listing the usage metrics for an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listPoolUsageMetricsInternalNextSinglePage(String nextLink,
+    private PagedResponse<BinaryData> listPoolUsageMetricsNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listPoolUsageMetricsInternalNextSync(nextLink, this.getEndpoint(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res
+            = service.listPoolUsageMetricsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -29807,6 +31107,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -29939,12 +31250,12 @@ public final class BatchClientImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listPoolsInternalNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listPoolsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.listPoolsInternalNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+                context -> service.listPoolsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -30170,6 +31481,17 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -30301,10 +31623,10 @@ public final class BatchClientImpl {
      * @return the result of listing the Pools in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listPoolsInternalNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listPoolsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res
-            = service.listPoolsInternalNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+            = service.listPoolsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -30349,12 +31671,11 @@ public final class BatchClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listSupportedImagesInternalNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listSupportedImagesNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listSupportedImagesInternalNext(nextLink, this.getEndpoint(), accept,
-                requestOptions, context))
+        return FluxUtil.withContext(
+            context -> service.listSupportedImagesNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -30398,998 +31719,1017 @@ public final class BatchClientImpl {
      * @return the result of listing the supported Virtual Machine Images along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listSupportedImagesInternalNextSinglePage(String nextLink,
+    private PagedResponse<BinaryData> listSupportedImagesNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res = service.listSupportedImagesInternalNextSync(nextLink, this.getEndpoint(), accept,
-            requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     poolId: String (Required)
-     *     dedicated (Optional): {
-     *         creating: int (Required)
-     *         idle: int (Required)
-     *         offline: int (Required)
-     *         preempted: int (Required)
-     *         rebooting: int (Required)
-     *         reimaging: int (Required)
-     *         running: int (Required)
-     *         starting: int (Required)
-     *         startTaskFailed: int (Required)
-     *         leavingPool: int (Required)
-     *         unknown: int (Required)
-     *         unusable: int (Required)
-     *         waitingForStartTask: int (Required)
-     *         deallocated: int (Required)
-     *         deallocating: int (Required)
-     *         total: int (Required)
-     *         upgradingOS: int (Required)
-     *     }
-     *     lowPriority (Optional): (recursive schema, see lowPriority above)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of listing the Compute Node counts in the Account along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listPoolNodeCountsInternalNextSinglePageAsync(String nextLink,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listPoolNodeCountsInternalNext(nextLink, this.getEndpoint(), accept,
-                requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
-    }
-
-    /**
-     * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     poolId: String (Required)
-     *     dedicated (Optional): {
-     *         creating: int (Required)
-     *         idle: int (Required)
-     *         offline: int (Required)
-     *         preempted: int (Required)
-     *         rebooting: int (Required)
-     *         reimaging: int (Required)
-     *         running: int (Required)
-     *         starting: int (Required)
-     *         startTaskFailed: int (Required)
-     *         leavingPool: int (Required)
-     *         unknown: int (Required)
-     *         unusable: int (Required)
-     *         waitingForStartTask: int (Required)
-     *         deallocated: int (Required)
-     *         deallocating: int (Required)
-     *         total: int (Required)
-     *         upgradingOS: int (Required)
-     *     }
-     *     lowPriority (Optional): (recursive schema, see lowPriority above)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of listing the Compute Node counts in the Account along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listPoolNodeCountsInternalNextSinglePage(String nextLink,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res = service.listPoolNodeCountsInternalNextSync(nextLink, this.getEndpoint(), accept,
-            requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
-    }
-
-    /**
-     * Lists all of the Jobs in the specified Account.
-     * 
-     * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     displayName: String (Optional)
-     *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     priority: Integer (Optional)
-     *     allowTaskPreemption: Boolean (Optional)
-     *     maxParallelTasks: Integer (Optional)
-     *     constraints (Optional): {
-     *         maxWallClockTime: Duration (Optional)
-     *         maxTaskRetryCount: Integer (Optional)
-     *     }
-     *     jobManagerTask (Optional): {
-     *         id: String (Required)
-     *         displayName: String (Optional)
-     *         commandLine: String (Required)
-     *         containerSettings (Optional): {
-     *             containerRunOptions: String (Optional)
-     *             imageName: String (Required)
-     *             registry (Optional): {
-     *                 username: String (Optional)
-     *                 password: String (Optional)
-     *                 registryServer: String (Optional)
-     *                 identityReference (Optional): {
-     *                     resourceId: String (Optional)
-     *                 }
-     *             }
-     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
-     *             containerHostBatchBindMounts (Optional): [
-     *                  (Optional){
-     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
-     *                     isReadOnly: Boolean (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         resourceFiles (Optional): [
-     *              (Optional){
-     *                 autoStorageContainerName: String (Optional)
-     *                 storageContainerUrl: String (Optional)
-     *                 httpUrl: String (Optional)
-     *                 blobPrefix: String (Optional)
-     *                 filePath: String (Optional)
-     *                 fileMode: String (Optional)
-     *                 identityReference (Optional): (recursive schema, see identityReference above)
-     *             }
-     *         ]
-     *         outputFiles (Optional): [
-     *              (Optional){
-     *                 filePattern: String (Required)
-     *                 destination (Required): {
-     *                     container (Optional): {
-     *                         path: String (Optional)
-     *                         containerUrl: String (Required)
-     *                         identityReference (Optional): (recursive schema, see identityReference above)
-     *                         uploadHeaders (Optional): [
-     *                              (Optional){
-     *                                 name: String (Required)
-     *                                 value: String (Optional)
-     *                             }
-     *                         ]
-     *                     }
-     *                 }
-     *                 uploadOptions (Required): {
-     *                     uploadCondition: String(tasksuccess/taskfailure/taskcompletion) (Required)
-     *                 }
-     *             }
-     *         ]
-     *         environmentSettings (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *         constraints (Optional): {
-     *             maxWallClockTime: Duration (Optional)
-     *             retentionTime: Duration (Optional)
-     *             maxTaskRetryCount: Integer (Optional)
-     *         }
-     *         requiredSlots: Integer (Optional)
-     *         killJobOnCompletion: Boolean (Optional)
-     *         userIdentity (Optional): {
-     *             username: String (Optional)
-     *             autoUser (Optional): {
-     *                 scope: String(task/pool) (Optional)
-     *                 elevationLevel: String(nonadmin/admin) (Optional)
-     *             }
-     *         }
-     *         runExclusive: Boolean (Optional)
-     *         applicationPackageReferences (Optional): [
-     *              (Optional){
-     *                 applicationId: String (Required)
-     *                 version: String (Optional)
-     *             }
-     *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
-     *         allowLowPriorityNode: Boolean (Optional)
-     *     }
-     *     jobPreparationTask (Optional): {
-     *         id: String (Optional)
-     *         commandLine: String (Required)
-     *         containerSettings (Optional): (recursive schema, see containerSettings above)
-     *         resourceFiles (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         environmentSettings (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         constraints (Optional): (recursive schema, see constraints above)
-     *         waitForSuccess: Boolean (Optional)
-     *         userIdentity (Optional): (recursive schema, see userIdentity above)
-     *         rerunOnNodeRebootAfterSuccess: Boolean (Optional)
-     *     }
-     *     jobReleaseTask (Optional): {
-     *         id: String (Optional)
-     *         commandLine: String (Required)
-     *         containerSettings (Optional): (recursive schema, see containerSettings above)
-     *         resourceFiles (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         environmentSettings (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         maxWallClockTime: Duration (Optional)
-     *         retentionTime: Duration (Optional)
-     *         userIdentity (Optional): (recursive schema, see userIdentity above)
-     *     }
-     *     commonEnvironmentSettings (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     poolInfo (Required): {
-     *         poolId: String (Optional)
-     *         autoPoolSpecification (Optional): {
-     *             autoPoolIdPrefix: String (Optional)
-     *             poolLifetimeOption: String(jobschedule/job) (Required)
-     *             keepAlive: Boolean (Optional)
-     *             pool (Optional): {
-     *                 displayName: String (Optional)
-     *                 vmSize: String (Required)
-     *                 virtualMachineConfiguration (Optional): {
-     *                     imageReference (Required): {
-     *                         publisher: String (Optional)
-     *                         offer: String (Optional)
-     *                         sku: String (Optional)
-     *                         version: String (Optional)
-     *                         virtualMachineImageId: String (Optional)
-     *                         exactVersion: String (Optional)
-     *                         sharedGalleryImageId: String (Optional)
-     *                         communityGalleryImageId: String (Optional)
-     *                     }
-     *                     nodeAgentSKUId: String (Required)
-     *                     windowsConfiguration (Optional): {
-     *                         enableAutomaticUpdates: Boolean (Optional)
-     *                     }
-     *                     dataDisks (Optional): [
-     *                          (Optional){
-     *                             lun: int (Required)
-     *                             caching: String(none/readonly/readwrite) (Optional)
-     *                             diskSizeGB: int (Required)
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                         }
-     *                     ]
-     *                     licenseType: String (Optional)
-     *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible/criCompatible) (Required)
-     *                         containerImageNames (Optional): [
-     *                             String (Optional)
-     *                         ]
-     *                         containerRegistries (Optional): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                     diskEncryptionConfiguration (Optional): {
-     *                         targets (Optional): [
-     *                             String(osdisk/temporarydisk) (Optional)
-     *                         ]
-     *                     }
-     *                     nodePlacementConfiguration (Optional): {
-     *                         policy: String(regional/zonal) (Optional)
-     *                     }
-     *                     extensions (Optional): [
-     *                          (Optional){
-     *                             name: String (Required)
-     *                             publisher: String (Required)
-     *                             type: String (Required)
-     *                             typeHandlerVersion: String (Optional)
-     *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             enableAutomaticUpgrade: Boolean (Optional)
-     *                             settings (Optional): {
-     *                                 String: String (Required)
-     *                             }
-     *                             protectedSettings (Optional): {
-     *                                 String: String (Required)
-     *                             }
-     *                             provisionAfterExtensions (Optional): [
-     *                                 String (Optional)
-     *                             ]
-     *                         }
-     *                     ]
-     *                     osDisk (Optional): {
-     *                         ephemeralOSDiskSettings (Optional): {
-     *                             placement: String(cachedisk) (Optional)
-     *                         }
-     *                         caching: String(none/readonly/readwrite) (Optional)
-     *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
-     *                         writeAcceleratorEnabled: Boolean (Optional)
-     *                     }
-     *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
-     *                             secureBootEnabled: Boolean (Optional)
-     *                             vTpmEnabled: Boolean (Optional)
-     *                         }
-     *                     }
-     *                     serviceArtifactReference (Optional): {
-     *                         id: String (Required)
-     *                     }
-     *                 }
-     *                 taskSlotsPerNode: Integer (Optional)
-     *                 taskSchedulingPolicy (Optional): {
-     *                     nodeFillType: String(spread/pack) (Required)
-     *                 }
-     *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
-     *                 targetDedicatedNodes: Integer (Optional)
-     *                 targetLowPriorityNodes: Integer (Optional)
-     *                 enableAutoScale: Boolean (Optional)
-     *                 autoScaleFormula: String (Optional)
-     *                 autoScaleEvaluationInterval: Duration (Optional)
-     *                 enableInterNodeCommunication: Boolean (Optional)
-     *                 networkConfiguration (Optional): {
-     *                     subnetId: String (Optional)
-     *                     dynamicVNetAssignmentScope: String(none/job) (Optional)
-     *                     endpointConfiguration (Optional): {
-     *                         inboundNATPools (Required): [
-     *                              (Required){
-     *                                 name: String (Required)
-     *                                 protocol: String(tcp/udp) (Required)
-     *                                 backendPort: int (Required)
-     *                                 frontendPortRangeStart: int (Required)
-     *                                 frontendPortRangeEnd: int (Required)
-     *                                 networkSecurityGroupRules (Optional): [
-     *                                      (Optional){
-     *                                         priority: int (Required)
-     *                                         access: String(allow/deny) (Required)
-     *                                         sourceAddressPrefix: String (Required)
-     *                                         sourcePortRanges (Optional): [
-     *                                             String (Optional)
-     *                                         ]
-     *                                     }
-     *                                 ]
-     *                             }
-     *                         ]
-     *                     }
-     *                     publicIPAddressConfiguration (Optional): {
-     *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
-     *                         ipAddressIds (Optional): [
-     *                             String (Optional)
-     *                         ]
-     *                     }
-     *                     enableAcceleratedNetworking: Boolean (Optional)
-     *                 }
-     *                 startTask (Optional): {
-     *                     commandLine: String (Required)
-     *                     containerSettings (Optional): (recursive schema, see containerSettings above)
-     *                     resourceFiles (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     environmentSettings (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     userIdentity (Optional): (recursive schema, see userIdentity above)
-     *                     maxTaskRetryCount: Integer (Optional)
-     *                     waitForSuccess: Boolean (Optional)
-     *                 }
-     *                 applicationPackageReferences (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 userAccounts (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         password: String (Required)
-     *                         elevationLevel: String(nonadmin/admin) (Optional)
-     *                         linuxUserConfiguration (Optional): {
-     *                             uid: Integer (Optional)
-     *                             gid: Integer (Optional)
-     *                             sshPrivateKey: String (Optional)
-     *                         }
-     *                         windowsUserConfiguration (Optional): {
-     *                             loginMode: String(batch/interactive) (Optional)
-     *                         }
-     *                     }
-     *                 ]
-     *                 metadata (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         value: String (Required)
-     *                     }
-     *                 ]
-     *                 mountConfiguration (Optional): [
-     *                      (Optional){
-     *                         azureBlobFileSystemConfiguration (Optional): {
-     *                             accountName: String (Required)
-     *                             containerName: String (Required)
-     *                             accountKey: String (Optional)
-     *                             sasKey: String (Optional)
-     *                             blobfuseOptions: String (Optional)
-     *                             relativeMountPath: String (Required)
-     *                             identityReference (Optional): (recursive schema, see identityReference above)
-     *                         }
-     *                         nfsMountConfiguration (Optional): {
-     *                             source: String (Required)
-     *                             relativeMountPath: String (Required)
-     *                             mountOptions: String (Optional)
-     *                         }
-     *                         cifsMountConfiguration (Optional): {
-     *                             username: String (Required)
-     *                             source: String (Required)
-     *                             relativeMountPath: String (Required)
-     *                             mountOptions: String (Optional)
-     *                             password: String (Required)
-     *                         }
-     *                         azureFileShareConfiguration (Optional): {
-     *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
-     *                             accountKey: String (Required)
-     *                             relativeMountPath: String (Required)
-     *                             mountOptions: String (Optional)
-     *                         }
-     *                     }
-     *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *                 upgradePolicy (Optional): {
-     *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOSUpgradePolicy (Optional): {
-     *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOSUpgrade: Boolean (Optional)
-     *                         useRollingUpgradePolicy: Boolean (Optional)
-     *                         osRollingUpgradeDeferral: Boolean (Optional)
-     *                     }
-     *                     rollingUpgradePolicy (Optional): {
-     *                         enableCrossZoneUpgrade: Boolean (Optional)
-     *                         maxBatchInstancePercent: Integer (Optional)
-     *                         maxUnhealthyInstancePercent: Integer (Optional)
-     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
-     *                         pauseTimeBetweenBatches: Duration (Optional)
-     *                         prioritizeUnhealthyInstances: Boolean (Optional)
-     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
-     *                     }
-     *                 }
-     *             }
-     *         }
-     *     }
-     *     onAllTasksComplete: String(noaction/terminatejob) (Optional)
-     *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
-     *     networkConfiguration (Optional): {
-     *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
-     *     }
-     *     metadata (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     executionInfo (Optional): {
-     *         startTime: OffsetDateTime (Required)
-     *         endTime: OffsetDateTime (Optional)
-     *         poolId: String (Optional)
-     *         schedulingError (Optional): {
-     *             category: String(usererror/servererror) (Required)
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             details (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         terminateReason: String (Optional)
-     *     }
-     *     stats (Optional): {
-     *         url: String (Required)
-     *         startTime: OffsetDateTime (Required)
-     *         lastUpdateTime: OffsetDateTime (Required)
-     *         userCPUTime: Duration (Required)
-     *         kernelCPUTime: Duration (Required)
-     *         wallClockTime: Duration (Required)
-     *         readIOps: long (Required)
-     *         writeIOps: long (Required)
-     *         readIOGiB: double (Required)
-     *         writeIOGiB: double (Required)
-     *         numSucceededTasks: long (Required)
-     *         numFailedTasks: long (Required)
-     *         numTaskRetries: long (Required)
-     *         waitTime: Duration (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of listing the Jobs in an Account along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listJobsInternalNextSinglePageAsync(String nextLink,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listJobsInternalNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
-    }
-
-    /**
-     * Lists all of the Jobs in the specified Account.
-     * 
-     * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     displayName: String (Optional)
-     *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     priority: Integer (Optional)
-     *     allowTaskPreemption: Boolean (Optional)
-     *     maxParallelTasks: Integer (Optional)
-     *     constraints (Optional): {
-     *         maxWallClockTime: Duration (Optional)
-     *         maxTaskRetryCount: Integer (Optional)
-     *     }
-     *     jobManagerTask (Optional): {
-     *         id: String (Required)
-     *         displayName: String (Optional)
-     *         commandLine: String (Required)
-     *         containerSettings (Optional): {
-     *             containerRunOptions: String (Optional)
-     *             imageName: String (Required)
-     *             registry (Optional): {
-     *                 username: String (Optional)
-     *                 password: String (Optional)
-     *                 registryServer: String (Optional)
-     *                 identityReference (Optional): {
-     *                     resourceId: String (Optional)
-     *                 }
-     *             }
-     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
-     *             containerHostBatchBindMounts (Optional): [
-     *                  (Optional){
-     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
-     *                     isReadOnly: Boolean (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         resourceFiles (Optional): [
-     *              (Optional){
-     *                 autoStorageContainerName: String (Optional)
-     *                 storageContainerUrl: String (Optional)
-     *                 httpUrl: String (Optional)
-     *                 blobPrefix: String (Optional)
-     *                 filePath: String (Optional)
-     *                 fileMode: String (Optional)
-     *                 identityReference (Optional): (recursive schema, see identityReference above)
-     *             }
-     *         ]
-     *         outputFiles (Optional): [
-     *              (Optional){
-     *                 filePattern: String (Required)
-     *                 destination (Required): {
-     *                     container (Optional): {
-     *                         path: String (Optional)
-     *                         containerUrl: String (Required)
-     *                         identityReference (Optional): (recursive schema, see identityReference above)
-     *                         uploadHeaders (Optional): [
-     *                              (Optional){
-     *                                 name: String (Required)
-     *                                 value: String (Optional)
-     *                             }
-     *                         ]
-     *                     }
-     *                 }
-     *                 uploadOptions (Required): {
-     *                     uploadCondition: String(tasksuccess/taskfailure/taskcompletion) (Required)
-     *                 }
-     *             }
-     *         ]
-     *         environmentSettings (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *         constraints (Optional): {
-     *             maxWallClockTime: Duration (Optional)
-     *             retentionTime: Duration (Optional)
-     *             maxTaskRetryCount: Integer (Optional)
-     *         }
-     *         requiredSlots: Integer (Optional)
-     *         killJobOnCompletion: Boolean (Optional)
-     *         userIdentity (Optional): {
-     *             username: String (Optional)
-     *             autoUser (Optional): {
-     *                 scope: String(task/pool) (Optional)
-     *                 elevationLevel: String(nonadmin/admin) (Optional)
-     *             }
-     *         }
-     *         runExclusive: Boolean (Optional)
-     *         applicationPackageReferences (Optional): [
-     *              (Optional){
-     *                 applicationId: String (Required)
-     *                 version: String (Optional)
-     *             }
-     *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
-     *         allowLowPriorityNode: Boolean (Optional)
-     *     }
-     *     jobPreparationTask (Optional): {
-     *         id: String (Optional)
-     *         commandLine: String (Required)
-     *         containerSettings (Optional): (recursive schema, see containerSettings above)
-     *         resourceFiles (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         environmentSettings (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         constraints (Optional): (recursive schema, see constraints above)
-     *         waitForSuccess: Boolean (Optional)
-     *         userIdentity (Optional): (recursive schema, see userIdentity above)
-     *         rerunOnNodeRebootAfterSuccess: Boolean (Optional)
-     *     }
-     *     jobReleaseTask (Optional): {
-     *         id: String (Optional)
-     *         commandLine: String (Required)
-     *         containerSettings (Optional): (recursive schema, see containerSettings above)
-     *         resourceFiles (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         environmentSettings (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         maxWallClockTime: Duration (Optional)
-     *         retentionTime: Duration (Optional)
-     *         userIdentity (Optional): (recursive schema, see userIdentity above)
-     *     }
-     *     commonEnvironmentSettings (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     poolInfo (Required): {
-     *         poolId: String (Optional)
-     *         autoPoolSpecification (Optional): {
-     *             autoPoolIdPrefix: String (Optional)
-     *             poolLifetimeOption: String(jobschedule/job) (Required)
-     *             keepAlive: Boolean (Optional)
-     *             pool (Optional): {
-     *                 displayName: String (Optional)
-     *                 vmSize: String (Required)
-     *                 virtualMachineConfiguration (Optional): {
-     *                     imageReference (Required): {
-     *                         publisher: String (Optional)
-     *                         offer: String (Optional)
-     *                         sku: String (Optional)
-     *                         version: String (Optional)
-     *                         virtualMachineImageId: String (Optional)
-     *                         exactVersion: String (Optional)
-     *                         sharedGalleryImageId: String (Optional)
-     *                         communityGalleryImageId: String (Optional)
-     *                     }
-     *                     nodeAgentSKUId: String (Required)
-     *                     windowsConfiguration (Optional): {
-     *                         enableAutomaticUpdates: Boolean (Optional)
-     *                     }
-     *                     dataDisks (Optional): [
-     *                          (Optional){
-     *                             lun: int (Required)
-     *                             caching: String(none/readonly/readwrite) (Optional)
-     *                             diskSizeGB: int (Required)
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                         }
-     *                     ]
-     *                     licenseType: String (Optional)
-     *                     containerConfiguration (Optional): {
-     *                         type: String(dockerCompatible/criCompatible) (Required)
-     *                         containerImageNames (Optional): [
-     *                             String (Optional)
-     *                         ]
-     *                         containerRegistries (Optional): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                     diskEncryptionConfiguration (Optional): {
-     *                         targets (Optional): [
-     *                             String(osdisk/temporarydisk) (Optional)
-     *                         ]
-     *                     }
-     *                     nodePlacementConfiguration (Optional): {
-     *                         policy: String(regional/zonal) (Optional)
-     *                     }
-     *                     extensions (Optional): [
-     *                          (Optional){
-     *                             name: String (Required)
-     *                             publisher: String (Required)
-     *                             type: String (Required)
-     *                             typeHandlerVersion: String (Optional)
-     *                             autoUpgradeMinorVersion: Boolean (Optional)
-     *                             enableAutomaticUpgrade: Boolean (Optional)
-     *                             settings (Optional): {
-     *                                 String: String (Required)
-     *                             }
-     *                             protectedSettings (Optional): {
-     *                                 String: String (Required)
-     *                             }
-     *                             provisionAfterExtensions (Optional): [
-     *                                 String (Optional)
-     *                             ]
-     *                         }
-     *                     ]
-     *                     osDisk (Optional): {
-     *                         ephemeralOSDiskSettings (Optional): {
-     *                             placement: String(cachedisk) (Optional)
-     *                         }
-     *                         caching: String(none/readonly/readwrite) (Optional)
-     *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
-     *                         writeAcceleratorEnabled: Boolean (Optional)
-     *                     }
-     *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
-     *                             secureBootEnabled: Boolean (Optional)
-     *                             vTpmEnabled: Boolean (Optional)
-     *                         }
-     *                     }
-     *                     serviceArtifactReference (Optional): {
-     *                         id: String (Required)
-     *                     }
-     *                 }
-     *                 taskSlotsPerNode: Integer (Optional)
-     *                 taskSchedulingPolicy (Optional): {
-     *                     nodeFillType: String(spread/pack) (Required)
-     *                 }
-     *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
-     *                 targetDedicatedNodes: Integer (Optional)
-     *                 targetLowPriorityNodes: Integer (Optional)
-     *                 enableAutoScale: Boolean (Optional)
-     *                 autoScaleFormula: String (Optional)
-     *                 autoScaleEvaluationInterval: Duration (Optional)
-     *                 enableInterNodeCommunication: Boolean (Optional)
-     *                 networkConfiguration (Optional): {
-     *                     subnetId: String (Optional)
-     *                     dynamicVNetAssignmentScope: String(none/job) (Optional)
-     *                     endpointConfiguration (Optional): {
-     *                         inboundNATPools (Required): [
-     *                              (Required){
-     *                                 name: String (Required)
-     *                                 protocol: String(tcp/udp) (Required)
-     *                                 backendPort: int (Required)
-     *                                 frontendPortRangeStart: int (Required)
-     *                                 frontendPortRangeEnd: int (Required)
-     *                                 networkSecurityGroupRules (Optional): [
-     *                                      (Optional){
-     *                                         priority: int (Required)
-     *                                         access: String(allow/deny) (Required)
-     *                                         sourceAddressPrefix: String (Required)
-     *                                         sourcePortRanges (Optional): [
-     *                                             String (Optional)
-     *                                         ]
-     *                                     }
-     *                                 ]
-     *                             }
-     *                         ]
-     *                     }
-     *                     publicIPAddressConfiguration (Optional): {
-     *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
-     *                         ipAddressIds (Optional): [
-     *                             String (Optional)
-     *                         ]
-     *                     }
-     *                     enableAcceleratedNetworking: Boolean (Optional)
-     *                 }
-     *                 startTask (Optional): {
-     *                     commandLine: String (Required)
-     *                     containerSettings (Optional): (recursive schema, see containerSettings above)
-     *                     resourceFiles (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     environmentSettings (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     userIdentity (Optional): (recursive schema, see userIdentity above)
-     *                     maxTaskRetryCount: Integer (Optional)
-     *                     waitForSuccess: Boolean (Optional)
-     *                 }
-     *                 applicationPackageReferences (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 userAccounts (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         password: String (Required)
-     *                         elevationLevel: String(nonadmin/admin) (Optional)
-     *                         linuxUserConfiguration (Optional): {
-     *                             uid: Integer (Optional)
-     *                             gid: Integer (Optional)
-     *                             sshPrivateKey: String (Optional)
-     *                         }
-     *                         windowsUserConfiguration (Optional): {
-     *                             loginMode: String(batch/interactive) (Optional)
-     *                         }
-     *                     }
-     *                 ]
-     *                 metadata (Optional): [
-     *                      (Optional){
-     *                         name: String (Required)
-     *                         value: String (Required)
-     *                     }
-     *                 ]
-     *                 mountConfiguration (Optional): [
-     *                      (Optional){
-     *                         azureBlobFileSystemConfiguration (Optional): {
-     *                             accountName: String (Required)
-     *                             containerName: String (Required)
-     *                             accountKey: String (Optional)
-     *                             sasKey: String (Optional)
-     *                             blobfuseOptions: String (Optional)
-     *                             relativeMountPath: String (Required)
-     *                             identityReference (Optional): (recursive schema, see identityReference above)
-     *                         }
-     *                         nfsMountConfiguration (Optional): {
-     *                             source: String (Required)
-     *                             relativeMountPath: String (Required)
-     *                             mountOptions: String (Optional)
-     *                         }
-     *                         cifsMountConfiguration (Optional): {
-     *                             username: String (Required)
-     *                             source: String (Required)
-     *                             relativeMountPath: String (Required)
-     *                             mountOptions: String (Optional)
-     *                             password: String (Required)
-     *                         }
-     *                         azureFileShareConfiguration (Optional): {
-     *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
-     *                             accountKey: String (Required)
-     *                             relativeMountPath: String (Required)
-     *                             mountOptions: String (Optional)
-     *                         }
-     *                     }
-     *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *                 upgradePolicy (Optional): {
-     *                     mode: String(automatic/manual/rolling) (Required)
-     *                     automaticOSUpgradePolicy (Optional): {
-     *                         disableAutomaticRollback: Boolean (Optional)
-     *                         enableAutomaticOSUpgrade: Boolean (Optional)
-     *                         useRollingUpgradePolicy: Boolean (Optional)
-     *                         osRollingUpgradeDeferral: Boolean (Optional)
-     *                     }
-     *                     rollingUpgradePolicy (Optional): {
-     *                         enableCrossZoneUpgrade: Boolean (Optional)
-     *                         maxBatchInstancePercent: Integer (Optional)
-     *                         maxUnhealthyInstancePercent: Integer (Optional)
-     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
-     *                         pauseTimeBetweenBatches: Duration (Optional)
-     *                         prioritizeUnhealthyInstances: Boolean (Optional)
-     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
-     *                     }
-     *                 }
-     *             }
-     *         }
-     *     }
-     *     onAllTasksComplete: String(noaction/terminatejob) (Optional)
-     *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
-     *     networkConfiguration (Optional): {
-     *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
-     *     }
-     *     metadata (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     executionInfo (Optional): {
-     *         startTime: OffsetDateTime (Required)
-     *         endTime: OffsetDateTime (Optional)
-     *         poolId: String (Optional)
-     *         schedulingError (Optional): {
-     *             category: String(usererror/servererror) (Required)
-     *             code: String (Optional)
-     *             message: String (Optional)
-     *             details (Optional): [
-     *                  (Optional){
-     *                     name: String (Optional)
-     *                     value: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *         terminateReason: String (Optional)
-     *     }
-     *     stats (Optional): {
-     *         url: String (Required)
-     *         startTime: OffsetDateTime (Required)
-     *         lastUpdateTime: OffsetDateTime (Required)
-     *         userCPUTime: Duration (Required)
-     *         kernelCPUTime: Duration (Required)
-     *         wallClockTime: Duration (Required)
-     *         readIOps: long (Required)
-     *         writeIOps: long (Required)
-     *         readIOGiB: double (Required)
-     *         writeIOGiB: double (Required)
-     *         numSucceededTasks: long (Required)
-     *         numFailedTasks: long (Required)
-     *         numTaskRetries: long (Required)
-     *         waitTime: Duration (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of listing the Jobs in an Account along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listJobsInternalNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res
-            = service.listJobsInternalNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+            = service.listSupportedImagesNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     poolId: String (Required)
+     *     dedicated (Optional): {
+     *         creating: int (Required)
+     *         idle: int (Required)
+     *         offline: int (Required)
+     *         preempted: int (Required)
+     *         rebooting: int (Required)
+     *         reimaging: int (Required)
+     *         running: int (Required)
+     *         starting: int (Required)
+     *         startTaskFailed: int (Required)
+     *         leavingPool: int (Required)
+     *         unknown: int (Required)
+     *         unusable: int (Required)
+     *         waitingForStartTask: int (Required)
+     *         deallocated: int (Required)
+     *         deallocating: int (Required)
+     *         total: int (Required)
+     *         upgradingOS: int (Required)
+     *     }
+     *     lowPriority (Optional): (recursive schema, see lowPriority above)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the number of Compute Nodes in each state, grouped by Pool along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listPoolNodeCountsNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.listPoolNodeCountsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     poolId: String (Required)
+     *     dedicated (Optional): {
+     *         creating: int (Required)
+     *         idle: int (Required)
+     *         offline: int (Required)
+     *         preempted: int (Required)
+     *         rebooting: int (Required)
+     *         reimaging: int (Required)
+     *         running: int (Required)
+     *         starting: int (Required)
+     *         startTaskFailed: int (Required)
+     *         leavingPool: int (Required)
+     *         unknown: int (Required)
+     *         unusable: int (Required)
+     *         waitingForStartTask: int (Required)
+     *         deallocated: int (Required)
+     *         deallocating: int (Required)
+     *         total: int (Required)
+     *         upgradingOS: int (Required)
+     *     }
+     *     lowPriority (Optional): (recursive schema, see lowPriority above)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the number of Compute Nodes in each state, grouped by Pool along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listPoolNodeCountsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res
+            = service.listPoolNodeCountsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
+    }
+
+    /**
+     * Lists all of the Jobs in the specified Account.
+     * 
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Optional)
+     *     displayName: String (Optional)
+     *     usesTaskDependencies: Boolean (Optional)
+     *     url: String (Optional)
+     *     eTag: String (Optional)
+     *     lastModified: OffsetDateTime (Optional)
+     *     creationTime: OffsetDateTime (Optional)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     priority: Integer (Optional)
+     *     allowTaskPreemption: Boolean (Optional)
+     *     maxParallelTasks: Integer (Optional)
+     *     constraints (Optional): {
+     *         maxWallClockTime: Duration (Optional)
+     *         maxTaskRetryCount: Integer (Optional)
+     *     }
+     *     jobManagerTask (Optional): {
+     *         id: String (Required)
+     *         displayName: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): {
+     *             containerRunOptions: String (Optional)
+     *             imageName: String (Required)
+     *             registry (Optional): {
+     *                 username: String (Optional)
+     *                 password: String (Optional)
+     *                 registryServer: String (Optional)
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *             }
+     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         resourceFiles (Optional): [
+     *              (Optional){
+     *                 autoStorageContainerName: String (Optional)
+     *                 storageContainerUrl: String (Optional)
+     *                 httpUrl: String (Optional)
+     *                 blobPrefix: String (Optional)
+     *                 filePath: String (Optional)
+     *                 fileMode: String (Optional)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *         ]
+     *         outputFiles (Optional): [
+     *              (Optional){
+     *                 filePattern: String (Required)
+     *                 destination (Required): {
+     *                     container (Optional): {
+     *                         path: String (Optional)
+     *                         containerUrl: String (Required)
+     *                         identityReference (Optional): (recursive schema, see identityReference above)
+     *                         uploadHeaders (Optional): [
+     *                              (Optional){
+     *                                 name: String (Required)
+     *                                 value: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
+     *                 }
+     *                 uploadOptions (Required): {
+     *                     uploadCondition: String(tasksuccess/taskfailure/taskcompletion) (Required)
+     *                 }
+     *             }
+     *         ]
+     *         environmentSettings (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *         constraints (Optional): {
+     *             maxWallClockTime: Duration (Optional)
+     *             retentionTime: Duration (Optional)
+     *             maxTaskRetryCount: Integer (Optional)
+     *         }
+     *         requiredSlots: Integer (Optional)
+     *         killJobOnCompletion: Boolean (Optional)
+     *         userIdentity (Optional): {
+     *             username: String (Optional)
+     *             autoUser (Optional): {
+     *                 scope: String(task/pool) (Optional)
+     *                 elevationLevel: String(nonadmin/admin) (Optional)
+     *             }
+     *         }
+     *         runExclusive: Boolean (Optional)
+     *         applicationPackageReferences (Optional): [
+     *              (Optional){
+     *                 applicationId: String (Required)
+     *                 version: String (Optional)
+     *             }
+     *         ]
+     *         authenticationTokenSettings (Optional): {
+     *             access (Optional): [
+     *                 String(job) (Optional)
+     *             ]
+     *         }
+     *         allowLowPriorityNode: Boolean (Optional)
+     *     }
+     *     jobPreparationTask (Optional): {
+     *         id: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): (recursive schema, see containerSettings above)
+     *         resourceFiles (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         environmentSettings (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         constraints (Optional): (recursive schema, see constraints above)
+     *         waitForSuccess: Boolean (Optional)
+     *         userIdentity (Optional): (recursive schema, see userIdentity above)
+     *         rerunOnNodeRebootAfterSuccess: Boolean (Optional)
+     *     }
+     *     jobReleaseTask (Optional): {
+     *         id: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): (recursive schema, see containerSettings above)
+     *         resourceFiles (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         environmentSettings (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         maxWallClockTime: Duration (Optional)
+     *         retentionTime: Duration (Optional)
+     *         userIdentity (Optional): (recursive schema, see userIdentity above)
+     *     }
+     *     commonEnvironmentSettings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     poolInfo (Required): {
+     *         poolId: String (Optional)
+     *         autoPoolSpecification (Optional): {
+     *             autoPoolIdPrefix: String (Optional)
+     *             poolLifetimeOption: String(jobschedule/job) (Required)
+     *             keepAlive: Boolean (Optional)
+     *             pool (Optional): {
+     *                 displayName: String (Optional)
+     *                 vmSize: String (Required)
+     *                 virtualMachineConfiguration (Optional): {
+     *                     imageReference (Required): {
+     *                         publisher: String (Optional)
+     *                         offer: String (Optional)
+     *                         sku: String (Optional)
+     *                         version: String (Optional)
+     *                         virtualMachineImageId: String (Optional)
+     *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
+     *                     }
+     *                     nodeAgentSKUId: String (Required)
+     *                     windowsConfiguration (Optional): {
+     *                         enableAutomaticUpdates: Boolean (Optional)
+     *                     }
+     *                     dataDisks (Optional): [
+     *                          (Optional){
+     *                             lun: int (Required)
+     *                             caching: String(none/readonly/readwrite) (Optional)
+     *                             diskSizeGB: int (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                         }
+     *                     ]
+     *                     licenseType: String (Optional)
+     *                     containerConfiguration (Optional): {
+     *                         type: String(dockerCompatible/criCompatible) (Required)
+     *                         containerImageNames (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         containerRegistries (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                     diskEncryptionConfiguration (Optional): {
+     *                         targets (Optional): [
+     *                             String(osdisk/temporarydisk) (Optional)
+     *                         ]
+     *                     }
+     *                     nodePlacementConfiguration (Optional): {
+     *                         policy: String(regional/zonal) (Optional)
+     *                     }
+     *                     extensions (Optional): [
+     *                          (Optional){
+     *                             name: String (Required)
+     *                             publisher: String (Required)
+     *                             type: String (Required)
+     *                             typeHandlerVersion: String (Optional)
+     *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
+     *                             settings (Optional): {
+     *                                 String: String (Required)
+     *                             }
+     *                             protectedSettings (Optional): {
+     *                                 String: String (Required)
+     *                             }
+     *                             provisionAfterExtensions (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     ]
+     *                     osDisk (Optional): {
+     *                         ephemeralOSDiskSettings (Optional): {
+     *                             placement: String(cachedisk) (Optional)
+     *                         }
+     *                         caching: String(none/readonly/readwrite) (Optional)
+     *                         diskSizeGB: Integer (Optional)
+     *                         managedDisk (Optional): {
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
+     *                         }
+     *                         writeAcceleratorEnabled: Boolean (Optional)
+     *                     }
+     *                     securityProfile (Optional): {
+     *                         encryptionAtHost: boolean (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
+     *                         uefiSettings (Required): {
+     *                             secureBootEnabled: Boolean (Optional)
+     *                             vTpmEnabled: Boolean (Optional)
+     *                         }
+     *                     }
+     *                     serviceArtifactReference (Optional): {
+     *                         id: String (Required)
+     *                     }
+     *                 }
+     *                 taskSlotsPerNode: Integer (Optional)
+     *                 taskSchedulingPolicy (Optional): {
+     *                     nodeFillType: String(spread/pack) (Required)
+     *                 }
+     *                 resizeTimeout: Duration (Optional)
+     *                 resourceTags: String (Optional)
+     *                 targetDedicatedNodes: Integer (Optional)
+     *                 targetLowPriorityNodes: Integer (Optional)
+     *                 enableAutoScale: Boolean (Optional)
+     *                 autoScaleFormula: String (Optional)
+     *                 autoScaleEvaluationInterval: Duration (Optional)
+     *                 enableInterNodeCommunication: Boolean (Optional)
+     *                 networkConfiguration (Optional): {
+     *                     subnetId: String (Optional)
+     *                     dynamicVNetAssignmentScope: String(none/job) (Optional)
+     *                     endpointConfiguration (Optional): {
+     *                         inboundNATPools (Required): [
+     *                              (Required){
+     *                                 name: String (Required)
+     *                                 protocol: String(tcp/udp) (Required)
+     *                                 backendPort: int (Required)
+     *                                 frontendPortRangeStart: int (Required)
+     *                                 frontendPortRangeEnd: int (Required)
+     *                                 networkSecurityGroupRules (Optional): [
+     *                                      (Optional){
+     *                                         priority: int (Required)
+     *                                         access: String(allow/deny) (Required)
+     *                                         sourceAddressPrefix: String (Required)
+     *                                         sourcePortRanges (Optional): [
+     *                                             String (Optional)
+     *                                         ]
+     *                                     }
+     *                                 ]
+     *                             }
+     *                         ]
+     *                     }
+     *                     publicIPAddressConfiguration (Optional): {
+     *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipAddressIds (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
+     *                 }
+     *                 startTask (Optional): {
+     *                     commandLine: String (Required)
+     *                     containerSettings (Optional): (recursive schema, see containerSettings above)
+     *                     resourceFiles (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     environmentSettings (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     userIdentity (Optional): (recursive schema, see userIdentity above)
+     *                     maxTaskRetryCount: Integer (Optional)
+     *                     waitForSuccess: Boolean (Optional)
+     *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
+     *                 applicationPackageReferences (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 userAccounts (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         password: String (Required)
+     *                         elevationLevel: String(nonadmin/admin) (Optional)
+     *                         linuxUserConfiguration (Optional): {
+     *                             uid: Integer (Optional)
+     *                             gid: Integer (Optional)
+     *                             sshPrivateKey: String (Optional)
+     *                         }
+     *                         windowsUserConfiguration (Optional): {
+     *                             loginMode: String(batch/interactive) (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *                 metadata (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         value: String (Required)
+     *                     }
+     *                 ]
+     *                 mountConfiguration (Optional): [
+     *                      (Optional){
+     *                         azureBlobFileSystemConfiguration (Optional): {
+     *                             accountName: String (Required)
+     *                             containerName: String (Required)
+     *                             accountKey: String (Optional)
+     *                             sasKey: String (Optional)
+     *                             blobfuseOptions: String (Optional)
+     *                             relativeMountPath: String (Required)
+     *                             identityReference (Optional): (recursive schema, see identityReference above)
+     *                         }
+     *                         nfsMountConfiguration (Optional): {
+     *                             source: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                         }
+     *                         cifsMountConfiguration (Optional): {
+     *                             username: String (Required)
+     *                             source: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                             password: String (Required)
+     *                         }
+     *                         azureFileShareConfiguration (Optional): {
+     *                             accountName: String (Required)
+     *                             azureFileUrl: String (Required)
+     *                             accountKey: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOSUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
+     *             }
+     *         }
+     *     }
+     *     onAllTasksComplete: String(noaction/terminatejob) (Optional)
+     *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
+     *     }
+     *     metadata (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     executionInfo (Optional): {
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Optional)
+     *         poolId: String (Optional)
+     *         schedulingError (Optional): {
+     *             category: String(usererror/servererror) (Required)
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             details (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         terminateReason: String (Optional)
+     *     }
+     *     stats (Optional): {
+     *         url: String (Required)
+     *         startTime: OffsetDateTime (Required)
+     *         lastUpdateTime: OffsetDateTime (Required)
+     *         userCPUTime: Duration (Required)
+     *         kernelCPUTime: Duration (Required)
+     *         wallClockTime: Duration (Required)
+     *         readIOps: long (Required)
+     *         writeIOps: long (Required)
+     *         readIOGiB: double (Required)
+     *         writeIOGiB: double (Required)
+     *         numSucceededTasks: long (Required)
+     *         numFailedTasks: long (Required)
+     *         numTaskRetries: long (Required)
+     *         waitTime: Duration (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Jobs in an Account along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listJobsNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listJobsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
+    }
+
+    /**
+     * Lists all of the Jobs in the specified Account.
+     * 
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Optional)
+     *     displayName: String (Optional)
+     *     usesTaskDependencies: Boolean (Optional)
+     *     url: String (Optional)
+     *     eTag: String (Optional)
+     *     lastModified: OffsetDateTime (Optional)
+     *     creationTime: OffsetDateTime (Optional)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     priority: Integer (Optional)
+     *     allowTaskPreemption: Boolean (Optional)
+     *     maxParallelTasks: Integer (Optional)
+     *     constraints (Optional): {
+     *         maxWallClockTime: Duration (Optional)
+     *         maxTaskRetryCount: Integer (Optional)
+     *     }
+     *     jobManagerTask (Optional): {
+     *         id: String (Required)
+     *         displayName: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): {
+     *             containerRunOptions: String (Optional)
+     *             imageName: String (Required)
+     *             registry (Optional): {
+     *                 username: String (Optional)
+     *                 password: String (Optional)
+     *                 registryServer: String (Optional)
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *             }
+     *             workingDirectory: String(taskWorkingDirectory/containerImageDefault) (Optional)
+     *             containerHostBatchBindMounts (Optional): [
+     *                  (Optional){
+     *                     source: String(Shared/Startup/VfsMounts/Task/JobPrep/Applications) (Optional)
+     *                     isReadOnly: Boolean (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         resourceFiles (Optional): [
+     *              (Optional){
+     *                 autoStorageContainerName: String (Optional)
+     *                 storageContainerUrl: String (Optional)
+     *                 httpUrl: String (Optional)
+     *                 blobPrefix: String (Optional)
+     *                 filePath: String (Optional)
+     *                 fileMode: String (Optional)
+     *                 identityReference (Optional): (recursive schema, see identityReference above)
+     *             }
+     *         ]
+     *         outputFiles (Optional): [
+     *              (Optional){
+     *                 filePattern: String (Required)
+     *                 destination (Required): {
+     *                     container (Optional): {
+     *                         path: String (Optional)
+     *                         containerUrl: String (Required)
+     *                         identityReference (Optional): (recursive schema, see identityReference above)
+     *                         uploadHeaders (Optional): [
+     *                              (Optional){
+     *                                 name: String (Required)
+     *                                 value: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
+     *                 }
+     *                 uploadOptions (Required): {
+     *                     uploadCondition: String(tasksuccess/taskfailure/taskcompletion) (Required)
+     *                 }
+     *             }
+     *         ]
+     *         environmentSettings (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *         constraints (Optional): {
+     *             maxWallClockTime: Duration (Optional)
+     *             retentionTime: Duration (Optional)
+     *             maxTaskRetryCount: Integer (Optional)
+     *         }
+     *         requiredSlots: Integer (Optional)
+     *         killJobOnCompletion: Boolean (Optional)
+     *         userIdentity (Optional): {
+     *             username: String (Optional)
+     *             autoUser (Optional): {
+     *                 scope: String(task/pool) (Optional)
+     *                 elevationLevel: String(nonadmin/admin) (Optional)
+     *             }
+     *         }
+     *         runExclusive: Boolean (Optional)
+     *         applicationPackageReferences (Optional): [
+     *              (Optional){
+     *                 applicationId: String (Required)
+     *                 version: String (Optional)
+     *             }
+     *         ]
+     *         authenticationTokenSettings (Optional): {
+     *             access (Optional): [
+     *                 String(job) (Optional)
+     *             ]
+     *         }
+     *         allowLowPriorityNode: Boolean (Optional)
+     *     }
+     *     jobPreparationTask (Optional): {
+     *         id: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): (recursive schema, see containerSettings above)
+     *         resourceFiles (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         environmentSettings (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         constraints (Optional): (recursive schema, see constraints above)
+     *         waitForSuccess: Boolean (Optional)
+     *         userIdentity (Optional): (recursive schema, see userIdentity above)
+     *         rerunOnNodeRebootAfterSuccess: Boolean (Optional)
+     *     }
+     *     jobReleaseTask (Optional): {
+     *         id: String (Optional)
+     *         commandLine: String (Required)
+     *         containerSettings (Optional): (recursive schema, see containerSettings above)
+     *         resourceFiles (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         environmentSettings (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         maxWallClockTime: Duration (Optional)
+     *         retentionTime: Duration (Optional)
+     *         userIdentity (Optional): (recursive schema, see userIdentity above)
+     *     }
+     *     commonEnvironmentSettings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     poolInfo (Required): {
+     *         poolId: String (Optional)
+     *         autoPoolSpecification (Optional): {
+     *             autoPoolIdPrefix: String (Optional)
+     *             poolLifetimeOption: String(jobschedule/job) (Required)
+     *             keepAlive: Boolean (Optional)
+     *             pool (Optional): {
+     *                 displayName: String (Optional)
+     *                 vmSize: String (Required)
+     *                 virtualMachineConfiguration (Optional): {
+     *                     imageReference (Required): {
+     *                         publisher: String (Optional)
+     *                         offer: String (Optional)
+     *                         sku: String (Optional)
+     *                         version: String (Optional)
+     *                         virtualMachineImageId: String (Optional)
+     *                         exactVersion: String (Optional)
+     *                         sharedGalleryImageId: String (Optional)
+     *                         communityGalleryImageId: String (Optional)
+     *                     }
+     *                     nodeAgentSKUId: String (Required)
+     *                     windowsConfiguration (Optional): {
+     *                         enableAutomaticUpdates: Boolean (Optional)
+     *                     }
+     *                     dataDisks (Optional): [
+     *                          (Optional){
+     *                             lun: int (Required)
+     *                             caching: String(none/readonly/readwrite) (Optional)
+     *                             diskSizeGB: int (Required)
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                         }
+     *                     ]
+     *                     licenseType: String (Optional)
+     *                     containerConfiguration (Optional): {
+     *                         type: String(dockerCompatible/criCompatible) (Required)
+     *                         containerImageNames (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         containerRegistries (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                     diskEncryptionConfiguration (Optional): {
+     *                         targets (Optional): [
+     *                             String(osdisk/temporarydisk) (Optional)
+     *                         ]
+     *                     }
+     *                     nodePlacementConfiguration (Optional): {
+     *                         policy: String(regional/zonal) (Optional)
+     *                     }
+     *                     extensions (Optional): [
+     *                          (Optional){
+     *                             name: String (Required)
+     *                             publisher: String (Required)
+     *                             type: String (Required)
+     *                             typeHandlerVersion: String (Optional)
+     *                             autoUpgradeMinorVersion: Boolean (Optional)
+     *                             enableAutomaticUpgrade: Boolean (Optional)
+     *                             settings (Optional): {
+     *                                 String: String (Required)
+     *                             }
+     *                             protectedSettings (Optional): {
+     *                                 String: String (Required)
+     *                             }
+     *                             provisionAfterExtensions (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     ]
+     *                     osDisk (Optional): {
+     *                         ephemeralOSDiskSettings (Optional): {
+     *                             placement: String(cachedisk) (Optional)
+     *                         }
+     *                         caching: String(none/readonly/readwrite) (Optional)
+     *                         diskSizeGB: Integer (Optional)
+     *                         managedDisk (Optional): {
+     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             securityProfile (Optional): {
+     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                             }
+     *                         }
+     *                         writeAcceleratorEnabled: Boolean (Optional)
+     *                     }
+     *                     securityProfile (Optional): {
+     *                         encryptionAtHost: boolean (Required)
+     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
+     *                         uefiSettings (Required): {
+     *                             secureBootEnabled: Boolean (Optional)
+     *                             vTpmEnabled: Boolean (Optional)
+     *                         }
+     *                     }
+     *                     serviceArtifactReference (Optional): {
+     *                         id: String (Required)
+     *                     }
+     *                 }
+     *                 taskSlotsPerNode: Integer (Optional)
+     *                 taskSchedulingPolicy (Optional): {
+     *                     nodeFillType: String(spread/pack) (Required)
+     *                 }
+     *                 resizeTimeout: Duration (Optional)
+     *                 resourceTags: String (Optional)
+     *                 targetDedicatedNodes: Integer (Optional)
+     *                 targetLowPriorityNodes: Integer (Optional)
+     *                 enableAutoScale: Boolean (Optional)
+     *                 autoScaleFormula: String (Optional)
+     *                 autoScaleEvaluationInterval: Duration (Optional)
+     *                 enableInterNodeCommunication: Boolean (Optional)
+     *                 networkConfiguration (Optional): {
+     *                     subnetId: String (Optional)
+     *                     dynamicVNetAssignmentScope: String(none/job) (Optional)
+     *                     endpointConfiguration (Optional): {
+     *                         inboundNATPools (Required): [
+     *                              (Required){
+     *                                 name: String (Required)
+     *                                 protocol: String(tcp/udp) (Required)
+     *                                 backendPort: int (Required)
+     *                                 frontendPortRangeStart: int (Required)
+     *                                 frontendPortRangeEnd: int (Required)
+     *                                 networkSecurityGroupRules (Optional): [
+     *                                      (Optional){
+     *                                         priority: int (Required)
+     *                                         access: String(allow/deny) (Required)
+     *                                         sourceAddressPrefix: String (Required)
+     *                                         sourcePortRanges (Optional): [
+     *                                             String (Optional)
+     *                                         ]
+     *                                     }
+     *                                 ]
+     *                             }
+     *                         ]
+     *                     }
+     *                     publicIPAddressConfiguration (Optional): {
+     *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipAddressIds (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                     }
+     *                     enableAcceleratedNetworking: Boolean (Optional)
+     *                 }
+     *                 startTask (Optional): {
+     *                     commandLine: String (Required)
+     *                     containerSettings (Optional): (recursive schema, see containerSettings above)
+     *                     resourceFiles (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     environmentSettings (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     userIdentity (Optional): (recursive schema, see userIdentity above)
+     *                     maxTaskRetryCount: Integer (Optional)
+     *                     waitForSuccess: Boolean (Optional)
+     *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
+     *                 applicationPackageReferences (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 userAccounts (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         password: String (Required)
+     *                         elevationLevel: String(nonadmin/admin) (Optional)
+     *                         linuxUserConfiguration (Optional): {
+     *                             uid: Integer (Optional)
+     *                             gid: Integer (Optional)
+     *                             sshPrivateKey: String (Optional)
+     *                         }
+     *                         windowsUserConfiguration (Optional): {
+     *                             loginMode: String(batch/interactive) (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *                 metadata (Optional): [
+     *                      (Optional){
+     *                         name: String (Required)
+     *                         value: String (Required)
+     *                     }
+     *                 ]
+     *                 mountConfiguration (Optional): [
+     *                      (Optional){
+     *                         azureBlobFileSystemConfiguration (Optional): {
+     *                             accountName: String (Required)
+     *                             containerName: String (Required)
+     *                             accountKey: String (Optional)
+     *                             sasKey: String (Optional)
+     *                             blobfuseOptions: String (Optional)
+     *                             relativeMountPath: String (Required)
+     *                             identityReference (Optional): (recursive schema, see identityReference above)
+     *                         }
+     *                         nfsMountConfiguration (Optional): {
+     *                             source: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                         }
+     *                         cifsMountConfiguration (Optional): {
+     *                             username: String (Required)
+     *                             source: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                             password: String (Required)
+     *                         }
+     *                         azureFileShareConfiguration (Optional): {
+     *                             accountName: String (Required)
+     *                             azureFileUrl: String (Required)
+     *                             accountKey: String (Required)
+     *                             relativeMountPath: String (Required)
+     *                             mountOptions: String (Optional)
+     *                         }
+     *                     }
+     *                 ]
+     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOSUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOSUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
+     *             }
+     *         }
+     *     }
+     *     onAllTasksComplete: String(noaction/terminatejob) (Optional)
+     *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
+     *     networkConfiguration (Optional): {
+     *         subnetId: String (Required)
+     *         skipWithdrawFromVNet: boolean (Required)
+     *     }
+     *     metadata (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     executionInfo (Optional): {
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Optional)
+     *         poolId: String (Optional)
+     *         schedulingError (Optional): {
+     *             category: String(usererror/servererror) (Required)
+     *             code: String (Optional)
+     *             message: String (Optional)
+     *             details (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         terminateReason: String (Optional)
+     *     }
+     *     stats (Optional): {
+     *         url: String (Required)
+     *         startTime: OffsetDateTime (Required)
+     *         lastUpdateTime: OffsetDateTime (Required)
+     *         userCPUTime: Duration (Required)
+     *         kernelCPUTime: Duration (Required)
+     *         wallClockTime: Duration (Required)
+     *         readIOps: long (Required)
+     *         writeIOps: long (Required)
+     *         readIOGiB: double (Required)
+     *         writeIOGiB: double (Required)
+     *         numSucceededTasks: long (Required)
+     *         numFailedTasks: long (Required)
+     *         numTaskRetries: long (Required)
+     *         waitTime: Duration (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Jobs in an Account along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listJobsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res
+            = service.listJobsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -31694,6 +33034,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -31828,12 +33179,11 @@ public final class BatchClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listJobsFromScheduleInternalNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listJobsFromScheduleNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listJobsFromScheduleInternalNext(nextLink, this.getEndpoint(), accept,
-                requestOptions, context))
+        return FluxUtil.withContext(
+            context -> service.listJobsFromScheduleNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -32138,6 +33488,17 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
+     *                 certificateReferences (Optional): [
+     *                      (Optional){
+     *                         thumbprint: String (Required)
+     *                         thumbprintAlgorithm: String (Required)
+     *                         storeLocation: String(currentuser/localmachine) (Optional)
+     *                         storeName: String (Optional)
+     *                         visibility (Optional): [
+     *                             String(starttask/task/remoteuser) (Optional)
+     *                         ]
+     *                     }
+     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -32271,11 +33632,11 @@ public final class BatchClientImpl {
      * @return the result of listing the Jobs in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listJobsFromScheduleInternalNextSinglePage(String nextLink,
+    private PagedResponse<BinaryData> listJobsFromScheduleNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listJobsFromScheduleInternalNextSync(nextLink, this.getEndpoint(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res
+            = service.listJobsFromScheduleNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -32345,12 +33706,12 @@ public final class BatchClientImpl {
      * for a Job along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listJobPreparationAndReleaseTaskStatusInternalNextSinglePageAsync(
-        String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listJobPreparationAndReleaseTaskStatusNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listJobPreparationAndReleaseTaskStatusInternalNext(nextLink,
-                this.getEndpoint(), accept, requestOptions, context))
+            .withContext(context -> service.listJobPreparationAndReleaseTaskStatusNext(nextLink, this.getEndpoint(),
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -32420,11 +33781,116 @@ public final class BatchClientImpl {
      * for a Job along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listJobPreparationAndReleaseTaskStatusInternalNextSinglePage(String nextLink,
+    private PagedResponse<BinaryData> listJobPreparationAndReleaseTaskStatusNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listJobPreparationAndReleaseTaskStatusInternalNextSync(nextLink,
-            this.getEndpoint(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listJobPreparationAndReleaseTaskStatusNextSync(nextLink, this.getEndpoint(),
+            accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     * 
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Certificates in the Account along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listCertificatesNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listCertificatesNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
+    }
+
+    /**
+     * Lists all of the Certificates that have been added to the specified Account.
+     * 
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     thumbprint: String (Required)
+     *     thumbprintAlgorithm: String (Required)
+     *     url: String (Optional)
+     *     state: String(active/deleting/deletefailed) (Optional)
+     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     previousState: String(active/deleting/deletefailed) (Optional)
+     *     previousStateTransitionTime: OffsetDateTime (Optional)
+     *     publicData: String (Optional)
+     *     deleteCertificateError (Optional): {
+     *         code: String (Optional)
+     *         message: String (Optional)
+     *         values (Optional): [
+     *              (Optional){
+     *                 name: String (Optional)
+     *                 value: String (Optional)
+     *             }
+     *         ]
+     *     }
+     *     data: String (Required)
+     *     certificateFormat: String(pfx/cer) (Optional)
+     *     password: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the Certificates in the Account along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listCertificatesNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res
+            = service.listCertificatesNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -32743,6 +34209,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -32866,12 +34343,12 @@ public final class BatchClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listJobSchedulesInternalNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listJobSchedulesNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listJobSchedulesInternalNext(nextLink, this.getEndpoint(), accept,
-                requestOptions, context))
+            .withContext(
+                context -> service.listJobSchedulesNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -33190,6 +34667,17 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
+     *                     certificateReferences (Optional): [
+     *                          (Optional){
+     *                             thumbprint: String (Required)
+     *                             thumbprintAlgorithm: String (Required)
+     *                             storeLocation: String(currentuser/localmachine) (Optional)
+     *                             storeName: String (Optional)
+     *                             visibility (Optional): [
+     *                                 String(starttask/task/remoteuser) (Optional)
+     *                             ]
+     *                         }
+     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -33312,11 +34800,10 @@ public final class BatchClientImpl {
      * @return the result of listing the Job Schedules in an Account along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listJobSchedulesInternalNextSinglePage(String nextLink,
-        RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listJobSchedulesNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listJobSchedulesInternalNextSync(nextLink, this.getEndpoint(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res
+            = service.listJobSchedulesNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -33525,12 +35012,12 @@ public final class BatchClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listTasksInternalNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listTasksNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.listTasksInternalNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+                context -> service.listTasksNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -33738,10 +35225,10 @@ public final class BatchClientImpl {
      * @return the result of listing the Tasks in a Job along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listTasksInternalNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listTasksNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res
-            = service.listTasksInternalNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+            = service.listTasksNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -33803,11 +35290,12 @@ public final class BatchClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listSubTasksInternalNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listSubTasksNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.listSubTasksInternalNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+        return FluxUtil
+            .withContext(
+                context -> service.listSubTasksNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -33868,11 +35356,10 @@ public final class BatchClientImpl {
      * @return the result of listing the subtasks of a Task along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listSubTasksInternalNextSinglePage(String nextLink,
-        RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listSubTasksNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res
-            = service.listSubTasksInternalNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+            = service.listSubTasksNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -33892,7 +35379,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: String (Required)
+     *         contentLength: long (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -33910,11 +35397,12 @@ public final class BatchClientImpl {
      * a Task on a Compute Node along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listTaskFilesInternalNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listTaskFilesNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.listTaskFilesInternalNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+        return FluxUtil
+            .withContext(
+                context -> service.listTaskFilesNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -33934,7 +35422,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: String (Required)
+     *         contentLength: long (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -33952,11 +35440,10 @@ public final class BatchClientImpl {
      * a Task on a Compute Node along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listTaskFilesInternalNextSinglePage(String nextLink,
-        RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listTaskFilesNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res
-            = service.listTaskFilesInternalNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+            = service.listTaskFilesNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -34078,6 +35565,17 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -34131,12 +35629,12 @@ public final class BatchClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listNodesInternalNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listNodesNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.listNodesInternalNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+                context -> service.listNodesNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -34258,6 +35756,17 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
+     *     certificateReferences (Optional): [
+     *          (Optional){
+     *             thumbprint: String (Required)
+     *             thumbprintAlgorithm: String (Required)
+     *             storeLocation: String(currentuser/localmachine) (Optional)
+     *             storeName: String (Optional)
+     *             visibility (Optional): [
+     *                 String(starttask/task/remoteuser) (Optional)
+     *             ]
+     *         }
+     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -34310,10 +35819,10 @@ public final class BatchClientImpl {
      * @return the result of listing the Compute Nodes in a Pool along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listNodesInternalNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listNodesNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res
-            = service.listNodesInternalNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+            = service.listNodesNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -34374,12 +35883,11 @@ public final class BatchClientImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listNodeExtensionsInternalNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listNodeExtensionsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNodeExtensionsInternalNext(nextLink, this.getEndpoint(), accept,
-                requestOptions, context))
+        return FluxUtil.withContext(
+            context -> service.listNodeExtensionsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -34439,11 +35947,10 @@ public final class BatchClientImpl {
      * @return the result of listing the Compute Node extensions in a Node along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listNodeExtensionsInternalNextSinglePage(String nextLink,
-        RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listNodeExtensionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listNodeExtensionsInternalNextSync(nextLink, this.getEndpoint(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res
+            = service.listNodeExtensionsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }
@@ -34463,7 +35970,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: String (Required)
+     *         contentLength: long (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -34481,11 +35988,12 @@ public final class BatchClientImpl {
      * a Task on a Compute Node along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listNodeFilesInternalNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<BinaryData>> listNodeFilesNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.listNodeFilesInternalNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+        return FluxUtil
+            .withContext(
+                context -> service.listNodeFilesNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
     }
@@ -34505,7 +36013,7 @@ public final class BatchClientImpl {
      *     properties (Optional): {
      *         creationTime: OffsetDateTime (Optional)
      *         lastModified: OffsetDateTime (Required)
-     *         contentLength: String (Required)
+     *         contentLength: long (Required)
      *         contentType: String (Optional)
      *         fileMode: String (Optional)
      *     }
@@ -34523,11 +36031,10 @@ public final class BatchClientImpl {
      * a Task on a Compute Node along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listNodeFilesInternalNextSinglePage(String nextLink,
-        RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listNodeFilesNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res
-            = service.listNodeFilesInternalNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+            = service.listNodeFilesNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
     }

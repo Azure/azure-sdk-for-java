@@ -14,19 +14,19 @@ public final class DeploymentConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentConfiguration model = BinaryData.fromString(
-            "{\"configurationType\":\"Deployment\",\"appLocation\":\"zlobcufpd\",\"infrastructureConfiguration\":{\"deploymentType\":\"InfrastructureConfiguration\",\"appResourceGroup\":\"rbt\"},\"softwareConfiguration\":{\"softwareInstallationType\":\"SoftwareConfiguration\"}}")
+            "{\"configurationType\":\"Deployment\",\"appLocation\":\"dumjgrtfwvuk\",\"infrastructureConfiguration\":{\"deploymentType\":\"InfrastructureConfiguration\",\"appResourceGroup\":\"audccsnhs\"},\"softwareConfiguration\":{\"softwareInstallationType\":\"SoftwareConfiguration\"}}")
             .toObject(DeploymentConfiguration.class);
-        Assertions.assertEquals("zlobcufpd", model.appLocation());
-        Assertions.assertEquals("rbt", model.infrastructureConfiguration().appResourceGroup());
+        Assertions.assertEquals("dumjgrtfwvuk", model.appLocation());
+        Assertions.assertEquals("audccsnhs", model.infrastructureConfiguration().appResourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentConfiguration model = new DeploymentConfiguration().withAppLocation("zlobcufpd")
-            .withInfrastructureConfiguration(new InfrastructureConfiguration().withAppResourceGroup("rbt"))
+        DeploymentConfiguration model = new DeploymentConfiguration().withAppLocation("dumjgrtfwvuk")
+            .withInfrastructureConfiguration(new InfrastructureConfiguration().withAppResourceGroup("audccsnhs"))
             .withSoftwareConfiguration(new SoftwareConfiguration());
         model = BinaryData.fromObject(model).toObject(DeploymentConfiguration.class);
-        Assertions.assertEquals("zlobcufpd", model.appLocation());
-        Assertions.assertEquals("rbt", model.infrastructureConfiguration().appResourceGroup());
+        Assertions.assertEquals("dumjgrtfwvuk", model.appLocation());
+        Assertions.assertEquals("audccsnhs", model.infrastructureConfiguration().appResourceGroup());
     }
 }

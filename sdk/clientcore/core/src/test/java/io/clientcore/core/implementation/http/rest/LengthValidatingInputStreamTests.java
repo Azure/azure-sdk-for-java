@@ -3,17 +3,16 @@
 
 package io.clientcore.core.implementation.http.rest;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-
-import static io.clientcore.core.util.TestUtils.assertArraysEqual;
-import static io.clientcore.core.util.TestUtils.fillArray;
-import static io.clientcore.core.util.TestUtils.readStream;
-import static io.clientcore.core.util.TestUtils.readStreamByteByByte;
+import static io.clientcore.core.utils.TestUtils.assertArraysEqual;
+import static io.clientcore.core.utils.TestUtils.fillArray;
+import static io.clientcore.core.utils.TestUtils.readStream;
+import static io.clientcore.core.utils.TestUtils.readStreamByteByByte;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**

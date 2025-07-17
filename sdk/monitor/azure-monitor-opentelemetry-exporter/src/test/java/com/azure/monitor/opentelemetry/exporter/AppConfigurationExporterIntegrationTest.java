@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -10,6 +11,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.data.appconfiguration.ConfigurationClient;
@@ -37,6 +39,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @LiveOnly
 public class AppConfigurationExporterIntegrationTest extends MonitorExporterClientTestBase {
+
+    private TokenCredential credential;
+
+    @Override
+    public void beforeTest() {
+        super.beforeTest();
+        credential = TokenCredentialUtil.getTestTokenCredential(interceptorManager);
+    }
+
     @Test
     public void setConfigurationTest() throws InterruptedException {
         CountDownLatch exporterCountDown = new CountDownLatch(1);
@@ -87,8 +98,10 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
         assertTrue(exporterCountDown.await(60, TimeUnit.SECONDS));
     }
 
-    private static ConfigurationClient getConfigurationClient() {
-        return new ConfigurationClientBuilder().connectionString(System.getenv("AZURE_APPCONFIG_CONNECTION_STRING"))
+    private ConfigurationClient getConfigurationClient() {
+        String endPoint = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_ENDPOINT");
+        return new ConfigurationClientBuilder().credential(credential)
+            .endpoint(endPoint)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
     }

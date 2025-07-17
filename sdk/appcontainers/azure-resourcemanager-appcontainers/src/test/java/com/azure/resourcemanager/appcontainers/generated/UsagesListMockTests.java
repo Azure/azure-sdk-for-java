@@ -7,8 +7,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.Usage;
@@ -22,20 +22,20 @@ public final class UsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"currentValue\":55.734398,\"limit\":3.051567,\"name\":{\"value\":\"qbqxfbbigcfd\",\"localizedValue\":\"fxnfbm\"}}]}";
+            = "{\"value\":[{\"currentValue\":88.26447,\"limit\":4.6435356,\"name\":{\"value\":\"ewuyqa\",\"localizedValue\":\"hpjhge\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Usage> response = manager.usages().list("qldqabn", com.azure.core.util.Context.NONE);
+        PagedIterable<Usage> response = manager.usages().list("xbmsgycqsx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(55.734398f, response.iterator().next().currentValue());
-        Assertions.assertEquals(3.051567f, response.iterator().next().limit());
-        Assertions.assertEquals("qbqxfbbigcfd", response.iterator().next().name().value());
-        Assertions.assertEquals("fxnfbm", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals(88.26447f, response.iterator().next().currentValue());
+        Assertions.assertEquals(4.6435356f, response.iterator().next().limit());
+        Assertions.assertEquals("ewuyqa", response.iterator().next().name().value());
+        Assertions.assertEquals("hpjhge", response.iterator().next().name().localizedValue());
     }
 }

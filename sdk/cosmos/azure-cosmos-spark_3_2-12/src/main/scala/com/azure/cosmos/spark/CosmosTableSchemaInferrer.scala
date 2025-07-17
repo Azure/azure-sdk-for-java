@@ -121,6 +121,10 @@ private object CosmosTableSchemaInferrer
       val queryOptions = new CosmosQueryRequestOptions()
       queryOptions.setMaxBufferedItemCount(cosmosInferenceConfig.inferSchemaSamplingSize)
       queryOptions.setDedicatedGatewayRequestOptions(cosmosReadConfig.dedicatedGatewayRequestOptions)
+      if (cosmosReadConfig.responseContinuationTokenLimitInKb.isDefined) {
+        queryOptions.setResponseContinuationTokenLimitInKb(
+          cosmosReadConfig.responseContinuationTokenLimitInKb.get)
+      }
       ThroughputControlHelper.populateThroughputControlGroupName(
         ImplementationBridgeHelpers
           .CosmosQueryRequestOptionsHelper

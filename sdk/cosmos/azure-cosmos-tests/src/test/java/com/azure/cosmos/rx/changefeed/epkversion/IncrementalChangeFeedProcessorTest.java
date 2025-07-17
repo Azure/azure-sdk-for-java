@@ -41,6 +41,8 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.SplitTestsRetryAnalyzer;
+import com.azure.cosmos.SplitTimeoutException;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
@@ -64,7 +66,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -845,6 +846,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 .leaseContainer(createdLeaseCollection)
                 .options(new ChangeFeedProcessorOptions()
                     .setLeasePrefix(leasePrefix)
+                    .setLeaseVerificationEnabledOnRestart(true)
                 )
                 .buildChangeFeedProcessor();
 
@@ -868,6 +870,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     .setMaxItemCount(10)
                     .setStartFromBeginning(true)
                     .setMaxScaleCount(0) // unlimited
+                    .setLeaseVerificationEnabledOnRestart(true)
                 )
                 .buildChangeFeedProcessor();
 
@@ -994,6 +997,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     .setLeaseAcquireInterval(Duration.ofMillis(5 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                     .setLeaseExpirationInterval(Duration.ofMillis(6 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                     .setFeedPollDelay(Duration.ofSeconds(5))
+                    .setLeaseVerificationEnabledOnRestart(true)
                 )
                 .buildChangeFeedProcessor();
 
@@ -1338,7 +1342,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "cfp-split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "cfp-split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT, retryAnalyzer = SplitTestsRetryAnalyzer.class)
     public void readFeedDocumentsAfterSplit_maxScaleCount() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
@@ -1398,14 +1402,26 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             // wait for the split to finish
             ThroughputResponse throughputResponse = createdFeedCollectionForSplit.readThroughput().block();
-            while (true) {
-                assert throughputResponse != null;
-                if (!throughputResponse.isReplacePending()) {
-                    break;
-                }
+            int i = 0;
+            // Only wait for 10 minutes for the split to complete
+            // If backend does not finish split within 10 minutes
+            // something is off in the backend
+            // it could be due to limits on how many splits can be executed concurrently etc.
+            // nothing that can really be done in the SDK
+            while (i < 120 && throughputResponse.isReplacePending()) {
                 logger.info("Waiting for split to complete");
-                Thread.sleep(10 * 1000);
+                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
                 throughputResponse = createdFeedCollectionForSplit.readThroughput().block();
+                i += 2;
+            }
+
+            if (throughputResponse.isReplacePending()) {
+                throw new SplitTimeoutException(
+                    "Backend did not finish split for container '"
+                        + getEndpoint() + "/"
+                        + createdFeedCollectionForSplit.getDatabase().getId() + "/"
+                        + createdFeedCollectionForSplit.getId()
+                        + "' - skipping this test case");
             }
 
             // generate the second batch of documents
@@ -1853,14 +1869,34 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             }
 
             // Wait for the feed processor to receive and process the documents.
-            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+            Thread.sleep(5 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
-            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(10 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
-            for (InternalObjectNode item : createdDocuments) {
-                assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+            int i = 0;
+            while(i < 3) {
+                boolean isLastAttempt = (i == 2);
+                if (isLastAttempt) {
+                    for (InternalObjectNode item : createdDocuments) {
+                        assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+                    }
+                } else {
+                    boolean foundAll = true;
+                    for (InternalObjectNode item : createdDocuments) {
+                        if (!receivedDocuments.containsKey(item.getId())) {
+                            foundAll = false;
+                            break;
+                        }
+                    }
+
+                    if (!foundAll) {
+                        Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+                    }
+                }
+
+                i++;
             }
 
             // Wait for the feed processor to shutdown.
@@ -1896,7 +1932,10 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             Map<String, JsonNode> receivedDocumentsByFullFidelityCfp = new ConcurrentHashMap<>();
 
             ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
-                .options(new ChangeFeedProcessorOptions().setStartFromBeginning(isStartFromBeginning).setMaxItemCount(10))
+                .options(new ChangeFeedProcessorOptions()
+                    .setStartFromBeginning(isStartFromBeginning)
+                    .setMaxItemCount(10)
+                    .setLeasePrefix("TEST"))
                 .hostName(hostName)
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection);
@@ -1949,7 +1988,9 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 }
 
                 ChangeFeedProcessorBuilder fullFidelityChangeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
-                    .options(new ChangeFeedProcessorOptions().setMaxItemCount(1))
+                    .options(new ChangeFeedProcessorOptions()
+                        .setMaxItemCount(1)
+                        .setLeasePrefix("TEST"))
                     .hostName(hostName)
                     .feedContainer(createdFeedCollection)
                     .leaseContainer(createdLeaseCollection)
@@ -2178,6 +2219,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
 
         createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        for (InternalObjectNode current : createdDocuments) {
+            try {
+                logger.info("CREATED {}", OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(current));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 

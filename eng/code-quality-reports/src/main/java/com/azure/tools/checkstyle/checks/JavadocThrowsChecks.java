@@ -4,7 +4,6 @@
 package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.DetailNodeTreeStringPrinter;
-import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.DetailNode;
 import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
@@ -16,11 +15,12 @@ import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Verifies that all throws in the public API have JavaDocs explaining why and when they are thrown.
  */
-public class JavadocThrowsChecks extends AbstractCheck {
+public class JavadocThrowsChecks extends ImplementationExcludingCheck {
     static final String MISSING_DESCRIPTION_MESSAGE =
         "@throws tag requires a description explaining when the error is thrown.";
     static final String MISSING_THROWS_TAG_MESSAGE = "Javadoc @throws tag required for unchecked throw.";
@@ -37,23 +37,13 @@ public class JavadocThrowsChecks extends AbstractCheck {
     private static final String THIS_TOKEN = "this";
     private static final String CLASS_TOKEN = "class";
 
-    private Map<String, HashSet<String>> javadocThrowsMapping;
-    private Map<String, HashSet<String>> exceptionMapping;
+    private Map<String, Set<String>> javadocThrowsMapping;
+    private Map<String, Set<String>> exceptionMapping;
     private String currentScopeIdentifier;
     private boolean currentScopeNeedsChecking;
 
     @Override
-    public int[] getDefaultTokens() {
-        return getRequiredTokens();
-    }
-
-    @Override
-    public int[] getAcceptableTokens() {
-        return getRequiredTokens();
-    }
-
-    @Override
-    public int[] getRequiredTokens() {
+    public int[] getTokensForCheck() {
         return TOKENS;
     }
 
@@ -63,7 +53,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
     }
 
     @Override
-    public void beginTree(DetailAST rootToken) {
+    public void beforeTree(DetailAST rootToken) {
         javadocThrowsMapping = new HashMap<>();
         exceptionMapping = new HashMap<>();
         currentScopeNeedsChecking = false;
@@ -71,7 +61,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
     }
 
     @Override
-    public void visitToken(DetailAST token) {
+    public void processToken(DetailAST token) {
         switch (token.getType()) {
             case TokenTypes.CTOR_DEF:
             case TokenTypes.METHOD_DEF:
@@ -79,7 +69,9 @@ public class JavadocThrowsChecks extends AbstractCheck {
                 break;
 
             case TokenTypes.BLOCK_COMMENT_BEGIN:
-                findJavadocThrows(token);
+                if (currentScopeNeedsChecking) {
+                    findJavadocThrows(token);
+                }
                 break;
 
             case TokenTypes.LITERAL_THROWS:
@@ -177,7 +169,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
         }
 
         // Append the line number to differentiate overloads.
-        HashSet<String> javadocThrows = javadocThrowsMapping.getOrDefault(currentScopeIdentifier, new HashSet<>());
+        Set<String> javadocThrows = javadocThrowsMapping.getOrDefault(currentScopeIdentifier, new HashSet<>());
 
         // Iterate through all the top level nodes in the Javadoc, looking for the @throws statements.
         for (DetailNode node : javadocNode.getChildren()) {
@@ -218,7 +210,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
             }
         }
         String identifier = scope + definitionToken.findFirstToken(TokenTypes.IDENT).getText();
-        HashSet<String> types = exceptionMapping.getOrDefault(identifier, new HashSet<>());
+        Set<String> types = exceptionMapping.getOrDefault(identifier, new HashSet<>());
 
         if (typeToken.getType() == TokenTypes.BOR) {
             TokenUtil.forEachChild(typeToken, TokenTypes.IDENT, (identityToken) -> tryToAddType(identityToken, types));
@@ -229,7 +221,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
         exceptionMapping.put(identifier, types);
     }
 
-    private void tryToAddType(DetailAST typeToken, HashSet<String> types) {
+    private void tryToAddType(DetailAST typeToken, Set<String> types) {
         String type = typeToken.getText();
         if (type.endsWith("Exception") || type.endsWith("Error")) {
             types.add(type);
@@ -241,7 +233,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
      * @param throwsToken Throws token.
      */
     private void verifyCheckedThrowJavadoc(DetailAST throwsToken) {
-        HashSet<String> methodJavadocThrows = javadocThrowsMapping.get(currentScopeIdentifier);
+        Set<String> methodJavadocThrows = javadocThrowsMapping.get(currentScopeIdentifier);
         if (methodJavadocThrows == null) {
             log(throwsToken, MISSING_THROWS_TAG_MESSAGE);
             return;
@@ -260,7 +252,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
      */
     private void verifyUncheckedThrowJavadoc(DetailAST throwToken) {
         // Early out check for method that don't have Javadocs, they cannot have @throws documented.
-        HashSet<String> methodJavadocThrows = javadocThrowsMapping.get(currentScopeIdentifier);
+        Set<String> methodJavadocThrows = javadocThrowsMapping.get(currentScopeIdentifier);
         if (methodJavadocThrows == null) {
             log(throwToken, MISSING_THROWS_TAG_MESSAGE);
             return;
@@ -308,7 +300,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
             }
 
             String throwIdentName = lastIdentifier.getText();
-            HashSet<String> types = findMatchingExceptionType(currentScopeIdentifier, throwIdentName);
+            Set<String> types = findMatchingExceptionType(currentScopeIdentifier, throwIdentName);
 
             if (types == null) {
                 return;
@@ -322,9 +314,9 @@ public class JavadocThrowsChecks extends AbstractCheck {
         }
     }
 
-    private HashSet<String> findMatchingExceptionType(String scope, String throwIdent) {
+    private Set<String> findMatchingExceptionType(String scope, String throwIdent) {
         // check current scope
-        HashSet<String> types = exceptionMapping.get(scope + throwIdent);
+        Set<String> types = exceptionMapping.get(scope + throwIdent);
         if (types == null) {
             // if a matching type is not found in current method scope, search object scope
             types = exceptionMapping.get(THIS_TOKEN + throwIdent);

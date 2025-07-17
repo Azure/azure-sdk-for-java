@@ -7,8 +7,8 @@ package com.azure.resourcemanager.datafactory.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.TriggerResource;
@@ -22,19 +22,19 @@ public final class TriggersListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"Trigger\",\"description\":\"klxnbbkbjnnzqzu\",\"runtimeState\":\"Started\",\"annotations\":[\"datavlacll\"],\"\":{\"ielyhow\":\"dataksguccotgqge\",\"bdcheydcts\":\"datanzwhypjpypalptjp\"}},\"name\":\"wqsszd\",\"type\":\"kgbzmcprtanagehb\",\"etag\":\"wkaatjssebydus\",\"id\":\"ilp\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"Trigger\",\"description\":\"ixxxgltqldlh\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datald\"],\"nogyvpfyjlfnjmwb\":\"datacajhnnbp\",\"rpwkvz\":\"dataoqhy\",\"tfc\":\"databvdlhcyoykmp\",\"fea\":\"dataugitjnwajqzig\"},\"name\":\"bkcqoyqmbup\",\"type\":\"bzhczyhtjqtzl\",\"etag\":\"qp\",\"id\":\"c\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TriggerResource> response
-            = manager.triggers().listByFactory("rrixkobmrrnkdmn", "qhkju", com.azure.core.util.Context.NONE);
+            = manager.triggers().listByFactory("gaeeqgpvirozl", "ccpg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ilp", response.iterator().next().id());
-        Assertions.assertEquals("klxnbbkbjnnzqzu", response.iterator().next().properties().description());
+        Assertions.assertEquals("c", response.iterator().next().id());
+        Assertions.assertEquals("ixxxgltqldlh", response.iterator().next().properties().description());
     }
 }

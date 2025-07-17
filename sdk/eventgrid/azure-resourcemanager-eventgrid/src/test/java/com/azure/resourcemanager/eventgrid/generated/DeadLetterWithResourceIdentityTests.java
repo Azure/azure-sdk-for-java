@@ -15,20 +15,20 @@ public final class DeadLetterWithResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeadLetterWithResourceIdentity model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"r\"},\"deadLetterDestination\":{\"endpointType\":\"DeadLetterDestination\"}}")
+            "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"gwq\"},\"deadLetterDestination\":{\"endpointType\":\"DeadLetterDestination\"}}")
             .toObject(DeadLetterWithResourceIdentity.class);
-        Assertions.assertEquals(EventSubscriptionIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("r", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("gwq", model.identity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeadLetterWithResourceIdentity model = new DeadLetterWithResourceIdentity()
-            .withIdentity(new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentity("r"))
+            .withIdentity(new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentity("gwq"))
             .withDeadLetterDestination(new DeadLetterDestination());
         model = BinaryData.fromObject(model).toObject(DeadLetterWithResourceIdentity.class);
-        Assertions.assertEquals(EventSubscriptionIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("r", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("gwq", model.identity().userAssignedIdentity());
     }
 }

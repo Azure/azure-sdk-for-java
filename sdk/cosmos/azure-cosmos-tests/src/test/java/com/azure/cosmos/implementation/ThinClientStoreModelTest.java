@@ -1,23 +1,15 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
-import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
-import com.azure.cosmos.implementation.http.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpClientConfig;
-import com.azure.cosmos.implementation.http.HttpHeaders;
-import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.implementation.http.ReactorNettyClient;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import io.netty.channel.ConnectTimeoutException;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
 
-import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 
 public class ThinClientStoreModelTest {
@@ -38,7 +30,7 @@ public class ThinClientStoreModelTest {
 
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
 
-        Mockito.doReturn(new URI("https://localhost"))
+        Mockito.doReturn(new RegionalRoutingContext(new URI("https://localhost:8080")))
             .when(globalEndpointManager).resolveServiceEndpoint(any());
 
         // mocking with HTTP/1.1 client, just using this test as basic store model validation. e2e request flow

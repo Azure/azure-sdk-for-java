@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,17 +21,20 @@ public final class TrainSourceFilter implements JsonSerializable<TrainSourceFilt
      * A case-sensitive prefix string to filter documents in the source path for training. For example, when using a
      * Azure storage blob Uri, use the prefix to restrict sub folders for training.
      */
+    @Generated
     private String prefix;
 
     /*
      * A flag to indicate if sub folders within the set of prefix folders will also need to be included when searching
      * for content to be preprocessed.
      */
+    @Generated
     private Boolean includeSubFolders;
 
     /**
      * Creates an instance of TrainSourceFilter class.
      */
+    @Generated
     public TrainSourceFilter() {
     }
 
@@ -40,6 +44,7 @@ public final class TrainSourceFilter implements JsonSerializable<TrainSourceFilt
      * 
      * @return the prefix value.
      */
+    @Generated
     public String getPrefix() {
         return this.prefix;
     }
@@ -51,6 +56,7 @@ public final class TrainSourceFilter implements JsonSerializable<TrainSourceFilt
      * @param prefix the prefix value to set.
      * @return the TrainSourceFilter object itself.
      */
+    @Generated
     public TrainSourceFilter setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
@@ -62,6 +68,7 @@ public final class TrainSourceFilter implements JsonSerializable<TrainSourceFilt
      * 
      * @return the includeSubFolders value.
      */
+    @Generated
     public Boolean isIncludeSubFolders() {
         return this.includeSubFolders;
     }
@@ -73,6 +80,7 @@ public final class TrainSourceFilter implements JsonSerializable<TrainSourceFilt
      * @param includeSubFolders the includeSubFolders value to set.
      * @return the TrainSourceFilter object itself.
      */
+    @Generated
     public TrainSourceFilter setIncludeSubFolders(Boolean includeSubFolders) {
         this.includeSubFolders = includeSubFolders;
         return this;
@@ -81,6 +89,7 @@ public final class TrainSourceFilter implements JsonSerializable<TrainSourceFilt
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -97,6 +106,7 @@ public final class TrainSourceFilter implements JsonSerializable<TrainSourceFilt
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the TrainSourceFilter.
      */
+    @Generated
     public static TrainSourceFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TrainSourceFilter deserializedTrainSourceFilter = new TrainSourceFilter();

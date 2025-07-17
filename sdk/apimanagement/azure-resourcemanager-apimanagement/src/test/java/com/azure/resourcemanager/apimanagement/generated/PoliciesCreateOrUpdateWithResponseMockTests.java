@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
@@ -24,22 +24,22 @@ public final class PoliciesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"xdbktuqnbcjknrq\",\"format\":\"xml\"},\"id\":\"ww\",\"name\":\"ku\",\"type\":\"twiieinliclmoyoi\"}";
+            = "{\"properties\":{\"value\":\"cjgpt\",\"format\":\"rawxml\"},\"id\":\"hyunwm\",\"name\":\"fjjsel\",\"type\":\"lwmfudpntps\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PolicyContract response = manager.policies()
-            .createOrUpdateWithResponse("qqeetsqac", "czfro", PolicyIdName.POLICY,
-                new PolicyContractInner().withValue("raiai").withFormat(PolicyContentFormat.RAWXML), "fngfpilloir",
+            .createOrUpdateWithResponse("t", "oqoafdvxrlrsrfrx", PolicyIdName.POLICY,
+                new PolicyContractInner().withValue("djpspipkpcvhqa").withFormat(PolicyContentFormat.RAWXML), "bx",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xdbktuqnbcjknrq", response.value());
-        Assertions.assertEquals(PolicyContentFormat.XML, response.format());
+        Assertions.assertEquals("cjgpt", response.value());
+        Assertions.assertEquals(PolicyContentFormat.RAWXML, response.format());
     }
 }

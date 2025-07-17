@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -16,26 +17,25 @@ public interface PortalConfigs {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of the developer portal configurations along with {@link Response}.
+     * @return the collection of the developer portal configurations as paginated response with {@link PagedIterable}.
      */
-    Response<PortalConfigCollection> listByServiceWithResponse(String resourceGroupName, String serviceName,
-        Context context);
+    PagedIterable<PortalConfigContract> listByService(String resourceGroupName, String serviceName);
 
     /**
      * Lists the developer portal configurations.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of the developer portal configurations.
+     * @return the collection of the developer portal configurations as paginated response with {@link PagedIterable}.
      */
-    PortalConfigCollection listByService(String resourceGroupName, String serviceName);
+    PagedIterable<PortalConfigContract> listByService(String resourceGroupName, String serviceName, Context context);
 
     /**
      * Gets the entity state (Etag) version of the developer portal configuration.

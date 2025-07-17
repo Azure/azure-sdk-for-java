@@ -52,7 +52,7 @@ public final class SharePointOnlineListLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SharePointOnlineListLinkedServiceTypeProperties innerTypeProperties() {
+    SharePointOnlineListLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

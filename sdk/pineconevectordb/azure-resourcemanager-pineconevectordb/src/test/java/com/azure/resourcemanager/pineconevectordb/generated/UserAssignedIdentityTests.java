@@ -10,8 +10,9 @@ import com.azure.resourcemanager.pineconevectordb.models.UserAssignedIdentity;
 public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedIdentity model = BinaryData.fromString("{\"principalId\":\"l\",\"clientId\":\"uvfqawrlyxwj\"}")
-            .toObject(UserAssignedIdentity.class);
+        UserAssignedIdentity model
+            = BinaryData.fromString("{\"clientId\":\"zidnsezcxtbzsgfy\",\"principalId\":\"sne\"}")
+                .toObject(UserAssignedIdentity.class);
     }
 
     @org.junit.jupiter.api.Test

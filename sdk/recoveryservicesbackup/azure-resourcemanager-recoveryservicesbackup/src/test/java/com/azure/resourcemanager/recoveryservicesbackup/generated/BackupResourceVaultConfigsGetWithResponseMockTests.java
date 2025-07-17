@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceVaultConfigResource;
@@ -25,29 +25,29 @@ public final class BackupResourceVaultConfigsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storageModelType\":\"GeoRedundant\",\"storageType\":\"Invalid\",\"storageTypeState\":\"Locked\",\"enhancedSecurityState\":\"Enabled\",\"softDeleteFeatureState\":\"AlwaysON\",\"softDeleteRetentionPeriodInDays\":171157881,\"resourceGuardOperationRequests\":[\"wuowhlxlnwy\",\"mouvbl\"],\"isSoftDeleteFeatureStateEditable\":false},\"eTag\":\"zkltrfowtdvrfmv\",\"location\":\"ih\",\"tags\":{\"jidhftu\":\"drqc\",\"bfqz\":\"vhdxlwyo\",\"xmbjroum\":\"kfnjyixhafrat\",\"l\":\"znv\"},\"id\":\"jrhuzgf\",\"name\":\"on\",\"type\":\"tpusllywp\"}";
+            = "{\"properties\":{\"storageModelType\":\"LocallyRedundant\",\"storageType\":\"LocallyRedundant\",\"storageTypeState\":\"Unlocked\",\"enhancedSecurityState\":\"Enabled\",\"softDeleteFeatureState\":\"Invalid\",\"softDeleteRetentionPeriodInDays\":194219254,\"resourceGuardOperationRequests\":[\"xhmtfhocnxzc\",\"jhngxnoq\",\"xtdisnjevhd\",\"mydidwhepfw\"],\"isSoftDeleteFeatureStateEditable\":true},\"eTag\":\"doesxxhmwcdb\",\"location\":\"ky\",\"tags\":{\"plvukaobrlbpg\":\"xkxhnegknjzrbhtm\",\"g\":\"nbagnchj\",\"xcgqtagdrclsso\":\"muowakywalhjy\"},\"id\":\"jomevtfycnlb\",\"name\":\"gjco\",\"type\":\"kk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BackupResourceVaultConfigResource response = manager.backupResourceVaultConfigs()
-            .getWithResponse("d", "wrxwhydtl", com.azure.core.util.Context.NONE)
+            .getWithResponse("vlm", "jwcolbm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ih", response.location());
-        Assertions.assertEquals("drqc", response.tags().get("jidhftu"));
-        Assertions.assertEquals(StorageType.GEO_REDUNDANT, response.properties().storageModelType());
-        Assertions.assertEquals(StorageType.INVALID, response.properties().storageType());
-        Assertions.assertEquals(StorageTypeState.LOCKED, response.properties().storageTypeState());
+        Assertions.assertEquals("ky", response.location());
+        Assertions.assertEquals("xkxhnegknjzrbhtm", response.tags().get("plvukaobrlbpg"));
+        Assertions.assertEquals(StorageType.LOCALLY_REDUNDANT, response.properties().storageModelType());
+        Assertions.assertEquals(StorageType.LOCALLY_REDUNDANT, response.properties().storageType());
+        Assertions.assertEquals(StorageTypeState.UNLOCKED, response.properties().storageTypeState());
         Assertions.assertEquals(EnhancedSecurityState.ENABLED, response.properties().enhancedSecurityState());
-        Assertions.assertEquals(SoftDeleteFeatureState.ALWAYS_ON, response.properties().softDeleteFeatureState());
-        Assertions.assertEquals(171157881, response.properties().softDeleteRetentionPeriodInDays());
-        Assertions.assertEquals("wuowhlxlnwy", response.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(false, response.properties().isSoftDeleteFeatureStateEditable());
-        Assertions.assertEquals("zkltrfowtdvrfmv", response.etag());
+        Assertions.assertEquals(SoftDeleteFeatureState.INVALID, response.properties().softDeleteFeatureState());
+        Assertions.assertEquals(194219254, response.properties().softDeleteRetentionPeriodInDays());
+        Assertions.assertEquals("xhmtfhocnxzc", response.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(true, response.properties().isSoftDeleteFeatureStateEditable());
+        Assertions.assertEquals("doesxxhmwcdb", response.etag());
     }
 }

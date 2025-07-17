@@ -107,8 +107,9 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
     }
 
     /**
-     * Get the clusteringPolicy property: Clustering policy - default is OSSCluster. This property must be chosen at
-     * create time, and cannot be changed without deleting the database.
+     * Get the clusteringPolicy property: Clustering policy - default is OSSCluster. This property can be updated only
+     * if the current value is NoCluster. If the value is OSSCluster or EnterpriseCluster, it cannot be updated without
+     * deleting the database.
      * 
      * @return the clusteringPolicy value.
      */
@@ -117,8 +118,9 @@ public final class DatabaseUpdate implements JsonSerializable<DatabaseUpdate> {
     }
 
     /**
-     * Set the clusteringPolicy property: Clustering policy - default is OSSCluster. This property must be chosen at
-     * create time, and cannot be changed without deleting the database.
+     * Set the clusteringPolicy property: Clustering policy - default is OSSCluster. This property can be updated only
+     * if the current value is NoCluster. If the value is OSSCluster or EnterpriseCluster, it cannot be updated without
+     * deleting the database.
      * 
      * @param clusteringPolicy the clusteringPolicy value to set.
      * @return the DatabaseUpdate object itself.

@@ -12,21 +12,21 @@ public final class VMwareV2FabricCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VMwareV2FabricCreationInput model = BinaryData.fromString(
-            "{\"instanceType\":\"VMwareV2\",\"vmwareSiteId\":\"ptchdwyq\",\"physicalSiteId\":\"dqimlgbbfjm\",\"migrationSolutionId\":\"gjvxlhmpmhe\"}")
+            "{\"instanceType\":\"VMwareV2\",\"vmwareSiteId\":\"orxsqtzngxbsale\",\"physicalSiteId\":\"uxcmmhipbvskc\",\"migrationSolutionId\":\"tlynkwfsaangfg\"}")
             .toObject(VMwareV2FabricCreationInput.class);
-        Assertions.assertEquals("ptchdwyq", model.vmwareSiteId());
-        Assertions.assertEquals("dqimlgbbfjm", model.physicalSiteId());
-        Assertions.assertEquals("gjvxlhmpmhe", model.migrationSolutionId());
+        Assertions.assertEquals("orxsqtzngxbsale", model.vmwareSiteId());
+        Assertions.assertEquals("uxcmmhipbvskc", model.physicalSiteId());
+        Assertions.assertEquals("tlynkwfsaangfg", model.migrationSolutionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMwareV2FabricCreationInput model = new VMwareV2FabricCreationInput().withVmwareSiteId("ptchdwyq")
-            .withPhysicalSiteId("dqimlgbbfjm")
-            .withMigrationSolutionId("gjvxlhmpmhe");
+        VMwareV2FabricCreationInput model = new VMwareV2FabricCreationInput().withVmwareSiteId("orxsqtzngxbsale")
+            .withPhysicalSiteId("uxcmmhipbvskc")
+            .withMigrationSolutionId("tlynkwfsaangfg");
         model = BinaryData.fromObject(model).toObject(VMwareV2FabricCreationInput.class);
-        Assertions.assertEquals("ptchdwyq", model.vmwareSiteId());
-        Assertions.assertEquals("dqimlgbbfjm", model.physicalSiteId());
-        Assertions.assertEquals("gjvxlhmpmhe", model.migrationSolutionId());
+        Assertions.assertEquals("orxsqtzngxbsale", model.vmwareSiteId());
+        Assertions.assertEquals("uxcmmhipbvskc", model.physicalSiteId());
+        Assertions.assertEquals("tlynkwfsaangfg", model.migrationSolutionId());
     }
 }

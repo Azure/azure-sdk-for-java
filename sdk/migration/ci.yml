@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/migration/ci.yml
+      - sdk/migration/azure-resourcemanager-migration-assessment/
+    exclude:
+      - sdk/migration/pom.xml
+      - sdk/migration/azure-resourcemanager-migration-assessment/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/migration/ci.yml
+      - sdk/migration/azure-resourcemanager-migration-assessment/
+    exclude:
+      - sdk/migration/pom.xml
+      - sdk/migration/azure-resourcemanager-migration-assessment/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagermigrationassessment
+    displayName: azure-resourcemanager-migration-assessment
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: migration
+    Artifacts:
+      - name: azure-resourcemanager-migration-assessment
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermigrationassessment
+        releaseInBatch: ${{ parameters.release_azureresourcemanagermigrationassessment }}

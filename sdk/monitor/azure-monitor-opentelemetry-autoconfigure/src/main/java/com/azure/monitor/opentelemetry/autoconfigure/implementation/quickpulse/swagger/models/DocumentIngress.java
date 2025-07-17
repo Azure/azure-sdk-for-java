@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public class DocumentIngress implements JsonSerializable<DocumentIngress> {
     /*
      * Telemetry type. Types not defined in enum will get replaced with a 'Unknown' type.
      */
+    @Generated
     private DocumentType documentType = DocumentType.fromString("DocumentIngress");
 
     /*
      * An array of document streaming ids. Each id identifies a flow of documents customized by UX customers.
      */
+    @Generated
     private List<String> documentStreamIds;
 
     /*
      * Collection of custom properties.
      */
+    @Generated
     private List<KeyValuePairString> properties;
 
     /**
      * Creates an instance of DocumentIngress class.
      */
+    @Generated
     public DocumentIngress() {
     }
 
@@ -43,6 +48,7 @@ public class DocumentIngress implements JsonSerializable<DocumentIngress> {
      * 
      * @return the documentType value.
      */
+    @Generated
     public DocumentType getDocumentType() {
         return this.documentType;
     }
@@ -53,6 +59,7 @@ public class DocumentIngress implements JsonSerializable<DocumentIngress> {
      * 
      * @return the documentStreamIds value.
      */
+    @Generated
     public List<String> getDocumentStreamIds() {
         return this.documentStreamIds;
     }
@@ -64,6 +71,7 @@ public class DocumentIngress implements JsonSerializable<DocumentIngress> {
      * @param documentStreamIds the documentStreamIds value to set.
      * @return the DocumentIngress object itself.
      */
+    @Generated
     public DocumentIngress setDocumentStreamIds(List<String> documentStreamIds) {
         this.documentStreamIds = documentStreamIds;
         return this;
@@ -74,6 +82,7 @@ public class DocumentIngress implements JsonSerializable<DocumentIngress> {
      * 
      * @return the properties value.
      */
+    @Generated
     public List<KeyValuePairString> getProperties() {
         return this.properties;
     }
@@ -84,6 +93,7 @@ public class DocumentIngress implements JsonSerializable<DocumentIngress> {
      * @param properties the properties value to set.
      * @return the DocumentIngress object itself.
      */
+    @Generated
     public DocumentIngress setProperties(List<KeyValuePairString> properties) {
         this.properties = properties;
         return this;
@@ -92,6 +102,7 @@ public class DocumentIngress implements JsonSerializable<DocumentIngress> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -110,6 +121,7 @@ public class DocumentIngress implements JsonSerializable<DocumentIngress> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DocumentIngress.
      */
+    @Generated
     public static DocumentIngress fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -143,6 +155,7 @@ public class DocumentIngress implements JsonSerializable<DocumentIngress> {
         });
     }
 
+    @Generated
     static DocumentIngress fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DocumentIngress deserializedDocumentIngress = new DocumentIngress();

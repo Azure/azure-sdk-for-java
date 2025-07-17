@@ -14,19 +14,19 @@ public final class EventHubEventSubscriptionDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventHubEventSubscriptionDestinationProperties model = BinaryData.fromString(
-            "{\"resourceId\":\"kraokq\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"btwa\"}]}")
+            "{\"resourceId\":\"fvafh\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"ccbevxrhyzdf\"}]}")
             .toObject(EventHubEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("kraokq", model.resourceId());
-        Assertions.assertEquals("btwa", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("fvafh", model.resourceId());
+        Assertions.assertEquals("ccbevxrhyzdf", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventHubEventSubscriptionDestinationProperties model
-            = new EventHubEventSubscriptionDestinationProperties().withResourceId("kraokq")
-                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("btwa")));
+            = new EventHubEventSubscriptionDestinationProperties().withResourceId("fvafh")
+                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("ccbevxrhyzdf")));
         model = BinaryData.fromObject(model).toObject(EventHubEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("kraokq", model.resourceId());
-        Assertions.assertEquals("btwa", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("fvafh", model.resourceId());
+        Assertions.assertEquals("ccbevxrhyzdf", model.deliveryAttributeMappings().get(0).name());
     }
 }

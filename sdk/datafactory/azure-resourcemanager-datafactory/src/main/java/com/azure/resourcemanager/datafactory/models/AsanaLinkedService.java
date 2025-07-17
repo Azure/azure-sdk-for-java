@@ -51,7 +51,7 @@ public final class AsanaLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AsanaLinkedServiceTypeProperties innerTypeProperties() {
+    AsanaLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

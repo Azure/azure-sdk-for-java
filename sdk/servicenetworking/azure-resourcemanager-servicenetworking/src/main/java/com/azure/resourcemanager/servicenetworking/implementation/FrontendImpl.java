@@ -11,6 +11,7 @@ import com.azure.resourcemanager.servicenetworking.fluent.models.FrontendInner;
 import com.azure.resourcemanager.servicenetworking.models.Frontend;
 import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
 import com.azure.resourcemanager.servicenetworking.models.FrontendUpdate;
+import com.azure.resourcemanager.servicenetworking.models.FrontendUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -177,7 +178,12 @@ public final class FrontendImpl implements Frontend, Frontend.Definition, Fronte
         return this;
     }
 
+    public FrontendImpl withProperties(FrontendUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

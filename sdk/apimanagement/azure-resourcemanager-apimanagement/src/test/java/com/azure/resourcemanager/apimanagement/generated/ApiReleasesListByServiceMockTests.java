@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ApiReleaseContract;
@@ -22,20 +22,20 @@ public final class ApiReleasesListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"apiId\":\"rhqtwvcazekdzd\",\"createdDateTime\":\"2021-02-22T10:21:43Z\",\"updatedDateTime\":\"2021-02-25T19:14:31Z\",\"notes\":\"ztsmpchggr\"},\"id\":\"elgfyatigfgfrr\",\"name\":\"dknczgorywn\",\"type\":\"ojtvmdev\"}]}";
+            = "{\"value\":[{\"properties\":{\"apiId\":\"gdheronsd\",\"createdDateTime\":\"2021-01-13T11:49:05Z\",\"updatedDateTime\":\"2021-09-04T01:46:34Z\",\"notes\":\"zuatqhgzuyxt\"},\"id\":\"vfdbqskgqjbvitpt\",\"name\":\"vs\",\"type\":\"favdhpiwrm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ApiReleaseContract> response = manager.apiReleases()
-            .listByService("gdjccxwbpwyykd", "gq", "lrzndas", "nidmjqmvytg", 1554394708, 1719729924,
+            .listByService("saujqg", "bjvov", "a", "hgjsmbcsloy", 1205136049, 985080577,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rhqtwvcazekdzd", response.iterator().next().apiId());
-        Assertions.assertEquals("ztsmpchggr", response.iterator().next().notes());
+        Assertions.assertEquals("gdheronsd", response.iterator().next().apiId());
+        Assertions.assertEquals("zuatqhgzuyxt", response.iterator().next().notes());
     }
 }

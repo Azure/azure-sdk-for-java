@@ -4,22 +4,44 @@
 
 package com.azure.resourcemanager.servicenetworking.generated;
 
+import com.azure.resourcemanager.servicenetworking.models.IpAccessRulesPolicy;
 import com.azure.resourcemanager.servicenetworking.models.SecurityPolicyProperties;
 import com.azure.resourcemanager.servicenetworking.models.WafPolicy;
+import java.util.Arrays;
 
 /**
  * Samples for SecurityPoliciesInterface CreateOrUpdate.
  */
 public final class SecurityPoliciesInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/SecurityPolicyPut.json
+     * x-ms-original-file: 2025-03-01-preview/IpAccessRulesSecurityPolicyPut.json
      */
     /**
-     * Sample code: Put SecurityPolicy.
+     * Sample code: Put IpAccessRules SecurityPolicy.
      * 
      * @param manager Entry point to TrafficControllerManager.
      */
-    public static void putSecurityPolicy(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+    public static void
+        putIpAccessRulesSecurityPolicy(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.securityPoliciesInterfaces()
+            .define("sp1")
+            .withRegion("NorthCentralUS")
+            .withExistingTrafficController("rg1", "tc1")
+            .withProperties(new SecurityPolicyProperties()
+                .withIpAccessRulesPolicy(new IpAccessRulesPolicy().withRules(Arrays.asList())))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01-preview/WafSecurityPolicyPut.json
+     */
+    /**
+     * Sample code: Put WAF SecurityPolicy.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void
+        putWAFSecurityPolicy(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         manager.securityPoliciesInterfaces()
             .define("sp1")
             .withRegion("NorthCentralUS")

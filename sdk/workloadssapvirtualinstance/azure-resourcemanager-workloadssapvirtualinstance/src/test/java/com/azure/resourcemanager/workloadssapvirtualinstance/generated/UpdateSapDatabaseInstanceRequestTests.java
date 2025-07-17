@@ -13,17 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateSapDatabaseInstanceRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateSapDatabaseInstanceRequest model = BinaryData.fromString("{\"tags\":{\"vkg\":\"f\",\"gdknnqv\":\"u\"}}")
+        UpdateSapDatabaseInstanceRequest model = BinaryData.fromString("{\"tags\":{\"oebwnujhemms\":\"aojkniodk\"}}")
             .toObject(UpdateSapDatabaseInstanceRequest.class);
-        Assertions.assertEquals("f", model.tags().get("vkg"));
+        Assertions.assertEquals("aojkniodk", model.tags().get("oebwnujhemms"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateSapDatabaseInstanceRequest model
-            = new UpdateSapDatabaseInstanceRequest().withTags(mapOf("vkg", "f", "gdknnqv", "u"));
+            = new UpdateSapDatabaseInstanceRequest().withTags(mapOf("oebwnujhemms", "aojkniodk"));
         model = BinaryData.fromObject(model).toObject(UpdateSapDatabaseInstanceRequest.class);
-        Assertions.assertEquals("f", model.tags().get("vkg"));
+        Assertions.assertEquals("aojkniodk", model.tags().get("oebwnujhemms"));
     }
 
     // Use "Map.of" if available

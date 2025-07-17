@@ -14,22 +14,24 @@ public final class RecoveryPlanA2AFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPlanA2AFailoverInput model = BinaryData.fromString(
-            "{\"instanceType\":\"A2A\",\"recoveryPointType\":\"LatestApplicationConsistent\",\"cloudServiceCreationOption\":\"rtnuguefxxijteb\",\"multiVmSyncPointOption\":\"UsePerVmRecoveryPoint\"}")
+            "{\"instanceType\":\"A2A\",\"recoveryPointType\":\"LatestProcessed\",\"cloudServiceCreationOption\":\"ahbqsvnkxm\",\"multiVmSyncPointOption\":\"UseMultiVmSyncRecoveryPoint\"}")
             .toObject(RecoveryPlanA2AFailoverInput.class);
-        Assertions.assertEquals(A2ARpRecoveryPointType.LATEST_APPLICATION_CONSISTENT, model.recoveryPointType());
-        Assertions.assertEquals("rtnuguefxxijteb", model.cloudServiceCreationOption());
-        Assertions.assertEquals(MultiVmSyncPointOption.USE_PER_VM_RECOVERY_POINT, model.multiVmSyncPointOption());
+        Assertions.assertEquals(A2ARpRecoveryPointType.LATEST_PROCESSED, model.recoveryPointType());
+        Assertions.assertEquals("ahbqsvnkxm", model.cloudServiceCreationOption());
+        Assertions.assertEquals(MultiVmSyncPointOption.USE_MULTI_VM_SYNC_RECOVERY_POINT,
+            model.multiVmSyncPointOption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPlanA2AFailoverInput model = new RecoveryPlanA2AFailoverInput()
-            .withRecoveryPointType(A2ARpRecoveryPointType.LATEST_APPLICATION_CONSISTENT)
-            .withCloudServiceCreationOption("rtnuguefxxijteb")
-            .withMultiVmSyncPointOption(MultiVmSyncPointOption.USE_PER_VM_RECOVERY_POINT);
+        RecoveryPlanA2AFailoverInput model
+            = new RecoveryPlanA2AFailoverInput().withRecoveryPointType(A2ARpRecoveryPointType.LATEST_PROCESSED)
+                .withCloudServiceCreationOption("ahbqsvnkxm")
+                .withMultiVmSyncPointOption(MultiVmSyncPointOption.USE_MULTI_VM_SYNC_RECOVERY_POINT);
         model = BinaryData.fromObject(model).toObject(RecoveryPlanA2AFailoverInput.class);
-        Assertions.assertEquals(A2ARpRecoveryPointType.LATEST_APPLICATION_CONSISTENT, model.recoveryPointType());
-        Assertions.assertEquals("rtnuguefxxijteb", model.cloudServiceCreationOption());
-        Assertions.assertEquals(MultiVmSyncPointOption.USE_PER_VM_RECOVERY_POINT, model.multiVmSyncPointOption());
+        Assertions.assertEquals(A2ARpRecoveryPointType.LATEST_PROCESSED, model.recoveryPointType());
+        Assertions.assertEquals("ahbqsvnkxm", model.cloudServiceCreationOption());
+        Assertions.assertEquals(MultiVmSyncPointOption.USE_MULTI_VM_SYNC_RECOVERY_POINT,
+            model.multiVmSyncPointOption());
     }
 }

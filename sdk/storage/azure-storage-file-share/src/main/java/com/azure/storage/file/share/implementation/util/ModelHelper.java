@@ -24,6 +24,7 @@ import com.azure.storage.file.share.implementation.accesshelpers.ShareDirectoryP
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownloadHeadersConstructorProxy;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileInfoHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFilePropertiesHelper;
+import com.azure.storage.file.share.implementation.accesshelpers.ShareFileSymbolicLinkInfoHelper;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.DirectoriesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesHeaders;
@@ -32,8 +33,10 @@ import com.azure.storage.file.share.implementation.models.DirectoriesSetProperti
 import com.azure.storage.file.share.implementation.models.FileProperty;
 import com.azure.storage.file.share.implementation.models.FilesCreateHardLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
+import com.azure.storage.file.share.implementation.models.FilesCreateSymbolicLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.FilesGetSymbolicLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetHttpHeadersHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLHeaders;
@@ -66,6 +69,7 @@ import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareFileItemProperties;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
+import com.azure.storage.file.share.models.ShareFileSymbolicLinkInfo;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareInfo;
@@ -629,6 +633,27 @@ public class ModelHelper {
         return new SimpleResponse<>(response, shareFileInfo);
     }
 
+    public static Response<ShareFileInfo>
+        createSymbolicLinkResponse(final ResponseBase<FilesCreateSymbolicLinkHeaders, Void> response) {
+        String eTag = response.getDeserializedHeaders().getETag();
+        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
+        FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
+        FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
+        ShareFileInfo shareFileInfo
+            = ShareFileInfoHelper.create(eTag, lastModified, null, smbProperties, posixProperties);
+        return new SimpleResponse<>(response, shareFileInfo);
+    }
+
+    public static Response<ShareFileSymbolicLinkInfo>
+        getSymbolicLinkResponse(final ResponseBase<FilesGetSymbolicLinkHeaders, Void> response) {
+        String eTag = response.getDeserializedHeaders().getETag();
+        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
+        String linkText = response.getDeserializedHeaders().getXMsLinkText();
+        ShareFileSymbolicLinkInfo shareFileSymbolicLinkInfo
+            = ShareFileSymbolicLinkInfoHelper.create(eTag, lastModified, linkText);
+        return new SimpleResponse<>(response, shareFileSymbolicLinkInfo);
+    }
+
     public static List<ShareSignedIdentifier>
         truncateAccessPolicyPermissionsToSeconds(List<ShareSignedIdentifier> permissions) {
         /*
@@ -690,6 +715,9 @@ public class ModelHelper {
      * @return The public exception.
      */
     public static ShareStorageException mapToShareStorageException(ShareStorageExceptionInternal internal) {
-        return new ShareStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
+        String code = internal.getValue() == null ? null : internal.getValue().getCode();
+        String headerName = internal.getValue() == null ? null : internal.getValue().getHeaderName();
+        return new ShareStorageException(StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(),
+            internal.getResponse(), code, headerName), internal.getResponse(), internal.getValue());
     }
 }

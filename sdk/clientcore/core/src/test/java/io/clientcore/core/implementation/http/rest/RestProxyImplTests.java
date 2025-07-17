@@ -3,28 +3,22 @@
 
 package io.clientcore.core.implementation.http.rest;
 
-import io.clientcore.core.annotation.ServiceInterface;
-import io.clientcore.core.http.MockHttpResponse;
+import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.http.RestProxy;
-import io.clientcore.core.http.annotation.BodyParam;
-import io.clientcore.core.http.annotation.HeaderParam;
-import io.clientcore.core.http.annotation.HttpRequestInformation;
+import io.clientcore.core.http.annotations.BodyParam;
+import io.clientcore.core.http.annotations.HeaderParam;
+import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.implementation.util.JsonSerializer;
-import io.clientcore.core.util.Context;
-import io.clientcore.core.util.binarydata.BinaryData;
-import org.junit.jupiter.api.Named;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.json.JsonSerializer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,8 +26,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Named;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import static io.clientcore.core.util.TestUtils.assertArraysEqual;
+import static io.clientcore.core.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -52,10 +51,10 @@ public class RestProxyImplTests {
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
         Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength,
-            Context context);
+            RequestContext context);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
-        void testVoidMethod(Context context);
+        void testVoidMethod(RequestContext context);
     }
 
     @Test
@@ -64,7 +63,7 @@ public class RestProxyImplTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
 
-        testInterface.testVoidMethod(Context.none());
+        testInterface.testVoidMethod(RequestContext.none());
 
         assertTrue(client.lastResponseClosed);
     }
@@ -77,7 +76,7 @@ public class RestProxyImplTests {
         byte[] bytes = "hello".getBytes();
         Response<Void> response
             = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length),
-                "application/json", (long) bytes.length, Context.none());
+                "application/json", (long) bytes.length, RequestContext.none());
 
         assertEquals(200, response.getStatusCode());
     }
@@ -86,7 +85,7 @@ public class RestProxyImplTests {
         private volatile boolean lastResponseClosed;
 
         @Override
-        public Response<?> send(HttpRequest request) {
+        public Response<BinaryData> send(HttpRequest request) {
             boolean success = request.getUri().getPath().equals("/my/uri/path");
 
             if (request.getHttpMethod().equals(HttpMethod.POST)) {
@@ -95,9 +94,9 @@ public class RestProxyImplTests {
                 success &= request.getHttpMethod().equals(HttpMethod.GET);
             }
 
-            return new MockHttpResponse(request, success ? 200 : 400) {
+            return new Response<BinaryData>(request, success ? 200 : 400, new HttpHeaders(), BinaryData.empty()) {
                 @Override
-                public void close() throws IOException {
+                public void close() {
                     lastResponseClosed = true;
 
                     super.close();
@@ -121,7 +120,7 @@ public class RestProxyImplTests {
 
     @Test
     public void emptyRequestBody() {
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost");
 
         assertNull(RestProxyImpl.validateLength(httpRequest));
     }
@@ -150,8 +149,9 @@ public class RestProxyImplTests {
 
     @Test
     public void multipleToBytesToCheckBodyLength() {
-        HttpRequest httpRequest
-            = new HttpRequest(HttpMethod.GET, "http://localhost").setBody(BinaryData.fromBytes(EXPECTED));
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri("http://localhost")
+            .setBody(BinaryData.fromBytes(EXPECTED));
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length));
 
         BinaryData binaryData = RestProxyImpl.validateLength(httpRequest);
@@ -178,7 +178,7 @@ public class RestProxyImplTests {
     }
 
     private static HttpRequest createHttpRequest(String uri, BinaryData body, int contentLength) {
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri).setBody(body);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri).setBody(body);
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
         return httpRequest;
     }
@@ -186,36 +186,39 @@ public class RestProxyImplTests {
     @Test
     public void userProvidedLengthShouldNotBeTrustedTooLarge() throws IOException {
         try (InputStream byteArrayInputStream = new ByteArrayInputStream(EXPECTED)) {
-            HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
+            HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET)
+                .setUri("http://localhost")
                 .setBody(BinaryData.fromStream(byteArrayInputStream, EXPECTED.length - 1L));
             httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length - 1L));
 
             IllegalStateException thrown = assertThrows(IllegalStateException.class,
                 () -> validateAndCollectRequest(httpRequest), "Expected validateLength() to throw, but it didn't");
-            assertEquals("Request body emitted " + EXPECTED.length + " bytes, more than the expected "
-                + (EXPECTED.length - 1) + " bytes.", thrown.getMessage());
+            assertEquals("Request body is larger than the expected stream length; {\"position\":6,\"expectedSize\":5}",
+                thrown.getMessage());
         }
     }
 
     @Test
     public void userProvidedLengthShouldNotBeTrustedTooSmall() throws IOException {
         try (InputStream byteArrayInputStream = new ByteArrayInputStream(EXPECTED)) {
-            HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
+            HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET)
+                .setUri("http://localhost")
                 .setBody(BinaryData.fromStream(byteArrayInputStream, EXPECTED.length + 1L));
             httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length + 1L));
 
             IllegalStateException thrown = assertThrows(IllegalStateException.class,
                 () -> validateAndCollectRequest(httpRequest), "Expected validateLength() to throw, but it didn't");
 
-            assertEquals("Request body emitted " + EXPECTED.length + " bytes, less than the expected "
-                + (EXPECTED.length + 1) + " bytes.", thrown.getMessage());
+            assertEquals("Request body is smaller than the expected stream length; {\"position\":6,\"expectedSize\":7}",
+                thrown.getMessage());
         }
     }
 
     @Test
     public void expectedBodyLength() throws IOException {
         try (InputStream byteArrayInputStream = new ByteArrayInputStream(EXPECTED)) {
-            HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
+            HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET)
+                .setUri("http://localhost")
                 .setBody(BinaryData.fromStream(byteArrayInputStream, (long) EXPECTED.length));
             httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length));
 

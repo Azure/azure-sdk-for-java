@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,58 +22,68 @@ public class AzureMLLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AzureML";
 
     /*
      * The Batch Execution REST URL for an Azure ML Studio Web Service endpoint. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object mlEndpoint;
 
     /*
      * The API key for accessing the Azure ML model endpoint.
      */
+    @Generated
     private SecretBase apiKey;
 
     /*
      * The Update Resource REST URL for an Azure ML Studio Web Service endpoint. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object updateResourceEndpoint;
 
     /*
      * The ID of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure ML
      * Studio web service. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object servicePrincipalId;
 
     /*
      * The key of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure ML
      * Studio web service.
      */
+    @Generated
     private SecretBase servicePrincipalKey;
 
     /*
      * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object tenant;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /*
      * Type of authentication (Required to specify MSI) used to connect to AzureML. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object authentication;
 
     /**
      * Creates an instance of AzureMLLinkedService class.
      */
+    @Generated
     public AzureMLLinkedService() {
     }
 
@@ -81,6 +92,7 @@ public class AzureMLLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -92,6 +104,7 @@ public class AzureMLLinkedService extends LinkedService {
      * 
      * @return the mlEndpoint value.
      */
+    @Generated
     public Object getMlEndpoint() {
         return this.mlEndpoint;
     }
@@ -103,6 +116,7 @@ public class AzureMLLinkedService extends LinkedService {
      * @param mlEndpoint the mlEndpoint value to set.
      * @return the AzureMLLinkedService object itself.
      */
+    @Generated
     public AzureMLLinkedService setMlEndpoint(Object mlEndpoint) {
         this.mlEndpoint = mlEndpoint;
         return this;
@@ -113,6 +127,7 @@ public class AzureMLLinkedService extends LinkedService {
      * 
      * @return the apiKey value.
      */
+    @Generated
     public SecretBase getApiKey() {
         return this.apiKey;
     }
@@ -123,6 +138,7 @@ public class AzureMLLinkedService extends LinkedService {
      * @param apiKey the apiKey value to set.
      * @return the AzureMLLinkedService object itself.
      */
+    @Generated
     public AzureMLLinkedService setApiKey(SecretBase apiKey) {
         this.apiKey = apiKey;
         return this;
@@ -134,6 +150,7 @@ public class AzureMLLinkedService extends LinkedService {
      * 
      * @return the updateResourceEndpoint value.
      */
+    @Generated
     public Object getUpdateResourceEndpoint() {
         return this.updateResourceEndpoint;
     }
@@ -145,6 +162,7 @@ public class AzureMLLinkedService extends LinkedService {
      * @param updateResourceEndpoint the updateResourceEndpoint value to set.
      * @return the AzureMLLinkedService object itself.
      */
+    @Generated
     public AzureMLLinkedService setUpdateResourceEndpoint(Object updateResourceEndpoint) {
         this.updateResourceEndpoint = updateResourceEndpoint;
         return this;
@@ -156,6 +174,7 @@ public class AzureMLLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalId value.
      */
+    @Generated
     public Object getServicePrincipalId() {
         return this.servicePrincipalId;
     }
@@ -167,6 +186,7 @@ public class AzureMLLinkedService extends LinkedService {
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the AzureMLLinkedService object itself.
      */
+    @Generated
     public AzureMLLinkedService setServicePrincipalId(Object servicePrincipalId) {
         this.servicePrincipalId = servicePrincipalId;
         return this;
@@ -178,6 +198,7 @@ public class AzureMLLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalKey value.
      */
+    @Generated
     public SecretBase getServicePrincipalKey() {
         return this.servicePrincipalKey;
     }
@@ -189,6 +210,7 @@ public class AzureMLLinkedService extends LinkedService {
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureMLLinkedService object itself.
      */
+    @Generated
     public AzureMLLinkedService setServicePrincipalKey(SecretBase servicePrincipalKey) {
         this.servicePrincipalKey = servicePrincipalKey;
         return this;
@@ -200,6 +222,7 @@ public class AzureMLLinkedService extends LinkedService {
      * 
      * @return the tenant value.
      */
+    @Generated
     public Object getTenant() {
         return this.tenant;
     }
@@ -211,6 +234,7 @@ public class AzureMLLinkedService extends LinkedService {
      * @param tenant the tenant value to set.
      * @return the AzureMLLinkedService object itself.
      */
+    @Generated
     public AzureMLLinkedService setTenant(Object tenant) {
         this.tenant = tenant;
         return this;
@@ -222,6 +246,7 @@ public class AzureMLLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -233,6 +258,7 @@ public class AzureMLLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureMLLinkedService object itself.
      */
+    @Generated
     public AzureMLLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -244,6 +270,7 @@ public class AzureMLLinkedService extends LinkedService {
      * 
      * @return the authentication value.
      */
+    @Generated
     public Object getAuthentication() {
         return this.authentication;
     }
@@ -255,6 +282,7 @@ public class AzureMLLinkedService extends LinkedService {
      * @param authentication the authentication value to set.
      * @return the AzureMLLinkedService object itself.
      */
+    @Generated
     public AzureMLLinkedService setAuthentication(Object authentication) {
         this.authentication = authentication;
         return this;
@@ -263,6 +291,17 @@ public class AzureMLLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public AzureMLLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public AzureMLLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -272,6 +311,7 @@ public class AzureMLLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -281,6 +321,7 @@ public class AzureMLLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -290,6 +331,7 @@ public class AzureMLLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMLLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -299,9 +341,11 @@ public class AzureMLLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -318,12 +362,22 @@ public class AzureMLLinkedService extends LinkedService {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("mlEndpoint", this.mlEndpoint);
             jsonWriter.writeJsonField("apiKey", this.apiKey);
-            jsonWriter.writeUntypedField("updateResourceEndpoint", this.updateResourceEndpoint);
-            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            if (this.updateResourceEndpoint != null) {
+                jsonWriter.writeUntypedField("updateResourceEndpoint", this.updateResourceEndpoint);
+            }
+            if (this.servicePrincipalId != null) {
+                jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            }
             jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-            jsonWriter.writeUntypedField("tenant", this.tenant);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
-            jsonWriter.writeUntypedField("authentication", this.authentication);
+            if (this.tenant != null) {
+                jsonWriter.writeUntypedField("tenant", this.tenant);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
+            if (this.authentication != null) {
+                jsonWriter.writeUntypedField("authentication", this.authentication);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -343,6 +397,7 @@ public class AzureMLLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureMLLinkedService.
      */
+    @Generated
     public static AzureMLLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureMLLinkedService deserializedAzureMLLinkedService = new AzureMLLinkedService();
@@ -351,7 +406,9 @@ public class AzureMLLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedAzureMLLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedAzureMLLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedAzureMLLinkedService.setDescription(reader.getString());

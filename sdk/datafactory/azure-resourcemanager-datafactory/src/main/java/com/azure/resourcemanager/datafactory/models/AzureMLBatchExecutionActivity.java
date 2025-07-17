@@ -52,7 +52,7 @@ public final class AzureMLBatchExecutionActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureMLBatchExecutionActivityTypeProperties innerTypeProperties() {
+    AzureMLBatchExecutionActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

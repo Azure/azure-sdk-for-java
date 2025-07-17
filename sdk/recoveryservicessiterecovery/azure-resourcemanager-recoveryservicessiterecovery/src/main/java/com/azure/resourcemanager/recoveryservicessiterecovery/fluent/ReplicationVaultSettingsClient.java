@@ -23,23 +23,23 @@ public interface ReplicationVaultSettingsClient {
      * 
      * Gets the list of vault setting. This includes the Migration Hub connection settings.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of vault setting as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VaultSettingInner> list(String resourceName, String resourceGroupName);
+    PagedIterable<VaultSettingInner> list(String resourceGroupName, String resourceName);
 
     /**
      * Gets the list of vault setting.
      * 
      * Gets the list of vault setting. This includes the Migration Hub connection settings.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -47,15 +47,15 @@ public interface ReplicationVaultSettingsClient {
      * @return the list of vault setting as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VaultSettingInner> list(String resourceName, String resourceGroupName, Context context);
+    PagedIterable<VaultSettingInner> list(String resourceGroupName, String resourceName, Context context);
 
     /**
      * Gets the vault setting.
      * 
      * Gets the vault setting. This includes the Migration Hub connection settings.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -64,7 +64,7 @@ public interface ReplicationVaultSettingsClient {
      * @return the vault setting along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VaultSettingInner> getWithResponse(String resourceName, String resourceGroupName, String vaultSettingName,
+    Response<VaultSettingInner> getWithResponse(String resourceGroupName, String resourceName, String vaultSettingName,
         Context context);
 
     /**
@@ -72,8 +72,8 @@ public interface ReplicationVaultSettingsClient {
      * 
      * Gets the vault setting. This includes the Migration Hub connection settings.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -81,15 +81,15 @@ public interface ReplicationVaultSettingsClient {
      * @return the vault setting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VaultSettingInner get(String resourceName, String resourceGroupName, String vaultSettingName);
+    VaultSettingInner get(String resourceGroupName, String resourceName, String vaultSettingName);
 
     /**
      * Updates vault setting. A vault setting object is a singleton per vault and it is always present by default.
      * 
      * The operation to configure vault setting.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @param input Vault setting creation input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,16 +98,16 @@ public interface ReplicationVaultSettingsClient {
      * @return the {@link SyncPoller} for polling of vault setting.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VaultSettingInner>, VaultSettingInner> beginCreate(String resourceName,
-        String resourceGroupName, String vaultSettingName, VaultSettingCreationInput input);
+    SyncPoller<PollResult<VaultSettingInner>, VaultSettingInner> beginCreate(String resourceGroupName,
+        String resourceName, String vaultSettingName, VaultSettingCreationInput input);
 
     /**
      * Updates vault setting. A vault setting object is a singleton per vault and it is always present by default.
      * 
      * The operation to configure vault setting.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @param input Vault setting creation input.
      * @param context The context to associate with this operation.
@@ -117,16 +117,16 @@ public interface ReplicationVaultSettingsClient {
      * @return the {@link SyncPoller} for polling of vault setting.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VaultSettingInner>, VaultSettingInner> beginCreate(String resourceName,
-        String resourceGroupName, String vaultSettingName, VaultSettingCreationInput input, Context context);
+    SyncPoller<PollResult<VaultSettingInner>, VaultSettingInner> beginCreate(String resourceGroupName,
+        String resourceName, String vaultSettingName, VaultSettingCreationInput input, Context context);
 
     /**
      * Updates vault setting. A vault setting object is a singleton per vault and it is always present by default.
      * 
      * The operation to configure vault setting.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @param input Vault setting creation input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,7 +135,7 @@ public interface ReplicationVaultSettingsClient {
      * @return vault setting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VaultSettingInner create(String resourceName, String resourceGroupName, String vaultSettingName,
+    VaultSettingInner create(String resourceGroupName, String resourceName, String vaultSettingName,
         VaultSettingCreationInput input);
 
     /**
@@ -143,8 +143,8 @@ public interface ReplicationVaultSettingsClient {
      * 
      * The operation to configure vault setting.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param vaultSettingName Vault setting name.
      * @param input Vault setting creation input.
      * @param context The context to associate with this operation.
@@ -154,6 +154,6 @@ public interface ReplicationVaultSettingsClient {
      * @return vault setting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VaultSettingInner create(String resourceName, String resourceGroupName, String vaultSettingName,
+    VaultSettingInner create(String resourceGroupName, String resourceName, String vaultSettingName,
         VaultSettingCreationInput input, Context context);
 }

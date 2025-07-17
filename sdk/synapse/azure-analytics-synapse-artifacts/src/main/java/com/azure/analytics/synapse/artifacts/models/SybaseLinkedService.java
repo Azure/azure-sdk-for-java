@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,47 +22,56 @@ public class SybaseLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Sybase";
 
     /*
      * Server name for connection. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object server;
 
     /*
      * Database name for connection. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object database;
 
     /*
      * Schema name for connection. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object schema;
 
     /*
      * AuthenticationType to be used for connection.
      */
+    @Generated
     private SybaseAuthenticationType authenticationType;
 
     /*
      * Username for authentication. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object username;
 
     /*
      * Password for authentication.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of SybaseLinkedService class.
      */
+    @Generated
     public SybaseLinkedService() {
     }
 
@@ -70,6 +80,7 @@ public class SybaseLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -80,6 +91,7 @@ public class SybaseLinkedService extends LinkedService {
      * 
      * @return the server value.
      */
+    @Generated
     public Object getServer() {
         return this.server;
     }
@@ -90,6 +102,7 @@ public class SybaseLinkedService extends LinkedService {
      * @param server the server value to set.
      * @return the SybaseLinkedService object itself.
      */
+    @Generated
     public SybaseLinkedService setServer(Object server) {
         this.server = server;
         return this;
@@ -100,6 +113,7 @@ public class SybaseLinkedService extends LinkedService {
      * 
      * @return the database value.
      */
+    @Generated
     public Object getDatabase() {
         return this.database;
     }
@@ -110,6 +124,7 @@ public class SybaseLinkedService extends LinkedService {
      * @param database the database value to set.
      * @return the SybaseLinkedService object itself.
      */
+    @Generated
     public SybaseLinkedService setDatabase(Object database) {
         this.database = database;
         return this;
@@ -120,6 +135,7 @@ public class SybaseLinkedService extends LinkedService {
      * 
      * @return the schema value.
      */
+    @Generated
     public Object getSchema() {
         return this.schema;
     }
@@ -130,6 +146,7 @@ public class SybaseLinkedService extends LinkedService {
      * @param schema the schema value to set.
      * @return the SybaseLinkedService object itself.
      */
+    @Generated
     public SybaseLinkedService setSchema(Object schema) {
         this.schema = schema;
         return this;
@@ -140,6 +157,7 @@ public class SybaseLinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public SybaseAuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -150,6 +168,7 @@ public class SybaseLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the SybaseLinkedService object itself.
      */
+    @Generated
     public SybaseLinkedService setAuthenticationType(SybaseAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -160,6 +179,7 @@ public class SybaseLinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -170,6 +190,7 @@ public class SybaseLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the SybaseLinkedService object itself.
      */
+    @Generated
     public SybaseLinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -180,6 +201,7 @@ public class SybaseLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -190,6 +212,7 @@ public class SybaseLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the SybaseLinkedService object itself.
      */
+    @Generated
     public SybaseLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -201,6 +224,7 @@ public class SybaseLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -212,6 +236,7 @@ public class SybaseLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SybaseLinkedService object itself.
      */
+    @Generated
     public SybaseLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -220,6 +245,17 @@ public class SybaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public SybaseLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public SybaseLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -229,6 +265,7 @@ public class SybaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SybaseLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -238,6 +275,7 @@ public class SybaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SybaseLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -247,6 +285,7 @@ public class SybaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SybaseLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -256,9 +295,11 @@ public class SybaseLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -274,12 +315,18 @@ public class SybaseLinkedService extends LinkedService {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("server", this.server);
             jsonWriter.writeUntypedField("database", this.database);
-            jsonWriter.writeUntypedField("schema", this.schema);
+            if (this.schema != null) {
+                jsonWriter.writeUntypedField("schema", this.schema);
+            }
             jsonWriter.writeStringField("authenticationType",
                 this.authenticationType == null ? null : this.authenticationType.toString());
-            jsonWriter.writeUntypedField("username", this.username);
+            if (this.username != null) {
+                jsonWriter.writeUntypedField("username", this.username);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -299,6 +346,7 @@ public class SybaseLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SybaseLinkedService.
      */
+    @Generated
     public static SybaseLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SybaseLinkedService deserializedSybaseLinkedService = new SybaseLinkedService();
@@ -307,7 +355,9 @@ public class SybaseLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedSybaseLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedSybaseLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedSybaseLinkedService.setDescription(reader.getString());

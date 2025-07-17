@@ -17,7 +17,8 @@ import java.io.IOException;
 @Fluent
 public class ResourceList implements JsonSerializable<ResourceList> {
     /*
-     * The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
+     * The URI to fetch the next page of resources, with each API call returning up to 200 resources per page. Use
+     * ListNext() to fetch the next page if the total number of resources exceeds 200.
      */
     private String nextLink;
 
@@ -28,8 +29,8 @@ public class ResourceList implements JsonSerializable<ResourceList> {
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of resources. Call ListNext() fetches next page of
-     * resources.
+     * Get the nextLink property: The URI to fetch the next page of resources, with each API call returning up to 200
+     * resources per page. Use ListNext() to fetch the next page if the total number of resources exceeds 200.
      * 
      * @return the nextLink value.
      */
@@ -38,8 +39,8 @@ public class ResourceList implements JsonSerializable<ResourceList> {
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of resources. Call ListNext() fetches next page of
-     * resources.
+     * Set the nextLink property: The URI to fetch the next page of resources, with each API call returning up to 200
+     * resources per page. Use ListNext() to fetch the next page if the total number of resources exceeds 200.
      * 
      * @param nextLink the nextLink value to set.
      * @return the ResourceList object itself.

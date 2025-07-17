@@ -8,7 +8,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.certificates.CertificateAsyncClient;
 import com.azure.security.keyvault.certificates.CertificateClient;
-import com.azure.security.keyvault.certificates.implementation.CertificatePropertiesHelper;
+import com.azure.security.keyvault.certificates.implementation.CertificatePolicyHelper;
 import com.azure.security.keyvault.certificates.implementation.DeletedCertificateHelper;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateAttributes;
 import com.azure.security.keyvault.certificates.implementation.models.DeletedCertificateBundle;
@@ -55,23 +55,19 @@ public final class DeletedCertificate extends KeyVaultCertificateWithPolicy {
     }
 
     private DeletedCertificate(DeletedCertificateItem item) {
-        super(null, null, null, CertificatePropertiesHelper.createCertificateProperties(item));
-
-        this.recoveryId = item.getRecoveryId();
-        this.deletedOn = item.getDeletedDate();
-        this.scheduledPurgeDate = item.getScheduledPurgeDate();
+        this(null, null, null, new CertificateProperties(item), null, item.getRecoveryId(), item.getDeletedDate(),
+            item.getScheduledPurgeDate());
     }
 
     private DeletedCertificate(DeletedCertificateBundle bundle) {
-        super(bundle);
-
-        this.recoveryId = bundle.getRecoveryId();
-        this.deletedOn = bundle.getDeletedDate();
-        this.scheduledPurgeDate = bundle.getScheduledPurgeDate();
+        this(bundle.getCer(), bundle.getKid(), bundle.getSid(), new CertificateProperties(bundle),
+            CertificatePolicyHelper.createCertificatePolicy(bundle.getPolicy()), bundle.getRecoveryId(),
+            bundle.getDeletedDate(), bundle.getScheduledPurgeDate());
     }
 
     private DeletedCertificate(byte[] cer, String kid, String sid, CertificateProperties properties,
         CertificatePolicy policy, String recoveryId, OffsetDateTime deletedOn, OffsetDateTime scheduledPurgeDate) {
+
         super(cer, kid, sid, properties, policy);
 
         this.recoveryId = recoveryId;
@@ -151,6 +147,7 @@ public final class DeletedCertificate extends KeyVaultCertificateWithPolicy {
             String recoveryId = null;
             OffsetDateTime deletedOn = null;
             OffsetDateTime scheduledPurgeDate = null;
+            boolean certificateOrderPreserved = false;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -180,14 +177,16 @@ public final class DeletedCertificate extends KeyVaultCertificateWithPolicy {
                 } else if ("scheduledPurgeDate".equals(fieldName)) {
                     scheduledPurgeDate = reader.getNullable(nonNull -> OffsetDateTime
                         .ofInstant(Instant.ofEpochMilli(nonNull.getLong() * 1000L), ZoneOffset.UTC));
+                } else if ("preserveCertOrder".equals(fieldName)) {
+                    certificateOrderPreserved = reader.getBoolean();
                 } else {
                     reader.skipChildren();
                 }
             }
 
             return new DeletedCertificate(cer, keyId, secretId,
-                new CertificateProperties(id, attributes, tags, wireThumbprint, null), policy, recoveryId, deletedOn,
-                scheduledPurgeDate);
+                new CertificateProperties(id, attributes, tags, wireThumbprint, null, certificateOrderPreserved),
+                policy, recoveryId, deletedOn, scheduledPurgeDate);
         });
     }
 }

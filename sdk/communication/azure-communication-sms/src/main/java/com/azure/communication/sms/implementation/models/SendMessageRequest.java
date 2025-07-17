@@ -6,6 +6,7 @@ package com.azure.communication.sms.implementation.models;
 
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,26 +22,32 @@ public final class SendMessageRequest implements JsonSerializable<SendMessageReq
     /*
      * The sender's phone number in E.164 format that is owned by the authenticated account.
      */
+    @Generated
     private String from;
 
     /*
-     * The recipient's phone number in E.164 format. In this version, a minimum of 1 and upto 100 recipients in the list are supported.
+     * The recipient's phone number in E.164 format. In this version, a minimum of 1 and upto 100 recipients in the list
+     * are supported.
      */
+    @Generated
     private List<SmsRecipient> smsRecipients;
 
     /*
      * The contents of the message that will be sent to the recipient. The allowable content is defined by RFC 5724.
      */
+    @Generated
     private String message;
 
     /*
      * Optional configuration for sending SMS messages.
      */
+    @Generated
     private SmsSendOptions smsSendOptions;
 
     /**
      * Creates an instance of SendMessageRequest class.
      */
+    @Generated
     public SendMessageRequest() {
     }
 
@@ -49,6 +56,7 @@ public final class SendMessageRequest implements JsonSerializable<SendMessageReq
      * 
      * @return the from value.
      */
+    @Generated
     public String getFrom() {
         return this.from;
     }
@@ -59,6 +67,7 @@ public final class SendMessageRequest implements JsonSerializable<SendMessageReq
      * @param from the from value to set.
      * @return the SendMessageRequest object itself.
      */
+    @Generated
     public SendMessageRequest setFrom(String from) {
         this.from = from;
         return this;
@@ -70,6 +79,7 @@ public final class SendMessageRequest implements JsonSerializable<SendMessageReq
      * 
      * @return the smsRecipients value.
      */
+    @Generated
     public List<SmsRecipient> getSmsRecipients() {
         return this.smsRecipients;
     }
@@ -81,6 +91,7 @@ public final class SendMessageRequest implements JsonSerializable<SendMessageReq
      * @param smsRecipients the smsRecipients value to set.
      * @return the SendMessageRequest object itself.
      */
+    @Generated
     public SendMessageRequest setSmsRecipients(List<SmsRecipient> smsRecipients) {
         this.smsRecipients = smsRecipients;
         return this;
@@ -92,6 +103,7 @@ public final class SendMessageRequest implements JsonSerializable<SendMessageReq
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -103,6 +115,7 @@ public final class SendMessageRequest implements JsonSerializable<SendMessageReq
      * @param message the message value to set.
      * @return the SendMessageRequest object itself.
      */
+    @Generated
     public SendMessageRequest setMessage(String message) {
         this.message = message;
         return this;
@@ -113,6 +126,7 @@ public final class SendMessageRequest implements JsonSerializable<SendMessageReq
      * 
      * @return the smsSendOptions value.
      */
+    @Generated
     public SmsSendOptions getSmsSendOptions() {
         return this.smsSendOptions;
     }
@@ -123,6 +137,7 @@ public final class SendMessageRequest implements JsonSerializable<SendMessageReq
      * @param smsSendOptions the smsSendOptions value to set.
      * @return the SendMessageRequest object itself.
      */
+    @Generated
     public SendMessageRequest setSmsSendOptions(SmsSendOptions smsSendOptions) {
         this.smsSendOptions = smsSendOptions;
         return this;
@@ -131,6 +146,7 @@ public final class SendMessageRequest implements JsonSerializable<SendMessageReq
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -150,6 +166,7 @@ public final class SendMessageRequest implements JsonSerializable<SendMessageReq
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SendMessageRequest.
      */
+    @Generated
     public static SendMessageRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SendMessageRequest deserializedSendMessageRequest = new SendMessageRequest();

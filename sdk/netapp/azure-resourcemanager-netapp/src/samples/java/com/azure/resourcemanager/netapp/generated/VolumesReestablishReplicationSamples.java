@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
  */
 public final class VolumesReestablishReplicationSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2025-01-01-preview/examples/
      * Volumes_ReestablishReplication.json
      */
     /**
@@ -23,7 +23,7 @@ public final class VolumesReestablishReplicationSamples {
         manager.volumes()
             .reestablishReplication("myRG", "account1", "pool1", "volume1",
                 new ReestablishReplicationRequest().withSourceVolumeId(
-                    "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/mySourceRG/providers/Microsoft.NetApp/netAppAccounts/sourceAccount1/capacityPools/sourcePool1/volumes/sourceVolume1"),
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/mySourceRG/providers/Microsoft.NetApp/netAppAccounts/sourceAccount1/capacityPools/sourcePool1/volumes/sourceVolume1"),
                 com.azure.core.util.Context.NONE);
     }
 }

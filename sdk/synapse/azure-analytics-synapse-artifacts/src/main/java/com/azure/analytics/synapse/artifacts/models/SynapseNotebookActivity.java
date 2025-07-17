@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,25 @@ public class SynapseNotebookActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "SynapseNotebook";
 
     /*
      * Synapse notebook reference.
      */
+    @Generated
     private SynapseNotebookReference notebook;
 
     /*
      * The name of the big data pool which will be used to execute the notebook.
      */
+    @Generated
     private BigDataPoolParametrizationReference sparkPool;
 
     /*
      * Notebook parameters.
      */
+    @Generated
     private Map<String, NotebookParameter> parameters;
 
     /*
@@ -43,11 +48,13 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * will be used for overriding 'executorCores' and 'executorMemory' of the notebook you provide. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object executorSize;
 
     /*
      * Spark configuration properties, which will override the 'conf' of the notebook you provide.
      */
+    @Generated
     private Object conf;
 
     /*
@@ -55,32 +62,44 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * be used for overriding 'driverCores' and 'driverMemory' of the notebook you provide. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object driverSize;
 
     /*
      * Number of executors to launch for this session, which will override the 'numExecutors' of the notebook you
      * provide. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object numExecutors;
 
     /*
      * The type of the spark config.
      */
+    @Generated
     private ConfigurationType configurationType;
 
     /*
      * The spark configuration of the spark job.
      */
+    @Generated
     private SparkConfigurationParametrizationReference targetSparkConfiguration;
 
     /*
      * Spark configuration property.
      */
+    @Generated
     private Map<String, Object> sparkConfig;
+
+    /*
+     * Authentication method used for executing the notebook.
+     */
+    @Generated
+    private SynapseActivityAuthentication authentication;
 
     /**
      * Creates an instance of SynapseNotebookActivity class.
      */
+    @Generated
     public SynapseNotebookActivity() {
     }
 
@@ -89,6 +108,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -99,6 +119,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * 
      * @return the notebook value.
      */
+    @Generated
     public SynapseNotebookReference getNotebook() {
         return this.notebook;
     }
@@ -109,6 +130,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * @param notebook the notebook value to set.
      * @return the SynapseNotebookActivity object itself.
      */
+    @Generated
     public SynapseNotebookActivity setNotebook(SynapseNotebookReference notebook) {
         this.notebook = notebook;
         return this;
@@ -119,6 +141,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * 
      * @return the sparkPool value.
      */
+    @Generated
     public BigDataPoolParametrizationReference getSparkPool() {
         return this.sparkPool;
     }
@@ -129,6 +152,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * @param sparkPool the sparkPool value to set.
      * @return the SynapseNotebookActivity object itself.
      */
+    @Generated
     public SynapseNotebookActivity setSparkPool(BigDataPoolParametrizationReference sparkPool) {
         this.sparkPool = sparkPool;
         return this;
@@ -139,6 +163,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * 
      * @return the parameters value.
      */
+    @Generated
     public Map<String, NotebookParameter> getParameters() {
         return this.parameters;
     }
@@ -149,6 +174,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * @param parameters the parameters value to set.
      * @return the SynapseNotebookActivity object itself.
      */
+    @Generated
     public SynapseNotebookActivity setParameters(Map<String, NotebookParameter> parameters) {
         this.parameters = parameters;
         return this;
@@ -161,6 +187,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * 
      * @return the executorSize value.
      */
+    @Generated
     public Object getExecutorSize() {
         return this.executorSize;
     }
@@ -173,6 +200,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * @param executorSize the executorSize value to set.
      * @return the SynapseNotebookActivity object itself.
      */
+    @Generated
     public SynapseNotebookActivity setExecutorSize(Object executorSize) {
         this.executorSize = executorSize;
         return this;
@@ -184,6 +212,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * 
      * @return the conf value.
      */
+    @Generated
     public Object getConf() {
         return this.conf;
     }
@@ -195,6 +224,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * @param conf the conf value to set.
      * @return the SynapseNotebookActivity object itself.
      */
+    @Generated
     public SynapseNotebookActivity setConf(Object conf) {
         this.conf = conf;
         return this;
@@ -207,6 +237,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * 
      * @return the driverSize value.
      */
+    @Generated
     public Object getDriverSize() {
         return this.driverSize;
     }
@@ -219,6 +250,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * @param driverSize the driverSize value to set.
      * @return the SynapseNotebookActivity object itself.
      */
+    @Generated
     public SynapseNotebookActivity setDriverSize(Object driverSize) {
         this.driverSize = driverSize;
         return this;
@@ -230,6 +262,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * 
      * @return the numExecutors value.
      */
+    @Generated
     public Object getNumExecutors() {
         return this.numExecutors;
     }
@@ -241,6 +274,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * @param numExecutors the numExecutors value to set.
      * @return the SynapseNotebookActivity object itself.
      */
+    @Generated
     public SynapseNotebookActivity setNumExecutors(Object numExecutors) {
         this.numExecutors = numExecutors;
         return this;
@@ -251,6 +285,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * 
      * @return the configurationType value.
      */
+    @Generated
     public ConfigurationType getConfigurationType() {
         return this.configurationType;
     }
@@ -261,6 +296,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * @param configurationType the configurationType value to set.
      * @return the SynapseNotebookActivity object itself.
      */
+    @Generated
     public SynapseNotebookActivity setConfigurationType(ConfigurationType configurationType) {
         this.configurationType = configurationType;
         return this;
@@ -271,6 +307,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * 
      * @return the targetSparkConfiguration value.
      */
+    @Generated
     public SparkConfigurationParametrizationReference getTargetSparkConfiguration() {
         return this.targetSparkConfiguration;
     }
@@ -281,6 +318,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * @param targetSparkConfiguration the targetSparkConfiguration value to set.
      * @return the SynapseNotebookActivity object itself.
      */
+    @Generated
     public SynapseNotebookActivity
         setTargetSparkConfiguration(SparkConfigurationParametrizationReference targetSparkConfiguration) {
         this.targetSparkConfiguration = targetSparkConfiguration;
@@ -292,6 +330,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * 
      * @return the sparkConfig value.
      */
+    @Generated
     public Map<String, Object> getSparkConfig() {
         return this.sparkConfig;
     }
@@ -302,14 +341,38 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * @param sparkConfig the sparkConfig value to set.
      * @return the SynapseNotebookActivity object itself.
      */
+    @Generated
     public SynapseNotebookActivity setSparkConfig(Map<String, Object> sparkConfig) {
         this.sparkConfig = sparkConfig;
         return this;
     }
 
     /**
+     * Get the authentication property: Authentication method used for executing the notebook.
+     * 
+     * @return the authentication value.
+     */
+    @Generated
+    public SynapseActivityAuthentication getAuthentication() {
+        return this.authentication;
+    }
+
+    /**
+     * Set the authentication property: Authentication method used for executing the notebook.
+     * 
+     * @param authentication the authentication value to set.
+     * @return the SynapseNotebookActivity object itself.
+     */
+    @Generated
+    public SynapseNotebookActivity setAuthentication(SynapseActivityAuthentication authentication) {
+        this.authentication = authentication;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SynapseNotebookActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -319,6 +382,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SynapseNotebookActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -328,6 +392,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SynapseNotebookActivity setName(String name) {
         super.setName(name);
@@ -337,6 +402,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SynapseNotebookActivity setDescription(String description) {
         super.setDescription(description);
@@ -346,6 +412,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SynapseNotebookActivity setState(ActivityState state) {
         super.setState(state);
@@ -355,6 +422,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SynapseNotebookActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -364,6 +432,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SynapseNotebookActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -373,6 +442,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SynapseNotebookActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -382,6 +452,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -405,20 +476,30 @@ public class SynapseNotebookActivity extends ExecutionActivity {
             || numExecutors != null
             || configurationType != null
             || targetSparkConfiguration != null
-            || sparkConfig != null) {
+            || sparkConfig != null
+            || authentication != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeJsonField("notebook", this.notebook);
             jsonWriter.writeJsonField("sparkPool", this.sparkPool);
             jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
-            jsonWriter.writeUntypedField("executorSize", this.executorSize);
-            jsonWriter.writeUntypedField("conf", this.conf);
-            jsonWriter.writeUntypedField("driverSize", this.driverSize);
-            jsonWriter.writeUntypedField("numExecutors", this.numExecutors);
+            if (this.executorSize != null) {
+                jsonWriter.writeUntypedField("executorSize", this.executorSize);
+            }
+            if (this.conf != null) {
+                jsonWriter.writeUntypedField("conf", this.conf);
+            }
+            if (this.driverSize != null) {
+                jsonWriter.writeUntypedField("driverSize", this.driverSize);
+            }
+            if (this.numExecutors != null) {
+                jsonWriter.writeUntypedField("numExecutors", this.numExecutors);
+            }
             jsonWriter.writeStringField("configurationType",
                 this.configurationType == null ? null : this.configurationType.toString());
             jsonWriter.writeJsonField("targetSparkConfiguration", this.targetSparkConfiguration);
             jsonWriter.writeMapField("sparkConfig", this.sparkConfig,
                 (writer, element) -> writer.writeUntyped(element));
+            jsonWriter.writeJsonField("authentication", this.authentication);
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -438,6 +519,7 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SynapseNotebookActivity.
      */
+    @Generated
     public static SynapseNotebookActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SynapseNotebookActivity deserializedSynapseNotebookActivity = new SynapseNotebookActivity();
@@ -499,6 +581,9 @@ public class SynapseNotebookActivity extends ExecutionActivity {
                         } else if ("sparkConfig".equals(fieldName)) {
                             Map<String, Object> sparkConfig = reader.readMap(reader1 -> reader1.readUntyped());
                             deserializedSynapseNotebookActivity.sparkConfig = sparkConfig;
+                        } else if ("authentication".equals(fieldName)) {
+                            deserializedSynapseNotebookActivity.authentication
+                                = SynapseActivityAuthentication.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

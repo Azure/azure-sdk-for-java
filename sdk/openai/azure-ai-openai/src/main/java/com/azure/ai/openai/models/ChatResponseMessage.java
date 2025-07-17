@@ -119,6 +119,7 @@ public final class ChatResponseMessage implements JsonSerializable<ChatResponseM
         jsonWriter.writeStringField("content", this.content);
         jsonWriter.writeArrayField("tool_calls", this.toolCalls, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("function_call", this.functionCall);
+        jsonWriter.writeJsonField("audio", this.audio);
         jsonWriter.writeJsonField("context", this.context);
         return jsonWriter.writeEndObject();
     }
@@ -140,6 +141,7 @@ public final class ChatResponseMessage implements JsonSerializable<ChatResponseM
             String content = null;
             List<ChatCompletionsToolCall> toolCalls = null;
             FunctionCall functionCall = null;
+            AudioResponseData audio = null;
             AzureChatExtensionsMessageContext context = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -154,6 +156,8 @@ public final class ChatResponseMessage implements JsonSerializable<ChatResponseM
                     toolCalls = reader.readArray(reader1 -> ChatCompletionsToolCall.fromJson(reader1));
                 } else if ("function_call".equals(fieldName)) {
                     functionCall = FunctionCall.fromJson(reader);
+                } else if ("audio".equals(fieldName)) {
+                    audio = AudioResponseData.fromJson(reader);
                 } else if ("context".equals(fieldName)) {
                     context = AzureChatExtensionsMessageContext.fromJson(reader);
                 } else {
@@ -163,6 +167,7 @@ public final class ChatResponseMessage implements JsonSerializable<ChatResponseM
             ChatResponseMessage deserializedChatResponseMessage = new ChatResponseMessage(role, refusal, content);
             deserializedChatResponseMessage.toolCalls = toolCalls;
             deserializedChatResponseMessage.functionCall = functionCall;
+            deserializedChatResponseMessage.audio = audio;
             deserializedChatResponseMessage.context = context;
             return deserializedChatResponseMessage;
         });
@@ -196,5 +201,23 @@ public final class ChatResponseMessage implements JsonSerializable<ChatResponseM
     @Generated
     public String getRefusal() {
         return this.refusal;
+    }
+
+    /*
+     * If the audio output modality is requested, this object contains data
+     * about the audio response from the model.
+     */
+    @Generated
+    private AudioResponseData audio;
+
+    /**
+     * Get the audio property: If the audio output modality is requested, this object contains data
+     * about the audio response from the model.
+     *
+     * @return the audio value.
+     */
+    @Generated
+    public AudioResponseData getAudio() {
+        return this.audio;
     }
 }

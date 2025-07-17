@@ -4,6 +4,9 @@
 package com.azure.identity.util;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;
@@ -145,6 +148,26 @@ public final class TestUtils {
     public static Mono<AccessToken> getMockAccessToken(String accessToken, OffsetDateTime expiresOn,
         Duration tokenRefreshOffset) {
         return Mono.just(new AccessToken(accessToken, expiresOn.plusMinutes(2).minus(tokenRefreshOffset)));
+    }
+
+    /**
+     * Creates a mock {@link HttpClient} which simply returns the provided responses in order.
+     * @param responses The responses to return.
+     * @param delay If specified, throw a {@code RuntimeException} after the specified delay.
+     * @return A mock HttpClient that returns the provided responses.
+     */
+    public static HttpClient getMockHttpClient(HttpResponse... responses) {
+        return new HttpClient() {
+            int index = 0;
+
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                if (index >= responses.length) {
+                    throw new IllegalStateException("No more responses available");
+                }
+                return Mono.just(responses[index++]);
+            }
+        };
     }
 
     /**

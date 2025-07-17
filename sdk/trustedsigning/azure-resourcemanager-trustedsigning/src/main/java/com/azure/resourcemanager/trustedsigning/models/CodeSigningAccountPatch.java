@@ -68,7 +68,7 @@ public final class CodeSigningAccountPatch implements JsonSerializable<CodeSigni
      * 
      * @return the sku value.
      */
-    public AccountSku sku() {
+    public AccountSkuPatch sku() {
         return this.innerProperties() == null ? null : this.innerProperties().sku();
     }
 
@@ -78,7 +78,7 @@ public final class CodeSigningAccountPatch implements JsonSerializable<CodeSigni
      * @param sku the sku value to set.
      * @return the CodeSigningAccountPatch object itself.
      */
-    public CodeSigningAccountPatch withSku(AccountSku sku) {
+    public CodeSigningAccountPatch withSku(AccountSkuPatch sku) {
         if (this.innerProperties() == null) {
             this.innerProperties = new CodeSigningAccountPatchProperties();
         }

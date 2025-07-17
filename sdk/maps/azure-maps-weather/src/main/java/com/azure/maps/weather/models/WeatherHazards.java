@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,22 +20,25 @@ public final class WeatherHazards implements JsonSerializable<WeatherHazards> {
 
     /*
      * A severity/hazard index.
-     *   * `0` - No hazard.
-     *   * `1` - Be informed, be aware.
-     *   * `2` - Pay attention, be prepared.
-     *   * `3` - Take action.
-     *   * `4` - Life threatening, emergency.
+     * * `0` - No hazard.
+     * * `1` - Be informed, be aware.
+     * * `2` - Pay attention, be prepared.
+     * * `3` - Take action.
+     * * `4` - Life threatening, emergency.
      */
+    @Generated
     private HazardIndex maxHazardIndex;
 
     /*
      * Details of the weather hazards affecting the trip.
      */
+    @Generated
     private List<HazardDetail> details;
 
     /**
      * Set default WeatherHazards constructor to private
      */
+    @Generated
     private WeatherHazards() {
     }
 
@@ -48,6 +52,7 @@ public final class WeatherHazards implements JsonSerializable<WeatherHazards> {
      *
      * @return the maxHazardIndex value.
      */
+    @Generated
     public HazardIndex getMaxHazardIndex() {
         return this.maxHazardIndex;
     }
@@ -57,6 +62,7 @@ public final class WeatherHazards implements JsonSerializable<WeatherHazards> {
      *
      * @return the details value.
      */
+    @Generated
     public List<HazardDetail> getDetails() {
         return this.details;
     }
@@ -64,10 +70,12 @@ public final class WeatherHazards implements JsonSerializable<WeatherHazards> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("maxHazardIndex", this.maxHazardIndex == null ? null : this.maxHazardIndex.toInt());
+        jsonWriter.writeNumberField("maxHazardIndex",
+            this.maxHazardIndex == null ? null : this.maxHazardIndex.getValue());
         jsonWriter.writeArrayField("hazardDetails", this.details, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -80,6 +88,7 @@ public final class WeatherHazards implements JsonSerializable<WeatherHazards> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the WeatherHazards.
      */
+    @Generated
     public static WeatherHazards fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WeatherHazards deserializedWeatherHazards = new WeatherHazards();
@@ -87,7 +96,7 @@ public final class WeatherHazards implements JsonSerializable<WeatherHazards> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("maxHazardIndex".equals(fieldName)) {
-                    deserializedWeatherHazards.maxHazardIndex = HazardIndex.fromInt(reader.getInt());
+                    deserializedWeatherHazards.maxHazardIndex = HazardIndex.fromValue(reader.getInt());
                 } else if ("hazardDetails".equals(fieldName)) {
                     List<HazardDetail> details = reader.readArray(reader1 -> HazardDetail.fromJson(reader1));
                     deserializedWeatherHazards.details = details;

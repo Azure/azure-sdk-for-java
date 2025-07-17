@@ -41,7 +41,7 @@ public final class Completions implements JsonSerializable<Completions> {
      * Usage information for tokens processed and generated as part of this completions operation.
      */
     @Generated
-    private final CompletionsUsage usage;
+    private CompletionsUsage usage;
 
     /**
      * Get the id property: A unique identifier associated with this completions response.
@@ -103,26 +103,6 @@ public final class Completions implements JsonSerializable<Completions> {
     private final long createdAt;
 
     /**
-     * Creates an instance of Completions class.
-     *
-     * @param id the id value to set.
-     * @param createdAt the createdAt value to set.
-     * @param choices the choices value to set.
-     * @param usage the usage value to set.
-     */
-    @Generated
-    private Completions(String id, OffsetDateTime createdAt, List<Choice> choices, CompletionsUsage usage) {
-        this.id = id;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        this.choices = choices;
-        this.usage = usage;
-    }
-
-    /**
      * Get the createdAt property: The first timestamp associated with generation activity for this completions
      * response,
      * represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
@@ -144,9 +124,9 @@ public final class Completions implements JsonSerializable<Completions> {
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeLongField("created", this.createdAt);
         jsonWriter.writeArrayField("choices", this.choices, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("usage", this.usage);
         jsonWriter.writeArrayField("prompt_filter_results", this.promptFilterResults,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("usage", this.usage);
         jsonWriter.writeStringField("system_fingerprint", this.systemFingerprint);
         return jsonWriter.writeEndObject();
     }
@@ -166,8 +146,8 @@ public final class Completions implements JsonSerializable<Completions> {
             String id = null;
             OffsetDateTime createdAt = null;
             List<Choice> choices = null;
-            CompletionsUsage usage = null;
             List<ContentFilterResultsForPrompt> promptFilterResults = null;
+            CompletionsUsage usage = null;
             String systemFingerprint = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -178,18 +158,19 @@ public final class Completions implements JsonSerializable<Completions> {
                     createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("choices".equals(fieldName)) {
                     choices = reader.readArray(reader1 -> Choice.fromJson(reader1));
-                } else if ("usage".equals(fieldName)) {
-                    usage = CompletionsUsage.fromJson(reader);
                 } else if ("prompt_filter_results".equals(fieldName)) {
                     promptFilterResults = reader.readArray(reader1 -> ContentFilterResultsForPrompt.fromJson(reader1));
+                } else if ("usage".equals(fieldName)) {
+                    usage = CompletionsUsage.fromJson(reader);
                 } else if ("system_fingerprint".equals(fieldName)) {
                     systemFingerprint = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            Completions deserializedCompletions = new Completions(id, createdAt, choices, usage);
+            Completions deserializedCompletions = new Completions(id, createdAt, choices);
             deserializedCompletions.promptFilterResults = promptFilterResults;
+            deserializedCompletions.usage = usage;
             deserializedCompletions.systemFingerprint = systemFingerprint;
             return deserializedCompletions;
         });
@@ -216,5 +197,23 @@ public final class Completions implements JsonSerializable<Completions> {
     @Generated
     public String getSystemFingerprint() {
         return this.systemFingerprint;
+    }
+
+    /**
+     * Creates an instance of Completions class.
+     *
+     * @param id the id value to set.
+     * @param createdAt the createdAt value to set.
+     * @param choices the choices value to set.
+     */
+    @Generated
+    private Completions(String id, OffsetDateTime createdAt, List<Choice> choices) {
+        this.id = id;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        this.choices = choices;
     }
 }

@@ -1,14 +1,88 @@
 # Release History
 
-## 1.16.0-beta.1 (Unreleased)
+## 1.17.0-beta.1 (Unreleased)
+
 
 ### Features Added
 
+- `VisualStudioCodeCredential` has been restored and now supports **broker authentication** using the Azure account signed in via Visual Studio Code. [#45715](https://github.com/Azure/azure-sdk-for-java/pull/45715)
+- `DefaultAzureCredential` can be configured to use a specific credential type by setting the `AZURE_TOKEN_CREDENTIALS` environment variable. When set, it will only attempt authentication using the specified credential type. For example, setting `AZURE_TOKEN_CREDENTIALS=WorkloadIdentityCredential` will restrict authentication to workload identity only.
+- Enhanced `AzurePowerShellCredential` token retrieval with tenantId support, cross-version SecureString handling, and improved compatibility and robustness. [#45851](https://github.com/Azure/azure-sdk-for-java/pull/45851)
+
 ### Breaking Changes
 
-### Bugs Fixed
+#### Behavioral Breaking Changes
+
+- Removed `SharedTokenCacheCredential` from the `DefaultAzureCredential` authentication chain. [#45795](https://github.com/Azure/azure-sdk-for-java/pull/45795)
 
 ### Other Changes
+
+- Deprecated `SharedTokenCacheCredential` and `SharedTokenCacheCredentialBuilder`. [#45795](https://github.com/Azure/azure-sdk-for-java/pull/45795)
+
+## 1.16.2 (2025-06-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Updated `msal4j` from `1.20.1` to version `1.21.0`.
+
+
+## 1.16.1 (2025-05-14)
+
+### Features Added
+- Added `AZURE_TOKEN_CREDENTIALS` environment variable to `DefaultAzureCredential` to allow for choosing groups of credentials.
+  - `prod` for `EnvironmentCredential`, `WorkloadIdentityCredential`, and `ManagedIdentityCredential`.
+  - `dev` for `SharedTokenCredential`, `IntelliJCredential`, `AzureCliCredential`, `AzurePowershellCredential`, and `AzureDeveloperCliCredential`.
+
+## 1.16.0 (2025-05-06)
+
+### Other Changes
+- Marked `VisualStudioCodeCredential` and `VisualStudioCodeCredentialBuilder` as deprecated.[#44527](https://github.com/Azure/azure-sdk-for-java/issues/44527)
+- Added deprecation message to `EnvironmentCredential` when a username/password is used. [#45185](https://github.com/Azure/azure-sdk-for-java/pull/45185) 
+
+#### Dependency Updates
+
+- Updated `msal4j` from `1.20.0` to version `1.20.1`.
+
+## 1.16.0-beta.1 (2025-03-13)
+
+### Features Added
+- Added support to specify `subscription` ID or name on `AzureCliCredentialBuilder`. [#44123](https://github.com/Azure/azure-sdk-for-java/pull/44123)
+- Log the client, object, or resource ID of the user-assigned managed identity. [#44305](https://github.com/Azure/azure-sdk-for-java/pull/44305)
+
+### Other Changes
+
+- Marked `UsernamePasswordCredential` and `UsernamePasswordCredentialBuilder` as deprecated. See https://aka.ms/azsdk/identity/mfa for details about MFA enforcement and migration guidance. [#44381](https://github.com/Azure/azure-sdk-for-java/pull/44381)  
+
+## 1.15.4 (2025-03-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `msal4j` from `1.19.0` to version `1.19.1`.
+
+## 1.15.3 (2025-02-20)
+
+### Other Changes
+
+## Dependency Updates
+
+- Upgraded `azure-core` from `1.55.1` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` from `1.15.9` to version `1.15.10`.
+
+## 1.15.2 (2025-02-13)
+
+### Other Changes
+
+- Upgraded `azure-core` from `1.55.0` to version `1.55.1`.
+- Upgraded `azure-core-http-netty` from `1.15.8` to version `1.15.9`.
 
 ## 1.15.1 (2025-02-07)
 

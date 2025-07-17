@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.TagDescriptionContract;
@@ -22,23 +22,23 @@ public final class ApiTagDescriptionsListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"tagId\":\"vbuc\",\"displayName\":\"rovomep\",\"description\":\"sicvwqzocsf\",\"externalDocsUrl\":\"ennmsgpywdib\",\"externalDocsDescription\":\"vnrgalv\"},\"id\":\"rhryibrbknuub\",\"name\":\"cwojt\",\"type\":\"p\"}]}";
+            = "{\"value\":[{\"properties\":{\"tagId\":\"wrduxntpfxxgja\",\"displayName\":\"xfwf\",\"description\":\"qv\",\"externalDocsUrl\":\"fbkqynlzxem\",\"externalDocsDescription\":\"upjckiehdm\"},\"id\":\"foyrxxxffgmcua\",\"name\":\"s\",\"type\":\"eervgc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TagDescriptionContract> response = manager.apiTagDescriptions()
-            .listByService("nmzaofro", "fqckie", "yr", "jyoybkqftusdw", 810308745, 1884133811,
+            .listByService("jugcfebpiuc", "nb", "rllld", "knbdzwilsxry", 1026739472, 184765445,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vbuc", response.iterator().next().tagId());
-        Assertions.assertEquals("rovomep", response.iterator().next().displayName());
-        Assertions.assertEquals("sicvwqzocsf", response.iterator().next().description());
-        Assertions.assertEquals("ennmsgpywdib", response.iterator().next().externalDocsUrl());
-        Assertions.assertEquals("vnrgalv", response.iterator().next().externalDocsDescription());
+        Assertions.assertEquals("wrduxntpfxxgja", response.iterator().next().tagId());
+        Assertions.assertEquals("xfwf", response.iterator().next().displayName());
+        Assertions.assertEquals("qv", response.iterator().next().description());
+        Assertions.assertEquals("fbkqynlzxem", response.iterator().next().externalDocsUrl());
+        Assertions.assertEquals("upjckiehdm", response.iterator().next().externalDocsDescription());
     }
 }

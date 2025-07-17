@@ -96,7 +96,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyAssignmentInner>> get(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
-            @PathParam("policyAssignmentName") String policyAssignmentName,
+            @PathParam("policyAssignmentName") String policyAssignmentName, @QueryParam("$expand") String expand,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -115,9 +115,10 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyAssignmentListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam(value = "$filter", encoded = true) String filter, @QueryParam("$top") Integer top,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam(value = "$filter", encoded = true) String filter, @QueryParam("$expand") String expand,
+            @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -125,13 +126,14 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyAssignmentListResult>> listForResource(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
             @PathParam(value = "resourceType", encoded = true) String resourceType,
             @PathParam("resourceName") String resourceName,
-            @QueryParam(value = "$filter", encoded = true) String filter, @QueryParam("$top") Integer top,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam(value = "$filter", encoded = true) String filter, @QueryParam("$expand") String expand,
+            @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -140,17 +142,18 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyAssignmentListResult>> listForManagementGroup(@HostParam("$host") String endpoint,
             @PathParam("managementGroupId") String managementGroupId,
-            @QueryParam(value = "$filter", encoded = true) String filter, @QueryParam("$top") Integer top,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam(value = "$filter", encoded = true) String filter, @QueryParam("$expand") String expand,
+            @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyAssignmentListResult>> list(@HostParam("$host") String endpoint,
-            @QueryParam(value = "$filter", encoded = true) String filter, @QueryParam("$top") Integer top,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam(value = "$filter", encoded = true) String filter, @QueryParam("$expand") String expand,
+            @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/{policyAssignmentId}")
@@ -176,7 +179,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyAssignmentInner>> getById(@HostParam("$host") String endpoint,
             @PathParam(value = "policyAssignmentId", encoded = true) String policyAssignmentId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("$expand") String expand, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Patch("/{policyAssignmentId}")
@@ -252,7 +256,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), scope, policyAssignmentName, apiVersion,
@@ -293,7 +297,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), scope, policyAssignmentName, apiVersion, accept, context);
@@ -408,7 +412,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), scope, policyAssignmentName, apiVersion,
@@ -455,7 +459,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), scope, policyAssignmentName, apiVersion, parameters, accept,
@@ -549,13 +553,16 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param policyAssignmentName The name of the policy assignment to get.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyAssignmentInner>> getWithResponseAsync(String scope, String policyAssignmentName) {
+    public Mono<Response<PolicyAssignmentInner>> getWithResponseAsync(String scope, String policyAssignmentName,
+        String expand) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -567,10 +574,11 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.get(this.client.getEndpoint(), scope, policyAssignmentName, apiVersion, accept, context))
+        return FluxUtil
+            .withContext(context -> service.get(this.client.getEndpoint(), scope, policyAssignmentName, expand,
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -585,6 +593,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param policyAssignmentName The name of the policy assignment to get.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -593,7 +603,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyAssignmentInner>> getWithResponseAsync(String scope, String policyAssignmentName,
-        Context context) {
+        String expand, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -605,10 +615,10 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), scope, policyAssignmentName, apiVersion, accept, context);
+        return service.get(this.client.getEndpoint(), scope, policyAssignmentName, expand, apiVersion, accept, context);
     }
 
     /**
@@ -629,7 +639,9 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyAssignmentInner> getAsync(String scope, String policyAssignmentName) {
-        return getWithResponseAsync(scope, policyAssignmentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final String expand = null;
+        return getWithResponseAsync(scope, policyAssignmentName, expand)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -643,6 +655,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
      * @param policyAssignmentName The name of the policy assignment to get.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -650,8 +664,9 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * @return the policy assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyAssignmentInner> getWithResponse(String scope, String policyAssignmentName, Context context) {
-        return getWithResponseAsync(scope, policyAssignmentName, context).block();
+    public Response<PolicyAssignmentInner> getWithResponse(String scope, String policyAssignmentName, String expand,
+        Context context) {
+        return getWithResponseAsync(scope, policyAssignmentName, expand, context).block();
     }
 
     /**
@@ -672,7 +687,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyAssignmentInner get(String scope, String policyAssignmentName) {
-        return getWithResponse(scope, policyAssignmentName, Context.NONE).getValue();
+        final String expand = null;
+        return getWithResponse(scope, policyAssignmentName, expand, Context.NONE).getValue();
     }
 
     /**
@@ -713,7 +729,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), scope, policyAssignmentName, apiVersion,
@@ -760,7 +776,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), scope, policyAssignmentName, apiVersion, parameters, accept,
@@ -865,6 +881,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -873,24 +891,24 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyAssignmentInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
-        String filter, Integer top) {
+        String filter, String expand, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-06-01";
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, filter,
-                top, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, filter, expand, top, apiVersion, accept, context))
             .<PagedResponse<PolicyAssignmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -918,6 +936,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -927,25 +947,25 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyAssignmentInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
-        String filter, Integer top, Context context) {
+        String filter, String expand, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-06-01";
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, filter, top, apiVersion,
-                this.client.getSubscriptionId(), accept, context)
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, filter,
+                expand, top, apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -972,6 +992,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -980,8 +1002,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicyAssignmentInner> listByResourceGroupAsync(String resourceGroupName, String filter,
-        Integer top) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
+        String expand, Integer top) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand, top),
             nextLink -> listForResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -1008,8 +1030,9 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicyAssignmentInner> listByResourceGroupAsync(String resourceGroupName) {
         final String filter = null;
+        final String expand = null;
         final Integer top = null;
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand, top),
             nextLink -> listForResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -1035,6 +1058,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1044,8 +1069,9 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyAssignmentInner> listByResourceGroupAsync(String resourceGroupName, String filter,
-        Integer top, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, context),
+        String expand, Integer top, Context context) {
+        return new PagedFlux<>(
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand, top, context),
             nextLink -> listForResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -1072,8 +1098,9 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyAssignmentInner> listByResourceGroup(String resourceGroupName) {
         final String filter = null;
+        final String expand = null;
         final Integer top = null;
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, top));
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, expand, top));
     }
 
     /**
@@ -1098,6 +1125,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1107,8 +1136,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyAssignmentInner> listByResourceGroup(String resourceGroupName, String filter,
-        Integer top, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, top, context));
+        String expand, Integer top, Context context) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, expand, top, context));
     }
 
     /**
@@ -1148,6 +1177,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1157,10 +1188,14 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyAssignmentInner>> listForResourceSinglePageAsync(String resourceGroupName,
         String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
-        String filter, Integer top) {
+        String filter, String expand, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1180,16 +1215,12 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listForResource(this.client.getEndpoint(), resourceGroupName,
-                resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter, top, apiVersion,
-                this.client.getSubscriptionId(), accept, context))
+            .withContext(context -> service.listForResource(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter,
+                expand, top, apiVersion, accept, context))
             .<PagedResponse<PolicyAssignmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1232,6 +1263,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1242,10 +1275,14 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyAssignmentInner>> listForResourceSinglePageAsync(String resourceGroupName,
         String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
-        String filter, Integer top, Context context) {
+        String filter, String expand, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1265,17 +1302,13 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listForResource(this.client.getEndpoint(), resourceGroupName, resourceProviderNamespace,
-                parentResourcePath, resourceType, resourceName, filter, top, apiVersion,
-                this.client.getSubscriptionId(), accept, context)
+            .listForResource(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter, expand, top,
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1317,6 +1350,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1326,9 +1361,10 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicyAssignmentInner> listForResourceAsync(String resourceGroupName,
         String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
-        String filter, Integer top) {
-        return new PagedFlux<>(() -> listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace,
-            parentResourcePath, resourceType, resourceName, filter, top),
+        String filter, String expand, Integer top) {
+        return new PagedFlux<>(
+            () -> listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath,
+                resourceType, resourceName, filter, expand, top),
             nextLink -> listForResourceNextSinglePageAsync(nextLink));
     }
 
@@ -1371,9 +1407,11 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     public PagedFlux<PolicyAssignmentInner> listForResourceAsync(String resourceGroupName,
         String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName) {
         final String filter = null;
+        final String expand = null;
         final Integer top = null;
-        return new PagedFlux<>(() -> listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace,
-            parentResourcePath, resourceType, resourceName, filter, top),
+        return new PagedFlux<>(
+            () -> listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath,
+                resourceType, resourceName, filter, expand, top),
             nextLink -> listForResourceNextSinglePageAsync(nextLink));
     }
 
@@ -1414,6 +1452,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1424,10 +1464,10 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyAssignmentInner> listForResourceAsync(String resourceGroupName,
         String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
-        String filter, Integer top, Context context) {
+        String filter, String expand, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath,
-                resourceType, resourceName, filter, top, context),
+                resourceType, resourceName, filter, expand, top, context),
             nextLink -> listForResourceNextSinglePageAsync(nextLink, context));
     }
 
@@ -1470,9 +1510,10 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     public PagedIterable<PolicyAssignmentInner> listForResource(String resourceGroupName,
         String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName) {
         final String filter = null;
+        final String expand = null;
         final Integer top = null;
         return new PagedIterable<>(listForResourceAsync(resourceGroupName, resourceProviderNamespace,
-            parentResourcePath, resourceType, resourceName, filter, top));
+            parentResourcePath, resourceType, resourceName, filter, expand, top));
     }
 
     /**
@@ -1512,6 +1553,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1522,9 +1565,9 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyAssignmentInner> listForResource(String resourceGroupName,
         String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
-        String filter, Integer top, Context context) {
+        String filter, String expand, Integer top, Context context) {
         return new PagedIterable<>(listForResourceAsync(resourceGroupName, resourceProviderNamespace,
-            parentResourcePath, resourceType, resourceName, filter, top, context));
+            parentResourcePath, resourceType, resourceName, filter, expand, top, context));
     }
 
     /**
@@ -1546,6 +1589,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1554,7 +1599,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyAssignmentInner>> listForManagementGroupSinglePageAsync(String managementGroupId,
-        String filter, Integer top) {
+        String filter, String expand, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1563,11 +1608,11 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listForManagementGroup(this.client.getEndpoint(), managementGroupId, filter,
-                top, apiVersion, accept, context))
+                expand, top, apiVersion, accept, context))
             .<PagedResponse<PolicyAssignmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1592,6 +1637,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1601,7 +1648,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyAssignmentInner>> listForManagementGroupSinglePageAsync(String managementGroupId,
-        String filter, Integer top, Context context) {
+        String filter, String expand, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1610,12 +1657,12 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listForManagementGroup(this.client.getEndpoint(), managementGroupId, filter, top, apiVersion, accept,
-                context)
+            .listForManagementGroup(this.client.getEndpoint(), managementGroupId, filter, expand, top, apiVersion,
+                accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1639,6 +1686,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1647,8 +1696,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicyAssignmentInner> listForManagementGroupAsync(String managementGroupId, String filter,
-        Integer top) {
-        return new PagedFlux<>(() -> listForManagementGroupSinglePageAsync(managementGroupId, filter, top),
+        String expand, Integer top) {
+        return new PagedFlux<>(() -> listForManagementGroupSinglePageAsync(managementGroupId, filter, expand, top),
             nextLink -> listForManagementGroupNextSinglePageAsync(nextLink));
     }
 
@@ -1672,8 +1721,9 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicyAssignmentInner> listForManagementGroupAsync(String managementGroupId) {
         final String filter = null;
+        final String expand = null;
         final Integer top = null;
-        return new PagedFlux<>(() -> listForManagementGroupSinglePageAsync(managementGroupId, filter, top),
+        return new PagedFlux<>(() -> listForManagementGroupSinglePageAsync(managementGroupId, filter, expand, top),
             nextLink -> listForManagementGroupNextSinglePageAsync(nextLink));
     }
 
@@ -1696,6 +1746,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1705,8 +1757,9 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyAssignmentInner> listForManagementGroupAsync(String managementGroupId, String filter,
-        Integer top, Context context) {
-        return new PagedFlux<>(() -> listForManagementGroupSinglePageAsync(managementGroupId, filter, top, context),
+        String expand, Integer top, Context context) {
+        return new PagedFlux<>(
+            () -> listForManagementGroupSinglePageAsync(managementGroupId, filter, expand, top, context),
             nextLink -> listForManagementGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -1730,8 +1783,9 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyAssignmentInner> listForManagementGroup(String managementGroupId) {
         final String filter = null;
+        final String expand = null;
         final Integer top = null;
-        return new PagedIterable<>(listForManagementGroupAsync(managementGroupId, filter, top));
+        return new PagedIterable<>(listForManagementGroupAsync(managementGroupId, filter, expand, top));
     }
 
     /**
@@ -1753,6 +1807,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1762,8 +1818,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyAssignmentInner> listForManagementGroup(String managementGroupId, String filter,
-        Integer top, Context context) {
-        return new PagedIterable<>(listForManagementGroupAsync(managementGroupId, filter, top, context));
+        String expand, Integer top, Context context) {
+        return new PagedIterable<>(listForManagementGroupAsync(managementGroupId, filter, expand, top, context));
     }
 
     /**
@@ -1787,6 +1843,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1794,7 +1852,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * @return list of policy assignments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyAssignmentInner>> listSinglePageAsync(String filter, Integer top) {
+    private Mono<PagedResponse<PolicyAssignmentInner>> listSinglePageAsync(String filter, String expand, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1803,10 +1861,10 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), filter, top, apiVersion,
+            .withContext(context -> service.list(this.client.getEndpoint(), filter, expand, top, apiVersion,
                 this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<PolicyAssignmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -1834,6 +1892,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1842,7 +1902,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * @return list of policy assignments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyAssignmentInner>> listSinglePageAsync(String filter, Integer top,
+    private Mono<PagedResponse<PolicyAssignmentInner>> listSinglePageAsync(String filter, String expand, Integer top,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1852,11 +1912,12 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), filter, top, apiVersion, this.client.getSubscriptionId(), accept, context)
+            .list(this.client.getEndpoint(), filter, expand, top, apiVersion, this.client.getSubscriptionId(), accept,
+                context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1882,6 +1943,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1889,8 +1952,9 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * @return list of policy assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PolicyAssignmentInner> listAsync(String filter, Integer top) {
-        return new PagedFlux<>(() -> listSinglePageAsync(filter, top), nextLink -> listNextSinglePageAsync(nextLink));
+    public PagedFlux<PolicyAssignmentInner> listAsync(String filter, String expand, Integer top) {
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, expand, top),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1914,8 +1978,10 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicyAssignmentInner> listAsync() {
         final String filter = null;
+        final String expand = null;
         final Integer top = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(filter, top), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, expand, top),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1939,6 +2005,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1947,8 +2015,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * @return list of policy assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PolicyAssignmentInner> listAsync(String filter, Integer top, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(filter, top, context),
+    private PagedFlux<PolicyAssignmentInner> listAsync(String filter, String expand, Integer top, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, expand, top, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -1973,8 +2041,9 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyAssignmentInner> list() {
         final String filter = null;
+        final String expand = null;
         final Integer top = null;
-        return new PagedIterable<>(listAsync(filter, top));
+        return new PagedIterable<>(listAsync(filter, expand, top));
     }
 
     /**
@@ -1998,6 +2067,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the given
      * scope. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
      * of the policy definition whose id is {value}.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param top Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2006,8 +2077,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * @return list of policy assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PolicyAssignmentInner> list(String filter, Integer top, Context context) {
-        return new PagedIterable<>(listAsync(filter, top, context));
+    public PagedIterable<PolicyAssignmentInner> list(String filter, String expand, Integer top, Context context) {
+        return new PagedIterable<>(listAsync(filter, expand, top, context));
     }
 
     /**
@@ -2038,7 +2109,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.deleteById(this.client.getEndpoint(), policyAssignmentId, apiVersion, accept, context))
@@ -2075,7 +2146,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteById(this.client.getEndpoint(), policyAssignmentId, apiVersion, accept, context);
@@ -2187,7 +2258,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createById(this.client.getEndpoint(), policyAssignmentId, apiVersion,
@@ -2232,7 +2303,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createById(this.client.getEndpoint(), policyAssignmentId, apiVersion, parameters, accept,
@@ -2329,13 +2400,15 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * 
      * @param policyAssignmentId The ID of the policy assignment to get. Use the format
      * '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyAssignmentInner>> getByIdWithResponseAsync(String policyAssignmentId) {
+    public Mono<Response<PolicyAssignmentInner>> getByIdWithResponseAsync(String policyAssignmentId, String expand) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -2344,11 +2417,11 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.getById(this.client.getEndpoint(), policyAssignmentId, apiVersion, accept, context))
+            .withContext(context -> service.getById(this.client.getEndpoint(), policyAssignmentId, expand, apiVersion,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2364,6 +2437,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * 
      * @param policyAssignmentId The ID of the policy assignment to get. Use the format
      * '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2371,7 +2446,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * @return the policy assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyAssignmentInner>> getByIdWithResponseAsync(String policyAssignmentId, Context context) {
+    private Mono<Response<PolicyAssignmentInner>> getByIdWithResponseAsync(String policyAssignmentId, String expand,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -2380,10 +2456,10 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getById(this.client.getEndpoint(), policyAssignmentId, apiVersion, accept, context);
+        return service.getById(this.client.getEndpoint(), policyAssignmentId, expand, apiVersion, accept, context);
     }
 
     /**
@@ -2405,7 +2481,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyAssignmentInner> getByIdAsync(String policyAssignmentId) {
-        return getByIdWithResponseAsync(policyAssignmentId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final String expand = null;
+        return getByIdWithResponseAsync(policyAssignmentId, expand).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2420,6 +2497,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * 
      * @param policyAssignmentId The ID of the policy assignment to get. Use the format
      * '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+     * @param expand Comma-separated list of additional properties to be included in the response. Supported values are
+     * 'LatestDefinitionVersion, EffectiveDefinitionVersion'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2427,8 +2506,9 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      * @return the policy assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyAssignmentInner> getByIdWithResponse(String policyAssignmentId, Context context) {
-        return getByIdWithResponseAsync(policyAssignmentId, context).block();
+    public Response<PolicyAssignmentInner> getByIdWithResponse(String policyAssignmentId, String expand,
+        Context context) {
+        return getByIdWithResponseAsync(policyAssignmentId, expand, context).block();
     }
 
     /**
@@ -2450,7 +2530,8 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyAssignmentInner getById(String policyAssignmentId) {
-        return getByIdWithResponse(policyAssignmentId, Context.NONE).getValue();
+        final String expand = null;
+        return getByIdWithResponse(policyAssignmentId, expand, Context.NONE).getValue();
     }
 
     /**
@@ -2489,7 +2570,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateById(this.client.getEndpoint(), policyAssignmentId, apiVersion,
@@ -2534,7 +2615,7 @@ public final class PolicyAssignmentsClientImpl implements InnerSupportsListing<P
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-06-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateById(this.client.getEndpoint(), policyAssignmentId, apiVersion, parameters, accept,

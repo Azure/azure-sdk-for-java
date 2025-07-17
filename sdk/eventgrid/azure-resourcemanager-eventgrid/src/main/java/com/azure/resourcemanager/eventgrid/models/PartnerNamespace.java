@@ -52,7 +52,7 @@ public interface PartnerNamespace {
     Map<String, String> tags();
 
     /**
-     * Gets the systemData property: The system metadata relating to Partner Namespace resource.
+     * Gets the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */

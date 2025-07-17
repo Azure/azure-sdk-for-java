@@ -112,18 +112,11 @@ public interface Users {
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      * request or it should be * for unconditional update.
-     * @param deleteSubscriptions Whether to delete user's subscription or not.
-     * @param notify Send an Account Closed Email notification to the User.
-     * @param appType Determines the type of application which send the create user request. Default is legacy publisher
-     * portal.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String userId, String ifMatch,
-        Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context);
+    void delete(String resourceGroupName, String serviceName, String userId, String ifMatch);
 
     /**
      * Deletes specific user.
@@ -133,11 +126,17 @@ public interface Users {
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      * request or it should be * for unconditional update.
+     * @param deleteSubscriptions Whether to delete user's subscription or not.
+     * @param notify Send an Account Closed Email notification to the User.
+     * @param appType Determines the type of application which send the create user request. Default is legacy publisher
+     * portal.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String serviceName, String userId, String ifMatch);
+    void delete(String resourceGroupName, String serviceName, String userId, String ifMatch,
+        Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context);
 
     /**
      * Retrieves a redirection URL containing an authentication token for signing a given user into the developer
@@ -247,10 +246,9 @@ public interface Users {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteByIdWithResponse(String id, String ifMatch, Boolean deleteSubscriptions, Boolean notify,
-        AppType appType, Context context);
+    void deleteByIdWithResponse(String id, String ifMatch, Boolean deleteSubscriptions, Boolean notify, AppType appType,
+        Context context);
 
     /**
      * Begins definition for a new UserContract resource.

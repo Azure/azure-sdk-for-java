@@ -10,7 +10,6 @@ package com.azure.ai.vision.imageanalysis.generated;
 
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
@@ -26,11 +25,10 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
     protected void beforeTest() {
         ImageAnalysisClientBuilder imageAnalysisClientbuilder = new ImageAnalysisClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-            .httpClient(HttpClient.createDefault())
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            imageAnalysisClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(new MockTokenCredential());
+            imageAnalysisClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             imageAnalysisClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
