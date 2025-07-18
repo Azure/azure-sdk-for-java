@@ -32,6 +32,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
@@ -452,7 +453,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "multi-region" }, dataProvider = "leaseNotFoundArgProvider"/*, timeOut = TIMEOUT*/)
+    @Test(groups = { "multi-region" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT)
     public void dataPlaneRequestHitsLeaseNotFoundInFirstPreferredRegion(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType,
@@ -474,11 +475,15 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             throw new SkipException("leaseNotFound is only meant for Direct mode");
         }
 
+        TestItem createdItem = TestItem.createNewItem();
+
         FaultInjectionRule leaseNotFoundFaultRule = new FaultInjectionRuleBuilder("leaseNotFound-" + UUID.randomUUID())
             .condition(
                 new FaultInjectionConditionBuilder()
                     .operationType(faultInjectionOperationType)
                     .region(this.preferredRegions.get(0))
+                    .endpoints(new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(new PartitionKey(createdItem.getMypk()))).includePrimary(true).build()
+                    )
                     .connectionType(FaultInjectionConnectionType.DIRECT)
                     .build())
             .result(
@@ -496,7 +501,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         CosmosAsyncContainer testContainer = getSharedSinglePartitionCosmosContainer(testClient);
 
         try {
-            TestItem createdItem = TestItem.createNewItem();
+
             testContainer.createItem(createdItem).block();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(leaseNotFoundFaultRule)).block();

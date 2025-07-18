@@ -8,7 +8,7 @@ import java.util.Map;
 public class LeaseNotFoundException extends CosmosException {
 
     /**
-     * Instantiates a new Gone exception.
+     * Instantiates a new LeaseNotFound exception.
      *
      * @param cosmosError the cosmos error
      * @param lsn the lsn
