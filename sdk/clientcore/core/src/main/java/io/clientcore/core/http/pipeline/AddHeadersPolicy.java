@@ -10,6 +10,8 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * <p>The {@code AddHeadersPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy
  * is used to add a set of headers to all outgoing HTTP requests.</p>
@@ -62,6 +64,13 @@ public class AddHeadersPolicy implements HttpPipelinePolicy {
         setHeaders(httpRequest.getHeaders(), headers);
 
         return next.process();
+    }
+
+    @Override
+    public CompletableFuture<Response<BinaryData>> processAsync(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        setHeaders(httpRequest.getHeaders(), headers);
+
+        return next.processAsync();
     }
 
     @Override

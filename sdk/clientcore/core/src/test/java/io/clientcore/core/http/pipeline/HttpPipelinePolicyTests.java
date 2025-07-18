@@ -5,20 +5,31 @@ package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedClass;
+import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static io.clientcore.core.http.pipeline.PipelineTestHelpers.sendRequest;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ParameterizedClass(name = "isAsync={0}")
+@ValueSource(booleans = { false, true })
 public class HttpPipelinePolicyTests {
+    private final boolean isAsync;
+
+    public HttpPipelinePolicyTests(boolean isAsync) {
+        this.isAsync = isAsync;
+    }
+
+    @SuppressWarnings("try")
     @Test
-    public void verifySend() throws IOException {
+    public void verifySend() {
         SyncPolicy policy1 = new SyncPolicy();
         SyncPolicy policy2 = new SyncPolicy();
 
@@ -28,14 +39,15 @@ public class HttpPipelinePolicyTests {
                 .addPolicy(policy2)
                 .build();
 
-        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close();
-
-        assertEquals(1, policy1.syncCalls.get());
-        assertEquals(1, policy2.syncCalls.get());
+        try (Response<BinaryData> ignored = sendRequest(pipeline, isAsync)) {
+            assertEquals(1, policy1.syncCalls.get());
+            assertEquals(1, policy2.syncCalls.get());
+        }
     }
 
+    @SuppressWarnings("try")
     @Test
-    public void defaultImplementationShouldCallRightStack() throws IOException {
+    public void defaultImplementationShouldCallRightStack() {
         DefaultImplementationSyncPolicy policyWithDefaultSyncImplementation = new DefaultImplementationSyncPolicy();
 
         HttpPipeline pipeline
@@ -43,17 +55,17 @@ public class HttpPipelinePolicyTests {
                 .addPolicy(policyWithDefaultSyncImplementation)
                 .build();
 
-        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close();
-
-        assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
-        assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
+        try (Response<BinaryData> ignored = sendRequest(pipeline, isAsync)) {
+            assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
+            assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
+        }
     }
 
     /**
      * This is to cover case when reactor could complain about blocking on non-blocking thread.
      */
     @Test
-    public void doesNotThrowThatThreadIsNonBlocking() throws IOException {
+    public void doesNotThrowThatThreadIsNonBlocking() {
         SyncPolicy policy1 = new SyncPolicy();
         HttpPipelinePolicy badPolicy1 = (ignored, next) -> {
             try {
@@ -90,7 +102,7 @@ public class HttpPipelinePolicyTests {
             .addPolicy(badPolicy2)
             .build();
 
-        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close();
+        assertDoesNotThrow(() -> sendRequest(pipeline, isAsync).close());
     }
 
     private static class SyncPolicy implements HttpPipelinePolicy {
