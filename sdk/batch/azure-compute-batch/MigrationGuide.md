@@ -112,14 +112,9 @@ We strongly recommend using Microsoft Entra ID for Batch account authentication.
 
 The preferred approach is to use the Azure Identity library’s `DefaultAzureCredential`.
 
-```java
-import com.azure.compute.batch.BatchClient;
-import com.azure.compute.batch.BatchClientBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-
-BatchClient batchClient = new BatchClientBuilder()
-    .endpoint("https://<your-batch-account>.<region>.batch.azure.com")
-    .credential(new DefaultAzureCredentialBuilder().build())
+```java com.azure.compute.batch.build-client
+BatchClient batchClient = new BatchClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
     .buildClient();
 ```
 
@@ -127,33 +122,32 @@ BatchClient batchClient = new BatchClientBuilder()
 
 Alternatively, authenticate using an `AzureNamedKeyCredential`.
 
-```java
-import com.azure.compute.batch.BatchClient;
-import com.azure.compute.batch.BatchClientBuilder;
-import com.azure.core.credential.AzureNamedKeyCredential;
+```java com.azure.compute.batch.build-sharedkey-client
+Configuration localConfig = Configuration.getGlobalConfiguration();
+String accountName = localConfig.get("AZURE_BATCH_ACCOUNT", "fakeaccount");
+String accountKey = localConfig.get("AZURE_BATCH_ACCESS_KEY", "fakekey");
+AzureNamedKeyCredential sharedKeyCreds = new AzureNamedKeyCredential(accountName, accountKey);
 
-AzureNamedKeyCredential credential = new AzureNamedKeyCredential("<your account>", "<BatchAccountKey>");
-BatchClient batchClient = new BatchClientBuilder()
-    .endpoint("https://<your-batch-account>.<region>.batch.azure.com")
-    .credential(credential)
-    .buildClient();
+BatchClientBuilder batchClientBuilder = new BatchClientBuilder();
+batchClientBuilder.credential(sharedKeyCreds);
+BatchClient batchClientWithSharedKey = batchClientBuilder.buildClient();
 ```
 
 ## Error Handling
 
-In `Azure.Compute.Batch`, server errors throw exceptions such as `HttpResponseException` or `ClientAuthenticationException`. For example:
+In `Azure.Compute.Batch`, server errors throw exceptions such as `BatchErrorException`, the custom Batch error object. For example:
 
-```java
-import com.azure.core.exception.HttpResponseException;
-import java.time.Duration;
-
+```java com.azure.compute.batch.resize-pool.resize-pool-error
 try {
-    batchClient.resizePool("poolID", new BatchPoolResizeContent()
-        .setTargetDedicatedNodes(1)
-        .setResizeTimeout(Duration.ofMinutes(10)));
-} catch (HttpResponseException e) {
-    System.err.println("Error resizing pool: " + e.getMessage());
-    // Additional details available via e.getResponse()
+    BatchPoolResizeParameters resizeParams
+        = new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1);
+    batchClient.beginResizePool("fakepool", resizeParams);
+} catch (BatchErrorException err) {
+    BatchError error = err.getValue();
+    Assertions.assertNotNull(error);
+    Assertions.assertEquals("PoolNotFound", error.getCode());
+    Assertions.assertTrue(error.getMessage().getValue().contains("The specified pool does not exist."));
+    Assertions.assertNull(error.getValues());
 }
 ```
 
@@ -181,24 +175,14 @@ unboundPool.commit();
 
 Track 2:
 
-```java
-import com.azure.compute.batch.models.BatchPoolCreateContent;
-import com.azure.compute.batch.models.ImageReference;
-import com.azure.compute.batch.models.VirtualMachineConfiguration;
-
-ImageReference imageReference = new ImageReference()
-    .setPublisher("MicrosoftWindowsServer")
-    .setOffer("WindowsServer")
-    .setSku("2019-datacenter-smalldisk")
-    .setVersion("latest");
-
-VirtualMachineConfiguration vmConfig = new VirtualMachineConfiguration(imageReference, "batch.node.windows amd64");
-
-BatchPoolCreateContent poolCreateContent = new BatchPoolCreateContent("poolId", "STANDARD_D1_v2")
-    .setVirtualMachineConfiguration(vmConfig)
-    .setTargetDedicatedNodes(2);
-
-batchClient.createPool(poolCreateContent);
+```java com.azure.compute.batch.create-pool.creates-a-simple-pool
+batchClient.createPool(new BatchPoolCreateParameters("poolId", "STANDARD_DC2s_V2")
+    .setVirtualMachineConfiguration(
+        new VirtualMachineConfiguration(new BatchVmImageReference().setPublisher("Canonical")
+            .setOffer("UbuntuServer")
+            .setSku("18_04-lts-gen2")
+            .setVersion("latest"), "batch.node.ubuntu 18.04"))
+    .setTargetDedicatedNodes(1), null);
 ```
 
 #### GetPool
@@ -211,10 +195,8 @@ CloudPool pool = batchClient.poolOperations().getPool("poolId");
 
 Track 2:
 
-```java
-BatchPool pool = batchClient.getPool("poolId");
-System.out.println(pool.getId());
-System.out.println(pool.getUrl());
+```java com.azure.compute.batch.get-pool.pool-get
+BatchPool response = batchClient.getPool("pool", null, null);
 ```
 
 #### ListPools
@@ -230,10 +212,8 @@ for (CloudPool pool : pools) {
 
 Track 2:
 
-```java
-for (BatchPool pool : batchClient.getPools()) {
-    System.out.println(pool.getId());
-}
+```java com.azure.compute.batch.list-pools.pool-list
+PagedIterable<BatchPool> poolList = batchClient.listPools(new BatchPoolsListOptions());
 ```
 
 #### DeletePool
@@ -246,8 +226,8 @@ batchClient.poolOperations().deletePool("poolId");
 
 Track 2:
 
-```java
-batchClient.deletePool("poolId");
+```java com.azure.compute.batch.delete-pool.pool-delete
+batchClient.beginDeletePool("poolId");
 ```
 
 #### UpdatePool
@@ -265,16 +245,10 @@ batchClient.poolOperations().patchPool("poolId", null, null, null, metadata);
 
 Track 2:
 
-```java
-import com.azure.compute.batch.models.BatchPoolUpdateContent;
-import com.azure.compute.batch.models.MetadataItem;
-import java.util.Collections;
-
-MetadataItem metadataItem = new MetadataItem("name", "value");
-BatchPoolUpdateContent updateContent = new BatchPoolUpdateContent();
-updateContent.setMetadata(Collections.singletonList(metadataItem));
-
-batchClient.updatePool("poolId", updateContent);
+```java com.azure.compute.batch.update-pool.patch-the-pool
+batchClient.updatePool("poolId",
+    new BatchPoolUpdateParameters().setStartTask(new BatchStartTask("/bin/bash -c 'echo start task'")), null,
+    null);
 ```
 
 #### ResizePool
@@ -288,11 +262,8 @@ pool.resize(1, 0, Duration.ofMinutes(10));
 
 Track 2:
 
-```java
-import com.azure.compute.batch.models.BatchPoolResizeContent;
-import java.time.Duration;
-
-BatchPoolResizeContent resizeContent = new BatchPoolResizeContent()
+```java com.azure.compute.batch.resize-pool.pool-resize
+BatchPoolResizeParameters resizeContent = new BatchPoolResizeParameters()
     .setTargetDedicatedNodes(1)
     .setResizeTimeout(Duration.ofMinutes(10));
 
@@ -309,8 +280,8 @@ pool.stopResize();
 
 Track 2:
 
-```java
-batchClient.stopPoolResize("poolId");
+```java com.azure.compute.batch.stop-resize-pool.stop-pool-resize
+batchClient.beginStopPoolResize("poolId");
 ```
 
 #### EnableAutoScalePool
@@ -323,15 +294,12 @@ batchClient.poolOperations().enableAutoScale("poolId", "$TargetDedicatedNodes=0;
 
 Track 2:
 
-```java
-import com.azure.compute.batch.models.BatchPoolEnableAutoScaleContent;
-import java.time.Duration;
-
-BatchPoolEnableAutoScaleContent autoScaleContent = new BatchPoolEnableAutoScaleContent()
+```java com.azure.compute.batch.enable-pool-auto-scale.pool-enable-autoscale
+BatchPoolEnableAutoScaleParameters autoScaleParameters = new BatchPoolEnableAutoScaleParameters()
     .setAutoScaleEvaluationInterval(Duration.ofMinutes(6))
     .setAutoScaleFormula("$TargetDedicated = 1;");
 
-batchClient.enablePoolAutoScale("poolId", autoScaleContent);
+batchClient.enablePoolAutoScale("poolId", autoScaleParameters);
 ```
 
 #### DisableAutoScalePool
@@ -344,7 +312,7 @@ batchClient.poolOperations().disableAutoScale("poolId");
 
 Track 2:
 
-```java
+```java com.azure.compute.batch.disable-pool-auto-scale.disable-pool-autoscale
 batchClient.disablePoolAutoScale("poolId");
 ```
 
@@ -358,12 +326,9 @@ AutoScaleRun eval = batchClient.poolOperations().evaluateAutoScale("poolId", "$T
 
 Track 2:
 
-```java
-import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleContent;
-import com.azure.compute.batch.models.AutoScaleRun;
-
-BatchPoolEvaluateAutoScaleContent evalContent = new BatchPoolEvaluateAutoScaleContent("$TargetDedicated = 1;");
-AutoScaleRun eval = batchClient.evaluatePoolAutoScale("poolId", evalContent);
+```java com.azure.compute.batch.evaluate-pool-auto-scale.evaluate-pool-autoscale
+BatchPoolEvaluateAutoScaleParameters evalParams = new BatchPoolEvaluateAutoScaleParameters("$TargetDedicated = 1;");
+AutoScaleRun eval = batchClient.evaluatePoolAutoScale("poolId", evalParams);
 ```
 
 #### ListPoolNodeCounts
@@ -371,17 +336,13 @@ AutoScaleRun eval = batchClient.evaluatePoolAutoScale("poolId", evalContent);
 Track 1:
 
 ```java
-for (PoolNodeCounts counts : batchClient.poolOperations().listPoolNodeCounts()) {
-    // Process counts
-}
+batchClient.poolOperations().listPoolNodeCounts()
 ```
 
 Track 2:
 
-```java
-for (BatchPoolNodeCounts counts : batchClient.getPoolNodeCounts()) {
-    // Process counts
-}
+```java com.azure.compute.batch.list-pool-node-counts.list-pool-node-counts
+batchClient.listPoolNodeCounts();
 ```
 
 #### ListPoolUsageMetrics
@@ -389,27 +350,13 @@ for (BatchPoolNodeCounts counts : batchClient.getPoolNodeCounts()) {
 Track 1:
 
 ```java
-import org.joda.time.DateTime;
-import com.microsoft.azure.batch.protocol.models.PoolUsageMetrics;
-import com.microsoft.azure.batch.PagedList;
-
-// For example, list pool usage metrics for January 1, 2023 to January 2, 2023.
-DateTime startTime = DateTime.parse("2023-01-01T00:00:00.000Z");
-DateTime endTime = DateTime.parse("2023-01-02T00:00:00.000Z");
-
-PagedList<PoolUsageMetrics> metricsList = batchClient.poolOperations().listPoolUsageMetrics(startTime, endTime);
-for (PoolUsageMetrics metrics : metricsList) {
-    System.out.println("Pool ID: " + metrics.poolId());
-    System.out.println("Total Core Hours: " + metrics.totalCoreHours());
-}
+batchClient.poolOperations().listPoolUsageMetrics(startTime, endTime);
 ```
 
 Track 2:
 
-```java
-for (BatchPoolUsageMetrics metrics : batchClient.listPoolUsageMetrics()) {
-    // Process metrics
-}
+```java com.azure.compute.batch.list-pool-usage-metrics.list-pool-usage-metrics
+batchClient.listPoolUsageMetrics();
 ```
 
 #### GetSupportedImages
@@ -418,17 +365,12 @@ Track 1:
 
 ```java
 List<ImageInformation> images = batchClient.poolOperations().listSupportedImages();
-for (ImageInformation image : images) {
-    // Process image
-}
 ```
 
 Track 2:
 
-```java
-for (BatchSupportedImage image : batchClient.listSupportedImages()) {
-    // Process image
-}
+```java com.azure.compute.batch.list-supported-images.list-supported-images
+batchClient.listSupportedImages();
 ```
 
 ### Job Operations
@@ -447,12 +389,9 @@ batchClient.jobOperations().createJob(jobId, poolInfo);
 
 Track 2:
 
-```java
-import com.azure.compute.batch.models.BatchJobCreateContent;
-import com.azure.compute.batch.models.BatchPoolInfo;
-
-BatchJobCreateContent jobCreateContent = new BatchJobCreateContent("jobId", new BatchPoolInfo().setPoolId("poolId"));
-batchClient.createJob(jobCreateContent);
+```java com.azure.compute.batch.create-job.creates-a-basic-job
+batchClient.createJob(
+    new BatchJobCreateParameters("jobId", new BatchPoolInfo().setPoolId("poolId")).setPriority(0), null);
 ```
 
 #### GetJob
@@ -465,8 +404,8 @@ CloudJob job = batchClient.jobOperations().getJob(jobId);
 
 Track 2:
 
-```java
-BatchJob job = batchClient.getJob("jobId");
+```java com.azure.compute.batch.get-job.job-get
+BatchJob job = batchClient.getJob("jobId", null, null);
 ```
 
 #### ListJobs
@@ -475,17 +414,12 @@ Track 1:
 
 ```java
 List<CloudJob> jobs = batchClient.jobOperations().listJobs();
-for (CloudJob job : jobs) {
-    System.out.println(job.getId());
-}
 ```
 
 Track 2:
 
-```java
-for (BatchJob job : batchClient.listJobs()) {
-    System.out.println(job.getId());
-}
+```java com.azure.compute.batch.list-jobs.job-list
+PagedIterable<BatchJob> jobList = batchClient.listJobs(new BatchJobsListOptions());
 ```
 
 #### DeleteJob
@@ -498,8 +432,8 @@ batchClient.jobOperations().deleteJob("jobId");
 
 Track 2:
 
-```java
-batchClient.deleteJob("jobId");
+```java com.azure.compute.batch.delete-job.job-delete
+batchClient.beginDeleteJob("jobId");
 ```
 
 #### ReplaceJob
@@ -515,9 +449,12 @@ batchClient.jobOperations().updateJob(jobId, poolInfo, 1, null, null, null);
 
 Track 2
 
-```java
-job.setOnAllTasksComplete(OnAllBatchTasksComplete.TERMINATE_JOB);
-batchClient.replaceJob("jobId", job);
+```java com.azure.compute.batch.replace-job.job-patch
+batchClient.replaceJob("jobId",
+    new BatchJob(new BatchPoolInfo().setPoolId("poolId")).setPriority(100)
+        .setConstraints(
+            new BatchJobConstraints().setMaxWallClockTime(Duration.parse("PT1H")).setMaxTaskRetryCount(-1)),
+    null, null);
 ```
 
 #### UpdateJob
@@ -532,12 +469,13 @@ batchClient.jobOperations().patchJob(jobId, OnAllTasksComplete.TERMINATE_JOB);
 
 Track 2:
 
-```java
-import com.azure.compute.batch.models.BatchJobUpdateContent;
-
-BatchJobUpdateContent updateContent = new BatchJobUpdateContent();
-updateContent.getMetadata().add(new MetadataItem("name", "value"));
-batchClient.updateJob("jobId", updateContent);
+```java com.azure.compute.batch.update-job.job-update
+batchClient.updateJob("jobId",
+    new BatchJobUpdateParameters().setPriority(100)
+        .setConstraints(
+            new BatchJobConstraints().setMaxWallClockTime(Duration.parse("PT1H")).setMaxTaskRetryCount(-1))
+        .setPoolInfo(new BatchPoolInfo().setPoolId("poolId")),
+    null, null);
 ```
 
 #### DisableJob
@@ -551,11 +489,9 @@ job.disable(DisableJobOption.TERMINATE);
 
 Track 2:
 
-```java
-import com.azure.compute.batch.models.BatchJobDisableContent;
-
-BatchJobDisableContent disableContent = new BatchJobDisableContent(DisableBatchJobOption.REQUEUE);
-batchClient.disableJob("jobId", disableContent);
+```java com.azure.compute.batch.disable-job.job-disable
+BatchJobDisableParameters disableParams = new BatchJobDisableParameters(DisableBatchJobOption.REQUEUE);
+batchClient.beginDisableJob("jobId", disableParams);
 ```
 
 #### EnableJob
@@ -568,8 +504,8 @@ batchClient.jobOperations().enableJob(jobId);
 
 Track 2:
 
-```java
-batchClient.enableJob("jobId");
+```java com.azure.compute.batch.enable-job.job-enable
+batchClient.beginEnableJob("jobId");
 ```
 
 #### List Job Preparation and Release Task Status
@@ -586,10 +522,8 @@ for (JobPreparationAndReleaseTaskExecutionInformation info : status) {
 
 Track 2:
 
-```java
-for (BatchJobPreparationAndReleaseTaskStatus status : batchClient.getJobPreparationAndReleaseTaskStatuses("jobId")) {
-    // Process status
-}
+```java com.azure.compute.batch.job.list-job-preparation-and-release-task-status
+batchClient.listJobPreparationAndReleaseTaskStatus("jobId");
 ```
 
 #### Get Job Task Counts
@@ -602,7 +536,7 @@ TaskCounts counts = batchClient.getJobOperations().getTaskCounts("jobId");
 
 Track 2:
 
-```java
+```java com.azure.compute.batch.job.get-job-task-counts
 BatchTaskCountsResult counts = batchClient.getJobTaskCounts("jobId");
 ```
 
@@ -616,8 +550,8 @@ batchClient.jobOperations().terminateJob("jobId");
 
 Track 2:
 
-```java
-batchClient.terminateJob("jobId");
+```java com.azure.compute.batch.job.terminate-job
+batchClient.beginTerminateJob("jobId");
 ```
 
 ### Job Schedule Operations
@@ -639,17 +573,10 @@ batchClient.jobScheduleOperations().createJobSchedule(jobScheduleId, schedule, s
 
 Track 2:
 
-```java
-String jobScheduleId = "jobScheduleId";
-
-BatchPoolInfo poolInfo = new BatchPoolInfo();
-poolInfo.setPoolId(poolId);
-
-BatchJobScheduleConfiguration schedule = new BatchJobScheduleConfiguration().setDoNotRunUntil(now())
-    .setDoNotRunAfter(now().plusHours(5))
-    .setStartWindow(Duration.ofDays(5));
-BatchJobSpecification spec = new BatchJobSpecification(poolInfo).setPriority(100);
-batchClient.createJobSchedule(new BatchJobScheduleCreateContent(jobScheduleId, schedule, spec));
+```java com.azure.compute.batch.create-job-schedule.creates-a-basic-job-schedule
+batchClient.createJobSchedule(new BatchJobScheduleCreateParameters("jobScheduleId",
+    new BatchJobScheduleConfiguration().setRecurrenceInterval(Duration.parse("PT5M")),
+    new BatchJobSpecification(new BatchPoolInfo().setPoolId("poolId"))), null);
 ```
 
 #### GetJobSchedule
@@ -662,9 +589,8 @@ CloudJobSchedule jobSchedule = batchClient.getJobScheduleOperations().getJobSche
 
 Track 2:
 
-```java
-BatchJobSchedule jobSchedule = batchClient.getJobSchedule("jobScheduleId");
-System.out.println(jobSchedule.getId());
+```java com.azure.compute.batch.job-schedule.get-job-schedule
+batchClient.getJobSchedule("jobScheduleId");
 ```
 
 #### ListJobSchedules
@@ -680,7 +606,7 @@ for (CloudJobSchedule schedule : schedules) {
 
 Track 2:
 
-```java
+```java com.azure.compute.batch.job-schedule.list-job-schedules
 for (BatchJobSchedule schedule : batchClient.listJobSchedules()) {
     System.out.println(schedule.getId());
 }
@@ -696,8 +622,8 @@ batchClient.jobScheduleOperations().deleteJobSchedule("jobScheduleId");
 
 Track 2:
 
-```java
-batchClient.deleteJobSchedule("jobScheduleId");
+```java com.azure.compute.batch.job-schedule.delete-job-schedule
+batchClient.beginDeleteJobSchedule("jobScheduleId");
 ```
 
 #### ReplaceJobSchedule
@@ -714,11 +640,16 @@ batchClient.jobScheduleOperations().updateJobSchedule("jobScheduleId", schedule,
 
 Track 2:
 
-```java
-BatchJobSchedule jobSchedule = batchClient.getJobSchedule("jobScheduleId");
-jobSchedule.setSchedule(new BatchJobScheduleConfiguration()
-    .setDoNotRunUntil(OffsetDateTime.parse("2026-08-18T00:00:00Z")));
-batchClient.replaceJobSchedule("jobScheduleId", jobSchedule);
+```java com.azure.compute.batch.replace-job-schedule.job-schedule-patch
+batchClient.replaceJobSchedule("jobScheduleId",
+    new BatchJobSchedule(new BatchJobSpecification(new BatchPoolInfo().setPoolId("poolId")).setPriority(0)
+        .setUsesTaskDependencies(false)
+        .setConstraints(
+            new BatchJobConstraints().setMaxWallClockTime(Duration.parse("P10675199DT2H48M5.4775807S"))
+                .setMaxTaskRetryCount(0)))
+                    .setSchedule(new BatchJobScheduleConfiguration()
+                        .setDoNotRunUntil(OffsetDateTime.parse("2025-01-01T12:30:00Z"))),
+    null, null);
 ```
 
 #### UpdateJobSchedule
@@ -735,7 +666,7 @@ batchClient.jobScheduleOperations().patchJobSchedule(jobScheduleId, null, null, 
 
 Track 2:
 
-```java
+```java BEGIN: com.azure.compute.batch.job-schedule.update-job-schedule
 import com.azure.compute.batch.models.BatchJobScheduleUpdateContent;
 
 BatchJobScheduleUpdateContent updateContent = new BatchJobScheduleUpdateContent();
@@ -753,7 +684,7 @@ batchClient.jobScheduleOperations().disableJobSchedule("jobScheduleId");
 
 Track 2:
 
-```java
+```java com.azure.compute.batch.job-schedule.disable-job-schedule
 batchClient.disableJobSchedule("jobScheduleId");
 ```
 
@@ -767,7 +698,7 @@ batchClient.jobScheduleOperations().enableJobSchedule("jobScheduleId");
 
 Track 2:
 
-```java
+```java com.azure.compute.batch.job-schedule.enable-job-schedule
 batchClient.enableJobSchedule("jobScheduleId");
 ```
 
@@ -781,8 +712,8 @@ batchClient.jobScheduleOperations().terminateJobSchedule("jobScheduleId");
 
 Track 2:
 
-```java
-batchClient.terminateJobSchedule("jobScheduleId");
+```java com.azure.compute.batch.job-schedule.terminate-job-schedule
+batchClient.beginTerminateJobSchedule("jobScheduleId");
 ```
 
 ### Task Operations
@@ -815,32 +746,26 @@ batchClient.taskOperations().createTasks(jobId, tasksToAdd, behaviors);
 Track 2
 Create a single task:
 
-```java
-import com.azure.compute.batch.models.BatchTaskCreateContent;
-
-BatchTaskCreateContent taskContent = new BatchTaskCreateContent("taskId", "cmd /c echo Hello World");
-batchClient.createTask("jobId", taskContent);
+```java com.azure.compute.batch.create-task.creates-a-basic-task
+batchClient.createTask("jobId", new BatchTaskCreateParameters("task1", "cmd /c echo task1"), null);
 ```
 
 Create a task collection (100 tasks or less):
 
-```java
-import com.azure.compute.batch.models.BatchTaskGroup;
-import com.azure.compute.batch.models.BatchTaskAddCollectionResult;
-
-BatchTaskGroup taskGroup = new BatchTaskGroup(new BatchTaskCreateContent[] {
-    new BatchTaskCreateContent("task1", "cmd /c echo Hello World"),
-    new BatchTaskCreateContent("task2", "cmd /c echo Hello World")
-});
-BatchTaskAddCollectionResult result = batchClient.createTaskCollection("jobId", taskGroup);
+```java com.azure.compute.batch.create-task.creates-a-task-collection
+List<BatchTaskCreateParameters> taskList = Arrays.asList(
+    new BatchTaskCreateParameters("task1", "cmd /c echo Hello World"),
+    new BatchTaskCreateParameters("task2", "cmd /c echo Hello World"));
+BatchTaskGroup taskGroup = new BatchTaskGroup(taskList);
+BatchCreateTaskCollectionResult result = batchClient.createTaskCollection("jobId", taskGroup);
 ```
 
 Create multiple tasks (used for creating very large numbers of tasks):
 
-```java
-List<BatchTaskCreateContent> tasks = new ArrayList<>();
+```java com.azure.compute.batch.create-task.create-tasks
+List<BatchTaskCreateParameters> tasks = new ArrayList<>();
 for (int i = 0; i < 1000; i++) {
-    tasks.add(new BatchTaskCreateContent("task" + i, "cmd /c echo Hello World"));
+    tasks.add(new BatchTaskCreateParameters("task" + i, "cmd /c echo Hello World"));
 }
 batchClient.createTasks("jobId", tasks);
 ```
@@ -855,10 +780,8 @@ CloudTask task = batchClient.getJobOperations().getTask("jobId", "taskId");
 
 Track 2:
 
-```java
-BatchTask task = batchClient.getTask("jobId", "taskId");
-System.out.println(task.getId());
-System.out.println(task.getState());
+```java com.azure.compute.batch.task.get-task
+batchClient.getTask("jobId", "taskId");
 ```
 
 #### ListTasks
@@ -871,7 +794,7 @@ List<CloudTask> tasks = batchClient.taskOperations().listTasks(jobId);
 
 Track 2:
 
-```java
+```java com.azure.compute.batch.task.list-tasks
 batchClient.listTasks("jobId");
 ```
 
@@ -885,7 +808,7 @@ batchClient.taskOperations().deleteTask("jobId", "taskId");
 
 Track 2:
 
-```java
+```java com.azure.compute.batch.task.delete-task
 batchClient.deleteTask("jobId", "taskId");
 ```
 
@@ -903,10 +826,12 @@ batchClient.taskOperations().updateTask("jobId", "taskId", contraint);
 
 Track 2:
 
-```java
-BatchTask task = batchClient.getTask("jobId", "taskId");
-task.setConstraints(new BatchTaskConstraints().setMaxTaskRetryCount(3));
-batchClient.replaceTask("jobId", "taskId", task);
+```java com.azure.compute.batch.replace-task.task-update
+batchClient.replaceTask("jobId", "taskId",
+    new BatchTask().setConstraints(new BatchTaskConstraints().setMaxWallClockTime(Duration.parse("PT1H"))
+        .setRetentionTime(Duration.parse("PT1H"))
+        .setMaxTaskRetryCount(3)),
+    null, null);
 ```
 
 #### ReactivateTask
@@ -919,8 +844,8 @@ batchClient.taskOperations().reactivateTask("jobId", "taskId");
 
 Track 2:
 
-```java
-batchClient.reactivateTask("jobId", "taskId");
+```java com.azure.compute.batch.reactivate-task.task-reactivate
+batchClient.reactivateTask("jobId", "taskId", null, null);
 ```
 
 #### TerminateTask
@@ -933,8 +858,8 @@ batchClient.taskOperations().terminateTask("jobId", "taskId");
 
 Track 2:
 
-```java
-batchClient.terminateTask("jobId", "taskId");
+```java com.azure.compute.batch.terminate-task.task-terminate
+batchClient.terminateTask("jobId", "taskId", null, null);
 ```
 
 ### File Operations for Tasks
@@ -953,11 +878,7 @@ for (NodeFile file : files) {
 
 Track 2:
 
-```java
-import com.azure.compute.batch.models.BatchNodeFile;
-import com.azure.core.http.rest.PagedIterable;
-
-// Directly listing task files from the client
+```java com.azure.compute.batch.task.list-task-files
 PagedIterable<BatchNodeFile> files = batchClient.listTaskFiles("jobId", "taskId");
 for (BatchNodeFile file : files) {
     System.out.println(file.getName());
@@ -975,11 +896,8 @@ batchClient.fileOperations().getFileFromTask(jobId, taskId, "stdout.txt", stream
 
 Track 2:
 
-```java
-import com.azure.core.util.BinaryData;
-
-// Directly retrieving the task file content from the client in Track 2
-BinaryData fileContent = batchClient.getTaskFile(jobId, taskId, "stdout.txt");
+```java com.azure.compute.batch.task.get-task-file
+BinaryData fileContent = batchClient.getTaskFile("jobId", "taskId", "stdout.txt");
 System.out.println(new String(fileContent.toBytes(), StandardCharsets.UTF_8));
 ```
 
@@ -993,11 +911,9 @@ FileProperties properties = batchClient.fileOperations().getFilePropertiesFromTa
 
 Track 2:
 
-```java
-import com.azure.compute.batch.models.FileResponseHeaderProperties;
-
-// Directly getting task file properties from the client in Track 2
-BatchFileProperties properties = batchClient.getTaskFileProperties("jobId", "taskId", "stdout.txt");
+```java com.azure.compute.batch.get-task-file-properties.file-get-properties-from-task
+batchClient.getTaskFileProperties("jobId", "taskId", "wd\\testFile.txt",
+    new BatchTaskFilePropertiesGetOptions());
 ```
 
 ### Node Operations
@@ -1012,8 +928,9 @@ ComputeNode computeNode = batchClient.computeNodeOperations().getComputeNode("po
 
 Track 2:
 
-```java
-BatchNode node = batchClient.getNode("poolId", "nodeId");
+```java com.azure.compute.batch.get-node.node-get
+BatchNode node
+    = batchClient.getNode("poolId", "tvm-1695681911_2-20161122t193202z", new BatchNodeGetOptions());
 ```
 
 #### ListComputeNodes
@@ -1021,13 +938,13 @@ BatchNode node = batchClient.getNode("poolId", "nodeId");
 Track 1:
 
 ```java
-List<ComputeNode> nodes = batchClient.computeNodeOperations().listComputeNodes("poolId");
+List<ComputeNode> nodeList = batchClient.computeNodeOperations().listComputeNodes("poolId");
 ```
 
 Track 2:
 
-```java
-PagedIterable<BatchNode> nodes = batchClient.listNodes("poolId");
+```java com.azure.compute.batch.list-nodes.node-list
+PagedIterable<BatchNode> nodeList = batchClient.listNodes("poolId", new BatchNodesListOptions());
 ```
 
 #### RebootNode
@@ -1040,8 +957,8 @@ batchClient.computeNodeOperations().rebootComputeNode("poolId", "nodeId");
 
 Track 2:
 
-```java
-batchClient.rebootNode("poolId", "nodeId");
+```java com.azure.compute.batch.node.reboot-node
+batchClient.beginRebootNode("poolId", "nodeId");
 ```
 
 #### CreateComputeNodeUser
@@ -1059,12 +976,12 @@ batchClient.computeNodeOperations().addComputeNodeUser("poolId", "nodeId", user)
 
 Track 2:
 
-```java
-import com.azure.compute.batch.models.BatchNodeUserCreateContent;
-
-BatchNodeUserCreateContent userContent = new BatchNodeUserCreateContent("userName")
-    .setPassword("userPassword");
-batchClient.createNodeUser("poolId", "nodeId", userContent);
+```java com.azure.compute.batch.create-node-user.node-create-user
+batchClient.createNodeUser("poolId", "tvm-1695681911_1-20161121t182739z",
+    new BatchNodeUserCreateParameters("userName").setIsAdmin(false)
+        .setExpiryTime(OffsetDateTime.parse("2017-08-01T00:00:00Z"))
+        .setPassword("fakeTokenPlaceholder"),
+    null);
 ```
 
 #### DeleteComputeNodeUser
@@ -1077,8 +994,8 @@ batchClient.computeNodeOperations().deleteComputeNodeUser("poolId", "nodeId", "u
 
 Track 2:
 
-```java
-batchClient.deleteNodeUser("poolId", "nodeId", "userName");
+```java com.azure.compute.batch.delete-node-user.node-delete-user
+batchClient.deleteNodeUser("poolId", "tvm-1695681911_1-20161121t182739z", "userName", null);
 ```
 
 #### GetNodeFile
@@ -1092,8 +1009,8 @@ batchClient.fileOperations().getFileFromComputeNode("poolId", "nodeId", "fileNam
 
 Track 2:
 
-```java
-BinaryData fileContent = batchClient.getNodeFile("poolId", "nodeId", "filePath");
+```java com.azure.compute.batch.node.get-node-file
+BinaryData nodeFile = batchClient.getNodeFile("poolId", "nodeId", "filePath");
 ```
 
 #### ListNodeFiles
@@ -1106,8 +1023,9 @@ List<NodeFile> files = batchClient.fileOperations().listFilesFromComputeNode(poo
 
 Track 2:
 
-```java
-PagedIterable<BatchNodeFile> files = batchClient.listNodeFiles("jobId", "nodeId");
+```java com.azure.compute.batch.list-node-files.file-list-from-node
+PagedIterable<BatchNodeFile> listNodeFilesResponse = batchClient.listNodeFiles("poolId", "tvm-1695681911_1-20161122t193202z",
+    new BatchNodeFilesListOptions().setRecursive(false));
 ```
 
 #### DeleteNodeFile
@@ -1120,8 +1038,9 @@ batchClient.fileOperations().deleteFileFromComputeNode("jobId", "taskId", "fileN
 
 Track 2:
 
-```java
-batchClient.deleteNodeFile("jobId", "nodeId", "filePath");
+```java com.azure.compute.batch.delete-node-file.file-delete-from-node
+batchClient.deleteNodeFile("poolId", "tvm-1695681911_1-20161122t193202z",
+    "workitems\\jobId\\job-1\\task1\\wd\\testFile.txt", new BatchNodeFileDeleteOptions().setRecursive(false));
 ```
 
 #### GetNodeFileProperties
@@ -1134,8 +1053,9 @@ FileProperties properties = batchClient.fileOperations().getFilePropertiesFromCo
 
 Track 2:
 
-```java
-BatchFileProperties properties = batchClient.getNodeFileProperties("poolId", "nodeId", "filePath");
+```java com.azure.compute.batch.get-node-file-properties.file-get-properties-from-node
+batchClient.getNodeFileProperties("poolId", "nodeId", "workitems\\jobId\\job-1\\task1\\wd\\testFile.txt",
+    new BatchNodeFilePropertiesGetOptions());
 ```
 
 #### GetRemoteLoginSettings
@@ -1148,8 +1068,9 @@ ComputeNodeGetRemoteLoginSettingsResult settings = batchClient.computeNodeOperat
 
 Track 2:
 
-```java
-BatchNodeRemoteLoginSettings settings = batchClient.getNodeRemoteLoginSettings("poolId", "nodeId");
+```java com.azure.compute.batch.get-node-remote-login-settings.node-get-remote-login-settings
+BatchNodeRemoteLoginSettings settings
+    = batchClient.getNodeRemoteLoginSettings("poolId", "tvm-1695681911_1-20161121t182739z", null);
 ```
 
 #### UploadNodeLogs
@@ -1164,13 +1085,9 @@ UploadBatchServiceLogsResult result = uploadBatchServiceLogs("poolId", "nodeId",
 
 Track 2:
 
-```java
-import com.azure.compute.batch.models.UploadBatchServiceLogsContent;
-import com.azure.compute.batch.models.UploadBatchServiceLogsResult;
-import java.time.OffsetDateTime;
-
-UploadBatchServiceLogsContent uploadContent = new UploadBatchServiceLogsContent("containerUrl", OffsetDateTime.parse("2026-05-01T00:00:00Z"));
-UploadBatchServiceLogsResult result = batchClient.uploadNodeLogs("poolId", "nodeId", uploadContent);
+```java com.azure.compute.batch.upload-node-logs.upload-batch-service-logs
+UploadBatchServiceLogsResult uploadNodeLogsResult
+    = batchClient.uploadNodeLogs("poolId", "tvm-1695681911_1-20161121t182739z", null, null);
 ```
 
 ### Certificate Operations
@@ -1187,19 +1104,12 @@ Certificate cert = batchClient.getCertificateOperations().createCertificateFromC
 
 Track 2:
 
-```java
-import com.azure.compute.batch.models.BatchCertificate;
-import com.azure.compute.batch.models.BatchCertificateFormat;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Base64;
-
-byte[] certData = Files.readAllBytes(Paths.get("certPath"));
-BatchCertificate cerCertificate = new BatchCertificate("Thumbprint", "ThumbprintAlgorithm", 
-    Base64.getEncoder().encodeToString(certData))
-    .setCertificateFormat(BatchCertificateFormat.CER)
-    .setPassword("");
-batchClient.createCertificate(cerCertificate);
+```java com.azure.compute.batch.create-certificate.certificate-create
+batchClient.createCertificate(
+    new BatchCertificate("0123456789abcdef0123456789abcdef01234567", "sha1", "U3dhZ2dlciByb2Nrcw==".getBytes())
+        .setCertificateFormat(BatchCertificateFormat.PFX)
+        .setPassword("fakeTokenPlaceholder"),
+    null);
 ```
 
 #### CreateCertificate
@@ -1227,11 +1137,12 @@ batchClient.createCertificate(certParam);
 
 Track 2:
 
-```java
-byte[] base64DecodedBytes = Files.readAllBytes(Paths.get("path/to/your-certificate.cer"));
-BatchCertificate cert = new BatchCertificate("your-thumbprint", "sha1", base64DecodedBytes)
-    .setCertificateFormat(BatchCertificateFormat.CER); // or PFX
-batchClient.createCertificate(cert);
+```java com.azure.compute.batch.create-certificate.certificate-create
+batchClient.createCertificate(
+    new BatchCertificate("0123456789abcdef0123456789abcdef01234567", "sha1", "U3dhZ2dlciByb2Nrcw==".getBytes())
+        .setCertificateFormat(BatchCertificateFormat.PFX)
+        .setPassword("fakeTokenPlaceholder"),
+    null);
 ```
 
 #### GetCertificate
@@ -1246,10 +1157,9 @@ Certificate cert = batchClient.certificateOperations().getCertificate(thumbprint
 
 Track 2:
 
-```java
-String thumbprintAlgorithm = "sha1";
-String thumbprint = "your-thumbprint"; 
-BatchCertificate cert = batchClient.getCertificate(thumbprintAlgorithm, thumbprint);
+```java com.azure.compute.batch.get-certificate.certificate-get
+BatchCertificate certificateResponse = batchClient.getCertificate("sha1", "0123456789abcdef0123456789abcdef01234567",
+    new BatchCertificateGetOptions());
 ```
 
 #### ListCertificates
@@ -1257,17 +1167,13 @@ BatchCertificate cert = batchClient.getCertificate(thumbprintAlgorithm, thumbpri
 Track 1:
 
 ```java
-for (Certificate cert : batchClient.getCertificateOperations().listCertificates()) {
-    System.out.println(cert.thumbprint());
-}
+batchClient.getCertificateOperations().listCertificates()
 ```
 
 Track 2:
 
-```java
-for (BatchCertificate cert : batchClient.listCertificates()) {
-    System.out.println(cert.getThumbprint());
-}
+```java com.azure.compute.batch.list-certificates.certificate-list
+PagedIterable<BatchCertificate> certificateList = batchClient.listCertificates(new BatchCertificatesListOptions());
 ```
 
 #### DeleteCertificate
@@ -1282,10 +1188,10 @@ batchClient.certificateOperations().deleteCertificate(thumbprintAlgorithm, thumb
 
 Track 2:
 
-```java
+```java com.azure.compute.batch.certificate.delete-certificate
 String thumbprintAlgorithm = "sha1";
 String thumbprint = "your-thumbprint";
-batchClient.deleteCertificate(thumbprintAlgorithm, thumbprint);
+batchClient.beginDeleteCertificate(thumbprintAlgorithm, thumbprint);
 ```
 
 #### CancelDeleteCertificate
@@ -1300,8 +1206,8 @@ batchClient.certificateOperations().cancelDeleteCertificate(thumbprintAlgorithm,
 
 Track 2:
 
-```java
-batchClient.cancelCertificateDeletion("ThumbprintAlgorithm", "Thumbprint");
+```java com.azure.compute.batch.cancel-certificate-deletion.certificate-cancel-delete
+batchClient.cancelCertificateDeletion("sha1", "0123456789abcdef0123456789abcdef01234567", null);
 ```
 
 ### Application Operations
@@ -1316,8 +1222,8 @@ ApplicationSummary appSummary = batchClient.applicationOperations().getApplicati
 
 Track 2:
 
-```java
-BatchApplication application = batchClient.getApplication("appId");
+```java com.azure.compute.batch.get-application.get-applications
+BatchApplication application = batchClient.getApplication("my_application_id", null);
 ```
 
 #### ListApplications
@@ -1334,8 +1240,6 @@ for (ApplicationSummary app : apps) {
 
 Track 2:
 
-```java
-for (BatchApplication app : batchClient.listApplications()) {
-    System.out.println(app.getId());
-}
+```java com.azure.compute.batch.list-applications.list-applications
+PagedIterable<BatchApplication> applications = batchClient.listApplications(new BatchApplicationsListOptions());
 ```

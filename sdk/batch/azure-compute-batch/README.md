@@ -120,7 +120,7 @@ When a call to the batch service fails the response from that call will contain 
 try {
     BatchPoolResizeParameters resizeParams
         = new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1);
-    batchClient.resizePool("fakepool", resizeParams);
+    batchClient.beginResizePool("fakepool", resizeParams);
 } catch (BatchErrorException err) {
     BatchError error = err.getValue();
     Assertions.assertNotNull(error);
