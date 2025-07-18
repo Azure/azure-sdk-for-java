@@ -162,7 +162,8 @@ public class SharedKeyTests extends BatchClientTestBase {
                 SyncAsyncExtension.execute(() -> batchClientWithSharedKey.deletePool(poolId),
                     () -> batchAsyncClientWithSharedKey.deletePool(poolId));
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for pool: " + poolId);
+                e.printStackTrace();
             }
         }
     }

@@ -118,7 +118,8 @@ public class TaskTests extends BatchClientTestBase {
                 SyncAsyncExtension.execute(() -> batchClient.deleteTask(jobId, taskId),
                     () -> batchAsyncClient.deleteTask(jobId, taskId));
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for task: " + taskId);
+                e.printStackTrace();
             }
 
             // DELETE
@@ -129,7 +130,8 @@ public class TaskTests extends BatchClientTestBase {
 
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for job: " + jobId);
+                e.printStackTrace();
             }
         }
     }
@@ -179,7 +181,8 @@ public class TaskTests extends BatchClientTestBase {
 
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for job: " + jobId);
+                e.printStackTrace();
             }
         }
     }
@@ -319,7 +322,6 @@ public class TaskTests extends BatchClientTestBase {
                     () -> batchAsyncClient.getTask(jobId, taskId));
                 Assertions.assertTrue(true, "Shouldn't be here, the job should be deleted");
             } catch (Exception e) {
-                //TODO (error) Integrate BatchErrorException
                 if (!e.getMessage().contains("Status code 404")) {
                     throw e;
                 }
@@ -334,18 +336,21 @@ public class TaskTests extends BatchClientTestBase {
 
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for job: " + jobId);
+                e.printStackTrace();
             }
             try {
                 container.deleteIfExists();
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for container: " + container.getBlobContainerName());
+                e.printStackTrace();
             }
             try {
                 SyncAsyncExtension.execute(() -> batchClient.deletePool(liveIaasPoolId),
                     () -> batchAsyncClient.deletePool(liveIaasPoolId));
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for pool: " + liveIaasPoolId);
+                e.printStackTrace();
             }
         }
     }
@@ -396,7 +401,8 @@ public class TaskTests extends BatchClientTestBase {
 
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for job: " + jobId);
+                e.printStackTrace();
             }
         }
     }
@@ -472,7 +478,8 @@ public class TaskTests extends BatchClientTestBase {
                     = setPlaybackSyncPollerPollInterval(batchClient.beginDeleteJob(jobId));
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for job: " + jobId);
+                e.printStackTrace();
             }
             Assertions.fail("Expected RequestBodyTooLarge error");
         } catch (HttpResponseException err) {
@@ -483,7 +490,8 @@ public class TaskTests extends BatchClientTestBase {
 
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for job: " + jobId);
+                e.printStackTrace();
             }
             Assertions.assertEquals(413, err.getResponse().getStatusCode());
         } catch (Exception err) {
@@ -494,7 +502,8 @@ public class TaskTests extends BatchClientTestBase {
 
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for job: " + jobId);
+                e.printStackTrace();
             }
             Assertions.fail("Expected RequestBodyTooLarge error");
         }
@@ -541,7 +550,8 @@ public class TaskTests extends BatchClientTestBase {
                     = setPlaybackSyncPollerPollInterval(batchAsyncClient.beginDeleteJob(jobId).getSyncPoller());
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for job: " + jobId);
+                e.printStackTrace();
             }
             Assertions.fail("Expected RequestBodyTooLarge error");
         } catch (HttpResponseException err) {
@@ -552,7 +562,8 @@ public class TaskTests extends BatchClientTestBase {
 
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for job: " + jobId);
+                e.printStackTrace();
             }
             Assertions.assertEquals(413, err.getResponse().getStatusCode());
         } catch (Exception err) {
@@ -604,7 +615,8 @@ public class TaskTests extends BatchClientTestBase {
                     = setPlaybackSyncPollerPollInterval(batchClient.beginDeleteJob(jobId));
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for job: " + jobId);
+                e.printStackTrace();
             }
         } catch (Exception err) {
             Assertions.fail("Expected Success");
@@ -655,7 +667,8 @@ public class TaskTests extends BatchClientTestBase {
                     = setPlaybackSyncPollerPollInterval(batchAsyncClient.beginDeleteJob(jobId).getSyncPoller());
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for job: " + jobId);
+                e.printStackTrace();
             }
         } catch (Exception err) {
             Assertions.fail("Expected Success");
@@ -721,7 +734,8 @@ public class TaskTests extends BatchClientTestBase {
                         () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for job: " + jobId);
+                e.printStackTrace();
             }
         }
     }
@@ -827,7 +841,8 @@ public class TaskTests extends BatchClientTestBase {
                         () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for job: " + jobId);
+                e.printStackTrace();
             }
         }
     }
@@ -877,7 +892,8 @@ public class TaskTests extends BatchClientTestBase {
 
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for job: " + jobId);
+                e.printStackTrace();
             }
         }
     }
