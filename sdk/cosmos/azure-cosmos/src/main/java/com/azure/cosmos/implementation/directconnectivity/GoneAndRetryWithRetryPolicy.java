@@ -71,7 +71,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             return this.goneRetryPolicy.shouldRetry(exception)
                 .flatMap((goneRetryResult) -> {
                     if (!goneRetryResult.shouldRetry) {
-                        logger.warn("Operation will NOT be retried. Exception:",
+                        logger.debug("Operation will NOT be retried. Exception:",
                             exception);
                         this.end = Instant.now();
                     }
@@ -200,7 +200,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             Duration timeout;
             boolean forceRefreshAddressCache;
             if (isNonRetryableException(exception)) {
-                logger.warn("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
+                logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
                     exception);
                 return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
             } else if (exception instanceof GoneException &&
@@ -252,7 +252,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                 backoffTime = Duration.ofSeconds(Math.min(Math.min(this.currentBackoffSeconds.get(), remainingSeconds),
                     GoneRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_SECONDS));
                 this.currentBackoffSeconds.accumulateAndGet(GoneRetryPolicy.BACK_OFF_MULTIPLIER, (left, right) -> left * right);
-                logger.warn("BackoffTime: {} seconds.", backoffTime.getSeconds());
+                logger.debug("BackoffTime: {} seconds.", backoffTime.getSeconds());
             }
 
             // Calculate the remaining time based after accounting for the backoff that we
@@ -260,7 +260,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             long timeoutInMillSec = remainingSeconds*1000 - backoffTime.toMillis();
             timeout = timeoutInMillSec > 0 ? Duration.ofMillis(timeoutInMillSec)
                 : Duration.ofSeconds(GoneRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_SECONDS);
-            logger.warn("Timeout. {} - BackoffTime {} - currentBackoffSeconds {} - CurrentRetryAttemptCount {}",
+            logger.debug("Timeout. {} - BackoffTime {} - currentBackoffSeconds {} - CurrentRetryAttemptCount {}",
                 timeout.toMillis(),
                 backoffTime,
                 this.currentBackoffSeconds,
@@ -298,12 +298,12 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         }
 
         private Pair<Mono<ShouldRetryResult>, Boolean> handleGoneException(GoneException exception) {
-            logger.warn("Received gone exception, will retry, {}", exception.toString());
+            logger.debug("Received gone exception, will retry, {}", exception.toString());
             return Pair.of(null, true); // indicate we are in retry.
         }
 
         private Pair<Mono<ShouldRetryResult>, Boolean> handlePartitionIsMigratingException(PartitionIsMigratingException exception) {
-            logger.warn("Received PartitionIsMigratingException, will retry, {}", exception.toString());
+            logger.debug("Received PartitionIsMigratingException, will retry, {}", exception.toString());
             this.request.forceCollectionRoutingMapRefresh = true;
             return Pair.of(null, true);
         }
@@ -312,7 +312,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             this.request.requestContext.resolvedPartitionKeyRange = null;
             this.request.requestContext.quorumSelectedLSN = -1;
             this.request.requestContext.quorumSelectedStoreResponse = null;
-            logger.warn("Received partition key range splitting exception, will retry, {}", exception.toString());
+            logger.debug("Received partition key range splitting exception, will retry, {}", exception.toString());
             this.request.forcePartitionKeyRangeRefresh = true;
             return Pair.of(null, false);
         }
@@ -331,7 +331,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                     false);
             }
 
-            logger.warn("Received invalid collection exception, will retry, {}", exception.toString());
+            logger.debug("Received invalid collection exception, will retry, {}", exception.toString());
             this.request.forceNameCacheRefresh = true;
 
             return Pair.of(null, false);
@@ -363,7 +363,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             Duration timeout;
 
             if (!(exception instanceof RetryWithException)) {
-                logger.warn("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount.get(),
+                logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount.get(),
                     exception);
                 return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
             }
@@ -395,7 +395,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                         this.currentBackoffMilliseconds.get() * RetryWithRetryPolicy.BACK_OFF_MULTIPLIER))
             );
 
-            logger.warn("BackoffTime: {} ms.", backoffTime.toMillis());
+            logger.debug("BackoffTime: {} ms.", backoffTime.toMillis());
 
             // Calculate the remaining time based after accounting for the backoff that we
             // will perform
@@ -403,7 +403,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             timeout = timeoutInMillSec > 0 ? Duration.ofMillis(timeoutInMillSec)
                 : Duration.ofMillis(RetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_MS);
 
-            logger.warn("Received RetryWithException, will retry, ", exception);
+            logger.debug("Received RetryWithException, will retry, ", exception);
 
             // For RetryWithException, prevent the caller
             // from refreshing any caches.
