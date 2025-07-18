@@ -58,8 +58,10 @@ batchClientBuilder.credential(sharedKeyCred);
 - The other way is using Entra ID authentication to create the client. See this [document](https://learn.microsoft.com/azure/batch/batch-aad-auth) for details on authenticating to Batch with Entra ID.
 For example:
 
-```java
-batchClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
+```java com.azure.compute.batch.build-client
+BatchClient batchClient = new BatchClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+    .buildClient();
 ```
 
 ### Create a pool using an Azure Marketplace image
