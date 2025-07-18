@@ -425,6 +425,7 @@ def move_premium_samples(sdk_root: str, service: str, module: str):
     package_path = "com/" + module.replace("-", "/")
     source_sample_dir = os.path.join(sdk_root, "sdk", service, module, "src", "samples", "java", package_path, "generated")
     target_sample_dir = os.path.join(sdk_root, "sdk", "resourcemanager", "azure-resourcemanager", "src", "samples", "java", package_path)
+    logging.info(f"Moving samples from {source_sample_dir} to {target_sample_dir}.")
     copy_folder_recursive_sync(source_sample_dir, target_sample_dir)
     shutil.rmtree(source_sample_dir, ignore_errors=True)
 
@@ -447,6 +448,8 @@ def main():
         succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
             tsp_project=tsp_config, sdk_root=sdk_root, remove_before_regen=True, group_id=GROUP_ID, **args
         )
+
+        premium = is_mgmt_premium(module)
 
         stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
         args["version"] = current_version
@@ -485,7 +488,6 @@ def main():
         service = get_and_update_service_from_api_specs(api_specs_file, spec, args["service"], suffix)
         args["service"] = service
         module = ARTIFACT_FORMAT.format(service)
-        premium = is_mgmt_premium(module)
         stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
         args["version"] = current_version
         output_folder = OUTPUT_FOLDER_FORMAT.format(service)
