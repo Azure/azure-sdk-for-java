@@ -10,8 +10,8 @@ package com.azure.resourcemanager.confidentialledger.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/stable/2022-05-13/examples/
-     * Operations_Get.json
+     * specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2024-09-19-preview/
+     * examples/Operations_Get.json
      */
     /**
      * Sample code: OperationsGet.

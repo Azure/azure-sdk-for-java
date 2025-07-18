@@ -79,7 +79,7 @@ public final class DocumentClassifiersImpl {
      * service to perform REST calls.
      */
     @Host("{endpoint}/formrecognizer")
-    @ServiceInterface(name = "FormRecognizerClient")
+    @ServiceInterface(name = "FormRecognizerClientDocumentClassifiers")
     public interface DocumentClassifiersService {
         @Post("/documentClassifiers:build")
         @ExpectedResponses({ 202 })
@@ -687,7 +687,7 @@ public final class DocumentClassifiersImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DocumentClassifierDetails> listClassifiers() {
-        return new PagedIterable<>(() -> listClassifiersSinglePage(Context.NONE),
+        return new PagedIterable<>(() -> listClassifiersSinglePage(),
             nextLink -> listClassifiersNextSinglePage(nextLink));
     }
 

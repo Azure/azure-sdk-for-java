@@ -176,8 +176,12 @@ public final class ParameterDefinitionsValue implements JsonSerializable<Paramet
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeArrayField("allowedValues", this.allowedValues,
             (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeUntypedField("defaultValue", this.defaultValue);
-        jsonWriter.writeUntypedField("schema", this.schema);
+        if (this.defaultValue != null) {
+            jsonWriter.writeUntypedField("defaultValue", this.defaultValue);
+        }
+        if (this.schema != null) {
+            jsonWriter.writeUntypedField("schema", this.schema);
+        }
         jsonWriter.writeJsonField("metadata", this.metadata);
         return jsonWriter.writeEndObject();
     }

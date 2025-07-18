@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class EffectiveSetting implements JsonSerializable<EffectiveSetting
     /*
      * Name of the parameter used.
      */
+    @Generated
     private String key;
 
     /*
      * Value of the parameter used.
      */
+    @Generated
     private String value;
 
     /**
      * Creates an instance of EffectiveSetting class.
      */
+    @Generated
     public EffectiveSetting() {
     }
 
@@ -37,6 +41,7 @@ public final class EffectiveSetting implements JsonSerializable<EffectiveSetting
      * 
      * @return the key value.
      */
+    @Generated
     public String getKey() {
         return this.key;
     }
@@ -46,6 +51,7 @@ public final class EffectiveSetting implements JsonSerializable<EffectiveSetting
      * 
      * @return the value value.
      */
+    @Generated
     public String getValue() {
         return this.value;
     }
@@ -53,6 +59,7 @@ public final class EffectiveSetting implements JsonSerializable<EffectiveSetting
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +74,7 @@ public final class EffectiveSetting implements JsonSerializable<EffectiveSetting
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the EffectiveSetting.
      */
+    @Generated
     public static EffectiveSetting fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EffectiveSetting deserializedEffectiveSetting = new EffectiveSetting();

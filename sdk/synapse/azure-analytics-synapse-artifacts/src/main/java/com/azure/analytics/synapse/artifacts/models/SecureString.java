@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,16 +20,19 @@ public final class SecureString extends SecretBase {
     /*
      * Type of the secret.
      */
+    @Generated
     private String type = "SecureString";
 
     /*
      * Value of secure string.
      */
+    @Generated
     private String value;
 
     /**
      * Creates an instance of SecureString class.
      */
+    @Generated
     public SecureString() {
     }
 
@@ -37,6 +41,7 @@ public final class SecureString extends SecretBase {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -47,6 +52,7 @@ public final class SecureString extends SecretBase {
      * 
      * @return the value value.
      */
+    @Generated
     public String getValue() {
         return this.value;
     }
@@ -57,6 +63,7 @@ public final class SecureString extends SecretBase {
      * @param value the value value to set.
      * @return the SecureString object itself.
      */
+    @Generated
     public SecureString setValue(String value) {
         this.value = value;
         return this;
@@ -65,6 +72,7 @@ public final class SecureString extends SecretBase {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -82,6 +90,7 @@ public final class SecureString extends SecretBase {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SecureString.
      */
+    @Generated
     public static SecureString fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SecureString deserializedSecureString = new SecureString();

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.DefenderForAISetting;
@@ -22,20 +22,20 @@ public final class DefenderForAISettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"mskxknp\",\"tags\":{\"odkwwnbafocto\":\"igjsugswhgs\",\"nvkervq\":\"zhaquvwsxb\",\"pabdsrg\":\"hoadhrsxqvzv\",\"hjnlt\":\"ajglzrsubklr\"},\"properties\":{\"state\":\"Disabled\"},\"id\":\"dvqydie\",\"name\":\"qkwaruwd\",\"type\":\"vqzxoebwg\"}";
+            = "{\"etag\":\"etqmmli\",\"tags\":{\"dchpojxlehzl\":\"jxnw\",\"rwkwbpjxljtxbus\":\"pgfquwzpwiibelwc\",\"hg\":\"tbxxniuisd\"},\"properties\":{\"state\":\"Disabled\"},\"id\":\"pagsecnad\",\"name\":\"u\",\"type\":\"qrgxf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DefenderForAISetting response = manager.defenderForAISettings()
-            .getWithResponse("bv", "ipbwxgooo", "zp", com.azure.core.util.Context.NONE)
+            .getWithResponse("lxrdhabsrwrsn", "hpqatiwkkvyanxk", "vcsemsvuvdj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("igjsugswhgs", response.tags().get("odkwwnbafocto"));
+        Assertions.assertEquals("jxnw", response.tags().get("dchpojxlehzl"));
         Assertions.assertEquals(DefenderForAISettingState.DISABLED, response.state());
     }
 }

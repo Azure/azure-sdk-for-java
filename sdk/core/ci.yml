@@ -42,10 +42,6 @@ parameters:
     displayName: 'azure-core-amqp'
     type: boolean
     default: true
-  - name: release_azurecoreamqpexperimental
-    displayName: 'azure-core-amqp-experimental'
-    type: boolean
-    default: false
   - name: release_azurecoreexperimental
     displayName: 'azure-core-experimental'
     type: boolean
@@ -107,17 +103,12 @@ extends:
         safeName: azurecore
         releaseInBatch: ${{ parameters.release_azurecore }}
         triggeringPaths:
-        - /eng
         - /sdk/parents/azure-sdk-parent
         - /sdk/parents/azure-client-sdk-parent
       - name: azure-core-amqp
         groupId: com.azure
         safeName: azurecoreamqp
         releaseInBatch: ${{ parameters.release_azurecoreamqp }}
-      - name: azure-core-amqp-experimental
-        groupId: com.azure
-        safeName: azurecoreamqpexperimental
-        releaseInBatch: ${{ parameters.release_azurecoreamqpexperimental }}
       - name: azure-core-experimental
         groupId: com.azure
         safeName: azurecoreexperimental
@@ -187,6 +178,11 @@ extends:
     AdditionalMatrixConfigs:
       - Name: version_overrides_tests
         Path: sdk/core/version-overrides-matrix.json
+        Selection: all
+        PRBatching: false
+        GenerateVMJobs: true
+      - Name: version_overrides_vertx_tests
+        Path: sdk/core/version-overrides-vertx-matrix.json
         Selection: all
         PRBatching: false
         GenerateVMJobs: true

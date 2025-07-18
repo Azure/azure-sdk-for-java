@@ -1,8 +1,6 @@
 parameters:
   - name: DependsOn
     type: object
-  - name: SDKType
-    type: string
   - name: Artifacts
     type: object
     default: []
@@ -130,8 +128,8 @@ stages:
               targetPath: '$(Pipeline.Workspace)/packages-esrp-flattened'
 
           pool:
-            name: azsdk-pool-mms-win-2022-general
-            image: azsdk-pool-mms-win-2022-1espt
+            name: azsdk-pool
+            image: windows-2022
             os: windows
           strategy:
             runOnce:
@@ -149,8 +147,8 @@ stages:
           timeoutInMinutes: 120
           dependsOn: PublishESRPPackage
           pool:
-            name: azsdk-pool-mms-win-2022-general
-            image: azsdk-pool-mms-win-2022-1espt
+            name: azsdk-pool
+            image: windows-2022
             os: windows
           steps:
             - checkout: azure-sdk-build-tools
@@ -171,11 +169,6 @@ stages:
             # this is that the azure-sdk-for-java feed will have the package available immediately
             # whereas Maven can take several hours for the package to become available.
             - template: /eng/pipelines/templates/steps/java-dev-feed-publishing.yml
-              parameters:
-                ArtifactDirectory: $(Pipeline.Workspace)/packages-signed
-                RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
-                Target: JavaDevFeed
-                JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
             - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
               parameters:
                 ArtifactName: packages-javadevfeed-$(System.JobAttempt)
@@ -218,19 +211,19 @@ stages:
                 versionSpec: $(PythonVersion)
 
             # Apply the version increment to each library, which only updates the version_client.txt file,
-            # and then call to update_versions will then apply all of the updates.
+            # and then call to update_versions will then apply all the updates.
             - pwsh: |
                 $ArtifactsList = $('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId)
                 $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
                 python --version
                 foreach($artifact in $ArtifactsList) {
-                  python eng/versioning/set_versions.py --build-type ${{ parameters.SDKType }} --increment-version --ai $($artifact.name) --gi $($artifact.groupId)
+                  python eng/versioning/set_versions.py --increment-version --ai $($artifact.name) --gi $($artifact.groupId)
                 }
               displayName: Increment package versions
 
             - script: |
                 python --version
-                python eng/versioning/update_versions.py --update-type library --build-type ${{ parameters.SDKType }} --avi --sr
+                python eng/versioning/update_versions.py --auto-version-increment --skip-readme
               displayName: Update pom files for incremented versions
 
             - template: /eng/common/pipelines/templates/steps/create-pull-request.yml

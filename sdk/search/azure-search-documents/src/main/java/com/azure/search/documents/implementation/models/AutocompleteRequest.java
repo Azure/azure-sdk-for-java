@@ -7,6 +7,7 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,17 +25,20 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
     /*
      * The search text on which to base autocomplete results.
      */
+    @Generated
     private final String searchText;
 
     /*
      * Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms' to get shingles and
      * 'oneTermWithContext' to use the current context while producing auto-completed terms.
      */
+    @Generated
     private AutocompleteMode autocompleteMode;
 
     /*
      * An OData expression that filters the documents used to produce completed terms for the Autocomplete result.
      */
+    @Generated
     private String filter;
 
     /*
@@ -43,18 +47,21 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * this provides a better experience in some scenarios, it comes at a performance cost as fuzzy autocomplete queries
      * are slower and consume more resources.
      */
+    @Generated
     private Boolean useFuzzyMatching;
 
     /*
      * A string tag that is appended to hit highlights. Must be set with highlightPreTag. If omitted, hit highlighting
      * is disabled.
      */
+    @Generated
     private String highlightPostTag;
 
     /*
      * A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit highlighting
      * is disabled.
      */
+    @Generated
     private String highlightPreTag;
 
     /*
@@ -62,22 +69,26 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * in order for the query to be reported as a success. This parameter can be useful for ensuring search availability
      * even for services with only one replica. The default is 80.
      */
+    @Generated
     private Double minimumCoverage;
 
     /*
      * The comma-separated list of field names to consider when querying for auto-completed terms. Target fields must be
      * included in the specified suggester.
      */
+    @Generated
     private String searchFields;
 
     /*
      * The name of the suggester as specified in the suggesters collection that's part of the index definition.
      */
+    @Generated
     private final String suggesterName;
 
     /*
      * The number of auto-completed terms to retrieve. This must be a value between 1 and 100. The default is 5.
      */
+    @Generated
     private Integer top;
 
     /**
@@ -86,6 +97,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * @param searchText the searchText value to set.
      * @param suggesterName the suggesterName value to set.
      */
+    @Generated
     public AutocompleteRequest(String searchText, String suggesterName) {
         this.searchText = searchText;
         this.suggesterName = suggesterName;
@@ -96,6 +108,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * 
      * @return the searchText value.
      */
+    @Generated
     public String getSearchText() {
         return this.searchText;
     }
@@ -106,6 +119,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * 
      * @return the autocompleteMode value.
      */
+    @Generated
     public AutocompleteMode getAutocompleteMode() {
         return this.autocompleteMode;
     }
@@ -117,6 +131,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * @param autocompleteMode the autocompleteMode value to set.
      * @return the AutocompleteRequest object itself.
      */
+    @Generated
     public AutocompleteRequest setAutocompleteMode(AutocompleteMode autocompleteMode) {
         this.autocompleteMode = autocompleteMode;
         return this;
@@ -128,6 +143,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * 
      * @return the filter value.
      */
+    @Generated
     public String getFilter() {
         return this.filter;
     }
@@ -139,6 +155,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * @param filter the filter value to set.
      * @return the AutocompleteRequest object itself.
      */
+    @Generated
     public AutocompleteRequest setFilter(String filter) {
         this.filter = filter;
         return this;
@@ -152,6 +169,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * 
      * @return the useFuzzyMatching value.
      */
+    @Generated
     public Boolean isUseFuzzyMatching() {
         return this.useFuzzyMatching;
     }
@@ -165,6 +183,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * @param useFuzzyMatching the useFuzzyMatching value to set.
      * @return the AutocompleteRequest object itself.
      */
+    @Generated
     public AutocompleteRequest setUseFuzzyMatching(Boolean useFuzzyMatching) {
         this.useFuzzyMatching = useFuzzyMatching;
         return this;
@@ -176,6 +195,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * 
      * @return the highlightPostTag value.
      */
+    @Generated
     public String getHighlightPostTag() {
         return this.highlightPostTag;
     }
@@ -187,6 +207,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * @param highlightPostTag the highlightPostTag value to set.
      * @return the AutocompleteRequest object itself.
      */
+    @Generated
     public AutocompleteRequest setHighlightPostTag(String highlightPostTag) {
         this.highlightPostTag = highlightPostTag;
         return this;
@@ -198,6 +219,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * 
      * @return the highlightPreTag value.
      */
+    @Generated
     public String getHighlightPreTag() {
         return this.highlightPreTag;
     }
@@ -209,6 +231,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * @param highlightPreTag the highlightPreTag value to set.
      * @return the AutocompleteRequest object itself.
      */
+    @Generated
     public AutocompleteRequest setHighlightPreTag(String highlightPreTag) {
         this.highlightPreTag = highlightPreTag;
         return this;
@@ -221,6 +244,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * 
      * @return the minimumCoverage value.
      */
+    @Generated
     public Double getMinimumCoverage() {
         return this.minimumCoverage;
     }
@@ -233,6 +257,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * @param minimumCoverage the minimumCoverage value to set.
      * @return the AutocompleteRequest object itself.
      */
+    @Generated
     public AutocompleteRequest setMinimumCoverage(Double minimumCoverage) {
         this.minimumCoverage = minimumCoverage;
         return this;
@@ -244,6 +269,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * 
      * @return the searchFields value.
      */
+    @Generated
     public String getSearchFields() {
         return this.searchFields;
     }
@@ -255,6 +281,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * @param searchFields the searchFields value to set.
      * @return the AutocompleteRequest object itself.
      */
+    @Generated
     public AutocompleteRequest setSearchFields(String searchFields) {
         this.searchFields = searchFields;
         return this;
@@ -266,6 +293,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * 
      * @return the suggesterName value.
      */
+    @Generated
     public String getSuggesterName() {
         return this.suggesterName;
     }
@@ -276,6 +304,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * 
      * @return the top value.
      */
+    @Generated
     public Integer getTop() {
         return this.top;
     }
@@ -287,6 +316,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * @param top the top value to set.
      * @return the AutocompleteRequest object itself.
      */
+    @Generated
     public AutocompleteRequest setTop(Integer top) {
         this.top = top;
         return this;
@@ -295,6 +325,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -321,6 +352,7 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AutocompleteRequest.
      */
+    @Generated
     public static AutocompleteRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean searchTextFound = false;

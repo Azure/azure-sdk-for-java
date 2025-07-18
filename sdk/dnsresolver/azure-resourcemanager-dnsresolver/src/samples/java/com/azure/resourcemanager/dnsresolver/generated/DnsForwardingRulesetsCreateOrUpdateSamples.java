@@ -15,7 +15,7 @@ import java.util.Map;
 public final class DnsForwardingRulesetsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DnsForwardingRuleset_Put.
+     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2025-05-01/examples/DnsForwardingRuleset_Put.
      * json
      */
     /**

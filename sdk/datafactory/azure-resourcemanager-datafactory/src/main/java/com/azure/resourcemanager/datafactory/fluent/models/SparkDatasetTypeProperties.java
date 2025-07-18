@@ -113,9 +113,15 @@ public final class SparkDatasetTypeProperties implements JsonSerializable<SparkD
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("tableName", this.tableName);
-        jsonWriter.writeUntypedField("table", this.table);
-        jsonWriter.writeUntypedField("schema", this.schema);
+        if (this.tableName != null) {
+            jsonWriter.writeUntypedField("tableName", this.tableName);
+        }
+        if (this.table != null) {
+            jsonWriter.writeUntypedField("table", this.table);
+        }
+        if (this.schema != null) {
+            jsonWriter.writeUntypedField("schema", this.schema);
+        }
         return jsonWriter.writeEndObject();
     }
 

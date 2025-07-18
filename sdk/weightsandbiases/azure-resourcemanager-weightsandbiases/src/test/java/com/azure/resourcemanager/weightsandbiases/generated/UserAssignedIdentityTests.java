@@ -10,7 +10,7 @@ import com.azure.resourcemanager.weightsandbiases.models.UserAssignedIdentity;
 public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedIdentity model = BinaryData.fromString("{\"clientId\":\"b\",\"principalId\":\"jvtbvpyss\"}")
+        UserAssignedIdentity model = BinaryData.fromString("{\"principalId\":\"rfidfvzwdz\",\"clientId\":\"tymw\"}")
             .toObject(UserAssignedIdentity.class);
     }
 

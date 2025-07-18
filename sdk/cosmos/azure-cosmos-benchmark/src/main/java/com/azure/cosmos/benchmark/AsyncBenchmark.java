@@ -10,7 +10,6 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
 import com.azure.cosmos.CosmosException;
@@ -160,13 +159,22 @@ abstract class AsyncBenchmark<T> {
             );
 
         if (configuration.isDefaultLog4jLoggerEnabled()) {
-            telemetryConfig.diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER);
+            logger.info("Diagnostics thresholds Point: {}, Non-Point: {}",
+                cfg.getPointOperationThreshold(),
+                cfg.getNonPointOperationThreshold());
+            telemetryConfig.diagnosticsHandler(
+                new CosmosSamplingDiagnosticsLogger(10, 10_000)
+            );
         }
 
         MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
         if (registry != null) {
             logger.info("USING AZURE METRIC REGISTRY");
-            telemetryConfig.metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(registry));
+            CosmosMicrometerMetricsOptions metricOptions = new CosmosMicrometerMetricsOptions()
+                .meterRegistry(registry)
+                .applyDiagnosticThresholdsForTransportLevelMeters(true)
+                .setEnabled(true);
+            telemetryConfig.metricsOptions(metricOptions);
         } else {
             registry = configuration.getGraphiteMeterRegistry();
 

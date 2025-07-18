@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,21 +24,25 @@ public final class SearchIndexerKnowledgeStoreProjection
     /*
      * Projections to Azure Table storage.
      */
+    @Generated
     private List<SearchIndexerKnowledgeStoreTableProjectionSelector> tables;
 
     /*
      * Projections to Azure Blob storage.
      */
+    @Generated
     private List<SearchIndexerKnowledgeStoreObjectProjectionSelector> objects;
 
     /*
      * Projections to Azure File storage.
      */
+    @Generated
     private List<SearchIndexerKnowledgeStoreFileProjectionSelector> files;
 
     /**
      * Creates an instance of SearchIndexerKnowledgeStoreProjection class.
      */
+    @Generated
     public SearchIndexerKnowledgeStoreProjection() {
     }
 
@@ -46,6 +51,7 @@ public final class SearchIndexerKnowledgeStoreProjection
      * 
      * @return the tables value.
      */
+    @Generated
     public List<SearchIndexerKnowledgeStoreTableProjectionSelector> getTables() {
         return this.tables;
     }
@@ -56,6 +62,7 @@ public final class SearchIndexerKnowledgeStoreProjection
      * @param tables the tables value to set.
      * @return the SearchIndexerKnowledgeStoreProjection object itself.
      */
+    @Generated
     public SearchIndexerKnowledgeStoreProjection
         setTables(List<SearchIndexerKnowledgeStoreTableProjectionSelector> tables) {
         this.tables = tables;
@@ -67,6 +74,7 @@ public final class SearchIndexerKnowledgeStoreProjection
      * 
      * @return the objects value.
      */
+    @Generated
     public List<SearchIndexerKnowledgeStoreObjectProjectionSelector> getObjects() {
         return this.objects;
     }
@@ -77,6 +85,7 @@ public final class SearchIndexerKnowledgeStoreProjection
      * @param objects the objects value to set.
      * @return the SearchIndexerKnowledgeStoreProjection object itself.
      */
+    @Generated
     public SearchIndexerKnowledgeStoreProjection
         setObjects(List<SearchIndexerKnowledgeStoreObjectProjectionSelector> objects) {
         this.objects = objects;
@@ -88,6 +97,7 @@ public final class SearchIndexerKnowledgeStoreProjection
      * 
      * @return the files value.
      */
+    @Generated
     public List<SearchIndexerKnowledgeStoreFileProjectionSelector> getFiles() {
         return this.files;
     }
@@ -98,6 +108,7 @@ public final class SearchIndexerKnowledgeStoreProjection
      * @param files the files value to set.
      * @return the SearchIndexerKnowledgeStoreProjection object itself.
      */
+    @Generated
     public SearchIndexerKnowledgeStoreProjection
         setFiles(List<SearchIndexerKnowledgeStoreFileProjectionSelector> files) {
         this.files = files;
@@ -107,6 +118,7 @@ public final class SearchIndexerKnowledgeStoreProjection
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -124,6 +136,7 @@ public final class SearchIndexerKnowledgeStoreProjection
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SearchIndexerKnowledgeStoreProjection.
      */
+    @Generated
     public static SearchIndexerKnowledgeStoreProjection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SearchIndexerKnowledgeStoreProjection deserializedSearchIndexerKnowledgeStoreProjection

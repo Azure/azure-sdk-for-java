@@ -9,7 +9,8 @@ import java.util.Collection;
 
 /**
  * Gets a value indicating whether fast provisioning is supported. "Enabled" means fast provisioning is supported.
- * "Disabled" stands for fast provisioning is not supported.
+ * "Disabled" stands for fast provisioning is not supported. Will be deprecated in future, please look to Supported
+ * Features for "FastProvisioning".
  */
 public final class FastProvisioningSupportedEnum extends ExpandableStringEnum<FastProvisioningSupportedEnum> {
     /**

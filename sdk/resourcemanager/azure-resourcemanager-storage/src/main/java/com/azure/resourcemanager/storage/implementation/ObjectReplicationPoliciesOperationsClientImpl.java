@@ -63,7 +63,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageManagementCli")
+    @ServiceInterface(name = "StorageManagementClientObjectReplicationPoliciesOperations")
     public interface ObjectReplicationPoliciesOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies")

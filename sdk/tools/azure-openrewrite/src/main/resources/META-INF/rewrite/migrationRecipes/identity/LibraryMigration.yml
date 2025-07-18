@@ -1,0 +1,20 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for Azure Identity Library
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.migration.identity
+displayName: Migrate from azure-identity to next generation stack
+description: This recipe migrates the Azure Identity library to the next generation stack.
+recipeList:
+
+  - org.openrewrite.java.ChangePackage:
+      oldPackageName: 'com.azure.identity'
+      newPackageName: 'com.azure.v2.identity'
+      recursive: true
+
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: "com.azure.v2.identity.ClientCertificateCredentialBuilder pemCertificate(..)"
+      newMethodName: "clientCertificate"
+

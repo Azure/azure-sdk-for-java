@@ -13,14 +13,8 @@ public class TimezoneCustomization extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         PackageCustomization models = customization.getPackage("com.azure.maps.timezone.models");
 
-        // customize country record
-        customizeCountryRecord(models);
-
         // customize timezone id
         customizeTimeZoneId(models);
-
-        // customize timezone names
-        customizeTimeZoneNames(models);
 
         // customize reference time
         customizeReferenceTime(models);
@@ -34,30 +28,16 @@ public class TimezoneCustomization extends Customization {
         // customize timeZone windows
         customizeTimeZoneWindows(models);
 
-        // customize TimeZone Iana Version Result
-        customizeTimeZoneIanaVersionResult(models);
-
-        // customize TimeZone Result
-        customizeTimeZoneResult(models);
-
-        // customize TimeZone Options
-        customizeTimeZoneOptions(models);
+        // Set the constructor for the following classes to private.
+        setConstructorPrivate(models, "CountryRecord", "TimeZoneNames", "TimeZoneIanaVersionResult", "TimeZoneResult");
     }
 
-    // Customizes the country record class
-    private void customizeCountryRecord(PackageCustomization models) {
-        models.getClass("CountryRecord").customizeAst(ast -> ast.getClassByName("CountryRecord").ifPresent(clazz ->
-            clazz.getConstructors().get(0)
-                .setModifiers(Modifier.Keyword.PRIVATE)
-                .setJavadocComment("Set default CountryRecord constructor to private")));
-    }
-
-    // Customizes the timezone names class
-    private void customizeTimeZoneNames(PackageCustomization models) {
-        models.getClass("TimeZoneNames").customizeAst(ast -> ast.getClassByName("TimeZoneNames").ifPresent(clazz ->
-            clazz.getConstructors().get(0)
-                .setModifiers(Modifier.Keyword.PRIVATE)
-                .setJavadocComment("Set default TimeZoneNames constructor to private")));
+    private static void setConstructorPrivate(PackageCustomization customization, String... classNames) {
+        for (String name : classNames) {
+            customization.getClass(name).customizeAst(ast -> ast.getClassByName(name).ifPresent(clazz ->
+                clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PRIVATE)
+                    .setJavadocComment("Set default " + name + " constructor to private.")));
+        }
     }
 
     // Customizes the timezone id class
@@ -70,9 +50,8 @@ public class TimezoneCustomization extends Customization {
                     .setModifiers(Modifier.Keyword.PRIVATE)
                     .setJavadocComment("Set default TimeZoneId constructor to private");
 
-                clazz.getMethodsByName("getRepresentativePoint").get(0)
-                    .setType("GeoPosition")
-                    .setBody(StaticJavaParser.parseBlock("{ return new GeoPosition(this.representativePoint.getLongitude(), this.representativePoint.getLatitude()); }"));
+                clazz.getMethodsByName("getRepresentativePoint").forEach(method -> method.setType("GeoPosition")
+                    .setBody(StaticJavaParser.parseBlock("{ return new GeoPosition(this.representativePoint.getLongitude(), this.representativePoint.getLatitude()); }")));
             });
         });
     }
@@ -88,23 +67,20 @@ public class TimezoneCustomization extends Customization {
                     .setModifiers(Modifier.Keyword.PRIVATE)
                     .setJavadocComment("Set default ReferenceTime constructor to private");
 
-                clazz.getMethodsByName("getStandardOffset").get(0)
-                    .setType("ZoneOffset")
+                clazz.getMethodsByName("getStandardOffset").forEach(method -> method.setType("ZoneOffset")
                     .setBody(StaticJavaParser.parseBlock("{ if (standardOffset.charAt(0) != '+' && standardOffset.charAt(0) != '-') { standardOffset = \"+\" + standardOffset; } return ZoneOffset.of(standardOffset); }"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText("Get the standard offset."))
-                        .addBlockTag("return", "Returns a {@link ZoneOffset} time offset."));
+                        .addBlockTag("return", "Returns a {@link ZoneOffset} time offset.")));
 
-                clazz.getMethodsByName("getDaylightSavings").get(0)
-                    .setType("ZoneOffset")
+                clazz.getMethodsByName("getDaylightSavings").forEach(method -> method.setType("ZoneOffset")
                     .setBody(StaticJavaParser.parseBlock("{ if (daylightSavings.charAt(0) != '+' && daylightSavings.charAt(0) != '-') { daylightSavings = \"+\" + daylightSavings; } return ZoneOffset.of(daylightSavings); }"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText("Get the daylight savings."))
-                        .addBlockTag("return", "Returns a {@link ZoneOffset} daylight savings. Get the daylightSavings property: Time saving in minutes in effect at the ReferenceUTCTimestamp."));
+                        .addBlockTag("return", "Returns a {@link ZoneOffset} daylight savings. Get the daylightSavings property: Time saving in minutes in effect at the ReferenceUTCTimestamp.")));
 
-                clazz.getMethodsByName("getWallTime").get(0)
-                    .setType("OffsetDateTime")
+                clazz.getMethodsByName("getWallTime").forEach(method -> method.setType("OffsetDateTime")
                     .setBody(StaticJavaParser.parseBlock("{ return OffsetDateTime.parse(wallTime); }"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText("Get the wall time."))
-                        .addBlockTag("return", "Returns a {@link OffsetDateTime} offset date time."));
+                        .addBlockTag("return", "Returns a {@link OffsetDateTime} offset date time.")));
             });
         });
     }
@@ -119,17 +95,15 @@ public class TimezoneCustomization extends Customization {
                     .setModifiers(Modifier.Keyword.PRIVATE)
                     .setJavadocComment("Set default TimeTransition constructor to private");
 
-                clazz.getMethodsByName("getStandardOffset").get(0)
-                    .setType("ZoneOffset")
+                clazz.getMethodsByName("getStandardOffset").forEach(method -> method.setType("ZoneOffset")
                     .setBody(StaticJavaParser.parseBlock("{ if (standardOffset.charAt(0) != '+' && standardOffset.charAt(0) != '-') { standardOffset = \"+\" + standardOffset; } return ZoneOffset.of(standardOffset); }"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText("return the standardOffset value"))
-                        .addBlockTag("return", "Returns a {@link ZoneOffset} time offset."));
+                        .addBlockTag("return", "Returns a {@link ZoneOffset} time offset.")));
 
-                clazz.getMethodsByName("getDaylightSavings").get(0)
-                    .setType("ZoneOffset")
+                clazz.getMethodsByName("getDaylightSavings").forEach(method -> method.setType("ZoneOffset")
                     .setBody(StaticJavaParser.parseBlock("{ if (daylightSavings.charAt(0) != '+' && daylightSavings.charAt(0) != '-') { daylightSavings = \"+\" + daylightSavings; } return ZoneOffset.of(daylightSavings); }"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText("return the daylight savings value"))
-                        .addBlockTag("return", "Returns a {@link ZoneOffset} daylight savings. Get the daylightSavings property: Time saving in minutes in effect at the ReferenceUTCTimestamp."));
+                        .addBlockTag("return", "Returns a {@link ZoneOffset} daylight savings. Get the daylightSavings property: Time saving in minutes in effect at the ReferenceUTCTimestamp.")));
             });
         });
     }
@@ -141,8 +115,8 @@ public class TimezoneCustomization extends Customization {
                 .setModifiers(Modifier.Keyword.PRIVATE)
                 .setJavadocComment("Set default TimeZoneWindows constructor to private");
 
-            clazz.getMethodsByName("getAliasOf").get(0).setName("getAlias");
-            clazz.getMethodsByName("isHasZone1970Location").get(0).setName("getHasZone1970Location");
+            clazz.getMethodsByName("getAliasOf").forEach(method -> method.setName("getAlias"));
+            clazz.getMethodsByName("isHasZone1970Location").forEach(method -> method.setName("getHasZone1970Location"));
         }));
     }
 
@@ -155,26 +129,5 @@ public class TimezoneCustomization extends Customization {
 
             clazz.getMethodsByName("setIanaIds").forEach(Node::remove);
         }));
-    }
-
-    // Customizes the TimeZone Iana Version Result
-    private void customizeTimeZoneIanaVersionResult(PackageCustomization models) {
-        models.getClass("TimeZoneIanaVersionResult").customizeAst(ast -> ast.getClassByName("TimeZoneIanaVersionResult")
-            .ifPresent(clazz -> clazz.getConstructors().get(0)
-                .setModifiers(Modifier.Keyword.PRIVATE)
-                .setJavadocComment("Set default TimeZoneIanaVersionResult constructor to private")));
-    }
-
-    // Customizes the timezone result class
-    private void customizeTimeZoneResult(PackageCustomization models) {
-        models.getClass("TimeZoneResult").customizeAst(ast -> ast.getClassByName("TimeZoneResult").ifPresent(clazz ->
-            clazz.getConstructors().get(0)
-                .setModifiers(Modifier.Keyword.PRIVATE)
-                .setJavadocComment("Set default TimeZoneResult constructor to private")));
-    }
-
-    // Customizes the timezone options class
-    private void customizeTimeZoneOptions(PackageCustomization models) {
-        models.getClass("TimezoneOptions").rename("TimeZoneOptions");
     }
 }

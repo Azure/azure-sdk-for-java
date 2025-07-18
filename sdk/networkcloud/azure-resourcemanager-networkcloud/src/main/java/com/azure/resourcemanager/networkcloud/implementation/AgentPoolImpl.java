@@ -54,6 +54,10 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
     }
@@ -159,6 +163,14 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
 
     private String agentPoolName;
 
+    private String createIfMatch;
+
+    private String createIfNoneMatch;
+
+    private String updateIfMatch;
+
+    private String updateIfNoneMatch;
+
     private AgentPoolPatchParameters updateAgentPoolUpdateParameters;
 
     public AgentPoolImpl withExistingKubernetesCluster(String resourceGroupName, String kubernetesClusterName) {
@@ -170,14 +182,16 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
     public AgentPool create() {
         this.innerObject = serviceManager.serviceClient()
             .getAgentPools()
-            .createOrUpdate(resourceGroupName, kubernetesClusterName, agentPoolName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, kubernetesClusterName, agentPoolName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE);
         return this;
     }
 
     public AgentPool create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getAgentPools()
-            .createOrUpdate(resourceGroupName, kubernetesClusterName, agentPoolName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, kubernetesClusterName, agentPoolName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context);
         return this;
     }
 
@@ -185,9 +199,13 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
         this.innerObject = new AgentPoolInner();
         this.serviceManager = serviceManager;
         this.agentPoolName = name;
+        this.createIfMatch = null;
+        this.createIfNoneMatch = null;
     }
 
     public AgentPoolImpl update() {
+        this.updateIfMatch = null;
+        this.updateIfNoneMatch = null;
         this.updateAgentPoolUpdateParameters = new AgentPoolPatchParameters();
         return this;
     }
@@ -195,15 +213,16 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
     public AgentPool apply() {
         this.innerObject = serviceManager.serviceClient()
             .getAgentPools()
-            .update(resourceGroupName, kubernetesClusterName, agentPoolName, updateAgentPoolUpdateParameters,
-                Context.NONE);
+            .update(resourceGroupName, kubernetesClusterName, agentPoolName, updateIfMatch, updateIfNoneMatch,
+                updateAgentPoolUpdateParameters, Context.NONE);
         return this;
     }
 
     public AgentPool apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getAgentPools()
-            .update(resourceGroupName, kubernetesClusterName, agentPoolName, updateAgentPoolUpdateParameters, context);
+            .update(resourceGroupName, kubernetesClusterName, agentPoolName, updateIfMatch, updateIfNoneMatch,
+                updateAgentPoolUpdateParameters, context);
         return this;
     }
 
@@ -312,6 +331,26 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
         }
     }
 
+    public AgentPoolImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    public AgentPoolImpl withIfNoneMatch(String ifNoneMatch) {
+        if (isInCreateMode()) {
+            this.createIfNoneMatch = ifNoneMatch;
+            return this;
+        } else {
+            this.updateIfNoneMatch = ifNoneMatch;
+            return this;
+        }
+    }
+
     public AgentPoolImpl
         withAdministratorConfiguration(NodePoolAdministratorConfigurationPatch administratorConfiguration) {
         this.updateAgentPoolUpdateParameters.withAdministratorConfiguration(administratorConfiguration);
@@ -324,6 +363,6 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

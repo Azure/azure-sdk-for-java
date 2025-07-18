@@ -137,7 +137,6 @@ public final class EncodedTaskStepUpdateParameters extends TaskStepUpdateParamet
      */
     @Override
     public void validate() {
-        super.validate();
         if (values() != null) {
             values().forEach(e -> e.validate());
         }

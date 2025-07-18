@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +22,25 @@ public final class NotebookKernelSpec implements JsonSerializable<NotebookKernel
     /*
      * Name of the kernel specification.
      */
+    @Generated
     private String name;
 
     /*
      * Name to display in UI.
      */
+    @Generated
     private String displayName;
 
     /*
      * Kernel information.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of NotebookKernelSpec class.
      */
+    @Generated
     public NotebookKernelSpec() {
     }
 
@@ -44,6 +49,7 @@ public final class NotebookKernelSpec implements JsonSerializable<NotebookKernel
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -54,6 +60,7 @@ public final class NotebookKernelSpec implements JsonSerializable<NotebookKernel
      * @param name the name value to set.
      * @return the NotebookKernelSpec object itself.
      */
+    @Generated
     public NotebookKernelSpec setName(String name) {
         this.name = name;
         return this;
@@ -64,6 +71,7 @@ public final class NotebookKernelSpec implements JsonSerializable<NotebookKernel
      * 
      * @return the displayName value.
      */
+    @Generated
     public String getDisplayName() {
         return this.displayName;
     }
@@ -74,6 +82,7 @@ public final class NotebookKernelSpec implements JsonSerializable<NotebookKernel
      * @param displayName the displayName value to set.
      * @return the NotebookKernelSpec object itself.
      */
+    @Generated
     public NotebookKernelSpec setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
@@ -84,6 +93,7 @@ public final class NotebookKernelSpec implements JsonSerializable<NotebookKernel
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -94,6 +104,7 @@ public final class NotebookKernelSpec implements JsonSerializable<NotebookKernel
      * @param additionalProperties the additionalProperties value to set.
      * @return the NotebookKernelSpec object itself.
      */
+    @Generated
     public NotebookKernelSpec setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -102,6 +113,7 @@ public final class NotebookKernelSpec implements JsonSerializable<NotebookKernel
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -124,6 +136,7 @@ public final class NotebookKernelSpec implements JsonSerializable<NotebookKernel
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the NotebookKernelSpec.
      */
+    @Generated
     public static NotebookKernelSpec fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             NotebookKernelSpec deserializedNotebookKernelSpec = new NotebookKernelSpec();

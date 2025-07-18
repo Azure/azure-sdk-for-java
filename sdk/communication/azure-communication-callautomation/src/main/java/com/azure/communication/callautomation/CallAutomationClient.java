@@ -43,14 +43,6 @@ public final class CallAutomationClient {
     }
 
     /**
-     * Get the event processor for handling events.
-     * @return {@link CallAutomationEventProcessor} as event processor
-     */
-    public CallAutomationEventProcessor getEventProcessor() {
-        return callAutomationAsyncClient.getEventProcessor();
-    }
-
-    /**
      * Get Source Identity that is used for create and answer call
      * @return {@link CommunicationUserIdentifier} represent source
      */

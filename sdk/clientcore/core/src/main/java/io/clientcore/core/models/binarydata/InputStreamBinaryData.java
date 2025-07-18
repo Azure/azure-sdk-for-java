@@ -75,7 +75,7 @@ public final class InputStreamBinaryData extends BinaryData {
     @Override
     public byte[] toBytes() {
         if (length != null && length > MAX_ARRAY_SIZE) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
+            throw LOGGER.throwableAtError().log(TOO_LARGE_FOR_BYTE_ARRAY + length, CoreException::from);
         }
 
         return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
@@ -91,7 +91,7 @@ public final class InputStreamBinaryData extends BinaryData {
         try {
             return serializer.deserializeFromBytes(toBytes(), type);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -126,7 +126,7 @@ public final class InputStreamBinaryData extends BinaryData {
                 }
             }
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -155,7 +155,7 @@ public final class InputStreamBinaryData extends BinaryData {
                 }
             }
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -166,7 +166,7 @@ public final class InputStreamBinaryData extends BinaryData {
         try {
             jsonWriter.writeBinary(toBytes());
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -202,7 +202,7 @@ public final class InputStreamBinaryData extends BinaryData {
             stream.reset();
             return stream;
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -214,7 +214,7 @@ public final class InputStreamBinaryData extends BinaryData {
             return new InputStreamBinaryData(() -> new IterableOfByteBuffersInputStream(byteBuffers), length,
                 byteBuffers);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 
@@ -229,7 +229,7 @@ public final class InputStreamBinaryData extends BinaryData {
             }
             return dataOutputBuffer.toByteArrayUnsafe();
         } catch (IOException ex) {
-            throw LOGGER.logThrowableAsError(CoreException.from(ex));
+            throw LOGGER.throwableAtError().log(ex, CoreException::from);
         }
     }
 
@@ -238,7 +238,7 @@ public final class InputStreamBinaryData extends BinaryData {
         try {
             content.get().close();
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            throw LOGGER.throwableAtError().log(e, CoreException::from);
         }
     }
 }

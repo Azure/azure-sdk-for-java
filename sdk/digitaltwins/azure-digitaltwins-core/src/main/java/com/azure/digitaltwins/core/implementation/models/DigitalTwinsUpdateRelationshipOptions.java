@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 
 /**
  * Parameter group.
@@ -14,21 +15,25 @@ public final class DigitalTwinsUpdateRelationshipOptions {
     /*
      * Identifies the request in a distributed tracing system.
      */
+    @Generated
     private String traceparent;
 
     /*
      * Provides vendor-specific trace identification information and is a companion to traceparent.
      */
+    @Generated
     private String tracestate;
 
     /*
      * Only perform the operation if the entity's etag matches one of the etags provided or * is provided.
      */
+    @Generated
     private String ifMatch;
 
     /**
      * Creates an instance of DigitalTwinsUpdateRelationshipOptions class.
      */
+    @Generated
     public DigitalTwinsUpdateRelationshipOptions() {
     }
 
@@ -37,6 +42,7 @@ public final class DigitalTwinsUpdateRelationshipOptions {
      * 
      * @return the traceparent value.
      */
+    @Generated
     public String getTraceparent() {
         return this.traceparent;
     }
@@ -47,6 +53,7 @@ public final class DigitalTwinsUpdateRelationshipOptions {
      * @param traceparent the traceparent value to set.
      * @return the DigitalTwinsUpdateRelationshipOptions object itself.
      */
+    @Generated
     public DigitalTwinsUpdateRelationshipOptions setTraceparent(String traceparent) {
         this.traceparent = traceparent;
         return this;
@@ -58,6 +65,7 @@ public final class DigitalTwinsUpdateRelationshipOptions {
      * 
      * @return the tracestate value.
      */
+    @Generated
     public String getTracestate() {
         return this.tracestate;
     }
@@ -69,6 +77,7 @@ public final class DigitalTwinsUpdateRelationshipOptions {
      * @param tracestate the tracestate value to set.
      * @return the DigitalTwinsUpdateRelationshipOptions object itself.
      */
+    @Generated
     public DigitalTwinsUpdateRelationshipOptions setTracestate(String tracestate) {
         this.tracestate = tracestate;
         return this;
@@ -80,6 +89,7 @@ public final class DigitalTwinsUpdateRelationshipOptions {
      * 
      * @return the ifMatch value.
      */
+    @Generated
     public String getIfMatch() {
         return this.ifMatch;
     }
@@ -91,6 +101,7 @@ public final class DigitalTwinsUpdateRelationshipOptions {
      * @param ifMatch the ifMatch value to set.
      * @return the DigitalTwinsUpdateRelationshipOptions object itself.
      */
+    @Generated
     public DigitalTwinsUpdateRelationshipOptions setIfMatch(String ifMatch) {
         this.ifMatch = ifMatch;
         return this;

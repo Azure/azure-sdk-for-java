@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class SparkServiceError implements JsonSerializable<SparkServiceErr
     /*
      * The message property.
      */
+    @Generated
     private String message;
 
     /*
      * The errorCode property.
      */
+    @Generated
     private String errorCode;
 
     /*
      * The source property.
      */
+    @Generated
     private SparkErrorSource source;
 
     /**
      * Creates an instance of SparkServiceError class.
      */
+    @Generated
     public SparkServiceError() {
     }
 
@@ -42,6 +47,7 @@ public final class SparkServiceError implements JsonSerializable<SparkServiceErr
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -52,6 +58,7 @@ public final class SparkServiceError implements JsonSerializable<SparkServiceErr
      * @param message the message value to set.
      * @return the SparkServiceError object itself.
      */
+    @Generated
     public SparkServiceError setMessage(String message) {
         this.message = message;
         return this;
@@ -62,6 +69,7 @@ public final class SparkServiceError implements JsonSerializable<SparkServiceErr
      * 
      * @return the errorCode value.
      */
+    @Generated
     public String getErrorCode() {
         return this.errorCode;
     }
@@ -72,6 +80,7 @@ public final class SparkServiceError implements JsonSerializable<SparkServiceErr
      * @param errorCode the errorCode value to set.
      * @return the SparkServiceError object itself.
      */
+    @Generated
     public SparkServiceError setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
@@ -82,6 +91,7 @@ public final class SparkServiceError implements JsonSerializable<SparkServiceErr
      * 
      * @return the source value.
      */
+    @Generated
     public SparkErrorSource getSource() {
         return this.source;
     }
@@ -92,6 +102,7 @@ public final class SparkServiceError implements JsonSerializable<SparkServiceErr
      * @param source the source value to set.
      * @return the SparkServiceError object itself.
      */
+    @Generated
     public SparkServiceError setSource(SparkErrorSource source) {
         this.source = source;
         return this;
@@ -100,6 +111,7 @@ public final class SparkServiceError implements JsonSerializable<SparkServiceErr
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,6 +129,7 @@ public final class SparkServiceError implements JsonSerializable<SparkServiceErr
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SparkServiceError.
      */
+    @Generated
     public static SparkServiceError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkServiceError deserializedSparkServiceError = new SparkServiceError();

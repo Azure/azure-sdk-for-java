@@ -60,7 +60,7 @@ public final class MiscellaneousImpl {
      * perform REST calls.
      */
     @Host("{endpoint}/formrecognizer")
-    @ServiceInterface(name = "FormRecognizerClient")
+    @ServiceInterface(name = "FormRecognizerClientMiscellaneous")
     public interface MiscellaneousService {
         @Get("/operations")
         @ExpectedResponses({ 200 })
@@ -221,7 +221,7 @@ public final class MiscellaneousImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationSummary> listOperations() {
-        return new PagedIterable<>(() -> listOperationsSinglePage(Context.NONE),
+        return new PagedIterable<>(() -> listOperationsSinglePage(),
             nextLink -> listOperationsNextSinglePage(nextLink));
     }
 

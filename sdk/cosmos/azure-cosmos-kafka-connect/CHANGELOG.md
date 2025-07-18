@@ -1,6 +1,6 @@
 ## Release History
 
-### 2.4.0-beta.1 (Unreleased)
+### 2.5.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,17 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 2.4.0 (2025-06-24)
+
+#### Bugs Fixed
+* Fixed an issue where Cosmos client is not being closed properly when connector failed to start - See [PR 45633](https://github.com/Azure/azure-sdk-for-java/pull/45633)
+* Fixed `NullReferenceException` in Kafka Source Connector when split happens - See [PR 45838](https://github.com/Azure/azure-sdk-for-java/pull/45838)
+
+### 2.3.1 (2025-05-14)
+
+#### Bugs Fixed
+* Fixed hang issue in `CosmosPagedIterable#handle` by preventing race conditions in underlying subscription of `Flux<FeedResponse>`. - [PR 45290](https://github.com/Azure/azure-sdk-for-java/pull/45290)
 
 ### 2.3.0 (2025-04-23)
 

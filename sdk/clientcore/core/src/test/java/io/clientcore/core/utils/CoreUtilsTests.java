@@ -9,6 +9,12 @@ import io.clientcore.core.models.Person;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.serialization.json.JsonSerializer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
+
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -19,7 +25,6 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,16 +35,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import static java.util.Collections.singletonList;
-import static java.util.Collections.singletonMap;
 
 import static io.clientcore.core.utils.CoreUtils.serializationFormatFromContentType;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -292,47 +291,6 @@ public class CoreUtilsTests {
         HttpHeaders headers
             = (contentType == null) ? null : new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType);
         assertEquals(expected, serializationFormatFromContentType(headers));
-    }
-
-    /**
-     * Test that appendQueryParams correctly appends multi-value query parameters with the specified delimiter.
-     */
-    @ParameterizedTest
-    @MethodSource("provideTestCases")
-    void testAppendQueryParams(String url, String key, List<?> value, String expected) {
-        String result = CoreUtils.appendQueryParams(url, Collections.singletonMap(key, value));
-        assertEquals(expected, result, "The URL should be correctly updated with the multi-value query parameter.");
-    }
-
-    private static Stream<Arguments> provideTestCases() {
-        return Stream.of(
-            // Test cases with no query string
-            Arguments.of("https://example.com", "api-version", Collections.singletonList("1.0"),
-                "https://example.com?api-version=1.0"),
-            Arguments.of("https://example.com", "api-version", Arrays.asList("1.0", "2.0"),
-                "https://example.com?api-version=1.0&api-version=2.0"),  // List value with comma delimiter
-
-            // Test cases with existing query string
-            Arguments.of("https://example.com?existingParam=value", "api-version", Collections.singletonList("1.0"),
-                "https://example.com?existingParam=value&api-version=1.0"),
-            Arguments.of("https://example.com?existingParam=value", "api-version", Arrays.asList("1.0", "2.0"),
-                "https://example.com?existingParam=value&api-version=1.0&api-version=2.0"),
-
-            // Test cases with empty URL
-            Arguments.of("", "api-version", Collections.singletonList("1.0"), "?api-version=1.0"),
-
-            // Test case with a non-empty map and one of the keys having a null value
-            Arguments.of("https://example.com", "api-version", null, "https://example.com"));
-    }
-
-    @Test
-    void testAppendNullQueryParam() {
-        String url = "https://example.com";
-        String key = "name";
-        String expected = "https://example.com";
-        // Null value for parameter
-        String result = CoreUtils.appendQueryParams(url, null);
-        assertEquals(expected, result, "The URL should be correctly updated with the query parameter.");
     }
 
     @Test

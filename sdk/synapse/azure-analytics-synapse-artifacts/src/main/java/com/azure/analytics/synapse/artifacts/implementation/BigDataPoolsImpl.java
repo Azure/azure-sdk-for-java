@@ -54,7 +54,7 @@ public final class BigDataPoolsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientBigDa")
+    @ServiceInterface(name = "ArtifactsClientBigDataPools")
     public interface BigDataPoolsService {
         @Get("/bigDataPools")
         @ExpectedResponses({ 200 })

@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package io.clientcore.core.shared;
 
-import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.X509ExtendedTrustManager;
+import java.net.Socket;
 import java.security.cert.X509Certificate;
 
 /**
@@ -10,7 +12,23 @@ import java.security.cert.X509Certificate;
  * <p>
  * Used for tests against {@link LocalTestServer}'s HTTPS endpoints as the server uses a self-signed certificate.
  */
-public final class InsecureTrustManager implements X509TrustManager {
+public final class InsecureTrustManager extends X509ExtendedTrustManager {
+    @Override
+    public void checkClientTrusted(X509Certificate[] chain, String authType, Socket socket) {
+    }
+
+    @Override
+    public void checkServerTrusted(X509Certificate[] chain, String authType, Socket socket) {
+    }
+
+    @Override
+    public void checkClientTrusted(X509Certificate[] chain, String authType, SSLEngine engine) {
+    }
+
+    @Override
+    public void checkServerTrusted(X509Certificate[] chain, String authType, SSLEngine engine) {
+    }
+
     @Override
     public void checkClientTrusted(X509Certificate[] chain, String authType) {
     }

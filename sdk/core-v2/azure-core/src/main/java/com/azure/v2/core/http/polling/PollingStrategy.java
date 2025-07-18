@@ -45,7 +45,7 @@ public interface PollingStrategy<T, U> {
      * @param initialResponse the response from the initial method call to activate the long-running operation
      * @return true if this polling strategy can handle the initial response, false if not
      */
-    boolean canPoll(Response<BinaryData> initialResponse);
+    boolean canPoll(Response<T> initialResponse);
 
     /**
      * Parses the initial response into a {@link LongRunningOperationStatus}, and stores information useful for polling
@@ -59,8 +59,7 @@ public interface PollingStrategy<T, U> {
      * response body should be kept. This should match the generic parameter {@link U}.
      * @return the poll response containing the status and the response content
      */
-    PollResponse<T> onInitialResponse(Response<BinaryData> response, PollingContext<T> pollingContext,
-        Type pollResponseType);
+    PollResponse<T> onInitialResponse(Response<T> response, PollingContext<T> pollingContext, Type pollResponseType);
 
     /**
      * Parses the response from the polling URL into a {@link PollResponse}, and stores information useful for further
@@ -98,6 +97,6 @@ public interface PollingStrategy<T, U> {
      * @throws IllegalStateException If cancellation isn't supported.
      */
     default T cancel(PollingContext<T> pollingContext, PollResponse<T> initialResponse) {
-        throw new IllegalStateException("Cancellation is not supported.");
+        throw new UnsupportedOperationException("Cancellation is not supported.");
     }
 }

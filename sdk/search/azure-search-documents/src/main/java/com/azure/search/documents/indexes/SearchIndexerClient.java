@@ -15,9 +15,11 @@ import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
+import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
 import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
 import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
+import com.azure.search.documents.indexes.models.IndexerResyncBody;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
@@ -1613,4 +1615,36 @@ public class SearchIndexerClient {
         return Utility.executeRestCallWithExceptionHandling(
             () -> restClient.getSkillsets().deleteWithResponse(skillset.getName(), eTag, null, null, context), LOGGER);
     }
+
+    /**
+     * Resync selective options from the datasource to be re-ingested by the indexer.
+     *
+     * @param indexerName The name of the indexer to resync for.
+     * @param indexerResync The indexerResync parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void resync(String indexerName, IndexerResyncBody indexerResync) {
+        resyncWithResponse(indexerName, indexerResync, Context.NONE).getValue();
+    }
+
+    /**
+     * Resync selective options from the datasource to be re-ingested by the indexer.
+     *
+     * @param indexerName The name of the indexer to resync for.
+     * @param indexerResync The indexerResync parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> resyncWithResponse(String indexerName, IndexerResyncBody indexerResync, Context context) {
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getIndexers().resyncWithResponse(indexerName, indexerResync, null, context), LOGGER);
+    }
+
 }

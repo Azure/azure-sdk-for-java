@@ -6,6 +6,7 @@ import json
 import glob
 import logging
 import argparse
+import shutil
 from typing import List
 
 pwd = os.getcwd()
@@ -31,6 +32,8 @@ from generate_utils import (
     get_suffix_from_api_specs,
     update_spec,
     generate_typespec_project,
+    is_mgmt_premium,
+    copy_folder_recursive_sync,
 )
 
 os.chdir(pwd)
@@ -127,14 +130,16 @@ def sdk_automation(input_file: str, output_file: str):
         logging.error("[GENERATE] Code generation failed. Unknown exception", exc_info=True)
         if packages and len(packages) == 1:
             packages[0]["result"] = "failed"
-        else:
-            sys.exit(1)
+        sys.exit(1)
 
     with open(output_file, "w", encoding="utf-8") as fout:
         output = {
             "packages": packages,
         }
         json.dump(output, fout)
+
+    if packages and len(packages) == 1 and packages[0]["result"] == "failed":
+        sys.exit(1)
 
 
 def sdk_automation_autorest(config: dict) -> List[dict]:
@@ -151,7 +156,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
 
     for readme in config["relatedReadmeMdFiles"]:
         match = re.search(
-            "specification/([^/]+)/resource-manager(/.*)*/readme.md",
+            r"specification/([^/]+)/resource-manager((?:/[^/]+)*)/readme.md",
             readme,
             re.IGNORECASE,
         )
@@ -193,6 +198,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
                 module=module,
                 namespace=namespace,
                 tag=tag,
+                premium=is_mgmt_premium(module)
             )
             if succeeded:
                 succeeded = compile_arm_package(sdk_root, module)
@@ -250,8 +256,22 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
         tsp_projects = [tsp_projects]
 
     for tsp_project in tsp_projects:
+        # folder structure v2: specification/{service}/[data-plane|resource-manager]/{provider}/
+        folder_structure_v2_pattern = r"specification/.*/(data-plane|resource-manager)"
+        match = re.compile(folder_structure_v2_pattern).search(tsp_project)
+        if match:
+            sdk_type = match.group(1)
+            if sdk_type == "data-plane":
+                logging.info("[GENERATE] Generating data-plane from folder structure v2: " + tsp_project)
+                packages.append(sdk_automation_typespec_project_data(tsp_project, config))
+            elif sdk_type == "resource-manager":
+                logging.info("[GENERATE] Generating mgmt-plane from folder structure v2: " + tsp_project)
+                packages.append(sdk_automation_typespec_project(tsp_project, config))
+            else:
+                raise ValueError("Unexpected sdk type: " + sdk_type)
+        # folder structure v1
         # mgmt tsp project folder follow the pattern, e.g. specification/deviceregistry/DeviceRegistry.Management
-        if re.match(r"specification[\\/](.*)[\\/](.*)[\\.]Management", tsp_project):
+        elif re.match(r"specification[\\/](.*)[\\/](.*)[\\.]Management", tsp_project):
             packages.append(sdk_automation_typespec_project(tsp_project, config))
         else:
             packages.append(sdk_automation_typespec_project_data(tsp_project, config))
@@ -401,6 +421,14 @@ def update_changelog_version(sdk_root: str, output_folder: str, current_version:
         os.chdir(pwd)
 
 
+def move_premium_samples(sdk_root: str, service: str, module: str):
+    package_path = "com/" + module.replace("-", "/")
+    source_sample_dir = os.path.join(sdk_root, "sdk", service, module, "src", "samples", "java", package_path, "generated")
+    target_sample_dir = os.path.join(sdk_root, "sdk", "resourcemanager", "azure-resourcemanager", "src", "samples", "java", package_path)
+    copy_folder_recursive_sync(source_sample_dir, target_sample_dir)
+    shutil.rmtree(source_sample_dir, ignore_errors=True)
+
+
 def main():
     (parser, args) = parse_args()
     args = vars(args)
@@ -411,6 +439,7 @@ def main():
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
     api_specs_file = os.path.join(base_dir, API_SPECS_FILE)
+    premium = False
 
     if args.get("tsp_config"):
         tsp_config = args["tsp_config"]
@@ -437,7 +466,7 @@ def main():
 
         readme = args["readme"]
         match = re.match(
-            r"specification/([^/]+)/resource-manager(/.*)*/readme.md",
+            r"specification/([^/]+)/resource-manager((?:/[^/]+)*)/readme.md",
             readme,
             re.IGNORECASE,
         )
@@ -451,19 +480,23 @@ def main():
         args["readme"] = readme
         args["spec"] = spec
 
-        update_parameters(args.get("suffix") or get_suffix_from_api_specs(api_specs_file, spec))
-        service = get_and_update_service_from_api_specs(api_specs_file, spec, args["service"])
+        suffix = args.get("suffix") or get_suffix_from_api_specs(api_specs_file, spec)
+        update_parameters(suffix)
+        service = get_and_update_service_from_api_specs(api_specs_file, spec, args["service"], suffix)
         args["service"] = service
         module = ARTIFACT_FORMAT.format(service)
+        premium = is_mgmt_premium(module)
         stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
         args["version"] = current_version
         output_folder = OUTPUT_FOLDER_FORMAT.format(service)
         namespace = NAMESPACE_FORMAT.format(service)
-        succeeded = generate(sdk_root, module=module, output_folder=output_folder, namespace=namespace, **args)
+        succeeded = generate(sdk_root, module=module, output_folder=output_folder, namespace=namespace, premium=premium, **args)
 
     if succeeded:
         succeeded = compile_arm_package(sdk_root, module)
         if succeeded:
+            if premium:
+                move_premium_samples(sdk_root, service, module)
             latest_release_version = get_latest_release_version(stable_version, current_version)
             compare_with_maven_package(sdk_root, GROUP_ID, service, latest_release_version, current_version, module)
 

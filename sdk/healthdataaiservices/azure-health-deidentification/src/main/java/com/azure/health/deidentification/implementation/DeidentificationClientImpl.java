@@ -163,7 +163,7 @@ public final class DeidentificationClientImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DeidentificationClie")
+    @ServiceInterface(name = "DeidentificationClient")
     public interface DeidentificationClientService {
         @Get("/jobs/{name}")
         @ExpectedResponses({ 200 })
@@ -851,262 +851,6 @@ public final class DeidentificationClientImpl {
      * @return the {@link PollerFlux} for polling of a job containing a batch of documents to de-identify.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginDeidentifyDocumentsAsync(String jobName, BinaryData resource,
-        RequestOptions requestOptions) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.deidentifyDocumentsWithResponseAsync(jobName, resource, requestOptions),
-            new com.azure.health.deidentification.implementation.OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Create a de-identification job.
-     * 
-     * Long-running resource create or replace operation template.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     sourceLocation (Required): {
-     *         location: String (Required)
-     *         prefix: String (Required)
-     *         extensions (Optional): [
-     *             String (Optional)
-     *         ]
-     *     }
-     *     targetLocation (Required): {
-     *         location: String (Required)
-     *         prefix: String (Required)
-     *         overwrite: Boolean (Optional)
-     *     }
-     *     customizations (Optional): {
-     *         redactionFormat: String (Optional)
-     *         surrogateLocale: String (Optional)
-     *     }
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     lastUpdatedAt: OffsetDateTime (Required)
-     *     createdAt: OffsetDateTime (Required)
-     *     startedAt: OffsetDateTime (Optional)
-     *     summary (Optional): {
-     *         successful: int (Required)
-     *         failed: int (Required)
-     *         canceled: int (Required)
-     *         total: int (Required)
-     *         bytesProcessed: long (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     sourceLocation (Required): {
-     *         location: String (Required)
-     *         prefix: String (Required)
-     *         extensions (Optional): [
-     *             String (Optional)
-     *         ]
-     *     }
-     *     targetLocation (Required): {
-     *         location: String (Required)
-     *         prefix: String (Required)
-     *         overwrite: Boolean (Optional)
-     *     }
-     *     customizations (Optional): {
-     *         redactionFormat: String (Optional)
-     *         surrogateLocale: String (Optional)
-     *     }
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     lastUpdatedAt: OffsetDateTime (Required)
-     *     createdAt: OffsetDateTime (Required)
-     *     startedAt: OffsetDateTime (Optional)
-     *     summary (Optional): {
-     *         successful: int (Required)
-     *         failed: int (Required)
-     *         canceled: int (Required)
-     *         total: int (Required)
-     *         bytesProcessed: long (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobName The name of a job.
-     * @param resource The resource instance.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of a job containing a batch of documents to de-identify.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginDeidentifyDocuments(String jobName, BinaryData resource,
-        RequestOptions requestOptions) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.deidentifyDocumentsWithResponse(jobName, resource, requestOptions),
-            new com.azure.health.deidentification.implementation.SyncOperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
-    }
-
-    /**
-     * Create a de-identification job.
-     * 
-     * Long-running resource create or replace operation template.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     sourceLocation (Required): {
-     *         location: String (Required)
-     *         prefix: String (Required)
-     *         extensions (Optional): [
-     *             String (Optional)
-     *         ]
-     *     }
-     *     targetLocation (Required): {
-     *         location: String (Required)
-     *         prefix: String (Required)
-     *         overwrite: Boolean (Optional)
-     *     }
-     *     customizations (Optional): {
-     *         redactionFormat: String (Optional)
-     *         surrogateLocale: String (Optional)
-     *     }
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     lastUpdatedAt: OffsetDateTime (Required)
-     *     createdAt: OffsetDateTime (Required)
-     *     startedAt: OffsetDateTime (Optional)
-     *     summary (Optional): {
-     *         successful: int (Required)
-     *         failed: int (Required)
-     *         canceled: int (Required)
-     *         total: int (Required)
-     *         bytesProcessed: long (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     sourceLocation (Required): {
-     *         location: String (Required)
-     *         prefix: String (Required)
-     *         extensions (Optional): [
-     *             String (Optional)
-     *         ]
-     *     }
-     *     targetLocation (Required): {
-     *         location: String (Required)
-     *         prefix: String (Required)
-     *         overwrite: Boolean (Optional)
-     *     }
-     *     customizations (Optional): {
-     *         redactionFormat: String (Optional)
-     *         surrogateLocale: String (Optional)
-     *     }
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     *     lastUpdatedAt: OffsetDateTime (Required)
-     *     createdAt: OffsetDateTime (Required)
-     *     startedAt: OffsetDateTime (Optional)
-     *     summary (Optional): {
-     *         successful: int (Required)
-     *         failed: int (Required)
-     *         canceled: int (Required)
-     *         total: int (Required)
-     *         bytesProcessed: long (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobName The name of a job.
-     * @param resource The resource instance.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of a job containing a batch of documents to de-identify.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeidentificationJob, DeidentificationJob> beginDeidentifyDocumentsWithModelAsync(String jobName,
         BinaryData resource, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
@@ -1249,6 +993,262 @@ public final class DeidentificationClientImpl {
                     .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DeidentificationJob.class),
             TypeReference.createInstance(DeidentificationJob.class));
+    }
+
+    /**
+     * Create a de-identification job.
+     * 
+     * Long-running resource create or replace operation template.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     sourceLocation (Required): {
+     *         location: String (Required)
+     *         prefix: String (Required)
+     *         extensions (Optional): [
+     *             String (Optional)
+     *         ]
+     *     }
+     *     targetLocation (Required): {
+     *         location: String (Required)
+     *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
+     *     }
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     lastUpdatedAt: OffsetDateTime (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     startedAt: OffsetDateTime (Optional)
+     *     summary (Optional): {
+     *         successful: int (Required)
+     *         failed: int (Required)
+     *         canceled: int (Required)
+     *         total: int (Required)
+     *         bytesProcessed: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     sourceLocation (Required): {
+     *         location: String (Required)
+     *         prefix: String (Required)
+     *         extensions (Optional): [
+     *             String (Optional)
+     *         ]
+     *     }
+     *     targetLocation (Required): {
+     *         location: String (Required)
+     *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
+     *     }
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     lastUpdatedAt: OffsetDateTime (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     startedAt: OffsetDateTime (Optional)
+     *     summary (Optional): {
+     *         successful: int (Required)
+     *         failed: int (Required)
+     *         canceled: int (Required)
+     *         total: int (Required)
+     *         bytesProcessed: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobName The name of a job.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of a job containing a batch of documents to de-identify.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginDeidentifyDocumentsAsync(String jobName, BinaryData resource,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.deidentifyDocumentsWithResponseAsync(jobName, resource, requestOptions),
+            new com.azure.health.deidentification.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Create a de-identification job.
+     * 
+     * Long-running resource create or replace operation template.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     sourceLocation (Required): {
+     *         location: String (Required)
+     *         prefix: String (Required)
+     *         extensions (Optional): [
+     *             String (Optional)
+     *         ]
+     *     }
+     *     targetLocation (Required): {
+     *         location: String (Required)
+     *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
+     *     }
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     lastUpdatedAt: OffsetDateTime (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     startedAt: OffsetDateTime (Optional)
+     *     summary (Optional): {
+     *         successful: int (Required)
+     *         failed: int (Required)
+     *         canceled: int (Required)
+     *         total: int (Required)
+     *         bytesProcessed: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     sourceLocation (Required): {
+     *         location: String (Required)
+     *         prefix: String (Required)
+     *         extensions (Optional): [
+     *             String (Optional)
+     *         ]
+     *     }
+     *     targetLocation (Required): {
+     *         location: String (Required)
+     *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
+     *     }
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     *     lastUpdatedAt: OffsetDateTime (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     startedAt: OffsetDateTime (Optional)
+     *     summary (Optional): {
+     *         successful: int (Required)
+     *         failed: int (Required)
+     *         canceled: int (Required)
+     *         total: int (Required)
+     *         bytesProcessed: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobName The name of a job.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of a job containing a batch of documents to de-identify.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginDeidentifyDocuments(String jobName, BinaryData resource,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.deidentifyDocumentsWithResponse(jobName, resource, requestOptions),
+            new com.azure.health.deidentification.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**

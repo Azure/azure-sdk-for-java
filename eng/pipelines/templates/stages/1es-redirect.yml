@@ -11,7 +11,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20250228.1
+      ref: refs/tags/azure-sdk-build-tools_20250603.2
 
 parameters:
 - name: stages
@@ -46,8 +46,8 @@ extends:
           isMainPipeline: true
           enableForGitHub: true
       sourceAnalysisPool:
-        name: azsdk-pool-mms-win-2022-general
-        image: azsdk-pool-mms-win-2022-1espt
+        name: azsdk-pool
+        image: windows-2022
         os: windows
       sourceRepositoriesToScan:
         exclude:

@@ -93,13 +93,13 @@ public class TokenRequestContext {
         Objects.requireNonNull(scopes, "The scopes parameter cannot be null.");
 
         if (scopes.length == 0) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("At least one scope must be provided."));
+            throw LOGGER.throwableAtError().log("At least one scope must be provided.", IllegalArgumentException::new);
         }
 
         for (String scope : scopes) {
             if (CoreUtils.isNullOrEmpty(scope)) {
-                throw LOGGER
-                    .logThrowableAsError(new IllegalArgumentException("Scopes cannot contain null or empty values."));
+                throw LOGGER.throwableAtError()
+                    .log("Scopes cannot contain null or empty values.", IllegalArgumentException::new);
             }
         }
         this.scopes.addAll(Arrays.asList(scopes));

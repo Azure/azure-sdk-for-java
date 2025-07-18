@@ -235,7 +235,7 @@ public class ProxyAuthenticatorTests {
      * sent in the {@code Proxy-Authorization} header will throw a {@link IllegalStateException}.
      */
     @Test
-    public void proxyAuthenticateInfoFailsValidation() throws IOException {
+    public void proxyAuthenticateInfoFailsValidation() {
         ProxyAuthenticator proxyAuthenticator
             = new ProxyAuthenticator(ChallengeHandler.of(new DigestChallengeHandler("1", "1")));
 

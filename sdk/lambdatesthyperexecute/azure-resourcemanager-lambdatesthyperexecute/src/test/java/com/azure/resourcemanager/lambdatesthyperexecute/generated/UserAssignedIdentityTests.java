@@ -10,7 +10,7 @@ import com.azure.resourcemanager.lambdatesthyperexecute.models.UserAssignedIdent
 public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedIdentity model = BinaryData.fromString("{\"clientId\":\"l\",\"principalId\":\"uvfqawrlyxwj\"}")
+        UserAssignedIdentity model = BinaryData.fromString("{\"principalId\":\"l\",\"clientId\":\"uvfqawrlyxwj\"}")
             .toObject(UserAssignedIdentity.class);
     }
 
