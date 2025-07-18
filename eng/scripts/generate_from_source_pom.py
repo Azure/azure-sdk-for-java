@@ -261,7 +261,10 @@ def create_project_for_pom(pom_path: str, artifacts_list_identifiers: list, arti
         return Project(project_identifier, directory_path, module_path, parent_pom)
 
     # If the project isn't a track 2 POM skip it and not one of the project list identifiers.
-    if not project_identifier in artifacts_list_identifiers and not is_spring_child_pom(tree_root) and not parent_pom in valid_parents: # Spring pom's parent can be empty.
+    if not project_identifier in artifacts_list_identifiers \
+        and not is_spring_child_pom(tree_root) \
+        and not parent_pom in valid_parents \
+        and not project_identifier == 'io.clientcore:sdk-linting-extensions': # Spring pom's parent can be empty.
         return
 
     project = Project(project_identifier, directory_path, module_path, parent_pom)
