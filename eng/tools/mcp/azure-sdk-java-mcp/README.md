@@ -8,13 +8,12 @@ This MCP server provides the following tools:
 
 1. **sync_typespec_source_files** - Synchronize/Download TypeSpec source files for Java SDK generation from local or remote sources
 2. **generate_java_sdk** - Generate or update Java SDK code from TypeSpec definitions 
-3. **clean_java_source** - Clean and remove generated Java source files from SDK directory
-4. **build_java_sdk** - Compile and build the Java SDK with Maven for Azure services
-5. **get_java_sdk_changelog** - Generate and retrieve changelog information for the Java SDK
-6. **update_java_sdk_changelog** - Update the CHANGELOG.md file for a Java SDK module
-7. **instruction_migrate_typespec** - Provide step-by-step instructions for migrating from Swagger to TypeSpec
-8. **update_client_name** - Guide through updating client class and property names in TypeSpec and Java SDK
-9. **prepare_java_sdk_environment** - Provide environment setup instructions and dependency requirements
+3. **build_java_sdk** - Compile and build the Java SDK with Maven for Azure services
+4. **get_java_sdk_changelog** - Generate and retrieve changelog information for the Java SDK
+5. **update_java_sdk_changelog** - Update the CHANGELOG.md file for a Java SDK module
+6. **instruction_migrate_typespec** - Provide step-by-step instructions for migrating from Swagger to TypeSpec
+7. **update_client_name** - Guide through updating client class and property names in TypeSpec and Java SDK
+8. **prepare_java_sdk_environment** - Provide environment setup instructions and dependency requirements
 
 ## Prerequisites
 
@@ -58,7 +57,6 @@ Here are some example prompts you can use with GitHub Copilot to interact with t
 
 ### Environment and Tooling
 - `prepare java sdk environment`
-- `clean java source files for azure-ai-openai`
 
 ### Client Name Updates
 - `update client name: EnableBatchJobOptions to BatchJobEnableOptions`
@@ -120,23 +118,8 @@ Generate SDK from TypeSpec source from 'TempTypeSpecFiles' for a target service 
 }
 ```
 
-### 3. clean_java_source
-Clean the Java source code for a module, removing all generated source files and directories.
 
-**Parameters:**
-- `cwd` (required): The absolute path to the directory where tsp-location.yaml is located
-
-**Example:**
-```json
-{
-  "name": "clean_java_source",
-  "arguments": {
-    "cwd": "/path/to/java/sdk/module"
-  }
-}
-```
-
-### 4. build_java_sdk
+### 3. build_java_sdk
 Build the Java SDK for a service sub module whose groupId starts with `com.azure`. The tool takes the module directory, root directory, groupId and artifactId as input parameters.
 
 **Parameters:**
@@ -158,7 +141,7 @@ Build the Java SDK for a service sub module whose groupId starts with `com.azure
 }
 ```
 
-### 5. get_java_sdk_changelog
+### 4. get_java_sdk_changelog
 Get the changelog for a service sub module whose groupId starts with `com.azure`. The tool takes the jarPath, groupId and artifactId as input parameters.
 
 **Parameters:**
@@ -178,7 +161,7 @@ Get the changelog for a service sub module whose groupId starts with `com.azure`
 }
 ```
 
-### 6. update_java_sdk_changelog
+### 5. update_java_sdk_changelog
 Update the CHANGELOG.md file for a service sub module whose groupId starts with `com.azure`. The tool takes the absolute path to the JAR file, groupId and artifactId as input parameters.
 
 **Parameters:**
@@ -198,7 +181,7 @@ Update the CHANGELOG.md file for a service sub module whose groupId starts with 
 }
 ```
 
-### 7. instruction_migrate_typespec
+### 6. instruction_migrate_typespec
 Get instructions for generating Java SDK after migrating from Swagger to TypeSpec.
 
 **Parameters:**
@@ -212,7 +195,7 @@ Get instructions for generating Java SDK after migrating from Swagger to TypeSpe
 }
 ```
 
-### 8. update_client_name
+### 7. update_client_name
 Update client name for both client.tsp and the generated java sdk. Follow the returned instruction to update old client name to new client name, be sure to ask for old client name and new client name. e.g. MediaMessageContent.mediaUri to MediaMessageContent.mediaUrl
 
 **Parameters:**
@@ -226,7 +209,7 @@ Update client name for both client.tsp and the generated java sdk. Follow the re
 }
 ```
 
-### 9. prepare_java_sdk_environment
+### 8. prepare_java_sdk_environment
 Prepare the development environment for Java SDK generation, including 3 main areas: Node.js/npm, Java environment, and TypeSpec tools.
 
 **Parameters:**
