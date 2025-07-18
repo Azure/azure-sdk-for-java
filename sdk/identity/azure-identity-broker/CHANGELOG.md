@@ -1,5 +1,13 @@
 # Release History
 
+## 1.1.16 (2025-07-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `com.microsoft.azure:msal4j` from version `1.21.0` to version `1.22.0`. 
+
 ## 1.1.15 (2025-06-09)
 
 ### Other Changes
