@@ -228,6 +228,7 @@ public class JobScheduleTests extends BatchClientTestBase {
 
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
+                System.err.println("Cleanup failed for job schedule: " + jobScheduleId);
                 e.printStackTrace();
             }
         }
