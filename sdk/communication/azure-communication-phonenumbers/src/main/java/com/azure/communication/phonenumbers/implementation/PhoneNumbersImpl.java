@@ -131,7 +131,8 @@ public final class PhoneNumbersImpl {
             @QueryParam("maxPageSize") Integer maxPageSize,
             @QueryParam("administrativeDivision") String administrativeDivision,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("phoneNumberType") PhoneNumberType phoneNumberType, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/availablePhoneNumbers/countries/{countryCode}/offerings")
         @ExpectedResponses({ 200 })
@@ -355,7 +356,7 @@ public final class PhoneNumbersImpl {
      * Gets the list of available area codes.
      * 
      * @param countryCode The ISO 3166-2 country code, e.g. US.
-     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
@@ -387,7 +388,7 @@ public final class PhoneNumbersImpl {
      * Gets the list of available area codes.
      * 
      * @param countryCode The ISO 3166-2 country code, e.g. US.
-     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
@@ -419,7 +420,7 @@ public final class PhoneNumbersImpl {
      * Gets the list of available area codes.
      * 
      * @param countryCode The ISO 3166-2 country code, e.g. US.
-     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
@@ -447,7 +448,7 @@ public final class PhoneNumbersImpl {
      * Gets the list of available area codes.
      * 
      * @param countryCode The ISO 3166-2 country code, e.g. US.
-     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
@@ -476,7 +477,7 @@ public final class PhoneNumbersImpl {
      * Gets the list of available area codes.
      * 
      * @param countryCode The ISO 3166-2 country code, e.g. US.
-     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
@@ -502,7 +503,7 @@ public final class PhoneNumbersImpl {
      * Gets the list of available area codes.
      * 
      * @param countryCode The ISO 3166-2 country code, e.g. US.
-     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
@@ -529,7 +530,7 @@ public final class PhoneNumbersImpl {
      * Gets the list of available area codes.
      * 
      * @param countryCode The ISO 3166-2 country code, e.g. US.
-     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
@@ -555,7 +556,7 @@ public final class PhoneNumbersImpl {
      * Gets the list of available area codes.
      * 
      * @param countryCode The ISO 3166-2 country code, e.g. US.
-     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
@@ -880,6 +881,7 @@ public final class PhoneNumbersImpl {
      * @param administrativeDivision An optional parameter for the name of the state or province in which to search for
      * the area code.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -888,11 +890,13 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PhoneNumberLocality>> listAvailableLocalitiesSinglePageAsync(String countryCode,
-        Integer skip, Integer maxPageSize, String administrativeDivision, String acceptLanguage) {
+        Integer skip, Integer maxPageSize, String administrativeDivision, String acceptLanguage,
+        PhoneNumberType phoneNumberType) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailableLocalities(this.client.getEndpoint(), countryCode, skip,
-                maxPageSize, administrativeDivision, this.client.getApiVersion(), acceptLanguage, accept, context))
+                maxPageSize, administrativeDivision, this.client.getApiVersion(), acceptLanguage, phoneNumberType,
+                accept, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getPhoneNumberLocalities(), res.getValue().getNextLink(), null));
     }
@@ -907,6 +911,7 @@ public final class PhoneNumbersImpl {
      * @param administrativeDivision An optional parameter for the name of the state or province in which to search for
      * the area code.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -916,11 +921,12 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PhoneNumberLocality>> listAvailableLocalitiesSinglePageAsync(String countryCode,
-        Integer skip, Integer maxPageSize, String administrativeDivision, String acceptLanguage, Context context) {
+        Integer skip, Integer maxPageSize, String administrativeDivision, String acceptLanguage,
+        PhoneNumberType phoneNumberType, Context context) {
         final String accept = "application/json";
         return service
             .listAvailableLocalities(this.client.getEndpoint(), countryCode, skip, maxPageSize, administrativeDivision,
-                this.client.getApiVersion(), acceptLanguage, accept, context)
+                this.client.getApiVersion(), acceptLanguage, phoneNumberType, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getPhoneNumberLocalities(), res.getValue().getNextLink(), null));
     }
@@ -935,6 +941,7 @@ public final class PhoneNumbersImpl {
      * @param administrativeDivision An optional parameter for the name of the state or province in which to search for
      * the area code.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -942,9 +949,10 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PhoneNumberLocality> listAvailableLocalitiesAsync(String countryCode, Integer skip,
-        Integer maxPageSize, String administrativeDivision, String acceptLanguage) {
-        return new PagedFlux<>(() -> listAvailableLocalitiesSinglePageAsync(countryCode, skip, maxPageSize,
-            administrativeDivision, acceptLanguage),
+        Integer maxPageSize, String administrativeDivision, String acceptLanguage, PhoneNumberType phoneNumberType) {
+        return new PagedFlux<>(
+            () -> listAvailableLocalitiesSinglePageAsync(countryCode, skip, maxPageSize, administrativeDivision,
+                acceptLanguage, phoneNumberType),
             nextLink -> listAvailableLocalitiesNextSinglePageAsync(nextLink, acceptLanguage));
     }
 
@@ -958,6 +966,7 @@ public final class PhoneNumbersImpl {
      * @param administrativeDivision An optional parameter for the name of the state or province in which to search for
      * the area code.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -966,10 +975,11 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PhoneNumberLocality> listAvailableLocalitiesAsync(String countryCode, Integer skip,
-        Integer maxPageSize, String administrativeDivision, String acceptLanguage, Context context) {
+        Integer maxPageSize, String administrativeDivision, String acceptLanguage, PhoneNumberType phoneNumberType,
+        Context context) {
         return new PagedFlux<>(
             () -> listAvailableLocalitiesSinglePageAsync(countryCode, skip, maxPageSize, administrativeDivision,
-                acceptLanguage, context),
+                acceptLanguage, phoneNumberType, context),
             nextLink -> listAvailableLocalitiesNextSinglePageAsync(nextLink, acceptLanguage, context));
     }
 
@@ -983,6 +993,7 @@ public final class PhoneNumbersImpl {
      * @param administrativeDivision An optional parameter for the name of the state or province in which to search for
      * the area code.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -990,9 +1001,9 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<PhoneNumberLocality> listAvailableLocalitiesSinglePage(String countryCode, Integer skip,
-        Integer maxPageSize, String administrativeDivision, String acceptLanguage) {
+        Integer maxPageSize, String administrativeDivision, String acceptLanguage, PhoneNumberType phoneNumberType) {
         return listAvailableLocalitiesSinglePageAsync(countryCode, skip, maxPageSize, administrativeDivision,
-            acceptLanguage).block();
+            acceptLanguage, phoneNumberType).block();
     }
 
     /**
@@ -1005,6 +1016,7 @@ public final class PhoneNumbersImpl {
      * @param administrativeDivision An optional parameter for the name of the state or province in which to search for
      * the area code.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1013,9 +1025,10 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<PhoneNumberLocality> listAvailableLocalitiesSinglePage(String countryCode, Integer skip,
-        Integer maxPageSize, String administrativeDivision, String acceptLanguage, Context context) {
+        Integer maxPageSize, String administrativeDivision, String acceptLanguage, PhoneNumberType phoneNumberType,
+        Context context) {
         return listAvailableLocalitiesSinglePageAsync(countryCode, skip, maxPageSize, administrativeDivision,
-            acceptLanguage, context).block();
+            acceptLanguage, phoneNumberType, context).block();
     }
 
     /**
@@ -1028,6 +1041,7 @@ public final class PhoneNumbersImpl {
      * @param administrativeDivision An optional parameter for the name of the state or province in which to search for
      * the area code.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1036,33 +1050,35 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberLocality> listAvailableLocalities(String countryCode, Integer skip,
-        Integer maxPageSize, String administrativeDivision, String acceptLanguage) {
-        return new PagedIterable<>(
-            listAvailableLocalitiesAsync(countryCode, skip, maxPageSize, administrativeDivision, acceptLanguage));
-    }
-
-    /**
-     * Gets the list of cities or towns with available phone numbers.
-     * 
-     * @param countryCode The ISO 3166-2 country code, e.g. US.
-     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
-     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
-     * value is 100.
-     * @param administrativeDivision An optional parameter for the name of the state or province in which to search for
-     * the area code.
-     * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cities or towns with available phone numbers as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PhoneNumberLocality> listAvailableLocalities(String countryCode, Integer skip,
-        Integer maxPageSize, String administrativeDivision, String acceptLanguage, Context context) {
+        Integer maxPageSize, String administrativeDivision, String acceptLanguage, PhoneNumberType phoneNumberType) {
         return new PagedIterable<>(listAvailableLocalitiesAsync(countryCode, skip, maxPageSize, administrativeDivision,
-            acceptLanguage, context));
+            acceptLanguage, phoneNumberType));
+    }
+
+    /**
+     * Gets the list of cities or towns with available phone numbers.
+     * 
+     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     * value is 100.
+     * @param administrativeDivision An optional parameter for the name of the state or province in which to search for
+     * the area code.
+     * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cities or towns with available phone numbers as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PhoneNumberLocality> listAvailableLocalities(String countryCode, Integer skip,
+        Integer maxPageSize, String administrativeDivision, String acceptLanguage, PhoneNumberType phoneNumberType,
+        Context context) {
+        return new PagedIterable<>(listAvailableLocalitiesAsync(countryCode, skip, maxPageSize, administrativeDivision,
+            acceptLanguage, phoneNumberType, context));
     }
 
     /**
@@ -1072,7 +1088,7 @@ public final class PhoneNumbersImpl {
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
-     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param assignmentType Filter by assignmentType, e.g. Person, Application.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1100,7 +1116,7 @@ public final class PhoneNumbersImpl {
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
-     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param assignmentType Filter by assignmentType, e.g. Person, Application.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @param context The context to associate with this operation.
@@ -1129,7 +1145,7 @@ public final class PhoneNumbersImpl {
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
-     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param assignmentType Filter by assignmentType, e.g. Person, Application.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1151,7 +1167,7 @@ public final class PhoneNumbersImpl {
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
-     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param assignmentType Filter by assignmentType, e.g. Person, Application.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @param context The context to associate with this operation.
@@ -1177,7 +1193,7 @@ public final class PhoneNumbersImpl {
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
-     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param assignmentType Filter by assignmentType, e.g. Person, Application.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1200,7 +1216,7 @@ public final class PhoneNumbersImpl {
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
-     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param assignmentType Filter by assignmentType, e.g. Person, Application.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @param context The context to associate with this operation.
@@ -1224,7 +1240,7 @@ public final class PhoneNumbersImpl {
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
-     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param assignmentType Filter by assignmentType, e.g. Person, Application.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1246,7 +1262,7 @@ public final class PhoneNumbersImpl {
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
-     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree.
+     * @param phoneNumberType Filter by numberType, e.g. Geographic, TollFree, Mobile.
      * @param assignmentType Filter by assignmentType, e.g. Person, Application.
      * @param acceptLanguage The locale to display in the localized fields in the response. e.g. 'en-US'.
      * @param context The context to associate with this operation.
