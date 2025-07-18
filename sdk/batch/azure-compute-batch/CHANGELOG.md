@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (2025-07-10)
+## 1.0.0-beta.5 (2025-07-17)
 
 This release is the first stable release of the Azure Compute Batch client library.
 
@@ -131,6 +131,53 @@ This release is the first stable release of the Azure Compute Batch client libra
 
 - The type of `timeOutInSeconds` in many of the optional parameter models has changed from `Integer` to `Duration`. This affects the getter and setter methods on these models. `getTimeOutInSeconds()` now returns `Duration` instead of `Integer`. `setTimeOutInSeconds(Integer timeOutInSeconds)` is now `setTimeOutInSeconds(Duration timeOutInSeconds)`.
   - This affects the following optional parameter models: `BatchApplicationGetOptions`, `BatchApplicationsListOptions`, `BatchCertificateCancelDeletionOptions`, `BatchCertificateCreateOptions`, `BatchCertificateDeleteOptions`, `BatchCertificateGetOptions`, `BatchCertificatesListOptions`, `BatchJobCreateOptions`, `BatchJobDeleteOptions`, `BatchJobDisableOptions`, `BatchJobEnableOptions`, `BatchJobGetOptions`, `BatchJobPreparationAndReleaseTaskStatusListOptions`, `BatchJobReplaceOptions`, `BatchJobScheduleCreateOptions`, `BatchJobScheduleDeleteOptions`, `BatchJobScheduleDisableOptions`, `BatchJobScheduleEnableOptions`, `BatchJobScheduleExistsOptions`, `BatchJobScheduleGetOptions`, `BatchJobScheduleReplaceOptions`, `BatchJobScheduleTerminateOptions`, `BatchJobScheduleUpdateOptions`, `BatchJobSchedulesListOptions`, `BatchJobTaskCountsGetOptions`, `BatchJobTerminateOptions`, `BatchJobUpdateOptions`, `BatchJobsFromScheduleListOptions`, `BatchJobsListOptions`, `BatchNodeDeallocateOptions`, `BatchNodeExtensionGetOptions`, `BatchNodeExtensionsListOptions`, `BatchNodeFileDeleteOptions`, `BatchNodeFileGetOptions`, `BatchNodeFilePropertiesGetOptions`, `BatchNodeFilesListOptions`, `BatchNodeGetOptions`, `BatchNodeLogsUploadOptions`, `BatchNodeRebootOptions`, `BatchNodeReimageOptions`, `BatchNodeRemoteLoginSettingsGetOptions`, `BatchNodeSchedulingDisableOptions`, `BatchNodeSchedulingEnableOptions`, `BatchNodeStartOptions`, `BatchNodeUserCreateOptions`, `BatchNodeUserDeleteOptions`, `BatchNodeUserReplaceOptions`, `BatchNodesListOptions`, `BatchNodesRemoveOptions`, `BatchPoolDisableAutoScaleOptions`, `BatchPoolEnableAutoScaleOptions`, `BatchPoolEvaluateAutoScaleOptions`, `BatchPoolCreateOptions`, `BatchPoolDeleteOptions`, `BatchPoolExistsOptions`, `BatchPoolGetOptions`, `BatchPoolNodeCountsListOptions`, `BatchPoolPropertiesReplaceOptions`, `BatchPoolResizeOptions`, `BatchPoolResizeStopOptions`, `BatchPoolUpdateOptions`, `BatchPoolUsageMetricsListOptions`, `BatchPoolsListOptions`, `BatchSubTasksListOptions`, `BatchTaskCollectionCreateOptions`, `BatchTaskCreateOptions`, `BatchTaskDeleteOptions`, `BatchTaskFileDeleteOptions`, `BatchTaskFileGetOptions`, `BatchTaskFilePropertiesGetOptions`, `BatchTaskFilesListOptions`, `BatchTaskGetOptions`, `BatchTaskReactivateOptions`, `BatchTaskReplaceOptions`, `BatchTaskTerminateOptions`, `BatchTasksListOptions`, and `SupportedBatchImagesListOptions`.
+
+- Several methods in the SDK have been updated to use the Long-Running Operation (LRO) pattern. LROs are used when an operation may take an extended period to complete. Instead of blocking or returning immediately, LRO methods return a Poller that tracks the operation’s progress and provides access to intermediate and final results.
+  - `deleteCertificate` has been renamed to `beginDeleteCertificate`.
+    - In the synchronous `BatchClient`, the return type changed from `void` to `SyncPoller<BatchCertificate, Void>`.
+    - In the asynchronous `BatchAsyncClient`, the return type changed from `Mono<Void>` to `PollerFlux<BatchCertificate, Void>`.
+  - `deleteJob` has been renamed to `beginDeleteJob`.
+    - In the synchronous `BatchClient`, the return type changed from `void` to `SyncPoller<BatchJob, Void>`.
+    - In the asynchronous `BatchAsyncClient`, the return type changed from `Mono<Void>` to `PollerFlux<BatchJob, Void>`.
+  - `disableJob` has been renamed to `beginDisableJob`.
+    - In the synchronous `BatchClient`, the return type changed from `void` to `SyncPoller<BatchJob, BatchJob>`.
+    - In the asynchronous `BatchAsyncClient`, the return type changed from `Mono<Void>` to `PollerFlux<BatchJob, BatchJob>`.
+  - `enableJob` has been renamed to `beginEnableJob`.
+    - In the synchronous `BatchClient`, the return type changed from `void` to `SyncPoller<BatchJob, BatchJob>`.
+    - In the asynchronous `BatchAsyncClient`, the return type changed from `Mono<Void>` to `PollerFlux<BatchJob, BatchJob>`.
+  - `terminateJob` has been renamed to `beginTerminateJob`.
+    - In the synchronous `BatchClient`, the return type changed from `void` to `SyncPoller<BatchJob, BatchJob>`.
+    - In the asynchronous `BatchAsyncClient`, the return type changed from `Mono<Void>` to `PollerFlux<BatchJob, BatchJob>`.
+  - `deleteJobSchedule` has been renamed to `beginDeleteJobSchedule`.
+    - In the synchronous `BatchClient`, the return type changed from `void` to `SyncPoller<BatchJobSchedule, Void>`.
+    - In the asynchronous `BatchAsyncClient`, the return type changed from `Mono<Void>` to `PollerFlux<BatchJobSchedule, Void>`.
+  - `terminateJobSchedule` has been renamed to `beginTerminateJobSchedule`.
+    - In the synchronous `BatchClient`, the return type changed from `void` to `SyncPoller<BatchJobSchedule, BatchJobSchedule>`.
+    - In the asynchronous `BatchAsyncClient`, the return type changed from `Mono<Void>` to `PollerFlux<BatchJobSchedule, BatchJobSchedule>`.
+  - `deallocateNode` has been renamed to `beginDeallocateNode`.
+    - In the synchronous `BatchClient`, the return type changed from `void` to `SyncPoller<BatchNode, BatchNode>`.
+    - In the asynchronous `BatchAsyncClient`, the return type changed from `Mono<Void>` to `PollerFlux<BatchNode, BatchNode>`.
+  - `rebootNode` has been renamed to `beginRebootNode`.
+    - In the synchronous `BatchClient`, the return type changed from `void` to `SyncPoller<BatchNode, BatchNode>`.
+    - In the asynchronous `BatchAsyncClient`, the return type changed from `Mono<Void>` to `PollerFlux<BatchNode, BatchNode>`.
+  - `reimageNode` has been renamed to `beginReimageNode`.
+    - In the synchronous `BatchClient`, the return type changed from `void` to `SyncPoller<BatchNode, BatchNode>`.
+    - In the asynchronous `BatchAsyncClient`, the return type changed from `Mono<Void>` to `PollerFlux<BatchNode, BatchNode>`.
+  - `startNode` has been renamed to `beginStartNode`.
+    - In the synchronous `BatchClient`, the return type changed from `void` to `SyncPoller<BatchNode, BatchNode>`.
+    - In the asynchronous `BatchAsyncClient`, the return type changed from `Mono<Void>` to `PollerFlux<BatchNode, BatchNode>`.
+  - `removeNodes` has been renamed to `beginRemoveNodes`.
+    - In the synchronous `BatchClient`, the return type changed from `void` to `SyncPoller<BatchPool, BatchPool>`.
+    - In the asynchronous `BatchAsyncClient`, the return type changed from `Mono<Void>` to `PollerFlux<BatchPool, BatchPool>`.
+  - `deletePool` has been renamed to `beginDeletePool`.
+    - In the synchronous `BatchClient`, the return type changed from `void` to `SyncPoller<BatchPool, Void>`.
+    - In the asynchronous `BatchAsyncClient`, the return type changed from `Mono<Void>` to `PollerFlux<BatchPool, Void>`.
+  - `resizePool` has been renamed to `beginResizePool`.
+    - In the synchronous `BatchClient`, the return type changed from `void` to `SyncPoller<BatchPool, BatchPool>`.
+    - In the asynchronous `BatchAsyncClient`, the return type changed from `Mono<Void>` to `PollerFlux<BatchPool, BatchPool>`.
+  - `stopPoolResize` has been renamed to `beginStopPoolResize`.
+    - In the synchronous `BatchClient`, the return type changed from `void` to `SyncPoller<BatchPool, BatchPool>`.
+    - In the asynchronous `BatchAsyncClient`, the return type changed from `Mono<Void>` to `PollerFlux<BatchPool, BatchPool>`.
 
 ## 1.0.0-beta.4 (2025-03-24)
 
