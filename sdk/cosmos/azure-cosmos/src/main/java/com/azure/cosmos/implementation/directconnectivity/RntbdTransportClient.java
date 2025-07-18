@@ -14,7 +14,9 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.OperationCancelledException;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeline;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -265,6 +267,10 @@ public class RntbdTransportClient extends TransportClient {
      */
     @Override
     public Mono<StoreResponse> invokeStoreAsync(final Uri addressUri, final RxDocumentServiceRequest request) {
+
+        if (request.getOperationType() == OperationType.Read && request.getResourceType() == ResourceType.Document) {
+            logger.debug("invoking read operation {}", request);
+        }
 
         checkNotNull(addressUri, "expected non-null addressUri");
         checkNotNull(request, "expected non-null request");

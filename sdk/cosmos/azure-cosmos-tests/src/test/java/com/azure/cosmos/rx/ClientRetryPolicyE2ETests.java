@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
@@ -81,6 +82,29 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false },
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true },
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false }
+        };
+    }
+
+    @DataProvider(name = "leaseNotFoundArgProvider")
+    public static Object[][] leaseNotFoundArgProvider() {
+        return new Object[][]{
+            // OperationType, FaultInjectionOperationType, shouldUsePreferredRegionsOnClient
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, true, true },
+//            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, true },
+//            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false },
+//            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false },
+//            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false },
+//            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false },
+//            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, true, false },
+//            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, true, true },
+//            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, true },
+//            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true },
+//            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false, false },
+//            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false, false },
+//            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false, false },
+//            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false, false },
+//            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false },
+//            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, true },
         };
     }
 
@@ -425,6 +449,87 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             }
         } finally {
             requestHttpTimeoutRule.disable();
+        }
+    }
+
+    @Test(groups = { "multi-region" }, dataProvider = "leaseNotFoundArgProvider"/*, timeOut = TIMEOUT*/)
+    public void dataPlaneRequestHitsLeaseNotFoundInFirstPreferredRegion(
+        OperationType operationType,
+        FaultInjectionOperationType faultInjectionOperationType,
+        boolean shouldUsePreferredRegionsOnClient,
+        boolean shouldOperationSeeSuccess) {
+
+        CosmosAsyncClient resultantCosmosAsyncClient;
+
+        if (shouldUsePreferredRegionsOnClient) {
+            resultantCosmosAsyncClient = this.clientWithPreferredRegions;
+        } else {
+            resultantCosmosAsyncClient = this.clientWithoutPreferredRegions;
+        }
+
+        if (BridgeInternal
+            .getContextClient(resultantCosmosAsyncClient)
+            .getConnectionPolicy()
+            .getConnectionMode() == ConnectionMode.GATEWAY) {
+            throw new SkipException("leaseNotFound is only meant for Direct mode");
+        }
+
+        FaultInjectionRule leaseNotFoundFaultRule = new FaultInjectionRuleBuilder("leaseNotFound-" + UUID.randomUUID())
+            .condition(
+                new FaultInjectionConditionBuilder()
+                    .operationType(faultInjectionOperationType)
+                    .region(this.preferredRegions.get(0))
+                    .connectionType(FaultInjectionConnectionType.DIRECT)
+                    .build())
+            .result(
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.GONE)
+                    .times(1)
+                    .build()
+            )
+            .duration(Duration.ofMinutes(5))
+            .build();
+
+        CosmosAsyncClient testClient = getClientBuilder()
+            .preferredRegions(shouldUsePreferredRegionsOnClient ? this.preferredRegions : Collections.emptyList())
+            .directMode()
+            .buildAsyncClient();
+        CosmosAsyncContainer testContainer = getSharedSinglePartitionCosmosContainer(testClient);
+
+        try {
+            TestItem createdItem = TestItem.createNewItem();
+            testContainer.createItem(createdItem).block();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(leaseNotFoundFaultRule)).block();
+            CosmosDiagnostics cosmosDiagnostics
+                = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk())).block();
+
+            if (shouldOperationSeeSuccess) {
+                assertThat(cosmosDiagnostics).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+
+                CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+
+                assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
+                assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
+            } else {
+
+                assertThat(cosmosDiagnostics).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+
+                CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+
+                assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
+                assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+                assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
+            }
+
+        } finally {
+            leaseNotFoundFaultRule.disable();
+
+            if (testClient != null) {
+                cleanUpContainer(testContainer);
+                testClient.close();
+            }
         }
     }
 

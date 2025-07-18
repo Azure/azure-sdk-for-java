@@ -125,6 +125,19 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         };
     }
 
+    @DataProvider(name = "faultInjectionOperationTypeProviderForLeaseNotFound")
+    public static Object[][] faultInjectionOperationTypeProviderForLeaseNotFound() {
+        return new Object[][]{
+            // fault injection operation type, primaryAddressOnly
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false },
+//            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true },
+//            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true },
+//            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true },
+//            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false },
+//            { OperationType.Replace, FaultInjectionOperationType.PATCH_ITEM, true }
+        };
+    }
+
     @DataProvider(name = "faultInjectionServerErrorResponseProvider")
     public static Object[][] faultInjectionServerErrorResponseProvider() {
         return new Object[][]{
@@ -878,6 +891,49 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             serverErrorRule.disable();
         }
 
+    }
+
+    @Test(groups = {"multi-region",  "long"}, dataProvider = "faultInjectionOperationTypeProviderForLeaseNotFound", timeOut = TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_LeaseNotFound(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType, boolean ignore) throws JsonProcessingException {
+
+        // simulate high channel acquisition/connectionTimeout for read/query
+        TestItem createdItem = TestItem.createNewItem();
+        cosmosAsyncContainer.createItem(createdItem).block();
+
+        String ruleId = "serverErrorRule-" + FaultInjectionServerErrorType.LEASE_NOT_FOUND + "-" + UUID.randomUUID();
+        FaultInjectionRule serverErrorRule =
+            new FaultInjectionRuleBuilder(ruleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(faultInjectionOperationType)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.LEASE_NOT_FOUND)
+                        .times(1)
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+
+        try {
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
+
+            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(cosmosAsyncContainer, operationType, createdItem);;
+            this.validateHitCount(serverErrorRule, 1, operationType, ResourceType.Document);
+            this.validateFaultInjectionRuleApplied(
+                cosmosDiagnostics,
+                operationType,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                ruleId,
+                true
+            );
+
+        } finally {
+            serverErrorRule.disable();
+        }
     }
 
     @Test(groups = {"multi-region", "long"}, timeOut = TIMEOUT)

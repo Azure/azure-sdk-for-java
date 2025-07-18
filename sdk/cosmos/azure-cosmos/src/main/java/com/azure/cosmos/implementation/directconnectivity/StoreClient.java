@@ -94,6 +94,10 @@ public class StoreClient implements IStoreClient {
             throw new NullPointerException("request");
         }
 
+        if (request.getResourceType() == ResourceType.Document && request.getOperationType() == OperationType.Read) {
+            logger.debug("Processing read request");
+        }
+
         Callable<Mono<StoreResponse>> storeResponseDelegate = () -> this.replicatedResourceClient.invokeAsync(request, prepareRequestAsyncDelegate);
 
         Mono<StoreResponse> storeResponse;
