@@ -27,6 +27,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot Web Account Manager (WAM) brokered authentication issues](#troubleshoot-web-account-manager-wam-brokered-authentication-issues)
 - [Get additional help](#get-additional-help)
 
+
 ## Handle Azure Identity exceptions
 
 ### ClientAuthenticationException
@@ -350,9 +351,16 @@ You can find more info about Fork Join Pool [here](https://docs.oracle.com/javas
 
 ## Troubleshoot Web Account Manager (WAM) brokered authentication issues
 
+Broker authentication is used by `DefaultAzureCredential` to enable secure sign-in via the Windows Web Account Manager (WAM). This mechanism requires the `azure-identity-broker` dependency and is currently only supported on Windows.
+
 | Error Message |Description| Mitigation |
 |---|---|---|
 |AADSTS50011|The application is missing the expected redirect URI.|Ensure that one of redirect URIs registered for the Microsoft Entra application matches the following URI pattern: `ms-appx-web://Microsoft.AAD.BrokerPlugin/{client_id}`|
+| `CredentialUnavailableException: azure-identity-broker dependency is not available. Ensure you have azure-identity-broker dependency added to your application.` | The required broker dependency is missing from your project. | Add the `azure-identity-broker` dependency to your application's build configuration (e.g., Maven or Gradle). |
+| `CredentialUnavailableException: InteractiveBrowserBrokerCredentialBuilder class not found. Ensure you have azure-identity-broker dependency added to your application.` | The broker credential builder class could not be found, likely due to a missing or misconfigured dependency. | Ensure the `azure-identity-broker` dependency is present and correctly configured in your project. |
+| `CredentialUnavailableException: Failed to create InteractiveBrowserBrokerCredential dynamically` | An unexpected error occurred while creating the broker credential. | Check the inner exception for more details. Ensure your environment meets all requirements for broker authentication (Windows OS, correct dependencies, and configuration). |
+
+> **Note:** Broker authentication is currently only supported on Windows. macOS and Linux are not yet supported.
 
 ### Unable to log in with Microsoft account (MSA) on Windows
 
@@ -372,6 +380,7 @@ You may also log in another MSA account by selecting "Microsoft account":
 
 ![Microsoft account](./images/MSA4.png)
 
+---
 
 ## Get additional help
 
