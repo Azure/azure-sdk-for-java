@@ -8,10 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The outbound (egress) routing method.
- * 
- * This can only be set at cluster creation time and cannot be changed later. For more information see [egress outbound
- * type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
+ * The outbound (egress) routing method. This can only be set at cluster creation time and cannot be changed later. For
+ * more information see [egress outbound type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
  */
 public final class OutboundType extends ExpandableStringEnum<OutboundType> {
     /**

@@ -8,9 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Pod IP Allocation Mode
- * 
- * The IP allocation mode for pods in the agent pool. Must be used with podSubnetId. The default is 'DynamicIndividual'.
+ * Pod IP Allocation Mode. The IP allocation mode for pods in the agent pool. Must be used with podSubnetId. The default
+ * is 'DynamicIndividual'.
  */
 public final class PodIpAllocationMode extends ExpandableStringEnum<PodIpAllocationMode> {
     /**

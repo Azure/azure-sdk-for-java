@@ -18,7 +18,7 @@ import java.io.IOException;
 public final class ManagedClusterStaticEgressGatewayProfile
     implements JsonSerializable<ManagedClusterStaticEgressGatewayProfile> {
     /*
-     * Indicates if Static Egress Gateway addon is enabled or not.
+     * Enable Static Egress Gateway addon. Indicates if Static Egress Gateway addon is enabled or not.
      */
     private Boolean enabled;
 
@@ -29,7 +29,8 @@ public final class ManagedClusterStaticEgressGatewayProfile
     }
 
     /**
-     * Get the enabled property: Indicates if Static Egress Gateway addon is enabled or not.
+     * Get the enabled property: Enable Static Egress Gateway addon. Indicates if Static Egress Gateway addon is enabled
+     * or not.
      * 
      * @return the enabled value.
      */
@@ -38,7 +39,8 @@ public final class ManagedClusterStaticEgressGatewayProfile
     }
 
     /**
-     * Set the enabled property: Indicates if Static Egress Gateway addon is enabled or not.
+     * Set the enabled property: Enable Static Egress Gateway addon. Indicates if Static Egress Gateway addon is enabled
+     * or not.
      * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterStaticEgressGatewayProfile object itself.

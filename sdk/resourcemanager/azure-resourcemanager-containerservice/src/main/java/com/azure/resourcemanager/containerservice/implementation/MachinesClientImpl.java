@@ -59,7 +59,7 @@ public final class MachinesClientImpl implements MachinesClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerServiceMana")
+    @ServiceInterface(name = "ContainerServiceManagementClientMachines")
     public interface MachinesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/machines")
@@ -121,7 +121,7 @@ public final class MachinesClientImpl implements MachinesClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -165,7 +165,7 @@ public final class MachinesClientImpl implements MachinesClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -282,7 +282,7 @@ public final class MachinesClientImpl implements MachinesClient {
         if (machineName == null) {
             return Mono.error(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -328,7 +328,7 @@ public final class MachinesClientImpl implements MachinesClient {
         if (machineName == null) {
             return Mono.error(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,

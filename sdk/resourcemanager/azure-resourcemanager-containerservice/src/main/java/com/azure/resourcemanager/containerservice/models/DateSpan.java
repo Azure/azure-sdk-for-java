@@ -15,9 +15,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- * A date range.
- * 
- * For example, between '2022-12-23' and '2023-01-05'.
+ * A date range. For example, between '2022-12-23' and '2023-01-05'.
  */
 @Fluent
 public final class DateSpan implements JsonSerializable<DateSpan> {

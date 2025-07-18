@@ -17,9 +17,9 @@ import java.io.IOException;
 @Fluent
 public final class ManagedClusterCostAnalysis implements JsonSerializable<ManagedClusterCostAnalysis> {
     /*
-     * The Managed Cluster sku.tier must be set to 'Standard' or 'Premium' to enable this feature. Enabling this will
-     * add Kubernetes Namespace and Deployment details to the Cost Analysis views in the Azure portal. If not specified,
-     * the default is false. For more information see aka.ms/aks/docs/cost-analysis.
+     * Whether to enable cost analysis. The Managed Cluster sku.tier must be set to 'Standard' or 'Premium' to enable
+     * this feature. Enabling this will add Kubernetes Namespace and Deployment details to the Cost Analysis views in
+     * the Azure portal. If not specified, the default is false. For more information see aka.ms/aks/docs/cost-analysis.
      */
     private Boolean enabled;
 
@@ -30,9 +30,10 @@ public final class ManagedClusterCostAnalysis implements JsonSerializable<Manage
     }
 
     /**
-     * Get the enabled property: The Managed Cluster sku.tier must be set to 'Standard' or 'Premium' to enable this
-     * feature. Enabling this will add Kubernetes Namespace and Deployment details to the Cost Analysis views in the
-     * Azure portal. If not specified, the default is false. For more information see aka.ms/aks/docs/cost-analysis.
+     * Get the enabled property: Whether to enable cost analysis. The Managed Cluster sku.tier must be set to 'Standard'
+     * or 'Premium' to enable this feature. Enabling this will add Kubernetes Namespace and Deployment details to the
+     * Cost Analysis views in the Azure portal. If not specified, the default is false. For more information see
+     * aka.ms/aks/docs/cost-analysis.
      * 
      * @return the enabled value.
      */
@@ -41,9 +42,10 @@ public final class ManagedClusterCostAnalysis implements JsonSerializable<Manage
     }
 
     /**
-     * Set the enabled property: The Managed Cluster sku.tier must be set to 'Standard' or 'Premium' to enable this
-     * feature. Enabling this will add Kubernetes Namespace and Deployment details to the Cost Analysis views in the
-     * Azure portal. If not specified, the default is false. For more information see aka.ms/aks/docs/cost-analysis.
+     * Set the enabled property: Whether to enable cost analysis. The Managed Cluster sku.tier must be set to 'Standard'
+     * or 'Premium' to enable this feature. Enabling this will add Kubernetes Namespace and Deployment details to the
+     * Cost Analysis views in the Azure portal. If not specified, the default is false. For more information see
+     * aka.ms/aks/docs/cost-analysis.
      * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterCostAnalysis object itself.
