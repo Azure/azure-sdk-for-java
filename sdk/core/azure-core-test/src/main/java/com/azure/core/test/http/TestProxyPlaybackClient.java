@@ -20,17 +20,14 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +36,11 @@ import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_FILE_LOCATION;
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
+import static com.azure.core.test.implementation.TestingHelpers.drainHttpResponse;
+import static com.azure.core.test.implementation.TestingHelpers.jsonWriteHelper;
 import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
 import static com.azure.core.test.utils.TestProxyUtils.createAddSanitizersRequest;
+import static com.azure.core.test.utils.TestProxyUtils.createProxyRequestUrl;
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
 import static com.azure.core.test.utils.TestProxyUtils.getMatcherRequests;
 import static com.azure.core.test.utils.TestProxyUtils.getRemoveSanitizerRequest;
@@ -53,7 +53,6 @@ public class TestProxyPlaybackClient implements HttpClient {
 
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyPlaybackClient.class);
     private final HttpClient client;
-    private final URL proxyUrl;
     private String xRecordingId;
     private String xRecordingFileLocation;
 
@@ -71,7 +70,6 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public TestProxyPlaybackClient(HttpClient httpClient, boolean skipRecordingRequestBody) {
         this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);
-        this.proxyUrl = TestProxyUtils.getProxyUrl();
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
         this.skipRecordingRequestBody = skipRecordingRequestBody;
     }
@@ -86,44 +84,52 @@ public class TestProxyPlaybackClient implements HttpClient {
      * @throws RuntimeException Failed to serialize body payload.
      */
     public Queue<String> startPlayback(File recordFile, Path testClassPath) {
-        HttpRequest request;
-        String assetJsonPath = getAssetJsonFile(recordFile, testClassPath);
         try {
-            request = new HttpRequest(HttpMethod.POST, proxyUrl + "/playback/start")
-                .setBody(new RecordFilePayload(recordFile.toString(), assetJsonPath).toJsonString())
+            HttpRequest request = new HttpRequest(HttpMethod.POST, createProxyRequestUrl("/playback/start"))
+                .setBody(new RecordFilePayload(recordFile.toString(), getAssetJsonFile(recordFile, testClassPath))
+                    .toJsonString())
                 .setHeader(HttpHeaderName.ACCEPT, "application/json")
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
-            HttpResponse response = sendRequestWithRetries(request);
-            checkForTestProxyErrors(response);
-            xRecordingId = response.getHeaderValue(X_RECORDING_ID);
-            xRecordingFileLocation
-                = new String(Base64.getUrlDecoder().decode(response.getHeaders().getValue(X_RECORDING_FILE_LOCATION)),
-                    StandardCharsets.UTF_8);
-            addProxySanitization(this.sanitizers);
-            addMatcherRequests(this.matchers);
-            String body = response.getBodyAsString().block();
-            // The test proxy stores variables in a map with no guaranteed order.
-            // The Java implementation of recording did not use a map, but relied on the order
-            // of the variables as they were stored. Our scheme instead sets an increasing integer
-            // the key. See TestProxyRecordPolicy.serializeVariables.
-            // This deserializes the map returned from the test proxy and creates an ordered list
-            // based on the key.
-            try (JsonReader jsonReader = JsonProviders.createReader(body)) {
-                Map<String, String> variables = jsonReader.readMap(JsonReader::getString);
-                List<Map.Entry<String, String>> toSort;
-                if (variables == null) {
-                    toSort = new ArrayList<>();
-                } else {
-                    toSort = new ArrayList<>(variables.entrySet());
-                    toSort.sort(Comparator.comparingInt(e -> Integer.parseInt(e.getKey())));
-                }
 
-                LinkedList<String> strings = new LinkedList<>();
-                for (Map.Entry<String, String> stringStringEntry : toSort) {
-                    String value = stringStringEntry.getValue();
-                    strings.add(value);
+            HttpResponse response = null;
+            try {
+                response = sendRequestWithRetries(request);
+                checkForTestProxyErrors(response);
+                xRecordingId = response.getHeaderValue(X_RECORDING_ID);
+                LOGGER.atInfo().addKeyValue("x-recording-id", xRecordingId).log("Running test.");
+                xRecordingFileLocation = new String(
+                    Base64.getUrlDecoder().decode(response.getHeaders().getValue(X_RECORDING_FILE_LOCATION)),
+                    StandardCharsets.UTF_8);
+                addProxySanitization(this.sanitizers);
+                addMatcherRequests(this.matchers);
+                String body = response.getBodyAsString().block();
+                // The test proxy stores variables in a map with no guaranteed order.
+                // The Java implementation of recording did not use a map, but relied on the order
+                // of the variables as they were stored. Our scheme instead sets an increasing integer
+                // the key. See TestProxyRecordPolicy.serializeVariables.
+                // This deserializes the map returned from the test proxy and creates an ordered list
+                // based on the key.
+                try (JsonReader jsonReader = JsonProviders.createReader(body)) {
+                    Map<String, String> variables = jsonReader.readMap(JsonReader::getString);
+                    List<Map.Entry<String, String>> toSort;
+                    if (variables == null) {
+                        toSort = new ArrayList<>();
+                    } else {
+                        toSort = new ArrayList<>(variables.entrySet());
+                        toSort.sort(Comparator.comparingInt(e -> Integer.parseInt(e.getKey())));
+                    }
+
+                    LinkedList<String> strings = new LinkedList<>();
+                    for (Map.Entry<String, String> stringStringEntry : toSort) {
+                        String value = stringStringEntry.getValue();
+                        strings.add(value);
+                    }
+                    return strings;
                 }
-                return strings;
+            } finally {
+                if (response != null) {
+                    drainHttpResponse(response);
+                }
             }
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -145,15 +151,18 @@ public class TestProxyPlaybackClient implements HttpClient {
                 if (retries >= 3) {
                     throw e;
                 }
-                sleep(1);
-                LOGGER.warning("Retrying request to test proxy. Retry attempt: " + retries);
+                sleep();
+                LOGGER.atWarning()
+                    .addKeyValue("attempt", retries)
+                    .addKeyValue("session-id", request.getHeaders().getValue(X_RECORDING_ID))
+                    .log(() -> "Retrying request to Test Proxy.", e);
             }
         }
     }
 
-    private void sleep(int durationInSeconds) {
+    private void sleep() {
         try {
-            TimeUnit.SECONDS.sleep(durationInSeconds);
+            TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -163,9 +172,9 @@ public class TestProxyPlaybackClient implements HttpClient {
      * Stops playback of a test recording.
      */
     public void stopPlayback() {
-        HttpRequest request
-            = new HttpRequest(HttpMethod.POST, proxyUrl + "/playback/stop").setHeader(X_RECORDING_ID, xRecordingId);
-        sendRequestWithRetries(request);
+        HttpRequest request = new HttpRequest(HttpMethod.POST, createProxyRequestUrl("/playback/stop"))
+            .setHeader(X_RECORDING_ID, xRecordingId);
+        drainHttpResponse(sendRequestWithRetries(request));
     }
 
     /**
@@ -178,7 +187,7 @@ public class TestProxyPlaybackClient implements HttpClient {
         if (xRecordingId == null) {
             throw new RuntimeException("Playback was not started before a request was sent.");
         }
-        TestProxyUtils.changeHeaders(request, proxyUrl, xRecordingId, "playback", false);
+        TestProxyUtils.changeHeaders(request, xRecordingId, "playback", false);
     }
 
     /**
@@ -221,10 +230,9 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public void addProxySanitization(List<TestProxySanitizer> sanitizers) {
         if (isPlayingBack()) {
-            HttpRequest request
-                = createAddSanitizersRequest(sanitizers, proxyUrl).setHeader(X_RECORDING_ID, xRecordingId);
+            HttpRequest request = createAddSanitizersRequest(sanitizers).setHeader(X_RECORDING_ID, xRecordingId);
 
-            sendRequestWithRetries(request);
+            drainHttpResponse(sendRequestWithRetries(request));
         } else {
             this.sanitizers.addAll(sanitizers);
         }
@@ -237,20 +245,12 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public void removeProxySanitization(List<String> sanitizers) {
         if (isPlayingBack()) {
-            Map<String, List<String>> data = new HashMap<>();
-            data.put("Sanitizers", sanitizers);
+            HttpRequest request = getRemoveSanitizerRequest().setHeader(X_RECORDING_ID, xRecordingId)
+                .setBody(jsonWriteHelper(jsonWriter -> jsonWriter.writeStartObject()
+                    .writeArrayField("Sanitizers", sanitizers, JsonWriter::writeString)
+                    .writeEndObject()));
 
-            HttpRequest request;
-            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
-                jsonWriter.writeMap(data, (writer, value) -> writer.writeArray(value, JsonWriter::writeString)).flush();
-                request = getRemoveSanitizerRequest().setBody(outputStream.toByteArray())
-                    .setHeader(X_RECORDING_ID, xRecordingId);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            sendRequestWithRetries(request);
+            drainHttpResponse(sendRequestWithRetries(request));
         }
     }
 
@@ -260,13 +260,13 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public void addMatcherRequests(List<TestProxyRequestMatcher> matchers) {
         if (isPlayingBack()) {
-            List<HttpRequest> matcherRequests = getMatcherRequests(matchers, proxyUrl);
+            List<HttpRequest> matcherRequests = getMatcherRequests(matchers);
             if (skipRecordingRequestBody) {
                 matcherRequests.add(TestProxyUtils.setCompareBodiesMatcher());
             }
             matcherRequests.forEach(request -> {
                 request.setHeader(X_RECORDING_ID, xRecordingId);
-                sendRequestWithRetries(request);
+                drainHttpResponse(sendRequestWithRetries(request));
             });
         } else {
             this.matchers.addAll(matchers);

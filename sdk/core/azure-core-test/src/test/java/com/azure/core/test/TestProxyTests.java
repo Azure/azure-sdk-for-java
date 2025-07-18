@@ -28,6 +28,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
@@ -325,7 +326,7 @@ public class TestProxyTests extends TestProxyTestBase {
         assertNotNull(version);
     }
 
-    @Test
+    @RepeatedTest(500)
     @Tag("Record")
     public void testResetTestProxyData() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();

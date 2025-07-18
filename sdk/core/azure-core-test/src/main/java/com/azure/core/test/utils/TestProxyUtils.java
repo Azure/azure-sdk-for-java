@@ -32,8 +32,12 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
+import static com.azure.core.test.implementation.TestingHelpers.jsonWriteHelper;
+import static com.azure.core.test.models.TestProxySanitizerType.BODY_KEY;
+import static com.azure.core.test.models.TestProxySanitizerType.BODY_REGEX;
 import static com.azure.core.test.models.TestProxySanitizerType.HEADER;
 import static com.azure.core.test.policy.TestProxyRecordPolicy.RECORD_MODE;
 
@@ -45,18 +49,6 @@ public class TestProxyUtils {
     private static final HttpHeaderName X_RECORDING_SKIP = HttpHeaderName.fromString("x-recording-skip");
     private static final String REDACTED_VALUE = "REDACTED";
     private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
-
-    // These are prepended with "$.." creating a Jsonpath expression.
-    private static final List<String> JSON_BODY_KEYS_TO_REDACT = Arrays.asList("authHeader", "accountKey",
-        "accessToken", "accountName", "applicationId", "apiKey", "client_secret", "connectionString", "url", "host",
-        "password", "userName", "applicationSecret", "aliasSecondaryConnectionString", "aliasPrimaryConnectionString",
-        "primaryKey", "secondaryKey", "adminPassword.value", "administratorLoginPassword", "runAsPassword",
-        "adminPassword", "accessSAS", "WEBSITE_AUTH_ENCRYPTION_KEY", "decryptionKey", "primaryMasterKey",
-        "primaryReadonlyMasterKey", "secondaryMasterKey", "secondaryReadonlyMasterKey", "certificatePassword",
-        "clientSecret", "keyVaultClientSecret", "authHeader", "httpHeader", "encryptedCredential", "functionKey",
-        "atlasKafkaPrimaryEndpoint", "atlasKafkaSecondaryEndpoint", "certificatePassword", "storageAccountPrimaryKey",
-        "privateKey", "fencingClientPassword", "acrToken", "scriptUrlSasToken", "azureBlobSource.containerUrl",
-        "properties.DOCKER_REGISTRY_SEVER_PASSWORD");
 
     public static final String HOST_NAME_REGEX = "(?<=http://|https://)(?<host>[^/?\\\\.]+)";
     private static final List<TestProxySanitizer> HEADER_KEY_REGEX_TO_REDACT = Arrays.asList(
@@ -70,20 +62,6 @@ public class TestProxyUtils {
         new TestProxySanitizer("Location", HOST_NAME_REGEX, REDACTED_VALUE, TestProxySanitizerType.HEADER)
             .setGroupForReplace("host"));
 
-    // Values in this list must have a capture group named "secret" for the redaction to work.
-    private static final List<String> BODY_REGEXES_TO_REDACT
-        = Arrays.asList("(?:(Password|User ID)=)(?<secret>.*)(?:;)", "client_secret=(?<secret>[^&]+)",
-            "<PrimaryKey>(?<secret>.*?)</PrimaryKey>", "<SecondaryKey>(?<secret>.*?)</SecondaryKey>",
-            "<UserDelegationKey>.*?<SignedOid>(?<secret>.*?)</SignedOid>.*?</UserDelegationKey>",
-            "<UserDelegationKey>.*?<SignedTid>(?<secret>.*?)</SignedTid>.*?</UserDelegationKey>",
-            "<UserDelegationKey>.*?<Value>(?<secret>.*?)</Value>.*?</UserDelegationKey>",
-            "SharedAccessKey=(?<secret>[^;\\\"]+)", "AccountKey=(?<secret>[^;\\\"]+)", "accesskey=(?<secret>[^;\\\"]+)",
-            "AccessKey=(?<secret>[^;\\\"]+)", "Secret=(?<secret>[^;\\\"]+)", "access_token=(?<secret>.*?)(?=&|$)",
-            "refresh_token=(?<secret>.*?)(?=&|$)");
-
-    private static final List<String> HEADER_KEYS_TO_REDACT = Arrays.asList("Ocp-Apim-Subscription-Key", "api-key",
-        "x-api-key", "subscription-key", "x-ms-encryption-key", "sshPassword");
-
     private static final HttpHeaderName X_RECORDING_UPSTREAM_BASE_URI
         = HttpHeaderName.fromString("x-recording-upstream-base-uri");
     private static final HttpHeaderName X_RECORDING_MODE = HttpHeaderName.fromString("x-recording-mode");
@@ -96,22 +74,59 @@ public class TestProxyUtils {
     private static final HttpHeaderName X_ABSTRACTION_IDENTIFIER
         = HttpHeaderName.fromString("x-abstraction-identifier");
 
-    private static volatile URL proxyUrl;
+    private static final List<TestProxySanitizer> JSON_BODY_KEYS_TO_REDACT;
+    private static final List<TestProxySanitizer> BODY_REGEXES_TO_REDACT;
+    private static final List<TestProxySanitizer> HEADER_KEYS_TO_REDACT;
+
+    static {
+        // These are prepended with "$.." creating a Jsonpath expression.
+        JSON_BODY_KEYS_TO_REDACT = Stream
+            .of("authHeader", "accountKey", "accessToken", "accountName", "applicationId", "apiKey", "client_secret",
+                "connectionString", "url", "host", "password", "userName", "applicationSecret",
+                "aliasSecondaryConnectionString", "aliasPrimaryConnectionString", "primaryKey", "secondaryKey",
+                "adminPassword.value", "administratorLoginPassword", "runAsPassword", "adminPassword", "accessSAS",
+                "WEBSITE_AUTH_ENCRYPTION_KEY", "decryptionKey", "primaryMasterKey", "primaryReadonlyMasterKey",
+                "secondaryMasterKey", "secondaryReadonlyMasterKey", "certificatePassword", "clientSecret",
+                "keyVaultClientSecret", "authHeader", "httpHeader", "encryptedCredential", "functionKey",
+                "atlasKafkaPrimaryEndpoint", "atlasKafkaSecondaryEndpoint", "certificatePassword",
+                "storageAccountPrimaryKey", "privateKey", "fencingClientPassword", "acrToken", "scriptUrlSasToken",
+                "azureBlobSource.containerUrl", "properties.DOCKER_REGISTRY_SEVER_PASSWORD")
+            .map(jsonProperty -> new TestProxySanitizer("$.." + jsonProperty, null, REDACTED_VALUE, BODY_KEY))
+            .collect(Collectors.toList());
+
+        // Values in this list must have a capture group named "secret" for the redaction to work.
+        BODY_REGEXES_TO_REDACT = Stream
+            .of("(?:(Password|User ID)=)(?<secret>.*)(?:;)", "client_secret=(?<secret>[^&]+)",
+                "(?:(access|refresh))_token=(?<secret>.*?)(?=&|$)",
+                "<(?:(Primary|Secondary))Key>(?<secret>.*?)</(?:(Primary|Secondary))Key>",
+                "<UserDelegationKey>.*?<Signed(O|T)id>(?<secret>.*?)</Signed(O|T)id>.*?</UserDelegationKey>",
+                "<UserDelegationKey>.*?<Value>(?<secret>.*?)</Value>.*?</UserDelegationKey>",
+                "(?:(Access|Account|SharedAccess))Key=(?<secret>[^;\\\"]+)", "accesskey=(?<secret>[^;\\\"]+)",
+                "Secret=(?<secret>[^;\\\"]+)")
+            .map(regex -> new TestProxySanitizer(regex, REDACTED_VALUE, BODY_REGEX).setGroupForReplace("secret"))
+            .collect(Collectors.toList());
+
+        HEADER_KEYS_TO_REDACT = Stream
+            .of("Ocp-Apim-Subscription-Key", "api-key", "x-api-key", "subscription-key", "x-ms-encryption-key",
+                "sshPassword")
+            .map(headerKey -> new TestProxySanitizer(headerKey, null, REDACTED_VALUE, HEADER))
+            .collect(Collectors.toList());
+    }
 
     /**
      * Adds headers required for communication with the test proxy.
      *
      * @param request The request to add headers to.
-     * @param proxyUrl The {@link URL} the proxy lives at.
      * @param xRecordingId The x-recording-id value for the current session.
      * @param mode The current test proxy mode.
      * @param skipRecordingRequestBody Flag indicating to skip recording request bodies when tests run in Record mode.
      * @throws RuntimeException Construction of one of the URLs failed.
      */
-    public static void changeHeaders(HttpRequest request, URL proxyUrl, String xRecordingId, String mode,
+    public static void changeHeaders(HttpRequest request, String xRecordingId, String mode,
         boolean skipRecordingRequestBody) {
         HttpHeader upstreamUri = request.getHeaders().get(X_RECORDING_UPSTREAM_BASE_URI);
 
+        URL proxyUrl = createProxyRequestUrl("");
         UrlBuilder proxyUrlBuilder = UrlBuilder.parse(request.getUrl());
         proxyUrlBuilder.setScheme(proxyUrl.getProtocol());
         proxyUrlBuilder.setHost(proxyUrl.getHost());
@@ -249,28 +264,26 @@ public class TestProxyUtils {
 
         Path versionFilePath = rootPath.resolve(versionFile);
         try {
-            return Files.readAllLines(versionFilePath).get(0).replace(System.getProperty("line.separator"), "");
+            return Files.readAllLines(versionFilePath).get(0).replace(System.lineSeparator(), "");
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
     /**
-     * Gets the current URL for the test proxy.
-     * @return The {@link URL} location of the test proxy.
+     * Creates the URL for a request being sent to Test Proxy.
+     *
+     * @param path The path to send the request.
+     * @return The {@link URL} for a request being sent to the Test Proxy.
      * @throws RuntimeException The URL could not be constructed.
      */
-    public static URL getProxyUrl() {
-        if (proxyUrl != null) {
-            return proxyUrl;
-        }
-        UrlBuilder builder = new UrlBuilder();
-        builder.setHost("localhost");
-        builder.setScheme("http");
-        builder.setPort(5000);
+    public static URL createProxyRequestUrl(String path) {
         try {
-            proxyUrl = builder.toUrl();
-            return proxyUrl;
+            return new UrlBuilder().setScheme("http")
+                .setHost("localhost")
+                .setPort(TestProxyManager.proxyPort)
+                .setPath(path)
+                .toUrl();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -281,19 +294,24 @@ public class TestProxyUtils {
      * @return the list of default sanitizers to be added.
      */
     public static List<TestProxySanitizer> loadSanitizers() {
-        List<TestProxySanitizer> sanitizers = addDefaultRegexSanitizers();
-        sanitizers.add(addDefaultUrlSanitizer());
-        sanitizers.addAll(addDefaultBodySanitizers());
-        sanitizers.addAll(addDefaultHeaderKeySanitizers());
+        List<TestProxySanitizer> sanitizers = new ArrayList<>();
+        sanitizers.addAll(BODY_REGEXES_TO_REDACT);
+        sanitizers.addAll(HEADER_KEY_REGEX_TO_REDACT);
+        sanitizers.add(new TestProxySanitizer(URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.URL));
+        sanitizers.addAll(JSON_BODY_KEYS_TO_REDACT);
+        sanitizers.addAll(HEADER_KEYS_TO_REDACT);
         return sanitizers;
     }
 
     private static String createCustomMatcherRequestBody(CustomMatcher customMatcher) {
-        return String.format(
-            "{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"%s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\",\"ignoreQueryOrdering\":%s}",
-            getCommaSeperatedString(customMatcher.getHeadersKeyOnlyMatch()),
-            getCommaSeperatedString(customMatcher.getExcludedHeaders()), customMatcher.isComparingBodies(),
-            getCommaSeperatedString(customMatcher.getIgnoredQueryParameters()), customMatcher.isQueryOrderingIgnored());
+        return jsonWriteHelper(jsonWriter -> jsonWriter.writeStartObject()
+            .writeStringField("ignoredHeaders", getCommaSeperatedString(customMatcher.getHeadersKeyOnlyMatch()))
+            .writeStringField("excludedHeaders", getCommaSeperatedString(customMatcher.getExcludedHeaders()))
+            .writeBooleanField("compareBodies", customMatcher.isComparingBodies())
+            .writeStringField("ignoredQueryParameters",
+                getCommaSeperatedString(customMatcher.getIgnoredQueryParameters()))
+            .writeBooleanField("ignoreQueryOrdering", customMatcher.isQueryOrderingIgnored())
+            .writeEndObject());
     }
 
     private static String getCommaSeperatedString(List<String> stringList) {
@@ -304,35 +322,21 @@ public class TestProxyUtils {
     }
 
     private static String createBodyJsonKeyRequestBody(String jsonKey, String regex, String redactedValue) {
-        if (regex == null) {
-            return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\"}", redactedValue, jsonKey);
-        } else {
-            return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\",\"regex\":\"%s\"}", redactedValue, jsonKey,
-                regex);
-        }
+        return jsonWriteHelper(jsonWriter -> jsonWriter.writeStartObject()
+            .writeStringField("value", redactedValue)
+            .writeStringField("jsonPath", jsonKey)
+            // writeStringField skips fields with null values, no need to null check anymore
+            .writeStringField("regex", regex)
+            .writeEndObject());
     }
 
     private static String createRegexRequestBody(String key, String regex, String value, String groupForReplace) {
-        if (key == null) {
-            if (groupForReplace == null) {
-                // regex pattern and redaction value
-                return String.format("{\"value\":\"%s\",\"regex\":\"%s\"}", value, regex);
-            } else {
-                // regex pattern and redaction value with group replace
-                return String.format("{\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", value, regex,
-                    groupForReplace);
-            }
-        } else if (regex == null) {
-            // header key value
-            return String.format("{\"key\":\"%s\",\"value\":\"%s\"}", key, value);
-        }
-        if (groupForReplace == null) {
-            // header key with regex
-            return String.format("{\"key\":\"%s\",\"value\":\"%s\",\"regex\":\"%s\"}", key, value, regex);
-        } else {
-            return String.format("{\"key\":\"%s\",\"value\":\"%s\",\"regex\":\"%s\",\"groupForReplace\":\"%s\"}", key,
-                value, regex, groupForReplace);
-        }
+        return jsonWriteHelper(jsonWriter -> jsonWriter.writeStartObject()
+            .writeStringField("key", key)
+            .writeStringField("regex", regex)
+            .writeStringField("value", value)
+            .writeStringField("groupForReplace", groupForReplace)
+            .writeEndObject());
     }
 
     /**
@@ -342,7 +346,7 @@ public class TestProxyUtils {
      * @param proxyUrl The proxyUrl to use when constructing requests.
      * @return the list of sanitizer {@link HttpRequest requests} to be sent.
      * @throws RuntimeException if {@link TestProxySanitizerType} is not supported.
-     * @deprecated Use {@link #createAddSanitizersRequest(List, URL)} instead as this will create a bulk HttpRequest
+     * @deprecated Use {@link #createAddSanitizersRequest(List)} instead as this will create a bulk HttpRequest
      * for setting the sanitizers for a test proxy session instead of a request per sanitizer.
      */
     @Deprecated
@@ -358,13 +362,13 @@ public class TestProxyUtils {
                     return createHttpRequest(requestBody, sanitizerType, proxyUrl);
 
                 case BODY_REGEX:
-                    sanitizerType = TestProxySanitizerType.BODY_REGEX.getName();
+                    sanitizerType = BODY_REGEX.getName();
                     requestBody = createRegexRequestBody(null, testProxySanitizer.getRegex(),
                         testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
                     return createHttpRequest(requestBody, sanitizerType, proxyUrl);
 
                 case BODY_KEY:
-                    sanitizerType = TestProxySanitizerType.BODY_KEY.getName();
+                    sanitizerType = BODY_KEY.getName();
                     requestBody = createBodyJsonKeyRequestBody(testProxySanitizer.getKey(),
                         testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
                     return createHttpRequest(requestBody, sanitizerType, proxyUrl);
@@ -393,54 +397,58 @@ public class TestProxyUtils {
      * wiki.
      *
      * @param sanitizers The list of sanitizers to be added.
-     * @param proxyUrl The proxyUrl to use when constructing requests.
      * @return The {@link HttpRequest request} to be sent.
      * @throws RuntimeException if {@link TestProxySanitizerType} is not supported.
      */
-    public static HttpRequest createAddSanitizersRequest(List<TestProxySanitizer> sanitizers, URL proxyUrl) {
-        List<String> sanitizersJsonPayloads = new ArrayList<>(sanitizers.size());
-
-        for (TestProxySanitizer sanitizer : sanitizers) {
-            String requestBody;
-            String sanitizerType;
+    public static HttpRequest createAddSanitizersRequest(List<TestProxySanitizer> sanitizers) {
+        String requestBody = jsonWriteHelper(jsonWriter -> jsonWriter.writeArray(sanitizers, (writer, sanitizer) -> {
             switch (sanitizer.getType()) {
                 case URL:
-                    sanitizerType = TestProxySanitizerType.URL.getName();
-                    requestBody = createRegexRequestBody(null, sanitizer.getRegex(), sanitizer.getRedactedValue(),
-                        sanitizer.getGroupForReplace());
+                    writer.writeStartObject()
+                        .writeStringField("Name", TestProxySanitizerType.URL.getName())
+                        .writeRawField("Body",
+                            createRegexRequestBody(null, sanitizer.getRegex(), sanitizer.getRedactedValue(),
+                                sanitizer.getGroupForReplace()))
+                        .writeEndObject();
                     break;
 
                 case BODY_REGEX:
-                    sanitizerType = TestProxySanitizerType.BODY_REGEX.getName();
-                    requestBody = createRegexRequestBody(null, sanitizer.getRegex(), sanitizer.getRedactedValue(),
-                        sanitizer.getGroupForReplace());
+                    writer.writeStartObject()
+                        .writeStringField("Name", BODY_REGEX.getName())
+                        .writeRawField("Body",
+                            createRegexRequestBody(null, sanitizer.getRegex(), sanitizer.getRedactedValue(),
+                                sanitizer.getGroupForReplace()))
+                        .writeEndObject();
                     break;
 
                 case BODY_KEY:
-                    sanitizerType = TestProxySanitizerType.BODY_KEY.getName();
-                    requestBody = createBodyJsonKeyRequestBody(sanitizer.getKey(), sanitizer.getRegex(),
-                        sanitizer.getRedactedValue());
+                    writer.writeStartObject()
+                        .writeStringField("Name", BODY_KEY.getName())
+                        .writeRawField("Body",
+                            createBodyJsonKeyRequestBody(sanitizer.getKey(), sanitizer.getRegex(),
+                                sanitizer.getRedactedValue()))
+                        .writeEndObject();
                     break;
 
                 case HEADER:
-                    sanitizerType = HEADER.getName();
                     if (sanitizer.getKey() == null && sanitizer.getRegex() == null) {
                         throw new RuntimeException(
-                            "Missing regexKey and/or headerKey for sanitizer type {" + sanitizerType + "}");
+                            "Missing regexKey and/or headerKey for sanitizer type {" + HEADER + "}");
                     }
-                    requestBody = createRegexRequestBody(sanitizer.getKey(), sanitizer.getRegex(),
-                        sanitizer.getRedactedValue(), sanitizer.getGroupForReplace());
+
+                    writer.writeStartObject()
+                        .writeStringField("Name", HEADER.getName())
+                        .writeRawField("Body",
+                            createRegexRequestBody(sanitizer.getKey(), sanitizer.getRegex(),
+                                sanitizer.getRedactedValue(), sanitizer.getGroupForReplace()))
+                        .writeEndObject();
                     break;
 
                 default:
                     throw new RuntimeException("Sanitizer type {" + sanitizer.getType() + "} not supported");
             }
-
-            sanitizersJsonPayloads.add("{\"Name\":\"" + sanitizerType + "\",\"Body\":" + requestBody + "}");
-        }
-
-        String requestBody = "[" + CoreUtils.stringJoin(",", sanitizersJsonPayloads) + "]";
-        return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/AddSanitizers").setBody(requestBody);
+        }));
+        return new HttpRequest(HttpMethod.POST, createProxyRequestUrl("/Admin/AddSanitizers")).setBody(requestBody);
     }
 
     /**
@@ -448,8 +456,7 @@ public class TestProxyUtils {
      * @return The {@link HttpRequest request} to be sent.
      */
     public static HttpRequest getRemoveSanitizerRequest() {
-
-        return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/RemoveSanitizers")
+        return new HttpRequest(HttpMethod.POST, createProxyRequestUrl("/Admin/RemoveSanitizers"))
             .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
     }
 
@@ -461,30 +468,27 @@ public class TestProxyUtils {
     /**
      * Creates a {@link List} of {@link HttpRequest} to be sent to the test proxy to register matchers.
      * @param matchers The {@link TestProxyRequestMatcher}s to encode into requests.
-     * @param proxyUrl The proxyUrl to use when constructing requests.
      * @return The {@link HttpRequest}s to send to the proxy.
      * @throws RuntimeException The {@link TestProxyRequestMatcher.TestProxyRequestMatcherType} is unsupported.
      */
-    public static List<HttpRequest> getMatcherRequests(List<TestProxyRequestMatcher> matchers, URL proxyUrl) {
+    public static List<HttpRequest> getMatcherRequests(List<TestProxyRequestMatcher> matchers) {
         return matchers.stream().map(testProxyMatcher -> {
-            HttpRequest request;
+            HttpRequest request = new HttpRequest(HttpMethod.POST, createProxyRequestUrl("/Admin/setmatcher"));
             String matcherType;
             switch (testProxyMatcher.getType()) {
                 case HEADERLESS:
                     matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.HEADERLESS.getName();
-                    request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/setmatcher");
                     break;
 
                 case BODILESS:
                     matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS.getName();
-                    request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/setmatcher");
                     break;
 
                 case CUSTOM:
                     CustomMatcher customMatcher = (CustomMatcher) testProxyMatcher;
                     String requestBody = createCustomMatcherRequestBody(customMatcher);
                     matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.CUSTOM.getName();
-                    request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/setmatcher").setBody(requestBody);
+                    request.setBody(requestBody);
                     break;
 
                 default:
@@ -502,40 +506,11 @@ public class TestProxyUtils {
      */
     public static HttpRequest setCompareBodiesMatcher() {
         String requestBody = createCustomMatcherRequestBody(new CustomMatcher().setComparingBodies(false));
-        HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/setmatcher").setBody(requestBody);
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, createProxyRequestUrl("/Admin/setmatcher")).setBody(requestBody);
 
         request.setHeader(X_ABSTRACTION_IDENTIFIER,
             TestProxyRequestMatcher.TestProxyRequestMatcherType.CUSTOM.getName());
         return request;
-    }
-
-    private static TestProxySanitizer addDefaultUrlSanitizer() {
-        return new TestProxySanitizer(URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.URL);
-    }
-
-    private static List<TestProxySanitizer> addDefaultBodySanitizers() {
-        return JSON_BODY_KEYS_TO_REDACT.stream()
-            .map(jsonProperty -> new TestProxySanitizer("$.." + jsonProperty, null, REDACTED_VALUE,
-                TestProxySanitizerType.BODY_KEY))
-            .collect(Collectors.toList());
-    }
-
-    private static List<TestProxySanitizer> addDefaultRegexSanitizers() {
-        List<TestProxySanitizer> regexSanitizers = new ArrayList<>();
-
-        regexSanitizers.addAll(BODY_REGEXES_TO_REDACT.stream()
-            .map(regex -> new TestProxySanitizer(regex, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)
-                .setGroupForReplace("secret"))
-            .collect(Collectors.toList()));
-
-        regexSanitizers.addAll(HEADER_KEY_REGEX_TO_REDACT);
-
-        return regexSanitizers;
-    }
-
-    private static List<TestProxySanitizer> addDefaultHeaderKeySanitizers() {
-        return HEADER_KEYS_TO_REDACT.stream()
-            .map(headerKey -> new TestProxySanitizer(headerKey, null, REDACTED_VALUE, HEADER))
-            .collect(Collectors.toList());
     }
 }
