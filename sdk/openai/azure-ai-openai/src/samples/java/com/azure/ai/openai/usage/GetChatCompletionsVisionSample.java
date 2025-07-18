@@ -37,11 +37,17 @@ public class GetChatCompletionsVisionSample {
                 .buildClient();
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        
+        ChatMessageImageUrl url = new ChatMessageImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png");
+        // Set to HIGH for more detail or LOW for compression. See
+        // https://platform.openai.com/docs/guides/images-vision?api-mode=responses#specify-image-input-detail-level
+        ChatMessageImageDetailLevel detail = ChatMessageImageDetailLevel.AUTO; 
+        url.setDetail(detail);
+        
         chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant that describes images"));
         chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
                 new ChatMessageTextContentItem("Please describe this image"),
-                new ChatMessageImageContentItem(
-                        new ChatMessageImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png"))
+                new ChatMessageImageContentItem(url)
         )));
 
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
