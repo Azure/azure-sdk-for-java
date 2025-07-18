@@ -7,8 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.logs.implementation.LogsQueryHelper;
 import com.azure.monitor.query.logs.implementation.models.BatchQueryRequest;
-import com.azure.monitor.query.logs.implementation.models.BatchQueryRequestMethod;
-import com.azure.monitor.query.logs.implementation.models.BatchQueryRequestPath;
 import com.azure.monitor.query.logs.implementation.models.QueryBody;
 
 import java.time.Duration;
@@ -90,9 +88,7 @@ public final class LogsBatchQuery {
             headers.put("Prefer", preferHeader);
         }
         BatchQueryRequest batchQueryRequest
-            = new BatchQueryRequest(String.valueOf(index), queryBody, workspaceId).setHeaders(headers)
-                .setPath(BatchQueryRequestPath.QUERY)
-                .setMethod(BatchQueryRequestMethod.POST);
+            = new BatchQueryRequest(String.valueOf(index), queryBody, workspaceId).setHeaders(headers);
 
         queries.add(batchQueryRequest);
         return String.valueOf(index);

@@ -17,8 +17,6 @@
     "com.azure.monitor.query.logs.implementation.MonitorQueryLogsClient.executeWithResponse": "ClientCustomizations.MonitorQueryLogsClient.execute",
     "com.azure.monitor.query.logs.implementation.MonitorQueryLogsClientBuilder": "ClientCustomizations.MonitorQueryLogsClient",
     "com.azure.monitor.query.logs.implementation.models.BatchQueryRequest": "MonitorQueryLogs.BatchQueryRequest",
-    "com.azure.monitor.query.logs.implementation.models.BatchQueryRequestMethod": null,
-    "com.azure.monitor.query.logs.implementation.models.BatchQueryRequestPath": null,
     "com.azure.monitor.query.logs.implementation.models.BatchQueryResponse": "MonitorQueryLogs.BatchQueryResponse",
     "com.azure.monitor.query.logs.implementation.models.BatchQueryResults": "MonitorQueryLogs.BatchQueryResults",
     "com.azure.monitor.query.logs.implementation.models.BatchRequest": "MonitorQueryLogs.BatchRequest",

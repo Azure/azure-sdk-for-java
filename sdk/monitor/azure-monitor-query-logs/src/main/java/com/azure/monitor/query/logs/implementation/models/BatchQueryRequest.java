@@ -39,16 +39,16 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
     private final QueryBody body;
 
     /*
-     * The query path of a single request in a batch, defaults to /query
+     * The path for the batch query request.
      */
     @Generated
-    private BatchQueryRequestPath path;
+    private final String path = "/query";
 
     /*
-     * The method of a single request in a batch, defaults to POST
+     * The method of a single request in a batch.
      */
     @Generated
-    private BatchQueryRequestMethod method;
+    private final String method = "POST";
 
     /*
      * Primary Workspace ID of the query. This is the Workspace ID from the Properties
@@ -117,47 +117,23 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
     }
 
     /**
-     * Get the path property: The query path of a single request in a batch, defaults to /query.
+     * Get the path property: The path for the batch query request.
      *
      * @return the path value.
      */
     @Generated
-    public BatchQueryRequestPath getPath() {
+    public String getPath() {
         return this.path;
     }
 
     /**
-     * Set the path property: The query path of a single request in a batch, defaults to /query.
-     *
-     * @param path the path value to set.
-     * @return the BatchQueryRequest object itself.
-     */
-    @Generated
-    public BatchQueryRequest setPath(BatchQueryRequestPath path) {
-        this.path = path;
-        return this;
-    }
-
-    /**
-     * Get the method property: The method of a single request in a batch, defaults to POST.
+     * Get the method property: The method of a single request in a batch.
      *
      * @return the method value.
      */
     @Generated
-    public BatchQueryRequestMethod getMethod() {
+    public String getMethod() {
         return this.method;
-    }
-
-    /**
-     * Set the method property: The method of a single request in a batch, defaults to POST.
-     *
-     * @param method the method value to set.
-     * @return the BatchQueryRequest object itself.
-     */
-    @Generated
-    public BatchQueryRequest setMethod(BatchQueryRequestMethod method) {
-        this.method = method;
-        return this;
     }
 
     /**
@@ -180,10 +156,10 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeJsonField("body", this.body);
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeStringField("method", this.method);
         jsonWriter.writeStringField("workspace", this.workspace);
         jsonWriter.writeMapField("headers", this.headers, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("path", this.path == null ? null : this.path.toString());
-        jsonWriter.writeStringField("method", this.method == null ? null : this.method.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -203,8 +179,6 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
             QueryBody body = null;
             String workspace = null;
             Map<String, String> headers = null;
-            BatchQueryRequestPath path = null;
-            BatchQueryRequestMethod method = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -216,18 +190,12 @@ public final class BatchQueryRequest implements JsonSerializable<BatchQueryReque
                     workspace = reader.getString();
                 } else if ("headers".equals(fieldName)) {
                     headers = reader.readMap(reader1 -> reader1.getString());
-                } else if ("path".equals(fieldName)) {
-                    path = BatchQueryRequestPath.fromString(reader.getString());
-                } else if ("method".equals(fieldName)) {
-                    method = BatchQueryRequestMethod.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             BatchQueryRequest deserializedBatchQueryRequest = new BatchQueryRequest(id, body, workspace);
             deserializedBatchQueryRequest.headers = headers;
-            deserializedBatchQueryRequest.path = path;
-            deserializedBatchQueryRequest.method = method;
             return deserializedBatchQueryRequest;
         });
     }
