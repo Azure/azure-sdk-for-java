@@ -6,6 +6,9 @@ import com.azure.compute.batch.models.*;
 import org.junit.jupiter.api.Assertions;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
+import com.azure.core.util.polling.SyncPoller;
+
+import reactor.core.publisher.Mono;
 
 public class BatchErrorTests extends BatchClientTestBase {
 
@@ -13,8 +16,11 @@ public class BatchErrorTests extends BatchClientTestBase {
     public void testResizeErrorCases() {
         try {
             BatchPoolResizeParameters emptyResizeParams = new BatchPoolResizeParameters();
-            SyncAsyncExtension.execute(() -> batchClient.resizePool("fakepool-sync", emptyResizeParams),
-                () -> batchAsyncClient.resizePool("fakepool-async", emptyResizeParams));
+
+            setPlaybackSyncPollerPollInterval(SyncAsyncExtension
+                .execute(() -> batchClient.beginResizePool("fakepool-sync", emptyResizeParams), () -> Mono.fromCallable(
+                    () -> batchAsyncClient.beginResizePool("fakepool-async", emptyResizeParams).getSyncPoller())));
+
         } catch (BatchErrorException err) {
             BatchError error = err.getValue();
             Assertions.assertNotNull(error);
@@ -28,8 +34,9 @@ public class BatchErrorTests extends BatchClientTestBase {
         try {
             BatchPoolResizeParameters resizeParams
                 = new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1);
-            SyncAsyncExtension.execute(() -> batchClient.resizePool("fakepool-sync", resizeParams),
-                () -> batchAsyncClient.resizePool("fakepool-async", resizeParams));
+            setPlaybackSyncPollerPollInterval(SyncAsyncExtension
+                .execute(() -> batchClient.beginResizePool("fakepool-sync", resizeParams), () -> Mono.fromCallable(
+                    () -> batchAsyncClient.beginResizePool("fakepool-async", resizeParams).getSyncPoller())));
         } catch (BatchErrorException err) {
             BatchError error = err.getValue();
             Assertions.assertNotNull(error);
