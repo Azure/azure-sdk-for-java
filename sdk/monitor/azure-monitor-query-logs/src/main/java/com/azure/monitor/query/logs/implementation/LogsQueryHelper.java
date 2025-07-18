@@ -73,7 +73,7 @@ public final class LogsQueryHelper {
 
     /**
      * Returns the list of batch queries.
-     * @param query the {@link LogsBatchQuery} to access {@link @BatchQueryRequest} from.
+     * @param query the {@link LogsBatchQuery} to access {@link BatchQueryRequest} from.
      * @return the list of batch queries.
      */
     public static List<BatchQueryRequest> getBatchQueries(LogsBatchQuery query) {
