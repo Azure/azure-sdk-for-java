@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
@@ -18,7 +19,6 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -190,7 +190,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
                 .duration(Duration.ofMinutes(5))
                 .build();
         try {
-            TestItem createdItem = TestItem.createNewItem();
+            TestObject createdItem = TestObject.create();
             container.createItem(createdItem).block();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(
@@ -295,7 +295,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
                 .build();
         try {
 
-            TestItem createdItem = TestItem.createNewItem();
+            TestObject createdItem = TestObject.create();
             container.createItem(createdItem).block();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(
@@ -358,7 +358,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
 
         // first create few documents
         for (int i = 0; i < 10; i++) {
-            container.createItem(TestItem.createNewItem()).block();
+            container.createItem(TestObject.create()).block();
         }
 
         List<FeedRange> feedRanges = container.getFeedRanges().block();
@@ -367,14 +367,14 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setFeedRange(feedRanges.get(0));
         String query = "select * from c";
-        TestItem itemOnFeedRange1 = container.queryItems(query, cosmosQueryRequestOptions, TestItem.class)
+        TestObject itemOnFeedRange1 = container.queryItems(query, cosmosQueryRequestOptions, TestObject.class)
             .byPage(1)
             .blockFirst()
             .getResults()
             .get(0);
 
         cosmosQueryRequestOptions.setFeedRange(feedRanges.get(1));
-        TestItem itemOnFeedRange2 = container.queryItems(query, cosmosQueryRequestOptions, TestItem.class)
+        TestObject itemOnFeedRange2 = container.queryItems(query, cosmosQueryRequestOptions, TestObject.class)
             .byPage(1)
             .blockFirst()
             .getResults()
@@ -509,7 +509,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
                 .duration(Duration.ofMinutes(5))
                 .build();
         try {
-            TestItem createdItem = TestItem.createNewItem();
+            TestObject createdItem = TestObject.create();
             container.createItem(createdItem).block();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(
@@ -589,7 +589,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         try {
             // create few items to first make sure the collection cache, pkRanges cache is being populated
             for (int i = 0; i < 10; i++) {
-                container.createItem(TestItem.createNewItem()).block();
+                container.createItem(TestObject.create()).block();
             }
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(
@@ -598,7 +598,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
                 .block();
 
             try {
-                CosmosDiagnostics cosmosDiagnostics = container.createItem(TestItem.createNewItem()).block().getDiagnostics();
+                CosmosDiagnostics cosmosDiagnostics = container.createItem(TestObject.create()).block().getDiagnostics();
                 // The PkRanges requests may have retried in another region,
                 // but the create request will only be retried locally for PARTITION_IS_SPLITTING
                 assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
@@ -695,7 +695,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
             // issue few requests to first populate all the necessary caches
             // as connection delay will impact all other operations, and in this test, we want to limit the scope to only collection read
             for (int i = 0; i < 10; i++) {
-                container.createItem(TestItem.createNewItem()).block();
+                container.createItem(TestObject.create()).block();
             }
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(
@@ -704,7 +704,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
                 .block();
 
             try {
-                CosmosDiagnostics cosmosDiagnostics = container.createItem(TestItem.createNewItem()).block().getDiagnostics();
+                CosmosDiagnostics cosmosDiagnostics = container.createItem(TestObject.create()).block().getDiagnostics();
 
                 // validate CONTAINER_LOOK_UP
                 ObjectNode diagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString());
