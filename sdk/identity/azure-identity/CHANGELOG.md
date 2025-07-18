@@ -6,6 +6,11 @@
 
 - Enhanced `AzurePowerShellCredential` token retrieval with tenantId support, cross-version SecureString handling, and improved compatibility and robustness. [#45851](https://github.com/Azure/azure-sdk-for-java/pull/45851)
 
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `com.microsoft.azure:msal4j` from version `1.21.0` to version `1.22.0`. 
 ## 1.16.2 (2025-06-09)
 
 ### Other Changes
