@@ -8,7 +8,7 @@ trigger:
       - hotfix/*
   paths:
     include:
-      - tools/mcp/azure-sdk-java-mcp
+      - eng/tools/mcp/azure-sdk-java-mcp
 
 pr:
   branches:
@@ -19,7 +19,7 @@ pr:
       - hotfix/*
   paths:
     include:
-      - tools/mcp/azure-sdk-java-mcp
+      - eng/tools/mcp/azure-sdk-java-mcp
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -29,11 +29,11 @@ extends:
         variables:
           - template: /eng/pipelines/templates/variables/image.yml
           - name: NodeVersion
-            value: '18.x'
+            value: '22.x'
           - name: ArtifactName
             value: 'azure-sdk-java-mcp'
-          - name: TypeScriptGeneratorDirectory
-            value: 'tools/mcp/azure-sdk-java-mcp'
+          - name: McpToolDirectory
+            value: 'eng/tools/mcp/azure-sdk-java-mcp'
         jobs:
           - job: 'Build'
 
@@ -49,23 +49,34 @@ extends:
                 displayName: 'Use NodeJS $(NodeVersion)'
 
               - script: |
-                  npm install -g npm@8.16.0
-                displayName: "Install npm 8.16.0"
+                  npm ci
+                workingDirectory: $(McpToolDirectory)
+                displayName: "Install npm packages for MCP tool"
 
               - script: |
-                  npm install
-                workingDirectory: $(TypeScriptGeneratorDirectory)
-                displayName: "Install npm packages typescript generator"
+                  npm run lint
+                workingDirectory: $(McpToolDirectory)
+                displayName: "Run ESLint validation"
+
+              - script: |
+                  npm run format:check
+                workingDirectory: $(McpToolDirectory)
+                displayName: "Check code formatting"
+
+              - script: |
+                  npm run test:run
+                workingDirectory: $(McpToolDirectory)
+                displayName: "Run tests"
 
               - script: |
                   npm run-script build
-                workingDirectory: $(TypeScriptGeneratorDirectory)
-                displayName: "Build typescript generator"
+                workingDirectory: $(McpToolDirectory)
+                displayName: "Build Java MCP tool"
 
               - pwsh: |
-                  npm pack $(TypeScriptGeneratorDirectory)
+                  npm pack $(McpToolDirectory)
                   Copy-Item ./*.tgz $(Build.ArtifactStagingDirectory)
-                displayName: "Pack typescript generator"
+                displayName: "Pack Java MCP tool"
 
               - task: 1ES.PublishPipelineArtifact@1
                 inputs:
@@ -79,13 +90,13 @@ extends:
           variables:
             - template: /eng/pipelines/templates/variables/image.yml
             - name: ArtifactName
-              value: 'apiview'
-            - name: TypeScriptGeneratorDirectory
-              value: 'tools/mcp/azure-sdk-java-mcp'
+              value: 'azure-sdk-java-mcp'
+            - name: McpToolDirectory
+              value: 'eng/tools/mcp/azure-sdk-java-mcp'
 
           jobs:
           - job: PublishPackage
-            displayName: 'Publish ts-genapi package to devops feed'
+            displayName: 'Publish azure-sdk-java-mcp package to devops feed'
             pool:
               name: $(LINUXPOOL)
               image: $(LINUXVMIMAGE)
@@ -103,13 +114,14 @@ extends:
                 @"
                 registry=https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-js/npm/registry/
                 always-auth=true
-                "@ | Set-Content -Path $(TypeScriptGeneratorDirectory)/.npmrc -NoNewline
-              displayName: Generate .npmrc
+                "@ | Set-Content -Path $(McpToolDirectory)/.npmrc -NoNewline
+              displayName: "Generate .npmrc"
 
             - task: NpmAuthenticate@0
               inputs:
-                workingFile: $(TypeScriptGeneratorDirectory)/.npmrc
+                workingFile: $(McpToolDirectory)/.npmrc
 
             - pwsh: |
                 npm publish $(PackageArtifactFullPath) --registry https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-js/npm/registry/
-              workingDirectory: $(TypeScriptGeneratorDirectory)
+              workingDirectory: $(McpToolDirectory)
+              displayName: "Publish package to devops feed"
