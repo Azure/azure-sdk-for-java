@@ -6,7 +6,6 @@ import com.azure.compute.batch.models.*;
 import org.junit.jupiter.api.Assertions;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
-import com.azure.core.util.polling.SyncPoller;
 
 import reactor.core.publisher.Mono;
 
