@@ -122,7 +122,8 @@ public class FileTests extends BatchClientTestBase {
 
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for job: " + jobId);
+                e.printStackTrace();
             }
         }
     }
@@ -212,7 +213,8 @@ public class FileTests extends BatchClientTestBase {
 
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
-                // Ignore here
+                System.err.println("Cleanup failed for job: " + jobId);
+                e.printStackTrace();
             }
         }
     }

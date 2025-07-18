@@ -52,7 +52,7 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.build-sharedkey-client
 
         // BEGIN: com.azure.compute.batch.create-pool.creates-a-simple-pool
-        batchClient.createPool(new BatchPoolCreateParameters("mypool001", "STANDARD_DC2s_V2")
+        batchClient.createPool(new BatchPoolCreateParameters("poolId", "STANDARD_DC2s_V2")
             .setVirtualMachineConfiguration(
                 new VirtualMachineConfiguration(new BatchVmImageReference().setPublisher("Canonical")
                     .setOffer("UbuntuServer")
