@@ -57,7 +57,7 @@ public class RequestContextJavaDocCodeSnippets {
 
         // BEGIN: io.clientcore.core.http.rest.requestcontext.postrequest
         RequestContext context = RequestContext.builder()
-            .addRequestCallback(request -> request
+            .addRequestMutator(request -> request
                 // may already be set if request is created from a client
                 .setUri("https://petstore.example.com/pet")
                 .setMethod(HttpMethod.POST)
