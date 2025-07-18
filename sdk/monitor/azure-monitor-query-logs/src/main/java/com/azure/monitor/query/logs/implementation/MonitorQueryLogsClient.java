@@ -261,8 +261,8 @@ public final class MonitorQueryLogsClient {
      *                     String (Optional)
      *                 ]
      *             }
-     *             path: String(/query) (Optional)
-     *             method: String(POST) (Optional)
+     *             path: String (Required)
+     *             method: String (Required)
      *             workspace: String (Required)
      *         }
      *     ]
