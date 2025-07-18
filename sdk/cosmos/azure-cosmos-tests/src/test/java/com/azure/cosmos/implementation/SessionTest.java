@@ -305,8 +305,14 @@ public class SessionTest extends TestSuiteBase {
             SinglePartitionKeyServerBatchRequest serverBatchRequest =
                 (SinglePartitionKeyServerBatchRequest) method.invoke(SinglePartitionKeyServerBatchRequest.class, new PartitionKey(document.getId()),
                     itemBatchOperations);
-            spyClient.executeBatchRequest(getCollectionLink(isNameBased), serverBatchRequest,
-                new RequestOptions(), false).block();
+            spyClient
+                .executeBatchRequest(
+                    getCollectionLink(isNameBased),
+                    serverBatchRequest,
+                    new RequestOptions(),
+                    false,
+                    true)
+                .block();
             assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
             assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
             assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
