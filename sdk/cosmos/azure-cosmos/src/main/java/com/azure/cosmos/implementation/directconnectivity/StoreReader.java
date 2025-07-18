@@ -1002,7 +1002,7 @@ public class StoreReader {
                         /* currentReplicaSetSize: */ currentReplicaSetSize,
                         /* currentWriteQuorum: */ currentWriteQuorum,
                         /* isValid: */!requiresValidLsn
-                        || ((cosmosException.getStatusCode() != HttpConstants.StatusCodes.GONE || isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE))
+                        || ((cosmosException.getStatusCode() != HttpConstants.StatusCodes.GONE || isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE) || isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.LEASE_NOT_FOUND))
                         && lsn >= 0),
                         // TODO: verify where exception.RequestURI is supposed to be set in .Net
                         /* storePhysicalAddress: */ storePhysicalAddress == null
