@@ -6,7 +6,7 @@ A Model Context Protocol (MCP) server that provides comprehensive tools for gene
 
 This MCP server provides the following tools:
 
-1. **sync_java_sdk** - Synchronize/Download TypeSpec source files for Java SDK generation from local or remote sources
+1. **sync_typespec_source_files** - Synchronize/Download TypeSpec source files for Java SDK generation from local or remote sources
 2. **generate_java_sdk** - Generate or update Java SDK code from TypeSpec definitions 
 3. **clean_java_source** - Clean and remove generated Java source files from SDK directory
 4. **build_java_sdk** - Compile and build the Java SDK with Maven for Azure services
@@ -23,7 +23,8 @@ Before using this MCP server, ensure you have:
 1. **Project Structure** - The tools can be run from either:
    - A service module directory containing `tsp-location.yaml` (e.g., `/azure-sdk-for-java/sdk/batch/azure-compute-batch`)
    - The SDK root directory (e.g., `/azure-sdk-for-java`)
-2. **Nodejs** installed.
+2. **Node.js** - Version 20.0.0 or higher installed.
+3. **MCP Client** - A compatible MCP client such as GitHub Copilot or Claude Desktop
 
 ## Configure MCP Server in VSCode
 
@@ -84,7 +85,7 @@ npm run test:run      # Run tests once
 
 ## Tools Documentation
 
-### 1. sync_java_sdk
+### 1. sync_typespec_source_files
 Synchronize/Download the TypeSpec source for a target service to generate Java SDK from. Always ask user to provide local tspconfig.yaml path or remote tspconfig.yaml url. The tool takes local tspconfig.yaml path or remote tspconfig.yaml url as input parameter.
 
 **Parameters:**
@@ -96,7 +97,7 @@ Synchronize/Download the TypeSpec source for a target service to generate Java S
 **Example:**
 ```json
 {
-  "name": "sync_java_sdk",
+  "name": "sync_typespec_source_files",
   "arguments": {
     "localTspConfigPath": "C:\\workspace\\azure-rest-api-specs\\specification\\communication\\Communication.Messages\\tspconfig.yaml"
   }
@@ -260,7 +261,9 @@ This flexibility allows you to work at the level that best suits your workflow.
 2. Add tests for new functionality in `src/**/*.spec.ts`
 3. Build the project with `npm run build`
 4. Test your changes with `npm test` and `npm start`
+5. Format and lint your code with `npm run format` and `npm run lint`
 
 ## License
 
 MIT
+

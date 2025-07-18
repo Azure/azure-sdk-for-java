@@ -1000,8 +1000,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application type names along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all application type name resources created or in the process of being created in the Service Fabric
+     * managed cluster resource along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationTypeResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -1026,7 +1026,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application type names along with {@link PagedResponse}.
+     * @return all application type name resources created or in the process of being created in the Service Fabric
+     * managed cluster resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationTypeResourceInner> listNextSinglePage(String nextLink) {
@@ -1054,7 +1055,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of application type names along with {@link PagedResponse}.
+     * @return all application type name resources created or in the process of being created in the Service Fabric
+     * managed cluster resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationTypeResourceInner> listNextSinglePage(String nextLink, Context context) {

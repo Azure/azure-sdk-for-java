@@ -4,7 +4,7 @@ This guide describes how package owners can monitor their package's Credential S
 any warnings.
 
 General information about CredScan can be found in the overview documentation at [aka.ms/credscan][credscan_doc]. The
-Azure SDK's motivation and methodology for running CredScan is documented [here][devops_doc].
+Azure SDK's motivation and methodology for running CredScan are documented [here][devops_doc].
 
 ## Table of Contents
 

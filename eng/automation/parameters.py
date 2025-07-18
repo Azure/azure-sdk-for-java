@@ -32,6 +32,33 @@ MODELERFOUR_ARGUMENTS = "--modelerfour.additional-checks=false --modelerfour.len
 FLUENTLITE_ARGUMENTS = "{0} --azure-arm --verbose --sdk-integration --generate-samples --generate-tests --fluent=lite --java.fluent=lite --java.license-header=MICROSOFT_MIT_SMALL".format(
     MODELERFOUR_ARGUMENTS
 )
+FLUENTPREMIUM_ARGUMENTS = "--verbose --generate-samples --fluent --java.fluent --java.license-header=MICROSOFT_MIT_SMALL"
+
+FLUENT_PREMIUM_PACKAGES = (
+    "azure-resourcemanager-appplatform",
+    "azure-resourcemanager-appservice",
+    "azure-resourcemanager-authorization",
+    "azure-resourcemanager-cdn",
+    "azure-resourcemanager-compute",
+    "azure-resourcemanager-containerinstance",
+    "azure-resourcemanager-containerregistry",
+    "azure-resourcemanager-containerservice",
+    "azure-resourcemanager-cosmos",
+    "azure-resourcemanager-dns",
+    "azure-resourcemanager-eventhubs",
+    "azure-resourcemanager-keyvault",
+    "azure-resourcemanager-monitor",
+    "azure-resourcemanager-msi",
+    "azure-resourcemanager-network",
+    "azure-resourcemanager-privatedns",
+    "azure-resourcemanager-redis",
+    "azure-resourcemanager-resources",
+    "azure-resourcemanager-search",
+    "azure-resourcemanager-servicebus",
+    "azure-resourcemanager-sql",
+    "azure-resourcemanager-storage",
+    "azure-resourcemanager-trafficmanager",
+)
 
 CI_HEADER = """\
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
