@@ -28,6 +28,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionEndpoints;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
@@ -130,11 +131,11 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         return new Object[][]{
             // fault injection operation type, primaryAddressOnly
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false },
-//            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true },
-//            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true },
-//            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true },
-//            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false },
-//            { OperationType.Replace, FaultInjectionOperationType.PATCH_ITEM, true }
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true }
         };
     }
 
@@ -894,7 +895,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
     }
 
     @Test(groups = {"multi-region",  "long"}, dataProvider = "faultInjectionOperationTypeProviderForLeaseNotFound", timeOut = TIMEOUT)
-    public void faultInjectionServerErrorRuleTests_LeaseNotFound(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType, boolean ignore) throws JsonProcessingException {
+    public void faultInjectionServerErrorRuleTests_LeaseNotFound(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType, boolean primaryAddressOnly) throws JsonProcessingException {
 
         // simulate high channel acquisition/connectionTimeout for read/query
         TestItem createdItem = TestItem.createNewItem();
@@ -906,6 +907,12 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 .condition(
                     new FaultInjectionConditionBuilder()
                         .operationType(faultInjectionOperationType)
+                        .endpoints(
+                            new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(new PartitionKey(createdItem.getId())))
+                                .replicaCount(4)
+                                .includePrimary(true)
+                                .build()
+                        )
                         .build()
                 )
                 .result(
@@ -920,15 +927,15 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         try {
             CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
 
-            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(cosmosAsyncContainer, operationType, createdItem);;
+            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(cosmosAsyncContainer, operationType, createdItem);
             this.validateHitCount(serverErrorRule, 1, operationType, ResourceType.Document);
             this.validateFaultInjectionRuleApplied(
                 cosmosDiagnostics,
                 operationType,
-                HttpConstants.StatusCodes.OK,
-                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.LEASE_NOT_FOUND,
                 ruleId,
-                true
+                !primaryAddressOnly
             );
 
         } finally {

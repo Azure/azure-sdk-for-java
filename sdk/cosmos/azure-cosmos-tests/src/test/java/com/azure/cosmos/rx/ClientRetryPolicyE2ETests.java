@@ -90,21 +90,21 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         return new Object[][]{
             // OperationType, FaultInjectionOperationType, shouldUsePreferredRegionsOnClient
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, true, true },
-//            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, true },
-//            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false },
-//            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false },
-//            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false },
-//            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false },
-//            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, true, false },
-//            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, true, true },
-//            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, true },
-//            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true },
-//            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false, false },
-//            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false, false },
-//            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false, false },
-//            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false, false },
-//            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false },
-//            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, true },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, true },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, true, false },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, true, true },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, true },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false, false },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false, false },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false, false },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false, false },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, true }
         };
     }
 
@@ -482,7 +482,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     .connectionType(FaultInjectionConnectionType.DIRECT)
                     .build())
             .result(
-                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.GONE)
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.LEASE_NOT_FOUND)
                     .times(1)
                     .build()
             )
@@ -511,7 +511,13 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
                 assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
                 assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
-            } else {
+            }
+
+        } catch (CosmosException e) {
+
+            if (!shouldOperationSeeSuccess) {
+
+                CosmosDiagnostics cosmosDiagnostics = e.getDiagnostics();
 
                 assertThat(cosmosDiagnostics).isNotNull();
                 assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
@@ -521,6 +527,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
                 assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
                 assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
+            } else {
+                fail("Operation " + operationType + " should have succeeded, but failed with exception: " + e.getMessage(), e);
             }
 
         } finally {

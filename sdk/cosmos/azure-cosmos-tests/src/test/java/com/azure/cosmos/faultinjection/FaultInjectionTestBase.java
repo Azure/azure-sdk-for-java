@@ -33,7 +33,7 @@ public abstract class FaultInjectionTestBase extends TestSuiteBase {
                 CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
                 String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
                 FeedResponse<TestItem> itemFeedResponse =
-                    cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst();
+                    cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockLast();
 
                 return itemFeedResponse.getCosmosDiagnostics();
             }
