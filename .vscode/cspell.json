@@ -1476,7 +1476,7 @@
       ]
     },
     {
-      "filename": "sdk/tools/sdk-linting-extensions/**",
+      "filename": "sdk/tools/linting-extensions/**",
       "words": [
         "elist",
         "slist"

@@ -67,6 +67,6 @@
     <module>../../storage/azure-storage-file-share/pom.xml</module>
     <module>../../storage/azure-storage-internal-avro/pom.xml</module>
     <module>../../storage/azure-storage-queue/pom.xml</module>
-    <module>../../tools/sdk-linting-extensions/pom.xml</module>
+    <module>../../tools/linting-extensions/pom.xml</module>
   </modules>
 </project>

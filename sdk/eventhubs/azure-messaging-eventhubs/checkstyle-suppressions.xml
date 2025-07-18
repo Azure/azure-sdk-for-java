@@ -11,13 +11,13 @@
   <suppress files="com.azure.messaging.eventhubs.TracingIntegrationTests.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentationTests.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.messaging.eventhubs.Messages.java" checks="NoWhitespaceBeforeCheck" />
-  <suppress files="com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsMetricsProvider.java" checks="io.clientcore.lintingextensions.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationScope.java" checks="io.clientcore.lintingextensions.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.messaging.eventhubs.EventHubClientBuilder.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ServiceClientBuilderCheck" />
-  <suppress files="com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.messaging.eventhubs.EventHubBufferedProducerClient.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.messaging.eventhubs.EventHubConsumerAsyncClient.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.messaging.eventhubs.EventHubConsumerClient.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.messaging.eventhubs.EventHubProducerAsyncClient.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.messaging.eventhubs.EventHubProducerClient.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsMetricsProvider.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
+  <suppress files="com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationScope.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
+  <suppress files="com.azure.messaging.eventhubs.EventHubClientBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
+  <suppress files="com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.messaging.eventhubs.EventHubBufferedProducerClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.messaging.eventhubs.EventHubConsumerAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.messaging.eventhubs.EventHubConsumerClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.messaging.eventhubs.EventHubProducerAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.messaging.eventhubs.EventHubProducerClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
 </suppressions>

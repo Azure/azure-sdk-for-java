@@ -12,6 +12,6 @@
   <suppress files="com.azure.core.tracing.opentelemetry.OpenTelemetryTracingBenchmark.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.core.tracing.opentelemetry.OpenTelemetryUtils.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.java" checks="io.clientcore.lintingextensions.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
+  <suppress files="com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
 </suppressions>

@@ -14,5 +14,5 @@
   <suppress files="com.azure.core.metrics.opentelemetry.OpenTelemetryMetricsBenchmark.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.core.metrics.opentelemetry.OpenTelemetryMetricsOptions.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.core.metrics.opentelemetry.OpenTelemetryUtils.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.core.metrics.opentelemetry.OpenTelemetryMetricsOptions.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.core.metrics.opentelemetry.OpenTelemetryMetricsOptions.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
 </suppressions>

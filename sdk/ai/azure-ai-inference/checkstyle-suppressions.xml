@@ -7,7 +7,7 @@
   <suppress files="com.azure.ai.inference.ChatCompletionsSyncClientTest.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.ai.inference.usage.TraceChatCompletionsToolCallSample.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.ai.inference.usage.TraceStreamingChatCompletionsToolCallSample.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.ai.inference.ChatCompletionsAsyncClient.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.ai.inference.ChatCompletionsClient.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.ai.inference.implementation.InferenceServerSentEvents.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.ai.inference.ChatCompletionsAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.ai.inference.ChatCompletionsClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.ai.inference.implementation.InferenceServerSentEvents.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
 </suppressions>

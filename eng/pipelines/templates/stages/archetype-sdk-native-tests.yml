@@ -125,7 +125,7 @@ extends:
                         - "sdk/${{ parameters.ServiceDirectory }}/**/*.json"
                         - '!sdk/**/test-recordings/*'
                         - '!sdk/**/session-records/*'
-                        - 'sdk/tools/sdk-linting-extensions'
+                        - 'sdk/tools/linting-extensions'
                       JobTemplatePath: /eng/pipelines/templates/jobs/native.live.tests.yml
                       AdditionalParameters:
                         PreSteps:

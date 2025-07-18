@@ -40,7 +40,7 @@ extends:
                         - '**/*.xml'
                         - '!sdk/**/test-recordings'
                         - '!sdk/**/session-records'
-                        - 'sdk/tools/sdk-linting-extensions'
+                        - 'sdk/tools/linting-extensions'
 
               - task: UsePythonVersion@0
                 displayName: 'Use Python $(PythonVersion)'

@@ -9,13 +9,13 @@ trigger:
       - sdk/tools/azure-sdk-archetype/
       - sdk/tools/azure-sdk-build-tool/
       - sdk/tools/azure-openrewrite/
-      - sdk/tools/sdk-linting-extensions/
+      - sdk/tools/linting-extensions/
     exclude:
       - sdk/tools/pom.xml
       - sdk/tools/azure-sdk-build-tool/pom.xml
       - sdk/tools/azure-sdk-archetype/pom.xml
       - sdk/tools/azure-openrewrite/pom.xml
-      - sdk/tools/sdk-linting-extensions/pom.xml
+      - sdk/tools/linting-extensions/pom.xml
 
 pr:
   branches:
@@ -29,13 +29,13 @@ pr:
       - sdk/tools/azure-sdk-archetype/
       - sdk/tools/azure-sdk-build-tool/
       - sdk/tools/azure-openrewrite/
-      - sdk/tools/sdk-linting-extensions/
+      - sdk/tools/linting-extensions/
     exclude:
       - sdk/tools/pom.xml
       - sdk/tools/azure-sdk-build-tool/pom.xml
       - sdk/tools/azure-sdk-archetype/pom.xml
       - sdk/tools/azure-openrewrite/pom.xml
-      - sdk/tools/sdk-linting-extensions/pom.xml
+      - sdk/tools/linting-extensions/pom.xml
 
 parameters:
   - name: release_azurearchetype
@@ -50,8 +50,8 @@ parameters:
     displayName: 'azure-openrewrite'
     type: boolean
     default: false
-  - name: release_sdklintingextensions
-    displayName: 'sdk-linting-extensions'
+  - name: release_lintingextensions
+    displayName: 'linting-extensions'
     type: boolean
     default: false
 
@@ -78,9 +78,9 @@ extends:
         releaseInBatch: ${{ parameters.release_azureopenrewrite }}
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
-      - name: sdk-linting-extensions
+      - name: linting-extensions
         groupId: io.clientcore.tools
-        releaseInBatch: ${{ parameters.release_sdklintingextensions }}
-        safeName: sdklintingextensions
+        releaseInBatch: ${{ parameters.release_lintingextensions }}
+        safeName: lintingextensions
         skipPublishDocGithubIo: true
         skipPublishDocMs: true

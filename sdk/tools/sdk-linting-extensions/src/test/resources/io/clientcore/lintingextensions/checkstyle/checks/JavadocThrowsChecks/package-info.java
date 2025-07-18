@@ -1,1 +1,0 @@
-package io.clientcore.lintingextensions.checkstyle.checks.JavadocThrowsChecks;

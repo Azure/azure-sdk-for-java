@@ -125,12 +125,12 @@ def main():
     if not args.skip_changelog:
         arguments.append('"-Dverify-changelog"')
 
-    # If Checkstyle, Spotbugs, or RevApi is being ran install sdk-linting-extensions to ensure the linting configuration is up-to-date.
+    # If Checkstyle, Spotbugs, or RevApi is being ran install linting-extensions to ensure the linting configuration is up-to-date.
     if not args.skip_checkstyle or not args.skip_spotbugs or not args.skip_revapi:
         if debug:
-            print('Installing sdk-linting-extensions as Checkstyle, Spotbugs, or RevApi linting is being performed.')
+            print('Installing linting-extensions as Checkstyle, Spotbugs, or RevApi linting is being performed.')
 
-        os.system('mvn install -f ' + os.path.join('sdk', 'tools', 'sdk-linting-extensions', 'pom.xml'))
+        os.system('mvn install -f ' + os.path.join('sdk', 'tools', 'linting-extensions', 'pom.xml'))
 
     maven_command = base_command.format(','.join(list(set(build_artifacts))), ' '.join(arguments))
 

@@ -1,3 +1,0 @@
-io.clientcore.lintingextensions.revapi.transforms.AllowedExternalApis
-io.clientcore.lintingextensions.revapi.transforms.IgnoredJacksonDatabindRemovalTransform
-io.clientcore.lintingextensions.revapi.transforms.IgnoredTransitiveChangesTransform

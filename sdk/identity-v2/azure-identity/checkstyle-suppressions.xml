@@ -7,6 +7,6 @@
   <suppress files="com.azure.v2.identity.implementation.client.DevToolsClient.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.v2.identity.implementation.client.LinuxKeyRingAccessor.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.v2.identity.implementation.client.PowershellManager.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.v2.identity.implementation.client.LinuxKeyRingAccessor.java" checks="io.clientcore.lintingextensions.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.v2.identity.implementation.models.PublicClientOptions.java" checks="io.clientcore.lintingextensions.checkstyle.checks.GoodLoggingCheck" />
+  <suppress files="com.azure.v2.identity.implementation.client.LinuxKeyRingAccessor.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
+  <suppress files="com.azure.v2.identity.implementation.models.PublicClientOptions.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
 </suppressions>

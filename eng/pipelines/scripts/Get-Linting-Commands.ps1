@@ -1,25 +1,25 @@
 <#
 .SYNOPSIS
 Determines the Checkstyle, RevApi, and Spotbugs linting commands that should be ran as validation in the
-sdk-linting-extensions pipeline.
+linting-extensions pipeline.
 
 .DESCRIPTION
 Given a build type and target branch this will determine which Checkstyle, RevApi, and Spotbugs linting commands
-will be used as validation in the sdk-linting-extensions pipeline.
+will be used as validation in the linting-extensions pipeline.
 
 If the build type is "Scheduled" all linting steps will be performed as this is a daily validation. This will verify
 all code changes since the last scheduled build against Checkstyle, RevApi, and Spotbugs linting.
 
 Otherwise, the linting steps are determined based on which directories have code modifications. They are the following:
 
-* checkstyle:check - sdk/tools/sdk-linting-extensions/src/main/java/io/clientcore/lintingextensions/checkstyle/* (indicates source code changes to our custom Checkstyle rules)
+* checkstyle:check - sdk/tools/linting-extensions/src/main/java/io/clientcore/linting/extensions/checkstyle/* (indicates source code changes to our custom Checkstyle rules)
 * checkstyle:check - eng/lintingconfigs/checkstyle/* (indicates global Checkstyle configuration changes)
-* revapi:check - sdk/tools/sdk-linting-extensions/src/main/java/io/clientcore/lintingextensions/revapi/* (indicates source code changes to our custom RevApi rules)
+* revapi:check - sdk/tools/linting-extensions/src/main/java/io/clientcore/linting/extensions/revapi/* (indicates source code changes to our custom RevApi rules)
 * revapi:check - eng/lintingconfigs/revapi/* (indicates global RevApi configuration changes)
 * spotbugs:check - eng/lintingconfigs/spotbugs/* (indicates global Spotbugs configuration changes)
 
 .PARAMETER BuildReason
-Which pipeline build reason triggered execution of sdk-linting-extensions.
+Which pipeline build reason triggered execution of linting-extensions.
 
 .PARAMETER SourceBranch
 The branch containing changes.
@@ -62,7 +62,7 @@ $runAll = $diffFiles -contains 'eng/code-quality-reports/ci.yml' `
     -or $diffFiles -contains 'eng/pipelines/code-quality-reports.yml' `
     -or $diffFiles -contains 'eng/pipelines/scripts/Get-Linting-Commands.ps1' `
     -or $diffFiles -contains 'eng/pipelines/scripts/Get-Linting-Reports.ps1' `
-    -or $diffFiles -contains 'sdk/tools/sdk-linting-extensions/pom.xml'
+    -or $diffFiles -contains 'sdk/tools/linting-extensions/pom.xml'
 if ($runAll) {
     Write-Host "PR changed the CI or project configuration, running all linting steps."
     Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]-Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false"
@@ -72,7 +72,7 @@ if ($runAll) {
 
 $runLinting = 'false'
 [string[]]$lintingGoals = @()
-$srcLintingExtensions = 'sdk/tools/sdk-linting-extensions/src/main/java/io/clientcore/lintingextensions'
+$srcLintingExtensions = 'sdk/tools/linting-extensions/src/main/java/io/clientcore/linting/extensions'
 $globalConfig = 'eng/lintingconfigs'
 
 $checkstyleSourceChanged = ($diffFiles -match "${srcLintingExtensions}/checkstyle/*").Count -gt 0

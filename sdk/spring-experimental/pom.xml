@@ -21,7 +21,7 @@
     <profile>
       <id>dev</id>
       <modules>
-        <module>../tools/sdk-linting-extensions</module>
+        <module>../tools/linting-extensions</module>
       </modules>
     </profile>
   </profiles>

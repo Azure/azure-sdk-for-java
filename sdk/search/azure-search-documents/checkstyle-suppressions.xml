@@ -9,8 +9,8 @@
   <suppress files="com.azure.search.documents.test.environment.models.LoudHotel.java" checks="MethodNameCheck" />
   <suppress files="com.azure.search.documents.test.environment.models.Book.java" checks="ParameterNameCheck" />
   <suppress files="com.azure.search.documents.indexes.FieldBuilderTests.java" checks="VisibilityModifierCheck" />
-  <suppress files="com.azure.search.documents.SearchClientBuilder.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ServiceClientBuilderCheck" />
-  <suppress files="com.azure.search.documents.SearchIndexingBufferedAsyncSender.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.search.documents.SearchIndexingBufferedSender.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.search.documents.implementation.batching.SearchIndexingPublisher.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.search.documents.SearchClientBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
+  <suppress files="com.azure.search.documents.SearchIndexingBufferedAsyncSender.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.search.documents.SearchIndexingBufferedSender.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.search.documents.implementation.batching.SearchIndexingPublisher.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
 </suppressions>

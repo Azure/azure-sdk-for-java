@@ -14,7 +14,7 @@ trigger:
       - eng/pipelines/code-quality-reports.yml
       - eng/pipelines/scripts/Get-Linting-Commands.ps1
       - eng/pipelines/scripts/Get-Linting-Reports.ps1
-      - sdk/tools/sdk-linting-extensions/
+      - sdk/tools/linting-extensions/
 
 pr:
   branches:
@@ -31,7 +31,7 @@ pr:
       - eng/pipelines/code-quality-reports.yml
       - eng/pipelines/scripts/Get-Linting-Commands.ps1
       - eng/pipelines/scripts/Get-Linting-Reports.ps1
-      - sdk/tools/sdk-linting-extensions/
+      - sdk/tools/linting-extensions/
 
 extends:
   template: /eng/pipelines/code-quality-reports.yml

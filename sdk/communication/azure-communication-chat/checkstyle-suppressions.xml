@@ -4,5 +4,5 @@
 
 <suppressions>
   <suppress files="com.azure.communication.chat.package-info.java" checks="HeaderCheck" />
-  <suppress files="com.azure.communication.chat.implementation.AzureCommunicationChatServiceImplBuilder.java" checks="io.clientcore.lintingextensions.checkstyle.checks.ServiceClientBuilderCheck" />
+  <suppress files="com.azure.communication.chat.implementation.AzureCommunicationChatServiceImplBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
 </suppressions>

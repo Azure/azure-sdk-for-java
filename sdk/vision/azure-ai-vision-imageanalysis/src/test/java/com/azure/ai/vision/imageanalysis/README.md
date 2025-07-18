@@ -11,7 +11,7 @@ See [Prerequisites](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vi
 1. Clone or download the azure-sdk-for-java repository.
 1. Open a command prompt window in the root folder of your clone, and run:
    ```bash
-   mvn install -f sdk\tools\sdk-linting-extensions\pom.xml
+   mvn install -f sdk\tools\linting-extensions\pom.xml
    ```
 
 ### Set environment variables
