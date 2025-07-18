@@ -342,7 +342,6 @@ public class TaskTests extends BatchClientTestBase {
             try {
                 container.deleteIfExists();
             } catch (Exception e) {
-                System.err.println("Cleanup failed for container: " + container.getBlobContainerName());
                 e.printStackTrace();
             }
             try {
