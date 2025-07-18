@@ -69,7 +69,7 @@ BatchClient batchClientWithSharedKey = batchClientBuilder.buildClient();
 You can create a pool of Azure virtual machines which can be used to execute tasks.
 
 ```java com.azure.compute.batch.create-pool.creates-a-simple-pool
-batchClient.createPool(new BatchPoolCreateParameters("mypool001", "STANDARD_DC2s_V2")
+batchClient.createPool(new BatchPoolCreateParameters("poolId", "STANDARD_DC2s_V2")
     .setVirtualMachineConfiguration(
         new VirtualMachineConfiguration(new BatchVmImageReference().setPublisher("Canonical")
             .setOffer("UbuntuServer")
