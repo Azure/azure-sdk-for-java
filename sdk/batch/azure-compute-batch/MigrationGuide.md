@@ -1106,7 +1106,7 @@ Track 2:
 
 ```java com.azure.compute.batch.create-certificate.certificate-create
 batchClient.createCertificate(
-    new BatchCertificate("0123456789abcdef0123456789abcdef01234567", "sha1", "U3dhZ2dlciByb2Nrcw==".getBytes())
+    new BatchCertificate("0123456789abcdef0123456789abcdef01234567", "sha1", "U3dhZ2randomByb2Hash==".getBytes())
         .setCertificateFormat(BatchCertificateFormat.PFX)
         .setPassword("fakeTokenPlaceholder"),
     null);
@@ -1139,7 +1139,7 @@ Track 2:
 
 ```java com.azure.compute.batch.create-certificate.certificate-create
 batchClient.createCertificate(
-    new BatchCertificate("0123456789abcdef0123456789abcdef01234567", "sha1", "U3dhZ2dlciByb2Nrcw==".getBytes())
+    new BatchCertificate("0123456789abcdef0123456789abcdef01234567", "sha1", "U3dhZ2randomByb2Hash==".getBytes())
         .setCertificateFormat(BatchCertificateFormat.PFX)
         .setPassword("fakeTokenPlaceholder"),
     null);
