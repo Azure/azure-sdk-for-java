@@ -25,7 +25,6 @@ import com.azure.compute.batch.models.ExitOptions;
 import com.azure.compute.batch.models.UserIdentity;
 import com.azure.compute.batch.models.VirtualMachineConfiguration;
 import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 

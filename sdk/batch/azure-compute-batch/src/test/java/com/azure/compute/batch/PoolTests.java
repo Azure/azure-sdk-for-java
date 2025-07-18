@@ -125,6 +125,7 @@ public class PoolTests extends BatchClientTestBase {
 
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
+                System.err.println("Cleanup failed for pool: " + poolId);
                 e.printStackTrace();
             }
         }
@@ -417,6 +418,7 @@ public class PoolTests extends BatchClientTestBase {
 
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
+                System.err.println("Cleanup failed for pool: " + poolId);
                 e.printStackTrace();
             }
         }
@@ -540,6 +542,7 @@ public class PoolTests extends BatchClientTestBase {
 
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
+                System.err.println("Cleanup failed for pool: " + poolId);
                 e.printStackTrace();
             }
         }
@@ -719,6 +722,7 @@ public class PoolTests extends BatchClientTestBase {
                         () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
+                System.err.println("Cleanup failed for pool: " + poolId);
                 e.printStackTrace();
             }
         }

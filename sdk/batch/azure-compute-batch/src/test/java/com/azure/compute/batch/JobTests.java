@@ -242,6 +242,7 @@ public class JobTests extends BatchClientTestBase {
 
                 deletePoller.waitForCompletion();
             } catch (Exception e) {
+                System.err.println("Cleanup failed for job: " + jobId);
                 e.printStackTrace();
             }
         }
