@@ -11,7 +11,6 @@ import io.netty.channel.ChannelPipeline;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
@@ -33,7 +32,6 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
 
     private final Netty4ConnectionPool connectionPool;
     private final AtomicReference<Throwable> errorReference;
-    private final CountDownLatch latch;
     private final AtomicBoolean cleanedUp = new AtomicBoolean(false);
     private final Object pipelineOwnerToken;
 
@@ -52,28 +50,21 @@ public class Netty4PipelineCleanupHandler extends ChannelDuplexHandler {
     }
 
     public Netty4PipelineCleanupHandler(Netty4ConnectionPool connectionPool, AtomicReference<Throwable> errorReference,
-        CountDownLatch latch, Object pipelineOwnerToken) {
+        Object pipelineOwnerToken) {
         this.connectionPool = connectionPool;
         this.errorReference = errorReference;
-        this.latch = latch;
         this.pipelineOwnerToken = pipelineOwnerToken;
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        if (errorReference != null && latch != null) {
-            setOrSuppressError(errorReference, cause);
-            latch.countDown();
-        }
+        setOrSuppressError(errorReference, cause);
         cleanup(ctx, true);
+        ctx.fireExceptionCaught(cause);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
-        ctx.fireChannelInactive();
-        if (latch != null) {
-            latch.countDown();
-        }
         cleanup(ctx, true);
         ctx.fireChannelInactive();
     }

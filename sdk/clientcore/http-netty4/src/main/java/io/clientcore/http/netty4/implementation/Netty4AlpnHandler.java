@@ -33,8 +33,6 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
      */
     public static final AttributeKey<HttpProtocolVersion> HTTP_PROTOCOL_VERSION_KEY
         = AttributeKey.valueOf("http-protocol-version");
-    private static final Netty4ConnectionPool.Http2GoAwayHandler GO_AWAY_HANDLER
-        = new Netty4ConnectionPool.Http2GoAwayHandler();
 
     private final HttpRequest request;
     private final AtomicReference<ResponseStateInfo> responseReference;
@@ -74,14 +72,9 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
             return;
         }
 
-        // Store the negotiated protocol for connection reuse.
         ctx.channel().attr(HTTP_PROTOCOL_VERSION_KEY).set(protocolVersion);
 
         configureHttpsPipeline(ctx.pipeline(), request, protocolVersion, responseReference, errorReference, latch);
-
-        if (protocolVersion == HttpProtocolVersion.HTTP_2) {
-            ctx.pipeline().addLast(GO_AWAY_HANDLER);
-        }
 
         if (protocolVersion == HttpProtocolVersion.HTTP_2) {
             sendHttp2Request(request, ctx.channel(), errorReference, latch);
@@ -101,12 +94,5 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
         if (ctx.pipeline().get(ALPN) != null) {
             ctx.pipeline().remove(this);
         }
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        setOrSuppressError(errorReference, cause);
-        ctx.fireExceptionCaught(cause);
-        latch.countDown();
     }
 }

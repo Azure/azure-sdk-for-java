@@ -28,6 +28,8 @@ import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
 import io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.proxy.ProxyConnectException;
+import org.eclipse.jetty.io.EndPoint;
+import org.eclipse.jetty.server.HttpConnection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
@@ -37,6 +39,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import javax.net.ssl.SSLException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
@@ -44,9 +47,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.SocketException;
 import java.net.URI;
 import java.nio.channels.Channels;
 import java.nio.channels.ClosedChannelException;
+import java.nio.channels.SocketChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -449,6 +454,84 @@ public class NettyHttpClientTests {
             = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(SHORT_BODY_PATH)))) {
             assertEquals(200, response.getStatusCode());
             assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
+        }
+    }
+
+    @Test
+    public void nonPooledConnectionFails() {
+        HttpClient client = null;
+        try {
+            client = new NettyHttpClientBuilder().connectionPoolSize(0).build();
+            HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost:1");
+
+            HttpClient finalClient = client;
+            assertThrows(CoreException.class, () -> finalClient.send(request));
+        } finally {
+            if (client != null) {
+                ((NettyHttpClient) client).close();
+            }
+        }
+    }
+
+    @Test
+    public void sslHandshakeFails() {
+        LocalTestServer server = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false,
+            (req, res, body) -> res.setStatus(HttpServletResponse.SC_OK));
+        HttpClient client = null;
+        try {
+            server.start();
+            client = new NettyHttpClientBuilder().connectionPoolSize(0).build();
+
+            URI httpsUri = URI.create("https://localhost:" + server.getPort());
+
+            HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(httpsUri);
+
+            HttpClient finalClient = client;
+            CoreException exception = assertThrows(CoreException.class, () -> finalClient.send(request));
+            assertInstanceOf(SSLException.class, exception.getCause());
+        } finally {
+            if (client != null) {
+                ((NettyHttpClient) client).close();
+            }
+            server.stop();
+        }
+    }
+
+    @Test
+    public void requestWriteFailsWhenServerClosesConnection() {
+        LocalTestServer server = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, (req, res, body) -> {
+            try {
+                // Get the underlying java.nio.SocketChannel from the Jetty connection
+                EndPoint endPoint = HttpConnection.getCurrentConnection().getEndPoint();
+                SocketChannel channel = (SocketChannel) endPoint.getTransport();
+
+                // Set SO_LINGER to true with a timeout of 0 seconds.
+                // This forces the OS to send a TCP RST packet on close() instead of the normal FIN sequence.
+                channel.socket().setSoLinger(true, 0);
+            } catch (SocketException e) {
+                throw new RuntimeException(e);
+            }
+
+            // Now, close the connection. This will trigger the RST.
+            HttpConnection.getCurrentConnection().getEndPoint().close();
+        });
+
+        HttpClient client = null;
+        try {
+            server.start();
+            client = new NettyHttpClientBuilder().connectionPoolSize(0).build();
+            HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
+                .setUri(URI.create(server.getUri()))
+                .setBody(BinaryData.fromString("test data"));
+
+            HttpClient finalClient = client;
+            CoreException exception = assertThrows(CoreException.class, () -> finalClient.send(request));
+            assertInstanceOf(IOException.class, exception.getCause());
+        } finally {
+            if (client != null) {
+                ((NettyHttpClient) client).close();
+            }
+            server.stop();
         }
     }
 

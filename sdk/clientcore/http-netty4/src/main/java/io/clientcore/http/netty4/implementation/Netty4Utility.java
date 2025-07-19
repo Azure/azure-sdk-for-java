@@ -135,6 +135,8 @@ public final class Netty4Utility {
      * <p>
      * Content will only be written to the {@link OutputStream} if the {@link ByteBuf} is non-null and is
      * {@link ByteBuf#isReadable()}. The entire {@link ByteBuf} will be consumed.
+     * </p>
+     * This method does NOT release the {@link ByteBuf} if it was consumed.
      *
      * @param byteBuf The Netty {@link ByteBuf} to read from.
      * @param stream The {@link OutputStream} to write to.
@@ -148,10 +150,6 @@ public final class Netty4Utility {
         }
 
         byteBuf.readBytes(stream, byteBuf.readableBytes());
-        //        if (byteBuf.refCnt() > 0) {
-        //            // Release the ByteBuf as we've consumed it.
-        //            byteBuf.release();
-        //        }
     }
 
     /**
@@ -480,24 +478,7 @@ public final class Netty4Utility {
         AtomicReference<Throwable> errorReference, CountDownLatch latch) {
         final ChannelHandler httpCodec;
         if (HttpProtocolVersion.HTTP_2 == protocol) {
-            // TODO (alzimmer): InboundHttp2ToHttpAdapter buffers the entire response into a FullHttpResponse. Need to
-            //  create a streaming version of this to support huge response payloads.
-            Http2Connection http2Connection = new DefaultHttp2Connection(false);
-            Http2Settings settings = new Http2Settings().headerTableSize(4096)
-                .maxHeaderListSize(TWO_FIFTY_SIX_KB)
-                .pushEnabled(false)
-                .initialWindowSize(TWO_FIFTY_SIX_KB);
-            Http2FrameListener frameListener = new DelegatingDecompressorFrameListener(http2Connection,
-                new InboundHttp2ToHttpAdapterBuilder(http2Connection).maxContentLength(Integer.MAX_VALUE)
-                    .propagateSettings(true)
-                    .validateHttpHeaders(true)
-                    .build());
-
-            httpCodec = new HttpToHttp2ConnectionHandlerBuilder().initialSettings(settings)
-                .frameListener(frameListener)
-                .connection(http2Connection)
-                .validateHeaders(true)
-                .build();
+            httpCodec = createHttp2Codec();
         } else { // HTTP/1.1
             httpCodec = createCodec();
         }
@@ -513,6 +494,27 @@ public final class Netty4Utility {
             pipeline.addAfter(Netty4HandlerNames.SSL, Netty4HandlerNames.HTTP_CODEC, httpCodec);
             pipeline.addAfter(Netty4HandlerNames.HTTP_CODEC, Netty4HandlerNames.HTTP_RESPONSE, responseHandler);
         }
+    }
+
+    public static ChannelHandler createHttp2Codec() {
+        // TODO (alzimmer): InboundHttp2ToHttpAdapter buffers the entire response into a FullHttpResponse. Need to
+        //  create a streaming version of this to support huge response payloads.
+        Http2Connection http2Connection = new DefaultHttp2Connection(false);
+        Http2Settings settings = new Http2Settings().headerTableSize(4096)
+            .maxHeaderListSize(TWO_FIFTY_SIX_KB)
+            .pushEnabled(false)
+            .initialWindowSize(TWO_FIFTY_SIX_KB);
+        Http2FrameListener frameListener = new DelegatingDecompressorFrameListener(http2Connection,
+            new InboundHttp2ToHttpAdapterBuilder(http2Connection).maxContentLength(Integer.MAX_VALUE)
+                .propagateSettings(true)
+                .validateHttpHeaders(true)
+                .build());
+
+        return new HttpToHttp2ConnectionHandlerBuilder().initialSettings(settings)
+            .frameListener(frameListener)
+            .connection(http2Connection)
+            .validateHeaders(true)
+            .build();
     }
 
     public static void sendHttp2Request(HttpRequest request, Channel channel, AtomicReference<Throwable> errorReference,

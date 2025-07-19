@@ -77,7 +77,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
         HttpProtocolVersion protocolVersion = ctx.channel().attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).get();
-        this.isHttp2 = protocolVersion == HttpProtocolVersion.HTTP_2;
+        this.isHttp2 = protocolVersion == HttpProtocolVersion.HTTP_2; //TODO: remove?
     }
 
     @Override

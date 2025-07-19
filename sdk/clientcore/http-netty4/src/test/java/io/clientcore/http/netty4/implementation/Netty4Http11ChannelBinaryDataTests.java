@@ -37,6 +37,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.clientcore.http.netty4.TestUtils.assertArraysEqual;
 import static io.clientcore.http.netty4.TestUtils.createChannelWithReadHandling;
@@ -358,6 +359,104 @@ public class Netty4Http11ChannelBinaryDataTests {
 
         assertTrue(cleanupLatch.await(10, TimeUnit.SECONDS),
             "Cleanup task was not called after the channel became inactive.");
+    }
+
+    @Test
+    public void testBinaryDataWithoutOnClose() {
+        Netty4ChannelBinaryData binaryData
+            = new Netty4ChannelBinaryData(new ByteArrayOutputStream(), new EmbeddedChannel(), 10L, false);
+        assertEquals(10L, binaryData.getLength());
+    }
+
+    @Test
+    public void writeToAlreadyDrainedStreamThrowsException() {
+        Netty4ChannelBinaryData binaryData
+            = new Netty4ChannelBinaryData(new ByteArrayOutputStream(), channelWithNoData(), 0L, false);
+
+        binaryData.writeTo(new ByteArrayOutputStream());
+
+        assertThrows(IllegalStateException.class, () -> binaryData.writeTo(new ByteArrayOutputStream()));
+    }
+
+    @Test
+    public void writeToThrowsWhenChannelErrors() {
+        IOException testException = new IOException("test writeTo error");
+        Channel channel = createChannelWithReadHandling((ignored, ch) -> {
+            ch.pipeline().addLast(new ExceptionSuppressingHandler());
+            ch.pipeline().fireExceptionCaught(testException);
+        });
+        Netty4ChannelBinaryData binaryData
+            = new Netty4ChannelBinaryData(new ByteArrayOutputStream(), channel, 10L, false);
+
+        CoreException exception
+            = assertThrows(CoreException.class, () -> binaryData.writeTo(new ByteArrayOutputStream()));
+        assertEquals(testException, exception.getCause());
+    }
+
+    @Test
+    public void writeToThrowsWhenChannelThrowsError() {
+        // This test covers the 'instanceof Error' branch in writeTo(OutputStream).
+        AssertionError testError = new AssertionError("test writeTo error");
+        Channel channel = createChannelWithReadHandling((ignored, ch) -> {
+            ch.pipeline().addLast(new ExceptionSuppressingHandler());
+            ch.pipeline().fireExceptionCaught(testError);
+        });
+        Netty4ChannelBinaryData binaryData
+            = new Netty4ChannelBinaryData(new ByteArrayOutputStream(), channel, 10L, false);
+
+        AssertionError error
+            = assertThrows(AssertionError.class, () -> binaryData.writeTo(new ByteArrayOutputStream()));
+        assertEquals(testError, error);
+    }
+
+    @Test
+    public void closeIsIdempotent() {
+        AtomicInteger closed = new AtomicInteger(0);
+        Runnable cleanupTask = closed::getAndIncrement;
+        Netty4ChannelBinaryData binaryData
+            = new Netty4ChannelBinaryData(new ByteArrayOutputStream(), channelWithNoData(), 0L, false, cleanupTask);
+
+        binaryData.toBytes();
+
+        binaryData.close();
+        binaryData.close();
+
+        assertEquals(1, closed.get(), "Close should have been called only once");
+    }
+
+    @Test
+    public void toBytesThrowsOnInactiveChannelWithIncompleteBody() throws IOException {
+        // This test covers the case where the channel is closed but the eager content is insufficient.
+        byte[] eagerBytes = "eager".getBytes(StandardCharsets.UTF_8);
+        ByteArrayOutputStream eagerContent = new ByteArrayOutputStream();
+        eagerContent.write(eagerBytes);
+
+        TestMockChannel channel = new TestMockChannel();
+        new DefaultEventLoop().register(channel);
+
+        // The Expected length is 10, but we only have 5 bytes.
+        Netty4ChannelBinaryData binaryData = new Netty4ChannelBinaryData(eagerContent, channel, 10L, false);
+
+        channel.close().awaitUninterruptibly();
+
+        CoreException exception = assertThrows(CoreException.class, binaryData::toBytes);
+
+        assertInstanceOf(IOException.class, exception.getCause());
+    }
+
+    @Test
+    public void toBytesThrowsWhenChannelThrowsError() {
+        // This test covers the 'instanceof Error' branch in drainStream() used by toBytes().
+        AssertionError testError = new AssertionError("test toBytes error");
+        Channel channel = createChannelWithReadHandling((ignored, ch) -> {
+            ch.pipeline().addLast(new ExceptionSuppressingHandler());
+            ch.pipeline().fireExceptionCaught(testError);
+        });
+        Netty4ChannelBinaryData binaryData
+            = new Netty4ChannelBinaryData(new ByteArrayOutputStream(), channel, 10L, false);
+
+        AssertionError error = assertThrows(AssertionError.class, binaryData::toBytes);
+        assertEquals(testError, error);
     }
 
     private static class TestMockChannel extends AbstractChannel {

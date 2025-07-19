@@ -8,6 +8,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.utils.AuthenticateChallenge;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler;
@@ -20,6 +21,8 @@ import io.netty.channel.socket.ChannelInputShutdownEvent;
 import io.netty.handler.codec.http2.Http2GoAwayFrame;
 import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.proxy.ProxyHandler;
+import io.netty.handler.ssl.ApplicationProtocolNames;
+import io.netty.handler.ssl.ApplicationProtocolNegotiationHandler;
 import io.netty.handler.ssl.SslCloseCompletionEvent;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -51,10 +54,12 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_CODEC;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROXY;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL_INITIALIZER;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.buildSslContext;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.createHttp2Codec;
 
 /**
  * A pool of Netty channels that can be reused for requests to the same remote address.
@@ -112,6 +117,9 @@ public class Netty4ConnectionPool implements Closeable {
 
     @ChannelHandler.Sharable
     public static final class SuppressProxyConnectExceptionWarningHandler extends ChannelInboundHandlerAdapter {
+        private static final SuppressProxyConnectExceptionWarningHandler INSTANCE
+            = new SuppressProxyConnectExceptionWarningHandler();
+
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
             if (cause instanceof HttpProxyHandler.HttpProxyConnectException) {
@@ -123,6 +131,8 @@ public class Netty4ConnectionPool implements Closeable {
 
     @ChannelHandler.Sharable
     private static class SslGracefulShutdownHandler extends ChannelInboundHandlerAdapter {
+        private static final SslGracefulShutdownHandler INSTANCE = new SslGracefulShutdownHandler();
+
         @Override
         public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
             if (evt instanceof SslCloseCompletionEvent) {
@@ -134,6 +144,8 @@ public class Netty4ConnectionPool implements Closeable {
 
     @ChannelHandler.Sharable
     private static class PoolConnectionHealthHandler extends ChannelInboundHandlerAdapter {
+        private static final PoolConnectionHealthHandler INSTANCE = new PoolConnectionHealthHandler();
+
         private static final AttributeKey<Boolean> CONNECTION_INVALIDATED
             = AttributeKey.valueOf("connection-invalidated");
 
@@ -161,7 +173,33 @@ public class Netty4ConnectionPool implements Closeable {
         }
     }
 
-    private static final SslGracefulShutdownHandler SSL_GRACEFUL_SHUTDOWN_HANDLER = new SslGracefulShutdownHandler();
+    @ChannelHandler.Sharable
+    private static class PoolAlpnConfigurator extends ApplicationProtocolNegotiationHandler {
+        private static final PoolAlpnConfigurator INSTANCE = new PoolAlpnConfigurator();
+
+        PoolAlpnConfigurator() {
+            super(ApplicationProtocolNames.HTTP_1_1);
+        }
+
+        @Override
+        protected void configurePipeline(ChannelHandlerContext ctx, String protocol) {
+            HttpProtocolVersion protocolVersion;
+            if (ApplicationProtocolNames.HTTP_2.equals(protocol)) {
+                protocolVersion = HttpProtocolVersion.HTTP_2;
+            } else {
+                protocolVersion = HttpProtocolVersion.HTTP_1_1;
+            }
+
+            ctx.channel().attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).set(protocolVersion);
+
+            ctx.pipeline().remove(this);
+        }
+
+        @Override
+        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+            ctx.fireExceptionCaught(cause);
+        }
+    }
 
     public Netty4ConnectionPool(Bootstrap bootstrap,
         ChannelInitializationProxyHandler channelInitializationProxyHandler,
@@ -203,7 +241,10 @@ public class Netty4ConnectionPool implements Closeable {
      */
     public Future<Channel> acquire(Netty4ConnectionPoolKey key, boolean isHttps) {
         if (closed.get()) {
-            throw LOGGER.throwableAtError().log(CLOSED_POOL_ERROR_MESSAGE, IllegalStateException::new);
+            return bootstrap.config()
+                .group()
+                .next()
+                .newFailedFuture(new IllegalStateException(CLOSED_POOL_ERROR_MESSAGE));
         }
 
         PerRoutePool perRoutePool = pool.computeIfAbsent(key, k -> new PerRoutePool(k, isHttps));
@@ -406,26 +447,19 @@ public class Netty4ConnectionPool implements Closeable {
             poolLock.lock();
             try {
                 if (!isHealthy(connection)) {
-                    // If the connection is unhealthy, it cannot be used by any waiter.
+                    // The connection is unhealthy. Close it.
+                    // The asynchronous closeFuture listener ('handleConnectionClosure') will eventually
+                    // decrement the connection count and create a new connections for available waiters.
                     connection.close();
-
-                    // Now, fail all pending waiters because this release operation cannot satisfy them.
-                    // The close listener on the connection will attempt to create a new connection for *one*
-                    // subsequent waiter, but we should proactively fail all current waiters to avoid hangs.
-                    Promise<Channel> waiter;
-                    while ((waiter = pendingAcquirers.poll()) != null) {
-                        if (!waiter.isCancelled()) {
-                            waiter.tryFailure(new IOException("Released connection was unhealthy."));
-                        }
-                    }
-                    return; // Exit after handling the unhealthy connection.
+                    return;
                 }
 
                 // The connection is healthy. Offer it to the waiters.
                 while (!pendingAcquirers.isEmpty()) {
-                    Promise<Channel> waiter = pendingAcquirers.poll();
-                    if (waiter.isCancelled()) {
-                        continue;
+                    Promise<Channel> waiter = pollNextWaiter();
+                    if (waiter == null) {
+                        // All remaining waiters were cancelled.
+                        break;
                     }
 
                     if (waiter.trySuccess(connection.channel)) {
@@ -478,24 +512,6 @@ public class Netty4ConnectionPool implements Closeable {
             }
         }
 
-        //        private void createNewConnectionForWaiter() {
-        //            Promise<Channel> waiter = pollNextWaiter();
-        //            if (waiter == null) {
-        //                totalConnections.getAndDecrement();
-        //                return;
-        //            }
-        //
-        //            createNewConnection().addListener(future -> {
-        //                if (future.isSuccess()) {
-        //                    if (!waiter.trySuccess((Channel) future.getNow())) {
-        //                        release(((Channel) future.getNow()).attr(POOLED_CONNECTION_KEY).get());
-        //                    }
-        //                } else {
-        //                    waiter.tryFailure(future.cause());
-        //                }
-        //            });
-        //        }
-
         private Promise<Channel> pollNextWaiter() {
             while (!pendingAcquirers.isEmpty()) {
                 Promise<Channel> waiter = pendingAcquirers.poll();
@@ -530,7 +546,7 @@ public class Netty4ConnectionPool implements Closeable {
                     new PooledConnection(channel, key);
 
                     ChannelPipeline pipeline = channel.pipeline(); //TODO: fix handler names
-                    pipeline.addLast("poolHealthHandler", new PoolConnectionHealthHandler());
+                    pipeline.addLast("poolHealthHandler", PoolConnectionHealthHandler.INSTANCE);
 
                     // Test whether proxying should be applied to this Channel. If so, add it.
                     // Proxy detection MUST use the final destination address from the key.
@@ -539,18 +555,19 @@ public class Netty4ConnectionPool implements Closeable {
                         ProxyHandler proxyHandler = channelInitializationProxyHandler.createProxy(proxyChallenges);
                         pipeline.addFirst(PROXY, proxyHandler);
                         pipeline.addAfter(PROXY, "clientcore.suppressproxyexception",
-                            new SuppressProxyConnectExceptionWarningHandler());
+                            SuppressProxyConnectExceptionWarningHandler.INSTANCE);
                     }
 
                     // Add SSL handling if the request is HTTPS.
-                    if (isHttps) {
-                        InetSocketAddress inetSocketAddress = (InetSocketAddress) key.getFinalDestination();
-                        SslContext ssl = buildSslContext(maximumHttpVersion, sslContextModifier);
-                        pipeline.addLast(SSL, ssl.newHandler(channel.alloc(), inetSocketAddress.getHostString(),
-                            inetSocketAddress.getPort()));
-                        pipeline.addAfter(SSL, "clientcore.sslshutdown", SSL_GRACEFUL_SHUTDOWN_HANDLER);
-                        pipeline.addLast(SSL_INITIALIZER, new Netty4SslInitializationHandler());
-                    }
+//                    if (isHttps) {
+//                        InetSocketAddress inetSocketAddress = (InetSocketAddress) key.getFinalDestination();
+//                        SslContext ssl = buildSslContext(maximumHttpVersion, sslContextModifier);
+//                        pipeline.addLast(SSL, ssl.newHandler(channel.alloc(), inetSocketAddress.getHostString(),
+//                            inetSocketAddress.getPort()));
+//                        pipeline.addAfter(SSL, "clientcore.sslshutdown", SslGracefulShutdownHandler.INSTANCE);
+//                        //pipeline.addLast(SSL_INITIALIZER, new Netty4SslInitializationHandler());
+//                        pipeline.addLast("pool-alpn-configurator", PoolAlpnConfigurator.INSTANCE);
+//                    }
                 }
             });
 
@@ -565,40 +582,53 @@ public class Netty4ConnectionPool implements Closeable {
                 Channel newChannel = ((ChannelFuture) future).channel();
                 newChannel.closeFuture().addListener(closeFuture -> handleConnectionClosure());
 
-                Runnable connectionReadyRunner = () -> {
-                    SslHandler sslHandler = newChannel.pipeline().get(SslHandler.class);
-                    if (sslHandler != null) {
-                        sslHandler.handshakeFuture().addListener(sslFuture -> {
-                            if (sslFuture.isSuccess()) {
-                                promise.setSuccess(newChannel);
-                            } else {
-                                promise.setFailure(sslFuture.cause());
-                                newChannel.close();
-                            }
-                        });
-                    } else {
-                        promise.setSuccess(newChannel);
-                    }
-                };
+//                Runnable connectionReadyRunner = () -> {
+//                    SslHandler sslHandler = newChannel.pipeline().get(SslHandler.class);
+//                    if (sslHandler != null) {
+//                        sslHandler.handshakeFuture().addListener(sslFuture -> {
+//                            if (sslFuture.isSuccess()) {
+//                                promise.setSuccess(newChannel);
+//                            } else {
+//                                promise.setFailure(sslFuture.cause());
+//                                newChannel.close();
+//                            }
+//                        });
+//                        newChannel.writeAndFlush(Unpooled.EMPTY_BUFFER);
+//                    } else {
+//                        promise.setSuccess(newChannel);
+//                    }
+//                };
 
+//                ProxyHandler proxyHandler = (ProxyHandler) newChannel.pipeline().get(PROXY);
+//                if (proxyHandler != null){
+//                    // Wait for the proxy handshake to complete if proxy is being used.
+//                    proxyHandler.connectFuture().addListener(proxyFuture -> {
+//                        if (proxyFuture.isSuccess()) {
+//                            if (!newChannel.isActive()) {
+//                                promise.setFailure(new ClosedChannelException());
+//                                newChannel.close();
+//                                return;
+//                            }
+//                            connectionReadyRunner.run();
+//                        } else {
+//                            promise.setFailure(proxyFuture.cause());
+//                            newChannel.close();
+//                        }
+//                    });
+//                } else {
+//                    connectionReadyRunner.run();
+//                }
                 ProxyHandler proxyHandler = (ProxyHandler) newChannel.pipeline().get(PROXY);
                 if (proxyHandler != null) {
-                    // Wait for the proxy handshake to complete if proxy is being used.
                     proxyHandler.connectFuture().addListener(proxyFuture -> {
-                        if (proxyFuture.isSuccess()) {
-                            if (!newChannel.isActive()) {
-                                promise.setFailure(new ClosedChannelException());
-                                newChannel.close();
-                                return;
-                            }
-                            connectionReadyRunner.run();
-                        } else {
-                            promise.setFailure(proxyFuture.cause());
+                        if (proxyFuture.isSuccess()) promise.trySuccess(newChannel);
+                        else {
+                            promise.tryFailure(proxyFuture.cause());
                             newChannel.close();
                         }
                     });
                 } else {
-                    promise.setSuccess(newChannel);
+                    promise.trySuccess(newChannel);
                 }
             });
             return promise;

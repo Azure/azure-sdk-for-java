@@ -99,7 +99,6 @@ public final class Netty4EagerConsumeChannelHandler extends ChannelInboundHandle
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         this.exception = cause;
-        ctx.fireExceptionCaught(cause);
         signalComplete(ctx);
     }
 

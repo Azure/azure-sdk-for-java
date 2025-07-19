@@ -22,7 +22,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 import java.net.SocketAddress;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
@@ -49,7 +48,6 @@ public class Netty4PipelineCleanupHandlerTests {
     private static final Object OBJECT = new Object();
     private TestMockChannel testChannel;
     private AtomicReference<Throwable> errorReference;
-    private CountDownLatch latch;
 
     @BeforeEach
     public void setup() {
@@ -59,15 +57,13 @@ public class Netty4PipelineCleanupHandlerTests {
         testChannel.attr(AttributeKey.valueOf("pipeline-owner-token")).set(OBJECT);
         testChannel.config.setAutoRead(false);
         errorReference = new AtomicReference<>();
-        latch = new CountDownLatch(1);
     }
 
     @Test
     public void cleanupWhenPooledAndActiveReleasesChannel() {
         testChannel.setActive(true);
         testChannel.pipeline().addLast(HTTP_CODEC, new MockChannelHandler());
-        Netty4PipelineCleanupHandler handler
-            = new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch, OBJECT);
+        Netty4PipelineCleanupHandler handler = new Netty4PipelineCleanupHandler(connectionPool, errorReference, OBJECT);
         testChannel.pipeline().addLast(handler);
         ChannelHandlerContext ctx = testChannel.pipeline().context(handler);
 
@@ -82,8 +78,7 @@ public class Netty4PipelineCleanupHandlerTests {
     @Test
     public void cleanupWhenForceCloseClosesChannel() {
         testChannel.setActive(true);
-        Netty4PipelineCleanupHandler handler
-            = new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch, OBJECT);
+        Netty4PipelineCleanupHandler handler = new Netty4PipelineCleanupHandler(connectionPool, errorReference, OBJECT);
         testChannel.pipeline().addLast(handler);
         ChannelHandlerContext ctx = testChannel.pipeline().context(handler);
 
@@ -96,7 +91,7 @@ public class Netty4PipelineCleanupHandlerTests {
     @Test
     public void cleanupWhenNonPooledClosesChannel() {
         testChannel.setActive(true);
-        Netty4PipelineCleanupHandler handler = new Netty4PipelineCleanupHandler(null, errorReference, latch, OBJECT);
+        Netty4PipelineCleanupHandler handler = new Netty4PipelineCleanupHandler(null, errorReference, OBJECT);
         testChannel.pipeline().addLast(handler);
         ChannelHandlerContext ctx = testChannel.pipeline().context(handler);
 
@@ -108,8 +103,7 @@ public class Netty4PipelineCleanupHandlerTests {
     @Test
     public void cleanupWhenChannelInactiveClosesChannel() {
         testChannel.setActive(false);
-        Netty4PipelineCleanupHandler handler
-            = new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch, OBJECT);
+        Netty4PipelineCleanupHandler handler = new Netty4PipelineCleanupHandler(connectionPool, errorReference, OBJECT);
         testChannel.pipeline().addLast(handler);
         ChannelHandlerContext ctx = testChannel.pipeline().context(handler);
 
@@ -123,8 +117,7 @@ public class Netty4PipelineCleanupHandlerTests {
     public void cleanupWhenHttp2PreservesHttpCodec() {
         testChannel.setActive(true);
         testChannel.attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).set(HttpProtocolVersion.HTTP_2);
-        Netty4PipelineCleanupHandler handler
-            = new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch, OBJECT);
+        Netty4PipelineCleanupHandler handler = new Netty4PipelineCleanupHandler(connectionPool, errorReference, OBJECT);
         populatePipelineWithStandardHandlers(handler);
         ChannelHandlerContext ctx = testChannel.pipeline().context(handler);
 
@@ -138,8 +131,7 @@ public class Netty4PipelineCleanupHandlerTests {
     @Test
     public void cleanupIsIdempotent() {
         testChannel.setActive(true);
-        Netty4PipelineCleanupHandler handler
-            = new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch, OBJECT);
+        Netty4PipelineCleanupHandler handler = new Netty4PipelineCleanupHandler(connectionPool, errorReference, OBJECT);
         testChannel.pipeline().addLast(handler);
         ChannelHandlerContext ctx = testChannel.pipeline().context(handler);
 
@@ -152,8 +144,7 @@ public class Netty4PipelineCleanupHandlerTests {
     @Test
     public void exceptionCaughtSetsErrorAndClosesChannel() {
         testChannel.setActive(true);
-        Netty4PipelineCleanupHandler handler
-            = new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch, OBJECT);
+        Netty4PipelineCleanupHandler handler = new Netty4PipelineCleanupHandler(connectionPool, errorReference, OBJECT);
         testChannel.pipeline().addLast(handler);
         ChannelHandlerContext ctx = testChannel.pipeline().context(handler);
         Throwable testException = new IOException("Test Exception");
@@ -161,15 +152,14 @@ public class Netty4PipelineCleanupHandlerTests {
         handler.exceptionCaught(ctx, testException);
 
         assertEquals(testException, errorReference.get());
-        assertEquals(0, latch.getCount());
         assertEquals(1, testChannel.getCloseCallCount());
         verify(connectionPool, never()).release(testChannel);
     }
 
     @Test
-    public void exceptionCaughtWithNullsStillClosesChannel() {
+    public void exceptionCaughtStillClosesChannel() {
         testChannel.setActive(true);
-        Netty4PipelineCleanupHandler handler = new Netty4PipelineCleanupHandler(connectionPool, null, null, OBJECT);
+        Netty4PipelineCleanupHandler handler = new Netty4PipelineCleanupHandler(connectionPool, new AtomicReference<>(), OBJECT);
         testChannel.pipeline().addLast(handler);
         ChannelHandlerContext ctx = testChannel.pipeline().context(handler);
         Throwable testException = new IOException("Test Exception");
@@ -184,8 +174,7 @@ public class Netty4PipelineCleanupHandlerTests {
     public void channelInactiveSchedulesAndExecutesCleanup() {
         testChannel.setActive(true);
         assertTrue(testChannel.isActive());
-        Netty4PipelineCleanupHandler handler
-            = new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch, OBJECT);
+        Netty4PipelineCleanupHandler handler = new Netty4PipelineCleanupHandler(connectionPool, errorReference, OBJECT);
         testChannel.pipeline().addLast(handler);
 
         testChannel.close();

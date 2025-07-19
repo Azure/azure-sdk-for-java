@@ -79,6 +79,8 @@ import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppre
  */
 class NettyHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(NettyHttpClient.class);
+    private static final Netty4ConnectionPool.Http2GoAwayHandler HTTP_2_GO_AWAY_HANDLER
+        = new Netty4ConnectionPool.Http2GoAwayHandler();
 
     /**
      * Error message for when no {@link ServerSentEventListener} is attached to the {@link HttpRequest}.
@@ -147,7 +149,7 @@ class NettyHttpClient implements HttpClient {
 
             final Channel channel = future.getNow();
             try {
-                configurePooledRequestPipeline(channel, request, responseReference, errorReference, latch, isHttps);
+                configurePooledRequestPipeline(channel, request, responseReference, errorReference, latch, isHttps, uri.getHost(), port);
             } catch (Exception e) {
                 // An exception occurred during the pipeline setup.
                 // We fire the exception through the pipeline to trigger the cleanup handler,
@@ -162,16 +164,18 @@ class NettyHttpClient implements HttpClient {
 
         awaitLatch(latch);
 
+        ResponseStateInfo info = responseReference.get();
+        if (info != null) {
+            return createResponse(request, info);
+        }
+
         if (errorReference.get() != null) {
             throw LOGGER.throwableAtError().log(errorReference.get(), CoreException::from);
+        } else {
+            throw LOGGER.throwableAtError()
+                .log("The request latch was released without a response or an error being set.",
+                    IllegalStateException::new);
         }
-
-        ResponseStateInfo info = responseReference.get();
-        if (info == null) {
-            throw LOGGER.throwableAtError().log(errorReference.get(), CoreException::from);
-        }
-
-        return createResponse(request, info);
     }
 
     private Response<BinaryData> sendWithoutConnectionPool(HttpRequest request) {
@@ -311,7 +315,7 @@ class NettyHttpClient implements HttpClient {
 
     private void configurePooledRequestPipeline(Channel channel, HttpRequest request,
         AtomicReference<ResponseStateInfo> responseReference, AtomicReference<Throwable> errorReference,
-        CountDownLatch latch, boolean isHttps) {
+        CountDownLatch latch, boolean isHttps, String host, int port) {
 
         ReentrantLock lock = channel.attr(Netty4ConnectionPool.CHANNEL_LOCK).get();
         lock.lock();
@@ -344,55 +348,52 @@ class NettyHttpClient implements HttpClient {
             ChannelPipeline pipeline = channel.pipeline();
 
             pipeline.addLast(PIPELINE_CLEANUP,
-                new Netty4PipelineCleanupHandler(connectionPool, errorReference, latch, pipelineOwnerToken));
+                new Netty4PipelineCleanupHandler(connectionPool, errorReference, pipelineOwnerToken));
 
-            // Only add CoreProgressAndTimeoutHandler if it will do anything, ex it is reporting progress or is
-            // applying timeouts.
-            // This is done to keep the ChannelPipeline shorter, therefore more performant if this
-            // effectively is a no-op.
-            if (addProgressAndTimeoutHandler) {
-                pipeline.addLast(PROGRESS_AND_TIMEOUT, new Netty4ProgressAndTimeoutHandler(progressReporter,
-                    writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
-            }
+            HttpProtocolVersion protocol = channel.attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).get();
 
-            // The SslHandler is already in the pipeline if this is an HTTPS request, as it's added
-            // by the connection pool during the initial connection setup. The SSL handshake is also
-            // guaranteed to be complete by the time we get the channel because the Netty4AlpnHandler
-            // reacts to the result of the ALPN negotiation that happened during the SSL handshake.
-            if (isHttps) {
-                HttpProtocolVersion protocolVersion = channel.attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).get();
-                if (protocolVersion != null) {
-                    // The Connection is being reused, ALPN is already done.
-                    // Manually configure the pipeline based on the stored protocol.
-                    boolean isHttp2 = protocolVersion == HttpProtocolVersion.HTTP_2;
-                    pipeline.addLast(HTTP_RESPONSE,
-                        new Netty4ResponseHandler(request, responseReference, errorReference, latch));
+            if (protocol != null) {
+                if (addProgressAndTimeoutHandler) {
+                    pipeline.addLast(PROGRESS_AND_TIMEOUT, new Netty4ProgressAndTimeoutHandler(progressReporter, writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
+                }
+                pipeline.addLast(HTTP_RESPONSE, new Netty4ResponseHandler(request, responseReference, errorReference, latch));
 
-                    if (!isHttp2 && pipeline.get(HTTP_CODEC) == null) {
-                        pipeline.addBefore(HTTP_RESPONSE, HTTP_CODEC, createCodec());
-                    }
+                if (protocol == HttpProtocolVersion.HTTP_1_1) {
+                    String addBefore = addProgressAndTimeoutHandler ? PROGRESS_AND_TIMEOUT : HTTP_RESPONSE;
+                    pipeline.addBefore(addBefore, HTTP_CODEC, createCodec());
+                }
 
-                    if (isHttp2) {
+                channel.eventLoop().execute(() -> {
+                    if (protocol == HttpProtocolVersion.HTTP_2) {
                         sendHttp2Request(request, channel, errorReference, latch);
                     } else {
                         send(request, channel, errorReference, latch);
                     }
-                } else {
-                    // This is a new connection, let ALPN do the work.
-                    // For HTTPS, we delegate the addition of the response handler and codec to the ALPN handler.
-                    pipeline.addAfter(SSL, ALPN,
-                        new Netty4AlpnHandler(request, responseReference, errorReference, latch));
-                    channel.writeAndFlush(Unpooled.EMPTY_BUFFER);
-                }
+                });
             } else {
-                // If there isn't an SslHandler, we can send the request immediately.
-                // Add the HTTP/1.1 codec, as we only support HTTP/2 when using SSL ALPN.
-                pipeline.addLast(HTTP_RESPONSE,
-                    new Netty4ResponseHandler(request, responseReference, errorReference, latch));
-                String addBefore = addProgressAndTimeoutHandler ? PROGRESS_AND_TIMEOUT : HTTP_RESPONSE;
-                pipeline.addBefore(addBefore, HTTP_CODEC, createCodec());
-                send(request, channel, errorReference, latch);
+                if (addProgressAndTimeoutHandler) {
+                    pipeline.addLast(PROGRESS_AND_TIMEOUT,
+                        new Netty4ProgressAndTimeoutHandler(progressReporter, writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
+                }
+
+                if (isHttps) {
+                    SslContext sslContext = buildSslContext(maximumHttpVersion, sslContextModifier);
+                    SslHandler sslHandler = sslContext.newHandler(channel.alloc(), host, port);
+                    pipeline.addFirst(SSL, sslHandler);
+                    pipeline.addAfter(SSL, ALPN, new Netty4AlpnHandler(request, responseReference, errorReference, latch));
+
+                    channel.writeAndFlush(Unpooled.EMPTY_BUFFER);
+                } else {
+                    Netty4ResponseHandler responseHandler = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
+                    pipeline.addLast(HTTP_RESPONSE, responseHandler);
+                    String addBefore = addProgressAndTimeoutHandler ? PROGRESS_AND_TIMEOUT : HTTP_RESPONSE;
+                    pipeline.addBefore(addBefore, HTTP_CODEC, createCodec());
+
+                    send(request, channel, errorReference, latch);
+                }
             }
+        } catch (SSLException e) {
+            throw new RuntimeException(e);
         } finally {
             lock.unlock();
         }
