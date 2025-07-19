@@ -138,7 +138,7 @@ public class NettyHttpClientBuilder {
 
     // --- Connection Pool Configuration ---
     private int connectionPoolSize = 1000;
-    private Duration connectionIdleTimeout = Duration.ofSeconds(50);
+    private Duration connectionIdleTimeout = Duration.ofSeconds(60);
     private Duration maxConnectionLifetime;
     private Duration pendingAcquireTimeout = Duration.ofSeconds(60); // Default wait time for a connection
     private int maxPendingAcquires = 10_000; // Default pending queue size
@@ -326,9 +326,10 @@ public class NettyHttpClientBuilder {
     /**
      * Sets the maximum time a connection is allowed to exist.
      * <p>
-     * After this time, the connection will be closed upon release.
+     * By default, connections have no lifetime limit and can be used indefinitely.
      * <p>
-     * A {@link Duration} of zero or less, or a null value, will result in connections having no lifetime limit.
+     * After this time is met or exceeded, the connection will be closed upon release. A {@link Duration} of zero or
+     * less, or a null value, will also result in connections having no lifetime limit.
      *
      * @param maxConnectionLifetime The maximum connection lifetime.
      * @return The updated builder.
@@ -340,7 +341,8 @@ public class NettyHttpClientBuilder {
 
     /**
      * Sets the maximum time to wait for a connection from the pool.
-     *
+     * <p>
+     * If not set, a default value of 60 seconds is used.
      * @param pendingAcquireTimeout The timeout for pending acquires.
      * @return The updated builder.
      */

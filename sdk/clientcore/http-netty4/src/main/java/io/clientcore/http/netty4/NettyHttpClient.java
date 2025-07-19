@@ -162,16 +162,18 @@ class NettyHttpClient implements HttpClient {
 
         awaitLatch(latch);
 
+        ResponseStateInfo info = responseReference.get();
+        if (info != null) {
+            return createResponse(request, info);
+        }
+
         if (errorReference.get() != null) {
             throw LOGGER.throwableAtError().log(errorReference.get(), CoreException::from);
+        } else {
+            throw LOGGER.throwableAtError()
+                .log("The request latch was released without a response or an error being set.",
+                    IllegalStateException::new);
         }
-
-        ResponseStateInfo info = responseReference.get();
-        if (info == null) {
-            throw LOGGER.throwableAtError().log(errorReference.get(), CoreException::from);
-        }
-
-        return createResponse(request, info);
     }
 
     private Response<BinaryData> sendWithoutConnectionPool(HttpRequest request) {

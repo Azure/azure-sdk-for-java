@@ -45,7 +45,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -293,10 +292,14 @@ public class Netty4ConnectionPoolTests {
     }
 
     @Test
-    public void testAcquireOnClosedPoolFails() throws IOException {
+    public void testAcquireOnClosedPoolFails() throws IOException, InterruptedException {
         Netty4ConnectionPool pool = createPool(1, Duration.ofSeconds(10), null, Duration.ofSeconds(10), 1);
         pool.close();
-        assertThrows(IllegalStateException.class, () -> pool.acquire(connectionPoolKey, false));
+        Future<Channel> future = pool.acquire(connectionPoolKey, false);
+        future.await();
+
+        assertFalse(future.isSuccess());
+        assertInstanceOf(IllegalStateException.class, future.cause());
     }
 
     @Test

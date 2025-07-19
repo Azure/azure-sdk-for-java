@@ -8,6 +8,7 @@ import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.utils.IOExceptionCheckedConsumer;
@@ -47,6 +48,8 @@ import java.util.stream.IntStream;
 import static io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer.LONG_BODY;
 import static io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer.LONG_BODY_PATH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests that closing the {@link Response} drains the network buffers.
@@ -128,7 +131,11 @@ public class HttpResponseDrainsBufferTests {
 
     @Test
     public void closeHttpResponseWithConsumingPartialWrite() {
-        runScenario(response -> response.getValue().writeTo(new ThrowingWritableByteChannel()));
+        RuntimeException ex = assertThrows(RuntimeException.class,
+            () -> runScenario(response -> response.getValue().writeTo(new ThrowingWritableByteChannel())));
+        assertInstanceOf(ExecutionException.class, ex.getCause());
+        assertInstanceOf(CoreException.class, ex.getCause().getCause());
+        assertEquals(0, testResourceLeakDetectorFactory.getTotalReportedLeakCount());
     }
 
     private static final class ThrowingWritableByteChannel implements WritableByteChannel {
@@ -213,8 +220,6 @@ public class HttpResponseDrainsBufferTests {
         } catch (InterruptedException | ExecutionException ex) {
             throw new RuntimeException(ex);
         }
-
-        assertEquals(0, testResourceLeakDetectorFactory.getTotalReportedLeakCount());
     }
 
     @Test

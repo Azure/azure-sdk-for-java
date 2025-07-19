@@ -203,7 +203,10 @@ public class Netty4ConnectionPool implements Closeable {
      */
     public Future<Channel> acquire(Netty4ConnectionPoolKey key, boolean isHttps) {
         if (closed.get()) {
-            throw LOGGER.throwableAtError().log(CLOSED_POOL_ERROR_MESSAGE, IllegalStateException::new);
+            return bootstrap.config()
+                .group()
+                .next()
+                .newFailedFuture(new IllegalStateException(CLOSED_POOL_ERROR_MESSAGE));
         }
 
         PerRoutePool perRoutePool = pool.computeIfAbsent(key, k -> new PerRoutePool(k, isHttps));
@@ -406,26 +409,19 @@ public class Netty4ConnectionPool implements Closeable {
             poolLock.lock();
             try {
                 if (!isHealthy(connection)) {
-                    // If the connection is unhealthy, it cannot be used by any waiter.
+                    // The connection is unhealthy. Close it.
+                    // The asynchronous closeFuture listener ('handleConnectionClosure') will eventually
+                    // decrement the connection count and create a new connections for available waiters.
                     connection.close();
-
-                    // Now, fail all pending waiters because this release operation cannot satisfy them.
-                    // The close listener on the connection will attempt to create a new connection for *one*
-                    // subsequent waiter, but we should proactively fail all current waiters to avoid hangs.
-                    Promise<Channel> waiter;
-                    while ((waiter = pendingAcquirers.poll()) != null) {
-                        if (!waiter.isCancelled()) {
-                            waiter.tryFailure(new IOException("Released connection was unhealthy."));
-                        }
-                    }
-                    return; // Exit after handling the unhealthy connection.
+                    return;
                 }
 
                 // The connection is healthy. Offer it to the waiters.
                 while (!pendingAcquirers.isEmpty()) {
-                    Promise<Channel> waiter = pendingAcquirers.poll();
-                    if (waiter.isCancelled()) {
-                        continue;
+                    Promise<Channel> waiter = pollNextWaiter();
+                    if (waiter == null) {
+                        // All remaining waiters were cancelled.
+                        break;
                     }
 
                     if (waiter.trySuccess(connection.channel)) {
@@ -477,24 +473,6 @@ public class Netty4ConnectionPool implements Closeable {
                 poolLock.unlock();
             }
         }
-
-        //        private void createNewConnectionForWaiter() {
-        //            Promise<Channel> waiter = pollNextWaiter();
-        //            if (waiter == null) {
-        //                totalConnections.getAndDecrement();
-        //                return;
-        //            }
-        //
-        //            createNewConnection().addListener(future -> {
-        //                if (future.isSuccess()) {
-        //                    if (!waiter.trySuccess((Channel) future.getNow())) {
-        //                        release(((Channel) future.getNow()).attr(POOLED_CONNECTION_KEY).get());
-        //                    }
-        //                } else {
-        //                    waiter.tryFailure(future.cause());
-        //                }
-        //            });
-        //        }
 
         private Promise<Channel> pollNextWaiter() {
             while (!pendingAcquirers.isEmpty()) {

@@ -87,7 +87,7 @@ public class Netty4EagerConsumeChannelHandlerTests {
     }
 
     @Test
-    public void consumerExceptionIsPropagated() {
+    public void consumerExceptionIsCapturedByHandler() {
         IOException testException = new IOException("test");
         CountDownLatch latch = new CountDownLatch(1);
         Netty4EagerConsumeChannelHandler handler = new Netty4EagerConsumeChannelHandler(latch, buf -> {
@@ -97,12 +97,12 @@ public class Netty4EagerConsumeChannelHandlerTests {
         EmbeddedChannel channel = new EmbeddedChannel(handler);
         ByteBuf content = Unpooled.wrappedBuffer(HELLO_BYTES);
 
-        IOException thrown = assertThrows(IOException.class, () -> {
-            channel.writeInbound(content);
-            channel.checkException();
-        });
+        channel.writeInbound(content);
 
-        assertEquals(testException, thrown);
+        Throwable capturedException = handler.channelException();
+
+        assertNotNull(capturedException);
+        assertEquals(testException, capturedException);
 
         assertNull(channel.pipeline().get(Netty4EagerConsumeChannelHandler.class));
     }

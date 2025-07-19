@@ -123,10 +123,50 @@ public final class Netty4ChannelBinaryData extends BinaryData {
     @Override
     public void writeTo(OutputStream outputStream) {
         Objects.requireNonNull(outputStream, "'outputStream' cannot be null.");
+
         try {
-            outputStream.write(toBytes());
+            if (bytes != null) {
+                outputStream.write(bytes);
+                return;
+            }
+
+            if (streamDrained.compareAndSet(false, true)) {
+                try {
+                    // Channel hasn't been read yet, don't buffer it, just write it to the OutputStream as it's being read.
+                    if (eagerContent != null && eagerContent.size() > 0) {
+                        eagerContent.writeTo(outputStream);
+                    }
+
+                    CountDownLatch latch = new CountDownLatch(1);
+                    Netty4EagerConsumeChannelHandler handler = new Netty4EagerConsumeChannelHandler(latch,
+                        buf -> buf.readBytes(outputStream, buf.readableBytes()), isHttp2);
+                    channel.pipeline().addLast(Netty4HandlerNames.EAGER_CONSUME, handler);
+                    channel.config().setAutoRead(true);
+
+                    awaitLatch(latch);
+
+                    Throwable exception = handler.channelException();
+                    if (exception != null) {
+                        if (exception instanceof Error) {
+                            throw (Error) exception;
+                        } else {
+                            throw CoreException.from(exception);
+                        }
+                    }
+                } finally {
+                    eagerContent = null;
+                    drainLatch.countDown();
+
+                    if (onClose != null) {
+                        onClose.run();
+                    }
+                }
+            } else {
+                throw LOGGER.throwableAtError()
+                    .log("The stream has already been consumed and is not replayable.", IllegalStateException::new);
+            }
         } catch (IOException e) {
-            throw LOGGER.throwableAtError().log(e, CoreException::from);
+            throw CoreException.from(e);
         }
     }
 
@@ -207,8 +247,15 @@ public final class Netty4ChannelBinaryData extends BinaryData {
                 }
 
                 if (!channel.isActive()) {
-                    bytes = (eagerContent == null) ? new byte[0] : eagerContent.toByteArray();
-                    return;
+                    // The connection was closed before we could read the full body.
+                    // Check if, by chance, the eager content we already have satisfies the full length.
+                    // This can happen if the body was very small and the server closed immediately.
+                    if (length != null && eagerContent != null && length == eagerContent.size()) {
+                        bytes = eagerContent.toByteArray();
+                        return;
+                    }
+                    throw LOGGER.throwableAtError()
+                        .log("Connection closed prematurely while reading response body.", IOException::new);
                 }
 
                 CountDownLatch ioLatch = new CountDownLatch(1);
@@ -219,7 +266,6 @@ public final class Netty4ChannelBinaryData extends BinaryData {
                 channel.config().setAutoRead(true);
 
                 awaitLatch(ioLatch);
-                bytes = eagerContent.toByteArray();
                 Throwable exception = handler.channelException();
 
                 if (exception != null) {
@@ -231,6 +277,8 @@ public final class Netty4ChannelBinaryData extends BinaryData {
                 } else {
                     bytes = eagerContent.toByteArray();
                 }
+            } catch (IOException e) {
+                throw LOGGER.throwableAtError().log(e, CoreException::from);
             } finally {
                 eagerContent = null;
                 drainLatch.countDown();
