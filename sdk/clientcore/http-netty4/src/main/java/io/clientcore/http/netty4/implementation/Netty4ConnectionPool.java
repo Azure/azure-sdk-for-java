@@ -20,6 +20,8 @@ import io.netty.channel.socket.ChannelInputShutdownEvent;
 import io.netty.handler.codec.http2.Http2GoAwayFrame;
 import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.proxy.ProxyHandler;
+import io.netty.handler.ssl.ApplicationProtocolNames;
+import io.netty.handler.ssl.ApplicationProtocolNegotiationHandler;
 import io.netty.handler.ssl.SslCloseCompletionEvent;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -55,6 +57,7 @@ import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROXY;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL_INITIALIZER;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.buildSslContext;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.createHttp2Codec;
 
 /**
  * A pool of Netty channels that can be reused for requests to the same remote address.
@@ -123,6 +126,8 @@ public class Netty4ConnectionPool implements Closeable {
 
     @ChannelHandler.Sharable
     private static class SslGracefulShutdownHandler extends ChannelInboundHandlerAdapter {
+        private static final SslGracefulShutdownHandler INSTANCE = new SslGracefulShutdownHandler();
+
         @Override
         public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
             if (evt instanceof SslCloseCompletionEvent) {
@@ -161,7 +166,34 @@ public class Netty4ConnectionPool implements Closeable {
         }
     }
 
-    private static final SslGracefulShutdownHandler SSL_GRACEFUL_SHUTDOWN_HANDLER = new SslGracefulShutdownHandler();
+    @ChannelHandler.Sharable
+    private static final class AlpnHandler extends ApplicationProtocolNegotiationHandler {
+        private static final AlpnHandler INSTANCE = new AlpnHandler();
+
+        private AlpnHandler() {
+            super(ApplicationProtocolNames.HTTP_1_1);
+        }
+
+        @Override
+        protected void configurePipeline(ChannelHandlerContext ctx, String protocol) throws Exception {
+            HttpProtocolVersion protocolVersion;
+            if (ApplicationProtocolNames.HTTP_2.equals(protocol)) {
+                protocolVersion = HttpProtocolVersion.HTTP_2;
+
+                ctx.pipeline().addAfter(SSL, Netty4HandlerNames.HTTP_CODEC, createHttp2Codec());
+                ctx.pipeline().addLast(new Http2GoAwayHandler());
+            } else if (ApplicationProtocolNames.HTTP_1_1.equals(protocol)) {
+                protocolVersion = HttpProtocolVersion.HTTP_1_1;
+                // Do nothing. The temporary H1 codec will be added per-request.
+            } else {
+                ctx.fireExceptionCaught(new IllegalStateException("unknown protocol: " + protocol));
+                return;
+            }
+
+            ctx.channel().attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).set(protocolVersion);
+            ctx.pipeline().remove(this);
+        }
+    }
 
     public Netty4ConnectionPool(Bootstrap bootstrap,
         ChannelInitializationProxyHandler channelInitializationProxyHandler,
@@ -526,8 +558,9 @@ public class Netty4ConnectionPool implements Closeable {
                         SslContext ssl = buildSslContext(maximumHttpVersion, sslContextModifier);
                         pipeline.addLast(SSL, ssl.newHandler(channel.alloc(), inetSocketAddress.getHostString(),
                             inetSocketAddress.getPort()));
-                        pipeline.addAfter(SSL, "clientcore.sslshutdown", SSL_GRACEFUL_SHUTDOWN_HANDLER);
+                        pipeline.addAfter(SSL, "clientcore.sslshutdown", SslGracefulShutdownHandler.INSTANCE);
                         pipeline.addLast(SSL_INITIALIZER, new Netty4SslInitializationHandler());
+                        pipeline.addLast("clientcore.poolalpn", AlpnHandler.INSTANCE);
                     }
                 }
             });
@@ -576,7 +609,7 @@ public class Netty4ConnectionPool implements Closeable {
                         }
                     });
                 } else {
-                    promise.setSuccess(newChannel);
+                    connectionReadyRunner.run();
                 }
             });
             return promise;

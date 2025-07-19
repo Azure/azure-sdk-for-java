@@ -480,24 +480,7 @@ public final class Netty4Utility {
         AtomicReference<Throwable> errorReference, CountDownLatch latch) {
         final ChannelHandler httpCodec;
         if (HttpProtocolVersion.HTTP_2 == protocol) {
-            // TODO (alzimmer): InboundHttp2ToHttpAdapter buffers the entire response into a FullHttpResponse. Need to
-            //  create a streaming version of this to support huge response payloads.
-            Http2Connection http2Connection = new DefaultHttp2Connection(false);
-            Http2Settings settings = new Http2Settings().headerTableSize(4096)
-                .maxHeaderListSize(TWO_FIFTY_SIX_KB)
-                .pushEnabled(false)
-                .initialWindowSize(TWO_FIFTY_SIX_KB);
-            Http2FrameListener frameListener = new DelegatingDecompressorFrameListener(http2Connection,
-                new InboundHttp2ToHttpAdapterBuilder(http2Connection).maxContentLength(Integer.MAX_VALUE)
-                    .propagateSettings(true)
-                    .validateHttpHeaders(true)
-                    .build());
-
-            httpCodec = new HttpToHttp2ConnectionHandlerBuilder().initialSettings(settings)
-                .frameListener(frameListener)
-                .connection(http2Connection)
-                .validateHeaders(true)
-                .build();
+            httpCodec = createHttp2Codec();
         } else { // HTTP/1.1
             httpCodec = createCodec();
         }
@@ -540,6 +523,27 @@ public final class Netty4Utility {
                 latch.countDown();
             }
         });
+    }
+
+    public static ChannelHandler createHttp2Codec() {
+        // TODO (alzimmer): InboundHttp2ToHttpAdapter buffers the entire response into a FullHttpResponse. Need to
+        //  create a streaming version of this to support huge response payloads.
+        Http2Connection http2Connection = new DefaultHttp2Connection(false);
+        Http2Settings settings = new Http2Settings().headerTableSize(4096)
+            .maxHeaderListSize(TWO_FIFTY_SIX_KB)
+            .pushEnabled(false)
+            .initialWindowSize(TWO_FIFTY_SIX_KB);
+        Http2FrameListener frameListener = new DelegatingDecompressorFrameListener(http2Connection,
+            new InboundHttp2ToHttpAdapterBuilder(http2Connection).maxContentLength(Integer.MAX_VALUE)
+                .propagateSettings(true)
+                .validateHttpHeaders(true)
+                .build());
+
+        return new HttpToHttp2ConnectionHandlerBuilder().initialSettings(settings)
+            .frameListener(frameListener)
+            .connection(http2Connection)
+            .validateHeaders(true)
+            .build();
     }
 
     private static io.netty.handler.codec.http.HttpRequest toNettyHttpRequest(HttpRequest request) {

@@ -102,11 +102,4 @@ public final class Netty4AlpnHandler extends ApplicationProtocolNegotiationHandl
             ctx.pipeline().remove(this);
         }
     }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        setOrSuppressError(errorReference, cause);
-        ctx.fireExceptionCaught(cause);
-        latch.countDown();
-    }
 }
