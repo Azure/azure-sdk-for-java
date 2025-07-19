@@ -35,6 +35,7 @@ jobs:
             - '**/*.md'
             - '!sdk/**/test-recordings'
             - '!sdk/**/session-records'
+            - 'sdk/tools/linting-extensions'
 
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"

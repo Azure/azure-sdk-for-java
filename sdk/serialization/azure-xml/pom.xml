@@ -59,10 +59,7 @@
     <!-- Ignore shaded code -->
     <checkstyle.excludes>**/aalto/**/*.java,**/stax2/**/*.java</checkstyle.excludes>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
-
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <spotbugs.excludes>**/aalto/**/*.java,**/stax2/**/*.java</spotbugs.excludes>
   </properties>
 

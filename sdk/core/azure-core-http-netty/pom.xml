@@ -61,10 +61,7 @@
       com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation
     </javadoc.excludePackageNames>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
-
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <animal.sniffer.skip>false</animal.sniffer.skip>
 
     <netty.version>4.1.118.Final</netty.version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->

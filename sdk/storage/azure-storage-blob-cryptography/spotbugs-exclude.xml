@@ -6,8 +6,4 @@
     <Bug pattern="CT_CONSTRUCTOR_THROW" />
     <Class name="com.azure.storage.blob.specialized.cryptography.EncryptorV1" />
   </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Class name="com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder" />
-  </Match>
 </FindBugsFilter>

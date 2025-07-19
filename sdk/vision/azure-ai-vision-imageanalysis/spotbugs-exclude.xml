@@ -2,27 +2,4 @@
 
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.ai.vision.imageanalysis.models.DenseCaptionsResult" />
-      <Class name="com.azure.ai.vision.imageanalysis.models.DetectedObject" />
-      <Class name="com.azure.ai.vision.imageanalysis.models.DetectedTextBlock" />
-      <Class name="com.azure.ai.vision.imageanalysis.models.DetectedTextLine" />
-      <Class name="com.azure.ai.vision.imageanalysis.models.DetectedTextWord" />
-      <Class name="com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions" />
-      <Class name="com.azure.ai.vision.imageanalysis.models.ObjectsResult" />
-      <Class name="com.azure.ai.vision.imageanalysis.models.PeopleResult" />
-      <Class name="com.azure.ai.vision.imageanalysis.models.ReadResult" />
-      <Class name="com.azure.ai.vision.imageanalysis.models.SmartCropsResult" />
-      <Class name="com.azure.ai.vision.imageanalysis.models.TagsResult" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder" />
-      <Class name="com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions" />
-    </Or>
-  </Match>
 </FindBugsFilter>

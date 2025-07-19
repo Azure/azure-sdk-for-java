@@ -44,7 +44,6 @@
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage> <!-- Temporary until full breadth of test coverage is added -->
     <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage> <!-- Temporary until full breadth of test coverage is added -->
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
   </properties>
 
   <developers>

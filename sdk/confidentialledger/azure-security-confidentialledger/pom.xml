@@ -41,9 +41,7 @@
       --add-reads com.azure.security.confidentialledger=com.azure.http.netty
     </javaModulesSurefireArgLine>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
 
     <jacoco.min.linecoverage>0.2</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.1</jacoco.min.branchcoverage>

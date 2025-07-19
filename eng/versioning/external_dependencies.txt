@@ -159,7 +159,6 @@ uk.org.webcompere:system-stubs-jupiter;2.0.2
 com.google.truth:truth;1.1.3
 
 ## Maven Tools versions
-com.azure:sdk-build-tools;1.0.0
 com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.10
 com.beust:jcommander;1.82
 # Spotless 2.30.0 is the last version supporting a Java 8 runtime

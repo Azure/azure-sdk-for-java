@@ -100,11 +100,10 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   }
 
   $TestResourcesFilePath = Join-Path $ServiceDirPath "test-resources.json"
-  $EngDir = Join-Path $RepoRoot "eng"
-  $CodeQualityReports = Join-Path $EngDir "code-quality-reports" "src" "main" "resources"
-  $CheckStyleSuppressionFilePath = Join-Path $CodeQualityReports "checkstyle" "checkstyle-suppressions.xml"
-  $CheckStyleFilePath = Join-Path $CodeQualityReports "checkstyle" "checkstyle.xml"
-  $SpotBugsFilePath = Join-Path $CodeQualityReports "spotbugs" "spotbugs-exclude.xml"
+  $LintingConfigs = Join-Path $RepoRoot "eng" "lintingconfigs"
+  $CheckStyleSuppressionFilePath = Join-Path $LintingConfigs "checkstyle" "track2" "checkstyle-suppressions.xml"
+  $CheckStyleFilePath = Join-Path $LintingConfigs "checkstyle" "track2" "checkstyle.xml"
+  $SpotBugsFilePath = Join-Path $LintingConfigs "spotbugs" "track2" "spotbugs-exclude.xml"
 
   Write-Information "Fetching all the tags from $RemoteName"
   $CmdOutput = git fetch $RemoteName $ReleaseTag

@@ -7,53 +7,7 @@
     <Class name="com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials$CredentialInformation" />
   </Match>
   <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.data.appconfiguration.implementation.Conditions" />
-      <Class name="com.azure.data.appconfiguration.implementation.models.ErrorDetail" />
-      <Class name="com.azure.data.appconfiguration.implementation.models.KeyListResult" />
-      <Class name="com.azure.data.appconfiguration.implementation.models.KeyValue" />
-      <Class name="com.azure.data.appconfiguration.implementation.models.KeyValueListResult" />
-      <Class name="com.azure.data.appconfiguration.implementation.models.LabelListResult" />
-      <Class name="com.azure.data.appconfiguration.implementation.models.SnapshotListResult" />
-      <Class name="com.azure.data.appconfiguration.models.ConfigurationSettingsFilter" />
-      <Class name="com.azure.data.appconfiguration.models.ConfigurationSnapshot" />
-      <Class name="com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting" />
-      <Class name="com.azure.data.appconfiguration.models.FeatureFlagFilter" />
-      <Class name="com.azure.data.appconfiguration.models.SettingLabelSelector" />
-      <Class name="com.azure.data.appconfiguration.models.SettingSelector" />
-      <Class name="com.azure.data.appconfiguration.models.SnapshotSelector" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.data.appconfiguration.ConfigurationClientBuilder" />
-      <Class name="com.azure.data.appconfiguration.implementation.Conditions" />
-      <Class name="com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy" />
-      <Class name="com.azure.data.appconfiguration.implementation.CreateSnapshotUtilClient" />
-      <Class name="com.azure.data.appconfiguration.implementation.models.ErrorDetail" />
-      <Class name="com.azure.data.appconfiguration.implementation.models.KeyListResult" />
-      <Class name="com.azure.data.appconfiguration.implementation.models.KeyValue" />
-      <Class name="com.azure.data.appconfiguration.implementation.models.KeyValueListResult" />
-      <Class name="com.azure.data.appconfiguration.implementation.models.LabelListResult" />
-      <Class name="com.azure.data.appconfiguration.implementation.models.SnapshotListResult" />
-      <Class name="com.azure.data.appconfiguration.models.ConfigurationSetting" />
-      <Class name="com.azure.data.appconfiguration.models.ConfigurationSettingsFilter" />
-      <Class name="com.azure.data.appconfiguration.models.ConfigurationSnapshot" />
-      <Class name="com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting" />
-      <Class name="com.azure.data.appconfiguration.models.FeatureFlagFilter" />
-      <Class name="com.azure.data.appconfiguration.models.SettingLabelSelector" />
-      <Class name="com.azure.data.appconfiguration.models.SettingSelector" />
-      <Class name="com.azure.data.appconfiguration.models.SnapshotSelector" />
-    </Or>
-  </Match>
-  <Match>
     <Bug pattern="EI_EXPOSE_STATIC_REP2" />
     <Class name="com.azure.data.appconfiguration.implementation.ConfigurationSettingHelper" />
-  </Match>
-  <Match>
-    <Bug pattern="NM_CONFUSING" />
-    <Class name="com.azure.data.appconfiguration.implementation.models.CheckKeyValueHeaders" />
   </Match>
 </FindBugsFilter>

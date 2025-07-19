@@ -6,32 +6,4 @@
     <Bug pattern="DM_DEFAULT_ENCODING" />
     <Class name="com.azure.messaging.webpubsub.client.implementation.MessageEncoder" />
   </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.messaging.webpubsub.client.implementation.WebPubSubConnection" />
-      <Class name="com.azure.messaging.webpubsub.client.implementation.models.GroupDataMessage" />
-      <Class name="com.azure.messaging.webpubsub.client.implementation.models.ServerDataMessage" />
-      <Class name="com.azure.messaging.webpubsub.client.implementation.websocket.SendResult" />
-      <Class name="com.azure.messaging.webpubsub.client.models.GroupMessageEvent" />
-      <Class name="com.azure.messaging.webpubsub.client.models.RejoinGroupFailedEvent" />
-      <Class name="com.azure.messaging.webpubsub.client.models.ServerMessageEvent" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.messaging.webpubsub.client.WebPubSubClientBuilder" />
-      <Class name="com.azure.messaging.webpubsub.client.implementation.models.GroupDataMessage" />
-      <Class name="com.azure.messaging.webpubsub.client.implementation.models.ServerDataMessage" />
-      <Class name="com.azure.messaging.webpubsub.client.implementation.websocket.SendResult" />
-      <Class name="com.azure.messaging.webpubsub.client.models.GroupMessageEvent" />
-      <Class name="com.azure.messaging.webpubsub.client.models.RejoinGroupFailedEvent" />
-      <Class name="com.azure.messaging.webpubsub.client.models.ServerMessageEvent" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="UWF_UNWRITTEN_FIELD" />
-    <Class name="com.azure.messaging.webpubsub.client.WebPubSubClientBuilder" />
-  </Match>
 </FindBugsFilter>

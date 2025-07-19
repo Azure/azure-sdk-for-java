@@ -71,29 +71,27 @@ public class HttpGet extends ScenarioBase<StressOptions> {
 
     private Mono<Void> runInternalAsync() {
         // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
-        return Mono.usingWhen(pipeline.send(createRequest()),
-                response -> response.getBody().then(),
-                response -> Mono.fromRunnable(response::close));
+        return Mono.usingWhen(pipeline.send(createRequest()), response -> response.getBody().then(),
+            response -> Mono.fromRunnable(response::close));
     }
 
     private HttpRequest createRequest() {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         request.getHeaders().set(HttpHeaderName.USER_AGENT, "azsdk-java-stress");
-        request.getHeaders().set(HttpHeaderName.X_MS_CLIENT_REQUEST_ID, String.valueOf(clientRequestId.incrementAndGet()));
+        request.getHeaders()
+            .set(HttpHeaderName.X_MS_CLIENT_REQUEST_ID, String.valueOf(clientRequestId.incrementAndGet()));
         return request;
     }
 
     private HttpPipelineBuilder getPipelineBuilder() {
-        HttpLogOptions logOptions = new HttpLogOptions()
-            .setLogLevel(HttpLogDetailLevel.HEADERS);
+        HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS);
 
         ArrayList<HttpPipelinePolicy> policies = new ArrayList<>();
 
         policies.add(new RetryPolicy());
         policies.add(new HttpLoggingPolicy(logOptions));
 
-        return new HttpPipelineBuilder()
-            .httpClient(super.httpClient)
+        return new HttpPipelineBuilder().httpClient(super.httpClient)
             .policies(policies.toArray(new HttpPipelinePolicy[0]));
     }
 }

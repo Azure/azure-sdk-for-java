@@ -4,11 +4,8 @@
 package com.azure.ai.openai.stainless;
 
 import com.openai.models.embeddings.EmbeddingModel;
-import com.openai.models.responses.Response;
-import com.openai.models.responses.ResponseOutputText;
 import org.junit.jupiter.params.provider.Arguments;
 
-import java.util.Objects;
 import java.util.stream.Stream;
 
 public class TestUtils {

@@ -2,43 +2,4 @@
 
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.ai.vision.face.implementation.FaceAdministrationClientImpl" />
-      <Class name="com.azure.ai.vision.face.implementation.MultipartFormDataHelper" />
-      <Class name="com.azure.ai.vision.face.implementation.models.DetectFromUrlImplOptions" />
-      <Class name="com.azure.ai.vision.face.implementation.models.FindSimilarRequest" />
-      <Class name="com.azure.ai.vision.face.implementation.models.GroupRequest" />
-      <Class name="com.azure.ai.vision.face.implementation.models.IdentifyFromLargePersonGroupRequest" />
-      <Class name="com.azure.ai.vision.face.implementation.models.VerifyImageFileDetails" />
-      <Class name="com.azure.ai.vision.face.models.DetectFromSessionImageOptions" />
-      <Class name="com.azure.ai.vision.face.models.DetectOptions" />
-      <Class name="com.azure.ai.vision.face.models.FaceAttributes" />
-      <Class name="com.azure.ai.vision.face.models.FaceGroupingResult" />
-      <Class name="com.azure.ai.vision.face.models.FaceIdentificationResult" />
-      <Class name="com.azure.ai.vision.face.models.HairProperties" />
-      <Class name="com.azure.ai.vision.face.models.LargePersonGroupPerson" />
-      <Class name="com.azure.ai.vision.face.models.LivenessResponseBody" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.ai.vision.face.FaceClientBuilder" />
-      <Class name="com.azure.ai.vision.face.FaceSessionClientBuilder" />
-      <Class name="com.azure.ai.vision.face.administration.FaceAdministrationClientBuilder" />
-      <Class name="com.azure.ai.vision.face.implementation.models.DetectFromUrlImplOptions" />
-      <Class name="com.azure.ai.vision.face.implementation.models.FindSimilarRequest" />
-      <Class name="com.azure.ai.vision.face.implementation.models.GroupRequest" />
-      <Class name="com.azure.ai.vision.face.implementation.models.IdentifyFromLargePersonGroupRequest" />
-      <Class name="com.azure.ai.vision.face.implementation.models.VerifyImageFileDetails" />
-      <Class name="com.azure.ai.vision.face.models.DetectFromSessionImageOptions" />
-      <Class name="com.azure.ai.vision.face.models.DetectOptions" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="NM_CONFUSING" />
-    <Class name="com.azure.ai.vision.face.implementation.models.VerifyImageFileDetails" />
-  </Match>
 </FindBugsFilter>

@@ -7,16 +7,6 @@
   <suppress files="com.azure.v2.identity.implementation.client.DevToolsClient.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.v2.identity.implementation.client.LinuxKeyRingAccessor.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.v2.identity.implementation.client.PowershellManager.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.v2.identity.implementation.client.PowershellManager.java" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.v2.identity.implementation.client.PowershellManager.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
-  <suppress files="com.azure.v2.identity.implementation.client.PowershellManager.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azure.v2.identity.implementation.client.LinuxKeyRingAccessor.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azure.v2.identity.implementation.client.LinuxKeyRingAccessor.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.v2.identity.implementation.client.DevToolsClient.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.v2.identity.implementation.client.DevToolsClient.java" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.v2.identity.implementation.client.AzureToolkitCacheAccessor.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azure.v2.identity.implementation.client.AzureToolkitCacheAccessor.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
-  <suppress files="com.azure.v2.identity.implementation.client.PersistentTokenCacheImpl.java" checks="MissingJavadocMethodCheck" />
-  <suppress files="com.azure.v2.identity.implementation.client.PersistentTokenCacheImpl.java" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.v2.identity.implementation.models.PublicClientOptions.java" checks="GoodLoggingCheck" />
+  <suppress files="com.azure.v2.identity.implementation.client.LinuxKeyRingAccessor.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
+  <suppress files="com.azure.v2.identity.implementation.models.PublicClientOptions.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
 </suppressions>

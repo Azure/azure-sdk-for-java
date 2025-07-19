@@ -89,22 +89,6 @@ Some live tests may have additional steps for setting up live testing resources.
 See the CONTRIBUTING.md file for the service you wish to test for additional
 information or instructions.
 
-### Workaround for Checkstyle error
-
-When building locally you might run into a Checkstyle such as the following:
-
-```
-Execution default of goal org.apache.maven.plugins:maven-checkstyle-plugin:3.1.0:check failed:
-Plugin org.apache.maven.plugins:maven-checkstyle-plugin:3.1.0 or one of its dependencies could not be resolved:
-Could not find artifact com.azure:sdk-build-tools:jar:1.0.0 in ossrh (https://oss.sonatype.org/content/repositories/snapshots/)
-```
-
-This is because the `sdk-build-tools` project isn't released to Maven. To resolve this issue you'll need to copy the `eng` folder locally then install `sdk-build-tools`.
-
-`mvn clean install -f eng/code-quality-reports/pom.xml`
-
-All code in the Azure SDKs for Java repository must pass Checkstyle before being merged. The `sdk-build-tools` is updated periodically, so if a new branch fails Checkstyle you'll need to reinstall.
-
 ## Versions and versioning
 
 Tooling has been introduced to centralize versioning and help ease the pain of updating artifact versions in POM and README files. Under the eng\versioning directory there exists a version text file for libraries ([version_client.txt](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/versioning/version_client.txt)).

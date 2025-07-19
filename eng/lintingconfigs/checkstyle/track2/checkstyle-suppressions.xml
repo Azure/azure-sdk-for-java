@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+  <!-- Add Javadoc suppression for any test files (ie. ones that live under src/test/java). -->
+  <suppress checks="Javadoc" files="src[/\\](test|test-shared)[/\\]java[/\\].*.java"/>
+  <suppress checks="Javadoc" files=".*[/\\]implementation[/\\].*\.java"/>
+  <suppress checks="Header" files=".*package-info.java"/>
+
+  <!-- Suppress all checkstyle rules for Track 1/management libraries. -->
+  <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
+
+  <!-- Suppress certain checks for samples. -->
+  <suppress checks="(MissingJavadocMethod|MissingJavadocType|MissingJavadocPackage|EqualsAvoidNullCheck|io\.clientcore\.linting.extensions\.checkstyle\.checks\..*)"
+            files=".*[/\\]samples[/\\].*\.java"/>
+
+  <!-- empty Enum Singleton Pattern -->
+  <suppress checks="NoWhitespaceBefore" files="Messages.java"/>
+
+  <!-- Star imports are ok in unit tests - it makes it easier to import all assertions, etc -->
+  <suppress checks="AvoidStarImport" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
+
+  <!-- Nested blocks are useful in tests, e.g. when lambdas require effectively final variables. -->
+  <suppress checks="AvoidNestedBlocks" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
+
+  <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5030 -->
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" files=".*(CredentialBuilderBase|DeviceCodeCredentialBuilder|InteractiveBrowserCredentialBuilder).java"/>
+
+  <!-- Don't apply custom Checkstyle rules to files under checkstyle package. -->
+  <suppress checks="io\.clientcore\.linting.extensions\.checkstyle\.checks\..+" files=".*[/\\]tools[/\\]checkstyle[/\\].*"/>
+
+  <!-- Don't apply custom Checkstyle rules to files under implementation package -->
+  <suppress checks="io\.clientcore\.linting.extensions\.checkstyle\.checks\..*" files=".*[/\\]implementation[/\\].*\.java"/>
+
+  <!-- Don't apply custom Checkstyle rules to files under test package -->
+  <suppress checks="io\.clientcore\.linting.extensions\.checkstyle\.checks\..*" files=".*[/\\]src[/\\]test(-shared)?[/\\]java[/\\].*\.java"/>
+
+  <!-- Don't check for JavaDocPackage or LineLength in samples or tests-->
+  <suppress checks="(JavadocPackage|LineLength)" files=".*[/\\](samples|test)[/\\].*\.java"/>
+
+  <!-- Suppress LineLength for i18n message properties -->
+  <suppress checks="LineLength" files="messages.properties"/>
+
+  <!-- OpenTelemetry tracing are plugin packages and shouldn't be referenced -->
+  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]cloud[/\\]autoconfigure[/\\]monitor[/\\]*"/>
+
+  <!-- Suppress external dependency Checkstyle on Event Hubs Stress Test packages as it use spring framework and may directly use external dependencies -->
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.messaging.eventhubs.stress.*\.java"/>
+  <suppress checks="MissingJavadocMethod" files="com.azure.messaging.eventhubs.stress.*\.java"/>
+
+  <!-- Suppress warnings for KeyEncryptionKey and LocalCrypto client as it is a specialized client and doesn't follow the guidelines completely -->
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" files=".*(KeyEncryptionKeyClientBuilder|LocalCryptographyClientBuilder).java"/>
+
+  <!-- Cryptography Client exception for service client instantiation as it provides client side crypto and is not entirely based on REST service -->
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" files=".*CryptographyAsyncClient.java"/>
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" files=".*CryptographyClient.java"/>
+
+  <!-- Suppress the long package name in autoconfigure.implementation.redis package  -->
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.redis.*" />
+
+  <!-- Suppress external dependency Checkstyle on Service Bus Stress Test packages as it use spring framework and may directly use external dependencies -->
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.messaging.servicebus.stress.*\.java"/>
+  <suppress checks="MissingJavadocMethod" files="com.azure.messaging.servicebus.stress.*\.java"/>
+
+  <!-- Logger class suppression -->
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" files="(ClientLogger|DefaultLogger|LoggingEventBuilder).java"/>
+
+  <!-- Requires static access to logger to report errors while loading i18n messages (from within a static initializer )-->
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" files="Messages.java"/>
+
+  <!-- Only checks Public Api classes -->
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.DenyListedWordsCheck" files=".*[/\\](implementation|test)[/\\].*"/>
+
+  <!-- Cosmos sdk suppressions -->
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-(encryption|kafka-connect|test)[/\\]src[/\\]test[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*"
+            files=".*[/\\]azure-cosmos[/\\]((?!(BridgeInternal|CosmosBridgeInternal|CommonsBridgeInternal)).*)"/>
+  <suppress checks="[a-zA-Z0-9]*"
+            files=".*[/\\]azure-cosmos-encryption[/\\]((?!(EncryptionBridgeInternal)).*)"/>
+
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-benchmark[/\\]"/>
+  <suppress checks="com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck" files="[/\\]azure-cosmos-test[/\\]"/>
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck"
+            files="com.azure.cosmos.CosmosResponseDiagnostics"/>
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck"
+            files=".*[/\\]cosmos[/\\]((?!(CosmosClient|CosmosScripts|CosmosAsyncDatabase|PartitionKeyDefinition
+            |JsonSerializable|CosmosContainer|DatabaseAccount|CosmosContainerProperties|UniqueKeyPolicy|IncludedPath
+            |CosmosConflictProperties|CosmosDatabase|ConnectionPolicy|ThrottlingRetryOptions|ClientSideRequestStatistics)).*)"/>
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.(GoodLoggingCheck|ExternalDependencyExposedCheck)"
+            files="com.azure.cosmos.JsonSerializable"/>  <!-- exposes logger from slf4j-->
+  <suppress checks="javadoc" files="com.azure.cosmos.CompositePathSortOrder"/>
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.cosmos.PartitionKey"/>
+  <suppress
+      checks="io.clientcore.linting.extensions.checkstyle.checks.(EnforceFinalFieldsCheck|ExternalDependencyExposedCheck|NoImplInPublicAPI)"
+      files="com.azure.cosmos.ClientSideRequestStatistics"/>
+  <suppress checks="(ConstantName|EnforceFinalFields)" files="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"/>
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" files="[/\\]azure-cosmos-kafka-connect[/\\]"/>
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.cosmos.kafka.connect.CosmosSourceConnector"/>
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.cosmos.kafka.connect.CosmosSinkConnector"/>
+
+  <!-- Checkstyle suppressions for resource manager package -->
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" files="com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy.java"/>
+
+  <!-- Suppress the long package name in kubernetesconfiguration and all its sub services/packages  -->
+  <suppress checks="PackageName" files="com.azure.resourcemanager.kubernetesconfiguration.*" />
+
+  <!-- Suppress the @Immutable class with a property named "setPasswordLink"  -->
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ImmutableClassCheck" files="com.azure.resourcemanager.datadog.fluent.models.DatadogSetPasswordLinkInner" />
+
+  <!-- ### begin: Spring related suppression -->
+  <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-data-cosmos[/\\]src[/\\]test[/\\]"/>
+  <suppress checks="MethodName|MemberName|ParameterName" files="src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]cosmos[/\\]domain|repository.*.java"/>
+  <suppress checks="EnforceFinalFields" files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest"/>
+  <suppress checks="EnforceFinalFields" files="com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration.java"/>
+  <suppress checks="MethodName" files="com.azure.spring.data.cosmos.config.CosmosConfig.java"/>
+  <suppress checks="MemberName" files="com.azure.spring.data.cosmos.MyItem.java"/>
+
+  <!-- The constant name is public static. -->
+  <suppress checks="ConstantName" files="com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties"/>
+
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.(eventhubs|servicebus|storage.queue).core.properties.*"/>
+
+  <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18291)  -->
+  <!-- GoodLoggingCheck: Spring as a framework, will not directly use ClientLogger-->
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.(GoodLoggingCheck|ThrowFromClientLoggerCheck|UseCaughtExceptionCauseCheck)" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
+
+  <!-- ExternalDependencyExposedCheck: Spring will directly use classes from spring dependencies in methods-->
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
+
+  <!-- Suppress package name warning: b2c is the product name. -->
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.aadb2c.*" />
+  <!-- The package name length limit -->
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.AzureKeyVaultCertificateProperties"/>
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties"/>
+
+  <!--DenyListedWordsCheck: URL is the name -->
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.DenyListedWordsCheck" files="com.azure.spring.cloud.core.resource.Storage(Blob|File)Resource.java"/>
+
+  <suppress checks="MethodName" files="com.azure.resourcemanager.appplatform.models.BuildProperties.java"/>
+
+  <!-- Checkstyle suppressions for azure.spring.cloud.autoconfigure.compatibility package -->
+  <suppress checks="MethodName" files="com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier.java"/>
+
+  <!-- Test class for spring-messaging-azure-servicebus module -->
+  <suppress checks="InnerAssignment" files="com.azure.spring.messaging.servicebus.implementation.properties.merger.util.(TestPropertiesComparer|TestPropertiesValueInjectHelper)"/>
+  <!-- ### end: Spring related suppression -->
+
+  <!-- Suppress checks for Core Perf package. -->
+  <suppress checks="(ExternalDependencyExposed|GoodLogging|Javadoc|ThrowFromClientLoggerCheck)" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
+
+  <!-- Suppress checks for stress packages. -->
+  <suppress checks="ExternalDependencyExposed" files=".*[/\\]azure-template-stress[/\\].*\.java"/>
+  <suppress checks="(EnforceFinalFields|IllegalImport|ThrowFromClientLogger)" files="com.azure.*.stress"/>
+
+  <!-- The build tool plugin checkstyle exceptions -->
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.(ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck)"
+            files="com.azure.sdk.build.tool.*\.java"/>
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" files="ConsoleLogger.java"/>
+
+  <suppress checks="ExternalDependencyExposed" files=".*[/\\]http-stress[/\\].*\.java"/>
+
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.DenyListedWordsCheck"
+            files="com.azure.resourcemanager.oep.fluent.OpenEnergyPlatformManagementServiceAPIs.java"/>
+</suppressions>

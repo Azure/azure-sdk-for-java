@@ -54,9 +54,7 @@
       --add-opens com.azure.monitor.ingestion/com.azure.monitor.ingestion.implementation=com.fasterxml.jackson.databind
     </javaModulesSurefireArgLine>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <developers>

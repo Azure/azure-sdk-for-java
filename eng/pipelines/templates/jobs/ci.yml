@@ -97,6 +97,7 @@ jobs:
               - '**/ci*.yml' # necessary for save-package-properties.yml
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
+              - 'sdk/tools/linting-extensions'
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
@@ -285,6 +286,7 @@ jobs:
               - '.vscode/cspell.json'
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
+              - 'sdk/tools/linting-extensions'
 
       - task: PowerShell@2
         displayName: 'Verify versions in POM files'

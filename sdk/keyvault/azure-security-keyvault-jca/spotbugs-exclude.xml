@@ -14,28 +14,6 @@
     <Class name="com.azure.security.keyvault.jca.implementation.utils.CertificateUtil" />
   </Match>
   <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.security.keyvault.jca.implementation.certificates.ClasspathCertificates" />
-      <Class name="com.azure.security.keyvault.jca.implementation.certificates.JreCertificates" />
-      <Class name="com.azure.security.keyvault.jca.implementation.certificates.KeyVaultCertificates" />
-      <Class name="com.azure.security.keyvault.jca.implementation.certificates.SpecificPathCertificates" />
-      <Class name="com.azure.security.keyvault.jca.implementation.model.CertificateBundle" />
-      <Class name="com.azure.security.keyvault.jca.implementation.model.CertificateListResult" />
-      <Class name="com.azure.security.keyvault.jca.implementation.model.CertificatePolicy" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.security.keyvault.jca.KeyVaultKeyManager" />
-      <Class name="com.azure.security.keyvault.jca.KeyVaultTrustManager" />
-      <Class name="com.azure.security.keyvault.jca.implementation.model.CertificateBundle" />
-      <Class name="com.azure.security.keyvault.jca.implementation.model.CertificateListResult" />
-      <Class name="com.azure.security.keyvault.jca.implementation.model.CertificatePolicy" />
-    </Or>
-  </Match>
-  <Match>
     <Bug pattern="MS_EXPOSE_REP" />
     <Or>
       <Class name="com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory" />

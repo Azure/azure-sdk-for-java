@@ -59,10 +59,7 @@
     <!-- skipping test coverage requirements for azure-core-test as this is a utility library for testing -->
     <jacoco.skip>true</jacoco.skip>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
-
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <animal.sniffer.skip>false</animal.sniffer.skip>
     <animal.sniffer.ignores>java.lang.management.ThreadMXBean,java.lang.management.ThreadInfo,java.lang.management.ManagementFactory</animal.sniffer.ignores>
   </properties>

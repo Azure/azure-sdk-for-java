@@ -7,13 +7,6 @@
     <Class name="com.azure.storage.blob.nio.AzureDirectoryStream$AzureDirectoryIterator" />
   </Match>
   <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.storage.blob.nio.AzureDirectoryStream" />
-      <Class name="com.azure.storage.blob.nio.AzureFileSystem" />
-    </Or>
-  </Match>
-  <Match>
     <Bug pattern="NP_BOOLEAN_RETURN_NULL" />
     <Class name="com.azure.storage.blob.nio.AzureBlobFileAttributes" />
   </Match>

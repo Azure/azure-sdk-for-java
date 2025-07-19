@@ -50,9 +50,7 @@
       --add-opens com.azure.ai.openai.assistants/com.azure.ai.openai.assistants=ALL-UNNAMED
      </javaModulesSurefireArgLine>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
   <dependencies>
 

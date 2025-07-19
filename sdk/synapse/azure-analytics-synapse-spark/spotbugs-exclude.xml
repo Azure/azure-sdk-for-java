@@ -2,40 +2,4 @@
 
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.analytics.synapse.spark.models.SparkBatchJob" />
-      <Class name="com.azure.analytics.synapse.spark.models.SparkBatchJobCollection" />
-      <Class name="com.azure.analytics.synapse.spark.models.SparkBatchJobOptions" />
-      <Class name="com.azure.analytics.synapse.spark.models.SparkRequest" />
-      <Class name="com.azure.analytics.synapse.spark.models.SparkSession" />
-      <Class name="com.azure.analytics.synapse.spark.models.SparkSessionCollection" />
-      <Class name="com.azure.analytics.synapse.spark.models.SparkSessionOptions" />
-      <Class name="com.azure.analytics.synapse.spark.models.SparkStatementCollection" />
-      <Class name="com.azure.analytics.synapse.spark.models.SparkStatementOutput" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.analytics.synapse.spark.SparkClientBuilder" />
-      <Class name="com.azure.analytics.synapse.spark.models.SparkBatchJob" />
-      <Class name="com.azure.analytics.synapse.spark.models.SparkBatchJobCollection" />
-      <Class name="com.azure.analytics.synapse.spark.models.SparkBatchJobOptions" />
-      <Class name="com.azure.analytics.synapse.spark.models.SparkRequest" />
-      <Class name="com.azure.analytics.synapse.spark.models.SparkSession" />
-      <Class name="com.azure.analytics.synapse.spark.models.SparkSessionCollection" />
-      <Class name="com.azure.analytics.synapse.spark.models.SparkSessionOptions" />
-      <Class name="com.azure.analytics.synapse.spark.models.SparkStatementCollection" />
-      <Class name="com.azure.analytics.synapse.spark.models.SparkStatementOutput" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE" />
-    <Or>
-      <Class name="com.azure.analytics.synapse.spark.implementation.SparkBatchesImpl" />
-      <Class name="com.azure.analytics.synapse.spark.implementation.SparkSessionsImpl" />
-    </Or>
-  </Match>
 </FindBugsFilter>

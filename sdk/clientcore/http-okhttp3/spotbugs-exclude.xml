@@ -7,7 +7,6 @@
     <Or>
       <Class name="io.clientcore.http.okhttp3.OkHttpHttpClient" />
       <Class name="io.clientcore.http.okhttp3.implementation.OkHttpInputStreamRequestBody" />
-      <Class name="io.clientcore.http.okhttp3.implementation.ProxyAuthenticator" />
     </Or>
   </Match>
   <Match>

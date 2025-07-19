@@ -204,6 +204,7 @@ stages:
                   - '**/*.md'
                   - '!sdk/**/test-recordings/*'
                   - '!sdk/**/session-records/*'
+                  - 'sdk/tools/linting-extensions'
 
             - task: UsePythonVersion@0
               displayName: 'Use Python $(PythonVersion)'
@@ -253,6 +254,7 @@ stages:
                 Paths:
                   - sdk/**/*.md
                   - '!**/pom*.xml'
+                  - 'sdk/tools/linting-extensions'
             - download: current
               displayName: 'Download Artifact: packages'
               artifact: packages

@@ -6,27 +6,4 @@
     <Bug pattern="DMI_INVOKING_TOSTRING_ON_ARRAY" />
     <Class name="com.azure.communication.email.implementation.models.EmailAttachment" />
   </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.communication.email.implementation.models.EmailAttachment" />
-      <Class name="com.azure.communication.email.implementation.models.EmailMessage" />
-      <Class name="com.azure.communication.email.implementation.models.EmailRecipients" />
-      <Class name="com.azure.communication.email.implementation.models.ErrorDetail" />
-      <Class name="com.azure.communication.email.models.EmailAttachment" />
-      <Class name="com.azure.communication.email.models.EmailMessage" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.communication.email.EmailClientBuilder" />
-      <Class name="com.azure.communication.email.implementation.AzureCommunicationEmailServiceImplBuilder" />
-      <Class name="com.azure.communication.email.implementation.models.EmailAttachment" />
-      <Class name="com.azure.communication.email.implementation.models.EmailMessage" />
-      <Class name="com.azure.communication.email.implementation.models.EmailRecipients" />
-      <Class name="com.azure.communication.email.models.EmailAttachment" />
-      <Class name="com.azure.communication.email.models.EmailMessage" />
-    </Or>
-  </Match>
 </FindBugsFilter>

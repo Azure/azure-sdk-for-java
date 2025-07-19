@@ -4,5 +4,9 @@
 
 <suppressions>
   <suppress files="io.clientcore.http.stress.util.TelemetryHelper.java" checks="IllegalImportCheck" />
-  <suppress files="io.clientcore.http.stress.util.TelemetryHelper.java" checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="io.clientcore.http.stress.StressOptions.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
+  <suppress files="io.clientcore.http.stress.HttpGet.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="io.clientcore.http.stress.HttpPatch.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="io.clientcore.http.stress.ScenarioBase.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="io.clientcore.http.stress.util.TelemetryHelper.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
 </suppressions>

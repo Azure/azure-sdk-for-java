@@ -786,9 +786,9 @@
           <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
           <dependencies>
             <dependency>
-              <groupId>com.azure</groupId>
-              <artifactId>sdk-build-tools</artifactId>
-              <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+              <groupId>io.clientcore</groupId>
+              <artifactId>linting-extensions</artifactId>
+              <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_io.clientcore:linting-extensions;dependency} -->
             </dependency>
             <dependency>
               <groupId>com.puppycrawl.tools</groupId>
@@ -798,9 +798,9 @@
           </dependencies>
           <configuration>
             <skip>${checkstyle.skip}</skip>
-            <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/clientcore-checkstyle.xml</configLocation>
+            <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/checkstyle/clientcore/checkstyle.xml</configLocation>
             <suppressionsLocation>${checkstyle.suppressionsLocation}</suppressionsLocation>
-            <headerLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+            <headerLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/checkstyle/java.header</headerLocation>
             <excludes>${checkstyle.excludes}</excludes>
             <propertyExpansion>samedir=</propertyExpansion>
             <outputEncoding>UTF-8</outputEncoding>
@@ -818,11 +818,6 @@
           <artifactId>spotbugs-maven-plugin</artifactId>
           <version>4.8.3.1</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
           <dependencies>
-            <dependency>
-              <groupId>com.azure</groupId>
-              <artifactId>sdk-build-tools</artifactId>
-              <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
-            </dependency>
             <dependency>
               <groupId>com.github.spotbugs</groupId>
               <artifactId>spotbugs</artifactId>
@@ -842,7 +837,7 @@
             <xmlOutput>true</xmlOutput>
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>${spotbugs.excludeFilterFile}</excludeFilterFile>
-            <includeFilterFile>spotbugs/spotbugs-include.xml</includeFilterFile>
+            <includeFilterFile>${project.parent.relativePath}/${relative.path.to.eng.folder}/eng/lintingconfigs/spotbugs/spotbugs-include.xml</includeFilterFile>
             <fork>true</fork>
             <failOnError>${spotbugs.failOnError}</failOnError>
             <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
@@ -1011,7 +1006,7 @@
             <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
             <analysisConfigurationFiles>
               <configurationFile>
-                <resource>revapi/clientcore-revapi.json</resource>
+                <path>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/revapi/clientcore/revapi.json</path>
               </configurationFile>
             </analysisConfigurationFiles>
             <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
@@ -1037,9 +1032,9 @@
           </configuration>
           <dependencies>
             <dependency>
-              <groupId>com.azure</groupId>
-              <artifactId>sdk-build-tools</artifactId>
-              <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+              <groupId>io.clientcore</groupId>
+              <artifactId>linting-extensions</artifactId>
+              <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_io.clientcore:linting-extensions;dependency} -->
             </dependency>
             <dependency>
               <groupId>org.revapi</groupId>
@@ -1600,7 +1595,7 @@
     </profile>
 
     <profile>
-      <id>set-checkstyle-suppressions</id>
+      <id>local-checkstyle-suppressions</id>
       <activation>
         <file>
           <exists>checkstyle-suppressions.xml</exists>
@@ -1612,7 +1607,7 @@
     </profile>
 
     <profile>
-      <id>set-spotbugs-exclude</id>
+      <id>local-spotbugs-exclude</id>
       <activation>
         <file>
           <exists>spotbugs-exclude.xml</exists>

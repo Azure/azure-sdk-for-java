@@ -2,22 +2,4 @@
 
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Class name="com.azure.analytics.purview.workflow.implementation.PurviewWorkflowClientImpl" />
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.analytics.purview.workflow.ApprovalClientBuilder" />
-      <Class name="com.azure.analytics.purview.workflow.TaskStatusClientBuilder" />
-      <Class name="com.azure.analytics.purview.workflow.UserRequestsClientBuilder" />
-      <Class name="com.azure.analytics.purview.workflow.WorkflowClientBuilder" />
-      <Class name="com.azure.analytics.purview.workflow.WorkflowRunClientBuilder" />
-      <Class name="com.azure.analytics.purview.workflow.WorkflowRunsClientBuilder" />
-      <Class name="com.azure.analytics.purview.workflow.WorkflowTaskClientBuilder" />
-      <Class name="com.azure.analytics.purview.workflow.WorkflowTasksClientBuilder" />
-      <Class name="com.azure.analytics.purview.workflow.WorkflowsClientBuilder" />
-    </Or>
-  </Match>
 </FindBugsFilter>
