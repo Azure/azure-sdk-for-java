@@ -4,6 +4,91 @@ This README is based on the latest released version of the Azure Compute Batch S
 
 > The SDK supports features of the Azure Batch service starting from API version **2023-05-01.16.0**. We will be adding support for more new features and tweaking the API associated with Azure Batch service newer release.
 
+## Table of Contents
+
+- [Documentation](#documentation)
+- [Prerequisites](#prerequisites)
+  - [Adding the package to your product](#adding-the-package-to-your-product)
+- [Key concepts](#key-concepts)
+  - [Azure Batch Authentication](#azure-batch-authentication)
+  - [Create a Pool](#create-a-pool)
+  - [Create a Job](#create-a-job)
+  - [Create a Task](#create-a-task)
+- [All Methods](#all-methods)
+  - [Authenticate with Microsoft Entra ID](#authenticate-with-microsoft-entra-id)
+  - [Authenticate with Shared Key Credentials](#authenticate-with-shared-key-credentials)
+- [Error Handling](#error-handling)
+- [Operations Examples](#operations-examples)
+  - [Pool Operations](#pool-operations)
+    - [CreatePool](#createpool)
+    - [GetPool](#getpool)
+    - [ListPools](#listpools)
+    - [DeletePool](#deletepool)
+    - [UpdatePool](#updatepool)
+    - [ResizePool](#resizepool)
+    - [StopResizePool](#stopresizepool)
+    - [EnableAutoScalePool](#enableautoscalepool)
+    - [DisableAutoScalePool](#disableautoscalepool)
+    - [EvaluateAutoScalePool](#evaluateautoscalepool)
+    - [ListPoolNodeCounts](#listpoolnodecounts)
+    - [ListPoolUsageMetrics](#listpoolusagemetrics)
+    - [GetSupportedImages](#getsupportedimages)
+  - [Job Operations](#job-operations)
+    - [CreateJob](#createjob)
+    - [GetJob](#getjob)
+    - [ListJobs](#listjobs)
+    - [DeleteJob](#deletejob)
+    - [ReplaceJob](#replacejob)
+    - [UpdateJob](#updatejob)
+    - [DisableJob](#disablejob)
+    - [EnableJob](#enablejob)
+    - [List Job Preparation and Release Task Status](#list-job-preparation-and-release-task-status)
+    - [Get Job Task Counts](#get-job-task-counts)
+    - [TerminateJob](#terminatejob)
+  - [Job Schedule Operations](#job-schedule-operations)
+    - [CreateJobSchedule](#createjobschedule)
+    - [GetJobSchedule](#getjobschedule)
+    - [ListJobSchedules](#listjobschedules)
+    - [DeleteJobSchedule](#deletejobschedule)
+    - [ReplaceJobSchedule](#replacejobschedule)
+    - [UpdateJobSchedule](#updatejobschedule)
+    - [DisableJobSchedule](#disablejobschedule)
+    - [EnableJobSchedule](#enablejobschedule)
+    - [TerminateJobSchedule](#terminatejobschedule)
+  - [Task Operations](#task-operations)
+    - [AddTask](#addtask)
+    - [GetTask](#gettask)
+    - [ListTasks](#listtasks)
+    - [DeleteTask](#deletetask)
+    - [ReplaceTask](#replacetask)
+    - [ReactivateTask](#reactivatetask)
+    - [TerminateTask](#terminatetask)
+    - [File Operations for Tasks](#file-operations-for-tasks)
+    - [List Task Files](#listtaskfiles)
+    - [Get Task File](#gettaskfile)
+    - [Get Task File Properties](#gettaskfileproperties)
+  - [Node Operations](#node-operations)
+    - [GetComputeNode](#getcomputenode)
+    - [ListComputeNodes](#listcomputenodes)
+    - [RebootNode](#rebootnode)
+    - [CreateComputeNodeUser](#createcomputenodeuser)
+    - [DeleteComputeNodeUser](#deletecomputenodeuser)
+    - [GetNodeFile](#getnodefile)
+    - [ListNodeFiles](#listnodefiles)
+    - [DeleteNodeFile](#deletenodefile)
+    - [GetNodeFileProperties](#getnodefileproperties)
+    - [GetRemoteLoginSettings](#getremoteloginsettings)
+    - [UploadNodeLogs](#uploadnodelogs)
+  - [Certificate Operations](#certificate-operations)
+    - [CreateCertificate](#createcertificate)
+    - [GetCertificate](#getcertificate)
+    - [ListCertificates](#listcertificates)
+    - [DeleteCertificate](#deletecertificate)
+    - [CancelDeleteCertificate](#canceldeletecertificate)
+  - [Application Operations](#application-operations)
+    - [GetApplication](#getapplication)
+    - [ListApplications](#listapplications)
+
 ## Documentation
 
 Various documentation is available to help you get started
@@ -32,151 +117,651 @@ Various documentation is available to help you get started
 
 [//]: # ({x-version-update-end})
 
-### Authentication
-
-You can authenticate with Microsoft Entra ID authentication.
-
 ## Key concepts
 
 ### Azure Batch Authentication
 
 You need to create a Batch account through the [Azure portal](https://portal.azure.com) or Azure cli.
 
-- Use the account name, key, and URL to create a `BatchSharedKeyCredentials` instance for authentication with the Azure Batch service.
-  The `BatchServiceClientBuilder` class is the simplest entry point for creating and interacting with Azure Batch objects.
-
-```java
-BatchServiceClientBuilder batchClientBuilder = new BatchServiceClientBuilder()
-        .endpoint(batchEndpoint)
-        .httpClient(HttpClient.createDefault());
-
-BatchSharedKeyCredentials sharedKeyCred = new BatchSharedKeyCredentials(batchEndpoint, accountName, accountKey);
-
-batchClientBuilder.credential(sharedKeyCred);
-```
-
-- The other way is using Entra ID authentication to create the client. See this [document](https://learn.microsoft.com/azure/batch/batch-aad-auth) for details on authenticating to Batch with Entra ID.
+- The preferred method is to use Entra ID authentication to create the client. See this [document](https://learn.microsoft.com/azure/batch/batch-aad-auth) for details on authenticating to Batch with Entra ID.
 For example:
 
-```java
-batchClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
+```java com.azure.compute.batch.build-client
+BatchClient batchClient = new BatchClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+    .buildClient();
 ```
 
-### Create a pool using an Azure Marketplace image
+You can also create a client using Shared Key Credentials:
+
+```java com.azure.compute.batch.build-sharedkey-client
+Configuration localConfig = Configuration.getGlobalConfiguration();
+String accountName = localConfig.get("AZURE_BATCH_ACCOUNT", "fakeaccount");
+String accountKey = localConfig.get("AZURE_BATCH_ACCESS_KEY", "fakekey");
+AzureNamedKeyCredential sharedKeyCreds = new AzureNamedKeyCredential(accountName, accountKey);
+
+BatchClientBuilder batchClientBuilder = new BatchClientBuilder();
+batchClientBuilder.credential(sharedKeyCreds);
+BatchClient batchClientWithSharedKey = batchClientBuilder.buildClient();
+```
+
+### Create a Pool
 
 You can create a pool of Azure virtual machines which can be used to execute tasks.
 
-```java
-System.out.println("Created a pool using an Azure Marketplace image.");
-
-ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
-                    .setSku("18.04-LTS").setVersion("latest");
-
-String poolVmSize = "STANDARD_D1_V2";
-VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
-
-BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(poolId, poolVmSize);
-poolCreateParameters.setTargetDedicatedNodes(1)
-        .setVirtualMachineConfiguration(configuration)
-        .setUserAccounts(userList)
-        .setNetworkConfiguration(networkConfiguration);
-
-batchClientBuilder.buildPoolClient().create(poolCreateParameters);
-
-System.out.println("Created a Pool: " + poolId);
+```java com.azure.compute.batch.create-pool.creates-a-simple-pool
+batchClient.createPool(new BatchPoolCreateParameters("poolId", "STANDARD_DC2s_V2")
+    .setVirtualMachineConfiguration(
+        new VirtualMachineConfiguration(new BatchVmImageReference().setPublisher("Canonical")
+            .setOffer("UbuntuServer")
+            .setSku("18_04-lts-gen2")
+            .setVersion("latest"), "batch.node.ubuntu 18.04"))
+    .setTargetDedicatedNodes(1), null);
 ```
 
 ### Create a Job
 
 You can create a job by using the recently created pool.
 
-```java
-PoolInformation poolInfo = new PoolInformation();
-poolInfo.setPoolId(poolId);
-BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(jobId, poolInfo);
-batchClientBuilder.buildJobClient().create(jobCreateParameters);
+```java com.azure.compute.batch.create-job.creates-a-basic-job
+batchClient.createJob(
+    new BatchJobCreateParameters("jobId", new BatchPoolInfo().setPoolId("poolId")).setPriority(0), null);
+```
+
+### Create a Task
+
+Create a simple task:
+
+```java com.azure.compute.batch.create-task.creates-a-simple-task
+String taskId = "ExampleTaskId";
+BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "echo hello world");
+batchClient.createTask("jobId", taskToCreate);
+```
+
+Or create a more complex task, one with exit conditions:
+
+```java com.azure.compute.batch.create-task.creates-a-task-with-exit-conditions
+batchClient.createTask("jobId", new BatchTaskCreateParameters("taskId", "cmd /c exit 3")
+    .setExitConditions(new ExitConditions().setExitCodeRanges(Arrays
+        .asList(new ExitCodeRangeMapping(2, 4, new ExitOptions().setJobAction(BatchJobActionKind.TERMINATE)))))
+    .setUserIdentity(new UserIdentity().setAutoUser(
+        new AutoUserSpecification().setScope(AutoUserScope.TASK).setElevationLevel(ElevationLevel.NON_ADMIN))),
+    null);
 ```
 
 ## Sample Code
 
 You can find sample code that illustrates Batch usage scenarios in <https://github.com/azure/azure-batch-samples>
 
-## Examples
-
-Create a pool with 3 Small VMs
-
-```java
-String poolId = "ExamplePoolId";
-
-String poolVmSize = "STANDARD_D1_V2";
-int poolVmCount = 2;
-int poolLowPriVmCount = 2;
-
-// 10 minutes
-long poolSteadyTimeoutInMilliseconds = 10 * 60 * 1000;
-
-// Create pool if it doesn't exist
-if (!batchClient.poolExists(poolId)) {
-    ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
-        .setSku("18.04-LTS").setVersion("latest");
-
-    VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
-
-    NetworkConfiguration netConfig = createNetworkConfiguration();
-    List<InboundNATPool> inbounds = new ArrayList<>();
-    inbounds.add(new InboundNATPool("testinbound", InboundEndpointProtocol.TCP, 5000, 60000, 60040));
-
-    BatchPoolEndpointConfiguration endpointConfig = new BatchPoolEndpointConfiguration(inbounds);
-    netConfig.setEndpointConfiguration(endpointConfig);
-
-    BatchPoolCreateContent poolToCreate = new BatchPoolCreateContent(poolId, poolVmSize);
-    poolToCreate.setTargetDedicatedNodes(poolVmCount)
-        .setTargetLowPriorityNodes(poolLowPriVmCount)
-        .setVirtualMachineConfiguration(configuration).setNetworkConfiguration(netConfig)
-        .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.DEFAULT);
-
-    batchClient.createPool(poolToCreate);
-}
-```
-
-Create a job
-
-```java
-String jobId = "ExampleJobId";
-
-BatchPoolInfo poolInfo = new BatchPoolInfo();
-poolInfo.setPoolId(poolId);
-BatchJobCreateContent jobToCreate = new BatchJobCreateContent(jobId, poolInfo);
-
-batchClient.createJob(jobToCreate);
-```
-
-Create a task
-
-```java
-String taskId = "ExampleTaskId";
-BatchTaskCreateContent taskToCreate = new BatchTaskCreateContent(taskId, "echo hello world");
-batchClient.createTask(jobId, taskToCreate);
-```
-
 Error handling
 
 When a call to the batch service fails the response from that call will contain a BatchError object in the body of the response.  In the AZURE-COMPUTE-BATCH SDK when an api method is called and a failure from the server occurs the sdk will throw a HttpResponseException exception.  You can use the helper method BatchError.fromException() to extract out the BatchError object.
 
-```java
+```java com.azure.compute.batch.resize-pool.resize-pool-error
 try {
-    BatchPool pool = batchClient.getPool("poolthatdoesnotexist");
-} catch (HttpResponseException err) {
-    BatchError batchError = BatchError.fromException(err);
-    Assertions.assertEquals("PoolNotFound", batchError.getCode());
+    BatchPoolResizeParameters resizeParams
+        = new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1);
+    batchClient.beginResizePool("fakepool", resizeParams);
+} catch (BatchErrorException err) {
+    BatchError error = err.getValue();
+    Assertions.assertNotNull(error);
+    Assertions.assertEquals("PoolNotFound", error.getCode());
+    Assertions.assertTrue(error.getMessage().getValue().contains("The specified pool does not exist."));
+    Assertions.assertNull(error.getValues());
 }
 ```
+
+## All Methods
+
+### Authenticate with Microsoft Entra ID
+
+The preferred approach is to use the Azure Identity library’s `DefaultAzureCredential`.
+
+```java com.azure.compute.batch.build-client
+BatchClient batchClient = new BatchClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+    .buildClient();
+```
+
+### Authenticate with Shared Key Credentials
+
+Alternatively, authenticate using an `AzureNamedKeyCredential`.
+
+```java com.azure.compute.batch.build-sharedkey-client
+Configuration localConfig = Configuration.getGlobalConfiguration();
+String accountName = localConfig.get("AZURE_BATCH_ACCOUNT", "fakeaccount");
+String accountKey = localConfig.get("AZURE_BATCH_ACCESS_KEY", "fakekey");
+AzureNamedKeyCredential sharedKeyCreds = new AzureNamedKeyCredential(accountName, accountKey);
+
+BatchClientBuilder batchClientBuilder = new BatchClientBuilder();
+batchClientBuilder.credential(sharedKeyCreds);
+BatchClient batchClientWithSharedKey = batchClientBuilder.buildClient();
+```
+
+## Error Handling
+
+In `Azure.Compute.Batch`, server errors throw exceptions such as `BatchErrorException`, the custom Batch error object. For example:
+
+```java com.azure.compute.batch.resize-pool.resize-pool-error
+try {
+    BatchPoolResizeParameters resizeParams
+        = new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1);
+    batchClient.beginResizePool("fakepool", resizeParams);
+} catch (BatchErrorException err) {
+    BatchError error = err.getValue();
+    Assertions.assertNotNull(error);
+    Assertions.assertEquals("PoolNotFound", error.getCode());
+    Assertions.assertTrue(error.getMessage().getValue().contains("The specified pool does not exist."));
+    Assertions.assertNull(error.getValues());
+}
+```
+
+## Operations Examples
+
+The sections below compare common operations between Track 1 (Microsoft.Azure.Batch) and Track 2 (Azure.Compute.Batch).
+
+### Pool Operations
+
+#### CreatePool
+
+```java com.azure.compute.batch.create-pool.creates-a-simple-pool
+batchClient.createPool(new BatchPoolCreateParameters("poolId", "STANDARD_DC2s_V2")
+    .setVirtualMachineConfiguration(
+        new VirtualMachineConfiguration(new BatchVmImageReference().setPublisher("Canonical")
+            .setOffer("UbuntuServer")
+            .setSku("18_04-lts-gen2")
+            .setVersion("latest"), "batch.node.ubuntu 18.04"))
+    .setTargetDedicatedNodes(1), null);
+```
+
+#### GetPool
+
+```java com.azure.compute.batch.get-pool.pool-get
+BatchPool response = batchClient.getPool("pool", null, null);
+```
+
+#### ListPools
+
+```java com.azure.compute.batch.list-pools.pool-list
+PagedIterable<BatchPool> poolList = batchClient.listPools(new BatchPoolsListOptions());
+```
+
+#### DeletePool
+
+```java com.azure.compute.batch.delete-pool.pool-delete
+batchClient.beginDeletePool("poolId");
+```
+
+#### UpdatePool
+
+```java com.azure.compute.batch.update-pool.patch-the-pool
+batchClient.updatePool("poolId",
+    new BatchPoolUpdateParameters().setStartTask(new BatchStartTask("/bin/bash -c 'echo start task'")), null,
+    null);
+```
+
+#### ResizePool
+
+```java com.azure.compute.batch.resize-pool.pool-resize
+BatchPoolResizeParameters resizeContent = new BatchPoolResizeParameters()
+    .setTargetDedicatedNodes(1)
+    .setResizeTimeout(Duration.ofMinutes(10));
+
+batchClient.resizePool("poolId", resizeContent);
+```
+
+#### StopResizePool
+
+```java com.azure.compute.batch.stop-resize-pool.stop-pool-resize
+batchClient.beginStopPoolResize("poolId");
+```
+
+#### EnableAutoScalePool
+
+```java com.azure.compute.batch.enable-pool-auto-scale.pool-enable-autoscale
+BatchPoolEnableAutoScaleParameters autoScaleParameters = new BatchPoolEnableAutoScaleParameters()
+    .setAutoScaleEvaluationInterval(Duration.ofMinutes(6))
+    .setAutoScaleFormula("$TargetDedicated = 1;");
+
+batchClient.enablePoolAutoScale("poolId", autoScaleParameters);
+```
+
+#### DisableAutoScalePool
+
+```java com.azure.compute.batch.disable-pool-auto-scale.disable-pool-autoscale
+batchClient.disablePoolAutoScale("poolId");
+```
+
+#### EvaluateAutoScalePool
+
+```java com.azure.compute.batch.evaluate-pool-auto-scale.evaluate-pool-autoscale
+BatchPoolEvaluateAutoScaleParameters evalParams = new BatchPoolEvaluateAutoScaleParameters("$TargetDedicated = 1;");
+AutoScaleRun eval = batchClient.evaluatePoolAutoScale("poolId", evalParams);
+```
+
+#### ListPoolNodeCounts
+
+```java com.azure.compute.batch.list-pool-node-counts.list-pool-node-counts
+batchClient.listPoolNodeCounts();
+```
+
+#### ListPoolUsageMetrics
+
+```java com.azure.compute.batch.list-pool-usage-metrics.list-pool-usage-metrics
+batchClient.listPoolUsageMetrics();
+```
+
+#### GetSupportedImages
+
+```java com.azure.compute.batch.list-supported-images.list-supported-images
+batchClient.listSupportedImages();
+```
+
+### Job Operations
+
+#### CreateJob
+
+```java com.azure.compute.batch.create-job.creates-a-basic-job
+batchClient.createJob(
+    new BatchJobCreateParameters("jobId", new BatchPoolInfo().setPoolId("poolId")).setPriority(0), null);
+```
+
+#### GetJob
+
+```java com.azure.compute.batch.get-job.job-get
+BatchJob job = batchClient.getJob("jobId", null, null);
+```
+
+#### ListJobs
+
+```java com.azure.compute.batch.list-jobs.job-list
+PagedIterable<BatchJob> jobList = batchClient.listJobs(new BatchJobsListOptions());
+```
+
+#### DeleteJob
+
+```java com.azure.compute.batch.delete-job.job-delete
+batchClient.beginDeleteJob("jobId");
+```
+
+#### ReplaceJob
+
+```java com.azure.compute.batch.replace-job.job-patch
+batchClient.replaceJob("jobId",
+    new BatchJob(new BatchPoolInfo().setPoolId("poolId")).setPriority(100)
+        .setConstraints(
+            new BatchJobConstraints().setMaxWallClockTime(Duration.parse("PT1H")).setMaxTaskRetryCount(-1)),
+    null, null);
+```
+
+#### UpdateJob
+
+```java com.azure.compute.batch.update-job.job-update
+batchClient.updateJob("jobId",
+    new BatchJobUpdateParameters().setPriority(100)
+        .setConstraints(
+            new BatchJobConstraints().setMaxWallClockTime(Duration.parse("PT1H")).setMaxTaskRetryCount(-1))
+        .setPoolInfo(new BatchPoolInfo().setPoolId("poolId")),
+    null, null);
+```
+
+#### DisableJob
+
+```java com.azure.compute.batch.disable-job.job-disable
+BatchJobDisableParameters disableParams = new BatchJobDisableParameters(DisableBatchJobOption.REQUEUE);
+batchClient.beginDisableJob("jobId", disableParams);
+```
+
+#### EnableJob
+
+```java com.azure.compute.batch.enable-job.job-enable
+batchClient.beginEnableJob("jobId");
+```
+
+#### List Job Preparation and Release Task Status
+
+Track 2:
+
+```java com.azure.compute.batch.job.list-job-preparation-and-release-task-status
+batchClient.listJobPreparationAndReleaseTaskStatus("jobId");
+```
+
+#### Get Job Task Counts
+
+Track 2:
+
+```java com.azure.compute.batch.job.get-job-task-counts
+BatchTaskCountsResult counts = batchClient.getJobTaskCounts("jobId");
+```
+
+#### TerminateJob
+
+```java com.azure.compute.batch.job.terminate-job
+batchClient.beginTerminateJob("jobId");
+```
+
+### Job Schedule Operations
+
+#### CreateJobSchedule
+
+```java com.azure.compute.batch.create-job-schedule.creates-a-basic-job-schedule
+batchClient.createJobSchedule(new BatchJobScheduleCreateParameters("jobScheduleId",
+    new BatchJobScheduleConfiguration().setRecurrenceInterval(Duration.parse("PT5M")),
+    new BatchJobSpecification(new BatchPoolInfo().setPoolId("poolId"))), null);
+```
+
+#### GetJobSchedule
+
+```java com.azure.compute.batch.job-schedule.get-job-schedule
+batchClient.getJobSchedule("jobScheduleId");
+```
+
+#### ListJobSchedules
+
+```java com.azure.compute.batch.job-schedule.list-job-schedules
+for (BatchJobSchedule schedule : batchClient.listJobSchedules()) {
+    System.out.println(schedule.getId());
+}
+```
+
+#### DeleteJobSchedule
+
+```java com.azure.compute.batch.job-schedule.delete-job-schedule
+batchClient.beginDeleteJobSchedule("jobScheduleId");
+```
+
+#### ReplaceJobSchedule
+
+```java com.azure.compute.batch.replace-job-schedule.job-schedule-patch
+batchClient.replaceJobSchedule("jobScheduleId",
+    new BatchJobSchedule(new BatchJobSpecification(new BatchPoolInfo().setPoolId("poolId")).setPriority(0)
+        .setUsesTaskDependencies(false)
+        .setConstraints(
+            new BatchJobConstraints().setMaxWallClockTime(Duration.parse("P10675199DT2H48M5.4775807S"))
+                .setMaxTaskRetryCount(0)))
+                    .setSchedule(new BatchJobScheduleConfiguration()
+                        .setDoNotRunUntil(OffsetDateTime.parse("2025-01-01T12:30:00Z"))),
+    null, null);
+```
+
+#### UpdateJobSchedule
+
+Track 2:
+
+```java BEGIN: com.azure.compute.batch.job-schedule.update-job-schedule
+import com.azure.compute.batch.models.BatchJobScheduleUpdateContent;
+
+BatchJobScheduleUpdateContent updateContent = new BatchJobScheduleUpdateContent();
+updateContent.getMetadata().add(new MetadataItem("key", "value"));
+batchClient.updateJobSchedule("jobScheduleId", updateContent);
+```
+
+#### DisableJobSchedule
+
+```java com.azure.compute.batch.job-schedule.disable-job-schedule
+batchClient.disableJobSchedule("jobScheduleId");
+```
+
+#### EnableJobSchedule
+
+```java com.azure.compute.batch.job-schedule.enable-job-schedule
+batchClient.enableJobSchedule("jobScheduleId");
+```
+
+#### TerminateJobSchedule
+
+```java com.azure.compute.batch.job-schedule.terminate-job-schedule
+batchClient.beginTerminateJobSchedule("jobScheduleId");
+```
+
+### Task Operations
+
+#### AddTask
+
+Create a single task:
+
+```java com.azure.compute.batch.create-task.creates-a-basic-task
+batchClient.createTask("jobId", new BatchTaskCreateParameters("task1", "cmd /c echo task1"), null);
+```
+
+Create a task collection (100 tasks or less):
+
+```java com.azure.compute.batch.create-task.creates-a-task-collection
+List<BatchTaskCreateParameters> taskList = Arrays.asList(
+    new BatchTaskCreateParameters("task1", "cmd /c echo Hello World"),
+    new BatchTaskCreateParameters("task2", "cmd /c echo Hello World"));
+BatchTaskGroup taskGroup = new BatchTaskGroup(taskList);
+BatchCreateTaskCollectionResult result = batchClient.createTaskCollection("jobId", taskGroup);
+```
+
+Create multiple tasks (used for creating very large numbers of tasks):
+
+```java com.azure.compute.batch.create-task.create-tasks
+List<BatchTaskCreateParameters> tasks = new ArrayList<>();
+for (int i = 0; i < 1000; i++) {
+    tasks.add(new BatchTaskCreateParameters("task" + i, "cmd /c echo Hello World"));
+}
+batchClient.createTasks("jobId", tasks);
+```
+
+#### GetTask
+
+```java com.azure.compute.batch.task.get-task
+batchClient.getTask("jobId", "taskId");
+```
+
+#### ListTasks
+
+```java com.azure.compute.batch.task.list-tasks
+batchClient.listTasks("jobId");
+```
+
+#### DeleteTask
+
+```java com.azure.compute.batch.task.delete-task
+batchClient.deleteTask("jobId", "taskId");
+```
+
+#### ReplaceTask
+
+```java com.azure.compute.batch.replace-task.task-update
+batchClient.replaceTask("jobId", "taskId",
+    new BatchTask().setConstraints(new BatchTaskConstraints().setMaxWallClockTime(Duration.parse("PT1H"))
+        .setRetentionTime(Duration.parse("PT1H"))
+        .setMaxTaskRetryCount(3)),
+    null, null);
+```
+
+#### ReactivateTask
+
+```java com.azure.compute.batch.reactivate-task.task-reactivate
+batchClient.reactivateTask("jobId", "taskId", null, null);
+```
+
+#### TerminateTask
+
+```java com.azure.compute.batch.terminate-task.task-terminate
+batchClient.terminateTask("jobId", "taskId", null, null);
+```
+
+### File Operations for Tasks
+
+#### ListTaskFiles
+
+```java com.azure.compute.batch.task.list-task-files
+PagedIterable<BatchNodeFile> files = batchClient.listTaskFiles("jobId", "taskId");
+for (BatchNodeFile file : files) {
+    System.out.println(file.getName());
+}
+```
+
+#### GetTaskFile
+
+```java com.azure.compute.batch.task.get-task-file
+BinaryData fileContent = batchClient.getTaskFile("jobId", "taskId", "stdout.txt");
+System.out.println(new String(fileContent.toBytes(), StandardCharsets.UTF_8));
+```
+
+#### GetTaskFileProperties
+
+```java com.azure.compute.batch.get-task-file-properties.file-get-properties-from-task
+batchClient.getTaskFileProperties("jobId", "taskId", "wd\\testFile.txt",
+    new BatchTaskFilePropertiesGetOptions());
+```
+
+### Node Operations
+
+#### GetComputeNode
+
+```java com.azure.compute.batch.get-node.node-get
+BatchNode node
+    = batchClient.getNode("poolId", "tvm-1695681911_2-20161122t193202z", new BatchNodeGetOptions());
+```
+
+#### ListComputeNodes
+
+```java com.azure.compute.batch.list-nodes.node-list
+PagedIterable<BatchNode> nodeList = batchClient.listNodes("poolId", new BatchNodesListOptions());
+```
+
+#### RebootNode
+
+```java com.azure.compute.batch.node.reboot-node
+batchClient.beginRebootNode("poolId", "nodeId");
+```
+
+#### CreateComputeNodeUser
+
+```java com.azure.compute.batch.create-node-user.node-create-user
+batchClient.createNodeUser("poolId", "tvm-1695681911_1-20161121t182739z",
+    new BatchNodeUserCreateParameters("userName").setIsAdmin(false)
+        .setExpiryTime(OffsetDateTime.parse("2017-08-01T00:00:00Z"))
+        .setPassword("fakeTokenPlaceholder"),
+    null);
+```
+
+#### DeleteComputeNodeUser
+
+```java com.azure.compute.batch.delete-node-user.node-delete-user
+batchClient.deleteNodeUser("poolId", "tvm-1695681911_1-20161121t182739z", "userName", null);
+```
+
+#### GetNodeFile
+
+```java com.azure.compute.batch.node.get-node-file
+BinaryData nodeFile = batchClient.getNodeFile("poolId", "nodeId", "filePath");
+```
+
+#### ListNodeFiles
+
+```java com.azure.compute.batch.list-node-files.file-list-from-node
+PagedIterable<BatchNodeFile> listNodeFilesResponse = batchClient.listNodeFiles("poolId", "tvm-1695681911_1-20161122t193202z",
+    new BatchNodeFilesListOptions().setRecursive(false));
+```
+
+#### DeleteNodeFile
+
+```java com.azure.compute.batch.delete-node-file.file-delete-from-node
+batchClient.deleteNodeFile("poolId", "tvm-1695681911_1-20161122t193202z",
+    "workitems\\jobId\\job-1\\task1\\wd\\testFile.txt", new BatchNodeFileDeleteOptions().setRecursive(false));
+```
+
+#### GetNodeFileProperties
+
+```java com.azure.compute.batch.get-node-file-properties.file-get-properties-from-node
+batchClient.getNodeFileProperties("poolId", "nodeId", "workitems\\jobId\\job-1\\task1\\wd\\testFile.txt",
+    new BatchNodeFilePropertiesGetOptions());
+```
+
+#### GetRemoteLoginSettings
+
+```java com.azure.compute.batch.get-node-remote-login-settings.node-get-remote-login-settings
+BatchNodeRemoteLoginSettings settings
+    = batchClient.getNodeRemoteLoginSettings("poolId", "tvm-1695681911_1-20161121t182739z", null);
+```
+
+#### UploadNodeLogs
+
+```java com.azure.compute.batch.upload-node-logs.upload-batch-service-logs
+UploadBatchServiceLogsResult uploadNodeLogsResult
+    = batchClient.uploadNodeLogs("poolId", "tvm-1695681911_1-20161121t182739z", null, null);
+```
+
+### Certificate Operations
+
+Note: Certificate operations are deprecated.
+
+#### CreateCertificateFromCer
+
+Track 1:
+
+```java com.azure.compute.batch.create-certificate.certificate-create
+batchClient.createCertificate(
+    new BatchCertificate("0123456789abcdef0123456789abcdef01234567", "sha1", "U3dhZ2randomByb2Hash==".getBytes())
+        .setCertificateFormat(BatchCertificateFormat.PFX)
+        .setPassword("fakeTokenPlaceholder"),
+    null);
+```
+
+#### CreateCertificate
+
+```java com.azure.compute.batch.create-certificate.certificate-create
+batchClient.createCertificate(
+    new BatchCertificate("0123456789abcdef0123456789abcdef01234567", "sha1", "U3dhZ2randomByb2Hash==".getBytes())
+        .setCertificateFormat(BatchCertificateFormat.PFX)
+        .setPassword("fakeTokenPlaceholder"),
+    null);
+```
+
+#### GetCertificate
+
+```java com.azure.compute.batch.get-certificate.certificate-get
+BatchCertificate certificateResponse = batchClient.getCertificate("sha1", "0123456789abcdef0123456789abcdef01234567",
+    new BatchCertificateGetOptions());
+```
+
+#### ListCertificates
+
+```java com.azure.compute.batch.list-certificates.certificate-list
+PagedIterable<BatchCertificate> certificateList = batchClient.listCertificates(new BatchCertificatesListOptions());
+```
+
+#### DeleteCertificate
+
+```java com.azure.compute.batch.certificate.delete-certificate
+String thumbprintAlgorithm = "sha1";
+String thumbprint = "your-thumbprint";
+batchClient.beginDeleteCertificate(thumbprintAlgorithm, thumbprint);
+```
+
+#### CancelDeleteCertificate
+
+```java com.azure.compute.batch.cancel-certificate-deletion.certificate-cancel-delete
+batchClient.cancelCertificateDeletion("sha1", "0123456789abcdef0123456789abcdef01234567", null);
+```
+
+### Application Operations
+
+#### GetApplication
+
+```java com.azure.compute.batch.get-application.get-applications
+BatchApplication application = batchClient.getApplication("my_application_id", null);
+```
+
+#### ListApplications
+
+```java com.azure.compute.batch.list-applications.list-applications
+PagedIterable<BatchApplication> applications = batchClient.listApplications(new BatchApplicationsListOptions());
+```
+
 
 ## Help
 
 If you encounter any bugs with these libraries, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java) or check out [StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
 
 ## Troubleshooting
+
+Please see [Troubleshooting common batch issues](https://learn.microsoft.com/troubleshoot/azure/hpc/batch/welcome-hpc-batch).
 
 Consult the Full Documentation: The full documentation is available at <https://learn.microsoft.com/azure/batch/>.
 
@@ -190,79 +775,15 @@ Check Azure Service Health: Sometimes, the issue may be with Azure services rath
 
 Handle Transient Errors: Implement retry logic in your application to handle transient failures in Batch.
 
-## Next steps
-
 ## Contributing
 
-For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
+This project welcomes contributions and suggestions.
+Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution.
+For details, visit [Contributor License Agreements](https://opensource.microsoft.com/cla/).
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment).
+Simply follow the instructions provided by the bot.
+You will only need to do this once across all repos using our CLA.
 
-## Build Code
-
-To build the code open a console, navigate to the project subdirectory (sdk/batch/azure-compute-batch/), and run
-
-```java
-mvn install -f pom.xml
-```
-
-For more information about building the client library including installing the associated build tools, please see the [Azure Java SDK Building wiki][java_building_wiki]  
-
-## Test Code
-
-All tests are run from the `sdk/batch/azure-compute-batch` directory. They can be run either on the command line or from a Java IDE, such as IntelliJ as Junit (Note that if you wish to run the tests within IntelliJ, you will need to temporarily delete the module-info.java file).
-If you are working on either the src or test code within an IDE, be sure you are also building the client library with Maven commands in the CLI as the build system is configured to target both JDK 8 and 11. Please see the [Build Code section](#build-code).
-
-Tests are run in two phases: Record and Playback. During the first Record phase, integration tests create real Batch resources on Azure using the Batch API, and JSON files are created locally to capture the response from Azure. In the second Playback phase, the integrations tests only exercise assertions against the JSON files themselves. To record sessions locally, several resources need to already exist in Azure:
-
-- A valid Azure subscription that can create resources
-- A service principal with contributor access to the subscription. If not already available, create an app registration in "Azure Active Directory". Generate a client secret for this principal
-- A clean Batch account
-- A storage account
-- A virtual network
-
-## Step 1: Run tests in Record mode
-
-1. Deploy test resources in Azure and set the following environment variables:
-
-    - AZURE_CLIENT_SECRET
-    - AZURE_TENANT_ID
-    - AZURE_BATCH_ACCESS_KEY
-    - AZURE_BATCH_ACCOUNT
-    - AZURE_BATCH_ENDPOINT
-    - AZURE_BATCH_REGION
-    - AZURE_VNET
-    - AZURE_VNET_ADDRESS_SPACE
-    - AZURE_VNET_RESOURCE_GROUP
-    - AZURE_VNET_SUBNET
-    - AZURE_VNET_SUBNET_ADDRESS_SPACE
-    - AZURE_CLIENT_ID
-    - STORAGE_ACCOUNT_KEY
-    - STORAGE_ACCOUNT_NAME
-    - AZURE_SUBSCRIPTION_ID
-
-2. If running as Junit in an IDE, Set the `AZURE_TEST_MODE` environment variable to `Record`, then run the tests in `src/test/java`
-3. If running from the command-line, run `mvn test` (can also supply `-DAZURE_TEST_MODE=Record` instead of setting environment variable)
-4. Test recordings will be created/modified in `azure-compute-batch/src/test/resources/session-records`
-
-Note: Whether you are running in record or playback mode through mvn, you can also run a specific test file i.e. PoolsTests, JobScheduleTests, etc. by passing the -Dtest parameter such as:
-
-```java
-mvn test -DAZURE_TEST_MODE=Playback -Dtest=JobScheduleTests
-```
-
-## Step 2: Run tests in Playback mode
-
-1. If running as Junit in an IDE, Set the `AZURE_TEST_MODE` environment variable to `Playback`, then run the tests in `src/test/java`
-2. If running from the command-line, run `mvn test -DAZURE_TEST_MODE=Playback`
-
-<!-- LINKS -->
-[product_documentation]: https://azure.microsoft.com/services/
-[docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://learn.microsoft.com/java/azure/jdk/
-[azure_subscription]: https://azure.microsoft.com/free/
-[java_building_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/Building
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
