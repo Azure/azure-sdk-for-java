@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandler;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -15,8 +15,10 @@ import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.LastHttpContent;
+import io.netty.util.ReferenceCountUtil;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
@@ -47,6 +49,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
     // and initial response body content.
     private final ByteArrayOutputStream eagerContent = new ByteArrayOutputStream();
     private boolean complete;
+    private boolean isHttp2;
 
     /**
      * Creates an instance of {@link Netty4ResponseHandler}.
@@ -72,6 +75,12 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
+    public void handlerAdded(ChannelHandlerContext ctx) {
+        HttpProtocolVersion protocolVersion = ctx.channel().attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).get();
+        this.isHttp2 = protocolVersion == HttpProtocolVersion.HTTP_2;
+    }
+
+    @Override
     public boolean isSharable() {
         return false;
     }
@@ -80,6 +89,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         setOrSuppressError(errorReference, cause);
         latch.countDown();
+        ctx.fireExceptionCaught(cause);
     }
 
     @Override
@@ -132,28 +142,41 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
 
             if (msg instanceof FullHttpResponse) {
                 complete = true;
-                ByteBuf content = ((FullHttpResponse) msg).content();
-                readByteBufIntoOutputStream(content, eagerContent);
+                FullHttpResponse fullHttpResponse = (FullHttpResponse) msg;
+                try {
+                    readByteBufIntoOutputStream(fullHttpResponse.content(), eagerContent);
+                } finally {
+                    fullHttpResponse.release();
+                }
             }
-
             return;
         }
 
         if (msg instanceof LastHttpContent) {
             complete = true;
-            ByteBuf content = ((LastHttpContent) msg).content();
-            readByteBufIntoOutputStream(content, eagerContent);
+            LastHttpContent lastHttpContent = (LastHttpContent) msg;
+            try {
+                readByteBufIntoOutputStream(lastHttpContent.content(), eagerContent);
+            } finally {
+                lastHttpContent.release();
+            }
             return;
         }
 
         if (!started) {
-            // Haven't received the HttpResponse, discard this message.
+            // This is an HttpContent that arrived before the HttpResponse.
+            // It's unexpected, so we release it and discard it.
+            ReferenceCountUtil.release(msg);
             return;
         }
 
         if (msg instanceof HttpContent) {
-            ByteBuf content = ((HttpContent) msg).content();
-            readByteBufIntoOutputStream(content, eagerContent);
+            HttpContent httpContent = (HttpContent) msg;
+            try {
+                readByteBufIntoOutputStream(httpContent.content(), eagerContent);
+            } finally {
+                httpContent.release();
+            }
         }
     }
 
@@ -161,19 +184,22 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         // Reading hasn't started yet.
         if (!started) {
+            ctx.read();
             ctx.fireChannelReadComplete();
             return;
         }
-
-        ctx.pipeline().remove(this);
         ctx.fireChannelReadComplete();
 
-        if (complete) {
-            ctx.close();
-        }
-
         responseReference.set(new ResponseStateInfo(ctx.channel(), complete, statusCode, headers, eagerContent,
-            ResponseBodyHandling.getBodyHandling(request, headers), false));
+            ResponseBodyHandling.getBodyHandling(request, headers), isHttp2));
+        latch.countDown();
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        setOrSuppressError(errorReference,
+            new IOException("The channel became inactive before a response was received."));
+        ctx.fireChannelInactive();
         latch.countDown();
     }
 }

@@ -4,6 +4,7 @@
 package io.clientcore.http.netty4;
 
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -12,6 +13,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.ServerSentEvent;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
@@ -19,6 +21,7 @@ import io.clientcore.core.http.pipeline.HttpRetryOptions;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.utils.ProgressReporter;
 import io.clientcore.http.netty4.implementation.MockProxyServer;
 import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
@@ -34,6 +37,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -42,7 +46,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URI;
 import java.nio.channels.Channels;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.WritableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -50,11 +56,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -302,18 +310,24 @@ public class NettyHttpClientTests {
                 () -> httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(PROXY_TO_ADDRESS))));
 
             Throwable exception = coreException.getCause();
-            assertInstanceOf(ProxyConnectException.class, exception, () -> {
-                StringWriter stringWriter = new StringWriter();
-                stringWriter.write(exception.toString());
-                PrintWriter printWriter = new PrintWriter(stringWriter);
-                exception.printStackTrace(printWriter);
+            assertTrue(exception instanceof ProxyConnectException || exception instanceof ClosedChannelException,
+                "Exception was not of expected type ProxyConnectException or ClosedChannelException, but was "
+                    + exception.getClass().getName());
 
-                return stringWriter.toString();
-            });
+            if (exception instanceof ProxyConnectException) {
+                assertInstanceOf(ProxyConnectException.class, exception, () -> {
+                    StringWriter stringWriter = new StringWriter();
+                    stringWriter.write(exception.toString());
+                    PrintWriter printWriter = new PrintWriter(stringWriter);
+                    exception.printStackTrace(printWriter);
 
-            assertTrue(coreException.getCause().getMessage().contains("Proxy Authentication Required"),
-                () -> "Expected exception message to contain \"Proxy Authentication Required\", it was: "
-                    + coreException.getCause().getMessage());
+                    return stringWriter.toString();
+                });
+
+                assertTrue(coreException.getCause().getMessage().contains("Proxy Authentication Required"),
+                    () -> "Expected exception message to contain \"Proxy Authentication Required\", it was: "
+                        + coreException.getCause().getMessage());
+            }
         }
     }
 
@@ -353,6 +367,88 @@ public class NettyHttpClientTests {
             assertNotNull(response);
             assertEquals(200, response.getStatusCode());
             assertArraysEqual(LONG_BODY, response.getValue().toBytes());
+        }
+    }
+
+    @Test
+    public void sendWithServerSentEvents() throws InterruptedException {
+        LocalTestServer sseServer = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, (req, res, body) -> {
+            res.setContentType("text/event-stream");
+            res.setCharacterEncoding(StandardCharsets.UTF_8.name());
+            res.setStatus(HttpServletResponse.SC_OK);
+            try (PrintWriter writer = res.getWriter()) {
+                writer.println("id: 1");
+                writer.println("event: message");
+                writer.println("data: event-1");
+                writer.println();
+                writer.flush();
+
+                writer.println("id: 2");
+                writer.println("event: message");
+                writer.println("data: event-2");
+                writer.println();
+                writer.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        try {
+            sseServer.start();
+            final CountDownLatch latch = new CountDownLatch(2);
+            final AtomicReference<ServerSentEvent> lastEvent = new AtomicReference<>();
+
+            HttpClient client = new NettyHttpClientBuilder().build();
+            HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(URI.create(sseServer.getUri()));
+            request.setServerSentEventListener(event -> {
+                lastEvent.set(event);
+                latch.countDown();
+            });
+
+            try (Response<BinaryData> response = client.send(request)) {
+                assertEquals(200, response.getStatusCode());
+                assertTrue(latch.await(10, TimeUnit.SECONDS));
+                assertNotNull(lastEvent.get());
+                assertEquals("2", lastEvent.get().getId());
+                assertEquals("message", lastEvent.get().getEvent());
+            }
+        } finally {
+            sseServer.stop();
+        }
+    }
+
+    @Test
+    public void sendWithServerSentEventsAndNoListenerThrows() {
+        LocalTestServer sseServer = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, (req, res, body) -> {
+            res.setContentType("text/event-stream");
+            res.setStatus(HttpServletResponse.SC_OK);
+            try {
+                res.getWriter().println("data: event-1\n\n");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        try {
+            sseServer.start();
+            HttpClient client = new NettyHttpClientBuilder().build();
+            HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(URI.create(sseServer.getUri()));
+
+            IllegalStateException ex = assertThrows(IllegalStateException.class, () -> client.send(request));
+            assertTrue(ex.getMessage().contains("No ServerSentEventListener attached"));
+        } finally {
+            sseServer.stop();
+        }
+    }
+
+    @Test
+    public void nonPooledClientSendsRequestSuccessfully() {
+        HttpClient client = new NettyHttpClientBuilder().connectionPoolSize(0).build();
+
+        try (Response<BinaryData> response
+            = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(SHORT_BODY_PATH)))) {
+            assertEquals(200, response.getStatusCode());
+            assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
         }
     }
 

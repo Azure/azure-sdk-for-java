@@ -7,7 +7,8 @@ import io.netty.channel.Channel;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -16,6 +17,7 @@ import java.util.concurrent.CountDownLatch;
 public final class Netty4ChannelInputStream extends InputStream {
     private final Channel channel;
     private final boolean isHttp2;
+    private final Runnable onClose;
 
     // Indicator for the Channel being fully read.
     // This will become true before 'streamDone' becomes true, but both may become true in the same operation.
@@ -27,9 +29,9 @@ public final class Netty4ChannelInputStream extends InputStream {
     // Once this is true, the stream will never return data again.
     private boolean streamDone = false;
 
-    // Linked list of byte[]s that maintains the last available contents from the Channel / eager content.
-    // A list is needed as each Channel.read() may result in many channelRead calls.
-    private final LinkedList<byte[]> additionalBuffers;
+    // Queue of byte[]s that maintains the last available contents from the Channel / eager content.
+    // A queue is needed as each Channel.read() may result in many channelRead calls.
+    private final Queue<byte[]> additionalBuffers;
 
     private byte[] currentBuffer;
 
@@ -46,20 +48,23 @@ public final class Netty4ChannelInputStream extends InputStream {
      * status line and response headers.
      * @param channel The {@link Channel} to read from.
      * @param isHttp2 Flag indicating whether the Channel is used for HTTP/2 or not.
+     * @param onClose A runnable to execute when the stream is closed.
      */
-    Netty4ChannelInputStream(ByteArrayOutputStream eagerContent, Channel channel, boolean isHttp2) {
+    Netty4ChannelInputStream(ByteArrayOutputStream eagerContent, Channel channel, boolean isHttp2, Runnable onClose) {
         if (eagerContent != null && eagerContent.size() > 0) {
             this.currentBuffer = eagerContent.toByteArray();
+            eagerContent.reset();
         } else {
             this.currentBuffer = new byte[0];
         }
         this.readIndex = 0;
-        this.additionalBuffers = new LinkedList<>();
+        this.additionalBuffers = new ConcurrentLinkedQueue<>();
         this.channel = channel;
         if (channel.pipeline().get(Netty4InitiateOneReadHandler.class) != null) {
             channel.pipeline().remove(Netty4InitiateOneReadHandler.class);
         }
         this.isHttp2 = isHttp2;
+        this.onClose = onClose;
     }
 
     byte[] getCurrentBuffer() {
@@ -167,19 +172,28 @@ public final class Netty4ChannelInputStream extends InputStream {
         return n - toSkip;
     }
 
+    /**
+     * Closes this input stream and ensures the underlying connection can be returned to the pool.
+     * This method does not close the underlying channel. Instead, it triggers the onClose
+     * callback which is responsible for draining the rest of the stream content.
+     */
     @Override
-    public void close() {
-        currentBuffer = null;
-        additionalBuffers.clear();
-        if (channel.isOpen() || channel.isActive()) {
-            channel.disconnect();
-            channel.close();
+    public void close() throws IOException {
+        try {
+            if (onClose != null) {
+                onClose.run();
+            }
+        } finally {
+            super.close();
+            currentBuffer = null;
+            additionalBuffers.clear();
+            streamDone = true;
         }
     }
 
     private boolean setupNextBuffer() throws IOException {
         if (!additionalBuffers.isEmpty()) {
-            currentBuffer = additionalBuffers.pop();
+            currentBuffer = additionalBuffers.poll();
             readIndex = 0;
             return true;
         } else if (readMore()) {
@@ -214,7 +228,7 @@ public final class Netty4ChannelInputStream extends InputStream {
                 byte[] buffer = new byte[byteBuf.readableBytes()];
                 byteBuf.readBytes(buffer);
 
-                additionalBuffers.add(buffer);
+                additionalBuffers.offer(buffer);
             }, isHttp2);
             channel.pipeline().addLast(Netty4HandlerNames.READ_ONE, handler);
         }
@@ -242,7 +256,7 @@ public final class Netty4ChannelInputStream extends InputStream {
         }
 
         if (!additionalBuffers.isEmpty()) {
-            currentBuffer = additionalBuffers.pop();
+            currentBuffer = additionalBuffers.poll();
             readIndex = 0;
         } else if (channelDone) { // Don't listen to IntelliJ here, channelDone may be false.
             // This read contained no data and the channel completed, therefore the stream is also completed.
