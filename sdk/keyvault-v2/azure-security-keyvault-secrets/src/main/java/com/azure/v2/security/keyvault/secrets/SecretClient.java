@@ -10,6 +10,8 @@ import com.azure.v2.core.http.polling.Poller;
 import com.azure.v2.core.http.polling.PollingContext;
 import com.azure.v2.security.keyvault.secrets.implementation.SecretClientImpl;
 import com.azure.v2.security.keyvault.secrets.implementation.models.BackupSecretResult;
+import com.azure.v2.security.keyvault.secrets.implementation.models.DeletedSecretBundle;
+import com.azure.v2.security.keyvault.secrets.implementation.models.SecretBundle;
 import com.azure.v2.security.keyvault.secrets.implementation.models.SecretRestoreParameters;
 import com.azure.v2.security.keyvault.secrets.implementation.models.SecretSetParameters;
 import com.azure.v2.security.keyvault.secrets.implementation.models.SecretUpdateParameters;
@@ -34,7 +36,6 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.azure.v2.security.keyvault.secrets.implementation.models.SecretsModelsUtils.createDeletedSecret;
 import static com.azure.v2.security.keyvault.secrets.implementation.models.SecretsModelsUtils.createKeyVaultSecret;
@@ -220,7 +221,11 @@ public final class SecretClient {
                 .log("'secret.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return createKeyVaultSecret(clientImpl.setSecret(secret.getName(), prepareSecretSetParameters(secret)));
+        try (Response<SecretBundle> response = clientImpl.setSecretWithResponse(secret.getName(),
+            prepareSecretSetParameters(secret), RequestContext.none())) {
+
+            return createKeyVaultSecret(response.getValue());
+        }
     }
 
     /**
@@ -347,7 +352,7 @@ public final class SecretClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return createKeyVaultSecret(clientImpl.getSecret(name, version));
+        return createKeyVaultSecret(clientImpl.getSecretWithResponse(name, version, RequestContext.none()).getValue());
     }
 
     /**
@@ -442,8 +447,11 @@ public final class SecretClient {
                 .log("'secretProperties.getName()' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return createSecretProperties(clientImpl.updateSecret(secretProperties.getName(), secretProperties.getVersion(),
-            prepareUpdateSecretParameters(secretProperties)));
+        try (Response<SecretBundle> response = clientImpl.updateSecretWithResponse(secretProperties.getName(),
+            prepareUpdateSecretParameters(secretProperties), secretProperties.getVersion(), RequestContext.none())) {
+
+            return createSecretProperties(response.getValue());
+        }
     }
 
     /**
@@ -506,8 +514,8 @@ public final class SecretClient {
         }
 
         return mapResponse(
-            clientImpl.updateSecretWithResponse(secretProperties.getName(), secretProperties.getVersion(),
-                prepareUpdateSecretParameters(secretProperties), requestContext),
+            clientImpl.updateSecretWithResponse(secretProperties.getName(),
+                prepareUpdateSecretParameters(secretProperties), secretProperties.getVersion(), requestContext),
             SecretsModelsUtils::createSecretProperties);
     }
 
@@ -559,17 +567,25 @@ public final class SecretClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return Poller.createPoller(Duration.ofSeconds(1),
-            pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                createDeletedSecret(clientImpl.deleteSecret(name))),
-            pollingContext -> deletePollOperation(name, pollingContext), (pollingContext, response) -> null,
+        return Poller.createPoller(Duration.ofSeconds(1), pollingContext -> deleteSecretActivationOperation(name),
+            pollingContext -> deleteSecretPollOperation(name, pollingContext), (pollingContext, response) -> null,
             pollingContext -> null);
     }
 
-    private PollResponse<DeletedSecret> deletePollOperation(String name, PollingContext<DeletedSecret> pollingContext) {
+    private PollResponse<DeletedSecret> deleteSecretActivationOperation(String name) {
+        try (
+            Response<DeletedSecretBundle> response = clientImpl.deleteSecretWithResponse(name, RequestContext.none())) {
+
+            return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, createDeletedSecret(response.getValue()));
+        }
+    }
+
+    private PollResponse<DeletedSecret> deleteSecretPollOperation(String name,
+        PollingContext<DeletedSecret> pollingContext) {
+
         try {
             return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                createDeletedSecret(clientImpl.getDeletedSecret(name)));
+                createDeletedSecret(clientImpl.getDeletedSecretWithResponse(name, RequestContext.none()).getValue()));
         } catch (HttpResponseException e) {
             if (e.getResponse().getStatusCode() == 404) {
                 return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
@@ -616,7 +632,7 @@ public final class SecretClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return createDeletedSecret(clientImpl.getDeletedSecret(name));
+        return createDeletedSecret(clientImpl.getDeletedSecretWithResponse(name, RequestContext.none()).getValue());
     }
 
     /**
@@ -684,7 +700,7 @@ public final class SecretClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        clientImpl.purgeDeletedSecret(name);
+        clientImpl.purgeDeletedSecretWithResponse(name, RequestContext.none());
     }
 
     /**
@@ -757,18 +773,25 @@ public final class SecretClient {
         }
 
         return Poller.createPoller(Duration.ofSeconds(1),
-            pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                createKeyVaultSecret(clientImpl.recoverDeletedSecret(name))),
-            pollingContext -> recoverPollOperation(name, pollingContext), (pollingContext, response) -> null,
-            pollingContext -> null);
+            pollingContext -> recoverDeletedSecretActivationOperation(name),
+            pollingContext -> recoverDeletedSecretPollOperation(name, pollingContext),
+            (pollingContext, response) -> null, pollingContext -> null);
     }
 
-    private PollResponse<KeyVaultSecret> recoverPollOperation(String name,
+    private PollResponse<KeyVaultSecret> recoverDeletedSecretActivationOperation(String name) {
+        try (Response<SecretBundle> response
+            = clientImpl.recoverDeletedSecretWithResponse(name, RequestContext.none())) {
+            return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                createKeyVaultSecret(response.getValue()));
+        }
+    }
+
+    private PollResponse<KeyVaultSecret> recoverDeletedSecretPollOperation(String name,
         PollingContext<KeyVaultSecret> pollingContext) {
 
         try {
             return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                createKeyVaultSecret(clientImpl.getSecret(name, "")));
+                createKeyVaultSecret(clientImpl.getSecretWithResponse(name, "", RequestContext.none()).getValue()));
         } catch (HttpResponseException e) {
             if (e.getResponse().getStatusCode() == 404) {
                 return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
@@ -813,7 +836,9 @@ public final class SecretClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return clientImpl.backupSecret(name).getValue();
+        try (Response<BackupSecretResult> response = clientImpl.backupSecretWithResponse(name, RequestContext.none())) {
+            return response.getValue().getValue();
+        }
     }
 
     /**
@@ -878,7 +903,11 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret restoreSecretBackup(byte[] backup) {
-        return createKeyVaultSecret(clientImpl.restoreSecret(new SecretRestoreParameters(backup)));
+        try (Response<SecretBundle> response
+            = clientImpl.restoreSecretWithResponse(new SecretRestoreParameters(backup), RequestContext.none())) {
+
+            return createKeyVaultSecret(response.getValue());
+        }
     }
 
     /**
@@ -1107,10 +1136,6 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecret> listDeletedSecrets(RequestContext requestContext) {
-        Stream<PagedResponse<DeletedSecret>> stream = clientImpl.getDeletedSecrets(null, requestContext)
-            .streamByPage()
-            .map(pagedResponse -> mapPagedResponse(pagedResponse, SecretsModelsUtils::createDeletedSecret));
-
         return mapPages(pagingOptions -> clientImpl.getDeletedSecretsSinglePage(null, requestContext),
             (pagingOptions, nextLink) -> clientImpl.getDeletedSecretsNextSinglePage(nextLink, requestContext),
             SecretsModelsUtils::createDeletedSecret);

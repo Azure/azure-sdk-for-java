@@ -12,7 +12,9 @@ import com.azure.v2.security.keyvault.keys.cryptography.CryptographyClientBuilde
 import com.azure.v2.security.keyvault.keys.implementation.KeyClientImpl;
 import com.azure.v2.security.keyvault.keys.implementation.KeyVaultKeysUtils;
 import com.azure.v2.security.keyvault.keys.implementation.models.BackupKeyResult;
+import com.azure.v2.security.keyvault.keys.implementation.models.DeletedKeyBundle;
 import com.azure.v2.security.keyvault.keys.implementation.models.GetRandomBytesRequest;
+import com.azure.v2.security.keyvault.keys.implementation.models.KeyBundle;
 import com.azure.v2.security.keyvault.keys.implementation.models.KeyCreateParameters;
 import com.azure.v2.security.keyvault.keys.implementation.models.KeyImportParameters;
 import com.azure.v2.security.keyvault.keys.implementation.models.KeyReleaseParameters;
@@ -300,7 +302,11 @@ public final class KeyClient {
             .setTags(createKeyOptions.getTags())
             .setReleasePolicy(mapKeyReleasePolicy(createKeyOptions.getReleasePolicy()));
 
-        return createKeyVaultKey(clientImpl.createKey(createKeyOptions.getName(), keyCreateParameters));
+        try (Response<KeyBundle> response = clientImpl.createKeyWithResponse(createKeyOptions.getName(),
+            keyCreateParameters, RequestContext.none())) {
+
+            return createKeyVaultKey(response.getValue());
+        }
     }
 
     /**
@@ -421,7 +427,11 @@ public final class KeyClient {
                 .setTags(createRsaKeyOptions.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(createRsaKeyOptions.getReleasePolicy()));
 
-        return createKeyVaultKey(clientImpl.createKey(createRsaKeyOptions.getName(), keyCreateParameters));
+        try (Response<KeyBundle> response = clientImpl.createKeyWithResponse(createRsaKeyOptions.getName(),
+            keyCreateParameters, RequestContext.none())) {
+
+            return createKeyVaultKey(response.getValue());
+        }
     }
 
     /**
@@ -544,7 +554,11 @@ public final class KeyClient {
                 .setCurve(createEcKeyOptions.getCurveName())
                 .setReleasePolicy(mapKeyReleasePolicy(createEcKeyOptions.getReleasePolicy()));
 
-        return createKeyVaultKey(clientImpl.createKey(createEcKeyOptions.getName(), keyCreateParameters));
+        try (Response<KeyBundle> response = clientImpl.createKeyWithResponse(createEcKeyOptions.getName(),
+            keyCreateParameters, RequestContext.none())) {
+
+            return createKeyVaultKey(response.getValue());
+        }
     }
 
     /**
@@ -659,7 +673,11 @@ public final class KeyClient {
                 .setTags(createOctKeyOptions.getTags())
                 .setReleasePolicy(mapKeyReleasePolicy(createOctKeyOptions.getReleasePolicy()));
 
-        return createKeyVaultKey(clientImpl.createKey(createOctKeyOptions.getName(), keyCreateParameters));
+        try (Response<KeyBundle> response = clientImpl.createKeyWithResponse(createOctKeyOptions.getName(),
+            keyCreateParameters, RequestContext.none())) {
+
+            return createKeyVaultKey(response.getValue());
+        }
     }
 
     /**
@@ -752,7 +770,11 @@ public final class KeyClient {
 
         Objects.requireNonNull(keyMaterial, "'keyMaterial' cannot be null.");
 
-        return createKeyVaultKey(clientImpl.importKey(name, new KeyImportParameters(mapJsonWebKey(keyMaterial))));
+        try (Response<KeyBundle> response = clientImpl.importKeyWithResponse(name,
+            new KeyImportParameters(mapJsonWebKey(keyMaterial)), RequestContext.none())) {
+
+            return createKeyVaultKey(response.getValue());
+        }
     }
 
     /**
@@ -807,7 +829,11 @@ public final class KeyClient {
             .setTags(importKeyOptions.getTags())
             .setReleasePolicy(mapKeyReleasePolicy(importKeyOptions.getReleasePolicy()));
 
-        return createKeyVaultKey(clientImpl.importKey(importKeyOptions.getName(), keyImportParameters));
+        try (Response<KeyBundle> response = clientImpl.importKeyWithResponse(importKeyOptions.getName(),
+            keyImportParameters, RequestContext.none())) {
+
+            return createKeyVaultKey(response.getValue());
+        }
     }
 
     /**
@@ -933,7 +959,7 @@ public final class KeyClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return createKeyVaultKey(clientImpl.getKey(name, version));
+        return createKeyVaultKey(clientImpl.getKeyWithResponse(name, version, RequestContext.none()).getValue());
     }
 
     /**
@@ -1024,8 +1050,11 @@ public final class KeyClient {
             .setTags(keyProperties.getTags())
             .setReleasePolicy(mapKeyReleasePolicy(keyProperties.getReleasePolicy()));
 
-        return createKeyVaultKey(
-            clientImpl.updateKey(keyProperties.getName(), keyProperties.getVersion(), keyUpdateParameters));
+        try (Response<KeyBundle> response = clientImpl.updateKeyWithResponse(keyProperties.getName(),
+            keyUpdateParameters, keyProperties.getVersion(), RequestContext.none())) {
+
+            return createKeyVaultKey(response.getValue());
+        }
     }
 
     /**
@@ -1081,8 +1110,8 @@ public final class KeyClient {
             .setTags(keyProperties.getTags())
             .setReleasePolicy(mapKeyReleasePolicy(keyProperties.getReleasePolicy()));
 
-        return mapResponse(clientImpl.updateKeyWithResponse(keyProperties.getName(), keyProperties.getVersion(),
-            keyUpdateParameters, requestContext), KeyVaultKeysModelsUtils::createKeyVaultKey);
+        return mapResponse(clientImpl.updateKeyWithResponse(keyProperties.getName(), keyUpdateParameters,
+            keyProperties.getVersion(), requestContext), KeyVaultKeysModelsUtils::createKeyVaultKey);
     }
 
     /**
@@ -1124,17 +1153,21 @@ public final class KeyClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return Poller.createPoller(Duration.ofSeconds(1),
-            pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                createDeletedKey(clientImpl.deleteKey(name))),
-            pollingContext -> deletePollOperation(name, pollingContext), (pollingContext, firstResponse) -> null,
+        return Poller.createPoller(Duration.ofSeconds(1), pollingContext -> deleteKeyActivationOperation(name),
+            pollingContext -> deleteKeyPollOperation(name, pollingContext), (pollingContext, firstResponse) -> null,
             pollingContext -> null);
     }
 
-    private PollResponse<DeletedKey> deletePollOperation(String name, PollingContext<DeletedKey> pollingContext) {
+    private PollResponse<DeletedKey> deleteKeyActivationOperation(String name) {
+        try (Response<DeletedKeyBundle> response = clientImpl.deleteKeyWithResponse(name, RequestContext.none())) {
+            return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, createDeletedKey(response.getValue()));
+        }
+    }
+
+    private PollResponse<DeletedKey> deleteKeyPollOperation(String name, PollingContext<DeletedKey> pollingContext) {
         try {
             return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                createDeletedKey(clientImpl.getDeletedKey(name)));
+                createDeletedKey(clientImpl.getDeletedKeyWithResponse(name, RequestContext.none()).getValue()));
         } catch (HttpResponseException e) {
             if (e.getResponse().getStatusCode() == 404) {
                 return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
@@ -1181,7 +1214,7 @@ public final class KeyClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return createDeletedKey(clientImpl.getDeletedKey(name));
+        return createDeletedKey(clientImpl.getDeletedKeyWithResponse(name, RequestContext.none()).getValue());
     }
 
     /**
@@ -1243,7 +1276,7 @@ public final class KeyClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        clientImpl.purgeDeletedKey(name);
+        clientImpl.purgeDeletedKeyWithResponse(name, RequestContext.none());
     }
 
     /**
@@ -1318,17 +1351,22 @@ public final class KeyClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return Poller.createPoller(Duration.ofSeconds(1),
-            pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                createKeyVaultKey(clientImpl.recoverDeletedKey(name))),
-            pollingContext -> recoverPollOperation(name, pollingContext), (pollingContext, firstResponse) -> null,
+        return Poller.createPoller(Duration.ofSeconds(1), pollingContext -> recoverKeyPollOperation(name),
+            pollingContext -> recoverKeyPollOperation(name, pollingContext), (pollingContext, firstResponse) -> null,
             pollingContext -> null);
     }
 
-    private PollResponse<KeyVaultKey> recoverPollOperation(String keyName, PollingContext<KeyVaultKey> pollingContext) {
+    private PollResponse<KeyVaultKey> recoverKeyPollOperation(String name) {
+        try (Response<KeyBundle> response = clientImpl.recoverDeletedKeyWithResponse(name, RequestContext.none())) {
+            return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, createKeyVaultKey(response.getValue()));
+        }
+    }
+
+    private PollResponse<KeyVaultKey> recoverKeyPollOperation(String keyName,
+        PollingContext<KeyVaultKey> pollingContext) {
         try {
             return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                createKeyVaultKey(clientImpl.getKey(keyName, "")));
+                createKeyVaultKey(clientImpl.getKeyWithResponse(keyName, "", RequestContext.none()).getValue()));
         } catch (HttpResponseException e) {
             if (e.getResponse().getStatusCode() == 404) {
                 return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
@@ -1380,7 +1418,9 @@ public final class KeyClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return clientImpl.backupKey(name).getValue();
+        try (Response<BackupKeyResult> response = clientImpl.backupKeyWithResponse(name, RequestContext.none())) {
+            return response.getValue().getValue();
+        }
     }
 
     /**
@@ -1457,7 +1497,11 @@ public final class KeyClient {
     public KeyVaultKey restoreKeyBackup(byte[] backup) {
         Objects.requireNonNull(backup, "'backup' cannot be null.");
 
-        return createKeyVaultKey(clientImpl.restoreKey(new KeyRestoreParameters(backup)));
+        try (Response<KeyBundle> response
+            = clientImpl.restoreKeyWithResponse(new KeyRestoreParameters(backup), RequestContext.none())) {
+
+            return createKeyVaultKey(response.getValue());
+        }
     }
 
     /**
@@ -1878,7 +1922,11 @@ public final class KeyClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return clientImpl.release(name, "", new KeyReleaseParameters(targetAttestationToken));
+        try (Response<ReleaseKeyResult> response = clientImpl.releaseWithResponse(name,
+            new KeyReleaseParameters(targetAttestationToken), "", RequestContext.none())) {
+
+            return response.getValue();
+        }
     }
 
     /**
@@ -1914,7 +1962,11 @@ public final class KeyClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return clientImpl.release(name, version, new KeyReleaseParameters(targetAttestationToken));
+        try (Response<ReleaseKeyResult> response = clientImpl.releaseWithResponse(name,
+            new KeyReleaseParameters(targetAttestationToken), version, RequestContext.none())) {
+
+            return response.getValue();
+        }
     }
 
     /**
@@ -1967,7 +2019,7 @@ public final class KeyClient {
             .setEnc(releaseKeyOptions == null ? null : releaseKeyOptions.getAlgorithm())
             .setNonce(releaseKeyOptions == null ? null : releaseKeyOptions.getNonce());
 
-        return clientImpl.releaseWithResponse(name, version, keyReleaseParameters, requestContext);
+        return clientImpl.releaseWithResponse(name, keyReleaseParameters, version, requestContext);
     }
 
     /**
@@ -1997,7 +2049,9 @@ public final class KeyClient {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return createKeyVaultKey(clientImpl.rotateKey(name));
+        try (Response<KeyBundle> response = clientImpl.rotateKeyWithResponse(name, RequestContext.none())) {
+            return createKeyVaultKey(response.getValue());
+        }
     }
 
     /**
@@ -2061,7 +2115,8 @@ public final class KeyClient {
             throw LOGGER.throwableAtError().log("'keyName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return mapKeyRotationPolicyImpl(clientImpl.getKeyRotationPolicy(keyName));
+        return mapKeyRotationPolicyImpl(
+            clientImpl.getKeyRotationPolicyWithResponse(keyName, RequestContext.none()).getValue());
     }
 
     /**
@@ -2141,8 +2196,12 @@ public final class KeyClient {
             throw LOGGER.throwableAtError().log("'keyName' cannot be null or empty.", IllegalArgumentException::new);
         }
 
-        return mapKeyRotationPolicyImpl(
-            clientImpl.updateKeyRotationPolicy(keyName, mapKeyRotationPolicy(keyRotationPolicy)));
+        try (Response<com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy> response
+            = clientImpl.updateKeyRotationPolicyWithResponse(keyName, mapKeyRotationPolicy(keyRotationPolicy),
+                RequestContext.none())) {
+
+            return mapKeyRotationPolicyImpl(response.getValue());
+        }
     }
 
     /**

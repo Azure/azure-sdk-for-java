@@ -6,6 +6,8 @@ package com.azure.v2.security.keyvault.keys.models;
 import com.azure.v2.security.keyvault.keys.implementation.KeyRotationLifetimeActionHelper;
 import com.azure.v2.security.keyvault.keys.implementation.models.LifetimeActionsTrigger;
 import com.azure.v2.security.keyvault.keys.implementation.models.LifetimeActionsType;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -16,7 +18,7 @@ import java.io.IOException;
 /**
  * Represents an action that will be performed by Key Vault over the lifetime of a key.
  */
-//@Fluent
+@Metadata(properties = { MetadataProperties.FLUENT })
 public final class KeyRotationLifetimeAction implements JsonSerializable<KeyRotationLifetimeAction> {
     static {
         KeyRotationLifetimeActionHelper

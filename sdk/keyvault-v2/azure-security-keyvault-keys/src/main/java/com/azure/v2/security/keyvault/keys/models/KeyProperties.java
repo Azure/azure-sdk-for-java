@@ -6,6 +6,8 @@ package com.azure.v2.security.keyvault.keys.models;
 import com.azure.v2.security.keyvault.keys.KeyClient;
 import com.azure.v2.security.keyvault.keys.implementation.KeyPropertiesHelper;
 import com.azure.v2.security.keyvault.keys.implementation.KeyVaultKeysUtils;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -21,7 +23,7 @@ import java.util.Map;
  *
  * @see KeyClient
  */
-//@Fluent
+@Metadata(properties = { MetadataProperties.FLUENT })
 public class KeyProperties implements JsonSerializable<KeyProperties> {
     static {
         KeyPropertiesHelper.setAccessor(new KeyPropertiesHelper.KeyPropertiesAccessor() {

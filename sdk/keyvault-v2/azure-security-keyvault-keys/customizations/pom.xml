@@ -15,7 +15,7 @@
   <description>This package contains code generation customization for Microsoft Azure Security Key Vault Keys library</description>
 
   <groupId>com.azure.tools</groupId>
-  <artifactId>azure-security-keyvault-keys-customization</artifactId>
+  <artifactId>azure-security-keyvault-keys-codegen-customization</artifactId>
   <version>1.0.0-beta.1</version>
   <packaging>jar</packaging>
 </project>
