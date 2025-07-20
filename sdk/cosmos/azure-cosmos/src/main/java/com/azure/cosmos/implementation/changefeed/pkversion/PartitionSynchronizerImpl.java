@@ -4,7 +4,6 @@ package com.azure.cosmos.implementation.changefeed.pkversion;
 
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
@@ -18,10 +17,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -170,7 +167,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             .map(lease -> lease.getLeaseToken())
             .collectList()
             .flatMapMany(existingLeaseTokens -> {
-                // only create lease documents if there is no existing lease document matching the partition or its parent partition
+                // only create lease documents if there is no existing lease document matching the partition or its parent partitions
                 leaseTokensToBeAdded.addAll(
                     leaseTokenMap.entrySet().stream()
                         .filter(entry -> !existingLeaseTokens.contains(entry.getKey()))
