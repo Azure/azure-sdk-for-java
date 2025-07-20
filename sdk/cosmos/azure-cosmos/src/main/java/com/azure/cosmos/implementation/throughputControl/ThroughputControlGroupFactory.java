@@ -9,7 +9,7 @@ import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.implementation.throughputControl.sdk.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.sdk.config.LocalThroughputControlGroup;
-import com.azure.cosmos.implementation.throughputControl.server.config.ThroughputBucketControlGroup;
+import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroup;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -52,14 +52,14 @@ public class ThroughputControlGroupFactory {
 
     }
 
-    public static ThroughputBucketControlGroup createThroughputBucketControlGroup(
+    public static ServerThroughputControlGroup createServerThroughputControlGroup(
         ThroughputControlGroupConfig groupConfig,
         CosmosAsyncContainer targetContainer) {
 
         checkNotNull(groupConfig, "Throughput control group config can not be null");
         checkNotNull(targetContainer, "Throughput target container can not be null");
 
-        return new ThroughputBucketControlGroup(
+        return new ServerThroughputControlGroup(
             groupConfig.getGroupName(),
             groupConfig.isDefault(),
             groupConfig.getPriorityLevel(),

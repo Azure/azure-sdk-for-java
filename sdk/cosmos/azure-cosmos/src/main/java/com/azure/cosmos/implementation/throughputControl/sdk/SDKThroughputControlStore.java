@@ -306,7 +306,7 @@ public class SDKThroughputControlStore {
     }
 
     public boolean hasGroup(String containerNameLink, String throughputControlGroupName) {
-        if (throughputControlGroupName.isEmpty()) {
+        if (StringUtils.isEmpty(throughputControlGroupName)) {
             return false;
         }
 

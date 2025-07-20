@@ -70,7 +70,7 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.implementation.throughputControl.sdk.config.SDKThroughputControlGroupInternal;
-import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroupInternal;
+import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroup;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -6262,7 +6262,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public void enableServerThroughputControlGroup(ServerThroughputControlGroupInternal group) {
+    public void enableServerThroughputControlGroup(ServerThroughputControlGroup group) {
         checkNotNull(group, "Argument 'group' can not be null");
 
         this.enableThroughputControlStore();

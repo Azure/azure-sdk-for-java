@@ -39,7 +39,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.sdk.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.sdk.config.LocalThroughputControlGroup;
-import com.azure.cosmos.implementation.throughputControl.server.config.ThroughputBucketControlGroup;
+import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlGroupFactory;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -2845,10 +2845,14 @@ public class CosmosAsyncContainer {
      * @param groupConfig the throughput control group config, see {@link ThroughputControlGroupConfig}.
      */
     public void enableServerThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
-        ThroughputBucketControlGroup throughputBucketControlGroup =
-            ThroughputControlGroupFactory.createThroughputBucketControlGroup(groupConfig, this);
+        if (groupConfig.getPriorityLevel() == null && groupConfig.getThroughputBucket() == null) {
+            throw new IllegalArgumentException("Config 'priorityLevel' and 'throughputBucket' can not both are null.");
+        }
 
-        this.database.getClient().enableServerThroughputControlGroup(throughputBucketControlGroup);
+        ServerThroughputControlGroup serverThroughputControlGroup =
+            ThroughputControlGroupFactory.createServerThroughputControlGroup(groupConfig, this);
+
+        this.database.getClient().enableServerThroughputControlGroup(serverThroughputControlGroup);
     }
 
     void configureFaultInjectionProvider(IFaultInjectorProvider injectorProvider) {

@@ -30,7 +30,7 @@ import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.sdk.config.SDKThroughputControlGroupInternal;
-import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroupInternal;
+import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroup;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
@@ -583,7 +583,7 @@ public final class CosmosAsyncClient implements Closeable {
      *
      * @param group the server throughput control group.
      */
-    void enableServerThroughputControlGroup(ServerThroughputControlGroupInternal group) {
+    void enableServerThroughputControlGroup(ServerThroughputControlGroup group) {
         checkNotNull(group, "Argument 'group' can not be null");
         this.asyncDocumentClient.enableServerThroughputControlGroup(group);
     }

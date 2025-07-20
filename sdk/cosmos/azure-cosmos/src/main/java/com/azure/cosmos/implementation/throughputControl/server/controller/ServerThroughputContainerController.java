@@ -8,8 +8,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.throughputControl.IThroughputContainerController;
-import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroupInternal;
-import com.azure.cosmos.implementation.throughputControl.server.config.ThroughputBucketControlGroup;
+import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -23,11 +22,11 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class ServerThroughputContainerController implements IThroughputContainerController {
     private static final Logger logger = LoggerFactory.getLogger(ServerThroughputContainerController.class);
 
-    private final AsyncCache<String, ServerThroughputGroupControllerBase> groupControllerCache;
-    private final Map<String, ServerThroughputControlGroupInternal> groups;
+    private final AsyncCache<String, ServerThroughputGroupController> groupControllerCache;
+    private final Map<String, ServerThroughputControlGroup> groups;
 
-    private ServerThroughputGroupControllerBase defaultGroupController;
-    public ServerThroughputContainerController(Map<String, ServerThroughputControlGroupInternal> groups) {
+    private ServerThroughputGroupController defaultGroupController;
+    public ServerThroughputContainerController(Map<String, ServerThroughputControlGroup> groups) {
 
         checkArgument(groups != null && !groups.isEmpty(), "Throughput groups can not be null or empty");
 
@@ -56,14 +55,14 @@ public class ServerThroughputContainerController implements IThroughputContainer
             });
     }
 
-    private Mono<Utils.ValueHolder<ServerThroughputGroupControllerBase>> getOrCreateThroughputGroupController(String groupName) {
+    private Mono<Utils.ValueHolder<ServerThroughputGroupController>> getOrCreateThroughputGroupController(String groupName) {
 
         // If there is no control group defined, using the default group controller
         if (StringUtils.isEmpty(groupName)) {
             return Mono.just(new Utils.ValueHolder<>(this.defaultGroupController));
         }
 
-        ServerThroughputControlGroupInternal group = this.groups.get(groupName);
+        ServerThroughputControlGroup group = this.groups.get(groupName);
         if (group == null) {
             // If the request is associated with a group not enabled, will fall back to the default one.
             return Mono.just(new Utils.ValueHolder<>(this.defaultGroupController));
@@ -83,18 +82,18 @@ public class ServerThroughputContainerController implements IThroughputContainer
             .then(Mono.just(this));
     }
 
-    private Mono<ServerThroughputGroupControllerBase> resolveThroughputGroupController(ServerThroughputControlGroupInternal group) {
+    private Mono<ServerThroughputGroupController> resolveThroughputGroupController(ServerThroughputControlGroup group) {
         return this.groupControllerCache.getAsync(
                 group.getGroupName(),
                 null,
                 () -> this.createAndInitializeGroupController(group));
     }
 
-    private Mono<ServerThroughputGroupControllerBase> createAndInitializeGroupController(ServerThroughputControlGroupInternal group) {
-        if (group instanceof ThroughputBucketControlGroup) {
+    private Mono<ServerThroughputGroupController> createAndInitializeGroupController(ServerThroughputControlGroup group) {
+        if (group instanceof ServerThroughputControlGroup) {
             // create throughput bucket group controller
-            ThroughputBucketGroupController throughputBucketGroupController =
-                new ThroughputBucketGroupController((ThroughputBucketControlGroup) group);
+            ServerThroughputGroupController throughputBucketGroupController =
+                new ServerThroughputGroupController(group);
             if (throughputBucketGroupController.isDefault()) {
                 this.defaultGroupController = throughputBucketGroupController;
             }

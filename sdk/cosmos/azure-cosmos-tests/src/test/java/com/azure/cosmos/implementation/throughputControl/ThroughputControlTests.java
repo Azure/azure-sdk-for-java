@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation.throughputControl.sdk;
+package com.azure.cosmos.implementation.throughputControl;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
@@ -52,6 +52,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.testng.Assert.fail;
 
 public class ThroughputControlTests extends TestSuiteBase {
@@ -670,8 +671,106 @@ public class ThroughputControlTests extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    public void serverThroughputControl(OperationType operationType) {
+        // TODO: currently there is no easy way to do e2e testing, so the testing here is to just verify that
+        // server throughput can be enabled on the container
+        this.ensureContainer();
+
+        ThroughputControlGroupConfig serverThroughputControlGroup =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("serverThroughputControl")
+                .throughputBucket(2)
+                .build();
+        container.enableServerThroughputControlGroup(serverThroughputControlGroup);
+
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        requestOptions.setContentResponseOnWriteEnabled(true);
+        requestOptions.setThroughputControlGroupName(serverThroughputControlGroup.getGroupName());
+
+        CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
+        TestItem createdItem = createItemResponse.getItem();
+        this.validateRequestNotThrottled(
+            createItemResponse.getDiagnostics().toString(),
+            BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+        performDocumentOperation(
+            this.container,
+            operationType,
+            createdItem,
+            serverThroughputControlGroup.getGroupName());
+    }
+
+    @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    public void throughputControl_LocalAndServer_requestOptions(OperationType operationType) {
+        this.ensureContainer();
+
+        // This test is verify that SDK throughput control group and server throughput control group can be enabled at the same time
+
+        // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
+        ThroughputControlGroupConfig groupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("group-sdk" + UUID.randomUUID())
+                .targetThroughput(6)
+                .build();
+        container.enableLocalThroughputControlGroup(groupConfig);
+
+        ThroughputControlGroupConfig serverGroupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("group-server" + UUID.randomUUID())
+                .throughputBucket(3)
+                .build();
+        container.enableServerThroughputControlGroup(serverGroupConfig);
+
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        requestOptions.setContentResponseOnWriteEnabled(true);
+        requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
+
+        CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
+        TestItem createdItem = createItemResponse.getItem();
+        this.validateRequestNotThrottled(
+            createItemResponse.getDiagnostics().toString(),
+            BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+        // second request to group-1. which will get throttled
+        CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(this.container, operationType, createdItem, groupConfig.getGroupName());
+        this.validateRequestThrottled(
+            cosmosDiagnostics.toString(),
+            BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+        // third request to server group, which will not get throttled
+        requestOptions.setThroughputControlGroupName(serverGroupConfig.getGroupName());
+        performDocumentOperation(this.container, operationType, createdItem, groupConfig.getGroupName());
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void throughputControlDefaultGroup_LocalAndServer_requestOptions() {
+        this.ensureContainer();
+
+        // This test is verify that only one default throughput control group can be defined across sdk and server control group
+        ThroughputControlGroupConfig groupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("group-sdk" + UUID.randomUUID())
+                .targetThroughput(6)
+                .defaultControlGroup(true)
+                .build();
+        container.enableLocalThroughputControlGroup(groupConfig);
+
+        ThroughputControlGroupConfig serverGroupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("group-server" + UUID.randomUUID())
+                .throughputBucket(3)
+                .defaultControlGroup(true)
+                .build();
+
+        assertThatThrownBy(
+                () ->container.enableServerThroughputControlGroup(serverGroupConfig))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("A default group already exists");
+    }
+
     @BeforeClass(groups = { "emulator" }, timeOut = 4 * SETUP_TIMEOUT)
-    public void before_ThroughputBudgetControllerTest() {
+    public void before_ThroughputControllerTest() {
         this.ensureContainer();
     }
 
@@ -698,7 +797,7 @@ public class ThroughputControlTests extends TestSuiteBase {
     }
 
     @AfterClass(groups = {"emulator"}, timeOut = TIMEOUT, alwaysRun = true)
-    public void after_ThroughputBudgetControllerTest() {
+    public void after_ThroughputControllerTest() {
         safeClose(this.client);
     }
 

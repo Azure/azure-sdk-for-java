@@ -13,7 +13,7 @@ import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.throughputControl.sdk.SDKThroughputControlStore;
 import com.azure.cosmos.implementation.throughputControl.sdk.config.SDKThroughputControlGroupInternal;
 import com.azure.cosmos.implementation.throughputControl.server.ServerThroughputControlStore;
-import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroupInternal;
+import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -52,12 +52,13 @@ public class ThroughputControlStore {
         this.sdkThroughputControlStore.enableThroughputControlGroup(group, throughputQueryMono);
     }
 
-    public void enableServerThroughputControlGroup(ServerThroughputControlGroupInternal group) {
+    public void enableServerThroughputControlGroup(ServerThroughputControlGroup group) {
         checkNotNull(group, "Throughput control group cannot be null");
 
         if (group.isDefault()) {
             //verify a default group is not being defined in the sdk throughput control store
-            String containerNameLink = Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(group.getTargetContainer()));
+            String containerNameLink =
+                Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(group.getTargetContainer()));
             if (this.sdkThroughputControlStore.hasDefaultGroup(containerNameLink)) {
                 throw new IllegalArgumentException("A default group already exists");
             }
@@ -91,7 +92,7 @@ public class ThroughputControlStore {
         }
 
         if (this.sdkThroughputControlStore.hasDefaultGroup(collectionNameLink)) {
-            return this.serverThroughputControlStore.processRequest(request, originalRequestMono);
+            return this.sdkThroughputControlStore.processRequest(request, originalRequestMono);
         }
 
         // neither store can process the request, fallback to just use the original mono

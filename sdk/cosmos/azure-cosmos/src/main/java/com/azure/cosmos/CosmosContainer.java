@@ -1030,6 +1030,18 @@ public class CosmosContainer {
         this.asyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
     }
 
+    /***
+     * Enable the server throughput bucket control group.
+     * <p>
+     * For more information about throughput bucket please visit
+     * <a href="https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/throughput-buckets?tabs=dotnet">Throughput buckets in Azure Cosmos DB</a>
+     *
+     * @param groupConfig the throughput control group config, see {@link ThroughputControlGroupConfig}.
+     */
+    public void enableServerThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
+        this.asyncContainer.enableServerThroughputControlGroup(groupConfig);
+    }
+
     /**
      *  Initializes the container by warming up the caches and connections for the current read region.
      *

@@ -22,7 +22,7 @@ import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.sdk.config.SDKThroughputControlGroupInternal;
-import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroupInternal;
+import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroup;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -1640,7 +1640,7 @@ public interface AsyncDocumentClient {
      *
      * @param group the server throughput control group.
      */
-    void enableServerThroughputControlGroup(ServerThroughputControlGroupInternal group);
+    void enableServerThroughputControlGroup(ServerThroughputControlGroup group);
 
     /**
      * Submits open connection tasks and warms up caches for replicas for containers specified by

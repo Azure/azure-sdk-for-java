@@ -12,55 +12,64 @@ import java.util.Objects;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public abstract class ServerThroughputControlGroupInternal {
+public class ServerThroughputControlGroup {
     private final String groupName;
     private final boolean isDefault;
     private final CosmosAsyncContainer targetContainer;
     private final PriorityLevel priorityLevel;
+    private final Integer throughputBucket;
 
-    public ServerThroughputControlGroupInternal(
+    public ServerThroughputControlGroup(
         String groupName,
         boolean isDefault,
         PriorityLevel priorityLevel,
+        Integer throughputBucket,
         CosmosAsyncContainer targetContainer) {
 
         checkArgument(StringUtils.isNotEmpty(groupName), "Argument 'groupName' cannot be null or empty.");
         checkNotNull(targetContainer, "Argument 'targetContainer' can not be null");
+        checkArgument(throughputBucket != null && throughputBucket > 0, "Target throughput should be greater than 0");
 
         this.groupName = groupName;
         this.isDefault = isDefault;
         this.targetContainer = targetContainer;
         this.priorityLevel = priorityLevel;
+        this.throughputBucket = throughputBucket;
     }
 
     public String getGroupName() {
-        return groupName;
+        return this.groupName;
     }
 
     public boolean isDefault() {
-        return isDefault;
+        return this.isDefault;
     }
 
     public CosmosAsyncContainer getTargetContainer() {
-        return targetContainer;
+        return this.targetContainer;
     }
 
     public PriorityLevel getPriorityLevel() {
-        return priorityLevel;
+        return this.priorityLevel;
+    }
+
+    public Integer getThroughputBucket() {
+        return this.throughputBucket;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        ServerThroughputControlGroupInternal that = (ServerThroughputControlGroupInternal) o;
+        ServerThroughputControlGroup that = (ServerThroughputControlGroup) o;
         return isDefault == that.isDefault
             && Objects.equals(groupName, that.groupName)
-            && Objects.equals(targetContainer.getId(), that.targetContainer.getId())
-            && Objects.equals(priorityLevel, that.priorityLevel);
+            && Objects.equals(targetContainer, that.targetContainer)
+            && Objects.equals(priorityLevel, that.priorityLevel)
+            && Objects.equals(throughputBucket, that.throughputBucket);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(groupName, isDefault, targetContainer, priorityLevel);
+        return Objects.hash(groupName, isDefault, targetContainer, priorityLevel, throughputBucket);
     }
 }

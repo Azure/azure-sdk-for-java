@@ -10,7 +10,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.throughputControl.EmptyThroughputContainerController;
-import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroupInternal;
+import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.server.controller.ServerThroughputContainerController;
 import reactor.core.publisher.Mono;
 
@@ -29,7 +29,7 @@ public class ServerThroughputControlStore {
         this.containerMap = new ConcurrentHashMap<>();
     }
 
-    public void enableThroughputControlGroup(ServerThroughputControlGroupInternal group) {
+    public void enableThroughputControlGroup(ServerThroughputControlGroup group) {
         checkNotNull(group, "Throughput control group cannot be null");
 
         String containerNameLink = Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(group.getTargetContainer()));
@@ -74,7 +74,7 @@ public class ServerThroughputControlStore {
     }
 
     public boolean hasGroup(String containerNameLink, String throughputControlGroupName) {
-        if (throughputControlGroupName.isEmpty()) {
+        if (StringUtils.isEmpty(throughputControlGroupName)) {
             return false;
         }
 

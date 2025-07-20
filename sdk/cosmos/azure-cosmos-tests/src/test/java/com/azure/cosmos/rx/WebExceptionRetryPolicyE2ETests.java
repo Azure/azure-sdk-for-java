@@ -16,7 +16,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeline;
-import com.azure.cosmos.implementation.throughputControl.sdk.TestItem;
+import com.azure.cosmos.implementation.throughputControl.TestItem;
 
 
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
