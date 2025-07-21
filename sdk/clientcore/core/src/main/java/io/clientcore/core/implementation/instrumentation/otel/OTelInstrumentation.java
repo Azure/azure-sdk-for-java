@@ -137,9 +137,10 @@ public class OTelInstrumentation implements Instrumentation {
 
         boolean isExperimentalFeaturesEnabled
             = applicationOptions != null && applicationOptions.isExperimentalFeaturesEnabled();
-
+        // operation duration metric is experimental and enabled only if the feature flag is set
         this.callDurationMetric = createOperationDurationHistogram(isExperimentalFeaturesEnabled,
             sdkOptions == null ? null : sdkOptions.getSdkName(), meter);
+
         this.host = host;
         this.port = port;
     }
@@ -172,7 +173,6 @@ public class OTelInstrumentation implements Instrumentation {
 
     private static Meter createMeter(boolean isMetricsEnabled, SdkInstrumentationOptions sdkOptions,
         Object otelInstance) {
-        // operation metrics are experimental and enabled only if the feature flag is set
         if (isMetricsEnabled && OTelInitializer.isInitialized()) {
             Object otelMeterProvider = GET_METER_PROVIDER_INVOKER.invoke(otelInstance);
 
