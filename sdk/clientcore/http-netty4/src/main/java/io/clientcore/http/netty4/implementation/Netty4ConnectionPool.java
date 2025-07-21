@@ -8,7 +8,6 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.utils.AuthenticateChallenge;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler;
@@ -26,7 +25,6 @@ import io.netty.handler.ssl.ApplicationProtocolNegotiationHandler;
 import io.netty.handler.ssl.SslCloseCompletionEvent;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.SslHandler;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.Promise;
@@ -37,7 +35,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.nio.channels.ClosedChannelException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -54,15 +51,20 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
-import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_CODEC;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.CONNECTION_POOL_ALPN;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.POOL_CONNECTION_HEALTH;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROXY;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROXY_EXCEPTION_WARNING_SUPPRESSION;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL;
-import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL_INITIALIZER;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL_GRACEFUL_SHUTDOWN;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.buildSslContext;
-import static io.clientcore.http.netty4.implementation.Netty4Utility.createHttp2Codec;
 
 /**
- * A pool of Netty channels that can be reused for requests to the same remote address.
+ * A thread-safe pool of Netty {@link Channel}s that are reused for requests to the same route.
+ * <p>
+ * This connection pool manages the entire connection lifecycle, including TCP connected, proxy handshakes, and the
+ * asynchronous SSL/ALPN negotiation. It is designed to return fully configured channels that are
+ * ready for immediate use, thereby eliminating per-request handshake latency.
  */
 public class Netty4ConnectionPool implements Closeable {
 
@@ -75,11 +77,17 @@ public class Netty4ConnectionPool implements Closeable {
      * lock instance, making the lock contention extremely low.
      */
     public static final AttributeKey<ReentrantLock> CHANNEL_LOCK = AttributeKey.valueOf("channel-lock");
-    public static final AttributeKey<Boolean> HTTP2_GOAWAY_RECEIVED = AttributeKey.valueOf("http2-goaway-received");
 
-    // A unique token to identify the current owner of a channel pipeline
+    /**
+     * A unique token created for each request to identify the current owner of a channel pipeline.
+     * <p>
+     * It protects against stale cleanup handlers from previous, timed-out, or failed requests,
+     * ensuring that only the {@link Netty4PipelineCleanupHandler} that belongs to the <i>current</i>,
+     * active request is allowed to modify the pipeline.
+     */
     public static final AttributeKey<Object> PIPELINE_OWNER_TOKEN = AttributeKey.valueOf("pipeline-owner-token");
 
+    private static final AttributeKey<Boolean> HTTP2_GOAWAY_RECEIVED = AttributeKey.valueOf("http2-goaway-received");
     private static final AttributeKey<PooledConnection> POOLED_CONNECTION_KEY
         = AttributeKey.valueOf("pooled-connection-key");
 
@@ -107,8 +115,8 @@ public class Netty4ConnectionPool implements Closeable {
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
             if (msg instanceof Http2GoAwayFrame) {
-                // A GOAWAY frame was received. Mark the channel so the pool knows
-                // not to reuse it for new requests.
+                // A GOAWAY frame was received.
+                // Mark the channel so the pool knows not to reuse it for new requests.
                 ctx.channel().attr(HTTP2_GOAWAY_RECEIVED).set(true);
             }
             super.channelRead(ctx, msg);
@@ -117,7 +125,7 @@ public class Netty4ConnectionPool implements Closeable {
 
     @ChannelHandler.Sharable
     public static final class SuppressProxyConnectExceptionWarningHandler extends ChannelInboundHandlerAdapter {
-        private static final SuppressProxyConnectExceptionWarningHandler INSTANCE
+        public static final SuppressProxyConnectExceptionWarningHandler INSTANCE
             = new SuppressProxyConnectExceptionWarningHandler();
 
         @Override
@@ -129,10 +137,7 @@ public class Netty4ConnectionPool implements Closeable {
         }
     }
 
-    @ChannelHandler.Sharable
-    private static class SslGracefulShutdownHandler extends ChannelInboundHandlerAdapter {
-        private static final SslGracefulShutdownHandler INSTANCE = new SslGracefulShutdownHandler();
-
+    public static class SslGracefulShutdownHandler extends ChannelInboundHandlerAdapter {
         @Override
         public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
             if (evt instanceof SslCloseCompletionEvent) {
@@ -143,7 +148,7 @@ public class Netty4ConnectionPool implements Closeable {
     }
 
     @ChannelHandler.Sharable
-    private static class PoolConnectionHealthHandler extends ChannelInboundHandlerAdapter {
+    public static class PoolConnectionHealthHandler extends ChannelInboundHandlerAdapter {
         private static final PoolConnectionHealthHandler INSTANCE = new PoolConnectionHealthHandler();
 
         private static final AttributeKey<Boolean> CONNECTION_INVALIDATED
@@ -151,7 +156,8 @@ public class Netty4ConnectionPool implements Closeable {
 
         @Override
         public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-            // This event is fired when the server closes its side of the connection.
+            // This event signals the server has closed its sending side (TCP half-closure).
+            // The channel is now considered unusable and must be closed.
             if (evt instanceof ChannelInputShutdownEvent) {
                 invalidateAndClose(ctx.channel());
             }
@@ -173,12 +179,15 @@ public class Netty4ConnectionPool implements Closeable {
         }
     }
 
-    @ChannelHandler.Sharable
-    private static class PoolAlpnConfigurator extends ApplicationProtocolNegotiationHandler {
-        private static final PoolAlpnConfigurator INSTANCE = new PoolAlpnConfigurator();
+    /**
+     * A specialized ALPN handler that signals when a channel is fully negotiated and ready for use by the pool.
+     */
+    public static class ConnectionPoolAlpnHandler extends ApplicationProtocolNegotiationHandler {
+        private final Promise<Channel> promise;
 
-        PoolAlpnConfigurator() {
+        ConnectionPoolAlpnHandler(Promise<Channel> promise) {
             super(ApplicationProtocolNames.HTTP_1_1);
+            this.promise = promise;
         }
 
         @Override
@@ -192,11 +201,16 @@ public class Netty4ConnectionPool implements Closeable {
 
             ctx.channel().attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).set(protocolVersion);
 
+            // After setting the protocol, fulfill the promise to signal the channel is ready.
+            promise.setSuccess(ctx.channel());
+
             ctx.pipeline().remove(this);
         }
 
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+            // If an error happens during negotiation, fail the promise.
+            promise.setFailure(cause);
             ctx.fireExceptionCaught(cause);
         }
     }
@@ -232,12 +246,17 @@ public class Netty4ConnectionPool implements Closeable {
     }
 
     /**
-     * Acquires a channel for the given composite key from the pool.
+     * Acquires a channel for the given route from the pool.
+     * <p>
+     * The returned {@link Future} will be notified with a channel that is fully connected, authenticated by any
+     * proxy, and has completed its SSL/ALPN handshake (for HTTPS). This method will first attempt to reuse an
+     * available idle channel. If none are available and the pool has not reached its maximum capacity, a new
+     * channel will be created. If the pool is at maximum capacity, the acquisition request will be queued.
      *
      * @param key The composite key representing the connection route.
-     * @param isHttps Flag indicating whether connections for this route should be secured using TLS/SSL.
-     * @return A {@link Future} that will be notified when a channel is acquired.
-     * @throws IllegalStateException if the connection pool has been closed.
+     * @param isHttps Flag indicating if the connection should be secured.
+     * @return A {@link Future} that will complete with a ready-to-use {@link Channel}, or a failed {@link Future}
+     * in case the connection pool has been closed.
      */
     public Future<Channel> acquire(Netty4ConnectionPoolKey key, boolean isHttps) {
         if (closed.get()) {
@@ -252,9 +271,10 @@ public class Netty4ConnectionPool implements Closeable {
     }
 
     /**
-     * Releases a channel back to the connection pool.
-     * The channel pipeline must be cleaned of request-specific handlers before releasing.
-     * This method is not responsible for that.
+     * Releases a healthy channel back to the connection pool to be reused for future requests.
+     * <p>
+     * The channel's pipeline <strong>must</strong> be cleaned of all request-specific handlers before being released.
+     * Unhealthy channels (e.g., those that are inactive or have received a GOAWAY frame) will be closed and discarded.
      *
      * @param channel The channel to release back to the connection pool.
      */
@@ -361,17 +381,16 @@ public class Netty4ConnectionPool implements Closeable {
         }
 
         /**
-         * Acquires a connection.
-         *
-         * <p>
-         * This method is the entry point for getting a connection. It will first try to poll from the idle queue.
-         * If it can't, it will attempt to create a new one if pool capacity is not reached. If capacity is reached,
-         * it will queue the request.
-         * </p>
+         * Acquires a connection for this specific route, following the pool's logic flow:
+         * <ol>
+         * <li>Attempt to poll a healthy, idle connection from the queue.</li>
+         * <li>If none is available, attempt to create a new connection if capacity allows.</li>
+         * <li>If at capacity, queue the acquisition request.</li>
+         * </ol>
          *
          * @return A {@link Future} that completes with a {@link Channel}.
          */
-        Future<Channel> acquire() {
+        private Future<Channel> acquire() {
             if (closed.get()) {
                 return bootstrap.config()
                     .group()
@@ -395,7 +414,7 @@ public class Netty4ConnectionPool implements Closeable {
                     return createNewConnection();
                 }
 
-                // Pool is full. Queue the acquisition request.
+                // The Pool is full. Queue the acquisition request.
                 if (pendingAcquirers.size() >= maxPendingAcquires) {
                     return bootstrap.config()
                         .group()
@@ -443,7 +462,14 @@ public class Netty4ConnectionPool implements Closeable {
             }
         }
 
-        void release(PooledConnection connection) {
+        /**
+         * Releases a connection back to this route's pool.
+         * <p>
+         * First offers the connection to any pending acquirers before adding it to the idle queue.
+         *
+         * @param connection The connection to release.
+         */
+        private void release(PooledConnection connection) {
             poolLock.lock();
             try {
                 if (!isHealthy(connection)) {
@@ -458,7 +484,7 @@ public class Netty4ConnectionPool implements Closeable {
                 while (!pendingAcquirers.isEmpty()) {
                     Promise<Channel> waiter = pollNextWaiter();
                     if (waiter == null) {
-                        // All remaining waiters were cancelled.
+                        // All remaining waiters were canceled.
                         break;
                     }
 
@@ -496,7 +522,7 @@ public class Netty4ConnectionPool implements Closeable {
                         if (future.isSuccess()) {
                             // Try to give the new channel to the waiter.
                             // If it fails (e.g., the waiter timed out in the meantime),
-                            // release the brand new channel back to the pool.
+                            // release the brand-new channel back to the pool.
                             if (!waiter.trySuccess((Channel) future.getNow())) {
                                 release(((Channel) future.getNow()).attr(POOLED_CONNECTION_KEY).get());
                             }
@@ -534,6 +560,15 @@ public class Netty4ConnectionPool implements Closeable {
             return null;
         }
 
+        /**
+         * Creates a new channel and asynchronously orchestrates its full setup.
+         * <p>
+         * This method configures a {@link ChannelInitializer} to set up the base pipeline with handlers for health,
+         * proxying, and SSL. The readiness of the channel is signaled by a {@link Promise}, which is only fulfilled
+         * after all asynchronous setup stages (TCP connect, proxy handshake, and SSL/ALPN negotiation) are complete.
+         *
+         * @return A {@link Future} that will complete with a new, fully configured channel.
+         */
         private Future<Channel> createNewConnection() {
             Bootstrap newConnectionBootstrap = bootstrap.clone();
             Promise<Channel> promise = newConnectionBootstrap.config().group().next().newPromise();
@@ -545,8 +580,8 @@ public class Netty4ConnectionPool implements Closeable {
                     // Create the connection wrapper and attach it to the channel.
                     new PooledConnection(channel, key);
 
-                    ChannelPipeline pipeline = channel.pipeline(); //TODO: fix handler names
-                    pipeline.addLast("poolHealthHandler", PoolConnectionHealthHandler.INSTANCE);
+                    ChannelPipeline pipeline = channel.pipeline();
+                    pipeline.addLast(POOL_CONNECTION_HEALTH, PoolConnectionHealthHandler.INSTANCE);
 
                     // Test whether proxying should be applied to this Channel. If so, add it.
                     // Proxy detection MUST use the final destination address from the key.
@@ -554,26 +589,27 @@ public class Netty4ConnectionPool implements Closeable {
                     if (hasProxy) {
                         ProxyHandler proxyHandler = channelInitializationProxyHandler.createProxy(proxyChallenges);
                         pipeline.addFirst(PROXY, proxyHandler);
-                        pipeline.addAfter(PROXY, "clientcore.suppressproxyexception",
+                        pipeline.addAfter(PROXY, PROXY_EXCEPTION_WARNING_SUPPRESSION,
                             SuppressProxyConnectExceptionWarningHandler.INSTANCE);
                     }
 
                     // Add SSL handling if the request is HTTPS.
-//                    if (isHttps) {
-//                        InetSocketAddress inetSocketAddress = (InetSocketAddress) key.getFinalDestination();
-//                        SslContext ssl = buildSslContext(maximumHttpVersion, sslContextModifier);
-//                        pipeline.addLast(SSL, ssl.newHandler(channel.alloc(), inetSocketAddress.getHostString(),
-//                            inetSocketAddress.getPort()));
-//                        pipeline.addAfter(SSL, "clientcore.sslshutdown", SslGracefulShutdownHandler.INSTANCE);
-//                        //pipeline.addLast(SSL_INITIALIZER, new Netty4SslInitializationHandler());
-//                        pipeline.addLast("pool-alpn-configurator", PoolAlpnConfigurator.INSTANCE);
-//                    }
+                    if (isHttps) {
+                        InetSocketAddress inetSocketAddress = (InetSocketAddress) key.getFinalDestination();
+                        SslContext ssl = buildSslContext(maximumHttpVersion, sslContextModifier);
+                        pipeline.addLast(SSL, ssl.newHandler(channel.alloc(), inetSocketAddress.getHostString(),
+                            inetSocketAddress.getPort()));
+                        pipeline.addAfter(SSL, SSL_GRACEFUL_SHUTDOWN, new SslGracefulShutdownHandler());
+                        pipeline.addLast(CONNECTION_POOL_ALPN, new ConnectionPoolAlpnHandler(promise));
+                    } else {
+                        channel.attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).set(HttpProtocolVersion.HTTP_1_1);
+                    }
                 }
             });
 
             newConnectionBootstrap.connect(route).addListener(future -> {
                 if (!future.isSuccess()) {
-                    LOGGER.atError().setThrowable(future.cause()).log("Failed connection.");
+                    LOGGER.atError().setThrowable(future.cause()).log("Failed to connect to the route.");
                     handleConnectionClosure();
                     promise.setFailure(future.cause());
                     return;
@@ -582,53 +618,25 @@ public class Netty4ConnectionPool implements Closeable {
                 Channel newChannel = ((ChannelFuture) future).channel();
                 newChannel.closeFuture().addListener(closeFuture -> handleConnectionClosure());
 
-//                Runnable connectionReadyRunner = () -> {
-//                    SslHandler sslHandler = newChannel.pipeline().get(SslHandler.class);
-//                    if (sslHandler != null) {
-//                        sslHandler.handshakeFuture().addListener(sslFuture -> {
-//                            if (sslFuture.isSuccess()) {
-//                                promise.setSuccess(newChannel);
-//                            } else {
-//                                promise.setFailure(sslFuture.cause());
-//                                newChannel.close();
-//                            }
-//                        });
-//                        newChannel.writeAndFlush(Unpooled.EMPTY_BUFFER);
-//                    } else {
-//                        promise.setSuccess(newChannel);
-//                    }
-//                };
+                Runnable connectionSuccessRunner = () -> {
+                    if (!isHttps) {
+                        promise.trySuccess(newChannel);
+                    }
+                    // If it IS https, we do nothing. The ConnectionPoolAlpnHandler is in charge.
+                };
 
-//                ProxyHandler proxyHandler = (ProxyHandler) newChannel.pipeline().get(PROXY);
-//                if (proxyHandler != null){
-//                    // Wait for the proxy handshake to complete if proxy is being used.
-//                    proxyHandler.connectFuture().addListener(proxyFuture -> {
-//                        if (proxyFuture.isSuccess()) {
-//                            if (!newChannel.isActive()) {
-//                                promise.setFailure(new ClosedChannelException());
-//                                newChannel.close();
-//                                return;
-//                            }
-//                            connectionReadyRunner.run();
-//                        } else {
-//                            promise.setFailure(proxyFuture.cause());
-//                            newChannel.close();
-//                        }
-//                    });
-//                } else {
-//                    connectionReadyRunner.run();
-//                }
                 ProxyHandler proxyHandler = (ProxyHandler) newChannel.pipeline().get(PROXY);
                 if (proxyHandler != null) {
                     proxyHandler.connectFuture().addListener(proxyFuture -> {
-                        if (proxyFuture.isSuccess()) promise.trySuccess(newChannel);
-                        else {
+                        if (proxyFuture.isSuccess()) {
+                            connectionSuccessRunner.run();
+                        } else {
                             promise.tryFailure(proxyFuture.cause());
                             newChannel.close();
                         }
                     });
                 } else {
-                    promise.trySuccess(newChannel);
+                    connectionSuccessRunner.run();
                 }
             });
             return promise;
@@ -671,7 +679,7 @@ public class Netty4ConnectionPool implements Closeable {
             return true;
         }
 
-        void cleanup() {
+        private void cleanup() {
             if (idleConnections.isEmpty()) {
                 return;
             }
@@ -687,7 +695,7 @@ public class Netty4ConnectionPool implements Closeable {
             }
         }
 
-        void close() {
+        private void close() {
             PooledConnection connection;
             while ((connection = idleConnections.poll()) != null) {
                 connection.close();

@@ -355,6 +355,7 @@ public class NettyHttpClientBuilder {
      * Sets the maximum number of requests that can be queued waiting for a connection.
      * <p>
      * This limit is applied on a per-route (per-host) basis.
+     * If not set, a default value of 10_000 is used.
      *
      * @param maxPendingAcquires The maximum number of pending acquires.
      * @return The updated builder.
@@ -397,7 +398,11 @@ public class NettyHttpClientBuilder {
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) getTimeoutMillis(connectTimeout, 10_000));
         // Disable auto-read as we want to control when and how data is read from the channel.
         bootstrap.option(ChannelOption.AUTO_READ, false);
+        // Enable TCP keep-alive to proactively detect and clean up stale connections in the pool. This helps evict
+        // connections that have been silently dropped by network intermediaries.
         bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
+        // Allow the channel to remain open for writing even after the server has closed its sending side.
+        // This helps detect half-closures with a ChannelInputShutdownEvent in the PoolConnectionHealthHandler.
         bootstrap.option(ChannelOption.ALLOW_HALF_CLOSURE, true);
 
         Configuration buildConfiguration

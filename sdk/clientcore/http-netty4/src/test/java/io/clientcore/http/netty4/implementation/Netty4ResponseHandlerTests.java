@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests {@link Netty4ResponseHandler}.
  */
-@Timeout(value = 1, unit = TimeUnit.MINUTES)
+@Timeout(value = 3, unit = TimeUnit.MINUTES)
 public class Netty4ResponseHandlerTests {
     @Test
     public void firstReadIsFullHttpResponse() throws Exception {

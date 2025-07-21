@@ -159,7 +159,8 @@ public class Netty4PipelineCleanupHandlerTests {
     @Test
     public void exceptionCaughtStillClosesChannel() {
         testChannel.setActive(true);
-        Netty4PipelineCleanupHandler handler = new Netty4PipelineCleanupHandler(connectionPool, new AtomicReference<>(), OBJECT);
+        Netty4PipelineCleanupHandler handler
+            = new Netty4PipelineCleanupHandler(connectionPool, new AtomicReference<>(), OBJECT);
         testChannel.pipeline().addLast(handler);
         ChannelHandlerContext ctx = testChannel.pipeline().context(handler);
         Throwable testException = new IOException("Test Exception");

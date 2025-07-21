@@ -60,16 +60,20 @@ import java.util.function.Consumer;
 import static io.clientcore.core.utils.ServerSentEventUtils.attemptRetry;
 import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStream;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.ALPN;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP2_GOAWAY;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_CODEC;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.HTTP_RESPONSE;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PIPELINE_CLEANUP;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.POOL_CONNECTION_HEALTH;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROGRESS_AND_TIMEOUT;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROXY;
+import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.PROXY_EXCEPTION_WARNING_SUPPRESSION;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL;
 import static io.clientcore.http.netty4.implementation.Netty4HandlerNames.SSL_INITIALIZER;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.awaitLatch;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.buildSslContext;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.createHttp2Codec;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.sendHttp11Request;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.sendHttp2Request;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppressError;
@@ -79,8 +83,6 @@ import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppre
  */
 class NettyHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(NettyHttpClient.class);
-    private static final Netty4ConnectionPool.Http2GoAwayHandler HTTP_2_GO_AWAY_HANDLER
-        = new Netty4ConnectionPool.Http2GoAwayHandler();
 
     /**
      * Error message for when no {@link ServerSentEventListener} is attached to the {@link HttpRequest}.
@@ -149,7 +151,7 @@ class NettyHttpClient implements HttpClient {
 
             final Channel channel = future.getNow();
             try {
-                configurePooledRequestPipeline(channel, request, responseReference, errorReference, latch, isHttps, uri.getHost(), port);
+                configurePooledRequestPipeline(channel, request, responseReference, errorReference, latch, isHttps);
             } catch (Exception e) {
                 // An exception occurred during the pipeline setup.
                 // We fire the exception through the pipeline to trigger the cleanup handler,
@@ -173,7 +175,7 @@ class NettyHttpClient implements HttpClient {
             throw LOGGER.throwableAtError().log(errorReference.get(), CoreException::from);
         } else {
             throw LOGGER.throwableAtError()
-                .log("The request latch was released without a response or an error being set.",
+                .log("The request pipeline completed without producing a response or an error.",
                     IllegalStateException::new);
         }
     }
@@ -209,7 +211,10 @@ class NettyHttpClient implements HttpClient {
                         }
                     });
 
-                    channel.pipeline().addFirst(PROXY, proxyHandler);
+                    ChannelPipeline pipeline = channel.pipeline();
+                    pipeline.addFirst(PROXY, proxyHandler);
+                    pipeline.addAfter(PROXY, PROXY_EXCEPTION_WARNING_SUPPRESSION,
+                        Netty4ConnectionPool.SuppressProxyConnectExceptionWarningHandler.INSTANCE);
                 }
 
                 // Add SSL handling if the request is HTTPS.
@@ -315,7 +320,7 @@ class NettyHttpClient implements HttpClient {
 
     private void configurePooledRequestPipeline(Channel channel, HttpRequest request,
         AtomicReference<ResponseStateInfo> responseReference, AtomicReference<Throwable> errorReference,
-        CountDownLatch latch, boolean isHttps, String host, int port) {
+        CountDownLatch latch, boolean isHttps) {
 
         ReentrantLock lock = channel.attr(Netty4ConnectionPool.CHANNEL_LOCK).get();
         lock.lock();
@@ -336,64 +341,64 @@ class NettyHttpClient implements HttpClient {
 
             final Object pipelineOwnerToken = new Object();
             channel.attr(Netty4ConnectionPool.PIPELINE_OWNER_TOKEN).set(pipelineOwnerToken);
+            ChannelPipeline pipeline = channel.pipeline();
 
-            ProgressReporter progressReporter = (request.getContext() == null)
+            HttpProtocolVersion protocol = channel.attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).get();
+            boolean isHttp2 = protocol == HttpProtocolVersion.HTTP_2;
+
+            if (protocol == null) {
+                // Ideally, this should never happen, but as a safeguard.
+                setOrSuppressError(errorReference, new IllegalStateException("Channel from pool is missing protocol."));
+                latch.countDown();
+                return;
+            }
+
+            if (isHttp2) {
+                // For H2 (which is always HTTPS), the codec is persistent.
+                // Add it only if it's not already there (first request).
+                if (pipeline.get(HTTP_CODEC) == null) {
+                    pipeline.addAfter(SSL, HTTP_CODEC, createHttp2Codec());
+                    pipeline.addAfter(HTTP_CODEC, HTTP2_GOAWAY, new Netty4ConnectionPool.Http2GoAwayHandler());
+                }
+            } else { // HTTP/1.1 (can be HTTP or HTTPS)
+                // For H1, the codec is transient and must be added for every request.
+                // The cleanup handler is responsible for removing it.
+                String after = isHttps ? SSL : POOL_CONNECTION_HEALTH;
+                pipeline.addAfter(after, HTTP_CODEC, createCodec());
+            }
+
+            ProgressReporter progressReporter = request.getContext() == null
                 ? null
                 : (ProgressReporter) request.getContext().getMetadata("progressReporter");
+
             boolean addProgressAndTimeoutHandler = progressReporter != null
                 || writeTimeoutMillis > 0
                 || responseTimeoutMillis > 0
                 || readTimeoutMillis > 0;
 
-            ChannelPipeline pipeline = channel.pipeline();
+            Netty4ResponseHandler responseHandler
+                = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
+
+            if (addProgressAndTimeoutHandler) {
+                Netty4ProgressAndTimeoutHandler progressAndTimeoutHandler = new Netty4ProgressAndTimeoutHandler(
+                    progressReporter, writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis);
+
+                pipeline.addAfter(HTTP_CODEC, PROGRESS_AND_TIMEOUT, progressAndTimeoutHandler);
+                pipeline.addAfter(PROGRESS_AND_TIMEOUT, HTTP_RESPONSE, responseHandler);
+            } else {
+                pipeline.addAfter(HTTP_CODEC, HTTP_RESPONSE, responseHandler);
+            }
 
             pipeline.addLast(PIPELINE_CLEANUP,
                 new Netty4PipelineCleanupHandler(connectionPool, errorReference, pipelineOwnerToken));
 
-            HttpProtocolVersion protocol = channel.attr(Netty4AlpnHandler.HTTP_PROTOCOL_VERSION_KEY).get();
-
-            if (protocol != null) {
-                if (addProgressAndTimeoutHandler) {
-                    pipeline.addLast(PROGRESS_AND_TIMEOUT, new Netty4ProgressAndTimeoutHandler(progressReporter, writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
-                }
-                pipeline.addLast(HTTP_RESPONSE, new Netty4ResponseHandler(request, responseReference, errorReference, latch));
-
-                if (protocol == HttpProtocolVersion.HTTP_1_1) {
-                    String addBefore = addProgressAndTimeoutHandler ? PROGRESS_AND_TIMEOUT : HTTP_RESPONSE;
-                    pipeline.addBefore(addBefore, HTTP_CODEC, createCodec());
-                }
-
-                channel.eventLoop().execute(() -> {
-                    if (protocol == HttpProtocolVersion.HTTP_2) {
-                        sendHttp2Request(request, channel, errorReference, latch);
-                    } else {
-                        send(request, channel, errorReference, latch);
-                    }
-                });
-            } else {
-                if (addProgressAndTimeoutHandler) {
-                    pipeline.addLast(PROGRESS_AND_TIMEOUT,
-                        new Netty4ProgressAndTimeoutHandler(progressReporter, writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
-                }
-
-                if (isHttps) {
-                    SslContext sslContext = buildSslContext(maximumHttpVersion, sslContextModifier);
-                    SslHandler sslHandler = sslContext.newHandler(channel.alloc(), host, port);
-                    pipeline.addFirst(SSL, sslHandler);
-                    pipeline.addAfter(SSL, ALPN, new Netty4AlpnHandler(request, responseReference, errorReference, latch));
-
-                    channel.writeAndFlush(Unpooled.EMPTY_BUFFER);
-                } else {
-                    Netty4ResponseHandler responseHandler = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
-                    pipeline.addLast(HTTP_RESPONSE, responseHandler);
-                    String addBefore = addProgressAndTimeoutHandler ? PROGRESS_AND_TIMEOUT : HTTP_RESPONSE;
-                    pipeline.addBefore(addBefore, HTTP_CODEC, createCodec());
-
+            channel.eventLoop().execute(() -> {
+                if (isHttp2) {
+                    sendHttp2Request(request, channel, errorReference, latch);
+                } else { // HTTP/1.1
                     send(request, channel, errorReference, latch);
                 }
-            }
-        } catch (SSLException e) {
-            throw new RuntimeException(e);
+            });
         } finally {
             lock.unlock();
         }
