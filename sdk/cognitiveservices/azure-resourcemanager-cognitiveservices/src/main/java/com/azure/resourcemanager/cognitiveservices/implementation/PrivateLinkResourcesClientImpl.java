@@ -56,7 +56,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CognitiveServicesMan")
+    @ServiceInterface(name = "CognitiveServicesManagementClientPrivateLinkResources")
     public interface PrivateLinkResourcesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateLinkResources")
