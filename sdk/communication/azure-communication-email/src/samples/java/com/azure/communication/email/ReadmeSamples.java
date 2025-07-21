@@ -12,7 +12,9 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.util.Base64;
 import java.io.File;
+import java.nio.file.Files;
 
 public class ReadmeSamples {
 
