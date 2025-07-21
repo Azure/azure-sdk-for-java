@@ -67,8 +67,9 @@ public class HttpPipelinePolicyCheck extends AbstractCheck {
             return;
         }
 
-        TokenUtil.findFirstTokenByPredicate(implementsClauseToken,
-            node -> node.getType() == TokenTypes.IDENT && HTTP_PIPELINE_POLICY.equals(node.getText()))
+        TokenUtil
+            .findFirstTokenByPredicate(implementsClauseToken,
+                node -> node.getType() == TokenTypes.IDENT && HTTP_PIPELINE_POLICY.equals(node.getText()))
             .ifPresent(ignored -> {
                 final String className = classDefToken.findFirstToken(TokenTypes.IDENT).getText();
                 // Public class check

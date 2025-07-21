@@ -8,11 +8,11 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.logs.models.LogsBatchQuery;
 import com.azure.monitor.query.logs.models.LogsBatchQueryResult;
 import com.azure.monitor.query.logs.models.LogsQueryResult;
+import com.azure.monitor.query.logs.models.LogsQueryTimeInterval;
 import com.azure.monitor.query.logs.models.LogsTable;
 import com.azure.monitor.query.logs.models.LogsTableCell;
 import com.azure.monitor.query.logs.models.LogsTableColumn;
 import com.azure.monitor.query.logs.models.LogsTableRow;
-import com.azure.monitor.query.logs.models.QueryTimeInterval;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -59,14 +59,14 @@ public class SplitQueryByByteSizeSample {
      * Helper method to create a batch query from a query string and a list of time intervals.
      *
      * @param originalQuery The original query string.
-     * @param queryTimeIntervals The list of time intervals.
+     * @param logsQueryTimeIntervals The list of time intervals.
      * @return A {@link LogsBatchQuery} object equivalent to the original query.
      */
     static LogsBatchQuery createBatchQueryFromTimeRanges(String originalQuery,
-                                                         List<QueryTimeInterval> queryTimeIntervals) {
+                                                         List<LogsQueryTimeInterval> logsQueryTimeIntervals) {
         LogsBatchQuery batchQuery = new LogsBatchQuery();
 
-        for (QueryTimeInterval timeInterval : queryTimeIntervals) {
+        for (LogsQueryTimeInterval timeInterval : logsQueryTimeIntervals) {
             batchQuery.addWorkspaceQuery(workspaceId, originalQuery, timeInterval);
         }
 
@@ -80,10 +80,10 @@ public class SplitQueryByByteSizeSample {
      * @param originalQuery The original query string.
      * @param maxByteSizePerBatch The maximum byte size per batch. If multiple log entries returned in the original
      *                            query have the exact same timestamp, the byte size per batch may exceed this limit.
-     * @return A list of {@link QueryTimeInterval} objects.
+     * @return A list of {@link LogsQueryTimeInterval} objects.
      */
-    static List<QueryTimeInterval> createQueryTimeIntervalsForBatchQueryByByteSize(String originalQuery,
-                                                                                   int maxByteSizePerBatch) {
+    static List<LogsQueryTimeInterval> createQueryTimeIntervalsForBatchQueryByByteSize(String originalQuery,
+                                                                                       int maxByteSizePerBatch) {
         /*
          * This query finds the start time of each batch extending the query with a batch_num column that determined
          * using the estimate_data_size() function. The estimate_data_size() function returns the estimated byte size of
@@ -96,10 +96,10 @@ public class SplitQueryByByteSizeSample {
             originalQuery,
             maxByteSizePerBatch);
 
-        LogsQueryResult result = client.queryWorkspace(workspaceId, findBatchEndpointsQuery, QueryTimeInterval.ALL);
+        LogsQueryResult result = client.queryWorkspace(workspaceId, findBatchEndpointsQuery, LogsQueryTimeInterval.ALL);
         List<LogsTableRow> rows = result.getTable().getRows();
         List<OffsetDateTime> offsetDateTimes = new ArrayList<>();
-        List<QueryTimeInterval> queryTimeIntervals = new ArrayList<>();
+        List<LogsQueryTimeInterval> logsQueryTimeIntervals = new ArrayList<>();
 
         for (LogsTableRow row : rows) {
             row.getColumnValue("batchStart").ifPresent(rowValue -> {
@@ -111,11 +111,11 @@ public class SplitQueryByByteSizeSample {
         for (int i = 0; i < offsetDateTimes.size(); i++) {
             OffsetDateTime startTime = offsetDateTimes.get(i);
             OffsetDateTime endTime = i == offsetDateTimes.size() - 1 ? OffsetDateTime.now() : offsetDateTimes.get(i + 1);
-            QueryTimeInterval timeInterval = new QueryTimeInterval(startTime, endTime);
-            queryTimeIntervals.add(timeInterval);
+            LogsQueryTimeInterval timeInterval = new LogsQueryTimeInterval(startTime, endTime);
+            logsQueryTimeIntervals.add(timeInterval);
         }
 
-        return queryTimeIntervals;
+        return logsQueryTimeIntervals;
     }
 
 

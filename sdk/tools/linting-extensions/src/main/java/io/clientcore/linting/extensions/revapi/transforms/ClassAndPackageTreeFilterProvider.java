@@ -94,8 +94,8 @@ public final class ClassAndPackageTreeFilterProvider implements TreeFilterProvid
                 TypeElement outermostClass = findOuterMostClass(((JavaTypeElement) element).getDeclaringElement());
 
                 // No guarantee there is an outermost class, the enclosing type could be an interface or enum.
-                boolean excludeClass = outermostClass != null
-                    && excludeClass(outermostClass.getQualifiedName().toString());
+                boolean excludeClass
+                    = outermostClass != null && excludeClass(outermostClass.getQualifiedName().toString());
 
                 if (excludeClass) {
                     // Class is being excluded, no need to inspect package.

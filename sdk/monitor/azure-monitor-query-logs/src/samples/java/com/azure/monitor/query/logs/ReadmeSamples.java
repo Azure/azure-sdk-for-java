@@ -17,8 +17,8 @@ import com.azure.monitor.query.logs.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.logs.models.LogsQueryOptions;
 import com.azure.monitor.query.logs.models.LogsQueryResult;
 import com.azure.monitor.query.logs.models.LogsQueryResultStatus;
+import com.azure.monitor.query.logs.models.LogsQueryTimeInterval;
 import com.azure.monitor.query.logs.models.LogsTableRow;
-import com.azure.monitor.query.logs.models.QueryTimeInterval;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -58,7 +58,7 @@ public class ReadmeSamples {
             .buildClient();
 
         LogsQueryResult queryResults = logsQueryClient.queryWorkspace("{workspace-id}", "{kusto-query}",
-            new QueryTimeInterval(Duration.ofDays(2)));
+            new LogsQueryTimeInterval(Duration.ofDays(2)));
 
         for (LogsTableRow row : queryResults.getTable().getRows()) {
             System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
@@ -76,7 +76,7 @@ public class ReadmeSamples {
             .buildClient();
 
         LogsQueryResult queryResults = logsQueryClient.queryResource("{resource-id}", "{kusto-query}",
-            new QueryTimeInterval(Duration.ofDays(2)));
+            new LogsQueryTimeInterval(Duration.ofDays(2)));
 
         for (LogsTableRow row : queryResults.getTable().getRows()) {
             System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
@@ -112,7 +112,7 @@ public class ReadmeSamples {
             .buildClient();
 
         List<CustomLogModel> customLogModels = logsQueryClient.queryWorkspace("{workspace-id}", "{kusto-query}",
-            new QueryTimeInterval(Duration.ofDays(2)), CustomLogModel.class);
+            new LogsQueryTimeInterval(Duration.ofDays(2)), CustomLogModel.class);
 
         for (CustomLogModel customLogModel : customLogModels) {
             System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
@@ -130,9 +130,9 @@ public class ReadmeSamples {
             .buildClient();
 
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        String query1 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-1}", new QueryTimeInterval(Duration.ofDays(2)));
-        String query2 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-2}", new QueryTimeInterval(Duration.ofDays(30)));
-        String query3 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-3}", new QueryTimeInterval(Duration.ofDays(10)));
+        String query1 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-1}", new LogsQueryTimeInterval(Duration.ofDays(2)));
+        String query2 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-2}", new LogsQueryTimeInterval(Duration.ofDays(30)));
+        String query3 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-3}", new LogsQueryTimeInterval(Duration.ofDays(10)));
 
         LogsBatchQueryResultCollection batchResults = logsQueryClient
             .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
@@ -169,7 +169,7 @@ public class ReadmeSamples {
             .setServerTimeout(Duration.ofMinutes(10));
 
         Response<LogsQueryResult> response = logsQueryClient.queryWorkspaceWithResponse("{workspace-id}",
-            "{kusto-query}", new QueryTimeInterval(Duration.ofDays(2)), options, Context.NONE);
+            "{kusto-query}", new LogsQueryTimeInterval(Duration.ofDays(2)), options, Context.NONE);
         // END: readme-sample-logsquerytimeout
     }
 
@@ -183,7 +183,7 @@ public class ReadmeSamples {
             .buildClient();
 
         Response<LogsQueryResult> response = logsQueryClient.queryWorkspaceWithResponse("{workspace-id}", "{kusto-query}",
-            new QueryTimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
+            new LogsQueryTimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
                 .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
             Context.NONE);
         LogsQueryResult result = response.getValue();
@@ -228,7 +228,7 @@ public class ReadmeSamples {
             .credential(credential)
             .buildClient();
 
-        client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
+        client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", LogsQueryTimeInterval.LAST_DAY,
             new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(10)), Context.NONE);
         // END: readme-sample-servertimeout
     }
@@ -244,7 +244,7 @@ public class ReadmeSamples {
             .buildClient();
 
         // BEGIN: readme-sample-allowpartialerrors
-        client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
+        client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", LogsQueryTimeInterval.LAST_DAY,
             new LogsQueryOptions().setAllowPartialErrors(true), Context.NONE);
         // END: readme-sample-allowpartialerrors
     }
@@ -278,7 +278,7 @@ public class ReadmeSamples {
         LogsQueryOptions options = new LogsQueryOptions()
             .setIncludeStatistics(true);
         Response<LogsQueryResult> response = client.queryWorkspaceWithResponse("{workspace-id}",
-            "AzureActivity | top 10 by TimeGenerated", QueryTimeInterval.LAST_1_HOUR, options, Context.NONE);
+            "AzureActivity | top 10 by TimeGenerated", LogsQueryTimeInterval.LAST_1_HOUR, options, Context.NONE);
         LogsQueryResult result = response.getValue();
         BinaryData statistics = result.getStatistics();
 
@@ -309,7 +309,7 @@ public class ReadmeSamples {
         LogsQueryOptions options = new LogsQueryOptions()
             .setIncludeVisualization(true);
         Response<LogsQueryResult> response = client.queryWorkspaceWithResponse("{workspace-id}", visualizationQuery,
-            QueryTimeInterval.LAST_7_DAYS, options, Context.NONE);
+            LogsQueryTimeInterval.LAST_7_DAYS, options, Context.NONE);
         LogsQueryResult result = response.getValue();
         BinaryData visualization = result.getVisualization();
 
