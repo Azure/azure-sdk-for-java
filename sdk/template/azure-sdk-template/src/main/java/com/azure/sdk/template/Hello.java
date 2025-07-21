@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.sdk.template;
 
+// test change
+
 /**
  * This is a sample class for template app.
  */
