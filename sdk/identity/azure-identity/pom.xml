@@ -6,7 +6,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.17.0-beta.1</version><!-- {x-version-update;com.azure:azure-identity;current} -->
+  <version>1.17.0-beta.2</version><!-- {x-version-update;com.azure:azure-identity;current} -->
 
   <name>Microsoft Azure client library for Identity</name>
   <description>This module contains client library for Microsoft Azure Identity.</description>
@@ -20,10 +20,7 @@
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
-
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <spotbugs.includeTests>true</spotbugs.includeTests>
   </properties>
 
