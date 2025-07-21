@@ -11,9 +11,10 @@ import com.azure.identity.implementation.IdentityLogOptionsImpl;
 import com.azure.identity.implementation.util.IdentityUtil;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
@@ -272,41 +273,72 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         Configuration configuration = identityClientOptions.getConfiguration() == null
             ? Configuration.getGlobalConfiguration().clone()
             : identityClientOptions.getConfiguration();
-        String selectedCredentials = configuration.get("AZURE_TOKEN_CREDENTIALS");
-        boolean useProductionCredentials = false;
-        boolean useDeveloperCredentials = false;
-        if (!CoreUtils.isNullOrEmpty(selectedCredentials)) {
-            selectedCredentials = selectedCredentials.trim();
-            if ("prod".equalsIgnoreCase(selectedCredentials)) {
-                useProductionCredentials = true;
-            } else if ("dev".equalsIgnoreCase(selectedCredentials)) {
-                useDeveloperCredentials = true;
+
+        String selectedCredential = configuration.get("AZURE_TOKEN_CREDENTIALS");
+        ArrayList<TokenCredential> credentials = new ArrayList<>(8);
+
+        if (!CoreUtils.isNullOrEmpty(selectedCredential)) {
+            selectedCredential = selectedCredential.trim().toLowerCase(Locale.ROOT);
+
+            // Use a map to associate credential names to their adders
+            java.util.Map<String, Runnable> credentialMap = new java.util.HashMap<>();
+            credentialMap.put("prod", () -> addProdCredentials(credentials));
+            credentialMap.put("dev", () -> addDevCredentials(credentials));
+            credentialMap.put("environmentcredential",
+                () -> credentials.add(new EnvironmentCredential(identityClientOptions.clone())));
+            credentialMap.put("workloadidentitycredential", () -> credentials.add(getWorkloadIdentityCredential()));
+            credentialMap.put("managedidentitycredential",
+                () -> credentials.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId,
+                    null, identityClientOptions.clone())));
+            credentialMap.put("intellijcredential",
+                () -> credentials.add(new IntelliJCredential(tenantId, identityClientOptions.clone())));
+            credentialMap.put("azureclicredential",
+                () -> credentials.add(new AzureCliCredential(tenantId, identityClientOptions.clone())));
+            credentialMap.put("azurepowershellcredential",
+                () -> credentials.add(new AzurePowerShellCredential(tenantId, identityClientOptions.clone())));
+            credentialMap.put("azuredeveloperclicredential",
+                () -> credentials.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone())));
+            credentialMap.put("visualstudiocodecredential",
+                () -> credentials.add(new VisualStudioCodeCredential(tenantId, identityClientOptions.clone())));
+
+            Runnable adder = credentialMap.get(selectedCredential);
+            if (adder != null) {
+                adder.run();
+                return credentials;
             } else {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "Invalid value for AZURE_TOKEN_CREDENTIALS. Valid values are 'prod' or 'dev'."));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("Invalid value for AZURE_TOKEN_CREDENTIALS: '"
+                        + selectedCredential + "'. " + "Valid values are: 'prod', 'dev', or one of "
+                        + "[EnvironmentCredential, WorkloadIdentityCredential, ManagedIdentityCredential, "
+                        + "IntelliJCredential, AzureCliCredential, AzurePowerShellCredential, "
+                        + "AzureDeveloperCliCredential, VisualStudioCodeCredential] (case-insensitive). "
+                        + "To mitigate this issue, please refer to the troubleshooting guidelines here at "
+                        + "https://aka.ms/azure-identity-java-default-azure-credential-troubleshoot"));
             }
         }
-        if (!useProductionCredentials && !useDeveloperCredentials) {
-            useProductionCredentials = true;
-            useDeveloperCredentials = true;
-        }
 
-        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(7);
-        if (useProductionCredentials) {
-            output.add(new EnvironmentCredential(identityClientOptions.clone()));
-            output.add(getWorkloadIdentityCredential());
-            output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, null,
-                identityClientOptions.clone()));
-        }
+        // Default case: full chain (prod + dev)
+        addProdCredentials(credentials);
+        addDevCredentials(credentials);
+        return credentials;
+    }
 
-        if (useDeveloperCredentials) {
-            output.add(new IntelliJCredential(tenantId, identityClientOptions.clone()));
-            output.add(new AzureCliCredential(tenantId, identityClientOptions.clone()));
-            output.add(new AzurePowerShellCredential(tenantId, identityClientOptions.clone()));
-            output.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
-        }
+    // Helper to add prod credentials
+    private void addProdCredentials(List<TokenCredential> credentials) {
+        credentials.add(new EnvironmentCredential(identityClientOptions.clone()));
+        credentials.add(getWorkloadIdentityCredential());
+        credentials.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, null,
+            identityClientOptions.clone()));
+    }
 
-        return output;
+    // Helper to add dev credentials
+    private void addDevCredentials(List<TokenCredential> credentials) {
+        credentials.add(new IntelliJCredential(tenantId, identityClientOptions.clone()));
+        credentials.add(new VisualStudioCodeCredential(tenantId, identityClientOptions.clone()));
+        credentials.add(new AzureCliCredential(tenantId, identityClientOptions.clone()));
+        credentials.add(new AzurePowerShellCredential(tenantId, identityClientOptions.clone()));
+        credentials.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
+        credentials.add(new OSBrokerCredential(tenantId));
     }
 
     private WorkloadIdentityCredential getWorkloadIdentityCredential() {

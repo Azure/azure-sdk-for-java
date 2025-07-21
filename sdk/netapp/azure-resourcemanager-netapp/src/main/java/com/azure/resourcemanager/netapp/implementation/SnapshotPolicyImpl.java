@@ -250,6 +250,6 @@ public final class SnapshotPolicyImpl implements SnapshotPolicy, SnapshotPolicy.
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

@@ -21,10 +21,12 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot AzurePowerShellCredential authentication issues](#troubleshoot-azurepowershellcredential-authentication-issues)
 - [Troubleshoot WorkloadIdentityCredential authentication issues](#troubleshoot-workloadidentitycredential-authentication-issues)
 - [Troubleshoot IntelliJCredential authentication issues](#troubleshoot-intellijcredential-authentication-issues)
+- [Troubleshoot VisualStudioCodeCredential authentication issues](#troubleshoot-visualstudiocodecredential-authentication-issues)
 - [Troubleshoot AzurePipelinesCredential authentication issues](#troubleshoot-azurepipelinescredential-authentication-issues)
 - [Troubleshoot authentication timeout issues](#troubleshoot-authentication-timeout-issues)
 - [Troubleshoot Web Account Manager (WAM) brokered authentication issues](#troubleshoot-web-account-manager-wam-brokered-authentication-issues)
 - [Get additional help](#get-additional-help)
+
 
 ## Handle Azure Identity exceptions
 
@@ -80,10 +82,11 @@ The underlying MSAL library, MSAL4J, also has detailed logging. It is highly ver
 
 ## Troubleshoot `DefaultAzureCredential` authentication issues
 
-| Error |Description| Mitigation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| Error | Description | Mitigation |
 |---|---|---|
-|`CredentialUnavailableException` raised with message. "DefaultAzureCredential failed to retrieve a token from the included credentials."|All credentials in the `DefaultAzureCredential` chain failed to retrieve a token, each throwing a `CredentialUnavailableException`| <ul><li>[Enable logging](#enable-and-configure-logging) to verify the credentials being tried, and get further diagnostic information.</li><li>Consult the troubleshooting guide for underlying credential types for more information.</li><ul><li>[EnvironmentCredential](#troubleshoot-environmentcredential-authentication-issues)</li><li>[ManagedIdentityCredential](#troubleshoot-managedidentitycredential-authentication-issues)</li><li>[AzureCLICredential](#troubleshoot-azureclicredential-authentication-issues)</li><li>[AzurePowershellCredential](#troubleshoot-azurepowershellcredential-authentication-issues)</li></ul> |
-|`HttpResponseException` raised from the client with a status code of 401 or 403|Authentication succeeded but the authorizing Azure service responded with a 401 (Authenticate), or 403 (Forbidden) status code. This can often be caused by the `DefaultAzureCredential` authenticating an account other than the intended or that the intended account does not have the correct permissions or roles assigned.| <ul><li>[Enable logging](#enable-and-configure-logging) to determine which credential in the chain returned the authenticating token.</li><li>In the case a credential other than the expected is returning a token, look too bypass this by signing out of the corresponding development tool.`</li><li>Ensure that the correct role is assigned to the account being used. For example, a service specific role rather than the subscription Owner role.</li></ul>                                                                                                                                                                                                                                                                                                                                                                         |
+| `CredentialUnavailableException` raised with message. "DefaultAzureCredential failed to retrieve a token from the included credentials." |All credentials in the `DefaultAzureCredential` chain failed to retrieve a token, each throwing a `CredentialUnavailableException`| <ul><li>[Enable logging](#enable-and-configure-logging) to verify the credentials being tried, and get further diagnostic information.</li><li>Consult the troubleshooting guide for underlying credential types for more information.</li><ul><li>[EnvironmentCredential](#troubleshoot-environmentcredential-authentication-issues)</li><li>[ManagedIdentityCredential](#troubleshoot-managedidentitycredential-authentication-issues)</li><li>[AzureCLICredential](#troubleshoot-azureclicredential-authentication-issues)</li><li>[AzurePowershellCredential](#troubleshoot-azurepowershellcredential-authentication-issues)</li></ul> |
+| `HttpResponseException` raised from the client with a status code of 401 or 403                                                          |Authentication succeeded but the authorizing Azure service responded with a 401 (Authenticate), or 403 (Forbidden) status code. This can often be caused by the `DefaultAzureCredential` authenticating an account other than the intended or that the intended account does not have the correct permissions or roles assigned.| <ul><li>[Enable logging](#enable-and-configure-logging) to determine which credential in the chain returned the authenticating token.</li><li>In the case a credential other than the expected is returning a token, look too bypass this by signing out of the corresponding development tool.`</li><li>Ensure that the correct role is assigned to the account being used. For example, a service specific role rather than the subscription Owner role.</li></ul> |
+| `IllegalArgumentException` raised with message "Invalid value for AZURE_TOKEN_CREDENTIALS..."                                            | The value provided in env var `AZURE_TOKEN_CREDENTIALS` doesn't map to one of `prod`, `dev`, or a specific credential name such as `EnvironmentCredential`, `ManagedIdentityCredential`, etc. | Ensure you specify a valid value as per your application's requirements. Specifying `prod` activates production environment credentials (`EnvironmentCredential`, `WorkloadIdentityCredential`, and `ManagedIdentityCredential`). Specifying `dev` activates development tool credentials (`IntelliJCredential`, `AzureCliCredential`, `AzurePowershellCredential`, `AzureDeveloperCliCredential`, and `VisualStudioCodeCredential`). Specifying a specific credential name targets that individual credential only as part of `DefaultAzureCredential`. |
 
 ## Troubleshoot `EnvironmentCredential` authentication issues
 `CredentialUnavailableException`
@@ -269,6 +272,27 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 
 > Note: Azure Toolkit for IntelliJ version 3.53 and higher are supported by this credential. If you are using an older version, please update to the latest version.
 
+
+
+
+# Troubleshoot `VisualStudioCodeCredential` authentication issues
+
+> **Applies to:** Version 1.17.0-beta.1 and later
+
+As of version 1.17.0-beta.1, `VisualStudioCodeCredential` uses broker authentication to sign in using the Azure Resources extension in Visual Studio Code. This approach requires the `azure-identity-broker` dependency and currently only works on Windows. Broker authentication is not yet supported on macOS or Linux.
+
+#### Platform Support
+
+> **Note:** VisualStudioCodeCredential with broker authentication is currently only supported on Windows. macOS and Linux are not yet supported.
+
+#### Common Error
+
+| Error Message | Description | Mitigation |
+|---|---|---|
+| `CredentialUnavailableException: Visual Studio Code Authentication is not available. Ensure you have azure-identity-broker dependency added to your application. Then ensure, you have signed into Azure via VS Code and have Azure Resources Extension installed in VS Code.` | Broker authentication is not available, which may be due to missing dependencies, not being signed in to Azure in VS Code, or the Azure Resources extension not being installed. | <ul><li>Ensure your project includes the <code>azure-identity-broker</code> dependency.</li><li>In Visual Studio Code, install the <a href="https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureresourcegroups">Azure Resources extension</a>.</li><li>Sign in to Azure using the "Azure: Sign In" command in VS Code.</li><li>Restart your application after signing in.</li></ul> |
+
+> VisualStudioCodeCredential is intended for local development scenarios and is not recommended for production environments.
+
 ## Troubleshoot `AzurePipelinesCredential` authentication issues
 
 | Error Message |Description| Mitigation |
@@ -327,9 +351,16 @@ You can find more info about Fork Join Pool [here](https://docs.oracle.com/javas
 
 ## Troubleshoot Web Account Manager (WAM) brokered authentication issues
 
+Broker authentication is used by `DefaultAzureCredential` to enable secure sign-in via the Windows Web Account Manager (WAM). This mechanism requires the `azure-identity-broker` dependency and is currently only supported on Windows.
+
 | Error Message |Description| Mitigation |
 |---|---|---|
 |AADSTS50011|The application is missing the expected redirect URI.|Ensure that one of redirect URIs registered for the Microsoft Entra application matches the following URI pattern: `ms-appx-web://Microsoft.AAD.BrokerPlugin/{client_id}`|
+| `CredentialUnavailableException: azure-identity-broker dependency is not available. Ensure you have azure-identity-broker dependency added to your application.` | The required broker dependency is missing from your project. | Add the `azure-identity-broker` dependency to your application's build configuration (e.g., Maven or Gradle). |
+| `CredentialUnavailableException: InteractiveBrowserBrokerCredentialBuilder class not found. Ensure you have azure-identity-broker dependency added to your application.` | The broker credential builder class could not be found, likely due to a missing or misconfigured dependency. | Ensure the `azure-identity-broker` dependency is present and correctly configured in your project. |
+| `CredentialUnavailableException: Failed to create InteractiveBrowserBrokerCredential dynamically` | An unexpected error occurred while creating the broker credential. | Check the inner exception for more details. Ensure your environment meets all requirements for broker authentication (Windows OS, correct dependencies, and configuration). |
+
+> **Note:** Broker authentication is currently only supported on Windows. macOS and Linux are not yet supported.
 
 ### Unable to log in with Microsoft account (MSA) on Windows
 
@@ -349,6 +380,7 @@ You may also log in another MSA account by selecting "Microsoft account":
 
 ![Microsoft account](./images/MSA4.png)
 
+---
 
 ## Get additional help
 

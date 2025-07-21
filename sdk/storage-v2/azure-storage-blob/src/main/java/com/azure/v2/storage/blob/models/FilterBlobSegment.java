@@ -102,9 +102,6 @@ public final class FilterBlobSegment implements XmlSerializable<FilterBlobSegmen
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public List<FilterBlobItem> getBlobs() {
-        if (this.blobs == null) {
-            this.blobs = new ArrayList<>();
-        }
         return this.blobs;
     }
 

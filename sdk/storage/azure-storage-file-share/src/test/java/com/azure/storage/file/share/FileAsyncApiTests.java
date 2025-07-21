@@ -90,6 +90,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -749,6 +750,50 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 assertEquals(result.charAt((int) (destinationOffset + i)), data.charAt((int) (sourceOffset + i)));
             }
         }).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void uploadRangeFromURLSourceErrorAndStatusCode() {
+        ShareFileAsyncClient destinationClient = shareAsyncClient.getFileClient(generatePathName());
+
+        StepVerifier
+            .create(primaryFileAsyncClient.create(1024)
+                .then(destinationClient.create(1024))
+                .then(destinationClient.uploadRangeFromUrl(5, 0, 0, primaryFileAsyncClient.getFileUrl())))
+            .verifyErrorSatisfies(r -> {
+                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
+                assertTrue(e.getStatusCode() == 401);
+                assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
+                assertTrue(e.getServiceMessage()
+                    .contains(
+                        "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
+            });
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void startCopySourceErrorAndStatusCode() {
+        ShareFileAsyncClient srcFile = shareAsyncClient.getFileClient(generatePathName());
+        srcFile.create(Constants.KB);
+        ShareFileAsyncClient destFile = shareAsyncClient.getFileClient(generatePathName());
+
+        String sasToken = srcFile.generateSas(new ShareServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new ShareFileSasPermission().setWritePermission(true)));
+        String sourceUri = srcFile.getFileUrl() + "?" + sasToken;
+
+        StepVerifier
+            .create(
+                destFile.create(Constants.KB)
+                    .thenMany(setPlaybackPollerFluxPollInterval(
+                        destFile.beginCopy(sourceUri, new ShareFileCopyOptions(), null))))
+            .verifyErrorSatisfies(error -> {
+                ShareStorageException e = assertInstanceOf(ShareStorageException.class, error);
+                assertTrue(e.getStatusCode() == 403);
+                assertTrue(e.getServiceMessage().contains("AuthorizationPermissionMismatch"));
+                assertTrue(e.getServiceMessage()
+                    .contains("This request is not authorized to perform this operation using this permission."));
+            });
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
@@ -2154,4 +2199,14 @@ public class FileAsyncApiTests extends FileShareTestBase {
         oauthServiceClient.deleteShare(shareName).block();
     }
 
+    @Test
+    public void fileExistsHandlesParentNotFound() {
+        ShareDirectoryAsyncClient directoryClient = shareAsyncClient.getDirectoryClient("fakeDir");
+        ShareFileAsyncClient fileClient = directoryClient.getFileClient(generatePathName());
+
+        StepVerifier.create(fileClient.existsWithResponse()).assertNext(r -> {
+            assertFalse(r.getValue());
+            assertEquals(ShareErrorCode.PARENT_NOT_FOUND.getValue(), r.getHeaders().getValue(ERROR_CODE_HEADER_NAME));
+        }).verifyComplete();
+    }
 }
