@@ -56,7 +56,7 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
 
     @Override
     public int[] getRequiredTokens() {
-        return new int[] {TokenTypes.LITERAL_CATCH};
+        return new int[] { TokenTypes.LITERAL_CATCH };
     }
 
     @Override
@@ -66,8 +66,8 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
         final String caughtExceptionVariableName = catchStatement.findFirstToken(TokenTypes.IDENT).getText();
 
         // get possible exception names to which the original exception might be assigned to
-        final List<String> wrappedExceptions =
-            getWrappedExceptions(catchBlockToken, catchBlockToken, caughtExceptionVariableName);
+        final List<String> wrappedExceptions
+            = getWrappedExceptions(catchBlockToken, catchBlockToken, caughtExceptionVariableName);
 
         forEachThrowStatement(catchBlockToken, throwToken -> {
             final Set<String> throwParamNames = new HashSet<>();
@@ -101,14 +101,15 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
         forEachChildNode(detailAST, currentNode -> {
             // Recursively traverse through the children of the parent node to collect references where the
             // caught exception variable is used.
-            if (currentNode.getType() == TokenTypes.IDENT && currentNode.getText().equals(caughtExceptionVariableName)) {
+            if (currentNode.getType() == TokenTypes.IDENT
+                && currentNode.getText().equals(caughtExceptionVariableName)) {
                 getWrappedExceptionVariable(currentCatchAST, wrappedExceptionNames, currentNode);
             }
 
             // add collection in case of last node on this level
             if (currentNode.getFirstChild() != null) {
-                wrappedExceptionNames.addAll(
-                    getWrappedExceptions(currentCatchAST, currentNode, caughtExceptionVariableName));
+                wrappedExceptionNames
+                    .addAll(getWrappedExceptions(currentCatchAST, currentNode, caughtExceptionVariableName));
             }
         });
         return wrappedExceptionNames;

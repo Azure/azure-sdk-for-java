@@ -67,17 +67,17 @@ public class ServiceClientCheck extends AbstractCheck {
     private static final String RESPONSE = "Response";
     private static final String PAGED_ITERABLE = "PagedIterable";
 
-    private static final String RETURN_TYPE_WITH_RESPONSE_ERROR =
-        "Return type is ''%s'', the method name %s end with ''%s''.";
-    private static final String RETURN_TYPE_ERROR =
-        "''%s'' service client with ''%s'' should use type ''%s'' as the return type.";
-    private static final String RESPONSE_METHOD_NAME_ERROR =
-        "''%s'' service client with ''%s'', should always use return type ''%s'' if method name ends with ''%s'' or "
+    private static final String RETURN_TYPE_WITH_RESPONSE_ERROR
+        = "Return type is ''%s'', the method name %s end with ''%s''.";
+    private static final String RETURN_TYPE_ERROR
+        = "''%s'' service client with ''%s'' should use type ''%s'' as the return type.";
+    private static final String RESPONSE_METHOD_NAME_ERROR
+        = "''%s'' service client with ''%s'', should always use return type ''%s'' if method name ends with ''%s'' or "
             + "should always named method name ends with ''%s'' if the return type is ''%s''.";
-    private static final String ASYNC_CONTEXT_ERROR =
-        "Asynchronous method with annotation @ServiceMethod must not have ''%s'' as a method parameter.";
-    private static final String SYNC_CONTEXT_ERROR =
-        "Synchronous method with annotation @ServiceMethod must have ''%s'' or ''%s'' as a method parameter.";
+    private static final String ASYNC_CONTEXT_ERROR
+        = "Asynchronous method with annotation @ServiceMethod must not have ''%s'' as a method parameter.";
+    private static final String SYNC_CONTEXT_ERROR
+        = "Synchronous method with annotation @ServiceMethod must have ''%s'' or ''%s'' as a method parameter.";
 
     // Add all imported classes into a map, key is the name of class and value is the full package path of class.
     private final Map<String, String> simpleClassNameToQualifiedNameMap = new HashMap<>();
@@ -108,8 +108,7 @@ public class ServiceClientCheck extends AbstractCheck {
             TokenTypes.CLASS_DEF,
             TokenTypes.CTOR_DEF,
             TokenTypes.METHOD_DEF,
-            TokenTypes.OBJBLOCK
-        };
+            TokenTypes.OBJBLOCK };
     }
 
     @Override
@@ -120,7 +119,7 @@ public class ServiceClientCheck extends AbstractCheck {
 
     @Override
     public void visitToken(DetailAST token) {
-        if (token.getType() ==  TokenTypes.IMPORT) {
+        if (token.getType() == TokenTypes.IMPORT) {
             addImportedClassPath(token);
         } else if (token.getType() == TokenTypes.CLASS_DEF) {
             isServiceClientAnnotation = hasServiceClientAnnotation(token);
@@ -166,7 +165,8 @@ public class ServiceClientCheck extends AbstractCheck {
 
         // find method's modifier accessibility, should not have a public static method called 'builder'
         final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(methodDefToken);
-        if (accessModifier.equals(AccessModifierOption.PUBLIC) && modifiersToken.branchContains(TokenTypes.LITERAL_STATIC)) {
+        if (accessModifier.equals(AccessModifierOption.PUBLIC)
+            && modifiersToken.branchContains(TokenTypes.LITERAL_STATIC)) {
             log(methodDefToken, "@ServiceClient class should not have a public static method named ''builder''.");
         }
     }
@@ -177,13 +177,17 @@ public class ServiceClientCheck extends AbstractCheck {
      * @param objBlockToken the OBJBLOCK AST node
      */
     private void checkClassField(DetailAST objBlockToken) {
-        TokenUtil.findFirstTokenByPredicate(objBlockToken, node -> node.getType() == TokenTypes.VARIABLE_DEF
-            && !node.findFirstToken(TokenTypes.MODIFIERS).branchContains(TokenTypes.FINAL))
+        TokenUtil
+            .findFirstTokenByPredicate(objBlockToken,
+                node -> node.getType() == TokenTypes.VARIABLE_DEF
+                    && !node.findFirstToken(TokenTypes.MODIFIERS).branchContains(TokenTypes.FINAL))
             .ifPresent(varDefToken -> {
                 final String varName = varDefToken.findFirstToken(TokenTypes.IDENT).getText();
-                log(varDefToken, String.format("The variable field ''%s'' of class ''%s'' should be final. Classes "
-                        + "annotated with @ServiceClient are supposed to be immutable.", varName,
-                    objBlockToken.getPreviousSibling().getText()));
+                log(varDefToken,
+                    String.format(
+                        "The variable field ''%s'' of class ''%s'' should be final. Classes "
+                            + "annotated with @ServiceClient are supposed to be immutable.",
+                        varName, objBlockToken.getPreviousSibling().getText()));
             });
     }
 
@@ -207,11 +211,12 @@ public class ServiceClientCheck extends AbstractCheck {
         // Class named <ServiceName>AsyncClient, the property 'isAsync' must set to true
         // Class named <ServiceName>Client, the property 'isAsync' must to be false or use the default value
         if (className.endsWith(ASYNC_CLIENT) && !isAsync) {
-            log(classDefToken, String.format("class ''%s'' is an asynchronous client, must set property ''%s'' to "
-                + "true.", className, IS_ASYNC));
+            log(classDefToken, String.format(
+                "class ''%s'' is an asynchronous client, must set property ''%s'' to " + "true.", className, IS_ASYNC));
         } else if (className.endsWith(CLIENT) && !className.endsWith(ASYNC_CLIENT) && isAsync) {
-            log(classDefToken, String.format("class ''%s'' is a synchronous client, must set property ''%s'' to false"
-                + " or without the property.", className, IS_ASYNC));
+            log(classDefToken, String.format(
+                "class ''%s'' is a synchronous client, must set property ''%s'' to false" + " or without the property.",
+                className, IS_ASYNC));
         }
     }
 
@@ -272,33 +277,34 @@ public class ServiceClientCheck extends AbstractCheck {
      * if found. return the value of member'return'.
      */
     private void checkServiceClientMethodReturnType(DetailAST methodDefToken, DetailAST serviceMethodAnnotation,
-                                                    String methodName) {
+        String methodName) {
         // Find the annotation member 'returns' value
-        TokenUtil.findFirstTokenByPredicate(serviceMethodAnnotation, node ->
-            node.getType() == TokenTypes.ANNOTATION_MEMBER_VALUE_PAIR
-                && node.findFirstToken(TokenTypes.IDENT).getText().equals("returns")
-                && !FullIdent.createFullIdentBelow(node.findFirstToken(TokenTypes.EXPR)).getText().isEmpty())
+        TokenUtil
+            .findFirstTokenByPredicate(serviceMethodAnnotation,
+                node -> node.getType() == TokenTypes.ANNOTATION_MEMBER_VALUE_PAIR
+                    && node.findFirstToken(TokenTypes.IDENT).getText().equals("returns")
+                    && !FullIdent.createFullIdentBelow(node.findFirstToken(TokenTypes.EXPR)).getText().isEmpty())
             .ifPresent(valueOptions -> {
-                String returnsAnnotationMemberValue = FullIdent.createFullIdentBelow(
-                    valueOptions.findFirstToken(TokenTypes.EXPR)).getText();
+                String returnsAnnotationMemberValue
+                    = FullIdent.createFullIdentBelow(valueOptions.findFirstToken(TokenTypes.EXPR)).getText();
 
-                String returnType = getReturnType(methodDefToken.findFirstToken(TokenTypes.TYPE), new StringBuilder())
-                    .toString();
+                String returnType
+                    = getReturnType(methodDefToken.findFirstToken(TokenTypes.TYPE), new StringBuilder()).toString();
 
                 if (isAsync) {
                     if (SINGLE_RETURN_TYPE.equals(returnsAnnotationMemberValue)) {
                         // If value of 'returns' is SINGLE, and then log error if the return type of the method is not
                         // start with {@code Mono<T>}
                         if (!returnType.startsWith(MONO_BRACKET)) {
-                            log(methodDefToken, String.format(RETURN_TYPE_ERROR, "Asynchronous", SINGLE_RETURN_TYPE,
-                                MONO));
+                            log(methodDefToken,
+                                String.format(RETURN_TYPE_ERROR, "Asynchronous", SINGLE_RETURN_TYPE, MONO));
                         }
                     } else if (COLLECTION_RETURN_TYPE.equals(returnsAnnotationMemberValue)) {
                         // If value of 'returns' is COLLECTION, and then log error if the return type of the method is
                         // not start with {@code PagedFlux<T>} or *PagedFlux
                         if (!returnType.contains(PAGED_FLUX)) {
-                            log(methodDefToken, String.format(RETURN_TYPE_ERROR, "Asynchronous", COLLECTION_RETURN_TYPE,
-                                PAGED_FLUX));
+                            log(methodDefToken,
+                                String.format(RETURN_TYPE_ERROR, "Asynchronous", COLLECTION_RETURN_TYPE, PAGED_FLUX));
                         }
                     } else if (LONG_RUNNING_OPERATION_RETURN_TYPE.equals(returnsAnnotationMemberValue)) {
                         if (!returnType.contains(POLLER_FLUX_BRACKET)) {
@@ -310,8 +316,8 @@ public class ServiceClientCheck extends AbstractCheck {
                     if (SINGLE_RETURN_TYPE.equals(returnsAnnotationMemberValue)) {
                         // If value of 'returns' is SINGLE, and then log error if the return type of the method is not
                         // start with {@code Response<T>} when the method name ends with 'WithResponse'.
-                        if ((returnType.startsWith(RESPONSE_BRACKET) && !methodName.endsWith(WITH_RESPONSE)) || (
-                            !returnType.startsWith(RESPONSE_BRACKET) && methodName.endsWith(WITH_RESPONSE))) {
+                        if ((returnType.startsWith(RESPONSE_BRACKET) && !methodName.endsWith(WITH_RESPONSE))
+                            || (!returnType.startsWith(RESPONSE_BRACKET) && methodName.endsWith(WITH_RESPONSE))) {
                             log(methodDefToken, String.format(RESPONSE_METHOD_NAME_ERROR, "Synchronous",
                                 SINGLE_RETURN_TYPE, RESPONSE, WITH_RESPONSE, WITH_RESPONSE, RESPONSE));
                         }
@@ -351,8 +357,8 @@ public class ServiceClientCheck extends AbstractCheck {
 
         if (methodName.endsWith(WITH_RESPONSE)) {
             if (!returnType.startsWith(RESPONSE_BRACKET) && !returnType.startsWith(MONO_RESPONSE_BRACKET)) {
-                log(methodDefToken, String.format(RETURN_TYPE_WITH_RESPONSE_ERROR, returnType, "must not",
-                    WITH_RESPONSE));
+                log(methodDefToken,
+                    String.format(RETURN_TYPE_WITH_RESPONSE_ERROR, returnType, "must not", WITH_RESPONSE));
             }
         } else {
             if (returnType.startsWith(RESPONSE_BRACKET) || returnType.startsWith(MONO_RESPONSE_BRACKET)) {
@@ -371,31 +377,33 @@ public class ServiceClientCheck extends AbstractCheck {
      */
     private void checkContextInRightPlace(DetailAST methodDefToken) {
         final DetailAST parametersToken = methodDefToken.findFirstToken(TokenTypes.PARAMETERS);
-        final String returnType =
-            getReturnType(methodDefToken.findFirstToken(TokenTypes.TYPE), new StringBuilder()).toString();
+        final String returnType
+            = getReturnType(methodDefToken.findFirstToken(TokenTypes.TYPE), new StringBuilder()).toString();
 
         boolean containsContextParameter = TokenUtil.findFirstTokenByPredicate(parametersToken, parameterToken -> {
             if (parameterToken.getType() != TokenTypes.PARAMETER_DEF) {
                 return false;
             }
-            final DetailAST paramTypeIdentToken = parameterToken.findFirstToken(TokenTypes.TYPE)
-                .findFirstToken(TokenTypes.IDENT);
+            final DetailAST paramTypeIdentToken
+                = parameterToken.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT);
             return paramTypeIdentToken != null && CONTEXT.equals(paramTypeIdentToken.getText());
         }).isPresent();
 
-        boolean containsRequestOptionsParameter = TokenUtil.findFirstTokenByPredicate(parametersToken, parameterToken -> {
-            if (parameterToken.getType() != TokenTypes.PARAMETER_DEF) {
-                return false;
-            }
-            final DetailAST paramTypeIdentToken = parameterToken.findFirstToken(TokenTypes.TYPE)
-                .findFirstToken(TokenTypes.IDENT);
-            return paramTypeIdentToken != null && REQUEST_OPTIONS.equals(paramTypeIdentToken.getText());
-        }).isPresent();
+        boolean containsRequestOptionsParameter
+            = TokenUtil.findFirstTokenByPredicate(parametersToken, parameterToken -> {
+                if (parameterToken.getType() != TokenTypes.PARAMETER_DEF) {
+                    return false;
+                }
+                final DetailAST paramTypeIdentToken
+                    = parameterToken.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT);
+                return paramTypeIdentToken != null && REQUEST_OPTIONS.equals(paramTypeIdentToken.getText());
+            }).isPresent();
 
         if (containsContextParameter) {
             // MONO and PagedFlux return type implies Asynchronous method
-            if (returnType.startsWith(MONO_BRACKET) || returnType.startsWith(PAGED_FLUX_BRACKET)
-                    || returnType.startsWith(POLLER_FLUX_BRACKET)) {
+            if (returnType.startsWith(MONO_BRACKET)
+                || returnType.startsWith(PAGED_FLUX_BRACKET)
+                || returnType.startsWith(POLLER_FLUX_BRACKET)) {
                 log(methodDefToken, String.format(ASYNC_CONTEXT_ERROR, CONTEXT));
             }
         } else if (!containsRequestOptionsParameter) {
@@ -485,13 +493,14 @@ public class ServiceClientCheck extends AbstractCheck {
      */
     private static StringBuilder getReturnType(DetailAST token, StringBuilder sb) {
         for (DetailAST currentToken = token.getFirstChild(); currentToken != null;
-             currentToken = currentToken.getNextSibling()) {
+            currentToken = currentToken.getNextSibling()) {
             switch (currentToken.getType()) {
                 case TokenTypes.TYPE_ARGUMENT:
                 case TokenTypes.TYPE_ARGUMENTS:
                     // Recursive call
                     getReturnType(currentToken, sb);
                     break;
+
                 default:
                     sb.append(currentToken.getText());
             }

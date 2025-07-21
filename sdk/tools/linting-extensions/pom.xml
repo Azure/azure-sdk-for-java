@@ -203,8 +203,30 @@
         <artifactId>spotless-maven-plugin</artifactId>
         <version>2.30.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
         <configuration>
-          <skip>true</skip>
+          <skip>${spotless.skip}</skip>
+          <java>
+            <eclipse>
+              <version>4.21.0</version> <!-- 4.21.0 is the last version of the Eclipse formatter supporting Java 8. -->
+              <file>${project.basedir}/../../../.vscode/eclipse-format-azure-sdk-for-java.xml</file>
+            </eclipse>
+          </java>
         </configuration>
+        <executions>
+          <execution>
+            <id>spotless-apply</id>
+            <goals>
+              <goal>apply</goal>
+            </goals>
+            <phase>process-sources</phase>
+          </execution>
+          <execution>
+            <id>spotless-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>verify</phase>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>

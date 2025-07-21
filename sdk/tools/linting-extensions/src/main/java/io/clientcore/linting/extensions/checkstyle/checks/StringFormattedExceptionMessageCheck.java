@@ -18,9 +18,8 @@ public class StringFormattedExceptionMessageCheck extends AbstractCheck {
     static final String ERROR_MESSAGE = "Short message passed to \"logger.throwableAt*().log\" should be static. "
         + "Provide dynamic components using the \"addKeyValue(key, value)\" method instead. "
         + "See https://github.com/Azure/azure-sdk-for-java/wiki/Client-core:-logging-exceptions-best-practices for more details.";
-    private static final List<String> THROWABLE_AT_LOGGING_METHODS = Arrays.asList(
-        ".throwableAtError",
-        ".throwableAtWarning");
+    private static final List<String> THROWABLE_AT_LOGGING_METHODS
+        = Arrays.asList(".throwableAtError", ".throwableAtWarning");
 
     private static final String LOG_METHOD_NAME = ".log";
     private static final String STRING_FORMAT_METHOD_NAME = "String.format";

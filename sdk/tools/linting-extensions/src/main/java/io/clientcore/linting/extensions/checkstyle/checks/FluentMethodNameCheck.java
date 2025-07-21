@@ -77,8 +77,7 @@ public class FluentMethodNameCheck extends AbstractCheck {
 
             // logs error if the @Fluent method has 'throws' at the method declaration.
             if (token.findFirstToken(TokenTypes.LITERAL_THROWS) != null) {
-                log(token, String.format(
-                    "Fluent Method ''%s'' must not be declared to throw any checked exceptions.",
+                log(token, String.format("Fluent Method ''%s'' must not be declared to throw any checked exceptions.",
                     token.findFirstToken(TokenTypes.IDENT).getText()));
             }
         }
@@ -97,15 +96,19 @@ public class FluentMethodNameCheck extends AbstractCheck {
      */
     private void checkMethodNamePrefix(DetailAST methodDefToken) {
         // A fluent method should only have one parameter.
-        if (TokenUtil.findFirstTokenByPredicate(methodDefToken, parameters ->
-            parameters.getType() == TokenTypes.PARAMETERS && parameters.getChildCount() != 1).isPresent()) {
+        if (TokenUtil
+            .findFirstTokenByPredicate(methodDefToken,
+                parameters -> parameters.getType() == TokenTypes.PARAMETERS && parameters.getChildCount() != 1)
+            .isPresent()) {
             log(methodDefToken, "A fluent method should only have one parameter.");
         }
 
         // A fluent method's return type should be the class itself
         final DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
-        if (TokenUtil.findFirstTokenByPredicate(typeToken, ident -> ident.getType() == TokenTypes.IDENT
-            && !ident.getText().equals(classNameStack.peek())).isPresent()) {
+        if (TokenUtil
+            .findFirstTokenByPredicate(typeToken,
+                ident -> ident.getType() == TokenTypes.IDENT && !ident.getText().equals(classNameStack.peek()))
+            .isPresent()) {
             log(methodDefToken, "Return type of fluent method should be the class itself");
         }
 
@@ -129,8 +132,9 @@ public class FluentMethodNameCheck extends AbstractCheck {
         // Always has MODIFIERS node
         final DetailAST modifiersToken = methodDefToken.findFirstToken(TokenTypes.MODIFIERS);
         // If no @Fluent annotated with this class, return false
-        return TokenUtil.findFirstTokenByPredicate(modifiersToken,
-            annotationToken -> annotationToken.getType() == TokenTypes.ANNOTATION)
+        return TokenUtil
+            .findFirstTokenByPredicate(modifiersToken,
+                annotationToken -> annotationToken.getType() == TokenTypes.ANNOTATION)
             .flatMap(annotationToken -> TokenUtil.findFirstTokenByPredicate(annotationToken,
                 identToken -> identToken.getType() == TokenTypes.IDENT && "Fluent".equals(identToken.getText())))
             .isPresent();

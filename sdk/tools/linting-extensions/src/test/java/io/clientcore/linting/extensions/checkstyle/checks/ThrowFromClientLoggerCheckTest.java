@@ -31,10 +31,7 @@ public class ThrowFromClientLoggerCheckTest extends AbstractModuleTestSupport {
 
     @Test
     public void directThrowExceptionTestData() throws Exception {
-        String[] expected = {
-            "12:9: " + THROW_LOGGER_EXCEPTION_MESSAGE,
-            "60:9: " + THROW_LOGGER_EXCEPTION_MESSAGE
-        };
+        String[] expected = { "12:9: " + THROW_LOGGER_EXCEPTION_MESSAGE, "60:9: " + THROW_LOGGER_EXCEPTION_MESSAGE };
         verify(checker, getPath("DirectThrowExceptionTestData.java"), expected);
     }
 }

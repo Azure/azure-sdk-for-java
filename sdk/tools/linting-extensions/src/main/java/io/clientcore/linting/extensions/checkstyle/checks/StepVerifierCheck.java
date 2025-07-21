@@ -31,7 +31,7 @@ public class StepVerifierCheck extends AbstractCheck {
 
     @Override
     public int[] getDefaultTokens() {
-        return new int[]{ TokenTypes.METHOD_CALL, TokenTypes.STATIC_IMPORT };
+        return new int[] { TokenTypes.METHOD_CALL, TokenTypes.STATIC_IMPORT };
     }
 
     @Override
@@ -60,8 +60,8 @@ public class StepVerifierCheck extends AbstractCheck {
     public void visitToken(DetailAST ast) {
         if (ast.getType() == TokenTypes.STATIC_IMPORT) {
             // Compare if the static import is for StepVerifier.setDefaultTimeout
-            hasStaticImport = FULLY_QUALIFIED.equals(
-                FullIdent.createFullIdent(ast.getFirstChild().getNextSibling()).getText());
+            hasStaticImport
+                = FULLY_QUALIFIED.equals(FullIdent.createFullIdent(ast.getFirstChild().getNextSibling()).getText());
         } else {
             // Compare the method call against StepVerifier.setDefaultTimeout or setDefaultTimeout if there is a static
             // import for StepVerifier.setDefaultTimeout

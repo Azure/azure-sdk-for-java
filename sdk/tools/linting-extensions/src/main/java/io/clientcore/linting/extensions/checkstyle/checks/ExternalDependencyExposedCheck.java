@@ -21,8 +21,8 @@ import java.util.Map;
  * {@code java.} and {@code javax.} are always allowed prefixes.
  */
 public class ExternalDependencyExposedCheck extends ImplementationExcludingCheck {
-    private static final String EXTERNAL_DEPENDENCY_ERROR =
-        "Class ''%s'', is a class from external dependency. You should not use it as a %s type.";
+    private static final String EXTERNAL_DEPENDENCY_ERROR
+        = "Class ''%s'', is a class from external dependency. You should not use it as a %s type.";
 
     private static final String[] ALWAYS_ALLOWED = new String[] { "java.", "javax." };
 
@@ -96,15 +96,15 @@ public class ExternalDependencyExposedCheck extends ImplementationExcludingCheck
         // Checks for the return type of method
         final DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
         if (typeToken != null) {
-            getInvalidReturnTypes(typeToken).forEach((token, returnTypeName) ->
-                log(token, String.format(EXTERNAL_DEPENDENCY_ERROR, returnTypeName, "return")));
+            getInvalidReturnTypes(typeToken).forEach((token, returnTypeName) -> log(token,
+                String.format(EXTERNAL_DEPENDENCY_ERROR, returnTypeName, "return")));
         }
 
         // Checks for the parameters of the method
         final DetailAST parametersToken = methodDefToken.findFirstToken(TokenTypes.PARAMETERS);
         if (parametersToken != null) {
-            getInvalidParameterTypes(parametersToken).forEach((token, parameterTypeName) ->
-                log(token, String.format(EXTERNAL_DEPENDENCY_ERROR, parameterTypeName, "method argument")));
+            getInvalidParameterTypes(parametersToken).forEach((token, parameterTypeName) -> log(token,
+                String.format(EXTERNAL_DEPENDENCY_ERROR, parameterTypeName, "method argument")));
         }
     }
 

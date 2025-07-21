@@ -32,12 +32,9 @@ public class UseCaughtExceptionTest extends AbstractModuleTestSupport {
         return "io/clientcore/linting/extensions/checkstyle/checks/UseCaughtExceptionCheck";
     }
 
-
     @Test
     public void unusedCaughtExceptionTestData() throws Exception {
-        String[] expected = {
-            "17:13: " + String.format(UNUSED_CAUGHT_EXCEPTION_ERROR, "e")
-        };
+        String[] expected = { "17:13: " + String.format(UNUSED_CAUGHT_EXCEPTION_ERROR, "e") };
         verify(checker, getPath("UseCaughtExceptionTestData.java"), expected);
     }
 }

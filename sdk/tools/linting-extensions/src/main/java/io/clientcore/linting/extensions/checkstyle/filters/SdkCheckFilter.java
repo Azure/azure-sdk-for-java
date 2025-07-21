@@ -65,10 +65,10 @@ public class SdkCheckFilter implements Filter {
         boolean isTestFile = matcher.group(1).startsWith("test");
 
         String violation = event.getViolation().getSourceName();
-            if (violation.toLowerCase().contains("javadoc")) {
+        if (violation.toLowerCase().contains("javadoc")) {
             // Ignore missing Javadoc comments in test code
             return true;
-        } else if  (isTestFile && violation.contains("AvoidStarImport")) {
+        } else if (isTestFile && violation.contains("AvoidStarImport")) {
             // Ignore star imports in test code
             return true;
         } else if (isTestFile && violation.contains("AvoidNestedBlocks")) {
@@ -98,7 +98,6 @@ public class SdkCheckFilter implements Filter {
 
         String violation = event.getViolation().getSourceName();
 
-        return violation.startsWith(EXTERNAL_DEPENDENCY_EXPOSED)
-            || violation.toLowerCase().contains("javadoc");
+        return violation.startsWith(EXTERNAL_DEPENDENCY_EXPOSED) || violation.toLowerCase().contains("javadoc");
     }
 }

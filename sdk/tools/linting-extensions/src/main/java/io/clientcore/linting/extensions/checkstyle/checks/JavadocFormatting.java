@@ -21,8 +21,8 @@ public class JavadocFormatting extends AbstractJavadocCheck {
     private static final String ERROR_DESCRIPTION_ON_NEW_LINE = "Description for %s must be on same the same line.";
     private static final String ERROR_NO_DESCRIPTION = "Description is missing for %s. Consider adding a description.";
     private static final String ERROR_NO_WS_AFTER_IDENT = "No white space after %s. Consider fixing format.";
-    private static final String ERROR_EXTRA_SPACE =
-        "Only one white space is expected after %s. Consider removing extra spaces.";
+    private static final String ERROR_EXTRA_SPACE
+        = "Only one white space is expected after %s. Consider removing extra spaces.";
 
     /**
      * Creates a new instance of {@link JavadocFormatting}.
@@ -41,8 +41,7 @@ public class JavadocFormatting extends AbstractJavadocCheck {
             JavadocTokenTypes.PARAMETER_NAME,
             JavadocTokenTypes.RETURN_LITERAL,
             JavadocTokenTypes.THROWS_LITERAL,
-            JavadocTokenTypes.DEPRECATED_LITERAL,
-        };
+            JavadocTokenTypes.DEPRECATED_LITERAL, };
     }
 
     @Override

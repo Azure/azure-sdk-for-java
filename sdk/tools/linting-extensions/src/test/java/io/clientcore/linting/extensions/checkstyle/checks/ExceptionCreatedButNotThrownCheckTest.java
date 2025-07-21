@@ -29,9 +29,7 @@ public class ExceptionCreatedButNotThrownCheckTest extends AbstractModuleTestSup
 
     @Test
     public void throwCreatedException() throws Exception {
-        String[] expected = {
-            "8:32: " + ExceptionCreatedButNotThrownCheck.ERROR_MESSAGE
-        };
+        String[] expected = { "8:32: " + ExceptionCreatedButNotThrownCheck.ERROR_MESSAGE };
         verify(checker, getPath("ThrowCreatedExceptionCheckTestData.java"), expected);
     }
 }

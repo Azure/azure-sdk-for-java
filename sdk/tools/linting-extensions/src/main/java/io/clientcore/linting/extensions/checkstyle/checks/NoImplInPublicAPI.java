@@ -48,13 +48,12 @@ public class NoImplInPublicAPI extends ImplementationExcludingCheck {
 
     @Override
     public int[] getTokensForCheck() {
-        return new int[]{
+        return new int[] {
             TokenTypes.IMPORT,
             TokenTypes.CLASS_DEF,
             TokenTypes.INTERFACE_DEF,
             TokenTypes.ENUM_DEF,
-            TokenTypes.METHOD_DEF
-        };
+            TokenTypes.METHOD_DEF };
     }
 
     @Override
@@ -160,8 +159,8 @@ public class NoImplInPublicAPI extends ImplementationExcludingCheck {
         TokenUtil.forEachChild(extendsOrImplements, TokenTypes.IDENT, extendsOrImplementsType -> {
             String type = FullIdent.createFullIdent(extendsOrImplementsType).getText();
             if (isImplementationType(type, implementationClassSet)) {
-                log(extendsOrImplementsType, String.format(isExtends ? EXTENDS_TYPE_ERROR : IMPLEMENTS_TYPE_ERROR,
-                    type));
+                log(extendsOrImplementsType,
+                    String.format(isExtends ? EXTENDS_TYPE_ERROR : IMPLEMENTS_TYPE_ERROR, type));
             }
         });
     }

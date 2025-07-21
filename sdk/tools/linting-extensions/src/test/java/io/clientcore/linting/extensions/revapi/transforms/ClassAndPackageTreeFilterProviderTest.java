@@ -18,15 +18,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class ClassAndPackageTreeFilterProviderTest {
     @ParameterizedTest
-    @ValueSource(strings = {
-        "com.azure.core.util.Configuration", "com.azure.cosmos.BridgeInternal", "com.azure.cosmos.CosmosBridgeInternal",
-        "com.azure.cosmos.models.ModelBridgeInternal", "com.azure.cosmos.util.UtilBridgeInternal",
-        "com.azure.spring.cloud.config.AppConfigurationBootstrapConfiguration",
-        "com.azure.spring.cloud.config.AppConfigurationRefresh",
-        "com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties",
-        "com.azure.spring.cloud.config.web.AppConfigurationEndpoint",
-        "com.azure.spring.cloud.config.web.pushrefresh.AppConfigurationRefreshEvent"
-    })
+    @ValueSource(
+        strings = {
+            "com.azure.core.util.Configuration",
+            "com.azure.cosmos.BridgeInternal",
+            "com.azure.cosmos.CosmosBridgeInternal",
+            "com.azure.cosmos.models.ModelBridgeInternal",
+            "com.azure.cosmos.util.UtilBridgeInternal",
+            "com.azure.spring.cloud.config.AppConfigurationBootstrapConfiguration",
+            "com.azure.spring.cloud.config.AppConfigurationRefresh",
+            "com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties",
+            "com.azure.spring.cloud.config.web.AppConfigurationEndpoint",
+            "com.azure.spring.cloud.config.web.pushrefresh.AppConfigurationRefreshEvent" })
     public void classesThatShouldBeExcluded(String className) {
         AnalysisContext context = AnalysisContext.builder().build().copyWithConfiguration(createDefaultConfiguration());
 
@@ -37,17 +40,20 @@ public class ClassAndPackageTreeFilterProviderTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "com.azure.core.util.CoreUtils", "com.azure.cosmos.ConnectionMode", "com.azure.cosmos.CosmosClient",
-        "com.azure.cosmos.models.ChangeFeedPolicy", "com.azure.cosmos.util.CosmosPagedFlux",
-        "com.azure.spring.cloud.config.AppConfigurationConstants", "com.azure.spring.cloud.config.HostType",
-        "com.azure.spring.cloud.config.properties.ConfigStore",
-        "com.azure.spring.cloud.config.web.AppConfigurationWebAutoConfiguration",
-        "com.azure.spring.cloud.config.web.pushrefresh.AppConfigurationRefreshEndpoint"
-    })
+    @ValueSource(
+        strings = {
+            "com.azure.core.util.CoreUtils",
+            "com.azure.cosmos.ConnectionMode",
+            "com.azure.cosmos.CosmosClient",
+            "com.azure.cosmos.models.ChangeFeedPolicy",
+            "com.azure.cosmos.util.CosmosPagedFlux",
+            "com.azure.spring.cloud.config.AppConfigurationConstants",
+            "com.azure.spring.cloud.config.HostType",
+            "com.azure.spring.cloud.config.properties.ConfigStore",
+            "com.azure.spring.cloud.config.web.AppConfigurationWebAutoConfiguration",
+            "com.azure.spring.cloud.config.web.pushrefresh.AppConfigurationRefreshEndpoint" })
     public void classesThatShouldNotBeExcluded(String className) {
-        AnalysisContext context = AnalysisContext.builder().build()
-            .copyWithConfiguration(createDefaultConfiguration());
+        AnalysisContext context = AnalysisContext.builder().build().copyWithConfiguration(createDefaultConfiguration());
 
         try (ClassAndPackageTreeFilterProvider treeFilterProvider = new ClassAndPackageTreeFilterProvider()) {
             treeFilterProvider.initialize(context);
@@ -56,16 +62,35 @@ public class ClassAndPackageTreeFilterProviderTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "com.azure.data.cosmos", "com.azure.core.implementation", "com.azure.resourcemanager.fluent",
-        "com.azure.resourcemanager.fluent.models", "com.fasterxml.jackson", "com.google.gson", "com.microsoft.azure",
-        "com.nimbusds", "io.micrometer", "io.netty", "io.vertx", "javax.jms", "javax.servlet", "kotlin", "okhttp3",
-        "okio", "org.apache.avro", "org.apache.commons", "org.apache.qpid", "org.junit", "org.slf4j",
-        "org.springframework", "reactor.core", "reactor.netty", "reactor.util"
-    })
+    @ValueSource(
+        strings = {
+            "com.azure.data.cosmos",
+            "com.azure.core.implementation",
+            "com.azure.resourcemanager.fluent",
+            "com.azure.resourcemanager.fluent.models",
+            "com.fasterxml.jackson",
+            "com.google.gson",
+            "com.microsoft.azure",
+            "com.nimbusds",
+            "io.micrometer",
+            "io.netty",
+            "io.vertx",
+            "javax.jms",
+            "javax.servlet",
+            "kotlin",
+            "okhttp3",
+            "okio",
+            "org.apache.avro",
+            "org.apache.commons",
+            "org.apache.qpid",
+            "org.junit",
+            "org.slf4j",
+            "org.springframework",
+            "reactor.core",
+            "reactor.netty",
+            "reactor.util" })
     public void packagesThatShouldBeExcluded(String packageName) {
-        AnalysisContext context = AnalysisContext.builder().build()
-            .copyWithConfiguration(createDefaultConfiguration());
+        AnalysisContext context = AnalysisContext.builder().build().copyWithConfiguration(createDefaultConfiguration());
 
         try (ClassAndPackageTreeFilterProvider treeFilterProvider = new ClassAndPackageTreeFilterProvider()) {
             treeFilterProvider.initialize(context);
@@ -74,12 +99,9 @@ public class ClassAndPackageTreeFilterProviderTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "com.azure.cosmos", "com.azure.core.util", "com.azure.resourcemanager.fluentcore"
-    })
+    @ValueSource(strings = { "com.azure.cosmos", "com.azure.core.util", "com.azure.resourcemanager.fluentcore" })
     public void packagesThatShouldBeNotExcluded(String packageName) {
-        AnalysisContext context = AnalysisContext.builder().build()
-            .copyWithConfiguration(createDefaultConfiguration());
+        AnalysisContext context = AnalysisContext.builder().build().copyWithConfiguration(createDefaultConfiguration());
 
         try (ClassAndPackageTreeFilterProvider treeFilterProvider = new ClassAndPackageTreeFilterProvider()) {
             treeFilterProvider.initialize(context);
@@ -109,13 +131,8 @@ public class ClassAndPackageTreeFilterProviderTest {
             .add("google.gson")
             .add("microsoft.azure")
             .add("nimbusds");
-        ignoredPackages.putArray("io.")
-            .add("micrometer")
-            .add("netty")
-            .add("vertx");
-        ignoredPackages.putArray("javax.")
-            .add("jms")
-            .add("servlet");
+        ignoredPackages.putArray("io.").add("micrometer").add("netty").add("vertx");
+        ignoredPackages.putArray("javax.").add("jms").add("servlet");
         ignoredPackages.putArray("kotlin");
         ignoredPackages.putArray("okhttp3");
         ignoredPackages.putArray("okio");
@@ -127,10 +144,7 @@ public class ClassAndPackageTreeFilterProviderTest {
             .add("reactivestreams")
             .add("slf4j")
             .add("springframework");
-        ignoredPackages.putArray("reactor.")
-            .add("core")
-            .add("netty")
-            .add("util");
+        ignoredPackages.putArray("reactor.").add("core").add("netty").add("util");
 
         configuration.putArray("ignoredPackagesPatterns")
             .add("com\\.azure\\..*(implementation|samples).*")
