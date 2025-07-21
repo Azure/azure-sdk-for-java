@@ -937,6 +937,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 ruleId,
                 !primaryAddressOnly
             );
+            this.validateAddressRefreshWithForceRefresh(cosmosDiagnostics);
 
         } finally {
             serverErrorRule.disable();
