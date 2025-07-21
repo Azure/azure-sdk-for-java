@@ -67,10 +67,10 @@ import static com.azure.monitor.query.logs.implementation.LogsQueryHelper.update
  *
  * <ul>
  *     <li>
- *         {@link LogsQueryClient#queryWorkspace(String, String, LogsQueryTimeInterval) queryWorkspace(String, String, QueryTimeInterval)} - Query logs from a workspace.
+ *         {@link LogsQueryClient#queryWorkspace(String, String, LogsQueryTimeInterval) queryWorkspace(String, String, LogsQueryTimeInterval)} - Query logs from a workspace.
  *     </li>
  *     <li>
- *         {@link LogsQueryClient#queryWorkspaceWithResponse(String, String, LogsQueryTimeInterval, LogsQueryOptions, Context) queryWorkspaceWithResponse(String, String, QueryTimeInterval, LogsQueryOptions, Context)} - Query logs from a workspace using query options and context with service response returned.
+ *         {@link LogsQueryClient#queryWorkspaceWithResponse(String, String, LogsQueryTimeInterval, LogsQueryOptions, Context) queryWorkspaceWithResponse(String, String, LogsQueryTimeInterval, LogsQueryOptions, Context)} - Query logs from a workspace using query options and context with service response returned.
  *     </li>
  *     <li>
  *         {@link LogsQueryClient#queryBatch(LogsBatchQuery) queryBatch(LogsBatchQuery)} - Execute a batch of logs queries.
@@ -79,10 +79,10 @@ import static com.azure.monitor.query.logs.implementation.LogsQueryHelper.update
  *         {@link LogsQueryClient#queryBatchWithResponse(LogsBatchQuery, Context) queryBatchWithResponse(LogsBatchQuery, Context)} - Execute a batch of logs queries with context and service response returned.
  *     </li>
  *     <li>
- *         {@link LogsQueryClient#queryResource(String, String, LogsQueryTimeInterval) queryResource(String, String, QueryTimeInterval)} - Query logs for an Azure resource.
+ *         {@link LogsQueryClient#queryResource(String, String, LogsQueryTimeInterval) queryResource(String, String, LogsQueryTimeInterval)} - Query logs for an Azure resource.
  *     </li>
  *     <li>
- *         {@link LogsQueryClient#queryResourceWithResponse(String, String, LogsQueryTimeInterval, LogsQueryOptions, Context) queryResourceWithResponse(String, String, QueryTimeInterval, LogsQueryOptions, Context)} - Query logs for an Azure resource with query options and context with service response returned.
+ *         {@link LogsQueryClient#queryResourceWithResponse(String, String, LogsQueryTimeInterval, LogsQueryOptions, Context) queryResourceWithResponse(String, String, LogsQueryTimeInterval, LogsQueryOptions, Context)} - Query logs for an Azure resource with query options and context with service response returned.
  *     </li>
  * </ul>
  *
