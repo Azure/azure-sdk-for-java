@@ -232,7 +232,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
                 BridgeInternal.setSubStatusCode(exceptionToThrow, leaseNotFoundException.getSubStatusCode());
 
-                logger.warn("Operation will NOT be retried. Write operations which failed due to transient transport errors can not be retried safely when sending the request to the service because they aren't idempotent. Current attempt {}, Exception: ",
+                logger.warn("Operation will NOT be retried in the local region. LeaseNotFoundException, Current attempt {}, Exception: ",
                     this.attemptCount,
                     exception);
 
