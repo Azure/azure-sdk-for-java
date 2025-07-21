@@ -70,7 +70,7 @@ public final class RaiBlocklistsClientImpl implements RaiBlocklistsClient {
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CognitiveServicesMan")
+    @ServiceInterface(name = "CognitiveServicesManagementClientRaiBlocklists")
     public interface RaiBlocklistsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists")
