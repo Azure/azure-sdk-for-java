@@ -156,11 +156,6 @@ public class ReplicatedResourceClient {
         } else if (request.getOperationType().isWriteOperation()) {
             return this.consistencyWriter.writeAsync(request, timeout, forceRefresh);
         } else if (request.isReadOnlyRequest()) {
-
-            if (request.getOperationType() == OperationType.Read && request.getResourceType() == ResourceType.Document) {
-                System.out.println("req");
-            }
-
             return this.consistencyReader.readAsync(request, timeout, isInRetry, forceRefresh);
         } else {
             throw new IllegalArgumentException(
