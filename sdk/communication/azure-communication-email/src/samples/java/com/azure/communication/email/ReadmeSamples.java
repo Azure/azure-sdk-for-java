@@ -143,7 +143,7 @@ public class ReadmeSamples {
         // END: readme-sample-sendEmailWithAttachment
     }
 
-    public void sendEmailWithInlineAttachment() {
+    public void sendEmailWithInlineAttachment() throws IOException {
         EmailClient emailClient = createEmailClientWithConnectionString();
 
         // BEGIN: readme-sample-sendEmailWithInlineAttachment
