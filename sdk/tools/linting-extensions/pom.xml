@@ -206,7 +206,7 @@
           <skip>${spotless.skip}</skip>
           <java>
             <eclipse>
-              <version>4.21.0</version> <!-- 4.21.0 is the last version of the Eclipse formatter supporting Java 8. -->
+              <version>4.19.0</version> <!-- 4.19.0 is the last version of the Eclipse formatter supporting Java 8. -->
               <file>${project.basedir}/../../../.vscode/eclipse-format-azure-sdk-for-java.xml</file>
             </eclipse>
           </java>
