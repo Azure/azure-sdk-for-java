@@ -73,8 +73,8 @@ See [API design][design] for general introduction on design and key concepts on 
 ```java
 grafana = dashboardManager.grafanas()
     .define(grafanaName)
-    .withRegion(REGION)
     .withExistingResourceGroup(resourceGroupName)
+    .withRegion(REGION)
     .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
     .create();
 ```
