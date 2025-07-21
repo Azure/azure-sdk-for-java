@@ -57,7 +57,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     @Override
     public Mono<Void> createMissingLeases() {
-        ConcurrentHashMap<String, List<String>> leaseTokenMap = new ConcurrentHashMap<>();
+        Map<String, List<String>> leaseTokenMap = new ConcurrentHashMap<>();
 
         return this.enumPartitionKeyRanges()
             .map(partitionKeyRange -> {
@@ -172,6 +172,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                     leaseTokenMap.entrySet().stream()
                         .filter(entry -> !existingLeaseTokens.contains(entry.getKey()))
                         .filter(entry -> entry.getValue() == null ||
+                            entry.getValue().isEmpty() ||
                             entry.getValue().stream().noneMatch(existingLeaseTokens::contains))
                         .map(Map.Entry::getKey)
                         .collect(Collectors.toList())
