@@ -145,11 +145,12 @@ public class ReadmeSamples {
         EmailClient emailClient = createEmailClientWithConnectionString();
 
         // BEGIN: readme-sample-sendEmailWithInlineAttachment
-        BinaryData attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath());
+        byte[] pngContent = Files.readAllBytes(new File("./inline-attachment.png").toPath());
+        byte[] pngEncodedContent = Base64.getEncoder().encodeToString(pngContent).getBytes();
         EmailAttachment attachment = new EmailAttachment(
-            "inlineimage.jpg",
-            "image/jpeg",
-            attachmentContent
+            "inline-attachment.png",
+            "image/png",
+            BinaryData.fromBytes(pngEncodedContent)
         ).setContentId("inline_image");
 
         EmailMessage message = new EmailMessage()
