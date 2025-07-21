@@ -15,58 +15,58 @@ import java.util.Objects;
  * Time intervals are inclusive at the start time and exclusive at the end time.
  */
 @Immutable
-public final class QueryTimeInterval {
+public final class LogsQueryTimeInterval {
     /**
      * Time interval of all time.
      */
-    public static final QueryTimeInterval ALL = new QueryTimeInterval(OffsetDateTime.MIN, OffsetDateTime.MAX);
+    public static final LogsQueryTimeInterval ALL = new LogsQueryTimeInterval(OffsetDateTime.MIN, OffsetDateTime.MAX);
 
     /**
      * Time interval of the last 5 minutes.
      */
-    public static final QueryTimeInterval LAST_5_MINUTES = new QueryTimeInterval(Duration.ofMinutes(5));
+    public static final LogsQueryTimeInterval LAST_5_MINUTES = new LogsQueryTimeInterval(Duration.ofMinutes(5));
 
     /**
      * Time interval of the last 30 minutes.
      */
-    public static final QueryTimeInterval LAST_30_MINUTES = new QueryTimeInterval(Duration.ofMinutes(30));
+    public static final LogsQueryTimeInterval LAST_30_MINUTES = new LogsQueryTimeInterval(Duration.ofMinutes(30));
 
     /**
      * Time interval of the last hour.
      */
-    public static final QueryTimeInterval LAST_1_HOUR = new QueryTimeInterval(Duration.ofHours(1));
+    public static final LogsQueryTimeInterval LAST_1_HOUR = new LogsQueryTimeInterval(Duration.ofHours(1));
 
     /**
      * Time interval of the last 4 hours.
      */
-    public static final QueryTimeInterval LAST_4_HOURS = new QueryTimeInterval(Duration.ofHours(4));
+    public static final LogsQueryTimeInterval LAST_4_HOURS = new LogsQueryTimeInterval(Duration.ofHours(4));
 
     /**
      * Time interval of the last 12 hours.
      */
-    public static final QueryTimeInterval LAST_12_HOURS = new QueryTimeInterval(Duration.ofHours(12));
+    public static final LogsQueryTimeInterval LAST_12_HOURS = new LogsQueryTimeInterval(Duration.ofHours(12));
 
     /**
      * Time interval of the last day.
      */
-    public static final QueryTimeInterval LAST_DAY = new QueryTimeInterval(Duration.ofDays(1));
+    public static final LogsQueryTimeInterval LAST_DAY = new LogsQueryTimeInterval(Duration.ofDays(1));
 
     /**
      * Time interval of the last 2 days.
      */
-    public static final QueryTimeInterval LAST_2_DAYS = new QueryTimeInterval(Duration.ofDays(2));
+    public static final LogsQueryTimeInterval LAST_2_DAYS = new LogsQueryTimeInterval(Duration.ofDays(2));
 
     /**
      * Time interval of the last 3 days.
      */
-    public static final QueryTimeInterval LAST_3_DAYS = new QueryTimeInterval(Duration.ofDays(3));
+    public static final LogsQueryTimeInterval LAST_3_DAYS = new LogsQueryTimeInterval(Duration.ofDays(3));
 
     /**
      * Time interval of the last 7 days.
      */
-    public static final QueryTimeInterval LAST_7_DAYS = new QueryTimeInterval(Duration.ofDays(7));
+    public static final LogsQueryTimeInterval LAST_7_DAYS = new LogsQueryTimeInterval(Duration.ofDays(7));
 
-    private static final ClientLogger LOGGER = new ClientLogger(QueryTimeInterval.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LogsQueryTimeInterval.class);
     private static final String ERROR_MESSAGE = "%s is an invalid time interval. It must be in one of the "
         + "following ISO 8601 time interval formats: duration, startDuration/endTime, "
         + "startTime/endTime, startTime/endDuration";
@@ -76,66 +76,66 @@ public final class QueryTimeInterval {
     private final OffsetDateTime endTime;
 
     /**
-     * Creates an instance of {@link QueryTimeInterval} using the provided duration. The duration is the interval that starts
+     * Creates an instance of {@link LogsQueryTimeInterval} using the provided duration. The duration is the interval that starts
      * from the provided duration and ends at the current time.
      *
      * @param duration the duration for this query time span.
      */
-    public QueryTimeInterval(Duration duration) {
+    public LogsQueryTimeInterval(Duration duration) {
         this.duration = Objects.requireNonNull(duration, "'duration' cannot be null");
         this.startTime = null;
         this.endTime = null;
     }
 
     /**
-     * Creates an instance of {@link QueryTimeInterval} using the start and end {@link OffsetDateTime OffsetDateTimes}.
+     * Creates an instance of {@link LogsQueryTimeInterval} using the start and end {@link OffsetDateTime OffsetDateTimes}.
      *
      * @param startTime The start time of the interval.
      * @param endTime The end time of the interval.
      */
-    public QueryTimeInterval(OffsetDateTime startTime, OffsetDateTime endTime) {
+    public LogsQueryTimeInterval(OffsetDateTime startTime, OffsetDateTime endTime) {
         this.startTime = Objects.requireNonNull(startTime, "'startTime' cannot be null");
         this.endTime = Objects.requireNonNull(endTime, "'endTime' cannot be null");
         this.duration = null;
     }
 
     /**
-     * Creates an instance of {@link QueryTimeInterval} using the start and end duration of the interval.
+     * Creates an instance of {@link LogsQueryTimeInterval} using the start and end duration of the interval.
      *
      * @param startTime The start time of the interval.
      * @param duration The end duration of the interval.
      */
-    public QueryTimeInterval(OffsetDateTime startTime, Duration duration) {
+    public LogsQueryTimeInterval(OffsetDateTime startTime, Duration duration) {
         this.startTime = Objects.requireNonNull(startTime, "'startTime' cannot be null");
         this.duration = Objects.requireNonNull(duration, "'duration' cannot be null");
         this.endTime = null;
     }
 
     /**
-     * Creates an instance of {@link QueryTimeInterval} using the start and end duration of the interval.
+     * Creates an instance of {@link LogsQueryTimeInterval} using the start and end duration of the interval.
      *
      * @param duration The duration of the interval.
      * @param endTime The end time of the interval.
      */
-    QueryTimeInterval(Duration duration, OffsetDateTime endTime) {
+    LogsQueryTimeInterval(Duration duration, OffsetDateTime endTime) {
         this.endTime = Objects.requireNonNull(endTime, "'endTime' cannot be null");
         this.duration = Objects.requireNonNull(duration, "'duration' cannot be null");
         this.startTime = null;
     }
 
     /**
-     * Returns the duration of this {@link QueryTimeInterval} instance.
+     * Returns the duration of this {@link LogsQueryTimeInterval} instance.
      *
-     * @return the duration of this {@link QueryTimeInterval} instance.
+     * @return the duration of this {@link LogsQueryTimeInterval} instance.
      */
     public Duration getDuration() {
         return duration;
     }
 
     /**
-     * Returns the start time of this {@link QueryTimeInterval} instance.
+     * Returns the start time of this {@link LogsQueryTimeInterval} instance.
      *
-     * @return the start time of this {@link QueryTimeInterval} instance.
+     * @return the start time of this {@link LogsQueryTimeInterval} instance.
      */
     public OffsetDateTime getStartTime() {
         if (startTime != null) {
@@ -150,9 +150,9 @@ public final class QueryTimeInterval {
     }
 
     /**
-     * Returns the end time of this {@link QueryTimeInterval} instance.
+     * Returns the end time of this {@link LogsQueryTimeInterval} instance.
      *
-     * @return the end time of this {@link QueryTimeInterval} instance.
+     * @return the end time of this {@link LogsQueryTimeInterval} instance.
      */
     public OffsetDateTime getEndTime() {
         if (endTime != null) {
@@ -165,13 +165,13 @@ public final class QueryTimeInterval {
     }
 
     /**
-     * This method takes an ISO 8601 formatted time interval string and returns an instance of {@link QueryTimeInterval}.
+     * This method takes an ISO 8601 formatted time interval string and returns an instance of {@link LogsQueryTimeInterval}.
      *
      * @param value The ISO 8601 formatted time interval string.
-     * @return An instance of {@link QueryTimeInterval}.
+     * @return An instance of {@link LogsQueryTimeInterval}.
      * @throws IllegalArgumentException if {@code value} is not in the correct format.
      */
-    public static QueryTimeInterval parse(String value) {
+    public static LogsQueryTimeInterval parse(String value) {
         Objects.requireNonNull(value);
 
         String[] parts = value.split("/");
@@ -183,7 +183,7 @@ public final class QueryTimeInterval {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(ERROR_MESSAGE, value)));
             }
 
-            return new QueryTimeInterval(duration);
+            return new LogsQueryTimeInterval(duration);
         }
 
         if (parts.length == 2) {
@@ -194,13 +194,13 @@ public final class QueryTimeInterval {
             OffsetDateTime endTime = parseTime(parts[1]);
 
             if (startDuration != null && endTime != null) {
-                return new QueryTimeInterval(startDuration, endTime);
+                return new LogsQueryTimeInterval(startDuration, endTime);
             }
             if (startTime != null && endTime != null) {
-                return new QueryTimeInterval(startTime, endTime);
+                return new LogsQueryTimeInterval(startTime, endTime);
             }
             if (startTime != null && endDuration != null) {
-                return new QueryTimeInterval(startTime, endDuration);
+                return new LogsQueryTimeInterval(startTime, endDuration);
             }
         }
         throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(ERROR_MESSAGE, value)));
@@ -232,7 +232,7 @@ public final class QueryTimeInterval {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        QueryTimeInterval that = (QueryTimeInterval) o;
+        LogsQueryTimeInterval that = (LogsQueryTimeInterval) o;
 
         return Objects.equals(this.duration, that.duration)
             && Objects.equals(this.startTime, that.startTime)

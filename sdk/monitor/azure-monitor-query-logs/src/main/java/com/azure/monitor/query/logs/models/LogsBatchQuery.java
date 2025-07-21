@@ -54,7 +54,7 @@ public final class LogsBatchQuery {
      * @param timeInterval The time period for which the logs should be queried.
      * @return The index of the query in the batch.
      */
-    public String addWorkspaceQuery(String workspaceId, String query, QueryTimeInterval timeInterval) {
+    public String addWorkspaceQuery(String workspaceId, String query, LogsQueryTimeInterval timeInterval) {
         return addWorkspaceQuery(workspaceId, query, timeInterval, new LogsQueryOptions());
     }
 
@@ -67,7 +67,7 @@ public final class LogsBatchQuery {
      * statistics and rendering information in response.
      * @return The index of the query in the batch.
      */
-    public String addWorkspaceQuery(String workspaceId, String query, QueryTimeInterval timeInterval,
+    public String addWorkspaceQuery(String workspaceId, String query, LogsQueryTimeInterval timeInterval,
         LogsQueryOptions logsQueryOptions) {
         Objects.requireNonNull(query, "'query' cannot be null.");
         Objects.requireNonNull(workspaceId, "'workspaceId' cannot be null.");

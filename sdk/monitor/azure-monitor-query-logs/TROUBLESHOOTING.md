@@ -163,7 +163,7 @@ LogsQueryClient client = new LogsQueryClientBuilder()
     .credential(credential)
     .buildClient();
 
-client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
+client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", LogsQueryTimeInterval.LAST_DAY,
     new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(10)), Context.NONE);
 ```
 
@@ -188,6 +188,6 @@ behavior off and consume the partially successful response, you can set the `all
 in `LogsQueryOptions` as shown below:
 
 ```java readme-sample-allowpartialerrors
-client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
+client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", LogsQueryTimeInterval.LAST_DAY,
     new LogsQueryOptions().setAllowPartialErrors(true), Context.NONE);
 ```

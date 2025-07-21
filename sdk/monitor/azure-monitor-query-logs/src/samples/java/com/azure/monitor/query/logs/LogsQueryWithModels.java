@@ -6,7 +6,7 @@ package com.azure.monitor.query.logs;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.monitor.query.logs.models.QueryTimeInterval;
+import com.azure.monitor.query.logs.models.LogsQueryTimeInterval;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class LogsQueryWithModels {
 
         // Sample to use a model type to read the results
         List<CustomModel> customModels  = logsQueryClient
-                .queryWorkspace("{workspace-id}", "AppRequests", QueryTimeInterval.ALL, CustomModel.class);
+                .queryWorkspace("{workspace-id}", "AppRequests", LogsQueryTimeInterval.ALL, CustomModel.class);
 
         customModels.forEach(model -> System.out.println("Time generated " + model.getTimeGenerated()
                 + "; success = " + model.getSuccess() + "; operation name = " + model.getOperationName()));

@@ -12,9 +12,9 @@ import com.azure.monitor.query.logs.models.LogsBatchQueryResult;
 import com.azure.monitor.query.logs.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.logs.models.LogsQueryOptions;
 import com.azure.monitor.query.logs.models.LogsQueryResult;
+import com.azure.monitor.query.logs.models.LogsQueryTimeInterval;
 import com.azure.monitor.query.logs.models.LogsTableCell;
 import com.azure.monitor.query.logs.models.LogsTableRow;
-import com.azure.monitor.query.logs.models.QueryTimeInterval;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -49,7 +49,7 @@ public class LogsQueryClientJavaDocCodeSnippets {
                 .buildAsyncClient();
         // BEGIN: com.azure.monitor.query.LogsQueryAsyncClient.query#String-String-QueryTimeInterval
         Mono<LogsQueryResult> queryResult = logsQueryAsyncClient.queryWorkspace("{workspace-id}", "{kusto-query}",
-                QueryTimeInterval.LAST_DAY);
+                LogsQueryTimeInterval.LAST_DAY);
         queryResult.subscribe(result -> {
             for (LogsTableRow row : result.getTable().getRows()) {
                 System.out.println(row.getRow()
@@ -68,7 +68,7 @@ public class LogsQueryClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.monitor.query.LogsQueryClient.query#String-String-QueryTimeInterval
         LogsQueryResult queryResult = logsQueryClient.queryWorkspace("{workspace-id}", "{kusto-query}",
-                QueryTimeInterval.LAST_DAY);
+                LogsQueryTimeInterval.LAST_DAY);
         for (LogsTableRow row : queryResult.getTable().getRows()) {
             System.out.println(row.getRow()
                     .stream()
@@ -85,7 +85,7 @@ public class LogsQueryClientJavaDocCodeSnippets {
         // BEGIN: com.azure.monitor.query.LogsQueryAsyncClient.queryWithResponse#String-String-QueryTimeInterval-LogsQueryOptions
         Mono<Response<LogsQueryResult>> queryResult = logsQueryAsyncClient.queryWorkspaceWithResponse("{workspace-id}",
                 "{kusto-query}",
-                QueryTimeInterval.LAST_7_DAYS,
+                LogsQueryTimeInterval.LAST_7_DAYS,
                 new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(2)));
 
         queryResult.subscribe(result -> {
@@ -107,7 +107,7 @@ public class LogsQueryClientJavaDocCodeSnippets {
         // BEGIN: com.azure.monitor.query.LogsQueryClient.queryWithResponse#String-String-QueryTimeInterval-LogsQueryOptions-Context
         Response<LogsQueryResult> queryResult = logsQueryClient.queryWorkspaceWithResponse("{workspace-id}",
                 "{kusto-query}",
-                QueryTimeInterval.LAST_7_DAYS,
+                LogsQueryTimeInterval.LAST_7_DAYS,
                 new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(2)),
                 Context.NONE);
 
@@ -127,9 +127,9 @@ public class LogsQueryClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.monitor.query.LogsQueryAsyncClient.queryBatch#LogsBatchQuery
         LogsBatchQuery batchQuery = new LogsBatchQuery();
-        String queryId1 = batchQuery.addWorkspaceQuery("{workspace-id-1}", "{kusto-query-1}", QueryTimeInterval.LAST_DAY);
+        String queryId1 = batchQuery.addWorkspaceQuery("{workspace-id-1}", "{kusto-query-1}", LogsQueryTimeInterval.LAST_DAY);
         String queryId2 = batchQuery.addWorkspaceQuery("{workspace-id-2}", "{kusto-query-2}",
-                QueryTimeInterval.LAST_7_DAYS, new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(2)));
+                LogsQueryTimeInterval.LAST_7_DAYS, new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(2)));
 
         Mono<LogsBatchQueryResultCollection> batchQueryResponse = logsQueryAsyncClient.queryBatch(batchQuery);
 
@@ -154,9 +154,9 @@ public class LogsQueryClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.monitor.query.LogsQueryClient.queryBatch#LogsBatchQuery
         LogsBatchQuery batchQuery = new LogsBatchQuery();
-        String queryId1 = batchQuery.addWorkspaceQuery("{workspace-id-1}", "{kusto-query-1}", QueryTimeInterval.LAST_DAY);
+        String queryId1 = batchQuery.addWorkspaceQuery("{workspace-id-1}", "{kusto-query-1}", LogsQueryTimeInterval.LAST_DAY);
         String queryId2 = batchQuery.addWorkspaceQuery("{workspace-id-2}", "{kusto-query-2}",
-                QueryTimeInterval.LAST_7_DAYS, new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(2)));
+                LogsQueryTimeInterval.LAST_7_DAYS, new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(2)));
 
         LogsBatchQueryResultCollection batchQueryResponse = logsQueryClient.queryBatch(batchQuery);
 
@@ -179,7 +179,7 @@ public class LogsQueryClientJavaDocCodeSnippets {
             .buildAsyncClient();
         // BEGIN: com.azure.monitor.query.LogsQueryAsyncClient.queryResource#String-String-QueryTimeInterval
         Mono<LogsQueryResult> queryResult = logsQueryAsyncClient.queryResource("{resource-id}", "{kusto-query}",
-            QueryTimeInterval.LAST_DAY);
+            LogsQueryTimeInterval.LAST_DAY);
         queryResult.subscribe(result -> {
             for (LogsTableRow row : result.getTable().getRows()) {
                 System.out.println(row.getRow()
@@ -198,7 +198,7 @@ public class LogsQueryClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.monitor.query.LogsQueryClient.queryResource#String-String-QueryTimeInterval
         LogsQueryResult queryResult = logsQueryClient.queryResource("{resource-id}", "{kusto-query}",
-            QueryTimeInterval.LAST_DAY);
+            LogsQueryTimeInterval.LAST_DAY);
         for (LogsTableRow row : queryResult.getTable().getRows()) {
             System.out.println(row.getRow()
                 .stream()
@@ -215,7 +215,7 @@ public class LogsQueryClientJavaDocCodeSnippets {
         // BEGIN: com.azure.monitor.query.LogsQueryAsyncClient.queryResourceWithResponse#String-String-QueryTimeInterval-LogsQueryOptions
         Mono<Response<LogsQueryResult>> queryResult = logsQueryAsyncClient.queryResourceWithResponse("{resource-id}",
             "{kusto-query}",
-            QueryTimeInterval.LAST_7_DAYS,
+            LogsQueryTimeInterval.LAST_7_DAYS,
             new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(2)));
 
         queryResult.subscribe(result -> {
@@ -237,7 +237,7 @@ public class LogsQueryClientJavaDocCodeSnippets {
         // BEGIN: com.azure.monitor.query.LogsQueryClient.queryResourceWithResponse#String-String-QueryTimeInterval-LogsQueryOptions-Context
         Response<LogsQueryResult> queryResult = logsQueryClient.queryResourceWithResponse("{resource-id}",
             "{kusto-query}",
-            QueryTimeInterval.LAST_7_DAYS,
+            LogsQueryTimeInterval.LAST_7_DAYS,
             new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(2)),
             Context.NONE);
 

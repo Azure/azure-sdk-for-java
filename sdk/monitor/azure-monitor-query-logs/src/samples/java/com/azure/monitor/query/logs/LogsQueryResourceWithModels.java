@@ -5,7 +5,7 @@ package com.azure.monitor.query.logs;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.monitor.query.logs.models.QueryTimeInterval;
+import com.azure.monitor.query.logs.models.LogsQueryTimeInterval;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class LogsQueryResourceWithModels {
         // Sample to use a model type to read the results
         List<CustomModel> customModels  = logsQueryClient
             .queryResource("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}",
-                "AppRequests", QueryTimeInterval.ALL, CustomModel.class);
+                "AppRequests", LogsQueryTimeInterval.ALL, CustomModel.class);
 
         customModels.forEach(model -> System.out.println("Time generated " + model.getTimeGenerated()
             + "; success = " + model.getSuccess() + "; operation name = " + model.getOperationName()));
