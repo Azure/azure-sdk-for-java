@@ -24,11 +24,11 @@ import com.azure.monitor.query.logs.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.logs.models.LogsColumnType;
 import com.azure.monitor.query.logs.models.LogsQueryOptions;
 import com.azure.monitor.query.logs.models.LogsQueryResult;
+import com.azure.monitor.query.logs.models.LogsQueryTimeInterval;
 import com.azure.monitor.query.logs.models.LogsTable;
 import com.azure.monitor.query.logs.models.LogsTableCell;
 import com.azure.monitor.query.logs.models.LogsTableColumn;
 import com.azure.monitor.query.logs.models.LogsTableRow;
-import com.azure.monitor.query.logs.models.QueryTimeInterval;
 
 import java.lang.reflect.Field;
 import java.time.Duration;
@@ -172,11 +172,11 @@ public final class LogsQueryHelper {
     }
 
     /**
-     * Returns this {@link QueryTimeInterval} in ISO 8601 string format.
+     * Returns this {@link LogsQueryTimeInterval} in ISO 8601 string format.
      *
-     * @return ISO 8601 formatted string representation of this {@link QueryTimeInterval} instance.
+     * @return ISO 8601 formatted string representation of this {@link LogsQueryTimeInterval} instance.
      */
-    public static String toIso8601Format(QueryTimeInterval timeInterval) {
+    public static String toIso8601Format(LogsQueryTimeInterval timeInterval) {
         if (timeInterval.getStartTime() != null && timeInterval.getEndTime() != null) {
             return timeInterval.getStartTime() + "/" + timeInterval.getEndTime();
         }
