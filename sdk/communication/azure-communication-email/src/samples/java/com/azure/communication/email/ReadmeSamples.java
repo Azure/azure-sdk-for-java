@@ -12,6 +12,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.io.IOException;
 import java.util.Base64;
 import java.io.File;
 import java.nio.file.Files;
