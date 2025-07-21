@@ -75,7 +75,7 @@ com.azure:azure-communication-callingserver;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-communication-chat;1.6.0;1.7.0-beta.1
 com.azure:azure-communication-common;1.4.0;1.5.0-beta.1
 com.azure:azure-communication-common-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-communication-email;1.0.22;1.2.0-beta.1
+com.azure:azure-communication-email;1.0.22;1.2.0-beta.2
 com.azure:azure-communication-identity;1.6.5;1.7.0-beta.1
 com.azure:azure-communication-jobrouter;1.1.13;2.0.0-beta.1
 com.azure:azure-communication-messages;1.1.4;1.2.0-beta.2
@@ -102,10 +102,10 @@ com.azure:azure-core-test;1.27.0-beta.10;1.27.0-beta.11
 com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.58;1.0.0-beta.59
 com.azure:azure-core-tracing-opentelemetry-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-version-tests;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-cosmos;4.72.0;4.73.0-beta.1
+com.azure:azure-cosmos;4.72.0;4.73.0
 com.azure:azure-cosmos-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3_2-12;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-cosmos-encryption;2.21.0;2.22.0-beta.1
+com.azure:azure-cosmos-encryption;2.21.0;2.22.0
 com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.37.2;4.38.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;4.37.2;4.38.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;4.37.2;4.38.0-beta.1
@@ -128,7 +128,7 @@ com.azure:azure-health-deidentification;1.0.0;1.1.0-beta.1
 com.azure:azure-health-insights-clinicalmatching;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-cancerprofiling;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-radiologyinsights;1.1.1;1.2.0-beta.1
-com.azure:azure-identity;1.16.2;1.17.0-beta.1
+com.azure:azure-identity;1.16.2;1.17.0-beta.2
 com.azure:azure-identity-extensions;1.2.3;1.3.0-beta.1
 com.azure:azure-identity-broker;1.1.15;1.2.0-beta.1
 com.azure:azure-identity-broker-samples;1.0.0-beta.1;1.0.0-beta.1
@@ -164,6 +164,7 @@ com.azure:azure-monitor-opentelemetry-autoconfigure;1.2.0;1.3.0-beta.1
 com.azure:azure-monitor-ingestion;1.2.10;1.3.0-beta.1
 com.azure:azure-monitor-ingestion-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-monitor-query;1.5.7;1.6.0-beta.1
+com.azure:azure-monitor-query-logs;2.0.0-beta.1;2.0.0-beta.1
 com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-openrewrite;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-perf-test-parent;1.0.0-beta.1;1.0.0-beta.1
@@ -400,7 +401,7 @@ com.azure.resourcemanager:azure-resourcemanager-dashboard;1.1.0;1.2.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-servicelinker;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appcontainers;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-scvmm;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-hardwaresecuritymodules;1.0.0;1.1.0
+com.azure.resourcemanager:azure-resourcemanager-hardwaresecuritymodules;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-workloads;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-confidentialledger;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-dynatrace;1.0.0;1.1.0-beta.1
@@ -488,7 +489,7 @@ com.azure.resourcemanager:azure-resourcemanager-lambdatesthyperexecute;1.0.0;1.1
 com.azure.resourcemanager:azure-resourcemanager-onlineexperimentation;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-secretsstoreextension;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-programmableconnectivity;1.0.0-beta.1;1.0.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-dell-storage;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-dell-storage;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-sitemanager;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-mongodbatlas;1.0.0-beta.1;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-purestorageblock;1.0.0;1.1.0-beta.1
