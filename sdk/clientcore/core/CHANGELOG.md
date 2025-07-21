@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.11 (Unreleased)
+## 1.0.0-beta.11 (2025-07-21)
 
 ### Features Added
 - Add HTTP2 support to JDK HTTP client (#[45758](https://github.com/Azure/azure-sdk-for-java/pull/45758))
