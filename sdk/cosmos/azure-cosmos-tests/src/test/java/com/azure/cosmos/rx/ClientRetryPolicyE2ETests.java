@@ -516,6 +516,11 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
                 assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
                 assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
+            } else {
+                assertThat(cosmosDiagnostics).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+
+                fail("Operation " + operationType + " should have failed, but succeeded : " + cosmosDiagnostics.getDiagnosticsContext().toJson());
             }
 
         } catch (CosmosException e) {
