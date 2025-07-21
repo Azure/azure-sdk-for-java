@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class SecurityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Security model = BinaryData.fromString("{\"csrfAlwaysCheck\":false}").toObject(Security.class);
-        Assertions.assertFalse(model.csrfAlwaysCheck());
+        Security model = BinaryData.fromString("{\"csrfAlwaysCheck\":true}").toObject(Security.class);
+        Assertions.assertTrue(model.csrfAlwaysCheck());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Security model = new Security().withCsrfAlwaysCheck(false);
+        Security model = new Security().withCsrfAlwaysCheck(true);
         model = BinaryData.fromObject(model).toObject(Security.class);
-        Assertions.assertFalse(model.csrfAlwaysCheck());
+        Assertions.assertTrue(model.csrfAlwaysCheck());
     }
 }
