@@ -184,12 +184,13 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     private Boolean allowProjectManagement;
 
     /*
-     * Specifies the project that is targeted when data plane endpoints are called without a project parameter.
+     * Specifies the project, by project name, that is targeted when data plane endpoints are called without a project
+     * parameter.
      */
     private String defaultProject;
 
     /*
-     * Specifies the projects that are associated with this resource.
+     * Specifies the projects, by project name, that are associated with this resource.
      */
     private List<String> associatedProjects;
 
@@ -684,8 +685,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Get the defaultProject property: Specifies the project that is targeted when data plane endpoints are called
-     * without a project parameter.
+     * Get the defaultProject property: Specifies the project, by project name, that is targeted when data plane
+     * endpoints are called without a project parameter.
      * 
      * @return the defaultProject value.
      */
@@ -694,8 +695,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Set the defaultProject property: Specifies the project that is targeted when data plane endpoints are called
-     * without a project parameter.
+     * Set the defaultProject property: Specifies the project, by project name, that is targeted when data plane
+     * endpoints are called without a project parameter.
      * 
      * @param defaultProject the defaultProject value to set.
      * @return the AccountProperties object itself.
@@ -706,7 +707,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Get the associatedProjects property: Specifies the projects that are associated with this resource.
+     * Get the associatedProjects property: Specifies the projects, by project name, that are associated with this
+     * resource.
      * 
      * @return the associatedProjects value.
      */
@@ -715,7 +717,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Set the associatedProjects property: Specifies the projects that are associated with this resource.
+     * Set the associatedProjects property: Specifies the projects, by project name, that are associated with this
+     * resource.
      * 
      * @param associatedProjects the associatedProjects value to set.
      * @return the AccountProperties object itself.

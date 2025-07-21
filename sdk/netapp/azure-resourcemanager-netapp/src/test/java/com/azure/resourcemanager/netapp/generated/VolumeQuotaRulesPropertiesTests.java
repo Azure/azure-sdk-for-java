@@ -13,21 +13,21 @@ public final class VolumeQuotaRulesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeQuotaRulesProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Moving\",\"quotaSizeInKiBs\":5461207981785721481,\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"jinrvgoupmfiibfg\"}")
+            "{\"provisioningState\":\"Failed\",\"quotaSizeInKiBs\":4113630630290274938,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"xjvfoimwksl\"}")
             .toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(5461207981785721481L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.INDIVIDUAL_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("jinrvgoupmfiibfg", model.quotaTarget());
+        Assertions.assertEquals(4113630630290274938L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, model.quotaType());
+        Assertions.assertEquals("xjvfoimwksl", model.quotaTarget());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(5461207981785721481L)
-            .withQuotaType(Type.INDIVIDUAL_GROUP_QUOTA)
-            .withQuotaTarget("jinrvgoupmfiibfg");
+        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(4113630630290274938L)
+            .withQuotaType(Type.DEFAULT_GROUP_QUOTA)
+            .withQuotaTarget("xjvfoimwksl");
         model = BinaryData.fromObject(model).toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(5461207981785721481L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.INDIVIDUAL_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("jinrvgoupmfiibfg", model.quotaTarget());
+        Assertions.assertEquals(4113630630290274938L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, model.quotaType());
+        Assertions.assertEquals("xjvfoimwksl", model.quotaTarget());
     }
 }
