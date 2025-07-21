@@ -32,8 +32,7 @@ public class JavadocThrowsChecks extends ImplementationExcludingCheck {
         TokenTypes.LITERAL_THROWS,
         TokenTypes.LITERAL_THROW,
         TokenTypes.PARAMETER_DEF,
-        TokenTypes.VARIABLE_DEF,
-    };
+        TokenTypes.VARIABLE_DEF, };
     private static final String THIS_TOKEN = "this";
     private static final String CLASS_TOKEN = "class";
 
@@ -98,6 +97,7 @@ public class JavadocThrowsChecks extends ImplementationExcludingCheck {
                     addExceptionMapping(token);
                 }
                 break;
+
             default:
                 // Checkstyle complains if there's no default block in switch
                 break;
@@ -110,8 +110,8 @@ public class JavadocThrowsChecks extends ImplementationExcludingCheck {
      */
     private void setIdentifierAndCheckStatus(DetailAST scopeDefToken) {
         currentScopeIdentifier = scopeDefToken.findFirstToken(TokenTypes.IDENT).getText() + scopeDefToken.getLineNo();
-        currentScopeNeedsChecking =
-            visibilityIsPublicOrProtectedAndNotAbstractOrOverride(scopeDefToken.findFirstToken(TokenTypes.MODIFIERS));
+        currentScopeNeedsChecking
+            = visibilityIsPublicOrProtectedAndNotAbstractOrOverride(scopeDefToken.findFirstToken(TokenTypes.MODIFIERS));
     }
 
     /*

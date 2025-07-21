@@ -176,6 +176,60 @@
       </plugin>
 
       <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <readmeGlob>**/*.md</readmeGlob>
+        </configuration>
+        <executions>
+          <execution>
+            <id>update-codesnippets</id>
+            <goals>
+              <goal>update-codesnippet</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>verify-codesnippets</id>
+            <goals>
+              <goal>verify-codesnippet</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.30.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>${spotless.skip}</skip>
+          <java>
+            <eclipse>
+              <version>4.19.0</version> <!-- 4.19.0 is the last version of the Eclipse formatter supporting Java 8. -->
+              <file>${project.basedir}/../../../.vscode/eclipse-format-azure-sdk-for-java.xml</file>
+            </eclipse>
+          </java>
+        </configuration>
+        <executions>
+          <execution>
+            <id>spotless-apply</id>
+            <goals>
+              <goal>apply</goal>
+            </goals>
+            <phase>process-sources</phase>
+          </execution>
+          <execution>
+            <id>spotless-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>verify</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
         <version>3.20.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-site-plugin;external_dependency} -->
@@ -192,5 +246,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>

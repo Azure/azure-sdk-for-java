@@ -29,10 +29,8 @@ public class RawExceptionThrowCheckTest extends AbstractModuleTestSupport {
 
     @Test
     public void logNewExceptionTestData() throws Exception {
-        String[] expected = {
-            "8:15: " + RawExceptionThrowCheck.ERROR_MESSAGE,
-            "13:33: " + RawExceptionThrowCheck.ERROR_MESSAGE,
-        };
+        String[] expected
+            = { "8:15: " + RawExceptionThrowCheck.ERROR_MESSAGE, "13:33: " + RawExceptionThrowCheck.ERROR_MESSAGE, };
         verify(checker, getPath("LogNewExceptionCheckTestData.java"), expected);
     }
 }

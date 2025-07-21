@@ -16,7 +16,7 @@ public class ExceptionCreatedButNotThrownCheck extends AbstractCheck {
         + "either thrown or not created at all. See "
         + "https://github.com/Azure/azure-sdk-for-java/wiki/Client-core:-logging-exceptions-best-practices for more details.";
     private static final String[] THROWABLE_AT_LOGGING_METHODS
-        = new String[] {".throwableAtError", ".throwableAtWarning"};
+        = new String[] { ".throwableAtError", ".throwableAtWarning" };
 
     /**
      * Creates a new instance of {@link ExceptionCreatedButNotThrownCheck}.
@@ -69,10 +69,11 @@ public class ExceptionCreatedButNotThrownCheck extends AbstractCheck {
         DetailAST parent = methodCallAst.getParent();
 
         // Walk up to skip DOT or EXPR
-        while (parent != null && (parent.getType() == TokenTypes.DOT
-            || parent.getType() == TokenTypes.EXPR
-            || parent.getType() == TokenTypes.TYPECAST
-            || parent.getType() == TokenTypes.METHOD_CALL)) {
+        while (parent != null
+            && (parent.getType() == TokenTypes.DOT
+                || parent.getType() == TokenTypes.EXPR
+                || parent.getType() == TokenTypes.TYPECAST
+                || parent.getType() == TokenTypes.METHOD_CALL)) {
             parent = parent.getParent();
         }
 

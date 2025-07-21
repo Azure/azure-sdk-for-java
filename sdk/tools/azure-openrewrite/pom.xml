@@ -155,7 +155,7 @@
         <dependency>
           <groupId>io.clientcore</groupId>
           <artifactId>core</artifactId>
-          <version>1.0.0-beta.10</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+          <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
           <scope>test</scope>
         </dependency>
 
@@ -183,7 +183,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
-          <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+          <version>1.16.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
           <scope>test</scope>
         </dependency>
 
@@ -247,7 +247,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
-          <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+          <version>1.16.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
           <scope>provided</scope>
         </dependency>
         <dependency>
@@ -317,7 +317,7 @@
         <dependency>
           <groupId>io.clientcore</groupId>
           <artifactId>core</artifactId>
-          <version>1.0.0-beta.10</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+          <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
           <scope>provided</scope>
         </dependency>
         <dependency>

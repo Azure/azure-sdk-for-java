@@ -32,8 +32,7 @@ public class JavadocThrowsChecksTest extends AbstractModuleTestSupport {
         String[] expected = {
             "6:9: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE,
             "11:9: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE,
-            "32: " + JavadocThrowsChecks.MISSING_DESCRIPTION_MESSAGE
-        };
+            "32: " + JavadocThrowsChecks.MISSING_DESCRIPTION_MESSAGE };
 
         verify(checker, getPath("SimpleThrows.java"), expected);
     }
@@ -45,8 +44,7 @@ public class JavadocThrowsChecksTest extends AbstractModuleTestSupport {
             "20:19: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE,
             "27: " + JavadocThrowsChecks.MISSING_DESCRIPTION_MESSAGE,
             "33:19: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE,
-            "46:19: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE
-        };
+            "46:19: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE };
 
         verify(checker, getPath("TryCatchThrows.java"), expected);
     }
@@ -56,8 +54,7 @@ public class JavadocThrowsChecksTest extends AbstractModuleTestSupport {
         String[] expected = {
             "5:46: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE,
             "12:47: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE,
-            "12:67: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE,
-        };
+            "12:67: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE, };
 
         verify(checker, getPath("CheckedThrows.java"), expected);
     }
@@ -71,20 +68,18 @@ public class JavadocThrowsChecksTest extends AbstractModuleTestSupport {
     public void constructorThrows() throws Exception {
         String[] expected = {
             "5:39: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE,
-            "13:9: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE,
-        };
+            "13:9: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE, };
 
         verify(checker, getPath("ConstructorThrows.java"), expected);
     }
 
     @Test
     public void testThrowsClassField() throws Exception {
-        String[] expected =  {
+        String[] expected = {
             "13:19: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE,
             "20:15: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE,
             "27:15: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE,
-            "34:31: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE,
-        };
+            "34:31: " + JavadocThrowsChecks.MISSING_THROWS_TAG_MESSAGE, };
         verify(checker, getPath("ThrowsClassField.java"), expected);
     }
 }

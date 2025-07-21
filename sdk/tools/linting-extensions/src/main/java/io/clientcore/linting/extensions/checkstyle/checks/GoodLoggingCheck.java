@@ -39,29 +39,29 @@ import java.util.Queue;
  * file. If left empty, an exception will be thrown by the check.
  */
 public class GoodLoggingCheck extends AbstractCheck {
-    private static final int[] REQUIRED_TOKENS = new int[]{
+    private static final int[] REQUIRED_TOKENS = new int[] {
         TokenTypes.IMPORT,
         TokenTypes.INTERFACE_DEF,
         TokenTypes.ENUM_DEF,
         TokenTypes.CLASS_DEF,
         TokenTypes.LITERAL_NEW,
         TokenTypes.VARIABLE_DEF,
-        TokenTypes.METHOD_CALL
-    };
+        TokenTypes.METHOD_CALL };
 
-    static final String LOGGER_NAME_ERROR = "ClientLogger instance naming: use \"%s\" instead of \"%s\" for consistency.";
-    static final String NOT_CLIENT_LOGGER_ERROR = "Do not use %s class. Use \"%s\" as a logging mechanism instead of \"%s\".";
-    static final String LOGGER_NAME_MISMATCH_ERROR = "Not newing a ClientLogger with matching class name. Use \"%s.class\" "
-        + "instead of \"%s\".";
+    static final String LOGGER_NAME_ERROR
+        = "ClientLogger instance naming: use \"%s\" instead of \"%s\" for consistency.";
+    static final String NOT_CLIENT_LOGGER_ERROR
+        = "Do not use %s class. Use \"%s\" as a logging mechanism instead of \"%s\".";
+    static final String LOGGER_NAME_MISMATCH_ERROR
+        = "Not newing a ClientLogger with matching class name. Use \"%s.class\" " + "instead of \"%s\".";
 
     // Boolean indicator that indicates if the java class imports ClientLogger
     private boolean hasClientLoggerImported;
     // A LIFO queue stores the class names, pop top element if exist the class name AST node
     private final Queue<String> classNameDeque = Collections.asLifoQueue(new ArrayDeque<>());
     // Collection of Invalid logging packages
-    private static final String[] INVALID_LOGS = new String[] {
-        "org.slf4j", "org.apache.logging.log4j", "java.util.logging"
-    };
+    private static final String[] INVALID_LOGS
+        = new String[] { "org.slf4j", "org.apache.logging.log4j", "java.util.logging" };
 
     private String fullyQualifiedLoggerName;
     private String simpleClassName;
@@ -169,21 +169,26 @@ public class GoodLoggingCheck extends AbstractCheck {
 
                 for (String invalidLog : INVALID_LOGS) {
                     if (importClassPath.startsWith(invalidLog)) {
-                        log(ast, String.format(NOT_CLIENT_LOGGER_ERROR, "external logger", fullyQualifiedLoggerName, invalidLog));
+                        log(ast, String.format(NOT_CLIENT_LOGGER_ERROR, "external logger", fullyQualifiedLoggerName,
+                            invalidLog));
                     }
                 }
                 break;
+
             case TokenTypes.CLASS_DEF:
             case TokenTypes.INTERFACE_DEF:
             case TokenTypes.ENUM_DEF:
                 classNameDeque.offer(ast.findFirstToken(TokenTypes.IDENT).getText());
                 break;
+
             case TokenTypes.LITERAL_NEW:
                 checkLoggerInstantiation(ast);
                 break;
+
             case TokenTypes.VARIABLE_DEF:
                 checkLoggerNameMatch(ast);
                 break;
+
             case TokenTypes.METHOD_CALL:
                 final DetailAST dotToken = ast.findFirstToken(TokenTypes.DOT);
                 if (dotToken == null) {
@@ -191,9 +196,11 @@ public class GoodLoggingCheck extends AbstractCheck {
                 }
                 final String methodCallName = FullIdent.createFullIdentBelow(dotToken).getText();
                 if (methodCallName.startsWith("System.out") || methodCallName.startsWith("System.err")) {
-                    log(ast, String.format(NOT_CLIENT_LOGGER_ERROR, "Java System", fullyQualifiedLoggerName, methodCallName));
+                    log(ast, String.format(NOT_CLIENT_LOGGER_ERROR, "Java System", fullyQualifiedLoggerName,
+                        methodCallName));
                 }
                 break;
+
             default:
                 // Checkstyle complains if there's no default block in switch
                 break;
@@ -211,8 +218,10 @@ public class GoodLoggingCheck extends AbstractCheck {
         if (typeAST == null) {
             return false;
         }
-        return TokenUtil.findFirstTokenByPredicate(typeAST,
-            node -> node.getType() == TokenTypes.IDENT && node.getText().equals(simpleClassName)).isPresent();
+        return TokenUtil
+            .findFirstTokenByPredicate(typeAST,
+                node -> node.getType() == TokenTypes.IDENT && node.getText().equals(simpleClassName))
+            .isPresent();
     }
 
     /**

@@ -62,12 +62,7 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
 
     @Override
     public int[] getRequiredTokens() {
-        return new int[] {
-            TokenTypes.CLASS_DEF,
-            TokenTypes.CTOR_DEF,
-            TokenTypes.LITERAL_THROW,
-            TokenTypes.METHOD_DEF
-        };
+        return new int[] { TokenTypes.CLASS_DEF, TokenTypes.CTOR_DEF, TokenTypes.LITERAL_THROW, TokenTypes.METHOD_DEF };
     }
 
     @Override
@@ -93,8 +88,12 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
             methodStaticDeque.offer(methodModifiersToken.findFirstToken(TokenTypes.LITERAL_STATIC) != null);
         } else if (token.getType() == TokenTypes.LITERAL_THROW) {
             // Skip check if the throw exception from static class, constructor or static method
-            if (classStaticDeque.isEmpty() || classStaticDeque.peek() || isInConstructor || methodStaticDeque.isEmpty()
-                || methodStaticDeque.peek() || findLogMethodIdentifier(token)) {
+            if (classStaticDeque.isEmpty()
+                || classStaticDeque.peek()
+                || isInConstructor
+                || methodStaticDeque.isEmpty()
+                || methodStaticDeque.peek()
+                || findLogMethodIdentifier(token)) {
                 return;
             }
 

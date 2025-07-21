@@ -79,7 +79,7 @@ extends:
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
       - name: linting-extensions
-        groupId: io.clientcore.tools
+        groupId: io.clientcore
         releaseInBatch: ${{ parameters.release_lintingextensions }}
         safeName: lintingextensions
         skipPublishDocGithubIo: true

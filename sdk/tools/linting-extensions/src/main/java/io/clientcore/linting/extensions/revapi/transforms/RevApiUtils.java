@@ -57,7 +57,7 @@ final class RevApiUtils {
 
         List<PrefixMatcher> prefixMatchers = new ArrayList<>();
         ObjectNode prefixesObject = (ObjectNode) configuration;
-        for (Iterator<Map.Entry<String, JsonNode>> it = prefixesObject.fields(); it.hasNext(); ) {
+        for (Iterator<Map.Entry<String, JsonNode>> it = prefixesObject.fields(); it.hasNext();) {
             Map.Entry<String, JsonNode> allowedPrefixKvp = it.next();
             String initialPrefix = allowedPrefixKvp.getKey();
             if (initialPrefix.isEmpty()) {
