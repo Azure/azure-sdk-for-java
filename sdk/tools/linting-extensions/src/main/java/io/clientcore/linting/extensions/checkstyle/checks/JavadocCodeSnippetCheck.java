@@ -35,7 +35,10 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
     private static final String CODE_SNIPPET_ANNOTATION = "@codesnippet";
 
     private static final int[] TOKENS = new int[] {
-        TokenTypes.PACKAGE_DEF, TokenTypes.BLOCK_COMMENT_BEGIN, TokenTypes.CLASS_DEF, TokenTypes.METHOD_DEF };
+        TokenTypes.PACKAGE_DEF,
+        TokenTypes.BLOCK_COMMENT_BEGIN,
+        TokenTypes.CLASS_DEF,
+        TokenTypes.METHOD_DEF };
 
     private String packageName;
     // A LIFO queue contains all class name visited, remove the class name when leave the same token
@@ -142,9 +145,10 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
             }
 
             // Check for CodeSnippet naming pattern matching
-            if (customDescription == null || customDescription.isEmpty()
+            if (customDescription == null
+                || customDescription.isEmpty()
                 || !isNamingMatched(customDescription.toLowerCase(Locale.ROOT),
-                fullPathWithoutParameters.toLowerCase(Locale.ROOT), parameters)) {
+                    fullPathWithoutParameters.toLowerCase(Locale.ROOT), parameters)) {
                 log(node.getLineNumber(), String.format("Naming pattern mismatch. The @codesnippet description "
                     + "''%s'' does not match ''%s''. Case Insensitive.", customDescription, fullPath));
             }

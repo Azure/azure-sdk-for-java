@@ -23,8 +23,11 @@ public class RawExceptionThrowCheck extends AbstractCheck {
         + "\"logger.throwableAtError()\" or \"logger.throwableAtWarning()\". See "
         + "https://github.com/Azure/azure-sdk-for-java/wiki/Client-core:-logging-exceptions-best-practices for more details.";
 
-    private static final String[] IGNORED_EXCEPTIONS = new String[] { "NullPointerException",
-        "IllegalArgumentException", "IllegalStateException", "UnsupportedOperationException" };
+    private static final String[] IGNORED_EXCEPTIONS = new String[] {
+        "NullPointerException",
+        "IllegalArgumentException",
+        "IllegalStateException",
+        "UnsupportedOperationException" };
 
     private static final String CORE_EXCEPTION_FACTORY_NAME = "CoreException.from";
 

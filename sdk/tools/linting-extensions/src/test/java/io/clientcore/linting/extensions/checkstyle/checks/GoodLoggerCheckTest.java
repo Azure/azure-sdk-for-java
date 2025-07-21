@@ -45,25 +45,21 @@ public class GoodLoggerCheckTest extends AbstractModuleTestSupport {
             "4:1: " + String.format(NOT_CLIENT_LOGGER_ERROR, "external logger",
                 "com.azure.core.util.logging.ClientLogger", "org.slf4j"),
             "5:1: " + String.format(NOT_CLIENT_LOGGER_ERROR, "external logger",
-                "com.azure.core.util.logging.ClientLogger", "java.util.logging"),
-        };
+                "com.azure.core.util.logging.ClientLogger", "java.util.logging"), };
         verify(checker, getPath("ExternalLoggerLibraryTestData.java"), expected);
     }
 
     @Test
     public void invalidLoggerNameTestData() throws Exception {
-        String[] expected = {
-            "5:5: " + String.format(LOGGER_NAME_ERROR, "logger", "wrongLoggerName"),
-        };
+        String[] expected = { "5:5: " + String.format(LOGGER_NAME_ERROR, "logger", "wrongLoggerName"), };
         verify(checker, getPath("InvalidLoggerNameTestData.java"), expected);
     }
 
     @Test
     public void wrongClassInLoggerConstructorTestData() throws Exception {
         String[] expected = {
-            "5:64: " + String.format(LOGGER_NAME_MISMATCH_ERROR,
-                "WrongClassInLoggerConstructorTestData", "XXXXXX.class")
-        };
+            "5:64: "
+                + String.format(LOGGER_NAME_MISMATCH_ERROR, "WrongClassInLoggerConstructorTestData", "XXXXXX.class") };
         verify(checker, getPath("WrongClassInLoggerConstructorTestData.java"), expected);
     }
 

@@ -36,53 +36,39 @@ public class DenyListedWordsCheckTest extends AbstractModuleTestSupport {
     public void denyListedWordsTestData() throws Exception {
         String[] expected = {
             "3:5: errorHTTPMethod" + DenyListedWordsCheck.ERROR_MESSAGE_TEMPLATE + "URL, HTTP, XML",
-            "9:5: invalidXMLMethod" + DenyListedWordsCheck.ERROR_MESSAGE_TEMPLATE + "URL, HTTP, XML"
-        };
+            "9:5: invalidXMLMethod" + DenyListedWordsCheck.ERROR_MESSAGE_TEMPLATE + "URL, HTTP, XML" };
         File file = TestUtils.createCheckFile("denyListedWordsTestData",
-            "@JacksonXmlRootElement(localName = \"File-SetHTTPHeaders-Headers\")",
-            "public class CamelCaseTestData {",
-            "    public void errorHTTPMethod() { throw new RuntimeException(\"Error Messages.\"); }",
-            "",
-            "    public void validHttpMethod() { throw new RuntimeException(\"Error Messages.\"); }",
-            "",
-            "    public static void itIsAURLError() { throw new RuntimeException(\"Error Messages.\"); }",
-            "",
-            "    protected void invalidXMLMethod() { throw new RuntimeException(\"Error Messages.\"); }",
-            "",
-            "    private void shouldNotSearch() { throw new RuntimeException(\"Error Messages.\"); }",
-        "}");
+            "@JacksonXmlRootElement(localName = \"File-SetHTTPHeaders-Headers\")", "public class CamelCaseTestData {",
+            "    public void errorHTTPMethod() { throw new RuntimeException(\"Error Messages.\"); }", "",
+            "    public void validHttpMethod() { throw new RuntimeException(\"Error Messages.\"); }", "",
+            "    public static void itIsAURLError() { throw new RuntimeException(\"Error Messages.\"); }", "",
+            "    protected void invalidXMLMethod() { throw new RuntimeException(\"Error Messages.\"); }", "",
+            "    private void shouldNotSearch() { throw new RuntimeException(\"Error Messages.\"); }", "}");
 
-        verify(checker, new File[]{file}, file.getAbsolutePath(), expected);
+        verify(checker, new File[] { file }, file.getAbsolutePath(), expected);
     }
 
     @Test
     public void denyListedWordsInterface() throws Exception {
         File file = TestUtils.createCheckFile("denyListedWordsInterface",
-            "package io.clientcore.linting.extensions.checkstyle.checks;",
-            "import java.time.Duration;",
-            "public interface DenyListedWordsInterface {",
-            "    int HTTP_STATUS_TOO_MANY_REQUESTS = 429;",
-            "    Duration calculateRetryDelay(int retryAttempts);",
-            "}");
+            "package io.clientcore.linting.extensions.checkstyle.checks;", "import java.time.Duration;",
+            "public interface DenyListedWordsInterface {", "    int HTTP_STATUS_TOO_MANY_REQUESTS = 429;",
+            "    Duration calculateRetryDelay(int retryAttempts);", "}");
 
-        verify(checker, new File[]{file}, file.getAbsolutePath());
+        verify(checker, new File[] { file }, file.getAbsolutePath());
     }
 
     @Test
     public void implementationPackageIgnored() throws Exception {
-        File file = TestUtils.createCheckFile("implementationPackageIgnored",
-            "package com.test.implementation;",
-            "@JacksonXmlRootElement(localName = \"File-SetHTTPHeaders-Headers\")",
-            "public class CamelCaseTestData {",
+        File file = TestUtils.createCheckFile("implementationPackageIgnored", "package com.test.implementation;",
+            "@JacksonXmlRootElement(localName = \"File-SetHTTPHeaders-Headers\")", "public class CamelCaseTestData {",
             "    public void errorHTTPMethod() { throw new RuntimeException(\"Error Messages.\"); }",
             "    public void validHttpMethod() { throw new RuntimeException(\"Error Messages.\"); }",
             "    public static void itIsAURLError() { throw new RuntimeException(\"Error Messages.\"); }",
             "    protected void invalidXMLMethod() { throw new RuntimeException(\"Error Messages.\"); }",
-            "    private void shouldNotSearch() { throw new RuntimeException(\"Error Messages.\"); }",
-            "}"
-        );
+            "    private void shouldNotSearch() { throw new RuntimeException(\"Error Messages.\"); }", "}");
 
-        verify(checker, new File[]{file}, file.getAbsolutePath());
+        verify(checker, new File[] { file }, file.getAbsolutePath());
     }
 
     private Checker prepareCheckStyleChecker() throws CheckstyleException {
@@ -95,7 +81,8 @@ public class DenyListedWordsCheckTest extends AbstractModuleTestSupport {
     private DefaultConfiguration prepareConfiguration() {
         DefaultConfiguration checks = new DefaultConfiguration("Checks");
         DefaultConfiguration treeWalker = new DefaultConfiguration("TreeWalker");
-        DefaultConfiguration denyListedWordsCheck = new DefaultConfiguration(DenyListedWordsCheck.class.getCanonicalName());
+        DefaultConfiguration denyListedWordsCheck
+            = new DefaultConfiguration(DenyListedWordsCheck.class.getCanonicalName());
         denyListedWordsCheck.addProperty("denyListedWords", "URL, HTTP, XML");
         checks.addChild(treeWalker);
         treeWalker.addChild(denyListedWordsCheck);

@@ -31,8 +31,7 @@ public class StringFormattedExceptionMessageCheckTest extends AbstractModuleTest
     public void stringFormatExceptionMessageTestData() throws Exception {
         String[] expected = {
             "9:31: " + StringFormattedExceptionMessageCheck.ERROR_MESSAGE,
-            "16:53: " + StringFormattedExceptionMessageCheck.ERROR_MESSAGE
-        };
+            "16:53: " + StringFormattedExceptionMessageCheck.ERROR_MESSAGE };
         verify(checker, getPath("StringFormattedExceptionCheckTestData.java"), expected);
     }
 }

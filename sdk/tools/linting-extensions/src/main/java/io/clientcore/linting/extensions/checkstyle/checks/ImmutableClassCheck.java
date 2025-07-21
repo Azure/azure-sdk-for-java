@@ -47,7 +47,7 @@ public class ImmutableClassCheck extends AbstractCheck {
 
     @Override
     public int[] getRequiredTokens() {
-        return new int[]{ TokenTypes.CLASS_DEF, TokenTypes.VARIABLE_DEF, TokenTypes.METHOD_DEF };
+        return new int[] { TokenTypes.CLASS_DEF, TokenTypes.VARIABLE_DEF, TokenTypes.METHOD_DEF };
     }
 
     @Override

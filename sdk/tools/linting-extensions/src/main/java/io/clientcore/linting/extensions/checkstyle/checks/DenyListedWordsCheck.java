@@ -43,7 +43,10 @@ public class DenyListedWordsCheck extends ImplementationExcludingCheck {
 
     @Override
     public int[] getTokensForCheck() {
-        return new int[] { TokenTypes.CLASS_DEF, TokenTypes.INTERFACE_DEF, TokenTypes.METHOD_DEF,
+        return new int[] {
+            TokenTypes.CLASS_DEF,
+            TokenTypes.INTERFACE_DEF,
+            TokenTypes.METHOD_DEF,
             TokenTypes.VARIABLE_DEF };
     }
 
