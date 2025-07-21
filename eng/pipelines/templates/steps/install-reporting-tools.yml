@@ -8,7 +8,7 @@ steps:
   - task: Maven@4
     displayName: 'Install reporting tools'
     inputs:
-      mavenPomFile: ./eng/code-quality-reports/pom.xml
+      mavenPomFile: ./sdk/tools/linting-extensions/pom.xml
       options: ${{ parameters.Options }}
       mavenOptions: ${{ parameters.MavenOptions }}
       javaHomeOption: 'JDKVersion'

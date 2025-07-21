@@ -47,9 +47,7 @@
     </javaModulesSurefireArgLine>
     <jacoco.skip>true</jacoco.skip> <!-- all tests are disabled -->
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
   <dependencies>
     <dependency>

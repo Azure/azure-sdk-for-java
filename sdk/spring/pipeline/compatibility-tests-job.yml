@@ -25,7 +25,6 @@ jobs:
         parameters:
           Paths:
             - 'common/perf-test-core'
-            - 'eng/code-quality-reports'
             - 'sdk/appconfiguration/azure-data-appconfiguration'
             - 'sdk/appcontainers/azure-resourcemanager-appcontainers'
             - 'sdk/core'
@@ -46,6 +45,7 @@ jobs:
             - 'sdk/serialization'
             - 'sdk/servicebus'
             - 'sdk/storage'
+            - 'sdk/tools'
       - task: Maven@4
         displayName: 'Install Unreleased Dependencies'
         inputs:
