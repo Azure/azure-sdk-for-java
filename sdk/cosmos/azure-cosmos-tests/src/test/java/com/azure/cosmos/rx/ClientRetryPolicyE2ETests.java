@@ -115,7 +115,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = {"multi-master"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"multi-master", "fast"}, timeOut = TIMEOUT)
     public void beforeClass() {
         CosmosAsyncClient dummy = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(dummy);
@@ -150,7 +150,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         this.cosmosAsyncContainerFromClientWithoutPreferredRegions = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithoutPreferredRegions);
     }
 
-    @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"multi-master", "fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.clientWithPreferredRegions);
         safeClose(this.clientWithoutPreferredRegions);
@@ -453,7 +453,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "multi-region" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT)
     public void dataPlaneRequestHitsLeaseNotFoundInFirstPreferredRegion(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType,

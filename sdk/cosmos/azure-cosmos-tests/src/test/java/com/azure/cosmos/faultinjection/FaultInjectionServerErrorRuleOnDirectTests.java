@@ -78,7 +78,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = {"multi-region", "long"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"multi-region", "long", "fast"}, timeOut = TIMEOUT)
     public void beforeClass() {
         clientWithoutPreferredRegions = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(clientWithoutPreferredRegions);
@@ -894,7 +894,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
 
     }
 
-    @Test(groups = {"multi-region",  "long"}, dataProvider = "faultInjectionOperationTypeProviderForLeaseNotFound", timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, dataProvider = "faultInjectionOperationTypeProviderForLeaseNotFound", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_LeaseNotFound(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType, boolean primaryAddressOnly) throws JsonProcessingException {
 
         // simulate high channel acquisition/connectionTimeout for read/query
@@ -997,7 +997,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         }
     }
 
-    @AfterClass(groups = {"multi-region", "long"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"multi-region", "long", "fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(clientWithoutPreferredRegions);
     }
