@@ -1,3 +1,15 @@
+## [Unreleased]
+
+### Added
+- Extended `SpeechVoice` with five new predefined constants: `Ash`, `Ballad`, `Coral`, `Sage`, `Verse`.
+- Added support for `instructions` parameter in `SpeechGenerationOptions` to align with OpenAI's latest API changes.
+
+### Tests
+- Added unit tests to validate new `SpeechVoice` constants and `instructions` field support.
+
+### Notes
+- These changes synchronize Azure SDK behavior with recent OpenAI API updates to ensure compatibility and feature parity.
+
 # Release History
 
 ## 1.0.0-beta.17 (Unreleased)
