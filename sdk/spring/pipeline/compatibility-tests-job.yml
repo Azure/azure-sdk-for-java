@@ -24,6 +24,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           Paths:
+            - '**/*.xml'
             - 'common/perf-test-core'
             - 'sdk/appconfiguration/azure-data-appconfiguration'
             - 'sdk/appcontainers/azure-resourcemanager-appcontainers'
