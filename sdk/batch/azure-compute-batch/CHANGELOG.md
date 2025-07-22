@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (2025-07-17)
+## 1.0.0-beta.5 (2025-07-21)
 
 This release is the first stable release of the Azure Compute Batch client library.
 
