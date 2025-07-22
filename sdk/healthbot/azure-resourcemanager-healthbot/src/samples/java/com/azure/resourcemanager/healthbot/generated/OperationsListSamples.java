@@ -10,7 +10,7 @@ package com.azure.resourcemanager.healthbot.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2020-12-08/examples/GetOperations.json
+     * specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2025-05-25/examples/GetOperations.json
      */
     /**
      * Sample code: Get Operations.

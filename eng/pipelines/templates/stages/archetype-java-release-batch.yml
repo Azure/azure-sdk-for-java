@@ -121,6 +121,7 @@ stages:
                   - '**/*.xml'
                   - '!sdk/**/test-recordings'
                   - '!sdk/**/session-records'
+                  - 'sdk/tools/linting-extensions'
 
             - download: current
               displayName: 'Download Artifact: packages'
@@ -142,7 +143,7 @@ stages:
                 $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
                 python --version
                 foreach($artifact in $ArtifactsList) {
-                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai $($artifact.name) --gi $($artifact.groupId)
+                  python eng/versioning/set_versions.py --verify-version --artifact-id $($artifact.name) --group-id $($artifact.groupId)
                 }
               displayName: 'Verify artifact versions for release'
 
@@ -172,7 +173,7 @@ stages:
                   ArtifactLocation: $(Pipeline.Workspace)/packages-signed
             # Given a list of libraries to release, verify that the list of libraries has full transitive closure.
             # This prevents us from releasing a library whose dependency is not being released. UberJar needs to be
-            # be passed in, we skip check on UberJars but we still do need to fail correctly if the user didn't
+            # passed in, we skip check on UberJars, but we still do need to fail correctly if the user didn't
             # select any artifacts to be released.
             - task: PowerShell@2
               displayName: Verify Release Set
@@ -303,6 +304,7 @@ stages:
                   - '**/*.md'
                   - '!sdk/**/test-recordings'
                   - '!sdk/**/session-records'
+                  - 'sdk/tools/linting-extensions'
 
             - task: UsePythonVersion@0
               displayName: 'Use Python $(PythonVersion)'
@@ -316,13 +318,13 @@ stages:
                 $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
                 python --version
                 foreach($artifact in $ArtifactsList) {
-                  python eng/versioning/set_versions.py --build-type ${{ parameters.SDKType }} --increment-version --ai $($artifact.name) --gi $($artifact.groupId)
+                  python eng/versioning/set_versions.py --increment-version --artifact-id $($artifact.name) --group-id $($artifact.groupId)
                 }
               displayName: Increment package versions
 
             - script: |
                 python --version
-                python eng/versioning/update_versions.py --update-type library --build-type ${{ parameters.SDKType }} --avi --sr
+                python eng/versioning/update_versions.py --auto-version-increment --skip-readme
               displayName: Update pom files for incremented versions
 
             - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
@@ -472,6 +474,7 @@ stages:
               Paths:
                 - sdk/${{ parameters.ServiceDirectory }}/**/*.md
                 - '!**/pom*.xml'
+                - 'sdk/tools/linting-extensions'
           - download: current
             displayName: 'Download Artifacts'
             artifact: packages

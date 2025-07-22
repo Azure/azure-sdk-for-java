@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-experimental</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.62</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+  <version>1.0.0-beta.63</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
 
   <name>Microsoft Azure Java Core Experimental Library</name>
   <description>This package contains experimental core types for Azure Java clients.</description>
@@ -62,10 +62,7 @@
       com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation
     </javadoc.excludePackageNames>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
-
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <developers>
@@ -79,7 +76,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.55.5</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.56.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>

@@ -97,6 +97,7 @@ jobs:
               - '**/ci*.yml' # necessary for save-package-properties.yml
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
+              - 'sdk/tools/linting-extensions'
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
@@ -157,7 +158,6 @@ jobs:
           filePath: eng/pipelines/scripts/Set-Dev-Versioning.ps1
           arguments: >
             -BuildNumber $(Build.BuildNumber)
-            -SdkType ${{parameters.SDKType}}
         env:
           ARTIFACTSJSON: $(ArtifactsJson)
 
@@ -286,6 +286,7 @@ jobs:
               - '.vscode/cspell.json'
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
+              - 'sdk/tools/linting-extensions'
 
       - task: PowerShell@2
         displayName: 'Verify versions in POM files'
@@ -402,20 +403,13 @@ jobs:
         displayName: Use Node.js 22.x
 
       - task: PowerShell@2
-        displayName: Verify Code Generation for Pull Request
+        displayName: Verify Swagger and TypeSpec Code Generation
         inputs:
           pwsh: true
           filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
           arguments: >
             -ServiceDirectories '$(PRServiceDirectories)'
-
-      - task: PowerShell@2
-        displayName: Verify TypeSpec Code Generation
-        inputs:
-          pwsh: true
-          filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
-          arguments: >
-            -ServiceDirectories '$(PRServiceDirectories)'
+            -RegenerationType 'All'
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
@@ -460,7 +454,10 @@ jobs:
       ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
         EnablePRGeneration: true
         PRMatrixSparseIndirect: true
-        PRJobBatchSize: 20
+        # Use a PR job batch size of 50 as the design of Java's CI doesn't increase CI times linear for each library
+        # added. So, using a smaller batch size means more CI jobs that are slightly faster than fewer larger jobs.
+        # Overall, using a large batch size reduces overall CI time.
+        PRJobBatchSize: 50
         # This key will use the PackageInfo.Name to populate the ArtifactPackageNames
         PRMatrixKey: 'Name'
         SparseCheckoutPaths:

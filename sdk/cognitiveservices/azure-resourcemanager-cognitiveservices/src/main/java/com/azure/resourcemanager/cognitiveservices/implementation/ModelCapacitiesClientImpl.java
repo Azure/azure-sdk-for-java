@@ -61,7 +61,7 @@ public final class ModelCapacitiesClientImpl implements ModelCapacitiesClient {
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CognitiveServicesMan")
+    @ServiceInterface(name = "CognitiveServicesManagementClientModelCapacities")
     public interface ModelCapacitiesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/modelCapacities")

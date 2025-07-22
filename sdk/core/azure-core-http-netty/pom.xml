@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
   <packaging>jar</packaging>
-  <version>1.15.13</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+  <version>1.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
 
   <name>Microsoft Azure Netty HTTP Client Library</name>
   <description>This package contains the Netty HTTP client plugin for azure-core.</description>
@@ -61,10 +61,7 @@
       com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation
     </javadoc.excludePackageNames>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
-
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <animal.sniffer.skip>false</animal.sniffer.skip>
 
     <netty.version>4.1.118.Final</netty.version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
@@ -82,7 +79,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.55.5</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.56.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -156,7 +153,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.55.5</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.56.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>

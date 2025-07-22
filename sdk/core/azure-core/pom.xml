@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.55.5</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+  <version>1.56.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
 
   <name>Microsoft Azure Java Core Library</name>
   <description>This package contains core types for Azure Java clients.</description>
@@ -83,10 +83,7 @@
     <compiler.failondeprecatedstatus/>
     <javadoc.excludePackageNames>com.azure.json</javadoc.excludePackageNames>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
-
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
 
     <animal.sniffer.skip>false</animal.sniffer.skip>
     <animal.sniffer.ignores>javax.xml.stream.XMLStreamException,java.lang.invoke.MethodHandle,java.lang.invoke.MethodHandles</animal.sniffer.ignores>
