@@ -136,7 +136,9 @@ public final class Netty4Utility {
      * Content will only be written to the {@link OutputStream} if the {@link ByteBuf} is non-null and is
      * {@link ByteBuf#isReadable()}. The entire {@link ByteBuf} will be consumed.
      * </p>
-     * This method does NOT release the {@link ByteBuf} if it was consumed.
+     * <p><strong>Warning:</strong> This is a helper method and does NOT release the {@link ByteBuf}
+     * after it is consumed, and it must be manually released to avoid memory leaks (either the {@link ByteBuf}
+     * or the container holding the {@link ByteBuf}).
      *
      * @param byteBuf The Netty {@link ByteBuf} to read from.
      * @param stream The {@link OutputStream} to write to.

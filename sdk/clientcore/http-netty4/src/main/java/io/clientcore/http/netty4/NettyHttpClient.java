@@ -337,8 +337,6 @@ class NettyHttpClient implements HttpClient {
                 return;
             }
 
-            channel.config().setAutoRead(false);
-
             final Object pipelineOwnerToken = new Object();
             channel.attr(Netty4ConnectionPool.PIPELINE_OWNER_TOKEN).set(pipelineOwnerToken);
             ChannelPipeline pipeline = channel.pipeline();
