@@ -336,6 +336,8 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         # compile
         succeeded = compile_arm_package(sdk_root, module)
         if succeeded:
+            if is_mgmt_premium(module):
+                move_premium_samples(sdk_root, service, module)
             logging.info("[Changelog] Start breaking change detection for SDK automation.")
             breaking, changelog, breaking_change_items = compare_with_maven_package(
                 sdk_root,
