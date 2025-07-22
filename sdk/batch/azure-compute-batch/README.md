@@ -20,78 +20,78 @@ This README is based on the latest released version of the Azure Compute Batch S
 - [Error Handling](#error-handling)
 - [Operations Examples](#operations-examples)
   - [Pool Operations](#pool-operations)
-    - [CreatePool](#createpool)
-    - [GetPool](#getpool)
-    - [ListPools](#listpools)
-    - [DeletePool](#deletepool)
-    - [UpdatePool](#updatepool)
-    - [ResizePool](#resizepool)
-    - [StopResizePool](#stopresizepool)
-    - [EnableAutoScalePool](#enableautoscalepool)
-    - [DisableAutoScalePool](#disableautoscalepool)
-    - [EvaluateAutoScalePool](#evaluateautoscalepool)
-    - [ListPoolNodeCounts](#listpoolnodecounts)
-    - [ListPoolUsageMetrics](#listpoolusagemetrics)
-    - [GetSupportedImages](#getsupportedimages)
-    - [RemoveNodes](#removenodes)
+    - [Create Pool](#create-pool)
+    - [Get Pool](#get-pool)
+    - [List Pools](#list-pools)
+    - [Delete Pool](#delete-pool)
+    - [Update Pool](#update-pool)
+    - [Resize Pool](#resize-pool)
+    - [Stop Resize Pool](#stop-resize-pool)
+    - [Enable AutoScale Pool](#enable-autoscale-pool)
+    - [Disable AutoScale Pool](#disable-autoscale-pool)
+    - [Evaluate AutoScale Pool](#evaluate-autoscale-pool)
+    - [List Pool Node Counts](#list-pool-node-counts)
+    - [List Pool Usage Metrics](#list-pool-usage-metrics)
+    - [Get Supported Images](#get-supported-images)
+    - [Remove Nodes](#remove-nodes)
   - [Job Operations](#job-operations)
-    - [CreateJob](#createjob)
-    - [GetJob](#getjob)
-    - [ListJobs](#listjobs)
-    - [DeleteJob](#deletejob)
-    - [ReplaceJob](#replacejob)
-    - [UpdateJob](#updatejob)
-    - [DisableJob](#disablejob)
-    - [EnableJob](#enablejob)
+    - [Create Job](#create-job)
+    - [Get Job](#get-job)
+    - [List Jobs](#list-jobs)
+    - [Delete Job](#delete-job)
+    - [Replace Job](#replace-job)
+    - [Update Job](#update-job)
+    - [Disable Job](#disable-job)
+    - [Enable Job](#enable-job)
     - [List Job Preparation and Release Task Status](#list-job-preparation-and-release-task-status)
     - [Get Job Task Counts](#get-job-task-counts)
-    - [TerminateJob](#terminatejob)
+    - [Terminate Job](#terminate-job)
   - [Job Schedule Operations](#job-schedule-operations)
-    - [CreateJobSchedule](#createjobschedule)
-    - [GetJobSchedule](#getjobschedule)
-    - [ListJobSchedules](#listjobschedules)
-    - [DeleteJobSchedule](#deletejobschedule)
-    - [ReplaceJobSchedule](#replacejobschedule)
-    - [UpdateJobSchedule](#updatejobschedule)
-    - [DisableJobSchedule](#disablejobschedule)
-    - [EnableJobSchedule](#enablejobschedule)
-    - [TerminateJobSchedule](#terminatejobschedule)
+    - [Create Job Schedule](#create-job-schedule)
+    - [Get Job Schedule](#get-job-schedule)
+    - [List Job Schedules](#list-job-schedules)
+    - [Delete Job Schedule](#delete-job-schedule)
+    - [Replace Job Schedule](#replace-job-schedule)
+    - [Update Job Schedule](#update-job-schedule)
+    - [Disable Job Schedule](#disable-job-schedule)
+    - [Enable Job Schedule](#enable-job-schedule)
+    - [Terminate Job Schedule](#terminate-job-schedule)
   - [Task Operations](#task-operations)
-    - [AddTask](#addtask)
-    - [GetTask](#gettask)
-    - [ListTasks](#listtasks)
-    - [DeleteTask](#deletetask)
-    - [ReplaceTask](#replacetask)
-    - [ReactivateTask](#reactivatetask)
-    - [TerminateTask](#terminatetask)
+    - [Create Tasks](#create-tasks)
+    - [Get Task](#get-task)
+    - [List Tasks](#list-tasks)
+    - [Delete Task](#delete-task)
+    - [Replace Task](#replace-task)
+    - [Reactivate Task](#reactivate-task)
+    - [Terminate Task](#terminate-task)
     - [File Operations for Tasks](#file-operations-for-tasks)
-    - [List Task Files](#listtaskfiles)
-    - [Get Task File](#gettaskfile)
-    - [Get Task File Properties](#gettaskfileproperties)
+    - [List Task Files](#list-task-files)
+    - [Get Task File](#get-task-file)
+    - [Get Task File Properties](#get-task-file-properties)
   - [Node Operations](#node-operations)
-    - [GetComputeNode](#getcomputenode)
-    - [ListComputeNodes](#listcomputenodes)
-    - [DeallocateNode](#deallocatenode)
-    - [ReimageNode](#reimagenode)
-    - [StartNode](#startnode)
-    - [RebootNode](#rebootnode)
-    - [CreateComputeNodeUser](#createcomputenodeuser)
-    - [DeleteComputeNodeUser](#deletecomputenodeuser)
-    - [GetNodeFile](#getnodefile)
-    - [ListNodeFiles](#listnodefiles)
-    - [DeleteNodeFile](#deletenodefile)
-    - [GetNodeFileProperties](#getnodefileproperties)
-    - [GetRemoteLoginSettings](#getremoteloginsettings)
-    - [UploadNodeLogs](#uploadnodelogs)
+    - [Get Compute Node](#get-compute-node)
+    - [ListCompute Nodes](#list-compute-nodes)
+    - [Deallocate Node](#deallocate-node)
+    - [Reimage Node](#reimage-node)
+    - [Start Node](#start-node)
+    - [Reboot Node](#reboot-node)
+    - [Create Compute Node User](#create-compute-node-user)
+    - [Delete Compute Node User](#delete-compute-node-user)
+    - [Get Node File](#get-node-file)
+    - [List Node Files](#list-node-files)
+    - [Delete Node File](#delete-node-file)
+    - [Get Node File Properties](#get-node-file-properties)
+    - [Get Remote Login Settings](#get-remote-login-settings)
+    - [Upload Node Logs](#upload-node-logs)
   - [Certificate Operations](#certificate-operations)
-    - [CreateCertificate](#createcertificate)
-    - [GetCertificate](#getcertificate)
-    - [ListCertificates](#listcertificates)
-    - [DeleteCertificate](#deletecertificate)
-    - [CancelDeleteCertificate](#canceldeletecertificate)
+    - [Create Certificate](#create-certificate)
+    - [Get Certificate](#get-certificate)
+    - [List Certificates](#list-certificates)
+    - [Delete Certificate](#delete-certificate)
+    - [Cancel Delete Certificate](#cancel-delete-certificate)
   - [Application Operations](#application-operations)
-    - [GetApplication](#getapplication)
-    - [ListApplications](#listapplications)
+    - [Get Application](#get-application)
+    - [List Applications](#list-applications)
 
 ## Documentation
 
@@ -115,7 +115,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-compute-batch</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>1.0.0-beta.5</version>
 </dependency>
 ```
 
@@ -266,7 +266,7 @@ The sections below compare common operations between Track 1 (Microsoft.Azure.B
 
 ### Pool Operations
 
-#### CreatePool
+#### Create Pool
 
 ```java com.azure.compute.batch.create-pool.creates-a-simple-pool
 batchClient.createPool(new BatchPoolCreateParameters("poolId", "STANDARD_DC2s_V2")
@@ -278,19 +278,19 @@ batchClient.createPool(new BatchPoolCreateParameters("poolId", "STANDARD_DC2s_V2
     .setTargetDedicatedNodes(1), null);
 ```
 
-#### GetPool
+#### Get Pool
 
 ```java com.azure.compute.batch.get-pool.pool-get
 BatchPool response = batchClient.getPool("pool", null, null);
 ```
 
-#### ListPools
+#### List Pools
 
 ```java com.azure.compute.batch.list-pools.pool-list
 PagedIterable<BatchPool> poolList = batchClient.listPools(new BatchPoolsListOptions());
 ```
 
-#### DeletePool
+#### Delete Pool
 
 ```java com.azure.compute.batch.delete-pool.pool-delete
 SyncPoller<BatchPool, Void> deletePoolPoller = batchClient.beginDeletePool("poolId");
@@ -306,7 +306,7 @@ deletePoolPoller.waitForCompletion();
 PollResponse<BatchPool> finalDeletePoolResponse = deletePoolPoller.poll();
 ```
 
-#### UpdatePool
+#### Update Pool
 
 ```java com.azure.compute.batch.update-pool.patch-the-pool
 batchClient.updatePool("poolId",
@@ -314,7 +314,7 @@ batchClient.updatePool("poolId",
     null);
 ```
 
-#### ResizePool
+#### Resize Pool
 
 ```java com.azure.compute.batch.resize-pool.pool-resize
 BatchPoolResizeParameters resizeParameters = new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1);
@@ -333,7 +333,7 @@ resizePoller.waitForCompletion();
 BatchPool resizedPool = resizePoller.getFinalResult();
 ```
 
-#### StopResizePool
+#### Stop Resize Pool
 
 ```java com.azure.compute.batch.stop-resize-pool.stop-pool-resize
 SyncPoller<BatchPool, BatchPool> stopPoller = batchClient.beginStopPoolResize("poolId");
@@ -349,7 +349,7 @@ stopPoller.waitForCompletion();
 BatchPool stoppedPool = stopPoller.getFinalResult();
 ```
 
-#### EnableAutoScalePool
+#### Enable AutoScale Pool
 
 ```java com.azure.compute.batch.enable-pool-auto-scale.pool-enable-autoscale
 BatchPoolEnableAutoScaleParameters autoScaleParameters = new BatchPoolEnableAutoScaleParameters()
@@ -359,38 +359,38 @@ BatchPoolEnableAutoScaleParameters autoScaleParameters = new BatchPoolEnableAuto
 batchClient.enablePoolAutoScale("poolId", autoScaleParameters);
 ```
 
-#### DisableAutoScalePool
+#### Disable AutoScale Pool
 
 ```java com.azure.compute.batch.disable-pool-auto-scale.disable-pool-autoscale
 batchClient.disablePoolAutoScale("poolId");
 ```
 
-#### EvaluateAutoScalePool
+#### Evaluate AutoScale Pool
 
 ```java com.azure.compute.batch.evaluate-pool-auto-scale.evaluate-pool-autoscale
 BatchPoolEvaluateAutoScaleParameters evalParams = new BatchPoolEvaluateAutoScaleParameters("$TargetDedicated = 1;");
 AutoScaleRun eval = batchClient.evaluatePoolAutoScale("poolId", evalParams);
 ```
 
-#### ListPoolNodeCounts
+#### List Pool Node Counts
 
 ```java com.azure.compute.batch.list-pool-node-counts.list-pool-node-counts
 batchClient.listPoolNodeCounts();
 ```
 
-#### ListPoolUsageMetrics
+#### List Pool Usage Metrics
 
 ```java com.azure.compute.batch.list-pool-usage-metrics.list-pool-usage-metrics
 batchClient.listPoolUsageMetrics();
 ```
 
-#### GetSupportedImages
+#### Get Supported Images
 
 ```java com.azure.compute.batch.list-supported-images.list-supported-images
 batchClient.listSupportedImages();
 ```
 
-#### RemoveNodes
+#### Remove Nodes
 
 ```java com.azure.compute.batch.pool.remove-nodes
 List<BatchNode> nodes = new ArrayList<>();
@@ -411,26 +411,26 @@ BatchPool poolAfterRemove = removePoller.getFinalResult();
 
 ### Job Operations
 
-#### CreateJob
+#### Create Job
 
 ```java com.azure.compute.batch.create-job.creates-a-basic-job
 batchClient.createJob(
     new BatchJobCreateParameters("jobId", new BatchPoolInfo().setPoolId("poolId")).setPriority(0), null);
 ```
 
-#### GetJob
+#### Get Job
 
 ```java com.azure.compute.batch.get-job.job-get
 BatchJob job = batchClient.getJob("jobId", null, null);
 ```
 
-#### ListJobs
+#### List Jobs
 
 ```java com.azure.compute.batch.list-jobs.job-list
 PagedIterable<BatchJob> jobList = batchClient.listJobs(new BatchJobsListOptions());
 ```
 
-#### DeleteJob
+#### Delete Job
 
 ```java com.azure.compute.batch.delete-job.job-delete
 SyncPoller<BatchJob, Void> deleteJobPoller = batchClient.beginDeleteJob("jobId");
@@ -445,7 +445,7 @@ deleteJobPoller.waitForCompletion();
 PollResponse<BatchJob> finalDeleteJobResponse = deleteJobPoller.poll();
 ```
 
-#### ReplaceJob
+#### Replace Job
 
 ```java com.azure.compute.batch.replace-job.job-patch
 batchClient.replaceJob("jobId",
@@ -455,7 +455,7 @@ batchClient.replaceJob("jobId",
     null, null);
 ```
 
-#### UpdateJob
+#### Update Job
 
 ```java com.azure.compute.batch.update-job.job-update
 batchClient.updateJob("jobId",
@@ -466,7 +466,7 @@ batchClient.updateJob("jobId",
     null, null);
 ```
 
-#### DisableJob
+#### Disable Job
 
 ```java com.azure.compute.batch.disable-job.job-disable
 BatchJobDisableParameters disableParams = new BatchJobDisableParameters(DisableBatchJobOption.REQUEUE);
@@ -483,7 +483,7 @@ disablePoller.waitForCompletion();
 BatchJob disabledJob = disablePoller.getFinalResult();
 ```
 
-#### EnableJob
+#### Enable Job
 
 ```java com.azure.compute.batch.enable-job.job-enable
 SyncPoller<BatchJob, BatchJob> enablePoller = batchClient.beginEnableJob("jobId");
@@ -515,10 +515,10 @@ Track 2:
 BatchTaskCountsResult counts = batchClient.getJobTaskCounts("jobId");
 ```
 
-#### TerminateJob
+#### Terminate Job
 
 ```java com.azure.compute.batch.job.terminate-job
-BatchJobTerminateParameters terminateParams = new BatchJobTerminateParameters().setTerminationReason("myreason");
+BatchJobTerminateParameters terminateParams = new BatchJobTerminateParameters().setTerminationReason("ExampleReason");
 BatchJobTerminateOptions terminateOptions = new BatchJobTerminateOptions().setParameters(terminateParams);
 SyncPoller<BatchJob, BatchJob> terminatePoller = batchClient.beginTerminateJob("jobId", terminateOptions, null);
 
@@ -534,7 +534,7 @@ BatchJob terminatedJob = terminatePoller.getFinalResult();
 
 ### Job Schedule Operations
 
-#### CreateJobSchedule
+#### Create Job Schedule
 
 ```java com.azure.compute.batch.create-job-schedule.creates-a-basic-job-schedule
 batchClient.createJobSchedule(new BatchJobScheduleCreateParameters("jobScheduleId",
@@ -542,13 +542,13 @@ batchClient.createJobSchedule(new BatchJobScheduleCreateParameters("jobScheduleI
     new BatchJobSpecification(new BatchPoolInfo().setPoolId("poolId"))), null);
 ```
 
-#### GetJobSchedule
+#### Get Job Schedule
 
 ```java com.azure.compute.batch.job-schedule.get-job-schedule
 batchClient.getJobSchedule("jobScheduleId");
 ```
 
-#### ListJobSchedules
+#### List Job Schedules
 
 ```java com.azure.compute.batch.job-schedule.list-job-schedules
 for (BatchJobSchedule schedule : batchClient.listJobSchedules()) {
@@ -556,7 +556,7 @@ for (BatchJobSchedule schedule : batchClient.listJobSchedules()) {
 }
 ```
 
-#### DeleteJobSchedule
+#### Delete Job Schedule
 
 ```java com.azure.compute.batch.job-schedule.delete-job-schedule
 SyncPoller<BatchJobSchedule, Void> jobScheduleDeletePoller = batchClient.beginDeleteJobSchedule("jobScheduleId");
@@ -571,7 +571,7 @@ jobScheduleDeletePoller.waitForCompletion();
 PollResponse<BatchJobSchedule> finalJobScheduleDeleteResponse = jobScheduleDeletePoller.poll();
 ```
 
-#### ReplaceJobSchedule
+#### Replace Job Schedule
 
 ```java com.azure.compute.batch.replace-job-schedule.job-schedule-patch
 batchClient.replaceJobSchedule("jobScheduleId",
@@ -585,7 +585,7 @@ batchClient.replaceJobSchedule("jobScheduleId",
     null, null);
 ```
 
-#### UpdateJobSchedule
+#### Update Job Schedule
 
 Track 2:
 
@@ -597,19 +597,19 @@ updateContent.getMetadata().add(new MetadataItem("key", "value"));
 batchClient.updateJobSchedule("jobScheduleId", updateContent);
 ```
 
-#### DisableJobSchedule
+#### Disable Job Schedule
 
 ```java com.azure.compute.batch.job-schedule.disable-job-schedule
 batchClient.disableJobSchedule("jobScheduleId");
 ```
 
-#### EnableJobSchedule
+#### Enable Job Schedule
 
 ```java com.azure.compute.batch.job-schedule.enable-job-schedule
 batchClient.enableJobSchedule("jobScheduleId");
 ```
 
-#### TerminateJobSchedule
+#### Terminate Job Schedule
 
 ```java com.azure.compute.batch.job-schedule.terminate-job-schedule
 SyncPoller<BatchJobSchedule, BatchJobSchedule> terminateJobSchedulePoller = batchClient.beginTerminateJobSchedule("jobScheduleId");
@@ -619,7 +619,7 @@ BatchJobSchedule jobSchedule = terminateJobSchedulePoller.getFinalResult();
 
 ### Task Operations
 
-#### AddTask
+#### Create Tasks
 
 Create a single task:
 
@@ -647,25 +647,25 @@ for (int i = 0; i < 1000; i++) {
 batchClient.createTasks("jobId", tasks);
 ```
 
-#### GetTask
+#### Get Task
 
 ```java com.azure.compute.batch.task.get-task
 batchClient.getTask("jobId", "taskId");
 ```
 
-#### ListTasks
+#### List Tasks
 
 ```java com.azure.compute.batch.task.list-tasks
 batchClient.listTasks("jobId");
 ```
 
-#### DeleteTask
+#### Delete Task
 
 ```java com.azure.compute.batch.task.delete-task
 batchClient.deleteTask("jobId", "taskId");
 ```
 
-#### ReplaceTask
+#### Replace Task
 
 ```java com.azure.compute.batch.replace-task.task-update
 batchClient.replaceTask("jobId", "taskId",
@@ -675,13 +675,13 @@ batchClient.replaceTask("jobId", "taskId",
     null, null);
 ```
 
-#### ReactivateTask
+#### Reactivate Task
 
 ```java com.azure.compute.batch.reactivate-task.task-reactivate
 batchClient.reactivateTask("jobId", "taskId", null, null);
 ```
 
-#### TerminateTask
+#### Terminate Task
 
 ```java com.azure.compute.batch.terminate-task.task-terminate
 batchClient.terminateTask("jobId", "taskId", null, null);
@@ -689,7 +689,7 @@ batchClient.terminateTask("jobId", "taskId", null, null);
 
 ### File Operations for Tasks
 
-#### ListTaskFiles
+#### List Task Files
 
 ```java com.azure.compute.batch.task.list-task-files
 PagedIterable<BatchNodeFile> files = batchClient.listTaskFiles("jobId", "taskId");
@@ -698,14 +698,14 @@ for (BatchNodeFile file : files) {
 }
 ```
 
-#### GetTaskFile
+#### Get Task File
 
 ```java com.azure.compute.batch.task.get-task-file
 BinaryData fileContent = batchClient.getTaskFile("jobId", "taskId", "stdout.txt");
 System.out.println(new String(fileContent.toBytes(), StandardCharsets.UTF_8));
 ```
 
-#### GetTaskFileProperties
+#### Get Task File Properties
 
 ```java com.azure.compute.batch.get-task-file-properties.file-get-properties-from-task
 batchClient.getTaskFileProperties("jobId", "taskId", "wd\\testFile.txt",
@@ -714,20 +714,20 @@ batchClient.getTaskFileProperties("jobId", "taskId", "wd\\testFile.txt",
 
 ### Node Operations
 
-#### GetComputeNode
+#### Get Compute Node
 
 ```java com.azure.compute.batch.get-node.node-get
 BatchNode node
     = batchClient.getNode("poolId", "tvm-1695681911_2-20161122t193202z", new BatchNodeGetOptions());
 ```
 
-#### ListComputeNodes
+#### List Compute Nodes
 
 ```java com.azure.compute.batch.list-nodes.node-list
 PagedIterable<BatchNode> nodeList = batchClient.listNodes("poolId", new BatchNodesListOptions());
 ```
 
-#### DeallocateNode
+#### Deallocate Node
 
 ```java com.azure.compute.batch.node.deallocate-node
 BatchNodeDeallocateParameters deallocateParams
@@ -749,7 +749,7 @@ deallocatePoller.waitForCompletion();
 BatchNode deallocatedNode = deallocatePoller.getFinalResult();
 ```
 
-#### ReimageNode
+#### Reimage Node
 
 ```java com.azure.compute.batch.node.reimage-node
 SyncPoller<BatchNode, BatchNode> reimagePoller = batchClient.beginReimageNode("poolId", "nodeId");
@@ -763,7 +763,7 @@ reimagePoller.waitForCompletion();
 BatchNode reimagedNode = reimagePoller.getFinalResult();
 ```
 
-#### StartNode
+#### Start Node
 
 ```java com.azure.compute.batch.node.start-node
 SyncPoller<BatchNode, BatchNode> startPoller = batchClient.beginStartNode("poolId", "nodeId");
@@ -777,7 +777,7 @@ startPoller.waitForCompletion();
 BatchNode startedNode = startPoller.getFinalResult();
 ```
 
-#### RebootNode
+#### Reboot Node
 
 ```java com.azure.compute.batch.node.reboot-node
 List<BatchNode> listOfNodes = new ArrayList<>();
@@ -795,7 +795,7 @@ rebootPoller.waitForCompletion();
 BatchNode rebootedNode = rebootPoller.getFinalResult();
 ```
 
-#### CreateComputeNodeUser
+#### Create Compute Node User
 
 ```java com.azure.compute.batch.create-node-user.node-create-user
 batchClient.createNodeUser("poolId", "tvm-1695681911_1-20161121t182739z",
@@ -805,47 +805,47 @@ batchClient.createNodeUser("poolId", "tvm-1695681911_1-20161121t182739z",
     null);
 ```
 
-#### DeleteComputeNodeUser
+#### Delete Compute Node User
 
 ```java com.azure.compute.batch.delete-node-user.node-delete-user
 batchClient.deleteNodeUser("poolId", "tvm-1695681911_1-20161121t182739z", "userName", null);
 ```
 
-#### GetNodeFile
+#### Get Node File
 
 ```java com.azure.compute.batch.node.get-node-file
 BinaryData nodeFile = batchClient.getNodeFile("poolId", "nodeId", "filePath");
 ```
 
-#### ListNodeFiles
+#### List Node Files
 
 ```java com.azure.compute.batch.list-node-files.file-list-from-node
 PagedIterable<BatchNodeFile> listNodeFilesResponse = batchClient.listNodeFiles("poolId", "tvm-1695681911_1-20161122t193202z",
     new BatchNodeFilesListOptions().setRecursive(false));
 ```
 
-#### DeleteNodeFile
+#### Delete Node File
 
 ```java com.azure.compute.batch.delete-node-file.file-delete-from-node
 batchClient.deleteNodeFile("poolId", "tvm-1695681911_1-20161122t193202z",
     "workitems\\jobId\\job-1\\task1\\wd\\testFile.txt", new BatchNodeFileDeleteOptions().setRecursive(false));
 ```
 
-#### GetNodeFileProperties
+#### Get Node File Properties
 
 ```java com.azure.compute.batch.get-node-file-properties.file-get-properties-from-node
 batchClient.getNodeFileProperties("poolId", "nodeId", "workitems\\jobId\\job-1\\task1\\wd\\testFile.txt",
     new BatchNodeFilePropertiesGetOptions());
 ```
 
-#### GetRemoteLoginSettings
+#### Get Remote Login Settings
 
 ```java com.azure.compute.batch.get-node-remote-login-settings.node-get-remote-login-settings
 BatchNodeRemoteLoginSettings settings
     = batchClient.getNodeRemoteLoginSettings("poolId", "tvm-1695681911_1-20161121t182739z", null);
 ```
 
-#### UploadNodeLogs
+#### Upload Node Logs
 
 ```java com.azure.compute.batch.upload-node-logs.upload-batch-service-logs
 UploadBatchServiceLogsResult uploadNodeLogsResult
@@ -856,7 +856,7 @@ UploadBatchServiceLogsResult uploadNodeLogsResult
 
 Note: Certificate operations are deprecated.
 
-#### CreateCertificateFromCer
+#### Create Certificate From Cer
 
 Track 1:
 
@@ -868,7 +868,7 @@ batchClient.createCertificate(
     null);
 ```
 
-#### CreateCertificate
+#### Create Certificate
 
 ```java com.azure.compute.batch.create-certificate.certificate-create
 batchClient.createCertificate(
@@ -878,20 +878,20 @@ batchClient.createCertificate(
     null);
 ```
 
-#### GetCertificate
+#### Get Certificate
 
 ```java com.azure.compute.batch.get-certificate.certificate-get
 BatchCertificate certificateResponse = batchClient.getCertificate("sha1", "0123456789abcdef0123456789abcdef01234567",
     new BatchCertificateGetOptions());
 ```
 
-#### ListCertificates
+#### List Certificates
 
 ```java com.azure.compute.batch.list-certificates.certificate-list
 PagedIterable<BatchCertificate> certificateList = batchClient.listCertificates(new BatchCertificatesListOptions());
 ```
 
-#### DeleteCertificate
+#### Delete Certificate
 
 ```java com.azure.compute.batch.certificate.delete-certificate
 String thumbprintAlgorithm = "sha1";
@@ -901,7 +901,7 @@ deleteCertificatePoller.waitForCompletion();
 PollResponse<BatchCertificate> finalDeleteCertificateResponse = deleteCertificatePoller.poll();
 ```
 
-#### CancelDeleteCertificate
+#### Cancel Delete Certificate
 
 ```java com.azure.compute.batch.cancel-certificate-deletion.certificate-cancel-delete
 batchClient.cancelCertificateDeletion("sha1", "0123456789abcdef0123456789abcdef01234567", null);
@@ -909,18 +909,17 @@ batchClient.cancelCertificateDeletion("sha1", "0123456789abcdef0123456789abcdef0
 
 ### Application Operations
 
-#### GetApplication
+#### Get Application
 
 ```java com.azure.compute.batch.get-application.get-applications
 BatchApplication application = batchClient.getApplication("my_application_id", null);
 ```
 
-#### ListApplications
+#### List Applications
 
 ```java com.azure.compute.batch.list-applications.list-applications
 PagedIterable<BatchApplication> applications = batchClient.listApplications(new BatchApplicationsListOptions());
 ```
-
 
 ## Help
 
@@ -954,3 +953,9 @@ You will only need to do this once across all repos using our CLA.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+<!-- LINKS -->
+[product_documentation]: https://azure.microsoft.com/services/
+[docs]: https://azure.github.io/azure-sdk-for-java/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
+[azure_subscription]: https://azure.microsoft.com/free/
