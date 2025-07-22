@@ -50,9 +50,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -70,6 +72,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
     private List<String> accountLevelWriteRegions;
     private Map<String, String> readRegionMap;
     private Map<String, String> writeRegionMap;
+    private List<String> preferredRegions;
 
     @Factory(dataProvider = "simpleClientBuildersWithJustDirectTcp")
     public FaultInjectionServerErrorRuleOnDirectTests(CosmosClientBuilder clientBuilder) {
@@ -98,6 +101,11 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         this.writeRegionMap = accountLevelWriteableLocationContext.regionNameToEndpoint;
         this.accountLevelReadRegions = accountLevelReadableLocationContext.serviceOrderedReadableRegions;
         this.accountLevelWriteRegions = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions;
+
+        this.preferredRegions = accountLevelReadableLocationContext.serviceOrderedReadableRegions
+            .stream()
+            .map(regionName -> regionName.toLowerCase(Locale.ROOT))
+            .collect(Collectors.toList());
     }
 
     @DataProvider(name = "operationTypeProvider")
@@ -899,9 +907,6 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
     @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "faultInjectionOperationTypeProviderForLeaseNotFound", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_LeaseNotFound(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType, boolean primaryAddressOnly, boolean isReadMany) throws JsonProcessingException {
 
-        TestItem createdItem = TestItem.createNewItem();
-        cosmosAsyncContainer.createItem(createdItem).block();
-
         boolean shouldRetryCrossRegion = false;
 
         if (Utils.isWriteOperation(operationType) && this.accountLevelWriteRegions.size() > 1) {
@@ -910,28 +915,34 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             shouldRetryCrossRegion = true;
         }
 
+        TestItem createdItem = TestItem.createNewItem();
+
         String ruleId = "serverErrorRule-" + FaultInjectionServerErrorType.LEASE_NOT_FOUND + "-" + UUID.randomUUID();
         FaultInjectionRule serverErrorRule =
             new FaultInjectionRuleBuilder(ruleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
                         .operationType(faultInjectionOperationType)
-                        .region(this.accountLevelReadRegions.get(0))
+                        .region(this.preferredRegions.get(0))
                         .build()
                 )
                 .result(
                     FaultInjectionResultBuilders
                         .getResultBuilder(FaultInjectionServerErrorType.LEASE_NOT_FOUND)
-                        .times(100)
                         .build()
                 )
                 .duration(Duration.ofMinutes(5))
                 .build();
 
-        try {
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
+        CosmosAsyncContainer testContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithoutPreferredRegions);
 
-            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, isReadMany);
+        try {
+
+            testContainer.createItem(createdItem).block();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(serverErrorRule)).block();
+
+            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(testContainer, operationType, createdItem, isReadMany);
             this.validateHitCount(serverErrorRule, 1, operationType, ResourceType.Document);
             this.validateFaultInjectionRuleApplied(
                 cosmosDiagnostics,
