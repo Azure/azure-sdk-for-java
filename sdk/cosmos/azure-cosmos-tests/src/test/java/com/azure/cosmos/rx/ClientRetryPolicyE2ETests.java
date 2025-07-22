@@ -123,7 +123,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = {"multi-master", "fast"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"multi-master", "fast", "fi-multi-master", "multi-region"}, timeOut = TIMEOUT)
     public void beforeClass() {
         CosmosAsyncClient dummy = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(dummy);
@@ -169,7 +169,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         this.cosmosAsyncContainerFromClientWithoutPreferredRegions = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithoutPreferredRegions);
     }
 
-    @AfterClass(groups = {"multi-master", "fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"multi-master", "fast", "fi-multi-master", "multi-region"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.clientWithPreferredRegions);
         safeClose(this.clientWithoutPreferredRegions);
@@ -474,7 +474,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "fast" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT)
+    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT)
     public void dataPlaneRequestHitsLeaseNotFoundInFirstPreferredRegion(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType,
@@ -549,25 +549,11 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 assertThat(cosmosDiagnostics).isNotNull();
                 assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
 
-                fail("Operation " + operationType + " should have failed, but succeeded : " + cosmosDiagnostics.getDiagnosticsContext().toJson());
-            }
-
-        } catch (CosmosException e) {
-
-            if (!shouldRetryCrossRegion) {
-
-                CosmosDiagnostics cosmosDiagnostics = e.getDiagnostics();
-
-                assertThat(cosmosDiagnostics).isNotNull();
-                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
-
                 CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
 
                 assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
                 assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
                 assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
-            } else {
-                fail("Operation " + operationType + " should have succeeded, but failed with exception: " + e.getMessage(), e);
             }
 
         } finally {
@@ -694,81 +680,144 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         TestItem createdItem,
         Function<TestItem, PartitionKey> extractPartitionKeyFunc,
         boolean isReadMany) {
-        if (operationType == OperationType.Query && isReadMany) {
-            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
-            String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
-            FeedResponse<TestItem> itemFeedResponse =
-                cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst();
-            return Mono.just(itemFeedResponse.getCosmosDiagnostics());
-        }
 
-        if (operationType == OperationType.Read
-            || operationType == OperationType.Delete
-            || operationType == OperationType.Replace
-            || operationType == OperationType.Create
-            || operationType == OperationType.Patch
-            || operationType == OperationType.Upsert
-            || operationType == OperationType.Batch) {
+        try {
+            if (operationType == OperationType.Query && isReadMany) {
+                CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
+                String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
+                FeedResponse<TestItem> itemFeedResponse =
+                    cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst();
+                return Mono.just(itemFeedResponse.getCosmosDiagnostics())
+                    .onErrorResume(throwable -> {
+                        if (throwable instanceof CosmosException) {
+                            CosmosException cosmosException = (CosmosException) throwable;
 
-            if (operationType == OperationType.Read) {
-                return cosmosAsyncContainer
-                    .readItem(
-                        createdItem.getId(),
-                        extractPartitionKeyFunc.apply(createdItem),
-                        TestItem.class
-                    )
-                    .map(itemResponse -> itemResponse.getDiagnostics());
+                            return Mono.just(cosmosException.getDiagnostics());
+                        }
+                        return Mono.error(throwable);
+                    });
             }
 
-            if (operationType == OperationType.Replace) {
-                return cosmosAsyncContainer
-                    .replaceItem(
-                        createdItem,
-                        createdItem.getId(),
-                        extractPartitionKeyFunc.apply(createdItem))
-                    .map(itemResponse -> itemResponse.getDiagnostics());
+            if (operationType == OperationType.Read
+                || operationType == OperationType.Delete
+                || operationType == OperationType.Replace
+                || operationType == OperationType.Create
+                || operationType == OperationType.Patch
+                || operationType == OperationType.Upsert
+                || operationType == OperationType.Batch) {
+
+                if (operationType == OperationType.Read) {
+                    return cosmosAsyncContainer
+                        .readItem(
+                            createdItem.getId(),
+                            extractPartitionKeyFunc.apply(createdItem),
+                            TestItem.class
+                        )
+                        .map(itemResponse -> itemResponse.getDiagnostics())
+                        .onErrorResume(throwable -> {
+                            if (throwable instanceof CosmosException) {
+                                CosmosException cosmosException = (CosmosException) throwable;
+
+                                return Mono.just(cosmosException.getDiagnostics());
+                            }
+                            return Mono.error(throwable);
+                        });
+                }
+
+                if (operationType == OperationType.Replace) {
+                    return cosmosAsyncContainer
+                        .replaceItem(
+                            createdItem,
+                            createdItem.getId(),
+                            extractPartitionKeyFunc.apply(createdItem))
+                        .map(itemResponse -> itemResponse.getDiagnostics())
+                        .onErrorResume(throwable -> {
+                            if (throwable instanceof CosmosException) {
+                                CosmosException cosmosException = (CosmosException) throwable;
+
+                                return Mono.just(cosmosException.getDiagnostics());
+                            }
+                            return Mono.error(throwable);
+                        });
+                }
+
+                if (operationType == OperationType.Delete) {
+                    return cosmosAsyncContainer.deleteItem(createdItem, null).map(itemResponse -> itemResponse.getDiagnostics())                        .onErrorResume(throwable -> {
+                        if (throwable instanceof CosmosException) {
+                            CosmosException cosmosException = (CosmosException) throwable;
+
+                            return Mono.just(cosmosException.getDiagnostics());
+                        }
+                        return Mono.error(throwable);
+                    });
+                }
+
+                if (operationType == OperationType.Create) {
+                    return cosmosAsyncContainer.createItem(TestItem.createNewItem()).map(itemResponse -> itemResponse.getDiagnostics())                        .onErrorResume(throwable -> {
+                        if (throwable instanceof CosmosException) {
+                            CosmosException cosmosException = (CosmosException) throwable;
+
+                            return Mono.just(cosmosException.getDiagnostics());
+                        }
+                        return Mono.error(throwable);
+                    });
+                }
+
+                if (operationType == OperationType.Upsert) {
+                    return cosmosAsyncContainer.upsertItem(TestItem.createNewItem()).map(itemResponse -> itemResponse.getDiagnostics())                        .onErrorResume(throwable -> {
+                        if (throwable instanceof CosmosException) {
+                            CosmosException cosmosException = (CosmosException) throwable;
+
+                            return Mono.just(cosmosException.getDiagnostics());
+                        }
+                        return Mono.error(throwable);
+                    });
+                }
+
+                if (operationType == OperationType.Patch) {
+                    CosmosPatchOperations patchOperations =
+                        CosmosPatchOperations
+                            .create()
+                            .add("newPath", "newPath");
+                    return cosmosAsyncContainer
+                        .patchItem(
+                            createdItem.getId(),
+                            extractPartitionKeyFunc.apply(createdItem),
+                            patchOperations,
+                            TestItem.class)
+                        .map(itemResponse -> itemResponse.getDiagnostics())
+                        .onErrorResume(throwable -> {
+                            if (throwable instanceof CosmosException) {
+                                CosmosException cosmosException = (CosmosException) throwable;
+
+                                return Mono.just(cosmosException.getDiagnostics());
+                            }
+                            return Mono.error(throwable);
+                        });
+                }
+
+                if (operationType == OperationType.Batch) {
+                    CosmosBatch batch = CosmosBatch.createCosmosBatch(extractPartitionKeyFunc.apply(createdItem));
+
+                    batch.upsertItemOperation(createdItem);
+                    batch.readItemOperation(createdItem.getId());
+
+                    return cosmosAsyncContainer.executeCosmosBatch(batch).map(cosmosBatchResponse -> cosmosBatchResponse.getDiagnostics())
+                        .onErrorResume(throwable -> {
+                            if (throwable instanceof CosmosException) {
+                                CosmosException cosmosException = (CosmosException) throwable;
+
+                                return Mono.just(cosmosException.getDiagnostics());
+                            }
+                            return Mono.error(throwable);
+                        });
+                }
             }
 
-            if (operationType == OperationType.Delete) {
-                return cosmosAsyncContainer.deleteItem(createdItem, null).map(itemResponse -> itemResponse.getDiagnostics());
-            }
-
-            if (operationType == OperationType.Create) {
-                return cosmosAsyncContainer.createItem(TestItem.createNewItem()).map(itemResponse -> itemResponse.getDiagnostics());
-            }
-
-            if (operationType == OperationType.Upsert) {
-                return cosmosAsyncContainer.upsertItem(TestItem.createNewItem()).map(itemResponse -> itemResponse.getDiagnostics());
-            }
-
-            if (operationType == OperationType.Patch) {
-                CosmosPatchOperations patchOperations =
-                    CosmosPatchOperations
-                        .create()
-                        .add("newPath", "newPath");
-                return cosmosAsyncContainer
-                    .patchItem(
-                        createdItem.getId(),
-                        extractPartitionKeyFunc.apply(createdItem),
-                        patchOperations,
-                        TestItem.class)
-                    .map(itemResponse -> itemResponse.getDiagnostics());
-            }
-
-            if (operationType == OperationType.Batch) {
-                CosmosBatch batch = CosmosBatch.createCosmosBatch(extractPartitionKeyFunc.apply(createdItem));
-
-                batch.upsertItemOperation(createdItem);
-                batch.readItemOperation(createdItem.getId());
-
-                return cosmosAsyncContainer.executeCosmosBatch(batch).map(cosmosBatchResponse -> cosmosBatchResponse.getDiagnostics());
-            }
-        }
-
-        if (operationType == OperationType.ReadFeed) {
-            List<FeedRange> feedRanges = cosmosAsyncContainer.getFeedRanges().block();
-            CosmosChangeFeedRequestOptions changeFeedRequestOptions =
-                CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
+            if (operationType == OperationType.ReadFeed) {
+                List<FeedRange> feedRanges = cosmosAsyncContainer.getFeedRanges().block();
+                CosmosChangeFeedRequestOptions changeFeedRequestOptions =
+                    CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
 
             FeedResponse<TestItem> firstPage =  cosmosAsyncContainer
                 .queryChangeFeed(changeFeedRequestOptions, TestItem.class)
@@ -777,15 +826,26 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             return Mono.just(firstPage.getCosmosDiagnostics());
         }
 
-        if (operationType == OperationType.Query) {
-            return cosmosAsyncContainer
-                .readMany(
-                    Arrays.asList(new CosmosItemIdentity(extractPartitionKeyFunc.apply(createdItem), createdItem.getId()), new CosmosItemIdentity(extractPartitionKeyFunc.apply(createdItem), createdItem.getId())),
-                    TestItem.class)
-                .map(itemResponse -> itemResponse.getCosmosDiagnostics());
-        }
+            if (operationType == OperationType.Query) {
+                return cosmosAsyncContainer
+                    .readMany(
+                        Arrays.asList(new CosmosItemIdentity(extractPartitionKeyFunc.apply(createdItem), createdItem.getId()), new CosmosItemIdentity(extractPartitionKeyFunc.apply(createdItem), createdItem.getId())),
+                        TestItem.class)
+                    .map(itemResponse -> itemResponse.getCosmosDiagnostics())
+                    .onErrorResume(throwable -> {
+                        if (throwable instanceof CosmosException) {
+                            CosmosException cosmosException = (CosmosException) throwable;
 
-        throw new IllegalArgumentException("The operation type is not supported");
+                            return Mono.just(cosmosException.getDiagnostics());
+                        }
+                        return Mono.error(throwable);
+                    });
+            }
+
+            throw new IllegalArgumentException("The operation type is not supported");
+        } catch (CosmosException e) {
+            return Mono.just(e.getDiagnostics());
+        }
     }
 
     private AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {

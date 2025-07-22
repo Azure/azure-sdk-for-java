@@ -77,7 +77,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = {"multi-region", "long", "fast"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"multi-region", "long", "fast", "fi-multi-master"}, timeOut = TIMEOUT)
     public void beforeClass() {
         clientWithoutPreferredRegions = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(clientWithoutPreferredRegions);
@@ -896,7 +896,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
 
     }
 
-    @Test(groups = { "fast", "multi-master" }, dataProvider = "faultInjectionOperationTypeProviderForLeaseNotFound", timeOut = TIMEOUT)
+    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "faultInjectionOperationTypeProviderForLeaseNotFound", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_LeaseNotFound(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType, boolean primaryAddressOnly, boolean isReadMany) throws JsonProcessingException {
 
         TestItem createdItem = TestItem.createNewItem();
@@ -1371,7 +1371,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         boolean canRetryOnFaultInjectedError) throws JsonProcessingException {
 
         List<ObjectNode> diagnosticsNode = new ArrayList<>();
-        if (operationType == OperationType.Query || (operationType == OperationType.ReadFeed && canRetryOnFaultInjectedError)) {
+        if ((operationType == OperationType.Query || operationType == OperationType.ReadFeed) && canRetryOnFaultInjectedError) {
             ObjectNode cosmosDiagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString());
             for (JsonNode node : cosmosDiagnosticsNode.get("clientSideRequestStatistics")) {
                 diagnosticsNode.add((ObjectNode) node);
@@ -1472,14 +1472,21 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         ObjectNode diagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString());
         JsonNode addressResolutionStatistics;
 
+        // optimistically resolve the addressResolutionStatistics
+
         if (isQueryOperation) {
 
             ArrayNode arrayNode = (ArrayNode) diagnosticsNode.get("clientSideRequestStatistics");
 
-            assertThat(arrayNode).isNotNull();
-            assertThat(arrayNode.get(0)).isNotNull();
+            if (arrayNode != null) {
+                assertThat(arrayNode).isNotNull();
+                assertThat(arrayNode.get(0)).isNotNull();
 
-            addressResolutionStatistics = arrayNode.get(0).get("addressResolutionStatistics");
+                addressResolutionStatistics = arrayNode.get(0).get("addressResolutionStatistics");
+            } else {
+                // if the addressResolutionStatistics is not present in the clientSideRequestStatistics, then fallback to the diagnosticsNode
+                addressResolutionStatistics = diagnosticsNode.get("addressResolutionStatistics");
+            }
         } else {
             addressResolutionStatistics = diagnosticsNode.get("addressResolutionStatistics");
         }
