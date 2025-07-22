@@ -80,7 +80,7 @@ import java.util.function.Consumer;
  * information on containers.
  */
 @ServiceClient(builder = BlobServiceClientBuilder.class)
-public final class BlobServiceClient {
+public class BlobServiceClient {
     private static final ClientLogger LOGGER = new ClientLogger(BlobServiceClient.class);
     private final AzureBlobStorageImpl azureBlobStorage;
     private final String accountName;
