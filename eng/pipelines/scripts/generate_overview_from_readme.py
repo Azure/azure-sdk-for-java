@@ -15,6 +15,7 @@
 # will be written to overview file. If there is a readme, its contents will be added after that.
 
 import argparse
+import html
 from bs4 import BeautifulSoup
 import pdb
 import markdown2
@@ -47,7 +48,7 @@ def generate_overview(readme_file, version, overview_file_path):
         # Replace all instances of & with &amp; in the raw readme content
         escaped_readme_content_lines = []
         for line in raw_readme_content_lines:
-            escaped_readme_content_lines.append(line.replace('&', '&amp;'))
+            escaped_readme_content_lines.append(html.escape(line, quote=True))
             
         # Before passing the README contents to markdown2 clean out the codesnippet tags on the java code fences.
         # Clean ```java com.azure.core.aCodeSnippetTag to ```java, without doing this markdown2 won't properly process
