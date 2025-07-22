@@ -9,12 +9,7 @@ This README is based on the latest released version of the Azure Compute Batch S
 - [Documentation](#documentation)
 - [Prerequisites](#prerequisites)
   - [Adding the package to your product](#adding-the-package-to-your-product)
-- [Key concepts](#key-concepts)
-  - [Azure Batch Authentication](#azure-batch-authentication)
-  - [Create a Pool](#create-a-pool)
-  - [Create a Job](#create-a-job)
-  - [Create a Task](#create-a-task)
-- [All Methods](#all-methods)
+- [Azure Batch Authentication](#azure-batch-authentication)
   - [Authenticate with Microsoft Entra ID](#authenticate-with-microsoft-entra-id)
   - [Authenticate with Shared Key Credentials](#authenticate-with-shared-key-credentials)
 - [Error Handling](#error-handling)
@@ -121,20 +116,30 @@ Various documentation is available to help you get started
 
 [//]: # ({x-version-update-end})
 
-## Key concepts
+## Azure Batch Authentication
 
-### Azure Batch Authentication
+### Authenticate with Microsoft Entra ID
 
 You need to create a Batch account through the [Azure portal](https://portal.azure.com) or Azure cli.
 
 - The preferred method is to use Entra ID authentication to create the client. See this [document](https://learn.microsoft.com/azure/batch/batch-aad-auth) for details on authenticating to Batch with Entra ID.
-For example:
+For example, here is how to build an instance of the synchronous client, BatchClient:
 
 ```java com.azure.compute.batch.build-client
 BatchClient batchClient = new BatchClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
     .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
     .buildClient();
 ```
+
+Alternatively, using that same method, you can also build an instance of the asynchronous client (BatchAsyncClient) if you want to perform any operations asynchronously:
+
+```java com.azure.compute.batch.build-async-client
+BatchAsyncClient batchAsyncClient = new BatchClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+    .buildAsyncClient();
+```
+
+### Authenticate with Shared Key Credentials
 
 You can also create a client using Shared Key Credentials:
 
@@ -146,101 +151,14 @@ AzureNamedKeyCredential sharedKeyCreds = new AzureNamedKeyCredential(accountName
 
 BatchClientBuilder batchClientBuilder = new BatchClientBuilder();
 batchClientBuilder.credential(sharedKeyCreds);
+// You can build both the sync and async clients with this configuration
 BatchClient batchClientWithSharedKey = batchClientBuilder.buildClient();
-```
-
-### Create a Pool
-
-You can create a pool of Azure virtual machines which can be used to execute tasks.
-
-```java com.azure.compute.batch.create-pool.creates-a-simple-pool
-batchClient.createPool(new BatchPoolCreateParameters("poolId", "STANDARD_DC2s_V2")
-    .setVirtualMachineConfiguration(
-        new VirtualMachineConfiguration(new BatchVmImageReference().setPublisher("Canonical")
-            .setOffer("UbuntuServer")
-            .setSku("18_04-lts-gen2")
-            .setVersion("latest"), "batch.node.ubuntu 18.04"))
-    .setTargetDedicatedNodes(1), null);
-```
-
-### Create a Job
-
-You can create a job by using the recently created pool.
-
-```java com.azure.compute.batch.create-job.creates-a-basic-job
-batchClient.createJob(
-    new BatchJobCreateParameters("jobId", new BatchPoolInfo().setPoolId("poolId")).setPriority(0), null);
-```
-
-### Create a Task
-
-Create a simple task:
-
-```java com.azure.compute.batch.create-task.creates-a-simple-task
-String taskId = "ExampleTaskId";
-BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "echo hello world");
-batchClient.createTask("jobId", taskToCreate);
-```
-
-Or create a more complex task, one with exit conditions:
-
-```java com.azure.compute.batch.create-task.creates-a-task-with-exit-conditions
-batchClient.createTask("jobId", new BatchTaskCreateParameters("taskId", "cmd /c exit 3")
-    .setExitConditions(new ExitConditions().setExitCodeRanges(Arrays
-        .asList(new ExitCodeRangeMapping(2, 4, new ExitOptions().setJobAction(BatchJobActionKind.TERMINATE)))))
-    .setUserIdentity(new UserIdentity().setAutoUser(
-        new AutoUserSpecification().setScope(AutoUserScope.TASK).setElevationLevel(ElevationLevel.NON_ADMIN))),
-    null);
+BatchAsyncClient batchAsyncClientWithSharedKey = batchClientBuilder.buildAsyncClient();
 ```
 
 ## Sample Code
 
 You can find sample code that illustrates Batch usage scenarios in <https://github.com/azure/azure-batch-samples>
-
-Error handling
-
-When a call to the batch service fails the response from that call will contain a BatchError object in the body of the response.  In the AZURE-COMPUTE-BATCH SDK when an api method is called and a failure from the server occurs the sdk will throw a HttpResponseException exception.  You can use the helper method BatchError.fromException() to extract out the BatchError object.
-
-```java com.azure.compute.batch.resize-pool.resize-pool-error
-try {
-    BatchPoolResizeParameters resizeParams
-        = new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1);
-    batchClient.beginResizePool("fakepool", resizeParams);
-} catch (BatchErrorException err) {
-    BatchError error = err.getValue();
-    Assertions.assertNotNull(error);
-    Assertions.assertEquals("PoolNotFound", error.getCode());
-    Assertions.assertTrue(error.getMessage().getValue().contains("The specified pool does not exist."));
-    Assertions.assertNull(error.getValues());
-}
-```
-
-## All Methods
-
-### Authenticate with Microsoft Entra ID
-
-The preferred approach is to use the Azure Identity library’s `DefaultAzureCredential`.
-
-```java com.azure.compute.batch.build-client
-BatchClient batchClient = new BatchClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-    .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
-    .buildClient();
-```
-
-### Authenticate with Shared Key Credentials
-
-Alternatively, authenticate using an `AzureNamedKeyCredential`.
-
-```java com.azure.compute.batch.build-sharedkey-client
-Configuration localConfig = Configuration.getGlobalConfiguration();
-String accountName = localConfig.get("AZURE_BATCH_ACCOUNT", "fakeaccount");
-String accountKey = localConfig.get("AZURE_BATCH_ACCESS_KEY", "fakekey");
-AzureNamedKeyCredential sharedKeyCreds = new AzureNamedKeyCredential(accountName, accountKey);
-
-BatchClientBuilder batchClientBuilder = new BatchClientBuilder();
-batchClientBuilder.credential(sharedKeyCreds);
-BatchClient batchClientWithSharedKey = batchClientBuilder.buildClient();
-```
 
 ## Error Handling
 
@@ -262,7 +180,7 @@ try {
 
 ## Operations Examples
 
-The sections below compare common operations between Track 1 (Microsoft.Azure.Batch) and Track 2 (Azure.Compute.Batch).
+The sections below compare common operations between Track 1 (Microsoft.Azure.Batch) and Track 2 (Azure.Compute.Batch). While most of these examples use the synchronous BatchClient, you can call these operations on the asynchronous BatchAsyncClient as well.
 
 ### Pool Operations
 
@@ -281,13 +199,20 @@ batchClient.createPool(new BatchPoolCreateParameters("poolId", "STANDARD_DC2s_V2
 #### Get Pool
 
 ```java com.azure.compute.batch.get-pool.pool-get
-BatchPool response = batchClient.getPool("pool", null, null);
+BatchPool pool = batchClient.getPool("poolId");
+```
+
+```java com.azure.compute.batch.pool.get-pool-async
+batchAsyncClient.getPool("poolId").subscribe(asyncPool -> {
+    // Use the pool here
+    System.out.println("Pool ID: " + asyncPool.getId());
+});
 ```
 
 #### List Pools
 
 ```java com.azure.compute.batch.list-pools.pool-list
-PagedIterable<BatchPool> poolList = batchClient.listPools(new BatchPoolsListOptions());
+PagedIterable<BatchPool> poolList = batchClient.listPools();
 ```
 
 #### Delete Pool
@@ -304,6 +229,21 @@ if (initialDeletePoolResponse.getStatus() == LongRunningOperationStatus.IN_PROGR
 // Wait for LRO to finish
 deletePoolPoller.waitForCompletion();
 PollResponse<BatchPool> finalDeletePoolResponse = deletePoolPoller.poll();
+```
+
+```java com.azure.compute.batch.delete-pool.pool-delete-async
+batchAsyncClient.beginDeletePool("poolId")
+    .doOnNext(pollResponse -> {
+        if (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchPool poolDuringPoll = pollResponse.getValue();
+            System.out.println("Pool is being deleted: " + poolDuringPoll.getId());
+        }
+    })
+    .takeUntil(pollResponse -> pollResponse.getStatus().isComplete())
+    .last()
+    .subscribe(finalPollResponse -> {
+        System.out.println("Pool deletion completed with status: " + finalPollResponse.getStatus());
+    });
 ```
 
 #### Update Pool
@@ -416,6 +356,12 @@ BatchPool poolAfterRemove = removePoller.getFinalResult();
 ```java com.azure.compute.batch.create-job.creates-a-basic-job
 batchClient.createJob(
     new BatchJobCreateParameters("jobId", new BatchPoolInfo().setPoolId("poolId")).setPriority(0), null);
+```
+
+```java com.azure.compute.batch.create-job.creates-a-basic-job-async
+batchAsyncClient.createJob(
+    new BatchJobCreateParameters("jobId", new BatchPoolInfo().setPoolId("poolId")).setPriority(0))
+    .subscribe(unused -> System.out.println("Job created successfully"));
 ```
 
 #### Get Job
@@ -532,6 +478,23 @@ terminatePoller.waitForCompletion();
 BatchJob terminatedJob = terminatePoller.getFinalResult();
 ```
 
+```java com.azure.compute.batch.job.terminate-job-async
+BatchJobTerminateParameters asyncTerminateParams = new BatchJobTerminateParameters()
+    .setTerminationReason("ExampleReason");
+BatchJobTerminateOptions asyncTerminateOptions = new BatchJobTerminateOptions()
+    .setParameters(asyncTerminateParams);
+
+batchAsyncClient.beginTerminateJob("jobId", asyncTerminateOptions, null)
+    .takeUntil(response -> response.getStatus().isComplete())
+    .last()
+    .flatMap(finalResponse -> {
+        BatchJob asyncTerminatedJob = finalResponse.getValue();
+        System.out.println("Job termination completed. Final job state: " + asyncTerminatedJob.getState());
+        return Mono.empty();
+    })
+    .subscribe();
+```
+
 ### Job Schedule Operations
 
 #### Create Job Schedule
@@ -623,8 +586,21 @@ BatchJobSchedule jobSchedule = terminateJobSchedulePoller.getFinalResult();
 
 Create a single task:
 
-```java com.azure.compute.batch.create-task.creates-a-basic-task
-batchClient.createTask("jobId", new BatchTaskCreateParameters("task1", "cmd /c echo task1"), null);
+```java com.azure.compute.batch.create-task.creates-a-simple-task
+String taskId = "ExampleTaskId";
+BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "echo hello world");
+batchClient.createTask("jobId", taskToCreate);
+```
+
+Or create a more complex task, one with exit conditions:
+
+```java com.azure.compute.batch.create-task.creates-a-task-with-exit-conditions
+batchClient.createTask("jobId", new BatchTaskCreateParameters("taskId", "cmd /c exit 3")
+    .setExitConditions(new ExitConditions().setExitCodeRanges(Arrays
+        .asList(new ExitCodeRangeMapping(2, 4, new ExitOptions().setJobAction(BatchJobActionKind.TERMINATE)))))
+    .setUserIdentity(new UserIdentity().setAutoUser(
+        new AutoUserSpecification().setScope(AutoUserScope.TASK).setElevationLevel(ElevationLevel.NON_ADMIN))),
+    null);
 ```
 
 Create a task collection (100 tasks or less):
@@ -736,7 +712,7 @@ BatchNodeDeallocateParameters deallocateParams
 BatchNodeDeallocateOptions deallocateOptions
     = new BatchNodeDeallocateOptions().setTimeOutInSeconds(Duration.ofSeconds(30))
         .setParameters(deallocateParams);
- SyncPoller<BatchNode, BatchNode> deallocatePoller = batchClient.beginDeallocateNode("poolId", "nodeId", deallocateOptions);
+SyncPoller<BatchNode, BatchNode> deallocatePoller = batchClient.beginDeallocateNode("poolId", "nodeId", deallocateOptions);
 
  // Validate first poll response
 PollResponse<BatchNode> firstPoll = deallocatePoller.poll();
@@ -849,7 +825,15 @@ BatchNodeRemoteLoginSettings settings
 
 ```java com.azure.compute.batch.upload-node-logs.upload-batch-service-logs
 UploadBatchServiceLogsResult uploadNodeLogsResult
-    = batchClient.uploadNodeLogs("poolId", "tvm-1695681911_1-20161121t182739z", null, null);
+    = batchClient.uploadNodeLogs("poolId", "nodeId", null);
+```
+
+```java com.azure.compute.batch.upload-node-logs.upload-batch-service-logs-async
+batchAsyncClient.uploadNodeLogs("poolId", "nodeId", null)
+    .subscribe(logResult -> {
+        System.out.println("Number of files uploaded: " + logResult.getNumberOfFilesUploaded());
+        System.out.println("Log upload container URL: " + logResult.getVirtualDirectoryName());
+    });
 ```
 
 ### Certificate Operations
