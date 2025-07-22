@@ -1,14 +1,9 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.0-beta.4 (2025-07-21)
 
 ### Bugs Fixed
-
-### Other Changes
+- Use response HTTP Header for deserialization of response body (#[45901](https://github.com/Azure/azure-sdk-for-java/pull/45901))
 
 ## 1.0.0-beta.3 (2025-06-02)
 

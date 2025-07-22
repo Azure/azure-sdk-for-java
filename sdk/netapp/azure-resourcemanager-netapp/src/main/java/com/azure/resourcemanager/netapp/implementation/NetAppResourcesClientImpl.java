@@ -22,8 +22,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourcesClient;
@@ -69,13 +71,23 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetAppManagementClie")
+    @ServiceInterface(name = "NetAppManagementClientNetAppResources")
     public interface NetAppResourcesService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkNameAvailability")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckAvailabilityResponseInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ResourceNameAvailabilityRequest body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkNameAvailability")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CheckAvailabilityResponseInner> checkNameAvailabilitySync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ResourceNameAvailabilityRequest body, @HeaderParam("Accept") String accept,
@@ -92,6 +104,16 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkFilePathAvailability")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CheckAvailabilityResponseInner> checkFilePathAvailabilitySync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") FilePathAvailabilityRequest body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkQuotaAvailability")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -101,10 +123,27 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkQuotaAvailability")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CheckAvailabilityResponseInner> checkQuotaAvailabilitySync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") QuotaAvailabilityRequest body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/regionInfo")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RegionInfoInner>> queryRegionInfo(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/regionInfo")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<RegionInfoInner> queryRegionInfoSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
@@ -119,10 +158,30 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/queryNetworkSiblingSet")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<NetworkSiblingSetInner> queryNetworkSiblingSetSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") QueryNetworkSiblingSetRequest body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/updateNetworkSiblingSet")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updateNetworkSiblingSet(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") UpdateNetworkSiblingSetRequest body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/updateNetworkSiblingSet")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateNetworkSiblingSetSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") UpdateNetworkSiblingSetRequest body, @HeaderParam("Accept") String accept,
@@ -175,45 +234,6 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * @param location The name of the Azure region.
      * @param body Name availability request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(String location,
-        ResourceNameAvailabilityRequest body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
-            this.client.getApiVersion(), body, accept, context);
-    }
-
-    /**
-     * Check resource name availability
-     * 
-     * Check if a resource name is available.
-     * 
-     * @param location The name of the Azure region.
-     * @param body Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -241,7 +261,28 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckAvailabilityResponseInner> checkNameAvailabilityWithResponse(String location,
         ResourceNameAvailabilityRequest body, Context context) {
-        return checkNameAvailabilityWithResponseAsync(location, body, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.checkNameAvailabilitySync(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+            this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -307,45 +348,6 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * @param location The name of the Azure region.
      * @param body File path availability request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckAvailabilityResponseInner>> checkFilePathAvailabilityWithResponseAsync(String location,
-        FilePathAvailabilityRequest body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.checkFilePathAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
-            this.client.getApiVersion(), body, accept, context);
-    }
-
-    /**
-     * Check file path availability
-     * 
-     * Check if a file path is available.
-     * 
-     * @param location The name of the Azure region.
-     * @param body File path availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -374,7 +376,28 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckAvailabilityResponseInner> checkFilePathAvailabilityWithResponse(String location,
         FilePathAvailabilityRequest body, Context context) {
-        return checkFilePathAvailabilityWithResponseAsync(location, body, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.checkFilePathAvailabilitySync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            location, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -440,45 +463,6 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * @param location The name of the Azure region.
      * @param body Quota availability request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckAvailabilityResponseInner>> checkQuotaAvailabilityWithResponseAsync(String location,
-        QuotaAvailabilityRequest body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.checkQuotaAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
-            this.client.getApiVersion(), body, accept, context);
-    }
-
-    /**
-     * Check quota availability
-     * 
-     * Check if a quota is available.
-     * 
-     * @param location The name of the Azure region.
-     * @param body Quota availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -506,7 +490,28 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckAvailabilityResponseInner> checkQuotaAvailabilityWithResponse(String location,
         QuotaAvailabilityRequest body, Context context) {
-        return checkQuotaAvailabilityWithResponseAsync(location, body, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.checkQuotaAvailabilitySync(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+            this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -564,38 +569,6 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * Provides storage to network proximity and logical zone mapping information.
      * 
      * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provides region specific information along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RegionInfoInner>> queryRegionInfoWithResponseAsync(String location, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.queryRegionInfo(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Describes region specific information.
-     * 
-     * Provides storage to network proximity and logical zone mapping information.
-     * 
-     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -620,7 +593,23 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RegionInfoInner> queryRegionInfoWithResponse(String location, Context context) {
-        return queryRegionInfoWithResponseAsync(location, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.queryRegionInfoSync(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -685,45 +674,6 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * @param location The name of the Azure region.
      * @param body Network sibling set to query.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified network sibling set along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkSiblingSetInner>> queryNetworkSiblingSetWithResponseAsync(String location,
-        QueryNetworkSiblingSetRequest body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.queryNetworkSiblingSet(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
-            this.client.getApiVersion(), body, accept, context);
-    }
-
-    /**
-     * Describe a network sibling set
-     * 
-     * Get details of the specified network sibling set.
-     * 
-     * @param location The name of the Azure region.
-     * @param body Network sibling set to query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -751,7 +701,28 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkSiblingSetInner> queryNetworkSiblingSetWithResponse(String location,
         QueryNetworkSiblingSetRequest body, Context context) {
-        return queryNetworkSiblingSetWithResponseAsync(location, body, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.queryNetworkSiblingSetSync(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+            this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -816,34 +787,75 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * @param location The name of the Azure region.
      * @param body Update for the specified network sibling set.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network sibling set along with {@link Response} on successful completion of {@link Mono}.
+     * @return network sibling set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateNetworkSiblingSetWithResponseAsync(String location,
-        UpdateNetworkSiblingSetRequest body, Context context) {
+    private Response<BinaryData> updateNetworkSiblingSetWithResponse(String location,
+        UpdateNetworkSiblingSetRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.updateNetworkSiblingSet(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+        return service.updateNetworkSiblingSetSync(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+            this.client.getApiVersion(), body, accept, Context.NONE);
+    }
+
+    /**
+     * Update the network features of a network sibling set
+     * 
+     * Update the network features of the specified network sibling set.
+     * 
+     * @param location The name of the Azure region.
+     * @param body Update for the specified network sibling set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network sibling set along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateNetworkSiblingSetWithResponse(String location,
+        UpdateNetworkSiblingSetRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.updateNetworkSiblingSetSync(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
             this.client.getApiVersion(), body, accept, context);
     }
 
@@ -875,28 +887,6 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * @param location The name of the Azure region.
      * @param body Update for the specified network sibling set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of network sibling set.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkSiblingSetInner>, NetworkSiblingSetInner>
-        beginUpdateNetworkSiblingSetAsync(String location, UpdateNetworkSiblingSetRequest body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = updateNetworkSiblingSetWithResponseAsync(location, body, context);
-        return this.client.<NetworkSiblingSetInner, NetworkSiblingSetInner>getLroResult(mono,
-            this.client.getHttpPipeline(), NetworkSiblingSetInner.class, NetworkSiblingSetInner.class, context);
-    }
-
-    /**
-     * Update the network features of a network sibling set
-     * 
-     * Update the network features of the specified network sibling set.
-     * 
-     * @param location The name of the Azure region.
-     * @param body Update for the specified network sibling set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -905,7 +895,9 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkSiblingSetInner>, NetworkSiblingSetInner>
         beginUpdateNetworkSiblingSet(String location, UpdateNetworkSiblingSetRequest body) {
-        return this.beginUpdateNetworkSiblingSetAsync(location, body).getSyncPoller();
+        Response<BinaryData> response = updateNetworkSiblingSetWithResponse(location, body);
+        return this.client.<NetworkSiblingSetInner, NetworkSiblingSetInner>getLroResult(response,
+            NetworkSiblingSetInner.class, NetworkSiblingSetInner.class, Context.NONE);
     }
 
     /**
@@ -924,7 +916,9 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkSiblingSetInner>, NetworkSiblingSetInner>
         beginUpdateNetworkSiblingSet(String location, UpdateNetworkSiblingSetRequest body, Context context) {
-        return this.beginUpdateNetworkSiblingSetAsync(location, body, context).getSyncPoller();
+        Response<BinaryData> response = updateNetworkSiblingSetWithResponse(location, body, context);
+        return this.client.<NetworkSiblingSetInner, NetworkSiblingSetInner>getLroResult(response,
+            NetworkSiblingSetInner.class, NetworkSiblingSetInner.class, context);
     }
 
     /**
@@ -952,26 +946,6 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * 
      * @param location The name of the Azure region.
      * @param body Update for the specified network sibling set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network sibling set on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkSiblingSetInner> updateNetworkSiblingSetAsync(String location,
-        UpdateNetworkSiblingSetRequest body, Context context) {
-        return beginUpdateNetworkSiblingSetAsync(location, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update the network features of a network sibling set
-     * 
-     * Update the network features of the specified network sibling set.
-     * 
-     * @param location The name of the Azure region.
-     * @param body Update for the specified network sibling set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -979,7 +953,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSiblingSetInner updateNetworkSiblingSet(String location, UpdateNetworkSiblingSetRequest body) {
-        return updateNetworkSiblingSetAsync(location, body).block();
+        return beginUpdateNetworkSiblingSet(location, body).getFinalResult();
     }
 
     /**
@@ -998,6 +972,8 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSiblingSetInner updateNetworkSiblingSet(String location, UpdateNetworkSiblingSetRequest body,
         Context context) {
-        return updateNetworkSiblingSetAsync(location, body, context).block();
+        return beginUpdateNetworkSiblingSet(location, body, context).getFinalResult();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetAppResourcesClientImpl.class);
 }

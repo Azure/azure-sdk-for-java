@@ -73,11 +73,10 @@ public class TelemetryHelper {
         this.tracer = GlobalOpenTelemetry.getTracer(scenarioName);
         this.meter = GlobalOpenTelemetry.getMeter(scenarioName);
         this.logger = new ClientLogger(scenarioName);
-        this.runDuration = meter.histogramBuilder("test.run.duration")
-            .setUnit("s")
-            .build();
+        this.runDuration = meter.histogramBuilder("test.run.duration").setUnit("s").build();
         this.commonAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName);
-        this.canceledAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, "cancelled");
+        this.canceledAttributes
+            = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, "cancelled");
     }
 
     /**
@@ -95,25 +94,26 @@ public class TelemetryHelper {
         }
 
         OpenTelemetry otel = sdkBuilder
-                // in case of multi-container test, customize instance id to distinguish telemetry from different containers
-                //.addResourceCustomizer((resource, props) -> resource.toBuilder().put(AttributeKey.stringKey("service.instance.id"), "container-name-1").build())
-                .addSamplerCustomizer((sampler, props) -> new Sampler() {
-                    @Override
-                    public SamplingResult shouldSample(Context parentContext, String traceId, String name, SpanKind spanKind, Attributes attributes, List<LinkData> parentLinks) {
-                        if (Boolean.TRUE.equals(attributes.get(SAMPLE_IN_ATTRIBUTE))) {
-                            return SamplingResult.recordAndSample();
-                        }
-                        return sampler.shouldSample(parentContext, traceId, name, spanKind, attributes, parentLinks);
+            // in case of multi-container test, customize instance id to distinguish telemetry from different containers
+            //.addResourceCustomizer((resource, props) -> resource.toBuilder().put(AttributeKey.stringKey("service.instance.id"), "container-name-1").build())
+            .addSamplerCustomizer((sampler, props) -> new Sampler() {
+                @Override
+                public SamplingResult shouldSample(Context parentContext, String traceId, String name,
+                    SpanKind spanKind, Attributes attributes, List<LinkData> parentLinks) {
+                    if (Boolean.TRUE.equals(attributes.get(SAMPLE_IN_ATTRIBUTE))) {
+                        return SamplingResult.recordAndSample();
                     }
+                    return sampler.shouldSample(parentContext, traceId, name, spanKind, attributes, parentLinks);
+                }
 
-                    @Override
-                    public String getDescription() {
-                        return sampler.getDescription();
-                    }
-                })
-                .setResultAsGlobal()
-                .build()
-                .getOpenTelemetrySdk();
+                @Override
+                public String getDescription() {
+                    return sampler.getDescription();
+                }
+            })
+            .setResultAsGlobal()
+            .build()
+            .getOpenTelemetrySdk();
         Classes.registerObservers(otel);
         Cpu.registerObservers(otel);
         MemoryPools.registerObservers(otel);
@@ -134,7 +134,9 @@ public class TelemetryHelper {
             oneRun.run();
             trackSuccess(start, span);
         } catch (Throwable e) {
-            if (e.getMessage().contains("Timeout on blocking read") || e instanceof InterruptedException || e instanceof TimeoutException) {
+            if (e.getMessage().contains("Timeout on blocking read")
+                || e instanceof InterruptedException
+                || e instanceof TimeoutException) {
                 trackCancellation(start, span);
             } else {
                 trackFailure(start, e, span);
@@ -156,23 +158,22 @@ public class TelemetryHelper {
                 return runAsync.doOnError(e -> trackFailure(start, e, span))
                     .doOnCancel(() -> trackCancellation(start, span))
                     .doOnSuccess(v -> trackSuccess(start, span))
-                    .contextWrite(reactor.util.context.Context.of(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current()));
+                    .contextWrite(
+                        reactor.util.context.Context.of(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY,
+                            io.opentelemetry.context.Context.current()));
             }
         });
     }
 
     private void trackSuccess(Instant start, Span span) {
-        logger.atInfo()
-            .log("run ended");
+        logger.atInfo().log("run ended");
 
         runDuration.record(getDuration(start), commonAttributes);
         span.end();
     }
 
     private void trackCancellation(Instant start, Span span) {
-        logger.atWarning()
-            .addKeyValue("error.type", "cancelled")
-            .log("run ended");
+        logger.atWarning().addKeyValue("error.type", "cancelled").log("run ended");
 
         runDuration.record(getDuration(start), canceledAttributes);
         span.setAttribute(ERROR_TYPE_ATTRIBUTE, "cancelled");
@@ -187,9 +188,7 @@ public class TelemetryHelper {
         span.setStatus(StatusCode.ERROR, unwrapped.getMessage());
 
         String errorType = unwrapped.getClass().getName();
-        logger.atError()
-            .addKeyValue("error.type", errorType)
-            .log("run ended", unwrapped);
+        logger.atError().addKeyValue("error.type", errorType).log("run ended", unwrapped);
 
         Attributes attributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, errorType);
         runDuration.record(getDuration(start), attributes);
@@ -209,7 +208,8 @@ public class TelemetryHelper {
 
         String httpClientPackageName = getHttpClientPackageName(options.getHttpClient());
         before.setAttribute(AttributeKey.stringKey("httpClientPackage"), httpClientPackageName);
-        before.setAttribute(AttributeKey.stringKey("httpClientPackageVersion"), getPackageVersionInUberJar(httpClientPackageName));
+        before.setAttribute(AttributeKey.stringKey("httpClientPackageVersion"),
+            getPackageVersionInUberJar(httpClientPackageName));
 
         before.setAttribute(AttributeKey.booleanKey("sync"), options.isSync());
         before.setAttribute(AttributeKey.longKey("size"), options.getSize());
@@ -249,7 +249,6 @@ public class TelemetryHelper {
         after.setAttribute(AttributeKey.longKey("durationMs"), Instant.now().toEpochMilli() - startTime.toEpochMilli());
         after.end();
     }
-
 
     private Span startSampledInSpan(String name) {
         return tracer.spanBuilder(name)

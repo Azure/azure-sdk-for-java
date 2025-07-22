@@ -10,106 +10,11 @@
     </Or>
   </Match>
   <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.AbstractTelemetryBuilder" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.AvailabilityData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ExportResult" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MessageData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MetricsData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MonitorDomain" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.PageViewData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.PageViewPerfData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.Response" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryEventData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionDetails" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.ByteBufferOutputStream" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryPipelineRequest" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatModule" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationError" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentIngress" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentStreamInfo" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.TelemetryColumns" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.ApplicationInsightsClientImplBuilder" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.LiveMetricsSpanProcessor" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.AvailabilityData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ExportResult" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MessageData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MetricsData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MonitorDomain" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.PageViewData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.PageViewPerfData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.Response" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryEventData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionData" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionDetails" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.ByteBufferOutputStream" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryPipelineListener$CompositeTelemetryPipelineListener" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.NetworkStatsbeatHttpPipelinePolicy" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationError" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentIngress" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentStreamInfo" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR" />
-    <Or>
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.heartbeat.HeartbeatExporter" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseDataFetcher" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="OS_OPEN_STREAM_EXCEPTION_PATH" />
-    <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.localstorage.LocalStorageTelemetryPipelineListener" />
-  </Match>
-  <Match>
-    <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" />
-    <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.AppInsightsByteBufferPool" />
-  </Match>
-  <Match>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_NEEDS_THIS" />
-    <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseDataCollector$FinalCounters" />
-  </Match>
-  <Match>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
-    <Class name="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorExporterBuilder" />
+    <Bug pattern="MS_EXPOSE_REP" />
+    <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatModule" />
   </Match>
   <Match>
     <Bug pattern="NM_CLASS_NOT_EXCEPTION" />
     <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Exception" />
-  </Match>
-  <Match>
-    <Bug pattern="DM_CONVERT_CASE" />
-    <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.Filter" />
-  </Match>
-  <Match>
-    <Bug pattern="MS_EXPOSE_REP" />
-    <Class name="com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule" /> <!--non-public API, only for testing-->
-  </Match>
-  <Match>
-    <Bug pattern="MS_EXPOSE_REP" />
-    <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatModule" /> <!--non-public API, only for testing-->
   </Match>
 </FindBugsFilter>

@@ -1,11 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+                xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
-    <Class name="~com\.azure\.xml\.implementation\.(aalto|stax2).*" />
+    <Bug pattern="CT_CONSTRUCTOR_THROW" />
+    <Class name="com.azure.xml.implementation.aalto.in.CharBasedPNameTable" />
   </Match>
-
+  <Match>
+    <Bug pattern="INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE" />
+    <Class name="com.azure.xml.implementation.aalto.UncheckedStreamException" />
+  </Match>
+  <Match>
+    <Bug pattern="LI_LAZY_INIT_UPDATE_STATIC" />
+    <Class name="com.azure.xml.implementation.aalto.out.OutputCharTypes" />
+  </Match>
+  <Match>
+    <Bug pattern="MS_MUTABLE_ARRAY" />
+    <Class name="com.azure.xml.implementation.aalto.util.XmlCharTypes" />
+  </Match>
+  <Match>
+    <Bug pattern="MS_SHOULD_BE_FINAL" />
+    <Class name="com.azure.xml.implementation.aalto.impl.ErrorConsts" />
+  </Match>
+  <Match>
+    <Bug pattern="NP_EQUALS_SHOULD_HANDLE_NULL_ARGUMENT" />
+    <Class name="com.azure.xml.implementation.aalto.out.WName" />
+  </Match>
+  <Match>
+    <Bug pattern="NP_NULL_ON_SOME_PATH" />
+    <Or>
+      <Class name="com.azure.xml.implementation.aalto.in.CharSourceBootstrapper" />
+      <Class name="com.azure.xml.implementation.aalto.out.ByteXmlWriter" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="NP_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD" />
+    <Class name="com.azure.xml.implementation.aalto.in.Utf32Reader" />
+  </Match>
+  <Match>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT" />
+    <Class name="com.azure.xml.implementation.aalto.util.CharsetNames" />
+  </Match>
+  <Match>
+    <Bug pattern="SF_SWITCH_FALLTHROUGH" />
+    <Or>
+      <Class name="com.azure.xml.implementation.aalto.in.ReaderScanner" />
+      <Class name="com.azure.xml.implementation.aalto.in.Utf8Scanner" />
+      <Class name="com.azure.xml.implementation.aalto.out.ByteXmlWriter" />
+      <Class name="com.azure.xml.implementation.aalto.out.CharXmlWriter" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="SF_SWITCH_NO_DEFAULT" />
+    <Or>
+      <Class name="com.azure.xml.implementation.aalto.in.ReaderScanner" />
+      <Class name="com.azure.xml.implementation.aalto.in.Utf8Scanner" />
+      <Class name="com.azure.xml.implementation.aalto.out.CharXmlWriter" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="SS_SHOULD_BE_STATIC" />
+    <Class name="com.azure.xml.implementation.aalto.in.XmlScanner" />
+  </Match>
+  <Match>
+    <Bug pattern="UWF_NULL_FIELD" />
+    <Class name="com.azure.xml.implementation.aalto.in.Utf32Reader" />
+  </Match>
   <Match>
     <Bug pattern="XXE_XMLSTREAMREADER" />
     <Class name="com.azure.xml.XmlReader" />
