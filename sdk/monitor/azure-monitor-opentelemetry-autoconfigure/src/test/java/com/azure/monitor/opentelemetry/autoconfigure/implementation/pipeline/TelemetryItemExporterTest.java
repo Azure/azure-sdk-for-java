@@ -232,7 +232,7 @@ public class TelemetryItemExporterTest {
     @Test
     public void initOtelResourceAttributesTest() {
         ConfigProperties config = DefaultConfigProperties
-            .create(singletonMap("otel.resource.attributes", "key1=value%201,key2=value2,key3=value%203"));
+            .createFromMap(singletonMap("otel.resource.attributes", "key1=value%201,key2=value2,key3=value%203"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
 
         assertThat(resource.getAttributes().size()).isEqualTo(3);
@@ -244,7 +244,7 @@ public class TelemetryItemExporterTest {
     @Test
     public void otelResourceAttributeTest() {
         ConfigProperties config = DefaultConfigProperties
-            .create(singletonMap("otel.resource.attributes", "key1=value1,key2=value2,key3=value3"));
+            .createFromMap(singletonMap("otel.resource.attributes", "key1=value1,key2=value2,key3=value3"));
         Resource environmentResource = ResourceConfiguration.createEnvironmentResource(config);
 
         // given
