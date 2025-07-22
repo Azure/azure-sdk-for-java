@@ -53,7 +53,7 @@ if [ $CLUSTER_NAME == "oltp-ci-spark35-2workers-ds3v2-16.4" ]; then
 else
   # For older runtimes: Use DBFS path
   echo "Using DBFS library installation for DBR $DBR_VERSION"
-  echo "Deleting files in dbfs:/tmp/libraries/$JARFILE
+  echo "Deleting files in dbfs:/tmp/libraries/$JARFILE"
   dbfs rm dbfs:/tmp/libraries/$JARFILE
   dbfs ls dbfs:/tmp/libraries/
 
