@@ -2,13 +2,34 @@
 
 ## 2.53.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ZoneListResult` was removed
 
-### Other Changes
+#### `models.RecordSetListResult` was removed
+
+#### `models.DnsResourceReference` was modified
+
+* `withDnsResources(java.util.List)` was removed
+* `withTargetResource(com.azure.core.management.SubResource)` was removed
+
+### Features Added
+
+* `models.TlsaRecord` was added
+
+* `models.RecordSetsCreateOrUpdateHeaders` was added
+
+* `models.NaptrRecord` was added
+
+* `models.DelegationSignerInfo` was added
+
+* `models.RecordSetsCreateOrUpdateResponse` was added
+
+* `models.SigningKey` was added
+
+* `models.Digest` was added
+
+* `models.DsRecord` was added
 
 ## 2.52.0 (2025-06-27)
 
