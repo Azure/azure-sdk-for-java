@@ -5,7 +5,7 @@ package com.azure.storage.file.datalake.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.storage.common.implementation.UploadUtils.ContentValidationInfo;
+import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
 import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 
@@ -20,7 +20,7 @@ public class DataLakeFileAppendOptions {
     private LeaseAction leaseAction;
     private Integer leaseDuration;
     private String proposedLeaseId;
-    private ContentValidationInfo contentValidationInfo;
+    private StorageChecksumAlgorithm storageChecksumAlgorithm;
 
     /**
      * Creates a new instance of {@link DataLakeFileAppendOptions}.
@@ -173,17 +173,17 @@ public class DataLakeFileAppendOptions {
      * comment
      * @return comment
      */
-    public ContentValidationInfo getContentValidationInfo() {
-        return contentValidationInfo;
+    public StorageChecksumAlgorithm getStorageChecksumAlgorithm() {
+        return storageChecksumAlgorithm;
     }
 
     /**
      * comment
-     * @param contentValidationInfo comment
+     * @param storageChecksumAlgorithm comment
      * @return comment
      */
-    public DataLakeFileAppendOptions setContentValidationInfo(ContentValidationInfo contentValidationInfo) {
-        this.contentValidationInfo = contentValidationInfo;
+    public DataLakeFileAppendOptions setStorageChecksumAlgorithm(StorageChecksumAlgorithm storageChecksumAlgorithm) {
+        this.storageChecksumAlgorithm = storageChecksumAlgorithm;
         return this;
     }
 }

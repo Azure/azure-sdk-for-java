@@ -159,7 +159,8 @@ public class UploadUtils {
         if (computeMd5) {
             return computeMd5(data, true, length, logger);
         }
-        if (storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
+        if (storageChecksumAlgorithm != null
+            && storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
             if (length < STATIC_MAXIMUM_ENCODED_DATA_LENGTH) {
                 return computeCRC64(data, length, logger);
             } else {

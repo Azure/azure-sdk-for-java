@@ -81,6 +81,7 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.storage.common.implementation.StorageImplUtils.assertNotNull;
 
 /**
  * This class provides a client that contains file operations for Azure Storage Data Lake. Operations provided by
@@ -589,7 +590,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathInfo>> uploadWithResponse(FileParallelUploadOptions options) {
         try {
-            StorageImplUtils.assertNotNull("options", options);
+            assertNotNull("options", options);
             DataLakeRequestConditions validatedRequestConditions = options.getRequestConditions() == null
                 ? new DataLakeRequestConditions()
                 : options.getRequestConditions();
@@ -683,18 +684,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 if (progressReporter != null) {
                     appendContexts.setHttpRequestProgressReporter(progressReporter.createChild());
                 }
-                return UploadUtils
-                    .computeChecksum(bufferAggregator.asFlux(), false, storageChecksumAlgorithm,
-                        bufferAggregator.length(), LOGGER)
-                    .flatMap(fluxContentValidationWrapper -> {
-                        DataLakeFileAppendOptions options
-                            = new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId())
-                                .setContentValidationInfo(fluxContentValidationWrapper.getContentValidationInfo());
-                        return appendWithResponse(fluxContentValidationWrapper.getData(), currentOffset,
-                            currentBufferLength, options, appendContexts.getContext());
-                    })
-                    .map(resp -> offset) /* End of file after append to pass to flush. */
-                    .flux();
+                return appendWithResponse(bufferAggregator.asFlux(), currentOffset, currentBufferLength,
+                    new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId())
+                        .setStorageChecksumAlgorithm(storageChecksumAlgorithm),
+                    appendContexts.getContext()).map(resp -> offset) /* End of file after append to pass to flush. */
+                        .flux();
             }, parallelTransferOptions.getMaxConcurrency(), 1)
             .last()
             .flatMap(length -> flushWithResponse(length, false, false, httpHeaders, requestConditions));
@@ -707,14 +701,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         if (progressListener != null) {
             appendContexts.setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progressListener));
         }
-        return UploadUtils.computeChecksum(data, false, storageChecksumAlgorithm, length, LOGGER)
-            .map(fluxContentValidationWrapper -> {
-                DataLakeFileAppendOptions options
-                    = new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId())
-                        .setContentValidationInfo(fluxContentValidationWrapper.getContentValidationInfo());
-                return appendWithResponse(data, fileOffset, fluxContentValidationWrapper.getDataLength(), options);
-            })
-            .flatMap(resp -> flushWithResponse(fileOffset + length, false, false, httpHeaders, requestConditions));
+        return appendWithResponse(data, fileOffset, length,
+            new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId())
+                .setStorageChecksumAlgorithm(storageChecksumAlgorithm),
+            appendContexts.getContext())
+                .flatMap(resp -> flushWithResponse(fileOffset + length, false, false, httpHeaders, requestConditions));
     }
 
     /**
@@ -1190,10 +1181,21 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         Long leaseDuration
             = appendOptions.getLeaseDuration() != null ? Long.valueOf(appendOptions.getLeaseDuration()) : null;
 
-        return this.dataLakeStorage.getPaths()
-            .appendDataNoCustomHeadersWithResponseAsync(data, fileOffset, null, length, null,
-                appendOptions.getLeaseAction(), leaseDuration, appendOptions.getProposedLeaseId(), null,
-                appendOptions.isFlush(), null, null, headers, leaseAccessConditions, getCpkInfo(), context);
+        DataLakeFileAppendOptions finalAppendOptions = appendOptions;
+        Context finalContext = context;
+        return UploadUtils.computeChecksum(data, false, appendOptions.getStorageChecksumAlgorithm(), length, LOGGER)
+            .flatMap(fluxContentValidationWrapper -> {
+                UploadUtils.ContentValidationInfo contentValidationInfo
+                    = fluxContentValidationWrapper.getContentValidationInfo();
+                assertNotNull("ContentValidationInfo should not be null", contentValidationInfo);
+                return this.dataLakeStorage.getPaths()
+                    .appendDataNoCustomHeadersWithResponseAsync(fluxContentValidationWrapper.getData(), fileOffset,
+                        null, fluxContentValidationWrapper.getDataLength(), contentValidationInfo.getCRC64checksum(),
+                        finalAppendOptions.getLeaseAction(), leaseDuration, finalAppendOptions.getProposedLeaseId(),
+                        null, finalAppendOptions.isFlush(), contentValidationInfo.getStructuredBodyType(),
+                        contentValidationInfo.getOriginalContentLength(), headers, leaseAccessConditions, getCpkInfo(),
+                        finalContext);
+            });
     }
 
     /**

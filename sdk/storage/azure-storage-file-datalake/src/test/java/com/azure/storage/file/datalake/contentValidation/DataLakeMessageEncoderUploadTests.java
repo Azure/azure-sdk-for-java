@@ -54,10 +54,11 @@ public class DataLakeMessageEncoderUploadTests extends DataLakeTestBase {
     @Test
     public void uploadBinaryDataChunkedStructMess() {
         FileParallelUploadOptions options
-            = new FileParallelUploadOptions(BinaryData.fromBytes(getRandomByteArray(Constants.MB * 8)))
+            = new FileParallelUploadOptions(BinaryData.fromBytes(getRandomByteArray(Constants.MB * 10)))
                 .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
                 .setParallelTransferOptions(
-                    new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
+                    new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 5)
+                        .setBlockSizeLong((long) Constants.MB * 5));
 
         assertDoesNotThrow(() -> fc.uploadWithResponse(options, null, Context.NONE));
     }
