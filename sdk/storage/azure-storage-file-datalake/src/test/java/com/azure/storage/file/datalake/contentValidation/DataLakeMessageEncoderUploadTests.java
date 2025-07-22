@@ -43,7 +43,7 @@ public class DataLakeMessageEncoderUploadTests extends DataLakeTestBase {
     public void uploadBinaryDataFullStructMess() {
         FileParallelUploadOptions options
             = new FileParallelUploadOptions(BinaryData.fromBytes(getRandomByteArray(Constants.MB * 5)))
-            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
+                .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
 
         // viewed structured body type header through httptoolkit, unable to retrieve it through the response object
         // Response<PathInfo> response = fc.uploadWithResponse(options, null, Context.NONE);
@@ -55,9 +55,9 @@ public class DataLakeMessageEncoderUploadTests extends DataLakeTestBase {
     public void uploadBinaryDataChunkedStructMess() {
         FileParallelUploadOptions options
             = new FileParallelUploadOptions(BinaryData.fromBytes(getRandomByteArray(Constants.MB * 8)))
-            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
-            .setParallelTransferOptions(
-                new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
+                .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
+                .setParallelTransferOptions(
+                    new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
 
         assertDoesNotThrow(() -> fc.uploadWithResponse(options, null, Context.NONE));
     }
@@ -93,8 +93,8 @@ public class DataLakeMessageEncoderUploadTests extends DataLakeTestBase {
         ByteArrayInputStream input = new ByteArrayInputStream(randomData);
         FileParallelUploadOptions options
             = new FileParallelUploadOptions(input).setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
-            .setParallelTransferOptions(
-                new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
+                .setParallelTransferOptions(
+                    new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 4));
 
         assertDoesNotThrow(() -> fc.uploadWithResponse(options, null, Context.NONE));
     }

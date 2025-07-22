@@ -610,7 +610,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<PathInfo>>> uploadFullMethod
                 = (stream, length) -> uploadWithResponse(stream, fileOffset, length, options.getHeaders(),
-                    validatedUploadRequestConditions, validatedParallelTransferOptions.getProgressListener(), storageChecksumAlgorithm);
+                    validatedUploadRequestConditions, validatedParallelTransferOptions.getProgressListener(),
+                    storageChecksumAlgorithm);
 
             BinaryData binaryData = options.getData();
 
@@ -682,16 +683,18 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 if (progressReporter != null) {
                     appendContexts.setHttpRequestProgressReporter(progressReporter.createChild());
                 }
-                return UploadUtils.computeChecksum(bufferAggregator.asFlux(), false,
-                    storageChecksumAlgorithm, bufferAggregator.length(), LOGGER)
-                        .flatMap(fluxContentValidationWrapper -> {
-                            DataLakeFileAppendOptions options = new DataLakeFileAppendOptions()
-                                .setLeaseId(requestConditions.getLeaseId())
+                return UploadUtils
+                    .computeChecksum(bufferAggregator.asFlux(), false, storageChecksumAlgorithm,
+                        bufferAggregator.length(), LOGGER)
+                    .flatMap(fluxContentValidationWrapper -> {
+                        DataLakeFileAppendOptions options
+                            = new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId())
                                 .setContentValidationInfo(fluxContentValidationWrapper.getContentValidationInfo());
-                            return appendWithResponse(fluxContentValidationWrapper.getData(), currentOffset, currentBufferLength,
-                                options,  appendContexts.getContext());
-                        }).map(resp -> offset) /* End of file after append to pass to flush. */
-                        .flux();
+                        return appendWithResponse(fluxContentValidationWrapper.getData(), currentOffset,
+                            currentBufferLength, options, appendContexts.getContext());
+                    })
+                    .map(resp -> offset) /* End of file after append to pass to flush. */
+                    .flux();
             }, parallelTransferOptions.getMaxConcurrency(), 1)
             .last()
             .flatMap(length -> flushWithResponse(length, false, false, httpHeaders, requestConditions));
@@ -705,14 +708,13 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             appendContexts.setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progressListener));
         }
         return UploadUtils.computeChecksum(data, false, storageChecksumAlgorithm, length, LOGGER)
-                .map(fluxContentValidationWrapper -> {
-                    DataLakeFileAppendOptions options = new DataLakeFileAppendOptions()
-                        .setLeaseId(requestConditions.getLeaseId())
+            .map(fluxContentValidationWrapper -> {
+                DataLakeFileAppendOptions options
+                    = new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId())
                         .setContentValidationInfo(fluxContentValidationWrapper.getContentValidationInfo());
-                    return appendWithResponse(data, fileOffset, fluxContentValidationWrapper.getDataLength(), options);
-                })
-                .flatMap(resp -> flushWithResponse(fileOffset + length,
-                    false, false, httpHeaders, requestConditions));
+                return appendWithResponse(data, fileOffset, fluxContentValidationWrapper.getDataLength(), options);
+            })
+            .flatMap(resp -> flushWithResponse(fileOffset + length, false, false, httpHeaders, requestConditions));
     }
 
     /**
@@ -899,7 +901,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                         // Otherwise, we know it can be sent in a single request reducing network overhead.
                         return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
                             .then(uploadWithResponse(FluxUtil.readFile(channel), fileOffset, fileSize, headers,
-                                validatedUploadRequestConditions, finalParallelTransferOptions.getProgressListener(), null));
+                                validatedUploadRequestConditions, finalParallelTransferOptions.getProgressListener(),
+                                null));
                     }
                 } catch (IOException ex) {
                     return Mono.error(ex);
