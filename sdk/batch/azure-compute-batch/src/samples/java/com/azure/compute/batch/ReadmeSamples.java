@@ -62,7 +62,6 @@ import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleParameters;
 import com.azure.compute.batch.models.BatchPoolInfo;
 import com.azure.compute.batch.models.BatchPoolResizeParameters;
 import com.azure.compute.batch.models.BatchPoolUpdateParameters;
-import com.azure.compute.batch.models.BatchPoolsListOptions;
 import com.azure.compute.batch.models.BatchStartTask;
 import com.azure.compute.batch.models.BatchTask;
 import com.azure.compute.batch.models.BatchTaskConstraints;
@@ -88,6 +87,8 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import reactor.core.publisher.Mono;
+
 public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.compute.batch.build-client
@@ -95,6 +96,12 @@ public final class ReadmeSamples {
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
             .buildClient();
         // END: com.azure.compute.batch.build-client
+
+        // BEGIN: com.azure.compute.batch.build-async-client
+        BatchAsyncClient batchAsyncClient = new BatchClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+            .buildAsyncClient();
+        // END: com.azure.compute.batch.build-async-client
 
         // BEGIN: com.azure.compute.batch.build-sharedkey-client
         Configuration localConfig = Configuration.getGlobalConfiguration();
@@ -104,7 +111,9 @@ public final class ReadmeSamples {
 
         BatchClientBuilder batchClientBuilder = new BatchClientBuilder();
         batchClientBuilder.credential(sharedKeyCreds);
+        // You can build both the sync and async clients with this configuration
         BatchClient batchClientWithSharedKey = batchClientBuilder.buildClient();
+        BatchAsyncClient batchAsyncClientWithSharedKey = batchClientBuilder.buildAsyncClient();
         // END: com.azure.compute.batch.build-sharedkey-client
 
         // BEGIN: com.azure.compute.batch.create-pool.creates-a-simple-pool
@@ -121,6 +130,12 @@ public final class ReadmeSamples {
         batchClient.createJob(
             new BatchJobCreateParameters("jobId", new BatchPoolInfo().setPoolId("poolId")).setPriority(0), null);
         // END: com.azure.compute.batch.create-job.creates-a-basic-job
+
+        // BEGIN: com.azure.compute.batch.create-job.creates-a-basic-job-async
+        batchAsyncClient.createJob(
+            new BatchJobCreateParameters("jobId", new BatchPoolInfo().setPoolId("poolId")).setPriority(0))
+            .subscribe(unused -> System.out.println("Job created successfully"));
+        // END: com.azure.compute.batch.create-job.creates-a-basic-job-async
 
         // BEGIN: com.azure.compute.batch.create-task.creates-a-simple-task
         String taskId = "ExampleTaskId";
@@ -152,11 +167,18 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.resize-pool.resize-pool-error
 
         // BEGIN: com.azure.compute.batch.get-pool.pool-get
-        BatchPool response = batchClient.getPool("pool", null, null);
+        BatchPool pool = batchClient.getPool("poolId");
         // END: com.azure.compute.batch.get-pool.pool-get
 
+        // BEGIN: com.azure.compute.batch.pool.get-pool-async
+        batchAsyncClient.getPool("poolId").subscribe(asyncPool -> {
+            // Use the pool here
+            System.out.println("Pool ID: " + asyncPool.getId());
+        });
+        // END: com.azure.compute.batch.pool.get-pool-async
+
         // BEGIN: com.azure.compute.batch.list-pools.pool-list
-        PagedIterable<BatchPool> poolList = batchClient.listPools(new BatchPoolsListOptions());
+        PagedIterable<BatchPool> poolList = batchClient.listPools();
         // END: com.azure.compute.batch.list-pools.pool-list
 
         // BEGIN: com.azure.compute.batch.delete-pool.pool-delete
@@ -172,6 +194,21 @@ public final class ReadmeSamples {
         deletePoolPoller.waitForCompletion();
         PollResponse<BatchPool> finalDeletePoolResponse = deletePoolPoller.poll();
         // END: com.azure.compute.batch.delete-pool.pool-delete
+
+        // BEGIN: com.azure.compute.batch.delete-pool.pool-delete-async
+        batchAsyncClient.beginDeletePool("poolId")
+            .doOnNext(pollResponse -> {
+                if (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+                    BatchPool poolDuringPoll = pollResponse.getValue();
+                    System.out.println("Pool is being deleted: " + poolDuringPoll.getId());
+                }
+            })
+            .takeUntil(pollResponse -> pollResponse.getStatus().isComplete())
+            .last()
+            .subscribe(finalPollResponse -> {
+                System.out.println("Pool deletion completed with status: " + finalPollResponse.getStatus());
+            });
+        // END: com.azure.compute.batch.delete-pool.pool-delete-async
 
         // BEGIN: com.azure.compute.batch.update-pool.patch-the-pool
         batchClient.updatePool("poolId",
@@ -329,6 +366,23 @@ public final class ReadmeSamples {
         BatchJob terminatedJob = terminatePoller.getFinalResult();
         // END: com.azure.compute.batch.job.terminate-job
 
+        // BEGIN: com.azure.compute.batch.job.terminate-job-async
+        BatchJobTerminateParameters asyncTerminateParams = new BatchJobTerminateParameters()
+            .setTerminationReason("ExampleReason");
+        BatchJobTerminateOptions asyncTerminateOptions = new BatchJobTerminateOptions()
+            .setParameters(asyncTerminateParams);
+
+        batchAsyncClient.beginTerminateJob("jobId", asyncTerminateOptions, null)
+            .takeUntil(response -> response.getStatus().isComplete())
+            .last()
+            .flatMap(finalResponse -> {
+                BatchJob asyncTerminatedJob = finalResponse.getValue();
+                System.out.println("Job termination completed. Final job state: " + asyncTerminatedJob.getState());
+                return Mono.empty();
+            })
+            .subscribe();
+        // END: com.azure.compute.batch.job.terminate-job-async
+
         // BEGIN: com.azure.compute.batch.create-job-schedule.creates-a-basic-job-schedule
         batchClient.createJobSchedule(new BatchJobScheduleCreateParameters("jobScheduleId",
             new BatchJobScheduleConfiguration().setRecurrenceInterval(Duration.parse("PT5M")),
@@ -389,10 +443,6 @@ public final class ReadmeSamples {
         terminateJobSchedulePoller.waitForCompletion();
         BatchJobSchedule jobSchedule = terminateJobSchedulePoller.getFinalResult();
         // END: com.azure.compute.batch.job-schedule.terminate-job-schedule
-
-        // BEGIN: com.azure.compute.batch.create-task.creates-a-basic-task
-        batchClient.createTask("jobId", new BatchTaskCreateParameters("task1", "cmd /c echo task1"), null);
-        // END: com.azure.compute.batch.create-task.creates-a-basic-task
 
         // BEGIN: com.azure.compute.batch.create-task.creates-a-task-collection
         List<BatchTaskCreateParameters> taskList = Arrays.asList(
@@ -518,8 +568,16 @@ public final class ReadmeSamples {
 
         // BEGIN: com.azure.compute.batch.upload-node-logs.upload-batch-service-logs
         UploadBatchServiceLogsResult uploadNodeLogsResult
-            = batchClient.uploadNodeLogs("poolId", "tvm-1695681911_1-20161121t182739z", null, null);
+            = batchClient.uploadNodeLogs("poolId", "nodeId", null);
         // END: com.azure.compute.batch.upload-node-logs.upload-batch-service-logs
+
+        // BEGIN: com.azure.compute.batch.upload-node-logs.upload-batch-service-logs-async
+        batchAsyncClient.uploadNodeLogs("poolId", "nodeId", null)
+            .subscribe(logResult -> {
+                System.out.println("Number of files uploaded: " + logResult.getNumberOfFilesUploaded());
+                System.out.println("Log upload container URL: " + logResult.getVirtualDirectoryName());
+            });
+        // END: com.azure.compute.batch.upload-node-logs.upload-batch-service-logs-async
 
         // BEGIN: com.azure.compute.batch.create-certificate.certificate-create
         batchClient.createCertificate(
