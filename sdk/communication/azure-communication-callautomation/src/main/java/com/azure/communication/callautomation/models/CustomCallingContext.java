@@ -17,6 +17,7 @@ import java.util.Map;
 public final class CustomCallingContext {
     private final Map<String, String> sipHeaders;
     private final Map<String, String> voipHeaders;
+    private TeamsPhoneCallDetails teamsPhoneCallDetails;
     private final ClientLogger logger;
 
     /**
@@ -31,12 +32,15 @@ public final class CustomCallingContext {
     /**
      * Create a CustomCallingContext object with SIP and VOIP headers
      *
-     * @param sipHeaders custom context SIP headers
+     * @param sipHeaders context SIP headers
      * @param voipHeaders custom context VOIP headers
+     * @param teamsPhoneCallDetails teams phone call details.
      */
-    CustomCallingContext(Map<String, String> sipHeaders, Map<String, String> voipHeaders) {
+    CustomCallingContext(Map<String, String> sipHeaders, Map<String, String> voipHeaders,
+        TeamsPhoneCallDetails teamsPhoneCallDetails) {
         this.sipHeaders = sipHeaders;
         this.voipHeaders = voipHeaders;
+        this.teamsPhoneCallDetails = teamsPhoneCallDetails;
         this.logger = new ClientLogger(CustomCallingContext.class);
     }
 
@@ -59,6 +63,28 @@ public final class CustomCallingContext {
     }
 
     /**
+     * Get the teamsPhoneCallDetails property: Custom calling context
+     * TeamsPhoneCallDetails.
+     * 
+     * @return the teamsPhoneCallDetails value.
+     */
+    public TeamsPhoneCallDetails getTeamsPhoneCallDetails() {
+        return this.teamsPhoneCallDetails;
+    }
+
+    /**
+     * Set the teamsPhoneCallDetails property: Custom calling context
+     * TeamsPhoneCallDetails.
+     * 
+     * @param teamsPhoneCallDetails the teamsPhoneCallDetails value to set.
+     * @return the CustomCallingContext object itself.
+     */
+    public CustomCallingContext setTeamsPhoneCallDetails(TeamsPhoneCallDetails teamsPhoneCallDetails) {
+        this.teamsPhoneCallDetails = teamsPhoneCallDetails;
+        return this;
+    }
+
+    /**
      * Add a custom context sip UUI header. The Key always remains 'User-To-User'
      *
      * @param value custom context sip UUI header's value.
@@ -72,7 +98,8 @@ public final class CustomCallingContext {
     }
 
     /**
-     * Add a custom context sip X header. The provided key is appended to 'X-MS-Custom-' in last.
+     * Add a custom context sip X header. The provided key is appended to
+     * 'X-MS-Custom-' in last.
      *
      * @param key custom context sip x header's key.
      * @param value custom context sip x header's value.
@@ -82,7 +109,8 @@ public final class CustomCallingContext {
     }
 
     /**
-     * Add a custom context sip X header. The provided key is appended to 'X-' or "X-MS-Custom-" in last.
+     * Add a custom context sip X header. The provided key is appended to 'X-' or
+     * "X-MS-Custom-" in last.
      *
      * @param key custom context sip x header's key.
      * @param value custom context sip x header's value.

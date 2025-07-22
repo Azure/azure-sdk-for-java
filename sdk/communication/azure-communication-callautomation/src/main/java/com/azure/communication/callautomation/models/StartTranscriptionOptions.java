@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.util.List;
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -31,6 +32,26 @@ public final class StartTranscriptionOptions {
      * Endpoint where the custom model was deployed.
      */
     private String speechRecognitionModelEndpointId;
+
+    /*
+     * PII redaction configuration options.
+     */
+    private PiiRedactionOptions piiRedactionOptions;
+
+    /*
+     * Indicating if sentiment analysis should be used.
+     */
+    private Boolean enableSentimentAnalysis;
+
+    /*
+     * List of languages for Language Identification.
+     */
+    private List<String> locales;
+
+    /*
+     * Summarization configuration options.
+     */
+    private SummarizationOptions summarizationOptions;
 
     /**
      * Get the locale.
@@ -62,12 +83,50 @@ public final class StartTranscriptionOptions {
     }
 
     /**
-     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom
+     * model was deployed.
      * 
      * @return the speechRecognitionModelEndpointId value.
      */
     public String getSpeechRecognitionModelEndpointId() {
         return this.speechRecognitionModelEndpointId;
+    }
+
+    /**
+     * Get the piiRedactionOptions property: PII redaction configuration options.
+     * 
+     * @return the piiRedactionOptions value.
+     */
+    public PiiRedactionOptions getPiiRedactionOptions() {
+        return this.piiRedactionOptions;
+    }
+
+    /**
+     * Get the enableSentimentAnalysis property: Indicating if sentiment analysis
+     * should be used.
+     * 
+     * @return the enableSentimentAnalysis value.
+     */
+    public Boolean isEnableSentimentAnalysis() {
+        return this.enableSentimentAnalysis;
+    }
+
+    /**
+     * Get the locales property: List of languages for Language Identification.
+     * 
+     * @return the locales value.
+     */
+    public List<String> getLocales() {
+        return this.locales;
+    }
+
+    /**
+     * Get the summarizationOptions property: Summarization configuration options.
+     * 
+     * @return the summarizationOptions value.
+     */
+    public SummarizationOptions getSummarizationOptions() {
+        return this.summarizationOptions;
     }
 
     /**
@@ -82,13 +141,60 @@ public final class StartTranscriptionOptions {
     }
 
     /**
-     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom
+     * model was deployed.
      * 
-     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId
+     *                                         value to set.
      * @return the StartTranscriptionOptions object itself.
      */
     public StartTranscriptionOptions setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
         this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+        return this;
+    }
+
+    /**
+     * Set the piiRedactionOptions property: PII redaction configuration options.
+     * 
+     * @param piiRedactionOptions the piiRedactionOptions value to set.
+     * @return the StartTranscriptionOptions object itself.
+     */
+    public StartTranscriptionOptions setPiiRedactionOptions(PiiRedactionOptions piiRedactionOptions) {
+        this.piiRedactionOptions = piiRedactionOptions;
+        return this;
+    }
+
+    /**
+     * Set the enableSentimentAnalysis property: Indicating if sentiment analysis
+     * should be used.
+     * 
+     * @param enableSentimentAnalysis the enableSentimentAnalysis value to set.
+     * @return the StartTranscriptionOptions object itself.
+     */
+    public StartTranscriptionOptions setEnableSentimentAnalysis(Boolean enableSentimentAnalysis) {
+        this.enableSentimentAnalysis = enableSentimentAnalysis;
+        return this;
+    }
+
+    /**
+     * Set the locales property: List of languages for Language Identification.
+     * 
+     * @param locales the locales value to set.
+     * @return the StartTranscriptionOptions object itself.
+     */
+    public StartTranscriptionOptions setLocales(List<String> locales) {
+        this.locales = locales;
+        return this;
+    }
+
+    /**
+     * Set the summarizationOptions property: Summarization configuration options.
+     * 
+     * @param summarizationOptions the summarizationOptions value to set.
+     * @return the StartTranscriptionOptions object itself.
+     */
+    public StartTranscriptionOptions setSummarizationOptions(SummarizationOptions summarizationOptions) {
+        this.summarizationOptions = summarizationOptions;
         return this;
     }
 }

@@ -14,6 +14,7 @@ import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 /** The Recognize configurations specific for Continuous Speech or DTMF Recognition. **/
@@ -29,6 +30,16 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
      * Speech language to be recognized, If not set default is en-US
      */
     private String speechLanguage;
+
+    /*
+     * Gets or sets a list of languages for Language Identification.
+     */
+    private List<String> speechLanguages;
+
+    /*
+     * Gets or sets a value indicating if sentiment analysis should be used.
+     */
+    private Boolean enableSentimentAnalysis;
 
     /*
      * Endpoint where the custom model was deployed.
@@ -130,6 +141,50 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
     }
 
     /**
+     * Get the speechLanguages property: Gets or sets a list of languages for
+     * Language Identification.
+     * 
+     * @return the speechLanguages value.
+     */
+    public List<String> getSpeechLanguages() {
+        return this.speechLanguages;
+    }
+
+    /**
+     * Set the speechLanguages property: Gets or sets a list of languages for
+     * Language Identification.
+     * 
+     * @param speechLanguages the speechLanguages value to set.
+     * @return the CallMediaRecognizeSpeechOrDtmfOptions object itself.
+     */
+    public CallMediaRecognizeSpeechOrDtmfOptions setSpeechLanguages(List<String> speechLanguages) {
+        this.speechLanguages = speechLanguages;
+        return this;
+    }
+
+    /**
+     * Get the enableSentimentAnalysis property: Gets or sets a value indicating if
+     * sentiment analysis should be used.
+     * 
+     * @return the enableSentimentAnalysis value.
+     */
+    public Boolean isEnableSentimentAnalysis() {
+        return this.enableSentimentAnalysis;
+    }
+
+    /**
+     * Set the enableSentimentAnalysis property: Gets or sets a value indicating if
+     * sentiment analysis should be used.
+     * 
+     * @param enableSentimentAnalysis the enableSentimentAnalysis value to set.
+     * @return the CallMediaRecognizeSpeechOrDtmfOptions object itself.
+     */
+    public CallMediaRecognizeSpeechOrDtmfOptions setEnableSentimentAnalysis(Boolean enableSentimentAnalysis) {
+        this.enableSentimentAnalysis = enableSentimentAnalysis;
+        return this;
+    }
+
+    /**
      * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
      *
      * @return the speechRecognitionModelEndpointId value.
@@ -187,6 +242,9 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
         // write properties specific to this class.
         jsonWriter.writeStringField("endSilenceTimeout", CoreUtils.durationToStringWithDays(endSilenceTimeout));
         jsonWriter.writeStringField("speechLanguage", speechLanguage);
+        jsonWriter.writeArrayField("speechLanguages", speechLanguages.toArray(new String[0]),
+            (writer, value) -> writer.writeString(value));
+        jsonWriter.writeBooleanField("enableSentimentAnalysis", this.enableSentimentAnalysis);
         jsonWriter.writeStringField("speechRecognitionModelEndpointId", speechRecognitionModelEndpointId);
         jsonWriter.writeStringField("interToneTimeout", CoreUtils.durationToStringWithDays(interToneTimeout));
         if (maxTonesToCollect != null) {
@@ -210,6 +268,8 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
             // variables to hold values of properties specific to this class.
             Duration endSilenceTimeout = null;
             String speechLanguage = null;
+            List<String> speechLanguages = null;
+            Boolean enableSentimentAnalysis = null;
             String speechRecognitionModelEndpointId = null;
             Duration interToneTimeout = null;
             int maxTonesToCollect = 0;
@@ -232,6 +292,15 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
                     endSilenceTimeout = Duration.parse(reader.getString());
                 } else if ("speechLanguage".equals(fieldName)) {
                     speechLanguage = reader.getString();
+                } else if ("speechLanguages".equals(fieldName)) {
+                    speechLanguages = new ArrayList<String>();
+                    reader.nextToken();
+                    while (reader.currentToken() != JsonToken.END_ARRAY) {
+                        speechLanguages.add(reader.getString());
+                        reader.nextToken();
+                    }
+                } else if ("enableSentimentAnalysis".equals(fieldName)) {
+                    enableSentimentAnalysis = reader.getNullable(JsonReader::getBoolean);
                 } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
                     speechRecognitionModelEndpointId = reader.getString();
                 } else if ("interToneTimeout".equals(fieldName)) {
@@ -250,10 +319,13 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
                 = new CallMediaRecognizeSpeechOrDtmfOptions(targetParticipant, maxTonesToCollect, endSilenceTimeout);
             //
             options.speechLanguage = speechLanguage;
+
             options.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
             options.interToneTimeout = interToneTimeout;
             options.stopDtmfTones = stopDtmfTones;
             // set properties of base class.
+            options.setSpeechLanguages(speechLanguages);
+            options.setEnableSentimentAnalysis(enableSentimentAnalysis);
             options.setRecognizeInputType(RecognizeInputType.fromString(recognizeInputType));
             options.setInterruptCallMediaOperation(interruptCallMediaOperation);
             options.setStopCurrentOperations(stopCurrentOperations);

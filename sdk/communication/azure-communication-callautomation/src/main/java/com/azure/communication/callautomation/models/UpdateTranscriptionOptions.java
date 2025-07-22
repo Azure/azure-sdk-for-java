@@ -32,6 +32,21 @@ public final class UpdateTranscriptionOptions {
      */
     private String speechRecognitionModelEndpointId;
 
+    /*
+     * PII redaction configuration options.
+     */
+    private PiiRedactionOptions piiRedactionOptions;
+
+    /*
+     * Indicating if sentiment analysis should be used.
+     */
+    private Boolean enableSentimentAnalysis;
+
+    /*
+     * Summarization configuration options.
+     */
+    private SummarizationOptions summarizationOptions;
+
     /**
      * Get the locale.
      *
@@ -71,6 +86,34 @@ public final class UpdateTranscriptionOptions {
     }
 
     /**
+     * Get the piiRedactionOptions property: PII redaction configuration options.
+     * 
+     * @return the piiRedactionOptions value.
+     */
+    public PiiRedactionOptions getPiiRedactionOptions() {
+        return this.piiRedactionOptions;
+    }
+
+    /**
+     * Get the enableSentimentAnalysis property: Indicating if sentiment analysis
+     * should be used.
+     * 
+     * @return the enableSentimentAnalysis value.
+     */
+    public Boolean isEnableSentimentAnalysis() {
+        return this.enableSentimentAnalysis;
+    }
+
+    /**
+     * Get the summarizationOptions property: Summarization configuration options.
+     * 
+     * @return the summarizationOptions value.
+     */
+    public SummarizationOptions getSummarizationOptions() {
+        return this.summarizationOptions;
+    }
+
+    /**
      * Sets the operation context.
      *
      * @param operationContext Operation Context
@@ -89,6 +132,40 @@ public final class UpdateTranscriptionOptions {
      */
     public UpdateTranscriptionOptions setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
         this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+        return this;
+    }
+
+    /**
+     * Set the piiRedactionOptions property: PII redaction configuration options.
+     * 
+     * @param piiRedactionOptions the piiRedactionOptions value to set.
+     * @return the UpdateTranscriptionOptions object itself.
+     */
+    public UpdateTranscriptionOptions setPiiRedactionOptions(PiiRedactionOptions piiRedactionOptions) {
+        this.piiRedactionOptions = piiRedactionOptions;
+        return this;
+    }
+
+    /**
+     * Set the enableSentimentAnalysis property: Indicating if sentiment analysis
+     * should be used.
+     * 
+     * @param enableSentimentAnalysis the enableSentimentAnalysis value to set.
+     * @return the UpdateTranscriptionOptions object itself.
+     */
+    public UpdateTranscriptionOptions setEnableSentimentAnalysis(Boolean enableSentimentAnalysis) {
+        this.enableSentimentAnalysis = enableSentimentAnalysis;
+        return this;
+    }
+
+    /**
+     * Set the summarizationOptions property: Summarization configuration options.
+     * 
+     * @param summarizationOptions the summarizationOptions value to set.
+     * @return the UpdateTranscriptionOptions object itself.
+     */
+    public UpdateTranscriptionOptions setSummarizationOptions(SummarizationOptions summarizationOptions) {
+        this.summarizationOptions = summarizationOptions;
         return this;
     }
 }
