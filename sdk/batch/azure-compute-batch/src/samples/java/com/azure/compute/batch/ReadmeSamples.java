@@ -8,10 +8,12 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 
+import com.azure.compute.batch.models.AllocationState;
 import com.azure.compute.batch.models.AutoScaleRun;
 import com.azure.compute.batch.models.AutoUserScope;
 import com.azure.compute.batch.models.AutoUserSpecification;
@@ -34,16 +36,23 @@ import com.azure.compute.batch.models.BatchJobScheduleConfiguration;
 import com.azure.compute.batch.models.BatchJobScheduleCreateParameters;
 import com.azure.compute.batch.models.BatchJobScheduleUpdateParameters;
 import com.azure.compute.batch.models.BatchJobSpecification;
+import com.azure.compute.batch.models.BatchJobTerminateOptions;
+import com.azure.compute.batch.models.BatchJobTerminateParameters;
 import com.azure.compute.batch.models.BatchJobUpdateParameters;
 import com.azure.compute.batch.models.BatchJobsListOptions;
 import com.azure.compute.batch.models.BatchMetadataItem;
 import com.azure.compute.batch.models.BatchNode;
+import com.azure.compute.batch.models.BatchNodeDeallocateOption;
+import com.azure.compute.batch.models.BatchNodeDeallocateOptions;
+import com.azure.compute.batch.models.BatchNodeDeallocateParameters;
+import com.azure.compute.batch.models.BatchNodeDeallocationOption;
 import com.azure.compute.batch.models.BatchNodeFile;
 import com.azure.compute.batch.models.BatchNodeFileDeleteOptions;
 import com.azure.compute.batch.models.BatchNodeFilePropertiesGetOptions;
 import com.azure.compute.batch.models.BatchNodeFilesListOptions;
 import com.azure.compute.batch.models.BatchNodeGetOptions;
 import com.azure.compute.batch.models.BatchNodeRemoteLoginSettings;
+import com.azure.compute.batch.models.BatchNodeRemoveParameters;
 import com.azure.compute.batch.models.BatchNodeUserCreateParameters;
 import com.azure.compute.batch.models.BatchNodesListOptions;
 import com.azure.compute.batch.models.BatchPool;
@@ -74,13 +83,13 @@ import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public final class ReadmeSamples {
     public void readmeSamples() {
-        // BEGIN: com.azure.compute.batch.readme
-        // END: com.azure.compute.batch.readme
-
         // BEGIN: com.azure.compute.batch.build-client
         BatchClient batchClient = new BatchClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
@@ -151,7 +160,17 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.list-pools.pool-list
 
         // BEGIN: com.azure.compute.batch.delete-pool.pool-delete
-        batchClient.beginDeletePool("poolId");
+        SyncPoller<BatchPool, Void> deletePoolPoller = batchClient.beginDeletePool("poolId");
+
+        // First poll
+        PollResponse<BatchPool> initialDeletePoolResponse = deletePoolPoller.poll();
+        if (initialDeletePoolResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchPool poolDuringPoll = initialDeletePoolResponse.getValue();
+        }
+
+        // Wait for LRO to finish
+        deletePoolPoller.waitForCompletion();
+        PollResponse<BatchPool> finalDeletePoolResponse = deletePoolPoller.poll();
         // END: com.azure.compute.batch.delete-pool.pool-delete
 
         // BEGIN: com.azure.compute.batch.update-pool.patch-the-pool
@@ -161,15 +180,34 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.update-pool.patch-the-pool
 
         // BEGIN: com.azure.compute.batch.resize-pool.pool-resize
-        BatchPoolResizeParameters resizeContent = new BatchPoolResizeParameters()
-            .setTargetDedicatedNodes(1)
-            .setResizeTimeout(Duration.ofMinutes(10));
+        BatchPoolResizeParameters resizeParameters = new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1);
+        SyncPoller<BatchPool, BatchPool> resizePoller = batchClient.beginResizePool("poolId", resizeParameters);
 
-        batchClient.resizePool("poolId", resizeContent);
+        // Inspect first poll
+        PollResponse<BatchPool> resizeFirst = resizePoller.poll();
+        if (resizeFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchPool poolDuringResize = resizeFirst.getValue();
+        }
+
+        // Wait for completion
+        resizePoller.waitForCompletion();
+
+        // Final pool after resize
+        BatchPool resizedPool = resizePoller.getFinalResult();
         // END: com.azure.compute.batch.resize-pool.pool-resize
 
         // BEGIN: com.azure.compute.batch.stop-resize-pool.stop-pool-resize
-        batchClient.beginStopPoolResize("poolId");
+        SyncPoller<BatchPool, BatchPool> stopPoller = batchClient.beginStopPoolResize("poolId");
+
+        // First poll
+        PollResponse<BatchPool> stopFirst = stopPoller.poll();
+        if (stopFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS && stopFirst.getValue() != null) {
+            AllocationState interim = stopFirst.getValue().getAllocationState();
+        }
+
+        // Wait for completion
+        stopPoller.waitForCompletion();
+        BatchPool stoppedPool = stopPoller.getFinalResult();
         // END: com.azure.compute.batch.stop-resize-pool.stop-pool-resize
 
         // BEGIN: com.azure.compute.batch.enable-pool-auto-scale.pool-enable-autoscale
@@ -210,7 +248,16 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.list-jobs.job-list
 
         // BEGIN: com.azure.compute.batch.delete-job.job-delete
-        batchClient.beginDeleteJob("jobId");
+        SyncPoller<BatchJob, Void> deleteJobPoller = batchClient.beginDeleteJob("jobId");
+
+        PollResponse<BatchJob> initialDeleteJobResponse = deleteJobPoller.poll();
+        if (initialDeleteJobResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchJob jobDuringPoll = initialDeleteJobResponse.getValue();
+        }
+
+        // Wait for LRO to finish
+        deleteJobPoller.waitForCompletion();
+        PollResponse<BatchJob> finalDeleteJobResponse = deleteJobPoller.poll();
         // END: com.azure.compute.batch.delete-job.job-delete
 
         // BEGIN: com.azure.compute.batch.replace-job.job-patch
@@ -232,11 +279,31 @@ public final class ReadmeSamples {
 
         // BEGIN: com.azure.compute.batch.disable-job.job-disable
         BatchJobDisableParameters disableParams = new BatchJobDisableParameters(DisableBatchJobOption.REQUEUE);
-        batchClient.beginDisableJob("jobId", disableParams);
+        SyncPoller<BatchJob, BatchJob> disablePoller = batchClient.beginDisableJob("jobId", disableParams);
+
+         // Inspect first poll
+        PollResponse<BatchJob> disableFirst = disablePoller.poll();
+        if (disableFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchJob disableDuringPoll = disableFirst.getValue();
+        }
+
+        // Wait for completion of operation
+        disablePoller.waitForCompletion();
+        BatchJob disabledJob = disablePoller.getFinalResult();
         // END: com.azure.compute.batch.disable-job.job-disable
 
         // BEGIN: com.azure.compute.batch.enable-job.job-enable
-        batchClient.beginEnableJob("jobId");
+        SyncPoller<BatchJob, BatchJob> enablePoller = batchClient.beginEnableJob("jobId");
+
+        // Inspect first poll
+        PollResponse<BatchJob> enableFirst = enablePoller.poll();
+        if (enableFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchJob enableDuringPoll = enableFirst.getValue();
+        }
+
+        // Wait for completion of operation
+        enablePoller.waitForCompletion();
+        BatchJob enabledJob = enablePoller.getFinalResult();
         // END: com.azure.compute.batch.enable-job.job-enable
 
         // BEGIN: com.azure.compute.batch.job.list-job-preparation-and-release-task-status
@@ -248,7 +315,18 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.job.get-job-task-counts
 
         // BEGIN: com.azure.compute.batch.job.terminate-job
-        batchClient.beginTerminateJob("jobId");
+        BatchJobTerminateParameters terminateParams = new BatchJobTerminateParameters().setTerminationReason("myreason");
+        BatchJobTerminateOptions terminateOptions = new BatchJobTerminateOptions().setParameters(terminateParams);
+        SyncPoller<BatchJob, BatchJob> terminatePoller = batchClient.beginTerminateJob("jobId", terminateOptions, null);
+
+        // Inspect the first poll
+        PollResponse<BatchJob> first = terminatePoller.poll();
+        if (first.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchJob pollingJob = first.getValue();
+        }
+
+        terminatePoller.waitForCompletion();
+        BatchJob terminatedJob = terminatePoller.getFinalResult();
         // END: com.azure.compute.batch.job.terminate-job
 
         // BEGIN: com.azure.compute.batch.create-job-schedule.creates-a-basic-job-schedule
@@ -268,7 +346,16 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.job-schedule.list-job-schedules
 
         // BEGIN: com.azure.compute.batch.job-schedule.delete-job-schedule
-        batchClient.beginDeleteJobSchedule("jobScheduleId");
+        SyncPoller<BatchJobSchedule, Void> jobScheduleDeletePoller = batchClient.beginDeleteJobSchedule("jobScheduleId");
+
+        PollResponse<BatchJobSchedule> initialJobScheduleDeleteResponse = jobScheduleDeletePoller.poll();
+        if (initialJobScheduleDeleteResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchJobSchedule jobScheduleDuringPoll = initialJobScheduleDeleteResponse.getValue();
+        }
+
+        // Final response
+        jobScheduleDeletePoller.waitForCompletion();
+        PollResponse<BatchJobSchedule> finalJobScheduleDeleteResponse = jobScheduleDeletePoller.poll();
         // END: com.azure.compute.batch.job-schedule.delete-job-schedule
 
         // BEGIN: com.azure.compute.batch.replace-job-schedule.job-schedule-patch
@@ -298,7 +385,9 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.job-schedule.enable-job-schedule
 
         // BEGIN: com.azure.compute.batch.job-schedule.terminate-job-schedule
-        batchClient.beginTerminateJobSchedule("jobScheduleId");
+        SyncPoller<BatchJobSchedule, BatchJobSchedule> terminateJobSchedulePoller = batchClient.beginTerminateJobSchedule("jobScheduleId");
+        terminateJobSchedulePoller.waitForCompletion();
+        BatchJobSchedule jobSchedule = terminateJobSchedulePoller.getFinalResult();
         // END: com.azure.compute.batch.job-schedule.terminate-job-schedule
 
         // BEGIN: com.azure.compute.batch.create-task.creates-a-basic-task
@@ -376,7 +465,19 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.list-nodes.node-list
 
         // BEGIN: com.azure.compute.batch.node.reboot-node
-        batchClient.beginRebootNode("poolId", "nodeId");
+        List<BatchNode> listOfNodes = new ArrayList<>();
+        batchClient.listNodes("poolId").forEach(listOfNodes::add);
+        String nodeIdA = listOfNodes.get(0).getId();
+        SyncPoller<BatchNode, BatchNode> rebootPoller = batchClient.beginRebootNode("poolId", nodeIdA);
+
+        // First poll
+        PollResponse<BatchNode> rebootFirst = rebootPoller.poll();
+        if (rebootFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchNode nodeDuringReboot = rebootFirst.getValue();
+        }
+
+        rebootPoller.waitForCompletion();
+        BatchNode rebootedNode = rebootPoller.getFinalResult();
         // END: com.azure.compute.batch.node.reboot-node
 
         // BEGIN: com.azure.compute.batch.create-node-user.node-create-user
@@ -440,7 +541,9 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.compute.batch.certificate.delete-certificate
         String thumbprintAlgorithm = "sha1";
         String thumbprint = "your-thumbprint";
-        batchClient.beginDeleteCertificate(thumbprintAlgorithm, thumbprint);
+        SyncPoller<BatchCertificate, Void> deleteCertificatePoller = batchClient.beginDeleteCertificate(thumbprintAlgorithm, thumbprint);
+        deleteCertificatePoller.waitForCompletion();
+        PollResponse<BatchCertificate> finalDeleteCertificateResponse = deleteCertificatePoller.poll();
         // END: com.azure.compute.batch.certificate.delete-certificate
 
         // BEGIN: com.azure.compute.batch.cancel-certificate-deletion.certificate-cancel-delete
@@ -454,5 +557,66 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.compute.batch.list-applications.list-applications
         PagedIterable<BatchApplication> applications = batchClient.listApplications(new BatchApplicationsListOptions());
         // END: com.azure.compute.batch.list-applications.list-applications
+
+        // BEGIN: com.azure.compute.batch.node.deallocate-node
+        BatchNodeDeallocateParameters deallocateParams
+            = new BatchNodeDeallocateParameters().setNodeDeallocateOption(BatchNodeDeallocateOption.TERMINATE);
+
+        BatchNodeDeallocateOptions deallocateOptions
+            = new BatchNodeDeallocateOptions().setTimeOutInSeconds(Duration.ofSeconds(30))
+                .setParameters(deallocateParams);
+         SyncPoller<BatchNode, BatchNode> deallocatePoller = batchClient.beginDeallocateNode("poolId", "nodeId", deallocateOptions);
+
+         // Validate first poll response
+        PollResponse<BatchNode> firstPoll = deallocatePoller.poll();
+        if (firstPoll.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchNode nodeDuringPoll = firstPoll.getValue();
+        }
+
+        // Wait for operation to complete
+        deallocatePoller.waitForCompletion();
+        BatchNode deallocatedNode = deallocatePoller.getFinalResult();
+        // END: com.azure.compute.batch.node.deallocate-node
+
+        // BEGIN: com.azure.compute.batch.node.reimage-node
+        SyncPoller<BatchNode, BatchNode> reimagePoller = batchClient.beginReimageNode("poolId", "nodeId");
+
+        // Retrieve the value while the operation is in progress
+        PollResponse<BatchNode> reimageFirst = reimagePoller.poll();
+        BatchNode nodeDuringReimage = reimageFirst.getValue();
+
+        // Wait until the the node is usable
+        reimagePoller.waitForCompletion();
+        BatchNode reimagedNode = reimagePoller.getFinalResult();
+        // END: com.azure.compute.batch.node.reimage-node
+
+        // BEGIN: com.azure.compute.batch.node.start-node
+        SyncPoller<BatchNode, BatchNode> startPoller = batchClient.beginStartNode("poolId", "nodeId");
+
+        // First poll
+        PollResponse<BatchNode> startFirst = startPoller.poll();
+        BatchNode firstVal = startFirst.getValue();
+
+        // Final result
+        startPoller.waitForCompletion();
+        BatchNode startedNode = startPoller.getFinalResult();
+        // END: com.azure.compute.batch.node.start-node
+
+        // BEGIN: com.azure.compute.batch.pool.remove-nodes
+        List<BatchNode> nodes = new ArrayList<>();
+        batchClient.listNodes("poolId").forEach(nodes::add);
+        String nodeIdB = nodes.get(1).getId();
+        BatchNodeRemoveParameters removeParams = new BatchNodeRemoveParameters(Collections.singletonList(nodeIdB))
+                .setNodeDeallocationOption(BatchNodeDeallocationOption.TASK_COMPLETION);
+
+        SyncPoller<BatchPool, BatchPool> removePoller = batchClient.beginRemoveNodes("poolId", removeParams);
+
+        // First poll response
+        PollResponse<BatchPool> removeFirst = removePoller.poll();
+
+        // Final result
+        removePoller.waitForCompletion();
+        BatchPool poolAfterRemove = removePoller.getFinalResult();
+        // END: com.azure.compute.batch.pool.remove-nodes
     }
 }
