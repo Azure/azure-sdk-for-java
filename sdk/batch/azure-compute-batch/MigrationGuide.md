@@ -114,12 +114,20 @@ We strongly recommend using Microsoft Entra ID for Batch account authentication.
 
 ### Authenticate with Microsoft Entra ID
 
-The preferred approach is to use the Azure Identity library’s `DefaultAzureCredential`.
+The preferred approach is to use the Azure Identity library’s `DefaultAzureCredential`. Here is a code snippet that builds an instance of the synchronous BatchClient:
 
 ```java com.azure.compute.batch.build-client
 BatchClient batchClient = new BatchClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
     .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
     .buildClient();
+```
+
+You can also build an instance of the asynchronous client (BatchAsyncClient) if you want to perform any operations asynchronously:
+
+```java com.azure.compute.batch.build-async-client
+BatchAsyncClient batchAsyncClient = new BatchClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+    .buildAsyncClient();
 ```
 
 ### Authenticate with Shared Key Credentials
@@ -134,7 +142,9 @@ AzureNamedKeyCredential sharedKeyCreds = new AzureNamedKeyCredential(accountName
 
 BatchClientBuilder batchClientBuilder = new BatchClientBuilder();
 batchClientBuilder.credential(sharedKeyCreds);
+// You can build both the sync and async clients with this configuration
 BatchClient batchClientWithSharedKey = batchClientBuilder.buildClient();
+BatchAsyncClient batchAsyncClientWithSharedKey = batchClientBuilder.buildAsyncClient();
 ```
 
 ## Error Handling
@@ -157,7 +167,7 @@ try {
 
 ## Operations Examples
 
-The sections below compare common operations between Track 1 (Microsoft.Azure.Batch) and Track 2 (Azure.Compute.Batch).
+The sections below compare common operations between Track 1 (Microsoft.Azure.Batch) and Track 2 (Azure.Compute.Batch). While most of these examples use the synchronous BatchClient, you can call these operations on the asynchronous BatchAsyncClient as well.
 
 ### Pool Operations
 
@@ -200,7 +210,14 @@ CloudPool pool = batchClient.poolOperations().getPool("poolId");
 Track 2:
 
 ```java com.azure.compute.batch.get-pool.pool-get
-BatchPool response = batchClient.getPool("pool", null, null);
+BatchPool pool = batchClient.getPool("poolId");
+```
+
+```java com.azure.compute.batch.pool.get-pool-async
+batchAsyncClient.getPool("poolId").subscribe(asyncPool -> {
+    // Use the pool here
+    System.out.println("Pool ID: " + asyncPool.getId());
+});
 ```
 
 #### List Pools
@@ -217,7 +234,7 @@ for (CloudPool pool : pools) {
 Track 2:
 
 ```java com.azure.compute.batch.list-pools.pool-list
-PagedIterable<BatchPool> poolList = batchClient.listPools(new BatchPoolsListOptions());
+PagedIterable<BatchPool> poolList = batchClient.listPools();
 ```
 
 #### Delete Pool
@@ -242,6 +259,21 @@ if (initialDeletePoolResponse.getStatus() == LongRunningOperationStatus.IN_PROGR
 // Wait for LRO to finish
 deletePoolPoller.waitForCompletion();
 PollResponse<BatchPool> finalDeletePoolResponse = deletePoolPoller.poll();
+```
+
+```java com.azure.compute.batch.delete-pool.pool-delete-async
+batchAsyncClient.beginDeletePool("poolId")
+    .doOnNext(pollResponse -> {
+        if (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchPool poolDuringPoll = pollResponse.getValue();
+            System.out.println("Pool is being deleted: " + poolDuringPoll.getId());
+        }
+    })
+    .takeUntil(pollResponse -> pollResponse.getStatus().isComplete())
+    .last()
+    .subscribe(finalPollResponse -> {
+        System.out.println("Pool deletion completed with status: " + finalPollResponse.getStatus());
+    });
 ```
 
 #### Update Pool
@@ -462,6 +494,12 @@ batchClient.createJob(
     new BatchJobCreateParameters("jobId", new BatchPoolInfo().setPoolId("poolId")).setPriority(0), null);
 ```
 
+```java com.azure.compute.batch.create-job.creates-a-basic-job-async
+batchAsyncClient.createJob(
+    new BatchJobCreateParameters("jobId", new BatchPoolInfo().setPoolId("poolId")).setPriority(0))
+    .subscribe(unused -> System.out.println("Job created successfully"));
+```
+
 #### Get Job
 
 Track 1:
@@ -660,6 +698,23 @@ if (first.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
 
 terminatePoller.waitForCompletion();
 BatchJob terminatedJob = terminatePoller.getFinalResult();
+```
+
+```java com.azure.compute.batch.job.terminate-job-async
+BatchJobTerminateParameters asyncTerminateParams = new BatchJobTerminateParameters()
+    .setTerminationReason("ExampleReason");
+BatchJobTerminateOptions asyncTerminateOptions = new BatchJobTerminateOptions()
+    .setParameters(asyncTerminateParams);
+
+batchAsyncClient.beginTerminateJob("jobId", asyncTerminateOptions, null)
+    .takeUntil(response -> response.getStatus().isComplete())
+    .last()
+    .flatMap(finalResponse -> {
+        BatchJob asyncTerminatedJob = finalResponse.getValue();
+        System.out.println("Job termination completed. Final job state: " + asyncTerminatedJob.getState());
+        return Mono.empty();
+    })
+    .subscribe();
 ```
 
 ### Job Schedule Operations
@@ -865,8 +920,10 @@ batchClient.taskOperations().createTasks(jobId, tasksToAdd, behaviors);
 Track 2
 Create a single task:
 
-```java com.azure.compute.batch.create-task.creates-a-basic-task
-batchClient.createTask("jobId", new BatchTaskCreateParameters("task1", "cmd /c echo task1"), null);
+```java com.azure.compute.batch.create-task.creates-a-simple-task
+String taskId = "ExampleTaskId";
+BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "echo hello world");
+batchClient.createTask("jobId", taskToCreate);
 ```
 
 Create a task collection (100 tasks or less):
@@ -1084,7 +1141,7 @@ BatchNodeDeallocateParameters deallocateParams
 BatchNodeDeallocateOptions deallocateOptions
     = new BatchNodeDeallocateOptions().setTimeOutInSeconds(Duration.ofSeconds(30))
         .setParameters(deallocateParams);
- SyncPoller<BatchNode, BatchNode> deallocatePoller = batchClient.beginDeallocateNode("poolId", "nodeId", deallocateOptions);
+SyncPoller<BatchNode, BatchNode> deallocatePoller = batchClient.beginDeallocateNode("poolId", "nodeId", deallocateOptions);
 
  // Validate first poll response
 PollResponse<BatchNode> firstPoll = deallocatePoller.poll();
@@ -1295,7 +1352,15 @@ Track 2:
 
 ```java com.azure.compute.batch.upload-node-logs.upload-batch-service-logs
 UploadBatchServiceLogsResult uploadNodeLogsResult
-    = batchClient.uploadNodeLogs("poolId", "tvm-1695681911_1-20161121t182739z", null, null);
+    = batchClient.uploadNodeLogs("poolId", "nodeId", null);
+```
+
+```java com.azure.compute.batch.upload-node-logs.upload-batch-service-logs-async
+batchAsyncClient.uploadNodeLogs("poolId", "nodeId", null)
+    .subscribe(logResult -> {
+        System.out.println("Number of files uploaded: " + logResult.getNumberOfFilesUploaded());
+        System.out.println("Log upload container URL: " + logResult.getVirtualDirectoryName());
+    });
 ```
 
 ### Certificate Operations
