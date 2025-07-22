@@ -15,78 +15,78 @@ This guide is intended to assist customers in migrating to the new Java SDK pack
 - [Error Handling](#error-handling)
 - [Operations Examples](#operations-examples)
   - [Pool Operations](#pool-operations)
-    - [CreatePool](#createpool)
-    - [GetPool](#getpool)
-    - [ListPools](#listpools)
-    - [DeletePool](#deletepool)
-    - [UpdatePool](#updatepool)
-    - [ResizePool](#resizepool)
-    - [StopResizePool](#stopresizepool)
-    - [EnableAutoScalePool](#enableautoscalepool)
-    - [DisableAutoScalePool](#disableautoscalepool)
-    - [EvaluateAutoScalePool](#evaluateautoscalepool)
-    - [ListPoolNodeCounts](#listpoolnodecounts)
-    - [ListPoolUsageMetrics](#listpoolusagemetrics)
-    - [GetSupportedImages](#getsupportedimages)
-    - [RemoveNodes](#removenodes)
+    - [Create Pool](#create-pool)
+    - [Get Pool](#get-pool)
+    - [List Pools](#list-pools)
+    - [Delete Pool](#delete-pool)
+    - [Update Pool](#update-pool)
+    - [Resize Pool](#resize-pool)
+    - [Stop Resize Pool](#stop-resize-pool)
+    - [Enable AutoScale Pool](#enable-autoscale-pool)
+    - [Disable AutoScale Pool](#disable-autoscale-pool)
+    - [Evaluate AutoScale Pool](#evaluate-autoscale-pool)
+    - [List Pool Node Counts](#list-pool-node-counts)
+    - [List Pool Usage Metrics](#list-pool-usage-metrics)
+    - [Get Supported Images](#get-supported-images)
+    - [Remove Nodes](#remove-nodes)
   - [Job Operations](#job-operations)
-    - [CreateJob](#createjob)
-    - [GetJob](#getjob)
-    - [ListJobs](#listjobs)
-    - [DeleteJob](#deletejob)
-    - [ReplaceJob](#replacejob)
-    - [UpdateJob](#updatejob)
-    - [DisableJob](#disablejob)
-    - [EnableJob](#enablejob)
+    - [Create Job](#create-job)
+    - [Get Job](#get-job)
+    - [List Jobs](#list-jobs)
+    - [Delete Job](#delete-job)
+    - [Replace Job](#replace-job)
+    - [Update Job](#update-job)
+    - [Disable Job](#disable-job)
+    - [Enable Job](#enable-job)
     - [List Job Preparation and Release Task Status](#list-job-preparation-and-release-task-status)
     - [Get Job Task Counts](#get-job-task-counts)
-    - [TerminateJob](#terminatejob)
+    - [Terminate Job](#terminate-job)
   - [Job Schedule Operations](#job-schedule-operations)
-    - [CreateJobSchedule](#createjobschedule)
-    - [GetJobSchedule](#getjobschedule)
-    - [ListJobSchedules](#listjobschedules)
-    - [DeleteJobSchedule](#deletejobschedule)
-    - [ReplaceJobSchedule](#replacejobschedule)
-    - [UpdateJobSchedule](#updatejobschedule)
-    - [DisableJobSchedule](#disablejobschedule)
-    - [EnableJobSchedule](#enablejobschedule)
-    - [TerminateJobSchedule](#terminatejobschedule)
+    - [Create Job Schedule](#create-job-schedule)
+    - [Get Job Schedule](#get-job-schedule)
+    - [List Job Schedules](#list-job-schedules)
+    - [Delete Job Schedule](#delete-job-schedule)
+    - [Replace Job Schedule](#replace-job-schedule)
+    - [Update Job Schedule](#update-job-schedule)
+    - [Disable Job Schedule](#disable-job-schedule)
+    - [Enable Job Schedule](#enable-job-schedule)
+    - [Terminate Job Schedule](#terminate-job-schedule)
   - [Task Operations](#task-operations)
-    - [AddTask](#addtask)
-    - [GetTask](#gettask)
-    - [ListTasks](#listtasks)
-    - [DeleteTask](#deletetask)
-    - [ReplaceTask](#replacetask)
-    - [ReactivateTask](#reactivatetask)
-    - [TerminateTask](#terminatetask)
+    - [Create Tasks](#create-tasks)
+    - [Get Task](#get-task)
+    - [List Tasks](#list-tasks)
+    - [Delete Task](#delete-task)
+    - [Replace Task](#replace-task)
+    - [Reactivate Task](#reactivate-task)
+    - [Terminate Task](#terminate-task)
     - [File Operations for Tasks](#file-operations-for-tasks)
-    - [List Task Files](#listtaskfiles)
-    - [Get Task File](#gettaskfile)
-    - [Get Task File Properties](#gettaskfileproperties)
+    - [List Task Files](#list-task-files)
+    - [Get Task File](#get-task-file)
+    - [Get Task File Properties](#get-task-file-properties)
   - [Node Operations](#node-operations)
-    - [GetComputeNode](#getcomputenode)
-    - [ListComputeNodes](#listcomputenodes)
-    - [DeallocateNode](#deallocatenode)
-    - [ReimageNode](#reimagenode)
-    - [StartNode](#startnode)
-    - [RebootNode](#rebootnode)
-    - [CreateComputeNodeUser](#createcomputenodeuser)
-    - [DeleteComputeNodeUser](#deletecomputenodeuser)
-    - [GetNodeFile](#getnodefile)
-    - [ListNodeFiles](#listnodefiles)
-    - [DeleteNodeFile](#deletenodefile)
-    - [GetNodeFileProperties](#getnodefileproperties)
-    - [GetRemoteLoginSettings](#getremoteloginsettings)
-    - [UploadNodeLogs](#uploadnodelogs)
+    - [Get Compute Node](#get-compute-node)
+    - [List Compute Nodes](#list-compute-nodes)
+    - [Deallocate Node](#deallocate-node)
+    - [Reimage Node](#reimage-node)
+    - [Start Node](#start-node)
+    - [Reboot Node](#reboot-node)
+    - [Create Compute Node User](#create-compute-node-user)
+    - [Delete Compute Node User](#delete-compute-node-user)
+    - [Get Node File](#get-node-file)
+    - [List Node Files](#list-node-files)
+    - [Delete Node File](#delete-node-file)
+    - [Get Node File Properties](#get-node-file-properties)
+    - [Get Remote Login Settings](#get-remote-login-settings)
+    - [Upload Node Logs](#upload-node-logs)
   - [Certificate Operations](#certificate-operations)
-    - [CreateCertificate](#createcertificate)
-    - [GetCertificate](#getcertificate)
-    - [ListCertificates](#listcertificates)
-    - [DeleteCertificate](#deletecertificate)
-    - [CancelDeleteCertificate](#canceldeletecertificate)
+    - [Create Certificate](#create-certificate)
+    - [Get Certificate](#get-certificate)
+    - [List Certificates](#list-certificates)
+    - [Delete Certificate](#delete-certificate)
+    - [Cancel Delete Certificate](#cancel-delete-certificate)
   - [Application Operations](#application-operations)
-    - [GetApplication](#getapplication)
-    - [ListApplications](#listapplications)
+    - [Get Application](#get-application)
+    - [List Applications](#list-applications)
 
 ## Overview
 
@@ -161,7 +161,7 @@ The sections below compare common operations between Track 1 (Microsoft.Azure.B
 
 ### Pool Operations
 
-#### CreatePool
+#### Create Pool
 
 Track 1:
 
@@ -189,7 +189,7 @@ batchClient.createPool(new BatchPoolCreateParameters("poolId", "STANDARD_DC2s_V2
     .setTargetDedicatedNodes(1), null);
 ```
 
-#### GetPool
+#### Get Pool
 
 Track 1:
 
@@ -203,7 +203,7 @@ Track 2:
 BatchPool response = batchClient.getPool("pool", null, null);
 ```
 
-#### ListPools
+#### List Pools
 
 Track 1:
 
@@ -220,7 +220,7 @@ Track 2:
 PagedIterable<BatchPool> poolList = batchClient.listPools(new BatchPoolsListOptions());
 ```
 
-#### DeletePool
+#### Delete Pool
 
 Track 1:
 
@@ -244,7 +244,7 @@ deletePoolPoller.waitForCompletion();
 PollResponse<BatchPool> finalDeletePoolResponse = deletePoolPoller.poll();
 ```
 
-#### UpdatePool
+#### Update Pool
 
 Track 1:
 
@@ -265,7 +265,7 @@ batchClient.updatePool("poolId",
     null);
 ```
 
-#### ResizePool
+#### Resize Pool
 
 Track 1:
 
@@ -292,7 +292,7 @@ resizePoller.waitForCompletion();
 BatchPool resizedPool = resizePoller.getFinalResult();
 ```
 
-#### StopResizePool
+#### Stop Resize Pool
 
 Track 1:
 
@@ -316,7 +316,7 @@ stopPoller.waitForCompletion();
 BatchPool stoppedPool = stopPoller.getFinalResult();
 ```
 
-#### EnableAutoScalePool
+#### Enable AutoScale Pool
 
 Track 1:
 
@@ -334,7 +334,7 @@ BatchPoolEnableAutoScaleParameters autoScaleParameters = new BatchPoolEnableAuto
 batchClient.enablePoolAutoScale("poolId", autoScaleParameters);
 ```
 
-#### DisableAutoScalePool
+#### Disable AutoScale Pool
 
 Track 1:
 
@@ -348,7 +348,7 @@ Track 2:
 batchClient.disablePoolAutoScale("poolId");
 ```
 
-#### EvaluateAutoScalePool
+#### Evaluate AutoScale Pool
 
 Track 1:
 
@@ -363,7 +363,7 @@ BatchPoolEvaluateAutoScaleParameters evalParams = new BatchPoolEvaluateAutoScale
 AutoScaleRun eval = batchClient.evaluatePoolAutoScale("poolId", evalParams);
 ```
 
-#### ListPoolNodeCounts
+#### List Pool Node Counts
 
 Track 1:
 
@@ -377,7 +377,7 @@ Track 2:
 batchClient.listPoolNodeCounts();
 ```
 
-#### ListPoolUsageMetrics
+#### List Pool Usage Metrics
 
 Track 1:
 
@@ -391,7 +391,7 @@ Track 2:
 batchClient.listPoolUsageMetrics();
 ```
 
-#### GetSupportedImages
+#### Get Supported Images
 
 Track 1:
 
@@ -405,7 +405,7 @@ Track 2:
 batchClient.listSupportedImages();
 ```
 
-#### RemoveNodes
+#### Remove Nodes
 
 Track 1:
 
@@ -443,7 +443,7 @@ BatchPool poolAfterRemove = removePoller.getFinalResult();
 
 ### Job Operations
 
-#### CreateJob
+#### Create Job
 
 Track 1:
 
@@ -462,7 +462,7 @@ batchClient.createJob(
     new BatchJobCreateParameters("jobId", new BatchPoolInfo().setPoolId("poolId")).setPriority(0), null);
 ```
 
-#### GetJob
+#### Get Job
 
 Track 1:
 
@@ -476,7 +476,7 @@ Track 2:
 BatchJob job = batchClient.getJob("jobId", null, null);
 ```
 
-#### ListJobs
+#### List Jobs
 
 Track 1:
 
@@ -490,7 +490,7 @@ Track 2:
 PagedIterable<BatchJob> jobList = batchClient.listJobs(new BatchJobsListOptions());
 ```
 
-#### DeleteJob
+#### Delete Job
 
 Track 1:
 
@@ -513,7 +513,7 @@ deleteJobPoller.waitForCompletion();
 PollResponse<BatchJob> finalDeleteJobResponse = deleteJobPoller.poll();
 ```
 
-#### ReplaceJob
+#### Replace Job
 
 (Known as `UpdateJob` in Track 1, `ReplaceJob` in Track 2)
 
@@ -534,7 +534,7 @@ batchClient.replaceJob("jobId",
     null, null);
 ```
 
-#### UpdateJob
+#### Update Job
 
 (Known as `PatchJob` in Track 1, `UpdateJob` in Track 2)
 
@@ -555,7 +555,7 @@ batchClient.updateJob("jobId",
     null, null);
 ```
 
-#### DisableJob
+#### Disable Job
 
 Track 1:
 
@@ -581,7 +581,7 @@ disablePoller.waitForCompletion();
 BatchJob disabledJob = disablePoller.getFinalResult();
 ```
 
-#### EnableJob
+#### Enable Job
 
 Track 1:
 
@@ -637,7 +637,7 @@ Track 2:
 BatchTaskCountsResult counts = batchClient.getJobTaskCounts("jobId");
 ```
 
-#### TerminateJob
+#### Terminate Job
 
 Track 1:
 
@@ -648,7 +648,7 @@ batchClient.jobOperations().terminateJob("jobId");
 Track 2:
 
 ```java com.azure.compute.batch.job.terminate-job
-BatchJobTerminateParameters terminateParams = new BatchJobTerminateParameters().setTerminationReason("myreason");
+BatchJobTerminateParameters terminateParams = new BatchJobTerminateParameters().setTerminationReason("ExampleReason");
 BatchJobTerminateOptions terminateOptions = new BatchJobTerminateOptions().setParameters(terminateParams);
 SyncPoller<BatchJob, BatchJob> terminatePoller = batchClient.beginTerminateJob("jobId", terminateOptions, null);
 
@@ -664,7 +664,7 @@ BatchJob terminatedJob = terminatePoller.getFinalResult();
 
 ### Job Schedule Operations
 
-#### CreateJobSchedule
+#### Create Job Schedule
 
 Track 1:
 
@@ -687,7 +687,7 @@ batchClient.createJobSchedule(new BatchJobScheduleCreateParameters("jobScheduleI
     new BatchJobSpecification(new BatchPoolInfo().setPoolId("poolId"))), null);
 ```
 
-#### GetJobSchedule
+#### Get Job Schedule
 
 Track 1:
 
@@ -701,7 +701,7 @@ Track 2:
 batchClient.getJobSchedule("jobScheduleId");
 ```
 
-#### ListJobSchedules
+#### List Job Schedules
 
 Track 1:
 
@@ -720,7 +720,7 @@ for (BatchJobSchedule schedule : batchClient.listJobSchedules()) {
 }
 ```
 
-#### DeleteJobSchedule
+#### Delete Job Schedule
 
 Track 1:
 
@@ -743,7 +743,7 @@ jobScheduleDeletePoller.waitForCompletion();
 PollResponse<BatchJobSchedule> finalJobScheduleDeleteResponse = jobScheduleDeletePoller.poll();
 ```
 
-#### ReplaceJobSchedule
+#### Replace Job Schedule
 
 (Known as `UpdateJobSchedule` in Track 1, `ReplaceJobSchedule` in Track 2)
 
@@ -769,7 +769,7 @@ batchClient.replaceJobSchedule("jobScheduleId",
     null, null);
 ```
 
-#### UpdateJobSchedule
+#### Update Job Schedule
 
 (Known as `PatchJobSchedule` in Track 1, `UpdateJobSchedule` in Track 2)
 
@@ -791,7 +791,7 @@ updateContent.getMetadata().add(new MetadataItem("key", "value"));
 batchClient.updateJobSchedule("jobScheduleId", updateContent);
 ```
 
-#### DisableJobSchedule
+#### Disable Job Schedule
 
 Track 1:
 
@@ -805,7 +805,7 @@ Track 2:
 batchClient.disableJobSchedule("jobScheduleId");
 ```
 
-#### EnableJobSchedule
+#### Enable Job Schedule
 
 Track 1:
 
@@ -819,7 +819,7 @@ Track 2:
 batchClient.enableJobSchedule("jobScheduleId");
 ```
 
-#### TerminateJobSchedule
+#### Terminate Job Schedule
 
 Track 1:
 
@@ -837,7 +837,7 @@ BatchJobSchedule jobSchedule = terminateJobSchedulePoller.getFinalResult();
 
 ### Task Operations
 
-#### AddTask
+#### Create Tasks
 
 There are several options in Track 2.
 
@@ -889,7 +889,7 @@ for (int i = 0; i < 1000; i++) {
 batchClient.createTasks("jobId", tasks);
 ```
 
-#### GetTask
+#### Get Task
 
 Track 1:
 
@@ -903,7 +903,7 @@ Track 2:
 batchClient.getTask("jobId", "taskId");
 ```
 
-#### ListTasks
+#### List Tasks
 
 Track 1:
 
@@ -917,7 +917,7 @@ Track 2:
 batchClient.listTasks("jobId");
 ```
 
-#### DeleteTask
+#### Delete Task
 
 Track 1:
 
@@ -931,7 +931,7 @@ Track 2:
 batchClient.deleteTask("jobId", "taskId");
 ```
 
-#### ReplaceTask
+#### Replace Task
 
 (Known as `UpdateTask` in Track 1, `ReplaceTask` in Track 2)
 
@@ -953,7 +953,7 @@ batchClient.replaceTask("jobId", "taskId",
     null, null);
 ```
 
-#### ReactivateTask
+#### Reactivate Task
 
 Track 1:
 
@@ -967,7 +967,7 @@ Track 2:
 batchClient.reactivateTask("jobId", "taskId", null, null);
 ```
 
-#### TerminateTask
+#### Terminate Task
 
 Track 1:
 
@@ -983,7 +983,7 @@ batchClient.terminateTask("jobId", "taskId", null, null);
 
 ### File Operations for Tasks
 
-#### ListTaskFiles
+#### List Task Files
 
 Track 1:
 
@@ -1004,7 +1004,7 @@ for (BatchNodeFile file : files) {
 }
 ```
 
-#### GetTaskFile
+#### Get Task File
 
 Track 1:
 
@@ -1020,7 +1020,7 @@ BinaryData fileContent = batchClient.getTaskFile("jobId", "taskId", "stdout.txt"
 System.out.println(new String(fileContent.toBytes(), StandardCharsets.UTF_8));
 ```
 
-#### GetTaskFileProperties
+#### Get Task File Properties
 
 Track 1:
 
@@ -1037,7 +1037,7 @@ batchClient.getTaskFileProperties("jobId", "taskId", "wd\\testFile.txt",
 
 ### Node Operations
 
-#### GetComputeNode
+#### Get Compute Node
 
 Track 1:
 
@@ -1052,7 +1052,7 @@ BatchNode node
     = batchClient.getNode("poolId", "tvm-1695681911_2-20161122t193202z", new BatchNodeGetOptions());
 ```
 
-#### ListComputeNodes
+#### List Compute Nodes
 
 Track 1:
 
@@ -1066,7 +1066,7 @@ Track 2:
 PagedIterable<BatchNode> nodeList = batchClient.listNodes("poolId", new BatchNodesListOptions());
 ```
 
-#### DeallocateNode
+#### Deallocate Node
 
 Track 1:
 
@@ -1097,7 +1097,7 @@ deallocatePoller.waitForCompletion();
 BatchNode deallocatedNode = deallocatePoller.getFinalResult();
 ```
 
-#### ReimageNode
+#### Reimage Node
 
 Track 1:
 
@@ -1119,7 +1119,7 @@ reimagePoller.waitForCompletion();
 BatchNode reimagedNode = reimagePoller.getFinalResult();
 ```
 
-#### StartNode
+#### Start Node
 
 Track 1:
 
@@ -1141,7 +1141,7 @@ startPoller.waitForCompletion();
 BatchNode startedNode = startPoller.getFinalResult();
 ```
 
-#### RebootNode
+#### Reboot Node
 
 Track 1:
 
@@ -1169,9 +1169,9 @@ rebootPoller.waitForCompletion();
 BatchNode rebootedNode = rebootPoller.getFinalResult();
 ```
 
-#### CreateComputeNodeUser
+#### Create Compute Node User
 
-(Known as `AddComputeNodeUser` in Track 1 and `CreateComputeNodeUser` in Track 2)
+(Known as `AddComputeNodeUser` in Track 1 and `CreateNodeUser` in Track 2)
 
 Track 1:
 
@@ -1192,7 +1192,7 @@ batchClient.createNodeUser("poolId", "tvm-1695681911_1-20161121t182739z",
     null);
 ```
 
-#### DeleteComputeNodeUser
+#### Delete Compute Node User
 
 Track 1:
 
@@ -1206,7 +1206,7 @@ Track 2:
 batchClient.deleteNodeUser("poolId", "tvm-1695681911_1-20161121t182739z", "userName", null);
 ```
 
-#### GetNodeFile
+#### Get Node File
 
 Track 1:
 
@@ -1221,7 +1221,7 @@ Track 2:
 BinaryData nodeFile = batchClient.getNodeFile("poolId", "nodeId", "filePath");
 ```
 
-#### ListNodeFiles
+#### List Node Files
 
 Track 1:
 
@@ -1236,7 +1236,7 @@ PagedIterable<BatchNodeFile> listNodeFilesResponse = batchClient.listNodeFiles("
     new BatchNodeFilesListOptions().setRecursive(false));
 ```
 
-#### DeleteNodeFile
+#### Delete Node File
 
 Track 1:
 
@@ -1251,7 +1251,7 @@ batchClient.deleteNodeFile("poolId", "tvm-1695681911_1-20161122t193202z",
     "workitems\\jobId\\job-1\\task1\\wd\\testFile.txt", new BatchNodeFileDeleteOptions().setRecursive(false));
 ```
 
-#### GetNodeFileProperties
+#### Get Node File Properties
 
 Track 1:
 
@@ -1266,7 +1266,7 @@ batchClient.getNodeFileProperties("poolId", "nodeId", "workitems\\jobId\\job-1\\
     new BatchNodeFilePropertiesGetOptions());
 ```
 
-#### GetRemoteLoginSettings
+#### Get Remote Login Settings
 
 Track 1:
 
@@ -1281,7 +1281,7 @@ BatchNodeRemoteLoginSettings settings
     = batchClient.getNodeRemoteLoginSettings("poolId", "tvm-1695681911_1-20161121t182739z", null);
 ```
 
-#### UploadNodeLogs
+#### Upload Node Logs
 
 Track 1:
 
@@ -1302,7 +1302,7 @@ UploadBatchServiceLogsResult uploadNodeLogsResult
 
 Note: Certificate operations are deprecated.
 
-#### CreateCertificateFromCer
+#### Create Certificate From Cer
 
 Track 1:
 
@@ -1320,7 +1320,7 @@ batchClient.createCertificate(
     null);
 ```
 
-#### CreateCertificate
+#### Create Certificate
 
 Track 1:
 
@@ -1353,7 +1353,7 @@ batchClient.createCertificate(
     null);
 ```
 
-#### GetCertificate
+#### Get Certificate
 
 Track 1:
 
@@ -1370,7 +1370,7 @@ BatchCertificate certificateResponse = batchClient.getCertificate("sha1", "01234
     new BatchCertificateGetOptions());
 ```
 
-#### ListCertificates
+#### List Certificates
 
 Track 1:
 
@@ -1384,7 +1384,7 @@ Track 2:
 PagedIterable<BatchCertificate> certificateList = batchClient.listCertificates(new BatchCertificatesListOptions());
 ```
 
-#### DeleteCertificate
+#### Delete Certificate
 
 Track 1:
 
@@ -1404,7 +1404,7 @@ deleteCertificatePoller.waitForCompletion();
 PollResponse<BatchCertificate> finalDeleteCertificateResponse = deleteCertificatePoller.poll();
 ```
 
-#### CancelDeleteCertificate
+#### Cancel Delete Certificate
 
 Track 1:
 
@@ -1422,7 +1422,7 @@ batchClient.cancelCertificateDeletion("sha1", "0123456789abcdef0123456789abcdef0
 
 ### Application Operations
 
-#### GetApplication
+#### Get Application
 
 Track 1:
 
@@ -1436,7 +1436,7 @@ Track 2:
 BatchApplication application = batchClient.getApplication("my_application_id", null);
 ```
 
-#### ListApplications
+#### List Applications
 
 Track 1:
 
