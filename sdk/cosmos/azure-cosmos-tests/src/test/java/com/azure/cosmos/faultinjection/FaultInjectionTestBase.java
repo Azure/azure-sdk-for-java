@@ -80,7 +80,7 @@ public abstract class FaultInjectionTestBase extends TestSuiteBase {
                     CosmosPatchOperations patchOperations =
                         CosmosPatchOperations
                             .create()
-                            .add("newPath", "newPath");
+                            .add("/newPath", "newPath");
                     return cosmosAsyncContainer
                         .patchItem(createdItem.getId(), new PartitionKey(createdItem.getId()), patchOperations, TestItem.class)
                         .block().getDiagnostics();

@@ -54,6 +54,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -113,7 +114,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false },
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, false },
             { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, false, false },
-            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true }
         };
     }
 
@@ -452,22 +453,23 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     fail("dataPlaneRequestHttpTimeout() should succeed for operationType " + operationType, e);
                 }
             } else {
-                try {
-                    this.performDocumentOperation(
-                        resultantCosmosAsyncContainer,
-                        operationType,
-                        newItem,
-                        (testItem) -> new PartitionKey(testItem.getId()),
-                        false
-                    ).block();
-                    fail("dataPlaneRequestHttpTimeout() should have failed for operationType " + operationType);
-                } catch (CosmosException e) {
-                    System.out.println("dataPlaneRequestHttpTimeout() preferredRegions " + this.preferredRegions.toString() + " " + e.getDiagnostics());
-                    assertThat(e.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
-                    assertThat(e.getDiagnostics().getContactedRegionNames()).contains(this.preferredRegions.get(0));
-                    assertThat(e.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
-                    assertThat(e.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
-                }
+                CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(
+                    resultantCosmosAsyncContainer,
+                    operationType,
+                    newItem,
+                    (testItem) -> new PartitionKey(testItem.getId()),
+                    false
+                ).block();
+
+                assertThat(cosmosDiagnostics).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+
+                System.out.println("dataPlaneRequestHttpTimeout() preferredRegions " + this.preferredRegions.toString() + " " + cosmosDiagnostics.getDiagnosticsContext().toJson());
+
+                assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
+                assertThat(cosmosDiagnostics.getContactedRegionNames()).contains(this.preferredRegions.get(0));
+                assertThat(cosmosDiagnostics.getDiagnosticsContext().getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
+                assertThat(cosmosDiagnostics.getDiagnosticsContext().getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
             }
         } finally {
             requestHttpTimeoutRule.disable();
@@ -517,7 +519,6 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     .build())
             .result(
                 FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.LEASE_NOT_FOUND)
-                    .times(1)
                     .build()
             )
             .duration(Duration.ofMinutes(5))
@@ -534,8 +535,13 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             testContainer.createItem(createdItem).block();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(leaseNotFoundFaultRule)).block();
+
+            Instant timeStart = Instant.now();
+
             CosmosDiagnostics cosmosDiagnostics
                 = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany).block();
+
+            Instant timeEnd = Instant.now();
 
             if (shouldRetryCrossRegion) {
                 assertThat(cosmosDiagnostics).isNotNull();
@@ -555,6 +561,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
                 assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
             }
+
+            assertThat(Duration.between(timeStart, timeEnd)).isLessThan(Duration.ofSeconds(5));
 
         } finally {
             leaseNotFoundFaultRule.disable();
@@ -775,10 +783,8 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 }
 
                 if (operationType == OperationType.Patch) {
-                    CosmosPatchOperations patchOperations =
-                        CosmosPatchOperations
-                            .create()
-                            .add("newPath", "newPath");
+                    CosmosPatchOperations patchOperations = CosmosPatchOperations.create();
+                    patchOperations.add("/newPath", "newPath");
                     return cosmosAsyncContainer
                         .patchItem(
                             createdItem.getId(),

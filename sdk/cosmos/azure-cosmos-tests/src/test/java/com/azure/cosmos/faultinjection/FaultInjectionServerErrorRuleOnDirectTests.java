@@ -916,19 +916,13 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 .condition(
                     new FaultInjectionConditionBuilder()
                         .operationType(faultInjectionOperationType)
-                        .endpoints(
-                            new FaultInjectionEndpointBuilder(FeedRange.forFullRange())
-                                .replicaCount(4)
-                                .includePrimary(true)
-                                .build()
-                        )
                         .region(this.accountLevelReadRegions.get(0))
                         .build()
                 )
                 .result(
                     FaultInjectionResultBuilders
                         .getResultBuilder(FaultInjectionServerErrorType.LEASE_NOT_FOUND)
-                        .times(4)
+                        .times(100)
                         .build()
                 )
                 .duration(Duration.ofMinutes(5))
