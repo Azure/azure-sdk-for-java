@@ -140,6 +140,7 @@
     "sdk/mixedreality/azure-mixedreality-authentication/**",
     "sdk/maps/azure-maps-search/**",
     "sdk/monitor/azure-monitor-query/**",
+    "sdk/monitor/azure-monitor-query-logs/**",
     "sdk/monitor/azure-monitor-opentelemetry-exporter/**",
     "sdk/monitor/azure-monitor-opentelemetry-autoconfigure/**",
     "sdk/monitor/test-resources.json",
@@ -421,6 +422,7 @@
     "vmware",
     "vnet",
     "VNET",
+    "vnext",
     "westcentralus",
     "westus",
     "WINDOWSVMIMAGE",
@@ -1140,6 +1142,7 @@
         "rabbitmq",
         "reactivex",
         "remoting",
+        "rocketmq",
         "rocksdb",
         "rsocket",
         "rxtx",
@@ -1182,6 +1185,7 @@
         "yasson",
         "yugabytedb",
         "zaxxer",
+        "zjsonpatch",
         "LINUXVMIMAGE",
         "LINUXPOOL",
         "OSVmImage"
@@ -1469,6 +1473,13 @@
         "momo",
         "RESOURCEID"
 
+      ]
+    },
+    {
+      "filename": "sdk/tools/linting-extensions/**",
+      "words": [
+        "elist",
+        "slist"
       ]
     }
   ],

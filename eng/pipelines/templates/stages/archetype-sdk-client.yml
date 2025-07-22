@@ -67,6 +67,12 @@ parameters:
   - name: PublicPublishEnvironment
     type: string
     default: 'package-publish'
+  - name: BuildParallelization
+    type: string
+    default: '2C'
+  - name: TestParallelization
+    type: string
+    default: '1C'
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -127,6 +133,8 @@ extends:
                 JavaBuildVersion: '1.11'
               ${{ else }}:
                 JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
+              BuildParallelization: ${{ parameters.BuildParallelization }}
+              TestParallelization: ${{ parameters.TestParallelization }}
 
       - ${{ if parameters.AdditionalStagesAfterBuild }}:
           - ${{ parameters.AdditionalStagesAfterBuild }}

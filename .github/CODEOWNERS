@@ -796,10 +796,10 @@
 # ServiceOwners:                                     @azureSQLGitHub
 
 # PRLabel: %Storage
-/sdk/storage/                                        @seanmcc-msft @ibrandes @kyleknap @alzimmermsft @gunjansingh-msft
+/sdk/storage/                                        @seanmcc-msft @ibrandes @kyleknap @alzimmermsft @gunjansingh-msft @browndav-msft
 
 # ServiceLabel:  %Storage
-# AzureSdkOwners:                                    @seanmcc-msft @ibrandes @kyleknap @gunjansingh-msft
+# AzureSdkOwners:                                    @seanmcc-msft @ibrandes @kyleknap @gunjansingh-msft @browndav-msft
 # ServiceOwners:                                     @xgithubtriage
 
 # ServiceLabel:  %Storsimple
@@ -931,7 +931,8 @@
 /eng/common/                                                  @Azure/azure-sdk-eng
 /eng/versioning/                                              @alzimmermsft @samvaity @g2vinay @Azure/azure-java-sdk
 /eng/versioning/external_dependencies.txt                     @alzimmermsft @samvaity @g2vinay @jonathangiles @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk
-/.github/CODEOWNERS                                           @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles @alzimmermsft @Azure/azure-sdk-eng @Azure/azure-java-sdk
+/.github/                                                     @Azure/azure-java-sdk
+/.github/CODEOWNERS                                           @Azure/azure-sdk-eng @Azure/azure-java-sdk
 /.github/workflows/                                           @Azure/azure-sdk-eng
 /.config/1espt/                                               @benbp @weshaggard
 /eng/tools/mcp/                                               @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @samvaity
