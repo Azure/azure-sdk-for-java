@@ -152,7 +152,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.18.0</version> <!-- {x-version-update;cosmos_org.apache.commons:commons-lang3;external_dependency} -->
+      <version>3.18.0</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -276,7 +276,7 @@ Licensed under the MIT License.
                 <include>io.micrometer:micrometer-core:[1.15.1]</include> <!-- {x-include-update;cosmos_io.micrometer:micrometer-core;external_dependency} -->
                 <include>io.micrometer:micrometer-registry-azure-monitor:[1.15.1]</include> <!-- {x-include-update;cosmos_io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
                 <include>io.micrometer:micrometer-registry-graphite:[1.15.1]</include> <!-- {x-include-update;cosmos_io.micrometer:micrometer-registry-graphite;external_dependency} -->
-                <include>org.apache.commons:commons-lang3:[3.18.0]</include> <!-- {x-include-update;cosmos_org.apache.commons:commons-lang3;external_dependency} -->
+                <include>org.apache.commons:commons-lang3:[3.18.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
                 <include>org.apache.logging.log4j:log4j-api:[2.17.2]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
                 <include>org.apache.logging.log4j:log4j-core:[2.17.2]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
                 <include>org.apache.logging.log4j:log4j-slf4j-impl:[2.17.2]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->

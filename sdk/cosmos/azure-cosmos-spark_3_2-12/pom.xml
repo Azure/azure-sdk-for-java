@@ -310,7 +310,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.apache.commons:commons-lang3:[3.18.0]</include> <!-- {x-include-update;cosmos_org.apache.commons:commons-lang3;external_dependency} -->
+                <include>org.apache.commons:commons-lang3:[3.18.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
                 <include>org.apache.spark:spark-sql_2.12:[3.3.0]</include> <!-- {x-include-update;cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>org.apache.spark:spark-sql_2.12:[3.4.0]</include> <!-- {x-include-update;cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;external_dependency} -->
