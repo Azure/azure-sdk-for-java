@@ -315,7 +315,7 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.job.get-job-task-counts
 
         // BEGIN: com.azure.compute.batch.job.terminate-job
-        BatchJobTerminateParameters terminateParams = new BatchJobTerminateParameters().setTerminationReason("myreason");
+        BatchJobTerminateParameters terminateParams = new BatchJobTerminateParameters().setTerminationReason("ExampleReason");
         BatchJobTerminateOptions terminateOptions = new BatchJobTerminateOptions().setParameters(terminateParams);
         SyncPoller<BatchJob, BatchJob> terminatePoller = batchClient.beginTerminateJob("jobId", terminateOptions, null);
 
