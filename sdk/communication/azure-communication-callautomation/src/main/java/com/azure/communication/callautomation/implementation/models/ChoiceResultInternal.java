@@ -37,6 +37,18 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
     @Generated
     private Double confidence;
 
+    /*
+     * The identified language for a spoken phrase.
+     */
+    @Generated
+    private String languageIdentified;
+
+    /*
+     * Gets or sets the sentiment analysis result.
+     */
+    @Generated
+    private SentimentAnalysisResultInternal sentimentAnalysisResult;
+
     /**
      * Creates an instance of ChoiceResultInternal class.
      */
@@ -115,6 +127,50 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
     }
 
     /**
+     * Get the languageIdentified property: The identified language for a spoken phrase.
+     * 
+     * @return the languageIdentified value.
+     */
+    @Generated
+    public String getLanguageIdentified() {
+        return this.languageIdentified;
+    }
+
+    /**
+     * Set the languageIdentified property: The identified language for a spoken phrase.
+     * 
+     * @param languageIdentified the languageIdentified value to set.
+     * @return the ChoiceResultInternal object itself.
+     */
+    @Generated
+    public ChoiceResultInternal setLanguageIdentified(String languageIdentified) {
+        this.languageIdentified = languageIdentified;
+        return this;
+    }
+
+    /**
+     * Get the sentimentAnalysisResult property: Gets or sets the sentiment analysis result.
+     * 
+     * @return the sentimentAnalysisResult value.
+     */
+    @Generated
+    public SentimentAnalysisResultInternal getSentimentAnalysisResult() {
+        return this.sentimentAnalysisResult;
+    }
+
+    /**
+     * Set the sentimentAnalysisResult property: Gets or sets the sentiment analysis result.
+     * 
+     * @param sentimentAnalysisResult the sentimentAnalysisResult value to set.
+     * @return the ChoiceResultInternal object itself.
+     */
+    @Generated
+    public ChoiceResultInternal setSentimentAnalysisResult(SentimentAnalysisResultInternal sentimentAnalysisResult) {
+        this.sentimentAnalysisResult = sentimentAnalysisResult;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -124,6 +180,8 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
         jsonWriter.writeStringField("label", this.label);
         jsonWriter.writeStringField("recognizedPhrase", this.recognizedPhrase);
         jsonWriter.writeNumberField("confidence", this.confidence);
+        jsonWriter.writeStringField("languageIdentified", this.languageIdentified);
+        jsonWriter.writeJsonField("sentimentAnalysisResult", this.sentimentAnalysisResult);
         return jsonWriter.writeEndObject();
     }
 
@@ -149,6 +207,11 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
                     deserializedChoiceResultInternal.recognizedPhrase = reader.getString();
                 } else if ("confidence".equals(fieldName)) {
                     deserializedChoiceResultInternal.confidence = reader.getNullable(JsonReader::getDouble);
+                } else if ("languageIdentified".equals(fieldName)) {
+                    deserializedChoiceResultInternal.languageIdentified = reader.getString();
+                } else if ("sentimentAnalysisResult".equals(fieldName)) {
+                    deserializedChoiceResultInternal.sentimentAnalysisResult
+                        = SentimentAnalysisResultInternal.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

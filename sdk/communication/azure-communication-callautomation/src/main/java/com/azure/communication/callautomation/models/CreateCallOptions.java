@@ -47,6 +47,11 @@ public final class CreateCallOptions {
     private MicrosoftTeamsAppIdentifier teamsAppSource;
 
     /**
+     * Enables loopback audio functionality for the call.
+     */
+    private Boolean enableLoopbackAudio;
+
+    /**
      * Constructor
      * @param callInvite Call invitee information.
      * @param callbackUrl The call back URI.
@@ -66,6 +71,16 @@ public final class CreateCallOptions {
     }
 
     /**
+     * Get the enableLoopbackAudio property: Enables loopback audio functionality
+     * for the call.
+     * 
+     * @return the enableLoopbackAudio value.
+     */
+    public Boolean isEnableLoopbackAudio() {
+        return this.enableLoopbackAudio;
+    }
+
+    /**
      * Get the Transcription configuration.
      *
      * @return the transcriptionOptions
@@ -82,6 +97,18 @@ public final class CreateCallOptions {
      */
     public CreateCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Set the enableLoopbackAudio property: Enables loopback audio functionality
+     * for the call.
+     * 
+     * @param enableLoopbackAudio the enableLoopbackAudio value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public CreateCallOptions setEnableLoopbackAudio(Boolean enableLoopbackAudio) {
+        this.enableLoopbackAudio = enableLoopbackAudio;
         return this;
     }
 

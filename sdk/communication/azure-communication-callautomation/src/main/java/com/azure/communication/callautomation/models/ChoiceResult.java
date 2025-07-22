@@ -25,6 +25,16 @@ public final class ChoiceResult extends RecognizeResult {
      */
     private String recognizedPhrase;
 
+    /*
+     * The identified language for a spoken phrase.
+     */
+    private String languageIdentified;
+
+    /*
+     * Gets or sets the sentiment analysis result.
+     */
+    private SentimentAnalysisResult sentimentAnalysisResult;
+
     /**
      * Creates an instance of {@link ChoiceResult}.
      */
@@ -32,7 +42,8 @@ public final class ChoiceResult extends RecognizeResult {
     }
 
     /**
-     * Get the label property: Label is the primary identifier for the choice detected.
+     * Get the label property: Label is the primary identifier for the choice
+     * detected.
      *
      * @return the label value.
      */
@@ -41,8 +52,10 @@ public final class ChoiceResult extends RecognizeResult {
     }
 
     /**
-     * Get the recognizedPhrase property: Phrases are set to the value if choice is selected via phrase detection. If
-     * Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to
+     * Get the recognizedPhrase property: Phrases are set to the value if choice is
+     * selected via phrase detection. If
+     * Dtmf input is recognized, then Label will be the identifier for the choice
+     * detected and phrases will be set to
      * null.
      *
      * @return the recognizedPhrase value.
@@ -51,11 +64,40 @@ public final class ChoiceResult extends RecognizeResult {
         return this.recognizedPhrase;
     }
 
+    /**
+     * Get the languageIdentified property: The identified language for a spoken
+     * phrase.
+     * 
+     * @return the languageIdentified value.
+     */
+    public String getLanguageIdentified() {
+        return this.languageIdentified;
+    }
+
+    /**
+     * Get the sentimentAnalysisResult property: Gets or sets the sentiment analysis
+     * result.
+     * 
+     * @return the sentimentAnalysisResult value.
+     */
+    public SentimentAnalysisResult getSentimentAnalysisResult() {
+        return this.sentimentAnalysisResult;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("label", this.label);
         jsonWriter.writeStringField("recognizedPhrase", this.recognizedPhrase);
+        jsonWriter.writeStringField("languageIdentified", this.recognizedPhrase);
+
+        if (this.sentimentAnalysisResult != null) {
+            jsonWriter.writeFieldName("sentimentAnalysisResult");
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("sentiment", sentimentAnalysisResult.getSentiment());
+            jsonWriter.writeEndObject();
+        }
+
         return jsonWriter.writeEndObject();
     }
 
@@ -63,8 +105,9 @@ public final class ChoiceResult extends RecognizeResult {
      * Reads an instance of ChoiceResult from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ChoiceResult if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of ChoiceResult if the JsonReader was pointing to an
+     *         instance of it, or
+     *         null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ChoiceResult.
      */
     public static ChoiceResult fromJson(JsonReader jsonReader) throws IOException {
@@ -77,6 +120,22 @@ public final class ChoiceResult extends RecognizeResult {
                     result.label = reader.getString();
                 } else if ("recognizedPhrase".equals(fieldName)) {
                     result.recognizedPhrase = reader.getString();
+                } else if ("languageIdentified".equals(fieldName)) {
+                    result.languageIdentified = reader.getString();
+                } else if ("sentimentAnalysis".equals(fieldName)) {
+                    result.sentimentAnalysisResult = reader.readObject(innerReader -> {
+                        SentimentAnalysisResult sentimentResult = new SentimentAnalysisResult();
+                        while (innerReader.nextToken() != JsonToken.END_OBJECT) {
+                            String sentimentField = innerReader.getFieldName();
+                            innerReader.nextToken();
+                            if ("sentiment".equals(sentimentField)) {
+                                sentimentResult.setSentiment(innerReader.getString());
+                            } else {
+                                innerReader.skipChildren();
+                            }
+                        }
+                        return sentimentResult;
+                    });
                 } else {
                     reader.skipChildren();
                 }

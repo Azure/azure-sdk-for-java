@@ -25,8 +25,11 @@ import com.azure.communication.callautomation.implementation.models.CreateCallRe
 import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioChannelTypeInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingContentTypeInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingOptionsInternal;
+import com.azure.communication.callautomation.implementation.models.PiiRedactionOptionsInternal;
+import com.azure.communication.callautomation.implementation.models.RedactionTypeInternal;
 import com.azure.communication.callautomation.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RejectCallRequestInternal;
+import com.azure.communication.callautomation.implementation.models.SummarizationOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.TranscriptionOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.WebSocketMediaStreamingOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.WebSocketTranscriptionOptionsInternal;
@@ -73,9 +76,14 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * Asynchronous client that supports calling server operations.
  *
- * <p><strong>Instantiating a asynchronous CallingServer client</strong></p>
+ * <p>
+ * <strong>Instantiating a asynchronous CallingServer client</strong>
+ * </p>
  *
- * <p>View {@link CallAutomationClientBuilder this} for additional ways to construct the client.</p>
+ * <p>
+ * View {@link CallAutomationClientBuilder this} for additional ways to
+ * construct the client.
+ * </p>
  *
  * @see CallAutomationClientBuilder
  */
@@ -108,13 +116,14 @@ public final class CallAutomationAsyncClient {
 
     /**
      * Get Source Identity that is used for create and answer call
+     * 
      * @return {@link CommunicationUserIdentifier} represent source
      */
     public CommunicationUserIdentifier getSourceIdentity() {
         return sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
     }
 
-    //region Pre-call Actions
+    // region Pre-call Actions
     /**
      * Create a call connection request from a source identity to a target identity.
      *
@@ -131,7 +140,8 @@ public final class CallAutomationAsyncClient {
     }
 
     /**
-     * Create a call connection request from a source identity to a list of target identity.
+     * Create a call connection request from a source identity to a list of target
+     * identity.
      *
      * @param targetParticipants The list of targetParticipants.
      * @param callbackUrl The call back url for receiving events.
@@ -160,7 +170,8 @@ public final class CallAutomationAsyncClient {
     }
 
     /**
-     * Create a group call connection request from a source identity to multiple identities.
+     * Create a group call connection request from a source identity to multiple
+     * identities.
      *
      * @param createGroupCallOptions Options for creating a new group call.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -226,7 +237,8 @@ public final class CallAutomationAsyncClient {
             .setTargets(targetsModel)
             .setCallbackUri(createCallOptions.getCallbackUrl())
             .setCallIntelligenceOptions(callIntelligenceOptionsInternal)
-            .setOperationContext(createCallOptions.getOperationContext());
+            .setOperationContext(createCallOptions.getOperationContext())
+            .setEnableLoopbackAudio(createCallOptions.isEnableLoopbackAudio());
 
         if (createCallOptions.getMediaStreamingOptions() != null) {
             MediaStreamingOptionsInternal streamingOptionsInternal
@@ -308,11 +320,35 @@ public final class CallAutomationAsyncClient {
     }
 
     private TranscriptionOptionsInternal getTranscriptionOptionsInternal(TranscriptionOptions transcriptionOptions) {
-        return new WebSocketTranscriptionOptionsInternal().setTransportUrl(transcriptionOptions.getTransportUrl())
-            .setLocale(transcriptionOptions.getLocale())
-            .setStartTranscription(transcriptionOptions.isStartTranscription())
-            .setEnableIntermediateResults(transcriptionOptions.isIntermediateResultsEnabled())
-            .setSpeechModelEndpointId(transcriptionOptions.getSpeechRecognitionModelEndpointId());
+        WebSocketTranscriptionOptionsInternal webSocketTranscriptionOptionsInternal
+            = new WebSocketTranscriptionOptionsInternal().setTransportUrl(transcriptionOptions.getTransportUrl())
+                .setLocale(transcriptionOptions.getLocale())
+                .setStartTranscription(transcriptionOptions.isStartTranscription())
+                .setEnableIntermediateResults(transcriptionOptions.isIntermediateResultsEnabled())
+                .setSpeechModelEndpointId(transcriptionOptions.getSpeechRecognitionModelEndpointId())
+                .setEnableSentimentAnalysis(transcriptionOptions.isEnableSentimentAnalysis());
+
+        if (transcriptionOptions.getPiiRedactionOptions() != null) {
+            PiiRedactionOptionsInternal piiRedactionOptionsInternal = new PiiRedactionOptionsInternal();
+            piiRedactionOptionsInternal.setEnable(transcriptionOptions.getPiiRedactionOptions().isEnable());
+            piiRedactionOptionsInternal.setRedactionType(RedactionTypeInternal
+                .fromString(transcriptionOptions.getPiiRedactionOptions().getRedactionType().toString()));
+            webSocketTranscriptionOptionsInternal.setPiiRedactionOptions(piiRedactionOptionsInternal);
+        }
+
+        if (transcriptionOptions.getLocales() != null) {
+            webSocketTranscriptionOptionsInternal.setLocales(transcriptionOptions.getLocales());
+        }
+
+        if (transcriptionOptions.getSummarizationOptions() != null) {
+            SummarizationOptionsInternal summarizationOptionsInternal = new SummarizationOptionsInternal();
+            summarizationOptionsInternal
+                .setEnableEndCallSummary(transcriptionOptions.getSummarizationOptions().isEnableEndCallSummary());
+            summarizationOptionsInternal.setLocale(transcriptionOptions.getSummarizationOptions().getLocale());
+            webSocketTranscriptionOptionsInternal.setSummarizationOptions(summarizationOptionsInternal);
+        }
+
+        return webSocketTranscriptionOptionsInternal;
     }
 
     /**
@@ -352,7 +388,8 @@ public final class CallAutomationAsyncClient {
                 = new AnswerCallRequestInternal().setIncomingCallContext(answerCallOptions.getIncomingCallContext())
                     .setCallbackUri(answerCallOptions.getCallbackUrl())
                     .setAnsweredBy(sourceIdentity)
-                    .setOperationContext(answerCallOptions.getOperationContext());
+                    .setOperationContext(answerCallOptions.getOperationContext())
+                    .setEnableLoopbackAudio(answerCallOptions.isEnableLoopbackAudio());
 
             if (answerCallOptions.getCallIntelligenceOptions() != null
                 && answerCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
@@ -554,6 +591,8 @@ public final class CallAutomationAsyncClient {
                 request.setTranscriptionOptions(transcriptionOptionsInternal);
             }
 
+            request.setEnableLoopbackAudio(connectCallOptions.isEnableLoopbackAudio());
+
             return azureCommunicationCallAutomationServiceInternal.connectWithResponseAsync(request, context)
                 .map(response -> {
                     try {
@@ -570,9 +609,9 @@ public final class CallAutomationAsyncClient {
             return monoError(logger, ex);
         }
     }
-    //endregion
+    // endregion
 
-    //region Mid-call Actions
+    // region Mid-call Actions
     /***
      * Returns an object of CallConnectionAsync
      *
@@ -582,9 +621,9 @@ public final class CallAutomationAsyncClient {
     public CallConnectionAsync getCallConnectionAsync(String callConnectionId) {
         return new CallConnectionAsync(callConnectionId, callConnectionsInternal, callMediasInternal);
     }
-    //endregion
+    // endregion
 
-    //region Content management Actions
+    // region Content management Actions
     /***
      * Returns an object of CallRecordingAsync
      *
@@ -593,5 +632,5 @@ public final class CallAutomationAsyncClient {
     public CallRecordingAsync getCallRecordingAsync() {
         return new CallRecordingAsync(callRecordingsInternal, contentDownloader, httpPipelineInternal, resourceUrl);
     }
-    //endregion
+    // endregion
 }

@@ -8,6 +8,7 @@ import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.AddParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.CancelAddParticipantResponseConstructorProxy;
+import com.azure.communication.callautomation.implementation.accesshelpers.MoveParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.MuteParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RemoveParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.TransferCallResponseConstructorProxy;
@@ -17,8 +18,12 @@ import com.azure.communication.callautomation.implementation.converters.PhoneNum
 import com.azure.communication.callautomation.implementation.models.AddParticipantRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CancelAddParticipantRequest;
 import com.azure.communication.callautomation.implementation.models.CustomCallingContext;
+import com.azure.communication.callautomation.implementation.models.MoveParticipantsRequest;
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantRequestInternal;
+import com.azure.communication.callautomation.implementation.models.TeamsPhoneCallDetailsInternal;
+import com.azure.communication.callautomation.implementation.models.TeamsPhoneCallerDetailsInternal;
+import com.azure.communication.callautomation.implementation.models.TeamsPhoneSourceDetailsInternal;
 import com.azure.communication.callautomation.implementation.models.TransferToParticipantRequestInternal;
 import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.AddParticipantResult;
@@ -27,10 +32,15 @@ import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.CancelAddParticipantOperationOptions;
 import com.azure.communication.callautomation.models.CancelAddParticipantOperationResult;
+import com.azure.communication.callautomation.models.MoveParticipantsOptions;
+import com.azure.communication.callautomation.models.MoveParticipantsResult;
 import com.azure.communication.callautomation.models.MuteParticipantOptions;
 import com.azure.communication.callautomation.models.MuteParticipantResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
+import com.azure.communication.callautomation.models.TeamsPhoneCallDetails;
+import com.azure.communication.callautomation.models.TeamsPhoneCallerDetails;
+import com.azure.communication.callautomation.models.TeamsPhoneSourceDetails;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -55,6 +65,9 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -174,7 +187,8 @@ public final class CallConnectionAsync {
      * @param targetParticipant The participant to retrieve.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response with the result of getting a desired participant in the call.
+     * @return Response with the result of getting a desired participant in the
+     *         call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallParticipant>> getParticipantWithResponse(CommunicationIdentifier targetParticipant) {
@@ -235,7 +249,8 @@ public final class CallConnectionAsync {
     /**
      * Transfer the call to a participant.
      *
-     * @param targetParticipant A {@link CommunicationIdentifier} representing the targetParticipant participant of this transfer.
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the
+     *                          targetParticipant participant of this transfer.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws IllegalArgumentException if the targetParticipant is not ACS, phone nor teams user
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -275,7 +290,8 @@ public final class CallConnectionAsync {
      * @param transferCallToParticipantOptions Options bag for transferToParticipantCall
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response with result of transferring the call to a designated participant.
+     * @return Response with result of transferring the call to a designated
+     *         participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TransferCallResult>>
@@ -297,11 +313,24 @@ public final class CallConnectionAsync {
                 .setSourceCallerIdNumber(
                     PhoneNumberIdentifierConverter.convert(transferCallToParticipantOptions.getSourceCallerIdNumber()));
 
-            if (transferCallToParticipantOptions.getCustomCallingContext().getSipHeaders() != null
-                || transferCallToParticipantOptions.getCustomCallingContext().getVoipHeaders() != null) {
-                request.setCustomCallingContext(new CustomCallingContext()
-                    .setSipHeaders(transferCallToParticipantOptions.getCustomCallingContext().getSipHeaders())
-                    .setVoipHeaders(transferCallToParticipantOptions.getCustomCallingContext().getVoipHeaders()));
+            if (transferCallToParticipantOptions.getCustomCallingContext() != null) {
+                CustomCallingContext customCallingContext = new CustomCallingContext();
+                if (transferCallToParticipantOptions.getCustomCallingContext().getVoipHeaders() != null) {
+                    customCallingContext
+                        .setVoipHeaders(transferCallToParticipantOptions.getCustomCallingContext().getSipHeaders());
+                }
+
+                if (transferCallToParticipantOptions.getCustomCallingContext().getSipHeaders() != null) {
+                    customCallingContext
+                        .setSipHeaders(transferCallToParticipantOptions.getCustomCallingContext().getSipHeaders());
+                }
+
+                if (transferCallToParticipantOptions.getCustomCallingContext().getTeamsPhoneCallDetails() != null) {
+                    customCallingContext.setTeamsPhoneCallDetails(createTeamsPhoneCallDetailsInternal(
+                        transferCallToParticipantOptions.getCustomCallingContext().getTeamsPhoneCallDetails()));
+                }
+
+                request.setCustomCallingContext(customCallingContext);
             }
 
             if (transferCallToParticipantOptions.getTransferee() != null) {
@@ -356,19 +385,48 @@ public final class CallConnectionAsync {
                 .setOperationContext(addParticipantOptions.getOperationContext())
                 .setOperationCallbackUri(addParticipantOptions.getOperationCallbackUrl());
 
-            // Need to do a null check since it is optional; it might be a null and breaks the get function as well as type casting.
+            // Need to do a null check since it is optional; it might be a null and breaks
+            // the get function as well as type casting.
             if (addParticipantOptions.getInvitationTimeout() != null) {
                 request.setInvitationTimeoutInSeconds((int) addParticipantOptions.getInvitationTimeout().getSeconds());
             }
 
-            // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
-            if (addParticipantOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders() != null
-                || addParticipantOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders() != null) {
+            // // Need to do a null check since SipHeaders and VoipHeaders are optional; If
+            // // they both are null then we do not need to set custom context
+            // if (addParticipantOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders() != null
+            //     || addParticipantOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders() != null
+            //     || addParticipantOptions.getTargetParticipant().getCustomCallingContext().getTeamsPhoneCallDetails()
+            //         != null) {
+            //     CustomCallingContext customCallingContext = new CustomCallingContext();
+            //     customCallingContext.setSipHeaders(
+            //         addParticipantOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders());
+            //     customCallingContext.setVoipHeaders(
+            //         addParticipantOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders());
+            //     customCallingContext.setTeamsPhoneCallDetails(createTeamsPhoneCallDetailsInternal(
+            //         addParticipantOptions.getTargetParticipant().getCustomCallingContext().getTeamsPhoneCallDetails()));
+            //     request.setCustomCallingContext(customCallingContext);
+            // }
+
+            if (addParticipantOptions.getTargetParticipant().getCustomCallingContext() != null) {
                 CustomCallingContext customCallingContext = new CustomCallingContext();
-                customCallingContext.setSipHeaders(
-                    addParticipantOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders());
-                customCallingContext.setVoipHeaders(
-                    addParticipantOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders());
+                if (addParticipantOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders() != null) {
+                    customCallingContext.setSipHeaders(
+                        addParticipantOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders());
+                }
+
+                if (addParticipantOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders() != null) {
+                    customCallingContext.setVoipHeaders(
+                        addParticipantOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders());
+                }
+
+                if (addParticipantOptions.getTargetParticipant().getCustomCallingContext().getTeamsPhoneCallDetails()
+                    != null) {
+                    customCallingContext.setTeamsPhoneCallDetails(
+                        createTeamsPhoneCallDetailsInternal(addParticipantOptions.getTargetParticipant()
+                            .getCustomCallingContext()
+                            .getTeamsPhoneCallDetails()));
+                }
+
                 request.setCustomCallingContext(customCallingContext);
             }
 
@@ -422,6 +480,74 @@ public final class CallConnectionAsync {
             return callConnectionInternal.removeParticipantWithResponseAsync(callConnectionId, request, context)
                 .map(response -> new SimpleResponse<>(response,
                     RemoveParticipantResponseConstructorProxy.create(response.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Move participants from one call to another.
+     *
+     * @param targetParticipants participants to move.
+     * @param fromCall The CallConnectionId for the call you want to move the participant from.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the
+     *                               request fails to be sent.
+     * @return Result of moving participants to the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MoveParticipantsResult> moveParticipants(List<CommunicationIdentifier> targetParticipants,
+        String fromCall) {
+        return moveParticipants(new MoveParticipantsOptions(targetParticipants, fromCall));
+    }
+
+    /**
+     * Move participants from one call to another.
+     *
+     * @param moveParticipantsOptions Options bag for moveParticipants
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Result of moving participants to the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MoveParticipantsResult> moveParticipants(MoveParticipantsOptions moveParticipantsOptions) {
+        return moveParticipantsWithResponse(moveParticipantsOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Move participants from one call to another.
+     *
+     * @param moveParticipantsOptions Options bag for moveParticipants
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response with result of moving participants to the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MoveParticipantsResult>>
+        moveParticipantsWithResponse(MoveParticipantsOptions moveParticipantsOptions) {
+        return withContext(context -> moveParticipantsWithResponseInternal(moveParticipantsOptions, context));
+    }
+
+    Mono<Response<MoveParticipantsResult>>
+        moveParticipantsWithResponseInternal(MoveParticipantsOptions moveParticipantsOptions, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+
+            MoveParticipantsRequest request = new MoveParticipantsRequest()
+                .setTargetParticipants(moveParticipantsOptions.getTargetParticipants()
+                    .stream()
+                    .map(CommunicationIdentifierConverter::convert)
+                    .collect(Collectors.toList()))
+                .setFromCall(moveParticipantsOptions.getFromCall())
+                .setOperationContext(moveParticipantsOptions.getOperationContext())
+                .setOperationCallbackUri(moveParticipantsOptions.getOperationCallbackUrl());
+
+            return callConnectionInternal.moveParticipantsWithResponseAsync(callConnectionId, request, context)
+                .map(response -> {
+                    MoveParticipantsResult result
+                        = MoveParticipantsResponseConstructorProxy.create(response.getValue());
+                    return new SimpleResponse<>(response, result);
+                });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -514,7 +640,69 @@ public final class CallConnectionAsync {
         }
     }
 
-    //region Content management Actions
+    private TeamsPhoneCallDetailsInternal
+        createTeamsPhoneCallDetailsInternal(TeamsPhoneCallDetails teamsPhoneCallDetails) {
+        TeamsPhoneCallDetailsInternal teamsPhoneCallDetailsInternal = new TeamsPhoneCallDetailsInternal();
+        TeamsPhoneCallerDetailsInternal teamsPhoneCallerDetailsInternal
+            = createTeamsPhoneCallerDetailsInternal(teamsPhoneCallDetails);
+        TeamsPhoneSourceDetailsInternal teamsPhoneSourceDetailsInternal
+            = createTeamsPhoneSourceDetailsInternal(teamsPhoneCallDetails);
+        teamsPhoneCallDetailsInternal.setTeamsPhoneCallerDetails(teamsPhoneCallerDetailsInternal);
+        teamsPhoneCallDetailsInternal.setTeamsPhoneSourceDetails(teamsPhoneSourceDetailsInternal);
+        teamsPhoneCallDetailsInternal.setSessionId(teamsPhoneCallDetails.getSessionId());
+        teamsPhoneCallDetailsInternal.setIntent(teamsPhoneCallDetails.getIntent());
+        teamsPhoneCallDetailsInternal.setCallTopic(teamsPhoneCallDetails.getCallTopic());
+        teamsPhoneCallDetailsInternal.setCallContext(teamsPhoneCallDetails.getCallContext());
+        teamsPhoneCallDetailsInternal.setTranscriptUrl(teamsPhoneCallDetails.getTranscriptUrl());
+        teamsPhoneCallDetailsInternal.setCallSentiment(teamsPhoneCallDetails.getCallSentiment());
+        teamsPhoneCallDetailsInternal.setSuggestedActions(teamsPhoneCallDetails.getSuggestedActions());
+
+        return teamsPhoneCallDetailsInternal;
+    }
+
+    private TeamsPhoneCallerDetailsInternal
+        createTeamsPhoneCallerDetailsInternal(TeamsPhoneCallDetails teamsPhoneCallDetails) {
+        TeamsPhoneCallerDetailsInternal teamsPhoneCallerDetailsInternal = new TeamsPhoneCallerDetailsInternal();
+        if (teamsPhoneCallDetails != null) {
+            if (teamsPhoneCallDetails.getTeamsPhoneCallerDetails() != null) {
+                TeamsPhoneCallerDetails teamsPhoneCallerDetails = teamsPhoneCallDetails.getTeamsPhoneCallerDetails();
+                teamsPhoneCallerDetailsInternal
+                    .setCaller(CommunicationIdentifierConverter.convert(teamsPhoneCallerDetails.getCaller()));
+                teamsPhoneCallerDetailsInternal.setName(teamsPhoneCallerDetails.getName());
+                teamsPhoneCallerDetailsInternal.setPhoneNumber(teamsPhoneCallerDetails.getPhoneNumber());
+                teamsPhoneCallerDetailsInternal.setRecordId(teamsPhoneCallerDetails.getRecordId());
+                teamsPhoneCallerDetailsInternal.setScreenPopUrl(teamsPhoneCallerDetails.getScreenPopUrl());
+                teamsPhoneCallerDetails.setIsAuthenticated(teamsPhoneCallerDetails.isAuthenticated());
+                teamsPhoneCallerDetails
+                    .setAdditionalCallerInformation(teamsPhoneCallerDetails.getAdditionalCallerInformation());
+            }
+        }
+
+        return teamsPhoneCallerDetailsInternal;
+    }
+
+    private TeamsPhoneSourceDetailsInternal
+        createTeamsPhoneSourceDetailsInternal(TeamsPhoneCallDetails teamsPhoneCallDetails) {
+        TeamsPhoneSourceDetailsInternal teamsPhoneSourceDetailsInternal = new TeamsPhoneSourceDetailsInternal();
+        if (teamsPhoneCallDetails != null) {
+            if (teamsPhoneCallDetails.getTeamsPhoneSourceDetails() != null) {
+                TeamsPhoneSourceDetails teamsPhoneSourceDetails = teamsPhoneCallDetails.getTeamsPhoneSourceDetails();
+                teamsPhoneSourceDetailsInternal
+                    .setSource(CommunicationIdentifierConverter.convert(teamsPhoneSourceDetails.getSource()));
+                teamsPhoneSourceDetailsInternal.setLanguage(teamsPhoneSourceDetails.getLanguage());
+                teamsPhoneSourceDetailsInternal.setStatus(teamsPhoneSourceDetails.getStatus());
+                teamsPhoneSourceDetailsInternal.setIntendedTargets(teamsPhoneSourceDetails.getIntendedTargets()
+                    .entrySet()
+                    .stream()
+                    .collect(Collectors.toMap(Map.Entry::getKey,
+                        entry -> CommunicationIdentifierConverter.convert(entry.getValue()))));
+            }
+        }
+
+        return teamsPhoneSourceDetailsInternal;
+    }
+
+    // region Content management Actions
     /***
      * Returns an object of CallContentAsync
      *
@@ -524,5 +712,5 @@ public final class CallConnectionAsync {
     public CallMediaAsync getCallMediaAsync() {
         return new CallMediaAsync(callConnectionId, callMediasInternal);
     }
-    //endregion
+    // endregion
 }

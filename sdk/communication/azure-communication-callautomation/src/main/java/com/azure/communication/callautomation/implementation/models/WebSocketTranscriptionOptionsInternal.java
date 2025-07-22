@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Represents the options for WebSocket transport.
@@ -47,6 +48,30 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
      */
     @Generated
     private Boolean enableIntermediateResults;
+
+    /*
+     * PII redaction configuration options.
+     */
+    @Generated
+    private PiiRedactionOptionsInternal piiRedactionOptions;
+
+    /*
+     * Indicating if sentiment analysis should be used.
+     */
+    @Generated
+    private Boolean enableSentimentAnalysis;
+
+    /*
+     * List of languages for Language Identification.
+     */
+    @Generated
+    private List<String> locales;
+
+    /*
+     * Summarization configuration options.
+     */
+    @Generated
+    private SummarizationOptionsInternal summarizationOptions;
 
     /**
      * Creates an instance of WebSocketTranscriptionOptionsInternal class.
@@ -160,6 +185,96 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
     }
 
     /**
+     * Get the piiRedactionOptions property: PII redaction configuration options.
+     * 
+     * @return the piiRedactionOptions value.
+     */
+    @Generated
+    public PiiRedactionOptionsInternal getPiiRedactionOptions() {
+        return this.piiRedactionOptions;
+    }
+
+    /**
+     * Set the piiRedactionOptions property: PII redaction configuration options.
+     * 
+     * @param piiRedactionOptions the piiRedactionOptions value to set.
+     * @return the WebSocketTranscriptionOptionsInternal object itself.
+     */
+    @Generated
+    public WebSocketTranscriptionOptionsInternal
+        setPiiRedactionOptions(PiiRedactionOptionsInternal piiRedactionOptions) {
+        this.piiRedactionOptions = piiRedactionOptions;
+        return this;
+    }
+
+    /**
+     * Get the enableSentimentAnalysis property: Indicating if sentiment analysis should be used.
+     * 
+     * @return the enableSentimentAnalysis value.
+     */
+    @Generated
+    public Boolean isEnableSentimentAnalysis() {
+        return this.enableSentimentAnalysis;
+    }
+
+    /**
+     * Set the enableSentimentAnalysis property: Indicating if sentiment analysis should be used.
+     * 
+     * @param enableSentimentAnalysis the enableSentimentAnalysis value to set.
+     * @return the WebSocketTranscriptionOptionsInternal object itself.
+     */
+    @Generated
+    public WebSocketTranscriptionOptionsInternal setEnableSentimentAnalysis(Boolean enableSentimentAnalysis) {
+        this.enableSentimentAnalysis = enableSentimentAnalysis;
+        return this;
+    }
+
+    /**
+     * Get the locales property: List of languages for Language Identification.
+     * 
+     * @return the locales value.
+     */
+    @Generated
+    public List<String> getLocales() {
+        return this.locales;
+    }
+
+    /**
+     * Set the locales property: List of languages for Language Identification.
+     * 
+     * @param locales the locales value to set.
+     * @return the WebSocketTranscriptionOptionsInternal object itself.
+     */
+    @Generated
+    public WebSocketTranscriptionOptionsInternal setLocales(List<String> locales) {
+        this.locales = locales;
+        return this;
+    }
+
+    /**
+     * Get the summarizationOptions property: Summarization configuration options.
+     * 
+     * @return the summarizationOptions value.
+     */
+    @Generated
+    public SummarizationOptionsInternal getSummarizationOptions() {
+        return this.summarizationOptions;
+    }
+
+    /**
+     * Set the summarizationOptions property: Summarization configuration options.
+     * 
+     * @param summarizationOptions the summarizationOptions value to set.
+     * @return the WebSocketTranscriptionOptionsInternal object itself.
+     */
+    @Generated
+    public WebSocketTranscriptionOptionsInternal
+        setSummarizationOptions(SummarizationOptionsInternal summarizationOptions) {
+        this.summarizationOptions = summarizationOptions;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -182,6 +297,10 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
         jsonWriter.writeStringField("speechModelEndpointId", this.speechModelEndpointId);
         jsonWriter.writeBooleanField("startTranscription", this.startTranscription);
         jsonWriter.writeBooleanField("enableIntermediateResults", this.enableIntermediateResults);
+        jsonWriter.writeJsonField("piiRedactionOptions", this.piiRedactionOptions);
+        jsonWriter.writeBooleanField("enableSentimentAnalysis", this.enableSentimentAnalysis);
+        jsonWriter.writeArrayField("locales", this.locales, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("summarizationOptions", this.summarizationOptions);
         return jsonWriter.writeEndObject();
     }
 
@@ -218,6 +337,18 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
                 } else if ("enableIntermediateResults".equals(fieldName)) {
                     deserializedWebSocketTranscriptionOptionsInternal.enableIntermediateResults
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("piiRedactionOptions".equals(fieldName)) {
+                    deserializedWebSocketTranscriptionOptionsInternal.piiRedactionOptions
+                        = PiiRedactionOptionsInternal.fromJson(reader);
+                } else if ("enableSentimentAnalysis".equals(fieldName)) {
+                    deserializedWebSocketTranscriptionOptionsInternal.enableSentimentAnalysis
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("locales".equals(fieldName)) {
+                    List<String> locales = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWebSocketTranscriptionOptionsInternal.locales = locales;
+                } else if ("summarizationOptions".equals(fieldName)) {
+                    deserializedWebSocketTranscriptionOptionsInternal.summarizationOptions
+                        = SummarizationOptionsInternal.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

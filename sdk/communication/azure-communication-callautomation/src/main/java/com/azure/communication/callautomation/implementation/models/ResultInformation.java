@@ -37,6 +37,22 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
     @Generated
     private String message;
 
+    /*
+     * Sip code from SBC. This can be helpful to troubleshoot PSTN call if this result was unexpected.
+     * This is only applicable for PSTN calls and will be null if SBC/Carrier does not provide this information.
+     * Do not solely rely on this information for troubleshooting, as it may not always be available.
+     */
+    @Generated
+    private SipDiagnosticInfo sipCode;
+
+    /*
+     * Q850 cause code from SBC. This can be helpful to troubleshoot call issues if this result was unexpected.
+     * This is only applicable for PSTN calls and will be null if SBC/Carrier does not provide this information.
+     * Do not solely rely on this information for troubleshooting, as it may not always be available.
+     */
+    @Generated
+    private SipDiagnosticInfo q850Cause;
+
     /**
      * Creates an instance of ResultInformation class.
      */
@@ -115,6 +131,62 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
     }
 
     /**
+     * Get the sipCode property: Sip code from SBC. This can be helpful to troubleshoot PSTN call if this result was
+     * unexpected.
+     * This is only applicable for PSTN calls and will be null if SBC/Carrier does not provide this information.
+     * Do not solely rely on this information for troubleshooting, as it may not always be available.
+     * 
+     * @return the sipCode value.
+     */
+    @Generated
+    public SipDiagnosticInfo getSipCode() {
+        return this.sipCode;
+    }
+
+    /**
+     * Set the sipCode property: Sip code from SBC. This can be helpful to troubleshoot PSTN call if this result was
+     * unexpected.
+     * This is only applicable for PSTN calls and will be null if SBC/Carrier does not provide this information.
+     * Do not solely rely on this information for troubleshooting, as it may not always be available.
+     * 
+     * @param sipCode the sipCode value to set.
+     * @return the ResultInformation object itself.
+     */
+    @Generated
+    public ResultInformation setSipCode(SipDiagnosticInfo sipCode) {
+        this.sipCode = sipCode;
+        return this;
+    }
+
+    /**
+     * Get the q850Cause property: Q850 cause code from SBC. This can be helpful to troubleshoot call issues if this
+     * result was unexpected.
+     * This is only applicable for PSTN calls and will be null if SBC/Carrier does not provide this information.
+     * Do not solely rely on this information for troubleshooting, as it may not always be available.
+     * 
+     * @return the q850Cause value.
+     */
+    @Generated
+    public SipDiagnosticInfo getQ850Cause() {
+        return this.q850Cause;
+    }
+
+    /**
+     * Set the q850Cause property: Q850 cause code from SBC. This can be helpful to troubleshoot call issues if this
+     * result was unexpected.
+     * This is only applicable for PSTN calls and will be null if SBC/Carrier does not provide this information.
+     * Do not solely rely on this information for troubleshooting, as it may not always be available.
+     * 
+     * @param q850Cause the q850Cause value to set.
+     * @return the ResultInformation object itself.
+     */
+    @Generated
+    public ResultInformation setQ850Cause(SipDiagnosticInfo q850Cause) {
+        this.q850Cause = q850Cause;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -124,6 +196,8 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
         jsonWriter.writeNumberField("code", this.code);
         jsonWriter.writeNumberField("subCode", this.subCode);
         jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeJsonField("sipCode", this.sipCode);
+        jsonWriter.writeJsonField("q850Cause", this.q850Cause);
         return jsonWriter.writeEndObject();
     }
 
@@ -149,6 +223,10 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
                     deserializedResultInformation.subCode = reader.getNullable(JsonReader::getInt);
                 } else if ("message".equals(fieldName)) {
                     deserializedResultInformation.message = reader.getString();
+                } else if ("sipCode".equals(fieldName)) {
+                    deserializedResultInformation.sipCode = SipDiagnosticInfo.fromJson(reader);
+                } else if ("q850Cause".equals(fieldName)) {
+                    deserializedResultInformation.q850Cause = SipDiagnosticInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
