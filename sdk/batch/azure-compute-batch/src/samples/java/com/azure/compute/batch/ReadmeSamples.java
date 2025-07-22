@@ -565,7 +565,7 @@ public final class ReadmeSamples {
         BatchNodeDeallocateOptions deallocateOptions
             = new BatchNodeDeallocateOptions().setTimeOutInSeconds(Duration.ofSeconds(30))
                 .setParameters(deallocateParams);
-         SyncPoller<BatchNode, BatchNode> deallocatePoller = batchClient.beginDeallocateNode("poolId", "nodeId", deallocateOptions);
+        SyncPoller<BatchNode, BatchNode> deallocatePoller = batchClient.beginDeallocateNode("poolId", "nodeId", deallocateOptions);
 
          // Validate first poll response
         PollResponse<BatchNode> firstPoll = deallocatePoller.poll();
