@@ -1,14 +1,10 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.2.11 (2025-07-22)
 
 ### Other Changes
+
+- Migrated code generation to TypeSpec.
 
 ## 1.2.10 (2025-06-19)
 
