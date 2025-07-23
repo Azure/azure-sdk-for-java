@@ -47,13 +47,12 @@
  * </p>
  *
  * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionClient.instantiation -->
- *
  * <pre>
- * LogsIngestionClient logsIngestionClient = new LogsIngestionClientBuilder&#40;&#41;.credential&#40;tokenCredential&#41;
- *     .endpoint&#40;&quot;&lt;data-collection-endpoint&gt;&quot;&#41;
- *     .buildClient&#40;&#41;;
+ * LogsIngestionClient logsIngestionClient = new LogsIngestionClientBuilder&#40;&#41;
+ *         .credential&#40;tokenCredential&#41;
+ *         .endpoint&#40;&quot;&lt;data-collection-endpoint&gt;&quot;&#41;
+ *         .buildClient&#40;&#41;;
  * </pre>
- *
  * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.instantiation -->
  *
  * <hr/>
@@ -145,13 +144,11 @@
  * </p>
  *
  * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionClient.upload -->
- *
  * <pre>
  * List&lt;Object&gt; logs = getLogs&#40;&#41;;
  * logsIngestionClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs&#41;;
  * System.out.println&#40;&quot;Logs uploaded successfully&quot;&#41;;
  * </pre>
- *
  * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.upload -->
  *
  * <p>
