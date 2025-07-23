@@ -83,7 +83,10 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
 
     @BeforeClass(groups = {"multi-region", "long", "fast", "fi-multi-master"}, timeOut = TIMEOUT)
     public void beforeClass() {
-        clientWithoutPreferredRegions = getClientBuilder().buildAsyncClient();
+        clientWithoutPreferredRegions = getClientBuilder()
+            .preferredRegions(new ArrayList<>())
+            .buildAsyncClient();
+
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(clientWithoutPreferredRegions);
         GlobalEndpointManager globalEndpointManager = asyncDocumentClient.getGlobalEndpointManager();
 
