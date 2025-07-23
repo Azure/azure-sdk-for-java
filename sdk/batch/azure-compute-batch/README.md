@@ -1,6 +1,6 @@
 # Azure Batch client library for Java
 
-This README is based on the latest released version of the Azure Compute Batch SDK, otherwise known as the track 2 Azure Batch Data Plane SDK.
+This README is based on the latest released version of the Azure Compute Batch SDK, otherwise known as the track 2 Azure Batch Data Plane SDK. To view the latest version of the package, [visit this link](https://central.sonatype.com/artifact/com.azure/azure-compute-batch/overview)
 
 > The SDK supports features of the Azure Batch service starting from API version **2023-05-01.16.0**. We will be adding support for more new features and tweaking the API associated with Azure Batch service newer release.
 
@@ -186,6 +186,36 @@ The sections below compare common operations between Track 1 (Microsoft.Azure.B
 
 #### Create Pool
 
+Azure Batch has two SDKs: `Azure-Compute-Batch`[https://learn.microsoft.com/java/api/com.azure.compute.batch?view=azure-java-preview] (this one- also known as the dataplane SDK), which interacts directly with the Azure Batch service, and `Azure-ResourceManager-Batch` [https://learn.microsoft.com/java/api/com.azure.resourcemanager.batch?view=azure-java-stable], which interacts with ARM (Azure Resource Manager) and is known as the management plane SDK. Both SDKs support Batch Pool operations such as create, get, update, list, but only the `Azure-ResourceManager-Batch` SDK can create a pool with managed identities, and for that reason it is the recommended way to create a pool.
+
+Here is how to [create a pool](https://learn.microsoft.com/java/api/com.azure.resourcemanager.batch.models.pools?view=azure-java-stable#com-azure-resourcemanager-batch-models-pools-define(java-lang-string)) using the `Azure-ResourceManager-Batch` SDK (recommended):
+
+```java
+Pool pool = batchManager.pools()
+    .define(poolName)
+    .withExistingBatchAccount(resourceGroup, batchAccountName)
+    .withDisplayName(poolDisplayName)
+    .withDeploymentConfiguration(
+        new DeploymentConfiguration()
+            .withVirtualMachineConfiguration(
+                new VirtualMachineConfiguration()
+                    .withImageReference(new ImageReference().withPublisher("Canonical")
+                        .withOffer("UbuntuServer").withSku("18.04-LTS").withVersion("latest"))
+                    .withNodeAgentSkuId("batch.node.ubuntu 18.04")))
+    .withScaleSettings(
+        new ScaleSettings()
+            .withFixedScale(
+                new FixedScaleSettings()
+                    .withResizeTimeout(Duration.parse("PT8M"))
+                    .withTargetDedicatedNodes(1)
+                    .withTargetLowPriorityNodes(1)
+                    .withNodeDeallocationOption(ComputeNodeDeallocationOption.TASK_COMPLETION)))
+    .withVmSize("Standard_D1")
+    .create();
+```
+
+As mentioned, you can still create a pool using `Azure-Compute-Batch`, just without support for managed identities.
+
 ```java com.azure.compute.batch.create-pool.creates-a-simple-pool
 batchClient.createPool(new BatchPoolCreateParameters("poolId", "STANDARD_DC2s_V2")
     .setVirtualMachineConfiguration(
@@ -195,6 +225,13 @@ batchClient.createPool(new BatchPoolCreateParameters("poolId", "STANDARD_DC2s_V2
             .setVersion("latest"), "batch.node.ubuntu 18.04"))
     .setTargetDedicatedNodes(1), null);
 ```
+
+For more information on code snippets and samples relating to using the management plane SDK, please visit these links:
+[Management Plane Code Snippets and Samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/batch/azure-resourcemanager-batch/SAMPLE.md)
+[API documentation for com.azure.resourcemanager.batch](https://learn.microsoft.com/java/api/com.azure.resourcemanager.batch?view=azure-java-stable)
+[azure-resourcemanager-batch SDK](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-batch/overview)
+
+Please note that the rest of the examples in this README will all be dataplane operations.
 
 #### Get Pool
 
