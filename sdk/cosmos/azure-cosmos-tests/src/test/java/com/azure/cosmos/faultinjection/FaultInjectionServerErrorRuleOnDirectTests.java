@@ -27,6 +27,7 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
@@ -924,6 +925,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                     new FaultInjectionConditionBuilder()
                         .operationType(faultInjectionOperationType)
                         .region(this.preferredRegions.get(0))
+                        .connectionType(FaultInjectionConnectionType.DIRECT)
                         .build()
                 )
                 .result(
@@ -941,8 +943,9 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             testContainer.createItem(createdItem).block();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(serverErrorRule)).block();
-
             CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(testContainer, operationType, createdItem, isReadMany);
+            logger.warn("Preferred regions : {}", this.preferredRegions.stream().collect(Collectors.joining(", ")));
+            logger.warn("Injected error details : {}", serverErrorRule.toString());
             this.validateHitCount(serverErrorRule, 1, operationType, ResourceType.Document);
             this.validateFaultInjectionRuleApplied(
                 cosmosDiagnostics,
