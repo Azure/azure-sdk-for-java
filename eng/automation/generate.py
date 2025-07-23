@@ -173,15 +173,15 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
                 suffix = SUFFIX
             update_parameters(suffix)
 
-            # TODO: use specific function to detect tag in "resources"
+            # TODO: use specific function to detect tag in "resources" spec/service
             tag = None
-            if service == "resources":
+            if service == "resources" and spec == service:
                 with open(os.path.join(config["specFolder"], readme)) as fin:
                     tag_match = re.search(r"tag: (package-resources-\S+)", fin.read())
                     if tag_match:
                         tag = tag_match.group(1)
                     else:
-                        tag = "package-resources-2021-01"
+                        tag = "package-resources-2025-04"
 
             module = ARTIFACT_FORMAT.format(service)
             output_folder = OUTPUT_FOLDER_FORMAT.format(service)
@@ -198,7 +198,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
                 module=module,
                 namespace=namespace,
                 tag=tag,
-                premium=is_mgmt_premium(module)
+                premium=is_mgmt_premium(module),
             )
             if succeeded:
                 succeeded = compile_arm_package(sdk_root, module)
@@ -494,7 +494,9 @@ def main():
         args["version"] = current_version
         output_folder = OUTPUT_FOLDER_FORMAT.format(service)
         namespace = NAMESPACE_FORMAT.format(service)
-        succeeded = generate(sdk_root, module=module, output_folder=output_folder, namespace=namespace, premium=premium, **args)
+        succeeded = generate(
+            sdk_root, module=module, output_folder=output_folder, namespace=namespace, premium=premium, **args
+        )
 
     if succeeded:
         succeeded = compile_arm_package(sdk_root, module)
