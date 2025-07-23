@@ -87,8 +87,6 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import reactor.core.publisher.Mono;
-
 public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.compute.batch.build-client

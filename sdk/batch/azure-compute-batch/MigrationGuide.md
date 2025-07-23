@@ -2,6 +2,8 @@
 
 This guide is intended to assist customers in migrating to the new Java SDK package, `Azure.Compute.Batch` (Track 2), from the legacy `Microsoft.Azure.Batch` package (Track 1). It provides side‐by‐side comparisons of similar operations between the two versions. Familiarity with the legacy client library is assumed. For newcomers, please refer to the [README for Track 2](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/batch/azure-compute-batch/README.md) and the [legacy README for Track 1](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/batch/microsoft-azure-batch/README.md).
 
+To view the latest version of the package, [visit this link](https://central.sonatype.com/artifact/com.azure/azure-compute-batch/overview)
+
 > **Note:** The legacy `Microsoft.Azure.Batch` package is deprecated. Upgrade to `Azure.Compute.Batch` for continued support and new features.
 
 ## Table of Contents
@@ -189,6 +191,36 @@ unboundPool.commit();
 
 Track 2:
 
+Azure Batch has two SDKs: `Azure-Compute-Batch`[https://learn.microsoft.com/java/api/com.azure.compute.batch?view=azure-java-preview] (this one- also known as the dataplane SDK), which interacts directly with the Azure Batch service, and `Azure-ResourceManager-Batch` [https://learn.microsoft.com/java/api/com.azure.resourcemanager.batch?view=azure-java-stable], which interacts with ARM (Azure Resource Manager) and is known as the management plane SDK. Both SDKs support Batch Pool operations such as create, get, update, list, but only the `Azure-ResourceManager-Batch` SDK can create a pool with managed identities, and for that reason it is the recommended way to create a pool.
+
+Here is how to [create a pool](https://learn.microsoft.com/java/api/com.azure.resourcemanager.batch.models.pools?view=azure-java-stable#com-azure-resourcemanager-batch-models-pools-define(java-lang-string)) using the `Azure-ResourceManager-Batch` SDK (recommended):
+
+```java
+Pool pool = batchManager.pools()
+    .define(poolName)
+    .withExistingBatchAccount(resourceGroup, batchAccountName)
+    .withDisplayName(poolDisplayName)
+    .withDeploymentConfiguration(
+        new DeploymentConfiguration()
+            .withVirtualMachineConfiguration(
+                new VirtualMachineConfiguration()
+                    .withImageReference(new ImageReference().withPublisher("Canonical")
+                        .withOffer("UbuntuServer").withSku("18.04-LTS").withVersion("latest"))
+                    .withNodeAgentSkuId("batch.node.ubuntu 18.04")))
+    .withScaleSettings(
+        new ScaleSettings()
+            .withFixedScale(
+                new FixedScaleSettings()
+                    .withResizeTimeout(Duration.parse("PT8M"))
+                    .withTargetDedicatedNodes(1)
+                    .withTargetLowPriorityNodes(1)
+                    .withNodeDeallocationOption(ComputeNodeDeallocationOption.TASK_COMPLETION)))
+    .withVmSize("Standard_D1")
+    .create();
+```
+
+As mentioned, you can still create a pool using `Azure-Compute-Batch`, just without support for managed identities.
+
 ```java com.azure.compute.batch.create-pool.creates-a-simple-pool
 batchClient.createPool(new BatchPoolCreateParameters("poolId", "STANDARD_DC2s_V2")
     .setVirtualMachineConfiguration(
@@ -198,6 +230,13 @@ batchClient.createPool(new BatchPoolCreateParameters("poolId", "STANDARD_DC2s_V2
             .setVersion("latest"), "batch.node.ubuntu 18.04"))
     .setTargetDedicatedNodes(1), null);
 ```
+
+For more information on code snippets and samples relating to using the management plane SDK, please visit these links:
+[Management Plane Code Snippets and Samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/batch/azure-resourcemanager-batch/SAMPLE.md)
+[API documentation for com.azure.resourcemanager.batch](https://learn.microsoft.com/java/api/com.azure.resourcemanager.batch?view=azure-java-stable)
+[azure-resourcemanager-batch SDK](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-batch/overview)
+
+Please note that the rest of the examples in this README will all be dataplane operations.
 
 #### Get Pool
 
