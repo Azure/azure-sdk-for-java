@@ -198,7 +198,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
                 module=module,
                 namespace=namespace,
                 tag=tag,
-                premium=is_mgmt_premium(module)
+                premium=is_mgmt_premium(module),
             )
             if succeeded:
                 succeeded = compile_arm_package(sdk_root, module)
@@ -423,8 +423,12 @@ def update_changelog_version(sdk_root: str, output_folder: str, current_version:
 
 def move_premium_samples(sdk_root: str, service: str, module: str):
     package_path = "com/" + module.replace("-", "/")
-    source_sample_dir = os.path.join(sdk_root, "sdk", service, module, "src", "samples", "java", package_path, "generated")
-    target_sample_dir = os.path.join(sdk_root, "sdk", "resourcemanager", "azure-resourcemanager", "src", "samples", "java", package_path)
+    source_sample_dir = os.path.join(
+        sdk_root, "sdk", service, module, "src", "samples", "java", package_path, "generated"
+    )
+    target_sample_dir = os.path.join(
+        sdk_root, "sdk", "resourcemanager", "azure-resourcemanager", "src", "samples", "java", package_path
+    )
     copy_folder_recursive_sync(source_sample_dir, target_sample_dir)
     shutil.rmtree(source_sample_dir, ignore_errors=True)
 
@@ -490,7 +494,9 @@ def main():
         args["version"] = current_version
         output_folder = OUTPUT_FOLDER_FORMAT.format(service)
         namespace = NAMESPACE_FORMAT.format(service)
-        succeeded = generate(sdk_root, module=module, output_folder=output_folder, namespace=namespace, premium=premium, **args)
+        succeeded = generate(
+            sdk_root, module=module, output_folder=output_folder, namespace=namespace, premium=premium, **args
+        )
 
     if succeeded:
         succeeded = compile_arm_package(sdk_root, module)
