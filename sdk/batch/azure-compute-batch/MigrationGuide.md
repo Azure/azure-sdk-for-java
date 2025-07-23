@@ -727,7 +727,7 @@ Here are examples for the synchronous and asynchronous client of how to simply i
 BatchJobTerminateParameters terminateParams = new BatchJobTerminateParameters().setTerminationReason("ExampleReason");
 BatchJobTerminateOptions terminateOptions = new BatchJobTerminateOptions().setParameters(terminateParams);
 
-SyncPoller<BatchJob, BatchJob> terminatePoller =batchClient.beginTerminateJob("jobId", terminateOptions, null);
+SyncPoller<BatchJob, BatchJob> terminatePoller = batchClient.beginTerminateJob("jobId", terminateOptions, null);
 ```
 
 ```java com.azure.compute.batch.job.terminate-job.async.simple
