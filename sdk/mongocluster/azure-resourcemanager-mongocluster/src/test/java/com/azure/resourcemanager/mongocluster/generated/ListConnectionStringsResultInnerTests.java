@@ -11,7 +11,7 @@ public final class ListConnectionStringsResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListConnectionStringsResultInner model = BinaryData.fromString(
-            "{\"connectionStrings\":[{\"connectionString\":\"hkr\",\"description\":\"d\",\"name\":\"p\"},{\"connectionString\":\"bdkvwrwjf\",\"description\":\"snhu\",\"name\":\"eltmrldhugjzzdat\"}]}")
+            "{\"connectionStrings\":[{\"connectionString\":\"bciqfouflm\",\"description\":\"kzsmodm\",\"name\":\"ougpbkwt\"}]}")
             .toObject(ListConnectionStringsResultInner.class);
     }
 }
