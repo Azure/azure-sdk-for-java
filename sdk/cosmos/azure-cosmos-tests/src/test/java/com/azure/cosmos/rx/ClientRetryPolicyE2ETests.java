@@ -512,9 +512,6 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             .condition(
                 new FaultInjectionConditionBuilder()
                     .operationType(faultInjectionOperationType)
-                    .region(this.preferredRegions.get(0))
-                    .endpoints(new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(new PartitionKey(createdItem.getMypk()))).includePrimary(true).build()
-                    )
                     .connectionType(FaultInjectionConnectionType.DIRECT)
                     .build())
             .result(
@@ -522,6 +519,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     .build()
             )
             .duration(Duration.ofMinutes(5))
+            .hitLimit(1)
             .build();
 
         CosmosAsyncClient testClient = getClientBuilder()

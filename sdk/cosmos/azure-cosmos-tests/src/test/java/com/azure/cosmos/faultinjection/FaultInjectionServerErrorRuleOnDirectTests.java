@@ -924,7 +924,6 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 .condition(
                     new FaultInjectionConditionBuilder()
                         .operationType(faultInjectionOperationType)
-                        .region(this.preferredRegions.get(0))
                         .connectionType(FaultInjectionConnectionType.DIRECT)
                         .build()
                 )
@@ -934,6 +933,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                         .build()
                 )
                 .duration(Duration.ofMinutes(5))
+                .hitLimit(1)
                 .build();
 
         CosmosAsyncContainer testContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithoutPreferredRegions);
