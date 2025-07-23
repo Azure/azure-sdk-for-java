@@ -936,14 +936,12 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 .hitLimit(1)
                 .build();
 
-        CosmosAsyncContainer testContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithoutPreferredRegions);
-
         try {
 
-            testContainer.createItem(createdItem).block();
+            this.cosmosAsyncContainer.createItem(createdItem).block();
 
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(serverErrorRule)).block();
-            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(testContainer, operationType, createdItem, isReadMany);
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
+            CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(this.cosmosAsyncContainer, operationType, createdItem, isReadMany);
             logger.warn("Preferred regions : {}", this.preferredRegions.stream().collect(Collectors.joining(", ")));
             logger.warn("Injected error details : {}", serverErrorRule.toString());
             logger.warn("Op Type : {} ; Diagnostics : {}", operationType, cosmosDiagnostics.getDiagnosticsContext().toJson());
