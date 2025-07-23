@@ -186,6 +186,9 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
     if set_skip_linting_projects:
         skip_linting_projects = []
         for maven_identifier in sorted([p.identifier for p in source_projects]):
+            # Don't skip linting for parent POMs or linting-extensions.
+            if maven_identifier in parent_pom_identifiers or maven_identifier == 'io.clientcore:linting-extensions':
+                continue
             if not project_uses_client_parent(projects.get(maven_identifier), projects):
                 skip_linting_projects.append('!' + maven_identifier)
         print('setting env variable {} = {}'.format(set_skip_linting_projects, skip_linting_projects))
