@@ -346,7 +346,7 @@ public final class ReadmeSamples {
         BatchJobTerminateParameters terminateParams = new BatchJobTerminateParameters().setTerminationReason("ExampleReason");
         BatchJobTerminateOptions terminateOptions = new BatchJobTerminateOptions().setParameters(terminateParams);
 
-        SyncPoller<BatchJob, BatchJob> terminatePoller =batchClient.beginTerminateJob("jobId", terminateOptions, null);
+        SyncPoller<BatchJob, BatchJob> terminatePoller = batchClient.beginTerminateJob("jobId", terminateOptions, null);
         // END: com.azure.compute.batch.job.terminate-job.simple
 
         // BEGIN: com.azure.compute.batch.job.terminate-job.final
