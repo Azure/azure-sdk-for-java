@@ -7,6 +7,7 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.http.netty4.implementation.ChannelInitializationProxyHandler;
 import io.clientcore.http.netty4.implementation.Netty4ConnectionPool;
@@ -381,17 +382,21 @@ public class NettyHttpClientBuilder {
             = getChannelClass(this.channelClass, group.getClass(), IS_EPOLL_AVAILABLE, IS_KQUEUE_AVAILABLE);
 
         // Leave breadcrumbs about the NettyHttpClient configuration, in case troubleshooting is needed.
-        LOGGER.atVerbose()
+        LoggingEvent loggingEvent = LOGGER.atVerbose()
             .addKeyValue("customEventLoopGroup", eventLoopGroup != null)
             .addKeyValue("eventLoopGroupClass", group.getClass())
             .addKeyValue("customChannelClass", this.channelClass != null)
-            .addKeyValue("channelClass", channelClass)
-            .addKeyValue("connectionPoolSize", this.connectionPoolSize)
-            .addKeyValue("connectionIdleTimeout", this.connectionIdleTimeout)
-            .addKeyValue("maxConnectionLifetime", this.maxConnectionLifetime)
-            .addKeyValue("pendingAcquireTimeout", this.pendingAcquireTimeout)
-            .addKeyValue("maxPendingAcquires", this.maxPendingAcquires)
-            .log("NettyHttpClient was built with these configurations.");
+            .addKeyValue("channelClass", channelClass);
+
+        if (connectionPoolSize > 0) {
+            loggingEvent.addKeyValue("connectionPoolSize", this.connectionPoolSize)
+                .addKeyValue("connectionIdleTimeout", this.connectionIdleTimeout)
+                .addKeyValue("maxConnectionLifetime", this.maxConnectionLifetime)
+                .addKeyValue("pendingAcquireTimeout", this.pendingAcquireTimeout)
+                .addKeyValue("maxPendingAcquires", this.maxPendingAcquires);
+        }
+
+        loggingEvent.log("NettyHttpClient was built with these configurations.");
 
         Bootstrap bootstrap = new Bootstrap().group(group)
             .channel(channelClass)
