@@ -173,15 +173,15 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
                 suffix = SUFFIX
             update_parameters(suffix)
 
-            # TODO: use specific function to detect tag in "resources"
+            # TODO: use specific function to detect tag in "resources" spec/service
             tag = None
-            if service == "resources":
+            if service == "resources" and spec == service:
                 with open(os.path.join(config["specFolder"], readme)) as fin:
                     tag_match = re.search(r"tag: (package-resources-\S+)", fin.read())
                     if tag_match:
                         tag = tag_match.group(1)
                     else:
-                        tag = "package-resources-2021-01"
+                        tag = "package-resources-2025-04"
 
             module = ARTIFACT_FORMAT.format(service)
             output_folder = OUTPUT_FOLDER_FORMAT.format(service)
