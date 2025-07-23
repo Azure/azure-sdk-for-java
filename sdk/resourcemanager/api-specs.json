@@ -295,7 +295,7 @@
     "dir": "azure-resourcemanager-msi",
     "source": "specification/msi/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.msi",
-    "args": "--tag=package-2023-01-31 --add-client-flatten=Identity --enable-sync-stack=false"
+    "args": "--tag=package-2024-11-30 --add-client-flatten=Identity --enable-sync-stack=false"
   },
   "changes": {
     "dir": "azure-resourcemanager-resources",
