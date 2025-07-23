@@ -247,28 +247,25 @@ batchClient.poolOperations().deletePool("poolId");
 
 Track 2:
 
-```java com.azure.compute.batch.delete-pool.pool-delete
+Here are examples for the synchronous and asynchronous client of how to simply issue the operation:
+
+```java com.azure.compute.batch.pool.delete-pool-simple
 SyncPoller<BatchPool, Void> deletePoolPoller = batchClient.beginDeletePool("poolId");
-
-// First poll
-PollResponse<BatchPool> initialDeletePoolResponse = deletePoolPoller.poll();
-if (initialDeletePoolResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-    BatchPool poolDuringPoll = initialDeletePoolResponse.getValue();
-}
-
-// Wait for LRO to finish
-deletePoolPoller.waitForCompletion();
-PollResponse<BatchPool> finalDeletePoolResponse = deletePoolPoller.poll();
 ```
 
-```java com.azure.compute.batch.delete-pool.pool-delete-async
+```java com.azure.compute.batch.pool.delete-pool-async-simple
+batchAsyncClient.beginDeletePool("poolId").subscribe();
+```
+
+Here are examples for the synchronous and asynchronous client of how to wait for the polling to finish and retrieve the final result:
+
+```java com.azure.compute.batch.pool.delete-pool-complex
+SyncPoller<BatchPool, Void> complexDeletePoolPoller = batchClient.beginDeletePool("poolId");
+PollResponse<BatchPool> finalDeletePoolResponse = complexDeletePoolPoller.waitForCompletion();
+```
+
+```java com.azure.compute.batch.pool.async.delete-pool-async-complex
 batchAsyncClient.beginDeletePool("poolId")
-    .doOnNext(pollResponse -> {
-        if (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-            BatchPool poolDuringPoll = pollResponse.getValue();
-            System.out.println("Pool is being deleted: " + poolDuringPoll.getId());
-        }
-    })
     .takeUntil(pollResponse -> pollResponse.getStatus().isComplete())
     .last()
     .subscribe(finalPollResponse -> {
@@ -685,36 +682,60 @@ batchClient.jobOperations().terminateJob("jobId");
 
 Track 2:
 
-```java com.azure.compute.batch.job.terminate-job
+Here are examples for the synchronous and asynchronous client of how to simply issue the operation:
+
+```java com.azure.compute.batch.job.terminate-job.simple
 BatchJobTerminateParameters terminateParams = new BatchJobTerminateParameters().setTerminationReason("ExampleReason");
 BatchJobTerminateOptions terminateOptions = new BatchJobTerminateOptions().setParameters(terminateParams);
-SyncPoller<BatchJob, BatchJob> terminatePoller = batchClient.beginTerminateJob("jobId", terminateOptions, null);
 
-// Inspect the first poll
-PollResponse<BatchJob> first = terminatePoller.poll();
-if (first.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-    BatchJob pollingJob = first.getValue();
-}
-
-terminatePoller.waitForCompletion();
-BatchJob terminatedJob = terminatePoller.getFinalResult();
+SyncPoller<BatchJob, BatchJob> terminatePoller =batchClient.beginTerminateJob("jobId", terminateOptions, null);
 ```
 
-```java com.azure.compute.batch.job.terminate-job-async
-BatchJobTerminateParameters asyncTerminateParams = new BatchJobTerminateParameters()
-    .setTerminationReason("ExampleReason");
-BatchJobTerminateOptions asyncTerminateOptions = new BatchJobTerminateOptions()
-    .setParameters(asyncTerminateParams);
+```java com.azure.compute.batch.job.terminate-job.async.simple
+batchAsyncClient.beginTerminateJob("jobId", terminateOptions, null).subscribe();
+```
 
-batchAsyncClient.beginTerminateJob("jobId", asyncTerminateOptions, null)
+Here are examples for the synchronous and asynchronous client of how to wait for the polling to finish and retrieve the final result:
+
+```java com.azure.compute.batch.job.terminate-job.final
+SyncPoller<BatchJob, BatchJob> terminateJobPoller = batchClient.beginTerminateJob("jobId", terminateOptions, null);
+BatchJob terminatedJob = terminateJobPoller.waitForCompletion().getValue();
+```
+
+```java com.azure.compute.batch.job.terminate-job.async.final
+batchAsyncClient.beginTerminateJob("jobId", terminateOptions, null)
     .takeUntil(response -> response.getStatus().isComplete())
     .last()
-    .flatMap(finalResponse -> {
+    .subscribe(finalResponse -> {
         BatchJob asyncTerminatedJob = finalResponse.getValue();
         System.out.println("Job termination completed. Final job state: " + asyncTerminatedJob.getState());
-        return Mono.empty();
-    })
-    .subscribe();
+    });
+```
+
+Here are examples for the synchronous and asynchronous client of how to kick off the operation, poll for an intermediate result, and then retrieve the final result:
+
+```java com.azure.compute.batch.job.terminate-job.poll-intermediate
+terminateJobPoller = batchClient.beginTerminateJob("jobId", terminateOptions, null);
+
+PollResponse<BatchJob> firstTerminateJobPoller = terminateJobPoller.poll();
+if (firstTerminateJobPoller.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+    BatchJob inProgressJob = firstTerminateJobPoller.getValue();
+    System.out.println("Current job state: " + inProgressJob.getState());
+}
+
+terminatedJob = terminatePoller.waitForCompletion().getValue();
+```
+
+```java com.azure.compute.batch.job.terminate-job.poll-intermediate
+terminateJobPoller = batchClient.beginTerminateJob("jobId", terminateOptions, null);
+
+PollResponse<BatchJob> firstTerminateJobPoller = terminateJobPoller.poll();
+if (firstTerminateJobPoller.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+    BatchJob inProgressJob = firstTerminateJobPoller.getValue();
+    System.out.println("Current job state: " + inProgressJob.getState());
+}
+
+terminatedJob = terminatePoller.waitForCompletion().getValue();
 ```
 
 ### Job Schedule Operations
