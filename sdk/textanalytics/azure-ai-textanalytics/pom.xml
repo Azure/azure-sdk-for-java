@@ -40,9 +40,7 @@
       --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>
@@ -82,7 +80,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.16.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
