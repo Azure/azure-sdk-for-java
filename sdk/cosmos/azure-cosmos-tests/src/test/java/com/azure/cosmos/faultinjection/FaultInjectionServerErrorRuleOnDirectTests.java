@@ -946,6 +946,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(testContainer, operationType, createdItem, isReadMany);
             logger.warn("Preferred regions : {}", this.preferredRegions.stream().collect(Collectors.joining(", ")));
             logger.warn("Injected error details : {}", serverErrorRule.toString());
+            logger.warn("Diagnostics : {}", cosmosDiagnostics.getDiagnosticsContext().toJson());
             this.validateHitCount(serverErrorRule, 1, operationType, ResourceType.Document);
             this.validateFaultInjectionRuleApplied(
                 cosmosDiagnostics,
