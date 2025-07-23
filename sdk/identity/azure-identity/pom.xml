@@ -164,9 +164,6 @@
             <configuration>
               <sources>
                 <source>src/samples/java</source>
-                <source>src/samples/Azure-Cache-For-Redis/Jedis/java</source>
-                <source>src/samples/Azure-Cache-For-Redis/Lettuce/java</source>
-                <source>src/samples/Azure-Cache-For-Redis/Redisson/java</source>
               </sources>
             </configuration>
           </execution>
