@@ -50,13 +50,29 @@ public class ImdsRetryStrategyTest {
             "Imds Retry Strategy should retry on 429 status response.");
 
         Assertions.assertTrue(imdsRetryStrategy.shouldRetry(new MockHttpResponse(null, 500)),
-            "Imds Retry Strategy should retry on 429 status response.");
+            "Imds Retry Strategy should retry on 500 status response.");
 
         Assertions.assertTrue(imdsRetryStrategy.shouldRetry(new MockHttpResponse(null, 599)),
-            "Imds Retry Strategy should retry on 429 status response.");
+            "Imds Retry Strategy should retry on 599 status response.");
 
         Assertions.assertTrue(imdsRetryStrategy.shouldRetry(new MockHttpResponse(null, 404)),
-            "Imds Retry Strategy should retry on 429 status response.");
+            "Imds Retry Strategy should retry on 404 status response.");
+
+        MockHttpResponse responseStatus403Network = new MockHttpResponse(null, 403);
+        responseStatus403Network.addHeader("ResponseMessage",
+            "A socket operation was attempted to an unreachable network");
+        Assertions.assertTrue(imdsRetryStrategy.shouldRetry(responseStatus403Network),
+            "Imds Retry Strategy should retry on 403 status with unreachable network message.");
+
+        MockHttpResponse responseStatus403Host = new MockHttpResponse(null, 403);
+        responseStatus403Host.addHeader("ResponseMessage", "A socket operation was attempted to an unreachable host");
+        Assertions.assertTrue(imdsRetryStrategy.shouldRetry(responseStatus403Host),
+            "Imds Retry Strategy should retry on 403 status with unreachable host message.");
+
+        MockHttpResponse responseStatus403NotSuccesful = new MockHttpResponse(null, 403);
+        responseStatus403NotSuccesful.addHeader("ResponseMessage", "Access denied");
+        Assertions.assertFalse(imdsRetryStrategy.shouldRetry(responseStatus403NotSuccesful),
+            "Imds Retry Strategy should not retry on 403 status with other messages.");
     }
 
     @Test

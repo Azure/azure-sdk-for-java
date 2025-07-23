@@ -58,8 +58,12 @@ public class ImdsRetryStrategy implements RetryStrategy {
                 return false;
             }
             if (statusCode == 403) {
-                return httpResponse.getHeaderValue("ResponseMessage")
-                    .contains("A socket operation was attempted to an unreachable network");
+                String headerValue = httpResponse.getHeaderValue("ResponseMessage");
+                if (headerValue != null) {
+                    return headerValue.contains("A socket operation was attempted to an unreachable network")
+                        || headerValue.contains("A socket operation was attempted to an unreachable host");
+                }
+                return false;
             }
             if (statusCode == 410
                 || statusCode == 429
