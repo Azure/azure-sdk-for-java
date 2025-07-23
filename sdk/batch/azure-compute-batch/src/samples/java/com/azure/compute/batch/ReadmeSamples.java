@@ -181,34 +181,27 @@ public final class ReadmeSamples {
         PagedIterable<BatchPool> poolList = batchClient.listPools();
         // END: com.azure.compute.batch.list-pools.pool-list
 
-        // BEGIN: com.azure.compute.batch.delete-pool.pool-delete
+        // BEGIN: com.azure.compute.batch.pool.delete-pool-simple
         SyncPoller<BatchPool, Void> deletePoolPoller = batchClient.beginDeletePool("poolId");
+        // END: com.azure.compute.batch.pool.delete-pool-simple
 
-        // First poll
-        PollResponse<BatchPool> initialDeletePoolResponse = deletePoolPoller.poll();
-        if (initialDeletePoolResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-            BatchPool poolDuringPoll = initialDeletePoolResponse.getValue();
-        }
+        // BEGIN: com.azure.compute.batch.pool.delete-pool-complex
+        SyncPoller<BatchPool, Void> complexDeletePoolPoller = batchClient.beginDeletePool("poolId");
+        PollResponse<BatchPool> finalDeletePoolResponse = complexDeletePoolPoller.waitForCompletion();
+        // END: com.azure.compute.batch.pool.delete-pool-complex
 
-        // Wait for LRO to finish
-        deletePoolPoller.waitForCompletion();
-        PollResponse<BatchPool> finalDeletePoolResponse = deletePoolPoller.poll();
-        // END: com.azure.compute.batch.delete-pool.pool-delete
+        // BEGIN: com.azure.compute.batch.pool.delete-pool-async-simple
+        batchAsyncClient.beginDeletePool("poolId").subscribe();
+        // END: com.azure.compute.batch.pool.delete-pool-async-simple
 
-        // BEGIN: com.azure.compute.batch.delete-pool.pool-delete-async
+        // BEGIN: com.azure.compute.batch.pool.async.delete-pool-async-complex
         batchAsyncClient.beginDeletePool("poolId")
-            .doOnNext(pollResponse -> {
-                if (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-                    BatchPool poolDuringPoll = pollResponse.getValue();
-                    System.out.println("Pool is being deleted: " + poolDuringPoll.getId());
-                }
-            })
             .takeUntil(pollResponse -> pollResponse.getStatus().isComplete())
             .last()
             .subscribe(finalPollResponse -> {
                 System.out.println("Pool deletion completed with status: " + finalPollResponse.getStatus());
             });
-        // END: com.azure.compute.batch.delete-pool.pool-delete-async
+        // END: com.azure.compute.batch.pool.async.delete-pool-async-complex
 
         // BEGIN: com.azure.compute.batch.update-pool.patch-the-pool
         batchClient.updatePool("poolId",
@@ -351,37 +344,59 @@ public final class ReadmeSamples {
         BatchTaskCountsResult counts = batchClient.getJobTaskCounts("jobId");
         // END: com.azure.compute.batch.job.get-job-task-counts
 
-        // BEGIN: com.azure.compute.batch.job.terminate-job
+        // BEGIN: com.azure.compute.batch.job.terminate-job.simple
         BatchJobTerminateParameters terminateParams = new BatchJobTerminateParameters().setTerminationReason("ExampleReason");
         BatchJobTerminateOptions terminateOptions = new BatchJobTerminateOptions().setParameters(terminateParams);
-        SyncPoller<BatchJob, BatchJob> terminatePoller = batchClient.beginTerminateJob("jobId", terminateOptions, null);
 
-        // Inspect the first poll
-        PollResponse<BatchJob> first = terminatePoller.poll();
-        if (first.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-            BatchJob pollingJob = first.getValue();
+        SyncPoller<BatchJob, BatchJob> terminatePoller =batchClient.beginTerminateJob("jobId", terminateOptions, null);
+        // END: com.azure.compute.batch.job.terminate-job.simple
+
+        // BEGIN: com.azure.compute.batch.job.terminate-job.final
+        SyncPoller<BatchJob, BatchJob> terminateJobPoller = batchClient.beginTerminateJob("jobId", terminateOptions, null);
+        BatchJob terminatedJob = terminateJobPoller.waitForCompletion().getValue();
+        // END: com.azure.compute.batch.job.terminate-job.final
+
+        // BEGIN: com.azure.compute.batch.job.terminate-job.poll-intermediate
+        terminateJobPoller = batchClient.beginTerminateJob("jobId", terminateOptions, null);
+
+        PollResponse<BatchJob> firstTerminateJobPoller = terminateJobPoller.poll();
+        if (firstTerminateJobPoller.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchJob inProgressJob = firstTerminateJobPoller.getValue();
+            System.out.println("Current job state: " + inProgressJob.getState());
         }
 
-        terminatePoller.waitForCompletion();
-        BatchJob terminatedJob = terminatePoller.getFinalResult();
-        // END: com.azure.compute.batch.job.terminate-job
+        terminatedJob = terminatePoller.waitForCompletion().getValue();
+        // END: com.azure.compute.batch.job.terminate-job.poll-intermediate
 
-        // BEGIN: com.azure.compute.batch.job.terminate-job-async
-        BatchJobTerminateParameters asyncTerminateParams = new BatchJobTerminateParameters()
-            .setTerminationReason("ExampleReason");
-        BatchJobTerminateOptions asyncTerminateOptions = new BatchJobTerminateOptions()
-            .setParameters(asyncTerminateParams);
+        // BEGIN: com.azure.compute.batch.job.terminate-job.async.simple
+        batchAsyncClient.beginTerminateJob("jobId", terminateOptions, null).subscribe();
+        // END: com.azure.compute.batch.job.terminate-job.async.simple
 
-        batchAsyncClient.beginTerminateJob("jobId", asyncTerminateOptions, null)
+        // BEGIN: com.azure.compute.batch.job.terminate-job.async.final
+        batchAsyncClient.beginTerminateJob("jobId", terminateOptions, null)
             .takeUntil(response -> response.getStatus().isComplete())
             .last()
-            .flatMap(finalResponse -> {
+            .subscribe(finalResponse -> {
                 BatchJob asyncTerminatedJob = finalResponse.getValue();
                 System.out.println("Job termination completed. Final job state: " + asyncTerminatedJob.getState());
-                return Mono.empty();
+            });
+        // END: com.azure.compute.batch.job.terminate-job.async.final
+
+        // BEGIN: com.azure.compute.batch.job.terminate-job.async.poll-intermediate
+        batchAsyncClient.beginTerminateJob("jobId", terminateOptions, null)
+            .doOnNext(pollResponse -> {
+                if (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+                    BatchJob inProgressJob = pollResponse.getValue();
+                    System.out.println("Current job state: " + inProgressJob.getState());
+                }
             })
-            .subscribe();
-        // END: com.azure.compute.batch.job.terminate-job-async
+            .takeUntil(response -> response.getStatus().isComplete())
+            .last()
+            .subscribe(finalResponse -> {
+                BatchJob asyncTerminatedJob = finalResponse.getValue();
+                System.out.println("Final job state: " + asyncTerminatedJob.getState());
+            });
+        // END: com.azure.compute.batch.job.terminate-job.async.poll-intermediate
 
         // BEGIN: com.azure.compute.batch.create-job-schedule.creates-a-basic-job-schedule
         batchClient.createJobSchedule(new BatchJobScheduleCreateParameters("jobScheduleId",
