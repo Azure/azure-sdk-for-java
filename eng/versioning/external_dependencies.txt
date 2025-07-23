@@ -128,9 +128,9 @@ io.opentelemetry:opentelemetry-sdk-testing;1.52.0
 io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;1.52.0
 io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;1.52.0
 io.opentelemetry:opentelemetry-bom;1.52.0
-io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;2.14.0-alpha
-io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.14.0
-io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;2.14.0-alpha
+io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;2.18.1-alpha
+io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.18.1
+io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;2.18.1-alpha
 io.opentelemetry:opentelemetry-semconv;0.14.1
 io.projectreactor:reactor-test;3.4.41
 io.github.hakky54:logcaptor;2.9.3
