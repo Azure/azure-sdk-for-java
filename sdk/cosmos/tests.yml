@@ -28,8 +28,6 @@ extends:
               groupId: com.azure
           TimeoutInMinutes: 210
           MaxParallel: 20
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'verify'
           TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
           TestResultsFiles: '**/junitreports/TEST-*.xml'
@@ -62,8 +60,6 @@ extends:
               groupId: com.azure
           TimeoutInMinutes: 210
           MaxParallel: 20
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'verify'
           TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
           TestResultsFiles: '**/junitreports/TEST-*.xml'
@@ -96,8 +92,6 @@ extends:
               groupId: com.azure
           TimeoutInMinutes: 210
           MaxParallel: 20
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'verify'
           TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
           TestResultsFiles: '**/junitreports/TEST-*.xml'
@@ -124,8 +118,6 @@ extends:
               groupId: com.azure
               safeName: azurespringdatacosmos
           TimeoutInMinutes: 90
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'verify'
           TestOptions: '$(ProfileFlag) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
           AdditionalVariables:
@@ -152,8 +144,6 @@ extends:
               groupId: com.azure.cosmos.kafka
               safeName: azurecosmoskafkaconnect
           TimeoutInMinutes: 120
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'clean verify'
           TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
           AdditionalVariables:
