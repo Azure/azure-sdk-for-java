@@ -24,31 +24,29 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
+/**
+ * Tests for {@link NettyHttpClient} with a connection pool using HTTP/2.
+ */
 @Timeout(value = 3, unit = TimeUnit.MINUTES)
-public class NettyHttp2HttpClientTests extends HttpClientTests {
+public class NettyHttpClientWithPooledHttp2ConnectionsTests extends HttpClientTests {
     private static LocalTestServer server;
-
-    private static final HttpClient HTTP_CLIENT_INSTANCE;
-
-    static {
-        HTTP_CLIENT_INSTANCE = new NettyHttpClientBuilder().connectionPoolSize(0)
-            .sslContextModifier(
-                builder -> builder.trustManager(new InsecureTrustManager()).secureRandom(new SecureRandom()))
-            .maximumHttpVersion(HttpProtocolVersion.HTTP_2)
-            .build();
-    }
+    private static HttpClient client;
 
     @BeforeAll
     public static void startTestServer() {
         server = HttpClientTestsServer.getHttpClientTestsServer(HttpProtocolVersion.HTTP_2, true);
-
         server.start();
+
+        client = new NettyHttpClientBuilder().maximumHttpVersion(HttpProtocolVersion.HTTP_2)
+            .sslContextModifier(
+                builder -> builder.trustManager(new InsecureTrustManager()).secureRandom(new SecureRandom()))
+            .build();
     }
 
     @AfterAll
     public static void stopTestServer() {
-        if (HTTP_CLIENT_INSTANCE instanceof NettyHttpClient) {
-            ((NettyHttpClient) HTTP_CLIENT_INSTANCE).close();
+        if (client instanceof NettyHttpClient) {
+            ((NettyHttpClient) client).close();
         }
         if (server != null) {
             server.stop();
@@ -66,7 +64,6 @@ public class NettyHttp2HttpClientTests extends HttpClientTests {
     }
 
     @Override
-    @Deprecated
     protected int getPort() {
         return server.getPort();
     }
@@ -78,7 +75,7 @@ public class NettyHttp2HttpClientTests extends HttpClientTests {
 
     @Override
     protected HttpClient getHttpClient() {
-        return HTTP_CLIENT_INSTANCE;
+        return client;
     }
 
     @Test

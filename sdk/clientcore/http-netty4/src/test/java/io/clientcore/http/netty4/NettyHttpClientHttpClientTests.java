@@ -15,24 +15,27 @@ import org.junit.jupiter.api.Timeout;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Reactor Netty {@link HttpClientTests}.
+ * Netty {@link HttpClientTests}.
  */
 @Timeout(value = 3, unit = TimeUnit.MINUTES)
 public class NettyHttpClientHttpClientTests extends HttpClientTests {
     private static LocalTestServer server;
-    private static HttpClient client;
+    private static final HttpClient HTTP_CLIENT_INSTANCE;
+
+    static {
+        HTTP_CLIENT_INSTANCE = new NettyHttpClientBuilder().connectionPoolSize(0).build();
+    }
 
     @BeforeAll
     public static void startTestServer() {
         server = HttpClientTestsServer.getHttpClientTestsServer(HttpProtocolVersion.HTTP_1_1, false);
         server.start();
-        client = new NettyHttpClientBuilder().build();
     }
 
     @AfterAll
     public static void stopTestServer() {
-        if (client instanceof NettyHttpClient) {
-            ((NettyHttpClient) client).close();
+        if (HTTP_CLIENT_INSTANCE instanceof NettyHttpClient) {
+            ((NettyHttpClient) HTTP_CLIENT_INSTANCE).close();
         }
         if (server != null) {
             server.stop();
@@ -52,6 +55,6 @@ public class NettyHttpClientHttpClientTests extends HttpClientTests {
 
     @Override
     protected HttpClient getHttpClient() {
-        return client;
+        return HTTP_CLIENT_INSTANCE;
     }
 }
