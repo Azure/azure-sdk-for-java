@@ -141,7 +141,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                     logger.info("Lease with token {}: processing {} feeds with owner {}.",
                         this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
                     return this.dispatchChanges(documentFeedResponse, continuationState)
-                        .doOnError(throwable -> logger.debug(
+                        .doOnError(throwable -> logger.warn(
                             "Lease with token {}: Exception was thrown from thread {}",
                             this.lease.getLeaseToken(),
                             Thread.currentThread().getId(),
@@ -155,7 +155,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                     // still need to checkpoint with the new continuation token
                     return this.checkpointer.checkpointPartition(continuationState)
                         .doOnError(throwable -> {
-                            logger.debug(
+                            logger.warn(
                                 "Failed to checkpoint Lease with token {} from thread {}",
                                 this.lease.getLeaseToken(),
                                 Thread.currentThread().getId(),
