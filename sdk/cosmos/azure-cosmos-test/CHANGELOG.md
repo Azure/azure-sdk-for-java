@@ -3,6 +3,7 @@
 ### 1.0.0-beta.13 (Unreleased)
 
 #### Features Added
+* Added support for `FaultInjectionServerErrorType.LEASE_NOT_FOUND` - See [PR 46071](https://github.com/Azure/azure-sdk-for-java/pull/46071)
 
 #### Breaking Changes
 
