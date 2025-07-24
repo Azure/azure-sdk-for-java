@@ -34,6 +34,7 @@ import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
+import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
@@ -114,6 +115,7 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.storage.common.implementation.StorageImplUtils.assertNotNull;
 
 /**
  * This class provides a client that contains all the operations for interacting with file in Azure Storage File
@@ -464,7 +466,7 @@ public class ShareFileAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileInfo>> createWithResponse(ShareFileCreateOptions options) {
         try {
-            StorageImplUtils.assertNotNull("options", options);
+            assertNotNull("options", options);
             return withContext(context -> createWithResponse(options.getSize(), options.getShareFileHttpHeaders(),
                 options.getSmbProperties(), options.getFilePermission(), options.getFilePermissionFormat(),
                 options.getPosixProperties(), options.getMetadata(), options.getRequestConditions(), context));
@@ -1765,7 +1767,7 @@ public class ShareFileAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileInfo>> setPropertiesWithResponse(ShareFileSetPropertiesOptions options) {
         try {
-            StorageImplUtils.assertNotNull("options", options);
+            assertNotNull("options", options);
             ShareFilePermission filePermission
                 = options.getFilePermissions() == null ? new ShareFilePermission() : options.getFilePermissions();
             return withContext(context -> setPropertiesWithResponse(options.getSizeInBytes(), options.getHttpHeaders(),
@@ -2133,17 +2135,20 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileUploadInfo>> uploadWithResponse(ShareFileUploadOptions options, Context context) {
         try {
-            StorageImplUtils.assertNotNull("options", options);
+            assertNotNull("options", options);
             ShareRequestConditions validatedRequestConditions = options.getRequestConditions() == null
                 ? new ShareRequestConditions()
                 : options.getRequestConditions();
             final ParallelTransferOptions validatedParallelTransferOptions
                 = ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
             long validatedOffset = options.getOffset() == null ? 0 : options.getOffset();
+            final StorageChecksumAlgorithm storageChecksumAlgorithm = options.getStorageChecksumAlgorithm() == null
+                ? StorageChecksumAlgorithm.NONE
+                : options.getStorageChecksumAlgorithm();
 
             Function<Flux<ByteBuffer>, Mono<Response<ShareFileUploadInfo>>> uploadInChunks
                 = (stream) -> uploadInChunks(stream, validatedOffset, validatedParallelTransferOptions,
-                    validatedRequestConditions, context);
+                    validatedRequestConditions, storageChecksumAlgorithm, context);
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<ShareFileUploadInfo>>> uploadFull = (stream, length) -> {
                 ProgressListener progressListener = validatedParallelTransferOptions.getProgressListener();
@@ -2155,7 +2160,8 @@ public class ShareFileAsyncClient {
                 }
                 return uploadRangeWithResponse(
                     new ShareFileUploadRangeOptions(stream, length).setOffset(options.getOffset())
-                        .setRequestConditions(validatedRequestConditions),
+                        .setRequestConditions(validatedRequestConditions)
+                        .setStorageChecksumAlgorithm(storageChecksumAlgorithm),
                     uploadContext);
             };
 
@@ -2170,7 +2176,8 @@ public class ShareFileAsyncClient {
     }
 
     Mono<Response<ShareFileUploadInfo>> uploadInChunks(Flux<ByteBuffer> data, long offset,
-        ParallelTransferOptions parallelTransferOptions, ShareRequestConditions requestConditions, Context context) {
+        ParallelTransferOptions parallelTransferOptions, ShareRequestConditions requestConditions,
+        StorageChecksumAlgorithm storageChecksumAlgorithm, Context context) {
 
         // Validation done in the constructor.
         BufferStagingArea stagingArea
@@ -2220,7 +2227,8 @@ public class ShareFileAsyncClient {
                 return uploadRangeWithResponse(
                     new ShareFileUploadRangeOptions(bufferAggregator.asFlux(), currentBufferLength)
                         .setOffset(currentOffset)
-                        .setRequestConditions(requestConditions),
+                        .setRequestConditions(requestConditions)
+                        .setStorageChecksumAlgorithm(storageChecksumAlgorithm),
                     uploadContext).flux();
             }, parallelTransferOptions.getMaxConcurrency(), 1)
             .last();
@@ -2312,11 +2320,21 @@ public class ShareFileAsyncClient {
                 (int) ModelHelper.FILE_DEFAULT_BLOCK_SIZE, true)
             : options.getDataFlux();
 
-        return azureFileStorageClient.getFiles()
-            .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
-                options.getLength(), null, null, requestConditions.getLeaseId(), options.getLastWrittenMode(), null,
-                null, data, context)
-            .map(ModelHelper::uploadRangeHeadersToShareFileInfo);
+        Context finalContext = context;
+        return UploadUtils
+            .computeFileShareChecksum(data, options.getStorageChecksumAlgorithm(), options.getLength(), LOGGER)
+            .flatMap(fluxContentValidationWrapper -> {
+                UploadUtils.ContentValidationInfo contentValidationInfo
+                    = fluxContentValidationWrapper.getContentValidationInfo();
+                assertNotNull("ContentValidationInfo should not be null", contentValidationInfo);
+                return azureFileStorageClient.getFiles()
+                    .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
+                        fluxContentValidationWrapper.getDataLength(), null, null, requestConditions.getLeaseId(),
+                        options.getLastWrittenMode(), contentValidationInfo.getStructuredBodyType(),
+                        contentValidationInfo.getOriginalContentLength(), fluxContentValidationWrapper.getData(),
+                        finalContext)
+                    .map(ModelHelper::uploadRangeHeadersToShareFileInfo);
+            });
     }
 
     /**
@@ -2833,7 +2851,7 @@ public class ShareFileAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileRangeList>> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options) {
         try {
-            StorageImplUtils.assertNotNull("options", options);
+            assertNotNull("options", options);
             return listRangesWithResponse(options.getRange(), options.getRequestConditions(),
                 options.getPreviousSnapshot(), options.isRenameIncluded(), Context.NONE);
         } catch (RuntimeException ex) {
@@ -3124,7 +3142,7 @@ public class ShareFileAsyncClient {
     }
 
     Mono<Response<ShareFileAsyncClient>> renameWithResponse(ShareFileRenameOptions options, Context context) {
-        StorageImplUtils.assertNotNull("options", options);
+        assertNotNull("options", options);
         context = context == null ? Context.NONE : context;
 
         ShareRequestConditions sourceRequestConditions = options.getSourceRequestConditions() == null
@@ -3383,7 +3401,7 @@ public class ShareFileAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileInfo>> createHardLinkWithResponse(ShareFileCreateHardLinkOptions options) {
         try {
-            StorageImplUtils.assertNotNull("options", options);
+            assertNotNull("options", options);
             return withContext(context -> createHardLinkWithResponse(options.getTargetFile(),
                 options.getRequestConditions(), context));
         } catch (RuntimeException ex) {
@@ -3436,7 +3454,7 @@ public class ShareFileAsyncClient {
      */
     public Mono<Response<ShareFileInfo>> createSymbolicLinkWithResponse(ShareFileCreateSymbolicLinkOptions options) {
         try {
-            StorageImplUtils.assertNotNull("options", options);
+            assertNotNull("options", options);
             return withContext(context -> createSymbolicLinkWithResponse(options.getLinkText(), options.getMetadata(),
                 options.getFileCreationTime(), options.getFileLastWriteTime(), options.getOwner(), options.getGroup(),
                 options.getRequestConditions(), context));
