@@ -5,6 +5,8 @@
 package com.azure.communication.phonenumbers.siprouting.implementation;
 
 import com.azure.communication.phonenumbers.siprouting.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.phonenumbers.siprouting.implementation.models.ExpandEnum;
+import com.azure.communication.phonenumbers.siprouting.implementation.models.RoutesForNumber;
 import com.azure.communication.phonenumbers.siprouting.implementation.models.SipConfiguration;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
@@ -13,6 +15,7 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -60,7 +63,8 @@ public final class SipRoutingsImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<SipConfiguration>> get(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("expand") ExpandEnum expand,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Patch("/sip")
         @ExpectedResponses({ 200 })
@@ -69,23 +73,34 @@ public final class SipRoutingsImpl {
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/merge-patch+json") SipConfiguration body, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Post("/sip:testRoutesWithNumber")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<RoutesForNumber>> testRoutesWithNumber(@HostParam("endpoint") String endpoint,
+            @QueryParam("targetPhoneNumber") String targetPhoneNumber, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SipConfiguration sipConfiguration, @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Gets SIP configuration for resource.
      * 
+     * @param expand Sip configuration expand. Optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sIP configuration for resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SipConfiguration>> getWithResponseAsync() {
-        return FluxUtil.withContext(context -> getWithResponseAsync(context));
+    public Mono<Response<SipConfiguration>> getWithResponseAsync(ExpandEnum expand) {
+        return FluxUtil.withContext(context -> getWithResponseAsync(expand, context));
     }
 
     /**
      * Gets SIP configuration for resource.
      * 
+     * @param expand Sip configuration expand. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -93,26 +108,29 @@ public final class SipRoutingsImpl {
      * @return sIP configuration for resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SipConfiguration>> getWithResponseAsync(Context context) {
+    public Mono<Response<SipConfiguration>> getWithResponseAsync(ExpandEnum expand, Context context) {
         final String accept = "application/json";
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), expand, accept, context);
     }
 
     /**
      * Gets SIP configuration for resource.
      * 
+     * @param expand Sip configuration expand. Optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sIP configuration for resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SipConfiguration> getAsync() {
-        return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<SipConfiguration> getAsync(ExpandEnum expand) {
+        return getWithResponseAsync(expand).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets SIP configuration for resource.
      * 
+     * @param expand Sip configuration expand. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -120,13 +138,14 @@ public final class SipRoutingsImpl {
      * @return sIP configuration for resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SipConfiguration> getAsync(Context context) {
-        return getWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<SipConfiguration> getAsync(ExpandEnum expand, Context context) {
+        return getWithResponseAsync(expand, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets SIP configuration for resource.
      * 
+     * @param expand Sip configuration expand. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -134,20 +153,22 @@ public final class SipRoutingsImpl {
      * @return sIP configuration for resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SipConfiguration> getWithResponse(Context context) {
-        return getWithResponseAsync(context).block();
+    public Response<SipConfiguration> getWithResponse(ExpandEnum expand, Context context) {
+        return getWithResponseAsync(expand, context).block();
     }
 
     /**
      * Gets SIP configuration for resource.
      * 
+     * @param expand Sip configuration expand. Optional.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sIP configuration for resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SipConfiguration get() {
-        return getWithResponse(Context.NONE).getValue();
+    public SipConfiguration get(ExpandEnum expand) {
+        return getWithResponse(expand, Context.NONE).getValue();
     }
 
     /**
@@ -259,5 +280,113 @@ public final class SipRoutingsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SipConfiguration update(SipConfiguration body) {
         return updateWithResponse(body, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets the list of routes matching the target phone number, ordered by priority.
+     * 
+     * @param targetPhoneNumber Phone number to test routing patterns against.
+     * @param sipConfiguration Sip configuration object to test with targetPhoneNumber.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of routes matching the target phone number, ordered by priority along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RoutesForNumber>> testRoutesWithNumberWithResponseAsync(String targetPhoneNumber,
+        SipConfiguration sipConfiguration) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.testRoutesWithNumber(this.client.getEndpoint(),
+            targetPhoneNumber, this.client.getApiVersion(), sipConfiguration, accept, context));
+    }
+
+    /**
+     * Gets the list of routes matching the target phone number, ordered by priority.
+     * 
+     * @param targetPhoneNumber Phone number to test routing patterns against.
+     * @param sipConfiguration Sip configuration object to test with targetPhoneNumber.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of routes matching the target phone number, ordered by priority along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RoutesForNumber>> testRoutesWithNumberWithResponseAsync(String targetPhoneNumber,
+        SipConfiguration sipConfiguration, Context context) {
+        final String accept = "application/json";
+        return service.testRoutesWithNumber(this.client.getEndpoint(), targetPhoneNumber, this.client.getApiVersion(),
+            sipConfiguration, accept, context);
+    }
+
+    /**
+     * Gets the list of routes matching the target phone number, ordered by priority.
+     * 
+     * @param targetPhoneNumber Phone number to test routing patterns against.
+     * @param sipConfiguration Sip configuration object to test with targetPhoneNumber.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of routes matching the target phone number, ordered by priority on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RoutesForNumber> testRoutesWithNumberAsync(String targetPhoneNumber,
+        SipConfiguration sipConfiguration) {
+        return testRoutesWithNumberWithResponseAsync(targetPhoneNumber, sipConfiguration)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the list of routes matching the target phone number, ordered by priority.
+     * 
+     * @param targetPhoneNumber Phone number to test routing patterns against.
+     * @param sipConfiguration Sip configuration object to test with targetPhoneNumber.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of routes matching the target phone number, ordered by priority on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RoutesForNumber> testRoutesWithNumberAsync(String targetPhoneNumber, SipConfiguration sipConfiguration,
+        Context context) {
+        return testRoutesWithNumberWithResponseAsync(targetPhoneNumber, sipConfiguration, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the list of routes matching the target phone number, ordered by priority.
+     * 
+     * @param targetPhoneNumber Phone number to test routing patterns against.
+     * @param sipConfiguration Sip configuration object to test with targetPhoneNumber.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of routes matching the target phone number, ordered by priority along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RoutesForNumber> testRoutesWithNumberWithResponse(String targetPhoneNumber,
+        SipConfiguration sipConfiguration, Context context) {
+        return testRoutesWithNumberWithResponseAsync(targetPhoneNumber, sipConfiguration, context).block();
+    }
+
+    /**
+     * Gets the list of routes matching the target phone number, ordered by priority.
+     * 
+     * @param targetPhoneNumber Phone number to test routing patterns against.
+     * @param sipConfiguration Sip configuration object to test with targetPhoneNumber.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of routes matching the target phone number, ordered by priority.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoutesForNumber testRoutesWithNumber(String targetPhoneNumber, SipConfiguration sipConfiguration) {
+        return testRoutesWithNumberWithResponse(targetPhoneNumber, sipConfiguration, Context.NONE).getValue();
     }
 }

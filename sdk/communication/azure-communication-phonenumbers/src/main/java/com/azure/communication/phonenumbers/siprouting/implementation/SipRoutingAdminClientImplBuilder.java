@@ -273,7 +273,7 @@ public final class SipRoutingAdminClientImplBuilder
     public SipRoutingAdminClientImpl buildClient() {
         this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2023-03-01";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2024-11-15-preview";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         SipRoutingAdminClientImpl client

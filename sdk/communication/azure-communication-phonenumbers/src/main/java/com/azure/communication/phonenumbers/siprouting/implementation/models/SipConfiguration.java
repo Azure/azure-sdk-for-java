@@ -17,10 +17,17 @@ import java.util.Map;
  * Represents a SIP configuration.
  * When a call is being routed the routes are applied in the same order as in the routes list.
  * A route is matched by its number pattern.
- * Call is then directed into route's first available trunk, based on the order in the route's trunks list.
+ * Call is then directed into route's first available trunk, based on the order in the route's trunks list. The
+ * configuration can be expanded with additional data.
  */
 @Fluent
 public final class SipConfiguration implements JsonSerializable<SipConfiguration> {
+
+    /*
+     * Validated Domains.
+     * Map key is domain.
+     */
+    private Map<String, SipDomain> domains;
 
     /*
      * SIP trunks for routing calls.
@@ -40,6 +47,28 @@ public final class SipConfiguration implements JsonSerializable<SipConfiguration
      */
     @Generated
     public SipConfiguration() {
+    }
+
+    /**
+     * Get the domains property: Validated Domains.
+     * Map key is domain.
+     * 
+     * @return the domains value.
+     */
+    public Map<String, SipDomain> getDomains() {
+        return this.domains;
+    }
+
+    /**
+     * Set the domains property: Validated Domains.
+     * Map key is domain.
+     * 
+     * @param domains the domains value to set.
+     * @return the SipConfiguration object itself.
+     */
+    public SipConfiguration setDomains(Map<String, SipDomain> domains) {
+        this.domains = domains;
+        return this;
     }
 
     /**
@@ -95,8 +124,27 @@ public final class SipConfiguration implements JsonSerializable<SipConfiguration
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("trunks", this.trunks, JsonWriter::writeJson, false);
-        jsonWriter.writeArrayField("routes", this.routes, JsonWriter::writeJson, false);
+        jsonWriter.writeMapField("domains", this.domains, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                writer.writeJson(element);
+            }
+        });
+        jsonWriter.writeMapField("trunks", this.trunks, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                writer.writeJson(element);
+            }
+        });
+        jsonWriter.writeArrayField("routes", this.routes, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                writer.writeJson(element);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 
@@ -115,7 +163,11 @@ public final class SipConfiguration implements JsonSerializable<SipConfiguration
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("trunks".equals(fieldName)) {
+
+                if ("domains".equals(fieldName)) {
+                    Map<String, SipDomain> domains = reader.readMap(reader1 -> SipDomain.fromJson(reader1));
+                    deserializedSipConfiguration.domains = domains;
+                } else if ("trunks".equals(fieldName)) {
                     Map<String, SipTrunk> trunks = reader.readMap(reader1 -> SipTrunk.fromJson(reader1));
                     deserializedSipConfiguration.trunks = trunks;
                 } else if ("routes".equals(fieldName)) {
