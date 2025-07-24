@@ -142,7 +142,8 @@ public class DataLakeMessageEncoderUploadTests extends DataLakeTestBase {
         FileParallelUploadOptions options = new FileParallelUploadOptions(Flux.just(ByteBuffer.wrap(data)))
             .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
             .setParallelTransferOptions(
-                new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 2));
+                new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 2)
+                    .setBlockSizeLong((long) Constants.MB * 2));
 
         fc.uploadWithResponse(options, null, Context.NONE);
 
