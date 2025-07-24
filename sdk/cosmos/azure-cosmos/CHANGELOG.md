@@ -1,10 +1,6 @@
 ## Release History
 
-### 4.74.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.73.1 (2025-07-24)
 
 #### Bugs Fixed
 * Fixed an issue where child partition lease is getting created with null continuation token when change feed processor restart after split - See [PR 46075](https://github.com/Azure/azure-sdk-for-java/pull/46075)
