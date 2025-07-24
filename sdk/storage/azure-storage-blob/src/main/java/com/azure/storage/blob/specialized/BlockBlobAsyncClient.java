@@ -41,8 +41,6 @@ import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.UploadUtils;
-import com.azure.storage.common.implementation.UploadUtils.ContentValidationInfo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -421,7 +419,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         if (binaryData == null) {
             Flux<ByteBuffer> dataFlux = options.getDataFlux() == null
                 ? Utility.convertStreamToByteBuffer(options.getDataStream(), options.getLength(),
-                    BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true)
+                BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true)
                 : options.getDataFlux();
             dataMono = BinaryData.fromFlux(dataFlux, options.getLength(), false);
         } else {
@@ -433,20 +431,14 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobImmutabilityPolicy immutabilityPolicy
             = options.getImmutabilityPolicy() == null ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        UploadUtils.ContentValidationInfo contentValidationInfo = options.getContentValidationInfo() == null
-            ? new UploadUtils.ContentValidationInfo()
-            : options.getContentValidationInfo();
-
         return dataMono.flatMap(data -> this.azureBlobStorage.getBlockBlobs()
-            .uploadWithResponseAsync(containerName, blobName, options.getLength(), data, null,
-                contentValidationInfo.getMD5checksum(), options.getMetadata(), requestConditions.getLeaseId(),
-                options.getTier(), requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+            .uploadWithResponseAsync(containerName, blobName, options.getLength(), data, null, options.getContentMd5(),
+                options.getMetadata(), requestConditions.getLeaseId(), options.getTier(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                 requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
                 requestConditions.getTagsConditions(), null, ModelHelper.tagsToString(options.getTags()),
-                immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.isLegalHold(),
-                contentValidationInfo.getCRC64checksum(), contentValidationInfo.getStructuredBodyType(),
-                contentValidationInfo.getOriginalContentLength(), options.getHeaders(), getCustomerProvidedKey(),
-                encryptionScope, finalContext)
+                immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.isLegalHold(), null,
+                null, null, options.getHeaders(), getCustomerProvidedKey(), encryptionScope, finalContext)
             .map(rb -> {
                 BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -516,7 +508,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         try {
             return uploadFromUrlWithResponse(
                 new BlobUploadFromUrlOptions(sourceUrl).setDestinationRequestConditions(blobRequestConditions))
-                    .flatMap(FluxUtil::toMono);
+                .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -709,9 +701,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         byte[] contentMd5, String leaseId) {
         try {
             return withContext(
-                context -> stageBlockWithResponse(new BlockBlobStageBlockOptions(base64BlockId, data, length)
-                    .setContentValidationInfo(new UploadUtils.ContentValidationInfo().setMD5checksum(contentMd5))
-                    .setLeaseId(leaseId), context));
+                context -> stageBlockWithResponse(base64BlockId, data, length, contentMd5, leaseId, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -747,36 +737,27 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<Void>> stageBlockWithResponse(BlockBlobStageBlockOptions options) {
         Objects.requireNonNull(options, "options must not be null");
         try {
-            return withContext(context -> stageBlockWithResponse(options, context));
+            return withContext(context -> stageBlockWithResponse(options.getBase64BlockId(), options.getData(),
+                options.getContentMd5(), options.getLeaseId(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<Void>> stageBlockWithResponse(BlockBlobStageBlockOptions options, Context context) {
-        StorageImplUtils.assertNotNull("options", options);
-        ContentValidationInfo contentValidationInfo = options.getContentValidationInfo() == null
-            ? new ContentValidationInfo()
-            : options.getContentValidationInfo();
-        BinaryData binaryData = options.getBinaryData();
-        Context finalContext = context == null ? Context.NONE : context;
+    Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
+        byte[] contentMd5, String leaseId, Context context) {
+        return BinaryData.fromFlux(data, length, false)
+            .flatMap(binaryData -> stageBlockWithResponse(base64BlockId, binaryData, contentMd5, leaseId, context));
+    }
 
-        if (binaryData == null) {
-            return BinaryData.fromFlux(options.getFluxData(), options.getLength(), false)
-                .flatMap(data -> this.azureBlobStorage.getBlockBlobs()
-                    .stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName, options.getBase64BlockId(),
-                        options.getLength(), data, contentValidationInfo.getMD5checksum(),
-                        contentValidationInfo.getCRC64checksum(), null, options.getLeaseId(), null,
-                        contentValidationInfo.getStructuredBodyType(), contentValidationInfo.getOriginalContentLength(),
-                        getCustomerProvidedKey(), encryptionScope, finalContext));
-        } else {
-            return this.azureBlobStorage.getBlockBlobs()
-                .stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName, options.getBase64BlockId(),
-                    options.getLength(), options.getBinaryData(), contentValidationInfo.getMD5checksum(),
-                    contentValidationInfo.getCRC64checksum(), null, options.getLeaseId(), null,
-                    contentValidationInfo.getStructuredBodyType(), contentValidationInfo.getOriginalContentLength(),
-                    getCustomerProvidedKey(), encryptionScope, context);
-        }
+    Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, BinaryData data, byte[] contentMd5,
+        String leaseId, Context context) {
+        Objects.requireNonNull(data, "data must not be null");
+        Objects.requireNonNull(data.getLength(), "data must have defined length");
+        context = context == null ? Context.NONE : context;
+        return this.azureBlobStorage.getBlockBlobs()
+            .stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName, base64BlockId, data.getLength(), data,
+                contentMd5, null, null, leaseId, null, null, null, getCustomerProvidedKey(), encryptionScope, context);
     }
 
     /**

@@ -13,7 +13,6 @@ import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -39,7 +38,6 @@ public class BlobParallelUploadOptions {
     private Duration timeout;
     private BlobImmutabilityPolicy immutabilityPolicy;
     private Boolean legalHold;
-    private StorageChecksumAlgorithm storageChecksumAlgorithm;
 
     /**
      * Constructs a new {@link BlobParallelUploadOptions}.
@@ -368,25 +366,4 @@ public class BlobParallelUploadOptions {
         this.legalHold = legalHold;
         return this;
     }
-
-    /**
-     * temp
-     *
-     * @return temp.
-     */
-    public StorageChecksumAlgorithm getStorageChecksumAlgorithm() {
-        return storageChecksumAlgorithm;
-    }
-
-    /**
-     * temp
-     *
-     * @param storageChecksumAlgorithm temp.
-     * @return temp.
-     */
-    public BlobParallelUploadOptions setStorageChecksumAlgorithm(StorageChecksumAlgorithm storageChecksumAlgorithm) {
-        this.storageChecksumAlgorithm = storageChecksumAlgorithm;
-        return this;
-    }
-
 }

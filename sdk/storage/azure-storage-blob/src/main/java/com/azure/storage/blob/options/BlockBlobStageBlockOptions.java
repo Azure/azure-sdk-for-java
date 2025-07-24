@@ -7,10 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.UploadUtils.ContentValidationInfo;
-import reactor.core.publisher.Flux;
-
-import java.nio.ByteBuffer;
 
 /**
  * Extended options that may be passed when staging a block.
@@ -18,46 +14,24 @@ import java.nio.ByteBuffer;
 @Fluent
 public final class BlockBlobStageBlockOptions {
     private final String base64BlockId;
-    private final BinaryData dataBinary;
-    private final Flux<ByteBuffer> dataFlux;
+    private final BinaryData data;
     private String leaseId;
     private byte[] contentMd5;
-    private ContentValidationInfo contentValidationInfo;
-    private final long length;
 
     /**
      * Creates a new instance of {@link BlockBlobStageBlockOptions}.
      *
      * @param base64BlockId The block ID to assign the new block.
-     * @param dataBinary The data to write to the block. Note that this {@code BinaryData} must have defined length
+     * @param data The data to write to the block. Note that this {@code BinaryData} must have defined length
      * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
      * @throws NullPointerException If {@code base64BlockId} or {@code data} is null.
      */
-    public BlockBlobStageBlockOptions(String base64BlockId, BinaryData dataBinary) {
+    public BlockBlobStageBlockOptions(String base64BlockId, BinaryData data) {
         StorageImplUtils.assertNotNull("base64BlockId must not be null", base64BlockId);
-        StorageImplUtils.assertNotNull("data must not be null", dataBinary);
-        StorageImplUtils.assertNotNull("data must have defined length", dataBinary.getLength());
-        this.length = dataBinary.getLength();
-        this.dataFlux = null;
+        StorageImplUtils.assertNotNull("data must not be null", data);
+        StorageImplUtils.assertNotNull("data must have defined length", data.getLength());
         this.base64BlockId = base64BlockId;
-        this.dataBinary = dataBinary;
-    }
-
-    /**
-     * comment
-     *
-     * @param base64BlockId comment
-     * @param dataFlux comment
-     * @param length comment
-     */
-    public BlockBlobStageBlockOptions(String base64BlockId, Flux<ByteBuffer> dataFlux, long length) {
-        StorageImplUtils.assertNotNull("base64BlockId must not be null", base64BlockId);
-        StorageImplUtils.assertNotNull("data must not be null", dataFlux);
-        StorageImplUtils.assertNotNull("data must have defined length", length);
-        this.length = length;
-        this.dataBinary = null;
-        this.base64BlockId = base64BlockId;
-        this.dataFlux = dataFlux;
+        this.data = data;
     }
 
     /**
@@ -74,17 +48,8 @@ public final class BlockBlobStageBlockOptions {
      *
      * @return The data to write to the blob.
      */
-    public BinaryData getBinaryData() {
-        return this.dataBinary;
-    }
-
-    /**
-     * comment
-     *
-     * @return comment
-     */
-    public Flux<ByteBuffer> getFluxData() {
-        return this.dataFlux;
+    public BinaryData getData() {
+        return this.data;
     }
 
     /**
@@ -115,7 +80,6 @@ public final class BlockBlobStageBlockOptions {
      * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the
      * operation will fail.
      */
-    @Deprecated
     public byte[] getContentMd5() {
         return CoreUtils.clone(contentMd5);
     }
@@ -129,36 +93,8 @@ public final class BlockBlobStageBlockOptions {
      * operation will fail.
      * @return The updated options
      */
-    @Deprecated
     public BlockBlobStageBlockOptions setContentMd5(byte[] contentMd5) {
         this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
-    }
-
-    /**
-     * comment
-     * @return comment
-     */
-    public ContentValidationInfo getContentValidationInfo() {
-        return contentValidationInfo;
-    }
-
-    /**
-     * comment
-     * @param contentValidationInfo comment
-     * @return comment
-     */
-    public BlockBlobStageBlockOptions setContentValidationInfo(ContentValidationInfo contentValidationInfo) {
-        this.contentValidationInfo = contentValidationInfo;
-        return this;
-    }
-
-    /**
-     * comment
-     *
-     * @return comment
-     */
-    public long getLength() {
-        return length;
     }
 }
