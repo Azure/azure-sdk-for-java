@@ -7,6 +7,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
+import reactor.core.publisher.Flux;
+
+import java.nio.ByteBuffer;
 
 /**
  * Extended options that may be passed when staging a block.
@@ -14,9 +18,12 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 @Fluent
 public final class BlockBlobStageBlockOptions {
     private final String base64BlockId;
+    private final long length;
     private final BinaryData data;
+    private final Flux<ByteBuffer> dataFlux;
     private String leaseId;
     private byte[] contentMd5;
+    private StorageChecksumAlgorithm storageChecksumAlgorithm;
 
     /**
      * Creates a new instance of {@link BlockBlobStageBlockOptions}.
@@ -30,8 +37,28 @@ public final class BlockBlobStageBlockOptions {
         StorageImplUtils.assertNotNull("base64BlockId must not be null", base64BlockId);
         StorageImplUtils.assertNotNull("data must not be null", data);
         StorageImplUtils.assertNotNull("data must have defined length", data.getLength());
-        this.base64BlockId = base64BlockId;
         this.data = data;
+        this.length = data.getLength();
+        this.base64BlockId = base64BlockId;
+        this.dataFlux = null;
+    }
+
+    /**
+     * comment
+     *
+     * @param base64BlockId comment
+     * @param dataFlux comment
+     * @param length comment
+     */
+    public BlockBlobStageBlockOptions(String base64BlockId, Flux<ByteBuffer> dataFlux, long length) {
+        StorageImplUtils.assertNotNull("base64BlockId must not be null", base64BlockId);
+        StorageImplUtils.assertNotNull("data must not be null", dataFlux);
+        StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
+        this.dataFlux = dataFlux;
+        this.length = length;
+        this.base64BlockId = base64BlockId;
+        this.data = null;
+
     }
 
     /**
@@ -50,6 +77,15 @@ public final class BlockBlobStageBlockOptions {
      */
     public BinaryData getData() {
         return this.data;
+    }
+
+    /**
+     * comment
+     *
+     * @return comment
+     */
+    public Flux<ByteBuffer> getDataFlux() {
+        return this.dataFlux;
     }
 
     /**
@@ -96,5 +132,34 @@ public final class BlockBlobStageBlockOptions {
     public BlockBlobStageBlockOptions setContentMd5(byte[] contentMd5) {
         this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
+    }
+
+    /**
+     * temp
+     *
+     * @return temp.
+     */
+    public StorageChecksumAlgorithm getStorageChecksumAlgorithm() {
+        return storageChecksumAlgorithm;
+    }
+
+    /**
+     * temp
+     *
+     * @param storageChecksumAlgorithm temp.
+     * @return temp.
+     */
+    public BlockBlobStageBlockOptions setStorageChecksumAlgorithm(StorageChecksumAlgorithm storageChecksumAlgorithm) {
+        this.storageChecksumAlgorithm = storageChecksumAlgorithm;
+        return this;
+    }
+
+    /**
+     * comment
+     *
+     * @return comment
+     */
+    public long getLength() {
+        return length;
     }
 }

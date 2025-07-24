@@ -38,9 +38,9 @@ import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.UploadUtils;
+import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -53,6 +53,7 @@ import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.storage.common.implementation.StorageImplUtils.assertNotNull;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
@@ -413,39 +414,53 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     Mono<Response<BlockBlobItem>> uploadWithResponse(BlockBlobSimpleUploadOptions options, Context context) {
-        StorageImplUtils.assertNotNull("options", options);
-        Mono<BinaryData> dataMono;
-        BinaryData binaryData = options.getData();
-        if (binaryData == null) {
-            Flux<ByteBuffer> dataFlux = options.getDataFlux() == null
-                ? Utility.convertStreamToByteBuffer(options.getDataStream(), options.getLength(),
-                BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true)
-                : options.getDataFlux();
-            dataMono = BinaryData.fromFlux(dataFlux, options.getLength(), false);
-        } else {
-            dataMono = Mono.just(binaryData);
-        }
+        assertNotNull("options", options);
         BlobRequestConditions requestConditions
             = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
         Context finalContext = context == null ? Context.NONE : context;
         BlobImmutabilityPolicy immutabilityPolicy
             = options.getImmutabilityPolicy() == null ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
+        StorageChecksumAlgorithm storageChecksumAlgorithm = options.getStorageChecksumAlgorithm() == null
+            ? StorageChecksumAlgorithm.NONE
+            : options.getStorageChecksumAlgorithm();
 
-        return dataMono.flatMap(data -> this.azureBlobStorage.getBlockBlobs()
-            .uploadWithResponseAsync(containerName, blobName, options.getLength(), data, null, options.getContentMd5(),
-                options.getMetadata(), requestConditions.getLeaseId(), options.getTier(),
-                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                requestConditions.getTagsConditions(), null, ModelHelper.tagsToString(options.getTags()),
-                immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.isLegalHold(), null,
-                null, null, options.getHeaders(), getCustomerProvidedKey(), encryptionScope, finalContext)
+        BinaryData binaryData = options.getData();
+
+        // if BinaryData is present, convert it to Flux Byte Buffer
+        Flux<ByteBuffer> data = binaryData != null ? binaryData.toFluxByteBuffer() : options.getDataFlux();
+        data = UploadUtils.extractByteBuffer(data, options.getLength(),
+            (long) BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, options.getDataStream());
+
+        return UploadUtils.computeChecksum(data, false, storageChecksumAlgorithm, options.getLength(), LOGGER)
+            .flatMap(fluxContentValidationWrapper -> {
+                UploadUtils.ContentValidationInfo contentValidationInfo
+                    = fluxContentValidationWrapper.getContentValidationInfo();
+                assertNotNull("ContentValidationInfo should not be null", contentValidationInfo);
+
+                // if no md5 was calculated but the user provided one in the options, use that one
+                if (contentValidationInfo.getMD5checksum() == null && options.getContentMd5() != null) {
+                    contentValidationInfo.setMD5checksum(options.getContentMd5());
+                }
+
+                return this.azureBlobStorage.getBlockBlobs()
+                    .uploadWithResponseAsync(containerName, blobName, fluxContentValidationWrapper.getDataLength(),
+                        fluxContentValidationWrapper.getData(), null, contentValidationInfo.getMD5checksum(),
+                        options.getMetadata(), requestConditions.getLeaseId(), options.getTier(),
+                        requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                        requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                        requestConditions.getTagsConditions(), null, ModelHelper.tagsToString(options.getTags()),
+                        immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.isLegalHold(),
+                        contentValidationInfo.getCRC64checksum(), contentValidationInfo.getStructuredBodyType(),
+                        contentValidationInfo.getOriginalContentLength(), options.getHeaders(),
+                        getCustomerProvidedKey(), encryptionScope, finalContext);
+            })
             .map(rb -> {
                 BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
                     hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
                     hd.getXMsVersionId());
                 return new SimpleResponse<>(rb, item);
-            }));
+            });
     }
 
     /**
@@ -508,7 +523,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         try {
             return uploadFromUrlWithResponse(
                 new BlobUploadFromUrlOptions(sourceUrl).setDestinationRequestConditions(blobRequestConditions))
-                .flatMap(FluxUtil::toMono);
+                    .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -561,7 +576,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     Mono<Response<BlockBlobItem>> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options, Context context) {
-        StorageImplUtils.assertNotNull("options", options);
+        assertNotNull("options", options);
         BlobRequestConditions destinationRequestConditions = options.getDestinationRequestConditions() == null
             ? new BlobRequestConditions()
             : options.getDestinationRequestConditions();
@@ -578,6 +593,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
         }
 
+        // TODO (isbr): we should probably put this back right?
         // TODO (kasobol-msft) add metadata back (https://github.com/Azure/azure-sdk-for-net/issues/15969)
         return this.azureBlobStorage.getBlockBlobs()
             .putBlobFromUrlWithResponseAsync(containerName, blobName, 0, options.getSourceUrl(), null, null, null,
@@ -700,8 +716,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
         byte[] contentMd5, String leaseId) {
         try {
-            return withContext(
-                context -> stageBlockWithResponse(base64BlockId, data, length, contentMd5, leaseId, context));
+            return withContext(context -> stageBlockWithResponse(
+                new BlockBlobStageBlockOptions(base64BlockId, data, length).setContentMd5(contentMd5)
+                    .setLeaseId(leaseId),
+                context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -735,29 +753,38 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stageBlockWithResponse(BlockBlobStageBlockOptions options) {
-        Objects.requireNonNull(options, "options must not be null");
         try {
-            return withContext(context -> stageBlockWithResponse(options.getBase64BlockId(), options.getData(),
-                options.getContentMd5(), options.getLeaseId(), context));
+            return withContext(context -> stageBlockWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
-        byte[] contentMd5, String leaseId, Context context) {
-        return BinaryData.fromFlux(data, length, false)
-            .flatMap(binaryData -> stageBlockWithResponse(base64BlockId, binaryData, contentMd5, leaseId, context));
-    }
+    Mono<Response<Void>> stageBlockWithResponse(BlockBlobStageBlockOptions options, Context context) {
+        assertNotNull("options", options);
+        StorageChecksumAlgorithm storageChecksumAlgorithm = options.getStorageChecksumAlgorithm() == null
+            ? StorageChecksumAlgorithm.NONE
+            : options.getStorageChecksumAlgorithm();
 
-    Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, BinaryData data, byte[] contentMd5,
-        String leaseId, Context context) {
-        Objects.requireNonNull(data, "data must not be null");
-        Objects.requireNonNull(data.getLength(), "data must have defined length");
-        context = context == null ? Context.NONE : context;
-        return this.azureBlobStorage.getBlockBlobs()
-            .stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName, base64BlockId, data.getLength(), data,
-                contentMd5, null, null, leaseId, null, null, null, getCustomerProvidedKey(), encryptionScope, context);
+        BinaryData binaryData = options.getData();
+
+        // if BinaryData is present, convert it to Flux Byte Buffer
+        Flux<ByteBuffer> data = binaryData != null ? binaryData.toFluxByteBuffer() : options.getDataFlux();
+        Objects.requireNonNull(data);
+
+        return UploadUtils.computeChecksum(data, false, storageChecksumAlgorithm, options.getLength(), LOGGER)
+            .flatMap(fluxContentValidationWrapper -> {
+                UploadUtils.ContentValidationInfo contentValidationInfo
+                    = fluxContentValidationWrapper.getContentValidationInfo();
+                assertNotNull("ContentValidationInfo should not be null", contentValidationInfo);
+
+                return this.azureBlobStorage.getBlockBlobs()
+                    .stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName, options.getBase64BlockId(),
+                        fluxContentValidationWrapper.getDataLength(), fluxContentValidationWrapper.getData(),
+                        contentValidationInfo.getMD5checksum(), contentValidationInfo.getCRC64checksum(), null,
+                        options.getLeaseId(), null, contentValidationInfo.getStructuredBodyType(), options.getLength(),
+                        getCustomerProvidedKey(), encryptionScope, context);
+            });
     }
 
     /**
@@ -986,7 +1013,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     Mono<Response<BlockList>> listBlocksWithResponse(BlockBlobListBlocksOptions options, Context context) {
-        StorageImplUtils.assertNotNull("options", options);
+        assertNotNull("options", options);
 
         return this.azureBlobStorage.getBlockBlobs()
             .getBlockListWithResponseAsync(containerName, blobName, options.getType(), getSnapshotId(), null,
@@ -1144,7 +1171,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<BlockBlobItem>> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options,
         Context context) {
-        StorageImplUtils.assertNotNull("options", options);
+        assertNotNull("options", options);
         BlobRequestConditions requestConditions
             = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;

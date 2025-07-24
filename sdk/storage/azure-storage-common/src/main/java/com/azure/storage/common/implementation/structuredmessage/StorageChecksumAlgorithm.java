@@ -18,10 +18,10 @@ public enum StorageChecksumAlgorithm {
      */
     NONE(1),
 
-    //    /**
-    //     * Standard MD5 hash algorithm.
-    //     */
-    //    MD5(2),
+    /**
+     * Standard MD5 hash algorithm.
+     */
+    MD5(2),
 
     /**
      * Azure Storage custom 64 bit CRC.
@@ -83,6 +83,13 @@ public enum StorageChecksumAlgorithm {
     public StorageChecksumAlgorithm resolveAuto() {
         if (this == AUTO) {
             return StorageChecksumAlgorithm.CRC64;
+        }
+        return this;
+    }
+
+    public StorageChecksumAlgorithm resolveMD5(boolean computeMd5) {
+        if (computeMd5) {
+            return StorageChecksumAlgorithm.MD5;
         }
         return this;
     }
