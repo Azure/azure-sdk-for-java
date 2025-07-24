@@ -72,7 +72,7 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ContainerServiceFlee")
+    @ServiceInterface(name = "ContainerServiceFleetManagementClientFleetMembers")
     public interface FleetMembersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}")

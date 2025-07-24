@@ -299,6 +299,6 @@ public final class LicenseProfileImpl implements LicenseProfile, LicenseProfile.
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

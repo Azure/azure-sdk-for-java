@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.ExtensionValue;
@@ -20,17 +20,17 @@ public final class ExtensionMetadatasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"version\":\"jimryvwgcwwpbmz\",\"extensionType\":\"esyds\",\"publisher\":\"efoh\"},\"id\":\"bvopwndyqle\",\"name\":\"llklmtk\",\"type\":\"lowkxxpvb\"}";
+            = "{\"properties\":{\"version\":\"qswankltytmhdr\",\"extensionType\":\"nnhdrl\",\"publisher\":\"gjc\"},\"id\":\"guxhem\",\"name\":\"wyw\",\"type\":\"eeczgfbu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ExtensionValue response = manager.extensionMetadatas()
-            .getWithResponse("gf", "tmhqykiz", "d", "saoafcluqvox", com.azure.core.util.Context.NONE)
+            .getWithResponse("rnfxtgddp", "th", "hn", "naoyank", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

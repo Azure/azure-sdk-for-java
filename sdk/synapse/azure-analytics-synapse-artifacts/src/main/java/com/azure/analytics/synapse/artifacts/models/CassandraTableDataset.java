@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,25 @@ public class CassandraTableDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "CassandraTable";
 
     /*
      * The table name of the Cassandra database. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object tableName;
 
     /*
      * The keyspace of the Cassandra database. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object keyspace;
 
     /**
      * Creates an instance of CassandraTableDataset class.
      */
+    @Generated
     public CassandraTableDataset() {
     }
 
@@ -44,6 +49,7 @@ public class CassandraTableDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -55,6 +61,7 @@ public class CassandraTableDataset extends Dataset {
      * 
      * @return the tableName value.
      */
+    @Generated
     public Object getTableName() {
         return this.tableName;
     }
@@ -66,6 +73,7 @@ public class CassandraTableDataset extends Dataset {
      * @param tableName the tableName value to set.
      * @return the CassandraTableDataset object itself.
      */
+    @Generated
     public CassandraTableDataset setTableName(Object tableName) {
         this.tableName = tableName;
         return this;
@@ -77,6 +85,7 @@ public class CassandraTableDataset extends Dataset {
      * 
      * @return the keyspace value.
      */
+    @Generated
     public Object getKeyspace() {
         return this.keyspace;
     }
@@ -88,6 +97,7 @@ public class CassandraTableDataset extends Dataset {
      * @param keyspace the keyspace value to set.
      * @return the CassandraTableDataset object itself.
      */
+    @Generated
     public CassandraTableDataset setKeyspace(Object keyspace) {
         this.keyspace = keyspace;
         return this;
@@ -96,6 +106,7 @@ public class CassandraTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CassandraTableDataset setDescription(String description) {
         super.setDescription(description);
@@ -105,6 +116,7 @@ public class CassandraTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CassandraTableDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -114,6 +126,7 @@ public class CassandraTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CassandraTableDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -123,6 +136,7 @@ public class CassandraTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CassandraTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -132,6 +146,7 @@ public class CassandraTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CassandraTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -141,6 +156,7 @@ public class CassandraTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CassandraTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -150,6 +166,7 @@ public class CassandraTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CassandraTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -159,21 +176,30 @@ public class CassandraTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
         jsonWriter.writeStringField("type", this.type);
         if (tableName != null || keyspace != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("tableName", this.tableName);
-            jsonWriter.writeUntypedField("keyspace", this.keyspace);
+            if (this.tableName != null) {
+                jsonWriter.writeUntypedField("tableName", this.tableName);
+            }
+            if (this.keyspace != null) {
+                jsonWriter.writeUntypedField("keyspace", this.keyspace);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -193,6 +219,7 @@ public class CassandraTableDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CassandraTableDataset.
      */
+    @Generated
     public static CassandraTableDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CassandraTableDataset deserializedCassandraTableDataset = new CassandraTableDataset();

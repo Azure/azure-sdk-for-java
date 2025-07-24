@@ -13,6 +13,8 @@ import com.azure.resourcemanager.cosmos.models.ContainerPartitionKey;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.DataType;
 import com.azure.resourcemanager.cosmos.models.DistanceFunction;
+import com.azure.resourcemanager.cosmos.models.FullTextPath;
+import com.azure.resourcemanager.cosmos.models.FullTextPolicy;
 import com.azure.resourcemanager.cosmos.models.IncludedPath;
 import com.azure.resourcemanager.cosmos.models.IndexKind;
 import com.azure.resourcemanager.cosmos.models.Indexes;
@@ -37,7 +39,7 @@ import java.util.Map;
  */
 public final class SqlResourcesCreateUpdateSqlContainerSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
      * CosmosDBSqlContainerCreateUpdate.json
      */
     /**
@@ -98,7 +100,12 @@ public final class SqlResourcesCreateUpdateSqlContainerSamples {
                                 new VectorEmbedding().withPath("/vectorPath3")
                                     .withDataType(VectorDataType.INT8)
                                     .withDistanceFunction(DistanceFunction.DOTPRODUCT)
-                                    .withDimensions(512)))))
+                                    .withDimensions(512))))
+                            .withFullTextPolicy(new FullTextPolicy().withDefaultLanguage("1033")
+                                .withFullTextPaths(
+                                    Arrays.asList(new FullTextPath().withPath("/ftPath1").withLanguage("en-US"),
+                                        new FullTextPath().withPath("/ftPath2").withLanguage("fr-FR"),
+                                        new FullTextPath().withPath("/ftPath3").withLanguage("de-DE")))))
                     .withOptions(new CreateUpdateOptions()),
                 com.azure.core.util.Context.NONE);
     }

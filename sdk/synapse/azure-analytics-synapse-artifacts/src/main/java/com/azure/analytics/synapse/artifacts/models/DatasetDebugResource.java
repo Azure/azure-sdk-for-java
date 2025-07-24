@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,11 +19,13 @@ public final class DatasetDebugResource extends SubResourceDebugResource {
     /*
      * Dataset properties.
      */
+    @Generated
     private Dataset properties;
 
     /**
      * Creates an instance of DatasetDebugResource class.
      */
+    @Generated
     public DatasetDebugResource() {
     }
 
@@ -31,6 +34,7 @@ public final class DatasetDebugResource extends SubResourceDebugResource {
      * 
      * @return the properties value.
      */
+    @Generated
     public Dataset getProperties() {
         return this.properties;
     }
@@ -41,6 +45,7 @@ public final class DatasetDebugResource extends SubResourceDebugResource {
      * @param properties the properties value to set.
      * @return the DatasetDebugResource object itself.
      */
+    @Generated
     public DatasetDebugResource setProperties(Dataset properties) {
         this.properties = properties;
         return this;
@@ -49,6 +54,7 @@ public final class DatasetDebugResource extends SubResourceDebugResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatasetDebugResource setName(String name) {
         super.setName(name);
@@ -58,6 +64,7 @@ public final class DatasetDebugResource extends SubResourceDebugResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,6 +82,7 @@ public final class DatasetDebugResource extends SubResourceDebugResource {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DatasetDebugResource.
      */
+    @Generated
     public static DatasetDebugResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DatasetDebugResource deserializedDatasetDebugResource = new DatasetDebugResource();

@@ -7,6 +7,8 @@ import com.azure.v2.identity.models.BrowserCustomizationOptions;
 import com.azure.v2.identity.implementation.models.ClientOptions;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.utils.CoreUtils;
@@ -16,7 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.Collections;
 import java.util.Map;
@@ -172,10 +173,11 @@ public final class IdentityUtil {
      * Converts input stream to byte array.
      *
      * @param inputStream the input stream
+     * @param logger the client logger
      * @return the byte array
-     * @throws UncheckedIOException if the parsing fails.
+     * @throws CoreException if the parsing fails.
      */
-    public static byte[] convertInputStreamToByteArray(InputStream inputStream) {
+    public static byte[] convertInputStreamToByteArray(InputStream inputStream, ClientLogger logger) {
         Objects.requireNonNull(inputStream);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[4096];
@@ -186,7 +188,7 @@ public final class IdentityUtil {
                 read = inputStream.read(buffer, 0, buffer.length);
             }
         } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
+            throw logger.throwableAtError().log(ex, CoreException::from);
         }
         return outputStream.toByteArray();
     }

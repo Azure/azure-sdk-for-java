@@ -22,7 +22,7 @@ public final class CredentialOperationsListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"Credential\",\"description\":\"qfzvvtifcqsuem\",\"annotations\":[\"datautovbpnrfu\"],\"\":{\"psdpfwjcw\":\"datamhmzc\",\"ajtbmjokttqgo\":\"databunfymbwinu\"}},\"name\":\"ajuylkfl\",\"type\":\"ofjskndwywbptvym\",\"etag\":\"pdcddbeozhprlxxb\",\"id\":\"z\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"Credential\",\"description\":\"qfzvvtifcqsuem\",\"annotations\":[\"datautovbpnrfu\"],\"psdpfwjcw\":\"datamhmzc\",\"ajtbmjokttqgo\":\"databunfymbwinu\"},\"name\":\"ajuylkfl\",\"type\":\"ofjskndwywbptvym\",\"etag\":\"pdcddbeozhprlxxb\",\"id\":\"z\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

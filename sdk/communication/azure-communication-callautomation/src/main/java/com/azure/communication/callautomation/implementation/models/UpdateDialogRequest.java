@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,22 +20,26 @@ public final class UpdateDialogRequest implements JsonSerializable<UpdateDialogR
     /*
      * Dialog context.
      */
+    @Generated
     private DialogUpdateBase dialog;
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
+    @Generated
     private String operationCallbackUri;
 
     /*
      * The value to identify context of the operation.
      */
+    @Generated
     private String operationContext;
 
     /**
      * Creates an instance of UpdateDialogRequest class.
      */
+    @Generated
     public UpdateDialogRequest() {
     }
 
@@ -43,6 +48,7 @@ public final class UpdateDialogRequest implements JsonSerializable<UpdateDialogR
      * 
      * @return the dialog value.
      */
+    @Generated
     public DialogUpdateBase getDialog() {
         return this.dialog;
     }
@@ -53,6 +59,7 @@ public final class UpdateDialogRequest implements JsonSerializable<UpdateDialogR
      * @param dialog the dialog value to set.
      * @return the UpdateDialogRequest object itself.
      */
+    @Generated
     public UpdateDialogRequest setDialog(DialogUpdateBase dialog) {
         this.dialog = dialog;
         return this;
@@ -65,6 +72,7 @@ public final class UpdateDialogRequest implements JsonSerializable<UpdateDialogR
      * 
      * @return the operationCallbackUri value.
      */
+    @Generated
     public String getOperationCallbackUri() {
         return this.operationCallbackUri;
     }
@@ -77,6 +85,7 @@ public final class UpdateDialogRequest implements JsonSerializable<UpdateDialogR
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the UpdateDialogRequest object itself.
      */
+    @Generated
     public UpdateDialogRequest setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
@@ -87,6 +96,7 @@ public final class UpdateDialogRequest implements JsonSerializable<UpdateDialogR
      * 
      * @return the operationContext value.
      */
+    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -97,6 +107,7 @@ public final class UpdateDialogRequest implements JsonSerializable<UpdateDialogR
      * @param operationContext the operationContext value to set.
      * @return the UpdateDialogRequest object itself.
      */
+    @Generated
     public UpdateDialogRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -105,6 +116,7 @@ public final class UpdateDialogRequest implements JsonSerializable<UpdateDialogR
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -123,6 +135,7 @@ public final class UpdateDialogRequest implements JsonSerializable<UpdateDialogR
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the UpdateDialogRequest.
      */
+    @Generated
     public static UpdateDialogRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             UpdateDialogRequest deserializedUpdateDialogRequest = new UpdateDialogRequest();

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,86 +22,103 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
     /*
      * Dictionary of <string>
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * The artifactId property.
      */
+    @Generated
     private String artifactId;
 
     /*
      * The name property.
      */
+    @Generated
     private String name;
 
     /*
      * The file property.
      */
+    @Generated
     private String file;
 
     /*
      * The className property.
      */
+    @Generated
     private String className;
 
     /*
      * The args property.
      */
+    @Generated
     private List<String> arguments;
 
     /*
      * The jars property.
      */
+    @Generated
     private List<String> jars;
 
     /*
      * The pyFiles property.
      */
+    @Generated
     private List<String> pythonFiles;
 
     /*
      * The files property.
      */
+    @Generated
     private List<String> files;
 
     /*
      * The archives property.
      */
+    @Generated
     private List<String> archives;
 
     /*
      * Dictionary of <string>
      */
+    @Generated
     private Map<String, String> configuration;
 
     /*
      * The driverMemory property.
      */
+    @Generated
     private String driverMemory;
 
     /*
      * The driverCores property.
      */
+    @Generated
     private Integer driverCores;
 
     /*
      * The executorMemory property.
      */
+    @Generated
     private String executorMemory;
 
     /*
      * The executorCores property.
      */
+    @Generated
     private Integer executorCores;
 
     /*
      * The numExecutors property.
      */
+    @Generated
     private Integer executorCount;
 
     /**
      * Creates an instance of SparkBatchJobOptions class.
      */
+    @Generated
     public SparkBatchJobOptions() {
     }
 
@@ -109,6 +127,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> getTags() {
         return this.tags;
     }
@@ -119,6 +138,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * @param tags the tags value to set.
      * @return the SparkBatchJobOptions object itself.
      */
+    @Generated
     public SparkBatchJobOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -129,6 +149,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * 
      * @return the artifactId value.
      */
+    @Generated
     public String getArtifactId() {
         return this.artifactId;
     }
@@ -139,6 +160,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * @param artifactId the artifactId value to set.
      * @return the SparkBatchJobOptions object itself.
      */
+    @Generated
     public SparkBatchJobOptions setArtifactId(String artifactId) {
         this.artifactId = artifactId;
         return this;
@@ -149,6 +171,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -159,6 +182,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * @param name the name value to set.
      * @return the SparkBatchJobOptions object itself.
      */
+    @Generated
     public SparkBatchJobOptions setName(String name) {
         this.name = name;
         return this;
@@ -169,6 +193,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * 
      * @return the file value.
      */
+    @Generated
     public String getFile() {
         return this.file;
     }
@@ -179,6 +204,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * @param file the file value to set.
      * @return the SparkBatchJobOptions object itself.
      */
+    @Generated
     public SparkBatchJobOptions setFile(String file) {
         this.file = file;
         return this;
@@ -189,6 +215,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * 
      * @return the className value.
      */
+    @Generated
     public String getClassName() {
         return this.className;
     }
@@ -199,6 +226,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * @param className the className value to set.
      * @return the SparkBatchJobOptions object itself.
      */
+    @Generated
     public SparkBatchJobOptions setClassName(String className) {
         this.className = className;
         return this;
@@ -209,6 +237,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * 
      * @return the arguments value.
      */
+    @Generated
     public List<String> getArguments() {
         return this.arguments;
     }
@@ -219,6 +248,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * @param arguments the arguments value to set.
      * @return the SparkBatchJobOptions object itself.
      */
+    @Generated
     public SparkBatchJobOptions setArguments(List<String> arguments) {
         this.arguments = arguments;
         return this;
@@ -229,6 +259,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * 
      * @return the jars value.
      */
+    @Generated
     public List<String> getJars() {
         return this.jars;
     }
@@ -239,6 +270,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * @param jars the jars value to set.
      * @return the SparkBatchJobOptions object itself.
      */
+    @Generated
     public SparkBatchJobOptions setJars(List<String> jars) {
         this.jars = jars;
         return this;
@@ -249,6 +281,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * 
      * @return the pythonFiles value.
      */
+    @Generated
     public List<String> getPythonFiles() {
         return this.pythonFiles;
     }
@@ -259,6 +292,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * @param pythonFiles the pythonFiles value to set.
      * @return the SparkBatchJobOptions object itself.
      */
+    @Generated
     public SparkBatchJobOptions setPythonFiles(List<String> pythonFiles) {
         this.pythonFiles = pythonFiles;
         return this;
@@ -269,6 +303,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * 
      * @return the files value.
      */
+    @Generated
     public List<String> getFiles() {
         return this.files;
     }
@@ -279,6 +314,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * @param files the files value to set.
      * @return the SparkBatchJobOptions object itself.
      */
+    @Generated
     public SparkBatchJobOptions setFiles(List<String> files) {
         this.files = files;
         return this;
@@ -289,6 +325,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * 
      * @return the archives value.
      */
+    @Generated
     public List<String> getArchives() {
         return this.archives;
     }
@@ -299,6 +336,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * @param archives the archives value to set.
      * @return the SparkBatchJobOptions object itself.
      */
+    @Generated
     public SparkBatchJobOptions setArchives(List<String> archives) {
         this.archives = archives;
         return this;
@@ -309,6 +347,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * 
      * @return the configuration value.
      */
+    @Generated
     public Map<String, String> getConfiguration() {
         return this.configuration;
     }
@@ -319,6 +358,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * @param configuration the configuration value to set.
      * @return the SparkBatchJobOptions object itself.
      */
+    @Generated
     public SparkBatchJobOptions setConfiguration(Map<String, String> configuration) {
         this.configuration = configuration;
         return this;
@@ -329,6 +369,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * 
      * @return the driverMemory value.
      */
+    @Generated
     public String getDriverMemory() {
         return this.driverMemory;
     }
@@ -339,6 +380,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * @param driverMemory the driverMemory value to set.
      * @return the SparkBatchJobOptions object itself.
      */
+    @Generated
     public SparkBatchJobOptions setDriverMemory(String driverMemory) {
         this.driverMemory = driverMemory;
         return this;
@@ -349,6 +391,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * 
      * @return the driverCores value.
      */
+    @Generated
     public Integer getDriverCores() {
         return this.driverCores;
     }
@@ -359,6 +402,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * @param driverCores the driverCores value to set.
      * @return the SparkBatchJobOptions object itself.
      */
+    @Generated
     public SparkBatchJobOptions setDriverCores(Integer driverCores) {
         this.driverCores = driverCores;
         return this;
@@ -369,6 +413,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * 
      * @return the executorMemory value.
      */
+    @Generated
     public String getExecutorMemory() {
         return this.executorMemory;
     }
@@ -379,6 +424,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * @param executorMemory the executorMemory value to set.
      * @return the SparkBatchJobOptions object itself.
      */
+    @Generated
     public SparkBatchJobOptions setExecutorMemory(String executorMemory) {
         this.executorMemory = executorMemory;
         return this;
@@ -389,6 +435,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * 
      * @return the executorCores value.
      */
+    @Generated
     public Integer getExecutorCores() {
         return this.executorCores;
     }
@@ -399,6 +446,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * @param executorCores the executorCores value to set.
      * @return the SparkBatchJobOptions object itself.
      */
+    @Generated
     public SparkBatchJobOptions setExecutorCores(Integer executorCores) {
         this.executorCores = executorCores;
         return this;
@@ -409,6 +457,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * 
      * @return the executorCount value.
      */
+    @Generated
     public Integer getExecutorCount() {
         return this.executorCount;
     }
@@ -419,6 +468,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * @param executorCount the executorCount value to set.
      * @return the SparkBatchJobOptions object itself.
      */
+    @Generated
     public SparkBatchJobOptions setExecutorCount(Integer executorCount) {
         this.executorCount = executorCount;
         return this;
@@ -427,6 +477,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -458,6 +509,7 @@ public final class SparkBatchJobOptions implements JsonSerializable<SparkBatchJo
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SparkBatchJobOptions.
      */
+    @Generated
     public static SparkBatchJobOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkBatchJobOptions deserializedSparkBatchJobOptions = new SparkBatchJobOptions();

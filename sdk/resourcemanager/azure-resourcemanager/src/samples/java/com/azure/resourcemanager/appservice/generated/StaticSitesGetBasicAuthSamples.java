@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.BasicAuthName;
 public final class StaticSitesGetBasicAuthSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/GetStaticSiteBasicAuth.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/GetStaticSiteBasicAuth.json
      */
     /**
      * Sample code: Gets the basic auth properties for a static site.

@@ -6,6 +6,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,26 +24,31 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
     /*
      * Defines combinations of configurations to use with vector search.
      */
+    @Generated
     private List<VectorSearchProfile> profiles;
 
     /*
      * Contains configuration options specific to the algorithm used during indexing or querying.
      */
+    @Generated
     private List<VectorSearchAlgorithmConfiguration> algorithms;
 
     /*
      * Contains configuration options on how to vectorize text vector queries.
      */
+    @Generated
     private List<VectorSearchVectorizer> vectorizers;
 
     /*
      * Contains configuration options specific to the compression method used during indexing or querying.
      */
+    @Generated
     private List<VectorSearchCompression> compressions;
 
     /**
      * Creates an instance of VectorSearch class.
      */
+    @Generated
     public VectorSearch() {
     }
 
@@ -51,6 +57,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      *
      * @return the profiles value.
      */
+    @Generated
     public List<VectorSearchProfile> getProfiles() {
         return this.profiles;
     }
@@ -61,6 +68,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      * @param profiles the profiles value to set.
      * @return the VectorSearch object itself.
      */
+    @Generated
     public VectorSearch setProfiles(List<VectorSearchProfile> profiles) {
         this.profiles = profiles;
         return this;
@@ -72,6 +80,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      *
      * @return the algorithms value.
      */
+    @Generated
     public List<VectorSearchAlgorithmConfiguration> getAlgorithms() {
         return this.algorithms;
     }
@@ -83,6 +92,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      * @param algorithms the algorithms value to set.
      * @return the VectorSearch object itself.
      */
+    @Generated
     public VectorSearch setAlgorithms(List<VectorSearchAlgorithmConfiguration> algorithms) {
         this.algorithms = algorithms;
         return this;
@@ -93,6 +103,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      *
      * @return the vectorizers value.
      */
+    @Generated
     public List<VectorSearchVectorizer> getVectorizers() {
         return this.vectorizers;
     }
@@ -103,6 +114,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      * @param vectorizers the vectorizers value to set.
      * @return the VectorSearch object itself.
      */
+    @Generated
     public VectorSearch setVectorizers(List<VectorSearchVectorizer> vectorizers) {
         this.vectorizers = vectorizers;
         return this;
@@ -114,6 +126,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      *
      * @return the compressions value.
      */
+    @Generated
     public List<VectorSearchCompression> getCompressions() {
         return this.compressions;
     }
@@ -125,6 +138,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      * @param compressions the compressions value to set.
      * @return the VectorSearch object itself.
      */
+    @Generated
     public VectorSearch setCompressions(List<VectorSearchCompression> compressions) {
         this.compressions = compressions;
         return this;
@@ -133,6 +147,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -151,6 +166,7 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the VectorSearch.
      */
+    @Generated
     public static VectorSearch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             VectorSearch deserializedVectorSearch = new VectorSearch();

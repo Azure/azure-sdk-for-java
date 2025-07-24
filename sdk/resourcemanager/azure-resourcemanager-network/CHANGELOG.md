@@ -1,14 +1,29 @@
 # Release History
 
-## 2.51.0-beta.1 (Unreleased)
+## 2.52.0-beta.1 (Unreleased)
 
 ### Features Added
+
+- Supported `beginDeleteByResourceGroup` and `beginDeleteById` in `NetworkInterfaces`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.51.0 (2025-05-26)
+
+### Breaking Changes
+
+- Removed `query` from `ConnectionMonitor`. Its functionality is now provided by Log Analytics service.
+- Removed `start` from `ConnectionMonitor`. It'll be started upon creation, hence no need for an explicit start. Once `stop`ed, one could do a `createOrUpdate` with same creation parameters for a restart.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-07-01`.
 
 ## 2.50.0 (2025-04-24)
 

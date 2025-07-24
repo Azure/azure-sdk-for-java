@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,11 +21,13 @@ public final class RouteMatrixResultResponse implements JsonSerializable<RouteMa
     /*
      * Summary object for route section.
      */
+    @Generated
     private RouteLegSummary summary;
 
     /**
      * Creates an instance of RouteMatrixResultResponse class.
      */
+    @Generated
     public RouteMatrixResultResponse() {
     }
 
@@ -33,6 +36,7 @@ public final class RouteMatrixResultResponse implements JsonSerializable<RouteMa
      * 
      * @return the summary value.
      */
+    @Generated
     public RouteLegSummary getSummary() {
         return this.summary;
     }
@@ -40,6 +44,7 @@ public final class RouteMatrixResultResponse implements JsonSerializable<RouteMa
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -54,6 +59,7 @@ public final class RouteMatrixResultResponse implements JsonSerializable<RouteMa
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RouteMatrixResultResponse.
      */
+    @Generated
     public static RouteMatrixResultResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteMatrixResultResponse deserializedRouteMatrixResultResponse = new RouteMatrixResultResponse();

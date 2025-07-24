@@ -18,7 +18,7 @@ import java.util.Arrays;
 public final class DomainsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-04-01/examples/UpdateAppServiceDomain
+     * specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/UpdateAppServiceDomain
      * .json
      */
     /**

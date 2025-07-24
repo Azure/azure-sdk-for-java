@@ -4,6 +4,7 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,18 +18,21 @@ public final class StringIndexType extends ExpandableStringEnum<StringIndexType>
      * the Unicode 8.0.0 standard. Use this option if your application is written in .Net Framework or .Net Core and you
      * will be using StringInfo.
      */
+    @Generated
     public static final StringIndexType TEXT_ELEMENTS_V8 = fromString("TextElements_v8");
 
     /**
      * Returned offset and length values will correspond to Unicode code points. Use this option if your application is
      * written in a language that support Unicode, for example Python.
      */
+    @Generated
     public static final StringIndexType UNICODE_CODE_POINT = fromString("UnicodeCodePoint");
 
     /**
      * Returned offset and length values will correspond to UTF-16 code units. Use this option if your application is
      * written in a language that support Unicode, for example Java, JavaScript.
      */
+    @Generated
     public static final StringIndexType UTF16CODE_UNIT = fromString("Utf16CodeUnit");
 
     /**
@@ -36,6 +40,7 @@ public final class StringIndexType extends ExpandableStringEnum<StringIndexType>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public StringIndexType() {
     }
@@ -46,6 +51,7 @@ public final class StringIndexType extends ExpandableStringEnum<StringIndexType>
      * @param name a name to look for.
      * @return the corresponding StringIndexType.
      */
+    @Generated
     public static StringIndexType fromString(String name) {
         return fromString(name, StringIndexType.class);
     }
@@ -55,6 +61,7 @@ public final class StringIndexType extends ExpandableStringEnum<StringIndexType>
      * 
      * @return known StringIndexType values.
      */
+    @Generated
     public static Collection<StringIndexType> values() {
         return values(StringIndexType.class);
     }

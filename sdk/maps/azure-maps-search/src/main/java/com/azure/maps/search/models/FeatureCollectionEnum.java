@@ -4,6 +4,7 @@
 
 package com.azure.maps.search.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class FeatureCollectionEnum extends ExpandableStringEnum<FeatureCol
     /**
      * Static value FeatureCollection for FeatureCollectionEnum.
      */
+    @Generated
     public static final FeatureCollectionEnum FEATURE_COLLECTION = fromString("FeatureCollection");
 
     /**
@@ -21,6 +23,7 @@ public final class FeatureCollectionEnum extends ExpandableStringEnum<FeatureCol
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public FeatureCollectionEnum() {
     }
@@ -31,6 +34,7 @@ public final class FeatureCollectionEnum extends ExpandableStringEnum<FeatureCol
      * @param name a name to look for.
      * @return the corresponding FeatureCollectionEnum.
      */
+    @Generated
     public static FeatureCollectionEnum fromString(String name) {
         return fromString(name, FeatureCollectionEnum.class);
     }
@@ -40,6 +44,7 @@ public final class FeatureCollectionEnum extends ExpandableStringEnum<FeatureCol
      * 
      * @return known FeatureCollectionEnum values.
      */
+    @Generated
     public static Collection<FeatureCollectionEnum> values() {
         return values(FeatureCollectionEnum.class);
     }

@@ -32,7 +32,7 @@ import static com.azure.v2.core.implementation.polling.PollingUtils.validateTime
  * @param <T> The type of poll response value
  * @param <U> The type of the final result of the long running operation
  *
- * @see com.azure.core.util.polling
+ * @see com.azure.v2.core.http.polling
  * @see Poller
  * @see PollResponse
  * @see LongRunningOperationStatus

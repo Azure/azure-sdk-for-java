@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.ConnectivityConfigurationPropertiesConnectivityCapabilities;
 import com.azure.resourcemanager.network.models.ConnectivityGroupItem;
 import com.azure.resourcemanager.network.models.ConnectivityTopology;
 import com.azure.resourcemanager.network.models.DeleteExistingPeering;
@@ -44,6 +45,12 @@ public final class ConnectivityConfigurationProperties
      * Flag if global mesh is supported.
      */
     private IsGlobal isGlobal;
+
+    /*
+     * Collection of additional settings to enhance specific topology behaviors of the connectivity configuration
+     * resource.
+     */
+    private ConnectivityConfigurationPropertiesConnectivityCapabilities connectivityCapabilities;
 
     /*
      * Groups for configuration
@@ -152,6 +159,29 @@ public final class ConnectivityConfigurationProperties
     }
 
     /**
+     * Get the connectivityCapabilities property: Collection of additional settings to enhance specific topology
+     * behaviors of the connectivity configuration resource.
+     * 
+     * @return the connectivityCapabilities value.
+     */
+    public ConnectivityConfigurationPropertiesConnectivityCapabilities connectivityCapabilities() {
+        return this.connectivityCapabilities;
+    }
+
+    /**
+     * Set the connectivityCapabilities property: Collection of additional settings to enhance specific topology
+     * behaviors of the connectivity configuration resource.
+     * 
+     * @param connectivityCapabilities the connectivityCapabilities value to set.
+     * @return the ConnectivityConfigurationProperties object itself.
+     */
+    public ConnectivityConfigurationProperties withConnectivityCapabilities(
+        ConnectivityConfigurationPropertiesConnectivityCapabilities connectivityCapabilities) {
+        this.connectivityCapabilities = connectivityCapabilities;
+        return this;
+    }
+
+    /**
      * Get the appliesToGroups property: Groups for configuration.
      * 
      * @return the appliesToGroups value.
@@ -223,6 +253,9 @@ public final class ConnectivityConfigurationProperties
         if (hubs() != null) {
             hubs().forEach(e -> e.validate());
         }
+        if (connectivityCapabilities() != null) {
+            connectivityCapabilities().validate();
+        }
         if (appliesToGroups() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -247,6 +280,7 @@ public final class ConnectivityConfigurationProperties
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("hubs", this.hubs, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("isGlobal", this.isGlobal == null ? null : this.isGlobal.toString());
+        jsonWriter.writeJsonField("connectivityCapabilities", this.connectivityCapabilities);
         jsonWriter.writeStringField("deleteExistingPeering",
             this.deleteExistingPeering == null ? null : this.deleteExistingPeering.toString());
         return jsonWriter.writeEndObject();
@@ -283,6 +317,9 @@ public final class ConnectivityConfigurationProperties
                     deserializedConnectivityConfigurationProperties.hubs = hubs;
                 } else if ("isGlobal".equals(fieldName)) {
                     deserializedConnectivityConfigurationProperties.isGlobal = IsGlobal.fromString(reader.getString());
+                } else if ("connectivityCapabilities".equals(fieldName)) {
+                    deserializedConnectivityConfigurationProperties.connectivityCapabilities
+                        = ConnectivityConfigurationPropertiesConnectivityCapabilities.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedConnectivityConfigurationProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

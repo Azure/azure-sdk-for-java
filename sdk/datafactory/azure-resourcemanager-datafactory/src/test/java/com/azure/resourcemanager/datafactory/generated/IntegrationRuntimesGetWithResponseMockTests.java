@@ -21,7 +21,7 @@ public final class IntegrationRuntimesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"tkpo\",\"\":{\"njduyotqb\":\"dataoyjjfx\"}},\"name\":\"tx\",\"type\":\"uxmegrix\",\"etag\":\"bzjlqr\",\"id\":\"qpjstc\"}";
+            = "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"tkpo\",\"njduyotqb\":\"dataoyjjfx\"},\"name\":\"tx\",\"type\":\"uxmegrix\",\"etag\":\"bzjlqr\",\"id\":\"qpjstc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

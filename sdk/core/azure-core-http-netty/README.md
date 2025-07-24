@@ -48,7 +48,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-netty</artifactId>
-    <version>1.15.11</version>
+    <version>1.15.12</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -115,6 +115,22 @@ Create a Netty HttpClient that uses a custom max chunk size.
 // shown the most consistent improvement).
 HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactor.netty.http.client.HttpClient.create()
     .httpResponseDecoder(httpResponseDecoderSpec -> httpResponseDecoderSpec.maxChunkSize(64 * 1024)))
+    .build();
+```
+
+### Create an HttpClient with custom maxHeaderSize
+
+Create a Netty HttpClient that uses a custom maxHeaderSize. Use this sample if you're seeing an error such as
+
+```
+io.netty.handler.codec.http.TooLongHttpHeaderException: HTTP header is larger than 8192 bytes.
+```
+
+```java readme-sample-customMaxHeaderSize
+// Constructs an HttpClient with a modified max header size.
+// This creates a Netty HttpClient with a max headers size of 256 KB.
+HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactor.netty.http.client.HttpClient.create()
+    .httpResponseDecoder(httpResponseDecoderSpec -> httpResponseDecoderSpec.maxHeaderSize(256 * 1024)))
     .build();
 ```
 

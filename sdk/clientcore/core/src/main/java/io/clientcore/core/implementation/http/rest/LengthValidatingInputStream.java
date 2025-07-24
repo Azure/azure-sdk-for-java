@@ -110,9 +110,15 @@ final class LengthValidatingInputStream extends InputStream {
         if (readSize == -1) {
             // If the inner InputStream has reached termination validate that the read bytes matches what was expected.
             if (position > expectedReadSize) {
-                throw new IllegalStateException(RestProxyImpl.bodyTooLarge(position, expectedReadSize));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("position", position)
+                    .addKeyValue("expectedSize", expectedReadSize)
+                    .log("Request body is larger than the expected stream length", IllegalStateException::new);
             } else if (position < expectedReadSize) {
-                throw new IllegalStateException(RestProxyImpl.bodyTooSmall(position, expectedReadSize));
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("position", position)
+                    .addKeyValue("expectedSize", expectedReadSize)
+                    .log("Request body is smaller than the expected stream length", IllegalStateException::new);
             }
         } else {
             position += readSize;

@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,6 +23,7 @@ public final class RescoringOptions implements JsonSerializable<RescoringOptions
      * If set to true, after the initial search on the compressed vectors, the similarity scores are recalculated using
      * the full-precision vectors. This will improve recall at the expense of latency.
      */
+    @Generated
     private Boolean enableRescoring;
 
     /*
@@ -30,16 +32,19 @@ public final class RescoringOptions implements JsonSerializable<RescoringOptions
      * Minimum value is 1, meaning no oversampling (1x). This parameter can only be set when 'enableRescoring' is true.
      * Higher values improve recall at the expense of latency.
      */
+    @Generated
     private Double defaultOversampling;
 
     /*
      * Controls the storage method for original vectors. This setting is immutable.
      */
+    @Generated
     private VectorSearchCompressionRescoreStorageMethod rescoreStorageMethod;
 
     /**
      * Creates an instance of RescoringOptions class.
      */
+    @Generated
     public RescoringOptions() {
     }
 
@@ -50,6 +55,7 @@ public final class RescoringOptions implements JsonSerializable<RescoringOptions
      * 
      * @return the enableRescoring value.
      */
+    @Generated
     public Boolean isEnableRescoring() {
         return this.enableRescoring;
     }
@@ -62,6 +68,7 @@ public final class RescoringOptions implements JsonSerializable<RescoringOptions
      * @param enableRescoring the enableRescoring value to set.
      * @return the RescoringOptions object itself.
      */
+    @Generated
     public RescoringOptions setEnableRescoring(Boolean enableRescoring) {
         this.enableRescoring = enableRescoring;
         return this;
@@ -75,6 +82,7 @@ public final class RescoringOptions implements JsonSerializable<RescoringOptions
      * 
      * @return the defaultOversampling value.
      */
+    @Generated
     public Double getDefaultOversampling() {
         return this.defaultOversampling;
     }
@@ -88,6 +96,7 @@ public final class RescoringOptions implements JsonSerializable<RescoringOptions
      * @param defaultOversampling the defaultOversampling value to set.
      * @return the RescoringOptions object itself.
      */
+    @Generated
     public RescoringOptions setDefaultOversampling(Double defaultOversampling) {
         this.defaultOversampling = defaultOversampling;
         return this;
@@ -99,6 +108,7 @@ public final class RescoringOptions implements JsonSerializable<RescoringOptions
      * 
      * @return the rescoreStorageMethod value.
      */
+    @Generated
     public VectorSearchCompressionRescoreStorageMethod getRescoreStorageMethod() {
         return this.rescoreStorageMethod;
     }
@@ -110,6 +120,7 @@ public final class RescoringOptions implements JsonSerializable<RescoringOptions
      * @param rescoreStorageMethod the rescoreStorageMethod value to set.
      * @return the RescoringOptions object itself.
      */
+    @Generated
     public RescoringOptions setRescoreStorageMethod(VectorSearchCompressionRescoreStorageMethod rescoreStorageMethod) {
         this.rescoreStorageMethod = rescoreStorageMethod;
         return this;
@@ -118,6 +129,7 @@ public final class RescoringOptions implements JsonSerializable<RescoringOptions
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -136,6 +148,7 @@ public final class RescoringOptions implements JsonSerializable<RescoringOptions
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RescoringOptions.
      */
+    @Generated
     public static RescoringOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RescoringOptions deserializedRescoringOptions = new RescoringOptions();

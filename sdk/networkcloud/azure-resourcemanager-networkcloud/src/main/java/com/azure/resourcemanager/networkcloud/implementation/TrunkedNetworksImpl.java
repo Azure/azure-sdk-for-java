@@ -79,8 +79,10 @@ public final class TrunkedNetworksImpl implements TrunkedNetworks {
         }
     }
 
-    public OperationStatusResult delete(String resourceGroupName, String trunkedNetworkName, Context context) {
-        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, trunkedNetworkName, context);
+    public OperationStatusResult delete(String resourceGroupName, String trunkedNetworkName, String ifMatch,
+        String ifNoneMatch, Context context) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, trunkedNetworkName, ifMatch, ifNoneMatch, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -127,10 +129,13 @@ public final class TrunkedNetworksImpl implements TrunkedNetworks {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'trunkedNetworks'.", id)));
         }
-        return this.delete(resourceGroupName, trunkedNetworkName, Context.NONE);
+        String localIfMatch = null;
+        String localIfNoneMatch = null;
+        return this.delete(resourceGroupName, trunkedNetworkName, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
-    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+    public OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch,
+        Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -141,7 +146,7 @@ public final class TrunkedNetworksImpl implements TrunkedNetworks {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'trunkedNetworks'.", id)));
         }
-        return this.delete(resourceGroupName, trunkedNetworkName, context);
+        return this.delete(resourceGroupName, trunkedNetworkName, ifMatch, ifNoneMatch, context);
     }
 
     private TrunkedNetworksClient serviceClient() {

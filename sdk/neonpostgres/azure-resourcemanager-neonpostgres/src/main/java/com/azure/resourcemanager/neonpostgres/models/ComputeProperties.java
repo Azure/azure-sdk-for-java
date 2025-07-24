@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.neonpostgres.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Properties specific to Compute.
  */
-@Fluent
+@Immutable
 public final class ComputeProperties implements JsonSerializable<ComputeProperties> {
     /*
      * Unique identifier for the entity
@@ -65,7 +65,7 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
     /**
      * Creates an instance of ComputeProperties class.
      */
-    public ComputeProperties() {
+    private ComputeProperties() {
     }
 
     /**
@@ -84,17 +84,6 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
      */
     public String entityName() {
         return this.entityName;
-    }
-
-    /**
-     * Set the entityName property: Name of the resource.
-     * 
-     * @param entityName the entityName value to set.
-     * @return the ComputeProperties object itself.
-     */
-    public ComputeProperties withEntityName(String entityName) {
-        this.entityName = entityName;
-        return this;
     }
 
     /**
@@ -125,34 +114,12 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
     }
 
     /**
-     * Set the attributes property: Additional attributes for the entity.
-     * 
-     * @param attributes the attributes value to set.
-     * @return the ComputeProperties object itself.
-     */
-    public ComputeProperties withAttributes(List<Attributes> attributes) {
-        this.attributes = attributes;
-        return this;
-    }
-
-    /**
      * Get the region property: Region where the compute instance is located.
      * 
      * @return the region value.
      */
     public String region() {
         return this.region;
-    }
-
-    /**
-     * Set the region property: Region where the compute instance is located.
-     * 
-     * @param region the region value to set.
-     * @return the ComputeProperties object itself.
-     */
-    public ComputeProperties withRegion(String region) {
-        this.region = region;
-        return this;
     }
 
     /**
@@ -165,17 +132,6 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
     }
 
     /**
-     * Set the cpuCores property: Number of allocated CPU cores.
-     * 
-     * @param cpuCores the cpuCores value to set.
-     * @return the ComputeProperties object itself.
-     */
-    public ComputeProperties withCpuCores(Integer cpuCores) {
-        this.cpuCores = cpuCores;
-        return this;
-    }
-
-    /**
      * Get the memory property: Memory allocated in GB.
      * 
      * @return the memory value.
@@ -185,34 +141,12 @@ public final class ComputeProperties implements JsonSerializable<ComputeProperti
     }
 
     /**
-     * Set the memory property: Memory allocated in GB.
-     * 
-     * @param memory the memory value to set.
-     * @return the ComputeProperties object itself.
-     */
-    public ComputeProperties withMemory(Integer memory) {
-        this.memory = memory;
-        return this;
-    }
-
-    /**
      * Get the status property: Current status of the compute instance.
      * 
      * @return the status value.
      */
     public String status() {
         return this.status;
-    }
-
-    /**
-     * Set the status property: Current status of the compute instance.
-     * 
-     * @param status the status value to set.
-     * @return the ComputeProperties object itself.
-     */
-    public ComputeProperties withStatus(String status) {
-        this.status = status;
-        return this;
     }
 
     /**

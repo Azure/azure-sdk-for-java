@@ -4,6 +4,7 @@
 
 package com.azure.maps.search.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class ResultTypeEnum extends ExpandableStringEnum<ResultTypeEnum> {
     /**
      * Static value Address for ResultTypeEnum.
      */
+    @Generated
     public static final ResultTypeEnum ADDRESS = fromString("Address");
 
     /**
      * Static value Neighborhood for ResultTypeEnum.
      */
+    @Generated
     public static final ResultTypeEnum NEIGHBORHOOD = fromString("Neighborhood");
 
     /**
      * Static value PopulatedPlace for ResultTypeEnum.
      */
+    @Generated
     public static final ResultTypeEnum POPULATED_PLACE = fromString("PopulatedPlace");
 
     /**
      * Static value Postcode1 for ResultTypeEnum.
      */
+    @Generated
     public static final ResultTypeEnum POSTCODE1 = fromString("Postcode1");
 
     /**
      * Static value AdminDivision1 for ResultTypeEnum.
      */
+    @Generated
     public static final ResultTypeEnum ADMIN_DIVISION1 = fromString("AdminDivision1");
 
     /**
      * Static value AdminDivision2 for ResultTypeEnum.
      */
+    @Generated
     public static final ResultTypeEnum ADMIN_DIVISION2 = fromString("AdminDivision2");
 
     /**
      * Static value CountryRegion for ResultTypeEnum.
      */
+    @Generated
     public static final ResultTypeEnum COUNTRY_REGION = fromString("CountryRegion");
 
     /**
@@ -51,6 +59,7 @@ public final class ResultTypeEnum extends ExpandableStringEnum<ResultTypeEnum> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ResultTypeEnum() {
     }
@@ -61,6 +70,7 @@ public final class ResultTypeEnum extends ExpandableStringEnum<ResultTypeEnum> {
      * @param name a name to look for.
      * @return the corresponding ResultTypeEnum.
      */
+    @Generated
     public static ResultTypeEnum fromString(String name) {
         return fromString(name, ResultTypeEnum.class);
     }
@@ -70,6 +80,7 @@ public final class ResultTypeEnum extends ExpandableStringEnum<ResultTypeEnum> {
      * 
      * @return known ResultTypeEnum values.
      */
+    @Generated
     public static Collection<ResultTypeEnum> values() {
         return values(ResultTypeEnum.class);
     }

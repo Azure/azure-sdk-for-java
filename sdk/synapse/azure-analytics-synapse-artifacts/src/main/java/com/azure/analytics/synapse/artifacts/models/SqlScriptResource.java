@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,31 +22,37 @@ public final class SqlScriptResource implements JsonSerializable<SqlScriptResour
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
      * resourceType}/{resourceName}
      */
+    @Generated
     private String id;
 
     /*
      * The name of the resource
      */
+    @Generated
     private String name;
 
     /*
      * The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
      */
+    @Generated
     private String type;
 
     /*
      * Resource Etag.
      */
+    @Generated
     private String etag;
 
     /*
      * Properties of sql script.
      */
+    @Generated
     private SqlScript properties;
 
     /**
      * Creates an instance of SqlScriptResource class.
      */
+    @Generated
     public SqlScriptResource() {
     }
 
@@ -55,6 +62,7 @@ public final class SqlScriptResource implements JsonSerializable<SqlScriptResour
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -64,6 +72,7 @@ public final class SqlScriptResource implements JsonSerializable<SqlScriptResour
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -74,6 +83,7 @@ public final class SqlScriptResource implements JsonSerializable<SqlScriptResour
      * @param name the name value to set.
      * @return the SqlScriptResource object itself.
      */
+    @Generated
     public SqlScriptResource setName(String name) {
         this.name = name;
         return this;
@@ -85,6 +95,7 @@ public final class SqlScriptResource implements JsonSerializable<SqlScriptResour
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -94,6 +105,7 @@ public final class SqlScriptResource implements JsonSerializable<SqlScriptResour
      * 
      * @return the etag value.
      */
+    @Generated
     public String getEtag() {
         return this.etag;
     }
@@ -103,6 +115,7 @@ public final class SqlScriptResource implements JsonSerializable<SqlScriptResour
      * 
      * @return the properties value.
      */
+    @Generated
     public SqlScript getProperties() {
         return this.properties;
     }
@@ -113,6 +126,7 @@ public final class SqlScriptResource implements JsonSerializable<SqlScriptResour
      * @param properties the properties value to set.
      * @return the SqlScriptResource object itself.
      */
+    @Generated
     public SqlScriptResource setProperties(SqlScript properties) {
         this.properties = properties;
         return this;
@@ -121,6 +135,7 @@ public final class SqlScriptResource implements JsonSerializable<SqlScriptResour
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -138,6 +153,7 @@ public final class SqlScriptResource implements JsonSerializable<SqlScriptResour
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SqlScriptResource.
      */
+    @Generated
     public static SqlScriptResource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SqlScriptResource deserializedSqlScriptResource = new SqlScriptResource();

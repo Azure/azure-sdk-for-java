@@ -4,6 +4,7 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,75 +15,88 @@ public final class CollectionConfigurationErrorType extends ExpandableStringEnum
     /**
      * Unknown error type.
      */
+    @Generated
     public static final CollectionConfigurationErrorType UNKNOWN = fromString("Unknown");
 
     /**
      * Performance counter parsing error.
      */
+    @Generated
     public static final CollectionConfigurationErrorType PERFORMANCE_COUNTER_PARSING
         = fromString("PerformanceCounterParsing");
 
     /**
      * Performance counter unexpected error.
      */
+    @Generated
     public static final CollectionConfigurationErrorType PERFORMANCE_COUNTER_UNEXPECTED
         = fromString("PerformanceCounterUnexpected");
 
     /**
      * Performance counter duplicate ids.
      */
+    @Generated
     public static final CollectionConfigurationErrorType PERFORMANCE_COUNTER_DUPLICATE_IDS
         = fromString("PerformanceCounterDuplicateIds");
 
     /**
      * Document stream duplication ids.
      */
+    @Generated
     public static final CollectionConfigurationErrorType DOCUMENT_STREAM_DUPLICATE_IDS
         = fromString("DocumentStreamDuplicateIds");
 
     /**
      * Document stream failed to create.
      */
+    @Generated
     public static final CollectionConfigurationErrorType DOCUMENT_STREAM_FAILURE_TO_CREATE
         = fromString("DocumentStreamFailureToCreate");
 
     /**
      * Document stream failed to create filter unexpectedly.
      */
+    @Generated
     public static final CollectionConfigurationErrorType DOCUMENT_STREAM_FAILURE_TO_CREATE_FILTER_UNEXPECTED
         = fromString("DocumentStreamFailureToCreateFilterUnexpected");
 
     /**
      * Metric duplicate ids.
      */
+    @Generated
     public static final CollectionConfigurationErrorType METRIC_DUPLICATE_IDS = fromString("MetricDuplicateIds");
 
     /**
      * Metric telemetry type unsupported.
      */
+    @Generated
     public static final CollectionConfigurationErrorType METRIC_TELEMETRY_TYPE_UNSUPPORTED
         = fromString("MetricTelemetryTypeUnsupported");
 
     /**
      * Metric failed to create.
      */
+    @Generated
     public static final CollectionConfigurationErrorType METRIC_FAILURE_TO_CREATE = fromString("MetricFailureToCreate");
 
     /**
      * Metric failed to create filter unexpectedly.
      */
+    @Generated
     public static final CollectionConfigurationErrorType METRIC_FAILURE_TO_CREATE_FILTER_UNEXPECTED
         = fromString("MetricFailureToCreateFilterUnexpected");
 
     /**
      * Filter failed to create unexpectedly.
      */
+    @Generated
     public static final CollectionConfigurationErrorType FILTER_FAILURE_TO_CREATE_UNEXPECTED
         = fromString("FilterFailureToCreateUnexpected");
 
     /**
      * Collection configuration failed to create unexpectedly.
      */
+    @Generated
     public static final CollectionConfigurationErrorType COLLECTION_CONFIGURATION_FAILURE_TO_CREATE_UNEXPECTED
         = fromString("CollectionConfigurationFailureToCreateUnexpected");
 
@@ -91,6 +105,7 @@ public final class CollectionConfigurationErrorType extends ExpandableStringEnum
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CollectionConfigurationErrorType() {
     }
@@ -101,6 +116,7 @@ public final class CollectionConfigurationErrorType extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding CollectionConfigurationErrorType.
      */
+    @Generated
     public static CollectionConfigurationErrorType fromString(String name) {
         return fromString(name, CollectionConfigurationErrorType.class);
     }
@@ -110,6 +126,7 @@ public final class CollectionConfigurationErrorType extends ExpandableStringEnum
      * 
      * @return known CollectionConfigurationErrorType values.
      */
+    @Generated
     public static Collection<CollectionConfigurationErrorType> values() {
         return values(CollectionConfigurationErrorType.class);
     }

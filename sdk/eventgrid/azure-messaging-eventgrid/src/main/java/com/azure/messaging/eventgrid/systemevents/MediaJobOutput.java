@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,37 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
     /*
      * The discriminator for derived types.
      */
+    @Generated
     private String odataType = "MediaJobOutput";
 
     /*
      * Gets the Job output error.
      */
+    @Generated
     private MediaJobError error;
 
     /*
      * Gets the Job output label.
      */
+    @Generated
     private String label;
 
     /*
      * Gets the Job output progress.
      */
+    @Generated
     private long progress;
 
     /*
      * Gets the Job output state.
      */
+    @Generated
     private MediaJobState state;
 
     /**
      * Creates an instance of MediaJobOutput class.
      */
+    @Generated
     public MediaJobOutput() {
     }
 
@@ -52,6 +59,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
      * 
      * @return the odataType value.
      */
+    @Generated
     public String getOdataType() {
         return this.odataType;
     }
@@ -61,6 +69,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
      * 
      * @return the error value.
      */
+    @Generated
     public MediaJobError getError() {
         return this.error;
     }
@@ -71,6 +80,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
      * @param error the error value to set.
      * @return the MediaJobOutput object itself.
      */
+    @Generated
     public MediaJobOutput setError(MediaJobError error) {
         this.error = error;
         return this;
@@ -81,6 +91,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
      * 
      * @return the label value.
      */
+    @Generated
     public String getLabel() {
         return this.label;
     }
@@ -91,6 +102,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
      * @param label the label value to set.
      * @return the MediaJobOutput object itself.
      */
+    @Generated
     public MediaJobOutput setLabel(String label) {
         this.label = label;
         return this;
@@ -101,6 +113,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
      * 
      * @return the progress value.
      */
+    @Generated
     public long getProgress() {
         return this.progress;
     }
@@ -111,6 +124,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
      * @param progress the progress value to set.
      * @return the MediaJobOutput object itself.
      */
+    @Generated
     public MediaJobOutput setProgress(long progress) {
         this.progress = progress;
         return this;
@@ -121,6 +135,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
      * 
      * @return the state value.
      */
+    @Generated
     public MediaJobState getState() {
         return this.state;
     }
@@ -131,6 +146,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
      * @param state the state value to set.
      * @return the MediaJobOutput object itself.
      */
+    @Generated
     public MediaJobOutput setState(MediaJobState state) {
         this.state = state;
         return this;
@@ -139,6 +155,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -159,6 +176,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MediaJobOutput.
      */
+    @Generated
     public static MediaJobOutput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -184,6 +202,7 @@ public class MediaJobOutput implements JsonSerializable<MediaJobOutput> {
         });
     }
 
+    @Generated
     static MediaJobOutput fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MediaJobOutput deserializedMediaJobOutput = new MediaJobOutput();

@@ -22,7 +22,7 @@ public final class BranchesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"entityId\":\"gzjxxlf\",\"entityName\":\"lzuqloiwyayyzivr\",\"createdAt\":\"tcdqlh\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"ktj\",\"value\":\"eifibfiplhx\"}],\"projectId\":\"smyc\",\"parentId\":\"wlyeyz\",\"roleName\":\"dsqcmhnxl\",\"databaseName\":\"uwod\",\"roles\":[{\"entityId\":\"bkvnrpbjrmvg\",\"entityName\":\"plehmumk\",\"createdAt\":\"llcz\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"hkgqggoxsst\",\"value\":\"ivrakfrryn\"},{\"name\":\"cwmhlymgnukxrk\",\"value\":\"mjpequlr\"}],\"branchId\":\"audgjtfbclakkucd\",\"permissions\":[\"hczbuto\",\"cgjtirjwayhicqq\",\"wvgwkslvli\",\"edvbiabvnsrge\"],\"isSuperUser\":true}],\"databases\":[{\"entityId\":\"dyfhb\",\"entityName\":\"khojqttbspvk\",\"createdAt\":\"laqjsgyzstujrzx\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"d\",\"value\":\"lduyehiiittugyuq\"},{\"name\":\"rldaxurfqa\",\"value\":\"csozjv\"}],\"branchId\":\"zciggbnvtxofwa\",\"ownerName\":\"yxwhoeamo\"},{\"entityId\":\"bdoeysf\",\"entityName\":\"imtwuuhau\",\"createdAt\":\"nkwmnfeub\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"kwfugiphrrkuu\",\"value\":\"nqd\"}],\"branchId\":\"hz\",\"ownerName\":\"opueo\"}],\"endpoints\":[{\"entityId\":\"wlujopwnibit\",\"entityName\":\"zt\",\"createdAt\":\"qumqvfmwcaddt\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"gtvgwyu\",\"value\":\"be\"},{\"name\":\"fnzzryizwbxg\",\"value\":\"ebxlayu\"},{\"name\":\"omirhp\",\"value\":\"abenqlamwmg\"}],\"projectId\":\"ayxflnbcpjstbh\",\"branchId\":\"hcucsqsnx\",\"endpointType\":\"read_only\"},{\"entityId\":\"feapdrbzyvbsuadu\",\"entityName\":\"odkaxpfobkzhm\",\"createdAt\":\"dqltdel\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"adhfztlray\",\"value\":\"rkgzkyhudbkuw\"},{\"name\":\"zqxlcwe\",\"value\":\"kfecjvxf\"}],\"projectId\":\"ufqizjvppw\",\"branchId\":\"a\",\"endpointType\":\"read_write\"}]},\"id\":\"jmjjxi\",\"name\":\"xpxhnzlslekc\",\"type\":\"tgzkjtyqpd\"}";
+            = "{\"properties\":{\"entityId\":\"qvumspbfsfeqbbe\",\"entityName\":\"cuq\",\"createdAt\":\"yyxmzrmtmvwituw\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"hcybwf\",\"value\":\"ppoxprcmv\"},{\"name\":\"uujxdii\",\"value\":\"moxrezsvavlrxi\"},{\"name\":\"jmoywlunpipcwybs\",\"value\":\"fncn\"}],\"projectId\":\"tpf\",\"parentId\":\"aebwfwhxorpwa\",\"roleName\":\"zwuge\",\"databaseName\":\"jfccylhtrht\",\"roles\":[{\"entityId\":\"jpwexcdrz\",\"entityName\":\"o\",\"createdAt\":\"zxezmnr\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"euxsphlokfpmijp\",\"value\":\"vzvfb\"},{\"name\":\"wbdq\",\"value\":\"fvcgnrglaqr\"},{\"name\":\"yambhb\",\"value\":\"febzxf\"}],\"branchId\":\"qutibhl\",\"permissions\":[\"trvrkpsab\",\"u\",\"vzm\"],\"isSuperUser\":true},{\"entityId\":\"ysvlpyeuukppd\",\"entityName\":\"qb\",\"createdAt\":\"xvhhyqq\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"grznmginmtsd\",\"value\":\"xch\"},{\"name\":\"kibmgjymn\",\"value\":\"jca\"}],\"branchId\":\"irwcqzoofjnqjsv\",\"permissions\":[\"bhtleberpy\",\"jeknfqnw\",\"j\"],\"isSuperUser\":false},{\"entityId\":\"kdnjrxgkrhwie\",\"entityName\":\"cpnowaw\",\"createdAt\":\"oehrguqlhfwafbj\",\"provisioningState\":\"Canceled\",\"attributes\":[{\"name\":\"guyfazbkocbygvt\",\"value\":\"rmxkbcjwwdxom\"},{\"name\":\"aw\",\"value\":\"pkeboozflyac\"}],\"branchId\":\"aeda\",\"permissions\":[\"clmgdtw\",\"abdxfkuzb\",\"jecooyvhtu\"],\"isSuperUser\":false},{\"entityId\":\"lniibncg\",\"entityName\":\"dvcdq\",\"createdAt\":\"tzbpyfao\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"tncwmhjobzrfpr\",\"value\":\"zdcqhyftcvb\"},{\"name\":\"wgwhgkg\",\"value\":\"o\"},{\"name\":\"uoorssatfybipufd\",\"value\":\"xuqbdqnasttuxvz\"},{\"name\":\"q\",\"value\":\"yopbtsixhgvb\"}],\"branchId\":\"mndzt\",\"permissions\":[\"jay\"],\"isSuperUser\":true}],\"databases\":[{\"entityId\":\"eibpgbrhbjdqkn\",\"entityName\":\"nmotpuwnnoh\",\"createdAt\":\"zngocfrjuypwyiul\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"ugkfhaxttpfsm\",\"value\":\"gsgh\"},{\"name\":\"ucumlddauqml\",\"value\":\"feothxu\"}],\"branchId\":\"igrjdljlkqhvkrbz\",\"ownerName\":\"astax\"}],\"endpoints\":[{\"entityId\":\"uul\",\"entityName\":\"l\",\"createdAt\":\"izwxvs\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"yyskyekgafxczv\",\"value\":\"cckwrtwle\"}],\"projectId\":\"veszrtlhpdhw\",\"branchId\":\"ctac\",\"endpointType\":\"read_write\"},{\"entityId\":\"fmbbfnv\",\"entityName\":\"itzovnkr\",\"createdAt\":\"kls\",\"provisioningState\":\"Succeeded\",\"attributes\":[{\"name\":\"lcoqksyiib\",\"value\":\"yxwb\"},{\"name\":\"bu\",\"value\":\"avqdorbccqcd\"},{\"name\":\"thojvlirknucos\",\"value\":\"wrdtnagzlgpy\"},{\"name\":\"ixihzqj\",\"value\":\"tsmuydqftt\"}],\"projectId\":\"cybdueurgm\",\"branchId\":\"cp\",\"endpointType\":\"read_only\"}]},\"id\":\"ojermhzicsbfdjhy\",\"name\":\"a\",\"type\":\"nyukibx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,33 +32,32 @@ public final class BranchesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Branch response = manager.branches()
-            .getWithResponse("lwk", "fowzkroyr", "urxf", "zqjim", com.azure.core.util.Context.NONE)
+            .getWithResponse("moxfablq", "pwbmwhria", "iwrycgnwplrrb", "hctsbbibti", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lzuqloiwyayyzivr", response.properties().entityName());
-        Assertions.assertEquals("ktj", response.properties().attributes().get(0).name());
-        Assertions.assertEquals("eifibfiplhx", response.properties().attributes().get(0).value());
-        Assertions.assertEquals("smyc", response.properties().projectId());
-        Assertions.assertEquals("wlyeyz", response.properties().parentId());
-        Assertions.assertEquals("dsqcmhnxl", response.properties().roleName());
-        Assertions.assertEquals("uwod", response.properties().databaseName());
-        Assertions.assertEquals("plehmumk", response.properties().roles().get(0).entityName());
-        Assertions.assertEquals("hkgqggoxsst", response.properties().roles().get(0).attributes().get(0).name());
-        Assertions.assertEquals("ivrakfrryn", response.properties().roles().get(0).attributes().get(0).value());
-        Assertions.assertEquals("audgjtfbclakkucd", response.properties().roles().get(0).branchId());
-        Assertions.assertEquals("hczbuto", response.properties().roles().get(0).permissions().get(0));
+        Assertions.assertEquals("cuq", response.properties().entityName());
+        Assertions.assertEquals("hcybwf", response.properties().attributes().get(0).name());
+        Assertions.assertEquals("ppoxprcmv", response.properties().attributes().get(0).value());
+        Assertions.assertEquals("tpf", response.properties().projectId());
+        Assertions.assertEquals("aebwfwhxorpwa", response.properties().parentId());
+        Assertions.assertEquals("zwuge", response.properties().roleName());
+        Assertions.assertEquals("jfccylhtrht", response.properties().databaseName());
+        Assertions.assertEquals("o", response.properties().roles().get(0).entityName());
+        Assertions.assertEquals("euxsphlokfpmijp", response.properties().roles().get(0).attributes().get(0).name());
+        Assertions.assertEquals("vzvfb", response.properties().roles().get(0).attributes().get(0).value());
+        Assertions.assertEquals("qutibhl", response.properties().roles().get(0).branchId());
+        Assertions.assertEquals("trvrkpsab", response.properties().roles().get(0).permissions().get(0));
         Assertions.assertTrue(response.properties().roles().get(0).isSuperUser());
-        Assertions.assertEquals("khojqttbspvk", response.properties().databases().get(0).entityName());
-        Assertions.assertEquals("d", response.properties().databases().get(0).attributes().get(0).name());
-        Assertions.assertEquals("lduyehiiittugyuq",
-            response.properties().databases().get(0).attributes().get(0).value());
-        Assertions.assertEquals("zciggbnvtxofwa", response.properties().databases().get(0).branchId());
-        Assertions.assertEquals("yxwhoeamo", response.properties().databases().get(0).ownerName());
-        Assertions.assertEquals("zt", response.properties().endpoints().get(0).entityName());
-        Assertions.assertEquals("gtvgwyu", response.properties().endpoints().get(0).attributes().get(0).name());
-        Assertions.assertEquals("be", response.properties().endpoints().get(0).attributes().get(0).value());
-        Assertions.assertEquals("ayxflnbcpjstbh", response.properties().endpoints().get(0).projectId());
-        Assertions.assertEquals("hcucsqsnx", response.properties().endpoints().get(0).branchId());
-        Assertions.assertEquals(EndpointType.READ_ONLY, response.properties().endpoints().get(0).endpointType());
+        Assertions.assertEquals("nmotpuwnnoh", response.properties().databases().get(0).entityName());
+        Assertions.assertEquals("ugkfhaxttpfsm", response.properties().databases().get(0).attributes().get(0).name());
+        Assertions.assertEquals("gsgh", response.properties().databases().get(0).attributes().get(0).value());
+        Assertions.assertEquals("igrjdljlkqhvkrbz", response.properties().databases().get(0).branchId());
+        Assertions.assertEquals("astax", response.properties().databases().get(0).ownerName());
+        Assertions.assertEquals("l", response.properties().endpoints().get(0).entityName());
+        Assertions.assertEquals("yyskyekgafxczv", response.properties().endpoints().get(0).attributes().get(0).name());
+        Assertions.assertEquals("cckwrtwle", response.properties().endpoints().get(0).attributes().get(0).value());
+        Assertions.assertEquals("veszrtlhpdhw", response.properties().endpoints().get(0).projectId());
+        Assertions.assertEquals("ctac", response.properties().endpoints().get(0).branchId());
+        Assertions.assertEquals(EndpointType.READ_WRITE, response.properties().endpoints().get(0).endpointType());
     }
 }

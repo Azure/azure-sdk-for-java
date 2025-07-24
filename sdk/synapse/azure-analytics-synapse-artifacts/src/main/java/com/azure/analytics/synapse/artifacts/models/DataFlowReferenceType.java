@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class DataFlowReferenceType extends ExpandableStringEnum<DataFlowRe
     /**
      * Static value DataFlowReference for DataFlowReferenceType.
      */
+    @Generated
     public static final DataFlowReferenceType DATA_FLOW_REFERENCE = fromString("DataFlowReference");
 
     /**
@@ -21,6 +23,7 @@ public final class DataFlowReferenceType extends ExpandableStringEnum<DataFlowRe
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataFlowReferenceType() {
     }
@@ -31,6 +34,7 @@ public final class DataFlowReferenceType extends ExpandableStringEnum<DataFlowRe
      * @param name a name to look for.
      * @return the corresponding DataFlowReferenceType.
      */
+    @Generated
     public static DataFlowReferenceType fromString(String name) {
         return fromString(name, DataFlowReferenceType.class);
     }
@@ -40,6 +44,7 @@ public final class DataFlowReferenceType extends ExpandableStringEnum<DataFlowRe
      * 
      * @return known DataFlowReferenceType values.
      */
+    @Generated
     public static Collection<DataFlowReferenceType> values() {
         return values(DataFlowReferenceType.class);
     }

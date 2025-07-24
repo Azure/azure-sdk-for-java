@@ -9,14 +9,16 @@ import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
@@ -27,16 +29,14 @@ import java.util.stream.Collectors;
  * Contains customizations for Azure Search's service swagger code generation.
  */
 public class SearchServiceCustomizations extends Customization {
-    private static final String VARARG_METHOD_BLOCK_TEMPLATE = joinWithNewline("{",
-        "    this.%1$s = (%1$s == null) ? null : Arrays.asList(%1$s);", "    return this;", "}");
+    private static final String VARARG_METHOD_BLOCK_TEMPLATE
+        = "{ this.%1$s = (%1$s == null) ? null : Arrays.asList(%1$s); return this; }";
 
     // Packages
-    private static final String IMPLEMENTATION_MODELS = "com.azure.search.documents.indexes.implementation.models";
     private static final String MODELS = "com.azure.search.documents.indexes.models";
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        PackageCustomization implCustomization = libraryCustomization.getPackage(IMPLEMENTATION_MODELS);
         PackageCustomization publicCustomization = libraryCustomization.getPackage(MODELS);
 
         // Customize implementation models.
@@ -65,8 +65,7 @@ public class SearchServiceCustomizations extends Customization {
         customizeCustomEntityLookupSkill(publicCustomization.getClass("CustomEntityLookupSkill"));
         customizeSearchField(publicCustomization.getClass("SearchField"));
         customizeSynonymMap(publicCustomization.getClass("SynonymMap"));
-        customizeSearchResourceEncryptionKey(publicCustomization.getClass("SearchResourceEncryptionKey"),
-            implCustomization.getClass("AzureActiveDirectoryApplicationCredentials"));
+        customizeSearchResourceEncryptionKey(publicCustomization.getClass("SearchResourceEncryptionKey"));
         customizeSearchSuggester(publicCustomization.getClass("SearchSuggester"));
         customizeCustomAnalyzer(publicCustomization.getClass("CustomAnalyzer"));
         customizePatternAnalyzer(publicCustomization.getClass("PatternAnalyzer"));
@@ -107,14 +106,13 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeSearchIndex(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            clazz.addConstructor(com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
+            clazz.addConstructor(Modifier.Keyword.PUBLIC)
                 .addParameter("String", "name")
                 .addParameter("List<SearchField>", "fields")
-                .setBody(StaticJavaParser.parseBlock(
-                    joinWithNewline("{", "    this.name = name;", "    this.fields = fields;", "}")))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(
-                    joinWithNewline("Constructor of {@link SearchIndex}.", "@param name The name of the index.",
-                        "@param fields The fields of the index.")));
+                .setBody(StaticJavaParser.parseBlock("{ this.name = name; this.fields = fields; }"))
+                .setJavadocComment(newJavadoc("Constructor of {@link SearchIndex}.")
+                    .addBlockTag("param", "name", "The name of the index.")
+                    .addBlockTag("param", "fields", "The fields of the index."));
 
             addVarArgsOverload(clazz, "fields", "SearchField");
             addVarArgsOverload(clazz, "scoringProfiles", "ScoringProfile");
@@ -128,17 +126,16 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeSearchIndexer(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            clazz.addConstructor(com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
+            clazz.addConstructor(Modifier.Keyword.PUBLIC)
                 .addParameter("String", "name")
                 .addParameter("String", "dataSourceName")
                 .addParameter("String", "targetIndexName")
-                .setBody(StaticJavaParser.parseBlock(
-                    joinWithNewline("{", "    this.name = name;", "    this.dataSourceName = dataSourceName;",
-                        "    this.targetIndexName = targetIndexName;", "}")))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(
-                    joinWithNewline("Constructor of {@link SearchIndexer}.", "", "@param name The name of the indexer.",
-                        "@param dataSourceName The name of the datasource from which this indexer reads data.",
-                        "@param targetIndexName The name of the index to which this indexer writes data.")));
+                .setBody(StaticJavaParser.parseBlock("{ this.name = name; this.dataSourceName = dataSourceName;"
+                    + "this.targetIndexName = targetIndexName; }"))
+                .setJavadocComment(newJavadoc("Constructor of {@link SearchIndexer}.")
+                    .addBlockTag("param", "name", "The name of the indexer.")
+                    .addBlockTag("param", "dataSourceName", "The name of the datasource from which this indexer reads data.")
+                    .addBlockTag("param", "targetIndexName", "The name of the index to which this indexer writes data."));
 
             addVarArgsOverload(clazz, "fieldMappings", "FieldMapping");
             addVarArgsOverload(clazz, "outputFieldMappings", "FieldMapping");
@@ -146,18 +143,14 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeSearchFieldDataType(ClassCustomization classCustomization) {
-        customizeAst(classCustomization, clazz -> {
-            clazz.addMethod("collection", com.github.javaparser.ast.Modifier.Keyword.PUBLIC,
-                    com.github.javaparser.ast.Modifier.Keyword.STATIC)
-                .setType(classCustomization.getClassName())
-                .addParameter(classCustomization.getClassName(), "dataType")
-                .setBody(StaticJavaParser.parseBlock(joinWithNewline("{",
-                    "    return fromString(String.format(\"Collection(%s)\", dataType.toString()));", "}")))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(
-                    joinWithNewline("Returns a collection of a specific SearchFieldDataType.", "",
-                        "@param dataType the corresponding SearchFieldDataType",
-                        "@return a Collection of the corresponding SearchFieldDataType")));
-        });
+        customizeAst(classCustomization, clazz -> clazz.addMethod("collection", Modifier.Keyword.PUBLIC,
+                Modifier.Keyword.STATIC)
+            .setType(classCustomization.getClassName())
+            .addParameter(classCustomization.getClassName(), "dataType")
+            .setBody(StaticJavaParser.parseBlock("{ return fromString(String.format(\"Collection(%s)\", dataType.toString())); }"))
+            .setJavadocComment(newJavadoc("Returns a collection of a specific SearchFieldDataType.")
+                .addBlockTag("param", "dataType", "the corresponding SearchFieldDataType")
+                .addBlockTag("return", "a Collection of the corresponding SearchFieldDataType")));
     }
 
     private void customizeSearchIndexerSkill(ClassCustomization classCustomization, Editor editor) {
@@ -207,36 +200,30 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeMagnitudeScoringParameters(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> clazz.getMethodsByName("isShouldBoostBeyondRangeByConstant")
-            .get(0)
-            .setName("shouldBoostBeyondRangeByConstant"));
+            .forEach(method -> method.setName("shouldBoostBeyondRangeByConstant")));
     }
 
     private void customizeCognitiveServicesAccountKey(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            clazz.getFieldByName("key").get().setModifiers(com.github.javaparser.ast.Modifier.Keyword.PRIVATE);
-            clazz.addMethod("setKey", com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
+            clazz.getFieldByName("key").ifPresent(field -> field.setModifiers(Modifier.Keyword.PRIVATE));
+            clazz.addMethod("setKey", Modifier.Keyword.PUBLIC)
                 .setType(classCustomization.getClassName())
                 .addParameter("String", "key")
-                .setBody(
-                    StaticJavaParser.parseBlock(joinWithNewline("{", "    this.key = key;", "    return this;", "}")))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "Set the key property: The key used to provision the cognitive service resource attached to a skillset.",
-                    "", "@param key the key value to set.", "@return the CognitiveServicesAccountKey object itself.")));
+                .setBody(StaticJavaParser.parseBlock("{ this.key = key; return this; }"))
+                .setJavadocComment(newJavadoc("Set the key property: The key used to provision the cognitive service resource attached to a skillset.")
+                    .addBlockTag("param", "key", "the key value to set.")
+                    .addBlockTag("return", "the CognitiveServicesAccountKey object itself."));
         });
     }
 
     private void customizeOcrSkill(ClassCustomization classCustomization) {
-        customizeAst(classCustomization, clazz -> {
-            clazz.addMethod("setShouldDetectOrientation", com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
-                .setType("Boolean")
-                .setBody(
-                    StaticJavaParser.parseBlock(joinWithNewline("{", "    return this.shouldDetectOrientation;", "}")))
-                .addAnnotation("Deprecated")
-                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "Get the shouldDetectOrientation property: A value indicating to turn orientation detection on or not. Default is",
-                    "false.", "", "@return the shouldDetectOrientation value.",
-                    "@deprecated Use {@link #isShouldDetectOrientation()} instead.")));
-        });
+        customizeAst(classCustomization, clazz -> clazz.addMethod("setShouldDetectOrientation", Modifier.Keyword.PUBLIC)
+            .setType("Boolean")
+            .setBody(StaticJavaParser.parseBlock("{ return this.shouldDetectOrientation; }"))
+            .addMarkerAnnotation("Deprecated")
+            .setJavadocComment(newJavadoc("Get the shouldDetectOrientation property: A value indicating to turn orientation detection on or not. Default is false.")
+                .addBlockTag("return", "the shouldDetectOrientation value.")
+                .addBlockTag("deprecated", "Use {@link #isShouldDetectOrientation()} instead.")));
     }
 
     private void customizeImageAnalysisSkill(ClassCustomization classCustomization) {
@@ -253,16 +240,11 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeSearchField(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            clazz.getMethodsByName("setHidden")
-                .get(0)
-                .setBody(StaticJavaParser.parseBlock(
-                    joinWithNewline("{", "    this.hidden = (hidden == null) ? null : !hidden;", "    return this;",
-                        "}")));
+            clazz.getMethodsByName("setHidden").forEach(method -> method.setBody(StaticJavaParser.parseBlock(
+                "{ this.hidden = (hidden == null) ? null : !hidden; return this; }")));
 
-            clazz.getMethodsByName("isHidden")
-                .get(0)
-                .setBody(StaticJavaParser.parseBlock(
-                    joinWithNewline("{", "    return (this.hidden == null) ? null : !this.hidden;", "}")));
+            clazz.getMethodsByName("isHidden").forEach(method -> method.setBody(StaticJavaParser.parseBlock(
+                "{ return (this.hidden == null) ? null : !this.hidden; }")));
 
             addVarArgsOverload(clazz, "fields", "SearchField");
             addVarArgsOverload(clazz, "synonymMapNames", "String");
@@ -275,101 +257,85 @@ public class SearchServiceCustomizations extends Customization {
             clazz.getMethodsByName("setFormat").forEach(MethodDeclaration::remove);
             clazz.getMethodsByName("setName").forEach(MethodDeclaration::remove);
 
-            clazz.addConstructor(com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
+            clazz.addConstructor(Modifier.Keyword.PUBLIC)
                 .setJavadocComment(StaticJavaParser.parseJavadoc(
                     joinWithNewline("Constructor of {@link SynonymMap}.", "@param name The name of the synonym map.")))
                 .addParameter("String", "name")
                 .getBody()
-                .addStatement(StaticJavaParser.parseExplicitConstructorInvocationStmt("this(name,null);"));
+                .addStatement(StaticJavaParser.parseExplicitConstructorInvocationStmt("this(name, null);"));
 
-            clazz.addConstructor(com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
+            clazz.addConstructor(Modifier.Keyword.PUBLIC)
                 .addParameter("String", "name")
                 .addParameter("String", "synonyms")
-                .setBody(StaticJavaParser.parseBlock(
-                    joinWithNewline("{", "    this.format = \"solr\";", "    this.name = name;",
-                        "    this.synonyms = synonyms;", "}")))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(
-                    joinWithNewline("Constructor of {@link SynonymMap}.", "@param name The name of the synonym map.",
-                        "@param synonyms A series of synonym rules in the specified synonym map format. The rules must be separated by newlines.")));
+                .setBody(StaticJavaParser.parseBlock("{ this.format = \"solr\"; this.name = name; this.synonyms = synonyms; }"))
+                .setJavadocComment(newJavadoc("Constructor of {@link SynonymMap}.")
+                    .addBlockTag("param", "name", "The name of the synonym map.")
+                    .addBlockTag("param", "synonyms", "A series of synonym rules in the specified synonym map format. The rules must be separated by newlines."));
 
-            clazz.addMethod("createFromFile", com.github.javaparser.ast.Modifier.Keyword.PUBLIC,
-                    com.github.javaparser.ast.Modifier.Keyword.STATIC)
+            clazz.addMethod("createFromFile", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
                 .setType("SynonymMap")
                 .addParameter("String", "name")
                 .addParameter("java.nio.file.Path", "filePath")
-                .setBody(StaticJavaParser.parseBlock(joinWithNewline("{",
-                    "    String synonyms = com.azure.search.documents.implementation.util.Utility.readSynonymsFromFile(filePath);",
-                    "    return new SynonymMap(name, synonyms);", "}")))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(
-                    joinWithNewline("Creates a new instance of SynonymMap with synonyms read from the passed file.", "",
-                        "@param name The name of the synonym map.",
-                        "@param filePath The path to the file where the formatted synonyms are read.",
-                        "@return A SynonymMap.",
-                        "@throws java.io.UncheckedIOException If reading {@code filePath} fails.")));
+                .setBody(StaticJavaParser.parseBlock("{"
+                    + "String synonyms = com.azure.search.documents.implementation.util.Utility.readSynonymsFromFile(filePath);"
+                    + "return new SynonymMap(name, synonyms); }"))
+                .setJavadocComment(newJavadoc("Creates a new instance of SynonymMap with synonyms read from the passed file.")
+                    .addBlockTag("param", "name", "The name of the synonym map.")
+                    .addBlockTag("param", "filePath", "The path to the file where the formatted synonyms are read.")
+                    .addBlockTag("return", "A SynonymMap.")
+                    .addBlockTag("throws", "java.io.UncheckedIOException", "If reading {@code filePath} fails."));
         });
     }
 
-    private void customizeSearchResourceEncryptionKey(ClassCustomization keyCustomization,
-        ClassCustomization credentialCustomization) {
-        keyCustomization.removeMethod("getAccessCredentials");
+    private void customizeSearchResourceEncryptionKey(ClassCustomization keyCustomization) {
         customizeAst(keyCustomization, clazz -> {
-            clazz.getMethodsByName("setAccessCredentials").get(0).remove();
+            clazz.getMethodsByName("getAccessCredentials").forEach(Node::remove);
+            clazz.getMethodsByName("setAccessCredentials").forEach(Node::remove);
 
             clazz.addMethod("getApplicationId", Modifier.Keyword.PUBLIC)
                 .setType(String.class)
-                .setBody(StaticJavaParser.parseBlock("{\n"
-                    + "        return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationId();\n"
-                    + "    }"))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(
-                    "* Get the applicationId property: An AAD Application ID that was granted the required access permissions to the\n"
-                        + "     * Azure Key Vault that is to be used when encrypting your data at rest. The Application ID should not be confused\n"
-                        + "     * with the Object ID for your AAD Application.\n" + "     * \n"
-                        + "     * @return the applicationId value."));
+                .setBody(StaticJavaParser.parseBlock(
+                    "{ return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationId(); }"))
+                .setJavadocComment(newJavadoc("Get the applicationId property: An AAD Application ID that was granted "
+                    + "the required access permissions to the Azure Key Vault that is to be used when encrypting your "
+                    + "data at rest. The Application ID should not be confused with the Object ID for your AAD Application.")
+                    .addBlockTag("return", "the applicationId value."));
 
             clazz.addMethod("setApplicationId", Modifier.Keyword.PUBLIC)
                 .setType(keyCustomization.getClassName())
                 .addParameter(String.class, "applicationId")
-                .setBody(StaticJavaParser.parseBlock("{\n" + "        if (this.accessCredentials == null) {\n"
-                    + "            this.accessCredentials = new AzureActiveDirectoryApplicationCredentials();\n"
-                    + "        }\n" + "        this.accessCredentials.setApplicationId(applicationId);\n"
-                    + "        return this;\n" + "    }"))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(
-                    "* Set the applicationId property: An AAD Application ID that was granted the required access permissions to the\n"
-                        + "     * Azure Key Vault that is to be used when encrypting your data at rest. The Application ID should not be confused\n"
-                        + "     * with the Object ID for your AAD Application.\n" + "     * \n"
-                        + "     * @param applicationId the applicationId value to set.\n"
-                        + "     * @return the SearchResourceEncryptionKey object itself."));
+                .setBody(StaticJavaParser.parseBlock("{ if (this.accessCredentials == null) {"
+                    + "this.accessCredentials = new AzureActiveDirectoryApplicationCredentials(); }"
+                    + "this.accessCredentials.setApplicationId(applicationId); return this; }"))
+                .setJavadocComment(newJavadoc("Set the applicationId property: An AAD Application ID that was granted "
+                    + "the required access permissions to the Azure Key Vault that is to be used when encrypting your "
+                    + "data at rest. The Application ID should not be confused with the Object ID for your AAD Application.")
+                    .addBlockTag("param", "applicationId", "the applicationId value to set.")
+                    .addBlockTag("return", "the SearchResourceEncryptionKey object itself."));
 
             clazz.addMethod("getApplicationSecret", Modifier.Keyword.PUBLIC)
                 .setType(String.class)
-                .setBody(StaticJavaParser.parseBlock("{\n"
-                    + "        return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationSecret();\n"
-                    + "    }"))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(
-                    "* Get the applicationSecret property: The authentication key of the specified AAD application.\n"
-                        + "     * \n" + "     * @return the applicationSecret value."));
+                .setBody(StaticJavaParser.parseBlock("{ return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationSecret(); }"))
+                .setJavadocComment(newJavadoc("Get the applicationSecret property: The authentication key of the specified AAD application.")
+                    .addBlockTag("return", "the applicationSecret value."));
 
             clazz.addMethod("setApplicationSecret", Modifier.Keyword.PUBLIC)
                 .setType(keyCustomization.getClassName())
                 .addParameter(String.class, "applicationSecret")
-                .setBody(StaticJavaParser.parseBlock("{\n" + "        if (this.accessCredentials == null) {\n"
-                    + "            this.accessCredentials = new AzureActiveDirectoryApplicationCredentials();\n"
-                    + "        }\n" + "        this.accessCredentials.setApplicationSecret(applicationSecret);\n"
-                    + "        return this;\n" + "    }"))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(
-                    "* Set the applicationSecret property: The authentication key of the specified AAD application.\n"
-                        + "     * \n" + "     * @param applicationSecret the applicationSecret value to set.\n"
-                        + "     * @return the SearchResourceEncryptionKey object itself."));
+                .setBody(StaticJavaParser.parseBlock("{ if (this.accessCredentials == null) {"
+                    + "this.accessCredentials = new AzureActiveDirectoryApplicationCredentials(); }"
+                    + "this.accessCredentials.setApplicationSecret(applicationSecret); return this; }"))
+                .setJavadocComment(newJavadoc("Set the applicationSecret property: The authentication key of the specified AAD application.")
+                    .addBlockTag("param", "applicationSecret", "the applicationSecret value to set.")
+                    .addBlockTag("return", "the SearchResourceEncryptionKey object itself."));
         });
     }
 
     private void customizeSearchSuggester(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            clazz.getConstructors()
-                .get(0)
+            clazz.getConstructors().get(0)
                 .setBody(StaticJavaParser.parseBlock(
-                    joinWithNewline("{", "    this.searchMode = \"analyzingInfixMatching\";",
-                        "    this.sourceFields = sourceFields;", "    this.name = name;", "}")));
+                    "{ this.searchMode = \"analyzingInfixMatching\"; this.sourceFields = sourceFields; this.name = name; }"));
 
             clazz.getMethodsByName("setSearchMode").forEach(MethodDeclaration::remove);
         });
@@ -386,32 +352,24 @@ public class SearchServiceCustomizations extends Customization {
         customizeAst(classCustomization, clazz -> {
             clazz.tryAddImportToParentCompilationUnit(Arrays.class);
 
-            clazz.getMethodsByName("isLowerCaseTerms").get(0).setName("areLowerCaseTerms");
+            clazz.getMethodsByName("isLowerCaseTerms").forEach(method -> method.setName("areLowerCaseTerms"));
             addVarArgsOverload(clazz, "stopwords", "String");
 
-            clazz.getMethodsByName("getFlags")
-                .get(0)
-                .setType("List<RegexFlags>")
-                .setBody(StaticJavaParser.parseBlock(
-                    joinWithNewline("{", "    if (this.flags == null) {", "        return null;", "    } else {",
-                        "        String[] flagStrings = this.flags.toString().split(\"\\\\|\");",
-                        "        return Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList());",
-                        "    }", "}")));
+            clazz.getMethodsByName("getFlags").forEach(method -> method.setType("List<RegexFlags>")
+                .setBody(StaticJavaParser.parseBlock("{ if (this.flags == null) { return null; } else {"
+                        + "String[] flagStrings = this.flags.toString().split(\"\\\\|\");"
+                        + "return Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList()); } }")));
 
             clazz.tryAddImportToParentCompilationUnit(Collectors.class);
 
-            clazz.getMethodsByName("setFlags")
-                .get(0)
+            clazz.getMethodsByName("setFlags").forEach(method -> method
                 .setParameters(new NodeList<>(new Parameter().setType("List<RegexFlags>").setName("flags")))
-                .setBody(StaticJavaParser.parseBlock(
-                    joinWithNewline("{", "    if (flags == null) {", "        this.flags = null;", "    } else {",
-                        "        String flagString = flags.stream().map(RegexFlags::toString).collect(Collectors.joining(\"|\"));",
-                        "        this.flags = RegexFlags.fromString(flagString);", "    }", "", "    return this;",
-                        "}")));
+                .setBody(StaticJavaParser.parseBlock("{ if (flags == null) { this.flags = null; } else {"
+                        + "String flagString = flags.stream().map(RegexFlags::toString).collect(Collectors.joining(\"|\"));"
+                        + "this.flags = RegexFlags.fromString(flagString); } return this; }")));
 
             addVarArgsOverload(clazz, "flags", "RegexFlags").setBody(StaticJavaParser.parseBlock(
-                joinWithNewline("{", "    if (flags == null) {", "        this.flags = null;", "        return this;",
-                    "    } else {", "        return setFlags(Arrays.asList(flags));", "    }", "}")));
+                "{ if (flags == null) { this.flags = null; return this; } else { return setFlags(Arrays.asList(flags)); } }"));
         });
     }
 
@@ -425,16 +383,14 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeSearchIndexerSkillset(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            clazz.addConstructor(com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
+            clazz.addConstructor(Modifier.Keyword.PUBLIC)
                 .addParameter("String", "name")
                 .addParameter("List<SearchIndexerSkill>", "skills")
-                .setBody(
-                    new BlockStmt().addStatement(StaticJavaParser.parseExplicitConstructorInvocationStmt("this(name);"))
-                        .addStatement(StaticJavaParser.parseStatement("this.skills = skills;")))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(
-                    joinWithNewline("/**", " * Creates an instance of SearchIndexerSkillset class.",
-                        " * @param name The name of the skillset.", " * @param skills The skills in the skillset.",
-                        " */")));
+                .setBody(new BlockStmt().addStatement(StaticJavaParser.parseStatement("this(name);"))
+                    .addStatement(StaticJavaParser.parseStatement("this.skills = skills;")))
+                .setJavadocComment(newJavadoc("Creates an instance of SearchIndexerSkillset class.")
+                    .addBlockTag("param", "name", "The name of the skillset.")
+                    .addBlockTag("param", "skills", "The skills in the skillset."));
 
             addVarArgsOverload(clazz, "skills", "SearchIndexerSkill");
         });
@@ -442,40 +398,43 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeCjkBigramTokenFilter(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            clazz.getMethodsByName("isOutputUnigrams").get(0).setName("areOutputUnigrams");
+            clazz.getMethodsByName("isOutputUnigrams").forEach(method -> method.setName("areOutputUnigrams"));
             addVarArgsOverload(clazz, "ignoreScripts", "CjkBigramTokenFilterScripts");
         });
     }
 
     private void customizeKeepTokenFilter(ClassCustomization classCustomization) {
-        customizeAst(classCustomization,
-            clazz -> clazz.getMethodsByName("isLowerCaseKeepWords").get(0).setName("areLowerCaseKeepWords"));
+        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("isLowerCaseKeepWords")
+            .forEach(method -> method.setName("areLowerCaseKeepWords")));
     }
 
     private void customizeSynonymTokenFilter(ClassCustomization classCustomization) {
-        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("isExpand").get(0).setName("getExpand"));
+        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("isExpand")
+            .forEach(method -> method.setName("getExpand")));
     }
 
     private void customizeShingleTokenFilter(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            clazz.getMethodsByName("isOutputUnigrams").get(0).setName("areOutputUnigrams");
-            clazz.getMethodsByName("isOutputUnigramsIfNoShingles").get(0).setName("areOutputUnigramsIfNoShingles");
+            clazz.getMethodsByName("isOutputUnigrams").forEach(method -> method.setName("areOutputUnigrams"));
+            clazz.getMethodsByName("isOutputUnigramsIfNoShingles")
+                .forEach(method -> method.setName("areOutputUnigramsIfNoShingles"));
         });
     }
 
     private void customizeLimitTokenFilter(ClassCustomization classCustomization) {
-        customizeAst(classCustomization,
-            clazz -> clazz.getMethodsByName("isAllTokensConsumed").get(0).setName("areAllTokensConsumed"));
+        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("isAllTokensConsumed")
+            .forEach(method -> method.setName("areAllTokensConsumed")));
     }
 
     private void customizePhoneticTokenFilter(ClassCustomization classCustomization) {
-        customizeAst(classCustomization,
-            clazz -> clazz.getMethodsByName("isOriginalTokensReplaced").get(0).setName("areOriginalTokensReplaced"));
+        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("isOriginalTokensReplaced")
+            .forEach(method -> method.setName("areOriginalTokensReplaced")));
     }
 
     private void customizeStopwordsTokenFilter(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            clazz.getMethodsByName("isTrailingStopWordsRemoved").get(0).setName("areTrailingStopWordsRemoved");
+            clazz.getMethodsByName("isTrailingStopWordsRemoved")
+                .forEach(method -> method.setName("areTrailingStopWordsRemoved"));
 
             addVarArgsOverload(clazz, "stopwords", "String");
         });
@@ -491,13 +450,13 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeWordDelimiterTokenFilter(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            clazz.getMethodsByName("isGenerateWordParts").get(0).setName("generateWordParts");
-            clazz.getMethodsByName("isGenerateNumberParts").get(0).setName("generateNumberParts");
-            clazz.getMethodsByName("isWordsCatenated").get(0).setName("areWordsCatenated");
-            clazz.getMethodsByName("isNumbersCatenated").get(0).setName("areNumbersCatenated");
-            clazz.getMethodsByName("isCatenateAll").get(0).setName("catenateAll");
-            clazz.getMethodsByName("isSplitOnCaseChange").get(0).setName("splitOnCaseChange");
-            clazz.getMethodsByName("isSplitOnNumerics").get(0).setName("splitOnNumerics");
+            clazz.getMethodsByName("isGenerateWordParts").forEach(method -> method.setName("generateWordParts"));
+            clazz.getMethodsByName("isGenerateNumberParts").forEach(method -> method.setName("generateNumberParts"));
+            clazz.getMethodsByName("isWordsCatenated").forEach(method -> method.setName("areWordsCatenated"));
+            clazz.getMethodsByName("isNumbersCatenated").forEach(method -> method.setName("areNumbersCatenated"));
+            clazz.getMethodsByName("isCatenateAll").forEach(method -> method.setName("catenateAll"));
+            clazz.getMethodsByName("isSplitOnCaseChange").forEach(method -> method.setName("splitOnCaseChange"));
+            clazz.getMethodsByName("isSplitOnNumerics").forEach(method -> method.setName("splitOnNumerics"));
 
             addVarArgsOverload(clazz, "protectedWords", "String");
         });
@@ -508,37 +467,29 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeMicrosoftLanguageStemmingTokenizer(ClassCustomization classCustomization) {
-        customizeAst(classCustomization,
-            clazz -> clazz.getMethodsByName("isSearchTokenizerUsed").get(0).setName("isSearchTokenizer"));
+        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("isSearchTokenizerUsed")
+            .forEach(method -> method.setName("isSearchTokenizer")));
     }
 
     private void customizePatternTokenizer(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
             clazz.tryAddImportToParentCompilationUnit(Arrays.class);
 
-            clazz.getMethodsByName("getFlags")
-                .get(0)
-                .setType("List<RegexFlags>")
-                .setBody(StaticJavaParser.parseBlock(
-                    joinWithNewline("{", "    if (this.flags == null) {", "        return null;", "    } else {",
-                        "        String[] flagStrings = this.flags.toString().split(\"\\\\|\");",
-                        "        return Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList());",
-                        "    }", "}")));
+            clazz.getMethodsByName("getFlags").forEach(method -> method.setType("List<RegexFlags>")
+                .setBody(StaticJavaParser.parseBlock("{ if (this.flags == null) { return null; } else {"
+                        + "String[] flagStrings = this.flags.toString().split(\"\\\\|\");"
+                        + "return Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList()); } }")));
 
             clazz.tryAddImportToParentCompilationUnit(Collectors.class);
 
-            clazz.getMethodsByName("setFlags")
-                .get(0)
+            clazz.getMethodsByName("setFlags").forEach(method -> method
                 .setParameters(new NodeList<>(new Parameter().setType("List<RegexFlags>").setName("flags")))
-                .setBody(StaticJavaParser.parseBlock(
-                    joinWithNewline("{", "    if (flags == null) {", "        this.flags = null;", "    } else {",
-                        "        String flagString = flags.stream().map(RegexFlags::toString).collect(Collectors.joining(\"|\"));",
-                        "        this.flags = RegexFlags.fromString(flagString);", "    }", "", "    return this;",
-                        "}")));
+                .setBody(StaticJavaParser.parseBlock("{ if (flags == null) { this.flags = null; } else {"
+                        + "String flagString = flags.stream().map(RegexFlags::toString).collect(Collectors.joining(\"|\"));"
+                        + "this.flags = RegexFlags.fromString(flagString); } return this; }")));
 
             addVarArgsOverload(clazz, "flags", "RegexFlags").setBody(StaticJavaParser.parseBlock(
-                joinWithNewline("{", "    if (flags == null) {", "        this.flags = null;", "        return this;",
-                    "    } else {", "        return setFlags(Arrays.asList(flags));", "    }", "}")));
+                "{ if (flags == null) { this.flags = null; return this; } else { return setFlags(Arrays.asList(flags)); } }"));
         });
     }
 
@@ -547,36 +498,32 @@ public class SearchServiceCustomizations extends Customization {
             clazz.addPrivateField("Map<String, Object>", "configurationMap");
             clazz.tryAddImportToParentCompilationUnit(Map.class);
 
-            clazz.getMethodsByName("getConfiguration").get(0).setName("getIndexingParametersConfiguration");
-            clazz.getMethodsByName("setConfiguration")
-                .get(0)
-                .setName("setIndexingParametersConfiguration")
-                .setBody(StaticJavaParser.parseBlock(joinWithNewline("{", "    this.configuration = configuration;",
-                    "    this.configurationMap = MappingUtils.indexingParametersConfigurationToMap(configuration);",
-                    "    return this;", "}")));
+            clazz.getMethodsByName("getConfiguration").forEach(method -> method.setName("getIndexingParametersConfiguration"));
+            clazz.getMethodsByName("setConfiguration").forEach(method -> method.setName("setIndexingParametersConfiguration")
+                .setBody(StaticJavaParser.parseBlock("{ this.configuration = configuration;"
+                    + "this.configurationMap = MappingUtils.indexingParametersConfigurationToMap(configuration);"
+                    + "return this; }")));
 
             clazz.findAncestor(CompilationUnit.class)
                 .ifPresent(p -> p.addImport("com.azure.search.documents.implementation.util.MappingUtils"));
 
-            clazz.addMethod("getConfiguration", com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
+            clazz.addMethod("getConfiguration", Modifier.Keyword.PUBLIC)
                 .setType("Map<String, Object>")
-                .setBody(StaticJavaParser.parseBlock(joinWithNewline("{", "    return this.configurationMap;", "}")))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "Get the configuration property: A dictionary of indexer-specific configuration properties. "
-                        + "Each name is the name of a specific property. Each value must be of a primitive type.", "",
-                    "@return the configuration value.")));
+                .setBody(StaticJavaParser.parseBlock("{ return this.configurationMap; }"))
+                .setJavadocComment(newJavadoc("Get the configuration property: A dictionary of indexer-specific "
+                    + "configuration properties. Each name is the name of a specific property. Each value must be of a primitive type.")
+                    .addBlockTag("return", "the configuration value."));
 
-            clazz.addMethod("setConfiguration", com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
+            clazz.addMethod("setConfiguration", Modifier.Keyword.PUBLIC)
                 .setType("IndexingParameters")
                 .addParameter("Map<String, Object>", "configuration")
-                .setBody(StaticJavaParser.parseBlock(joinWithNewline("{", "    this.configurationMap = configuration;",
-                    "    this.configuration = MappingUtils.mapToIndexingParametersConfiguration(configuration);",
-                    "    return this;", "}")))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
-                    "Set the configuration property: A dictionary of indexer-specific configuration properties. "
-                        + "Each name is the name of a specific property. Each value must be of a primitive type.", "",
-                    "@param configuration the configuration value to set.",
-                    "@return the IndexingParameters object itself.")));
+                .setBody(StaticJavaParser.parseBlock("{ this.configurationMap = configuration;"
+                    + "this.configuration = MappingUtils.mapToIndexingParametersConfiguration(configuration);"
+                    + "return this; }"))
+                .setJavadocComment(newJavadoc("Set the configuration property: A dictionary of indexer-specific "
+                    + "configuration properties. Each name is the name of a specific property. Each value must be of a primitive type.")
+                    .addBlockTag("param", "configuration", "the configuration value to set.")
+                    .addBlockTag("return", "the IndexingParameters object itself."));
         });
 
         String replacement = editor.getFileContent(classCustomization.getFileName())
@@ -587,46 +534,39 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeSearchIndexerDataSourceConnection(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            clazz.addConstructor(com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
+            clazz.addConstructor(Modifier.Keyword.PUBLIC)
                 .addParameter("String", "name")
                 .addParameter("SearchIndexerDataSourceType", "type")
                 .addParameter("String", "connectionString")
                 .addParameter("SearchIndexerDataContainer", "container")
-                .setBody(StaticJavaParser.parseBlock(
-                    joinWithNewline("{", "    this.name = name;", "    this.type = type;",
-                        "    this.credentials = (connectionString == null) ? null : new DataSourceCredentials().setConnectionString(connectionString);",
-                        "    this.container = container;", "}")))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(
-                    joinWithNewline("Constructor of {@link SearchIndexerDataSourceConnection}.", "",
-                        "@param name The name of the datasource.", "@param type The type of the datasource.",
-                        "@param connectionString The connection string for the datasource.",
-                        "@param container The data container for the datasource.")));
+                .setBody(StaticJavaParser.parseBlock("{ this.name = name; this.type = type;"
+                    + "this.credentials = (connectionString == null) ? null : new DataSourceCredentials().setConnectionString(connectionString);"
+                    + "this.container = container; }"))
+                .setJavadocComment(newJavadoc("Constructor of {@link SearchIndexerDataSourceConnection}.")
+                    .addBlockTag("param", "name", "The name of the datasource.")
+                    .addBlockTag("param", "type", "The type of the datasource.")
+                    .addBlockTag("param", "connectionString", "The connection string for the datasource.")
+                    .addBlockTag("param", "container", "The data container for the datasource."));
 
             clazz.getMethodsByName("getCredentials").forEach(MethodDeclaration::remove);
             clazz.getMethodsByName("setCredentials").forEach(MethodDeclaration::remove);
 
-            clazz.addMethod("getConnectionString", com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
+            clazz.addMethod("getConnectionString", Modifier.Keyword.PUBLIC)
                 .setType("String")
-                .setBody(StaticJavaParser.parseBlock(
-                    joinWithNewline("{", "    return (credentials == null) ? null : credentials.getConnectionString();",
-                        "}")))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(
-                    joinWithNewline("Get the connectionString property: The connection string for the datasource.", "",
-                        "@return the connectionString value.")));
+                .setBody(StaticJavaParser.parseBlock("{ return (credentials == null) ? null : credentials.getConnectionString(); }"))
+                .setJavadocComment(newJavadoc("Get the connectionString property: The connection string for the datasource.")
+                    .addBlockTag("return", "the connectionString value."));
 
-            clazz.addMethod("setConnectionString", com.github.javaparser.ast.Modifier.Keyword.PUBLIC)
+            clazz.addMethod("setConnectionString", Modifier.Keyword.PUBLIC)
                 .setType("SearchIndexerDataSourceConnection")
                 .addParameter("String", "connectionString")
-                .setBody(StaticJavaParser.parseBlock(
-                    joinWithNewline("{", "    if (connectionString == null) {", "        this.credentials = null;",
-                        "    } else if (credentials == null) {",
-                        "        this.credentials = new DataSourceCredentials().setConnectionString(connectionString);",
-                        "    } else {", "        credentials.setConnectionString(connectionString);", "    }",
-                        "    return this;", "}")))
-                .setJavadocComment(StaticJavaParser.parseJavadoc(
-                    joinWithNewline("Set the connectionString property: The connection string for the datasource.", "",
-                        "@param connectionString the connectionString value to set.",
-                        "@return the SearchIndexerDataSourceConnection object itself.")));
+                .setBody(StaticJavaParser.parseBlock("{ if (connectionString == null) { this.credentials = null;"
+                    + "} else if (credentials == null) {"
+                    + "this.credentials = new DataSourceCredentials().setConnectionString(connectionString); } else {"
+                    + "credentials.setConnectionString(connectionString); } return this; }"))
+                .setJavadocComment(newJavadoc("Set the connectionString property: The connection string for the datasource.")
+                    .addBlockTag("param", "connectionString", "the connectionString value to set.")
+                    .addBlockTag("return", "the SearchIndexerDataSourceConnection object itself."));
         });
     }
 
@@ -652,51 +592,24 @@ public class SearchServiceCustomizations extends Customization {
 
     private static void customizeAzureOpenAIModelName(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            clazz.getFieldByName("TEXT_EMBEDDING_ADA002").get().getVariable(0).setName("TEXT_EMBEDDING_ADA_002");
-            clazz.getFieldByName("TEXT_EMBEDDING3LARGE").get().getVariable(0).setName("TEXT_EMBEDDING_3_LARGE");
-            clazz.getFieldByName("TEXT_EMBEDDING3SMALL").get().getVariable(0).setName("TEXT_EMBEDDING_3_SMALL");
+            clazz.getFieldByName("TEXT_EMBEDDING_ADA002").ifPresent(f -> f.getVariable(0).setName("TEXT_EMBEDDING_ADA_002"));
+            clazz.getFieldByName("TEXT_EMBEDDING3LARGE").ifPresent(f -> f.getVariable(0).setName("TEXT_EMBEDDING_3_LARGE"));
+            clazz.getFieldByName("TEXT_EMBEDDING3SMALL").ifPresent(f -> f.getVariable(0).setName("TEXT_EMBEDDING_3_SMALL"));
         });
     }
 
     private static void customizeSplitSkillEncoderModelName(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            clazz.getFieldByName("R50KBASE").get().getVariable(0).setName("R_50K_BASE");
-            clazz.getFieldByName("P50KBASE").get().getVariable(0).setName("P_50K_BASE");
-            clazz.getFieldByName("P50KEDIT").get().getVariable(0).setName("P_50K_EDIT");
-            clazz.getFieldByName("CL100KBASE").get().getVariable(0).setName("CL_100K_BASE");
-        });
-    }
-
-    private void customizeSearchError(ClassCustomization classCustomization) {
-        customizeAst(classCustomization, clazz -> {
-            MethodDeclaration fromJson = clazz.getMethodsByName("fromJson").get(0);
-
-            clazz.addMethod("readSearchError", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC)
-                .setType("SearchError")
-                .addParameter("JsonReader", "jsonReader")
-                .addThrownException(IOException.class)
-                .setBody(fromJson.getBody().get());
-
-            fromJson.setBody(StaticJavaParser.parseBlock(
-                joinWithNewline("{", "return jsonReader.readObject(reader -> {",
-                    "    // Buffer the next JSON object as SearchError can take two forms:", "    //",
-                    "    // - A SearchError object", "    // - A SearchError object wrapped in an \"error\" node.",
-                    "    JsonReader bufferedReader = reader.bufferObject();",
-                    "    bufferedReader.nextToken(); // Get to the START_OBJECT token.",
-                    "    while (bufferedReader.nextToken() != JsonToken.END_OBJECT) {",
-                    "        String fieldName = bufferedReader.getFieldName();", "        bufferedReader.nextToken();",
-                    "", "        if (\"error\".equals(fieldName)) {",
-                    "            // If the SearchError was wrapped in the \"error\" node begin reading it now.",
-                    "            return readSearchError(bufferedReader);", "        } else {",
-                    "            bufferedReader.skipChildren();", "        }", "    }", "",
-                    "    // Otherwise reset the JsonReader and read the whole JSON object.",
-                    "    return readSearchError(bufferedReader.reset());", "});", "}")));
+            clazz.getFieldByName("R50KBASE").ifPresent(f -> f.getVariable(0).setName("R_50K_BASE"));
+            clazz.getFieldByName("P50KBASE").ifPresent(f -> f.getVariable(0).setName("P_50K_BASE"));
+            clazz.getFieldByName("P50KEDIT").ifPresent(f -> f.getVariable(0).setName("P_50K_EDIT"));
+            clazz.getFieldByName("CL100KBASE").ifPresent(f -> f.getVariable(0).setName("CL_100K_BASE"));
         });
     }
 
     private static void bulkRemoveFromJsonMethods(ClassCustomization... classCustomizations) {
-        for (ClassCustomization classCustomization : classCustomizations) {
-            classCustomization.removeMethod("fromJson(JsonReader jsonReader)");
+        for (ClassCustomization customization : classCustomizations) {
+            customizeAst(customization, clazz -> clazz.getMethodsBySignature("fromJson", "JsonReader").forEach(Node::remove));
         }
     }
 
@@ -716,6 +629,10 @@ public class SearchServiceCustomizations extends Customization {
             .addParameter(new Parameter().setType(parameterType).setName(parameterName).setVarArgs(true))
             .setBody(StaticJavaParser.parseBlock(String.format(VARARG_METHOD_BLOCK_TEMPLATE, parameterName)))
             .setJavadocComment(nonVarArgOverload.getJavadoc().get());
+    }
+
+    private static Javadoc newJavadoc(String description) {
+        return new Javadoc(JavadocDescription.parseText(description));
     }
 
     private static String joinWithNewline(String... lines) {

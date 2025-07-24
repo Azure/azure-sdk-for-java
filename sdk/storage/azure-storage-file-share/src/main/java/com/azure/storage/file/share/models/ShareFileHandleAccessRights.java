@@ -24,7 +24,7 @@ public enum ShareFileHandleAccessRights {
     DELETE("Delete");
 
     /**
-     * The actual serialized value for a AccessRight instance.
+     * The actual serialized value for a ShareFileHandleAccessRights instance.
      */
     private final String value;
 
@@ -33,10 +33,10 @@ public enum ShareFileHandleAccessRights {
     }
 
     /**
-     * Parses a serialized value to a AccessRight instance.
+     * Parses a serialized value to a ShareFileHandleAccessRights instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed AccessRight object, or null if unable to parse.
+     * @return the parsed ShareFileHandleAccessRights object, or null if unable to parse.
      */
     public static ShareFileHandleAccessRights fromString(String value) {
         if (value == null) {

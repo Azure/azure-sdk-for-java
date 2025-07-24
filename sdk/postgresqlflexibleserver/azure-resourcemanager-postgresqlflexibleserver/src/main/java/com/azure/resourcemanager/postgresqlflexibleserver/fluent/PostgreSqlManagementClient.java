@@ -180,6 +180,13 @@ public interface PostgreSqlManagementClient {
     PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
+     * Gets the QuotaUsagesClient object to access its operations.
+     * 
+     * @return the QuotaUsagesClient object.
+     */
+    QuotaUsagesClient getQuotaUsages();
+
+    /**
      * Gets the ReplicasClient object to access its operations.
      * 
      * @return the ReplicasClient object.
@@ -199,6 +206,27 @@ public interface PostgreSqlManagementClient {
      * @return the ServerThreatProtectionSettingsClient object.
      */
     ServerThreatProtectionSettingsClient getServerThreatProtectionSettings();
+
+    /**
+     * Gets the TuningOptionsClient object to access its operations.
+     * 
+     * @return the TuningOptionsClient object.
+     */
+    TuningOptionsClient getTuningOptions();
+
+    /**
+     * Gets the TuningIndexesClient object to access its operations.
+     * 
+     * @return the TuningIndexesClient object.
+     */
+    TuningIndexesClient getTuningIndexes();
+
+    /**
+     * Gets the TuningConfigurationsClient object to access its operations.
+     * 
+     * @return the TuningConfigurationsClient object.
+     */
+    TuningConfigurationsClient getTuningConfigurations();
 
     /**
      * Gets the VirtualEndpointsClient object to access its operations.

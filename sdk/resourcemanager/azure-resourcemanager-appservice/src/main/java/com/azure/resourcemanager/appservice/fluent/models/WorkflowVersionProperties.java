@@ -303,7 +303,9 @@ public final class WorkflowVersionProperties implements JsonSerializable<Workflo
         jsonWriter.writeJsonField("endpointsConfiguration", this.endpointsConfiguration);
         jsonWriter.writeJsonField("accessControl", this.accessControl);
         jsonWriter.writeJsonField("integrationAccount", this.integrationAccount);
-        jsonWriter.writeUntypedField("definition", this.definition);
+        if (this.definition != null) {
+            jsonWriter.writeUntypedField("definition", this.definition);
+        }
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }

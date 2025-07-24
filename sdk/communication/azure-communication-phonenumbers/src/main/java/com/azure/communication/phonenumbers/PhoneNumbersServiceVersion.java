@@ -17,7 +17,17 @@ public enum PhoneNumbersServiceVersion implements ServiceVersion {
     /**
      * Number Lookup GA {@code 2025-02-11}
      */
-    V2025_02_11("2025-02-11");
+    V2025_02_11("2025-02-11"),
+
+    /**
+     * Cherry Picker GA {@code 2025-04-01}
+     */
+    V2025_04_01("2025-04-01"),
+
+    /**
+     * Mobile Numbers beta {@code 2025-06-01}
+     */
+    V2025_06_01("2025-06-01");
 
     private final String version;
 
@@ -42,6 +52,6 @@ public enum PhoneNumbersServiceVersion implements ServiceVersion {
      */
     public static PhoneNumbersServiceVersion getLatest() {
 
-        return V2025_02_11;
+        return V2025_06_01;
     }
 }
