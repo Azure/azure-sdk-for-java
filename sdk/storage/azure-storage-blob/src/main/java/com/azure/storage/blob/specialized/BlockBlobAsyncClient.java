@@ -431,7 +431,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         data = UploadUtils.extractByteBuffer(data, options.getLength(),
             (long) BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, options.getDataStream());
 
-        return UploadUtils.computeChecksum(data, false, storageChecksumAlgorithm, options.getLength(), LOGGER)
+        return UploadUtils.computeChecksum(data, storageChecksumAlgorithm, options.getLength(), LOGGER)
             .flatMap(fluxContentValidationWrapper -> {
                 UploadUtils.ContentValidationInfo contentValidationInfo
                     = fluxContentValidationWrapper.getContentValidationInfo();
@@ -772,7 +772,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         Flux<ByteBuffer> data = binaryData != null ? binaryData.toFluxByteBuffer() : options.getDataFlux();
         Objects.requireNonNull(data);
 
-        return UploadUtils.computeChecksum(data, false, storageChecksumAlgorithm, options.getLength(), LOGGER)
+        return UploadUtils.computeChecksum(data, storageChecksumAlgorithm, options.getLength(), LOGGER)
             .flatMap(fluxContentValidationWrapper -> {
                 UploadUtils.ContentValidationInfo contentValidationInfo
                     = fluxContentValidationWrapper.getContentValidationInfo();

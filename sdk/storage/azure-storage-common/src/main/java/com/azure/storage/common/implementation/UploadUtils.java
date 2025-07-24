@@ -164,22 +164,24 @@ public class UploadUtils {
         }
     }
 
-    public static Mono<FluxContentValidationWrapper> computeChecksum(Flux<ByteBuffer> data, boolean computeMd5,
+    public static Mono<FluxContentValidationWrapper> computeChecksum(Flux<ByteBuffer> data,
         StorageChecksumAlgorithm storageChecksumAlgorithm, long length, ClientLogger logger) {
-        // todo isbr: resolve auto and md5 stuff here
-        // also see if logic can be shared with computeFileShareChecksum
-        if (computeMd5) {
+        // todo isbr: see if logic can be shared with computeFileShareChecksum
+        if (storageChecksumAlgorithm == null || storageChecksumAlgorithm == StorageChecksumAlgorithm.NONE) {
+            return Mono.just(new FluxContentValidationWrapper(data, new ContentValidationInfo(), length));
+        }
+        if (storageChecksumAlgorithm == StorageChecksumAlgorithm.MD5) {
             return computeMd5(data, true, length, logger);
         }
-        if (storageChecksumAlgorithm != null
-            && storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
+       if (storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
             if (length < STATIC_MAXIMUM_ENCODED_DATA_LENGTH) {
                 return computeCRC64(data, length, logger);
             } else {
                 return applyStructuredMessage(data, length, logger);
             }
+        } else {
+            return Mono.just(new FluxContentValidationWrapper(data, new ContentValidationInfo(), length));
         }
-        return Mono.just(new FluxContentValidationWrapper(data, new ContentValidationInfo(), length));
     }
 
     public static Mono<FluxContentValidationWrapper> applyStructuredMessage(Flux<ByteBuffer> data, long length,
