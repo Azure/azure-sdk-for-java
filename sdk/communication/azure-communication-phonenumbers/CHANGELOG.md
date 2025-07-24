@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.2 (2025-07-27)
+## 1.4.0-beta.2 (2025-08-01)
 
 ### Features Added
 - Added support for SIP routing API version `2024-11-15-preview` which includes new trunk settings.
