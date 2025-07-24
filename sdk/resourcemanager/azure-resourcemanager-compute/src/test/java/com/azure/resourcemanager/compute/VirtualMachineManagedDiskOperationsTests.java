@@ -26,6 +26,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.util.Map;
 
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -480,6 +481,12 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
 
         // Creates a native virtual machine
         //
+        Creatable<StorageAccount> storageAccountCreatable = this.storageManager.storageAccounts()
+            .define(storageAccountName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess();
+
         VirtualMachine nativeVm = computeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
@@ -492,7 +499,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withSsh(sshPublicKey())
             .withUnmanagedDisks() /* UN-MANAGED OS and DATA DISKS */
             .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-            .withNewStorageAccount(storageAccountName)
+            .withNewStorageAccount(storageAccountCreatable)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 

@@ -15,6 +15,7 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
@@ -110,6 +111,13 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
 
     @Test
     public void canSetMSIOnNewVMWithRoleAssignedToCurrentResourceGroup() throws Exception {
+        StorageAccount storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
+            .create();
+
         VirtualMachine virtualMachine = computeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
@@ -124,6 +132,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withSystemAssignedManagedServiceIdentity()
             .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
+            .withExistingStorageAccount(storageAccount)
             .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -168,10 +177,17 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
             .define(storageAccountName)
             .withRegion(Region.US_EAST2)
             .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
             .create();
 
         ResourceGroup resourceGroup
             = this.resourceManager.resourceGroups().getByName(storageAccount.resourceGroupName());
+
+        Creatable<StorageAccount> storageAccountCreatable = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess();
 
         VirtualMachine virtualMachine = computeManager.virtualMachines()
             .define(vmName)
@@ -188,6 +204,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
             .withSystemAssignedManagedServiceIdentity()
             .withSystemAssignedIdentityBasedAccessTo(resourceGroup.id(), BuiltInRole.CONTRIBUTOR)
             .withSystemAssignedIdentityBasedAccessTo(storageAccount.id(), BuiltInRole.CONTRIBUTOR)
+            .withNewStorageAccount(storageAccountCreatable)
             .create();
 
         // Validate service created service principal

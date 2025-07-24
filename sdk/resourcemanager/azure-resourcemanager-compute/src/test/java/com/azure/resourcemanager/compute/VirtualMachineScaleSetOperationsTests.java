@@ -53,6 +53,7 @@ import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
@@ -151,7 +152,14 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .define(generateRandomResourceName("stg", 15))
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess()
             .create();
+
+        Creatable<StorageAccount> storageAccountCreatable = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 15))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess();
 
         List<StorageAccountKey> keys = storageAccount.getKeys();
         Assertions.assertNotNull(keys);
@@ -178,7 +186,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withRootUsername(uname)
             .withSsh(sshPublicKey())
             .withUnmanagedDisks()
-            .withNewStorageAccount(generateRandomResourceName("stg", 15))
+            .withNewStorageAccount(storageAccountCreatable)
             .withExistingStorageAccount(storageAccount)
             .defineNewExtension("CustomScriptForLinux")
             .withPublisher("Microsoft.OSTCExtensions")
@@ -245,6 +253,18 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withSubnet("subnet1", "10.0.0.0/28")
             .create();
 
+        Creatable<StorageAccount> storageAccountCreatable1 = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 15))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess();
+
+        Creatable<StorageAccount> storageAccountCreatable2 = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 15))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess();
+
         LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, resourceGroup, "1");
         VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
@@ -258,8 +278,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withRootUsername(uname)
             .withSsh(sshPublicKey())
             .withUnmanagedDisks()
-            .withNewStorageAccount(generateRandomResourceName("stg", 15))
-            .withNewStorageAccount(generateRandomResourceName("stg", 15))
+            .withNewStorageAccount(storageAccountCreatable1)
+            .withNewStorageAccount(storageAccountCreatable2)
             .defineNewExtension("CustomScriptForLinux")
             .withPublisher("Microsoft.OSTCExtensions")
             .withType("CustomScriptForLinux")
@@ -955,7 +975,14 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .define(generateRandomResourceName("jvcsrg", 10))
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess()
             .create();
+
+        Creatable<StorageAccount> storageAccountCreatable = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess();
 
         VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
@@ -972,6 +999,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withSystemAssignedManagedServiceIdentity()
             .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
             .withSystemAssignedIdentityBasedAccessTo(storageAccount.id(), BuiltInRole.CONTRIBUTOR)
+            .withNewStorageAccount(storageAccountCreatable)
             .create();
 
         Assertions.assertNotNull(virtualMachineScaleSet.managedServiceIdentityType());
@@ -1047,6 +1075,18 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         }
         Assertions.assertTrue(backends.size() == 2);
 
+        Creatable<StorageAccount> storageAccountCreatable1 = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 15))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess();
+
+        Creatable<StorageAccount> storageAccountCreatable2 = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 15))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess();
+
         this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(region)
@@ -1059,8 +1099,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
-            .withNewStorageAccount(generateRandomResourceName("stg", 15))
-            .withNewStorageAccount(generateRandomResourceName("stg3", 15))
+            .withNewStorageAccount(storageAccountCreatable1)
+            .withNewStorageAccount(storageAccountCreatable2)
             .withUpgradeMode(UpgradeMode.MANUAL)
             .create();
 
@@ -1097,6 +1137,18 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         }
         Assertions.assertTrue(backends.size() == 2);
 
+        Creatable<StorageAccount> storageAccountCreatable1 = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 15))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess();
+
+        Creatable<StorageAccount> storageAccountCreatable2 = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 15))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess();
+
         VirtualMachineScaleSet vmss = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(region)
@@ -1109,8 +1161,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
-            .withNewStorageAccount(generateRandomResourceName("stg", 15))
-            .withNewStorageAccount(generateRandomResourceName("stg3", 15))
+            .withNewStorageAccount(storageAccountCreatable1)
+            .withNewStorageAccount(storageAccountCreatable2)
             .withUpgradeMode(UpgradeMode.MANUAL)
             .withLowPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
             .withMaxPrice(-1.0)
@@ -1372,6 +1424,13 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withSubnet("subnet1", "10.0.0.0/28")
             .create();
 
+        StorageAccount storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess()
+            .create();
+
         VirtualMachineScaleSet vmss = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(euapRegion)
@@ -1384,6 +1443,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
             .withCapacity(4)    // 4 instances
+            .withExistingStorageAccount(storageAccount)
             .create();
 
         Assertions.assertEquals(4, vmss.virtualMachines().list().stream().count());
@@ -1434,6 +1494,13 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, resourceGroup, "1",
             LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
 
+        StorageAccount storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess()
+            .create();
+
         VirtualMachineScaleSet vmss = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(region.name())
@@ -1446,6 +1513,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.CENTOS_8_3)
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
+            .withExistingStorageAccount(storageAccount)
             .create();
 
         Assertions.assertNotNull(vmss.innerModel().virtualMachineProfile());
@@ -1465,11 +1533,19 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         ResourceGroup resourceGroup
             = this.resourceManager.resourceGroups().define(rgName).withRegion(euapRegion).create();
 
+        StorageAccount storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess()
+            .create();
+
         VirtualMachineScaleSet vmss = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(euapRegion)
             .withExistingResourceGroup(resourceGroup)
             .withFlexibleOrchestrationMode()
+            .withExistingStorageAccount(storageAccount)
             .create();
 
         Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.FLEXIBLE);
@@ -1516,6 +1592,13 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         final String vmssVmDnsLabel = generateRandomResourceName("pip", 10);
 
         // update vmss, attach profile
+        storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess()
+            .create();
+
         vmss = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(euapRegion)
@@ -1530,6 +1613,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withSsh(sshPublicKey())
             .withCapacity(1)
             .withVirtualMachinePublicIp(vmssVmDnsLabel)
+            .withExistingStorageAccount(storageAccount)
             .create();
         Assertions.assertNotNull(vmss.innerModel().virtualMachineProfile());
         Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.FLEXIBLE);
@@ -1573,6 +1657,13 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withSubnet("subnet1", "10.0.0.0/28")
             .create();
 
+        StorageAccount storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess()
+            .create();
+
         VirtualMachineScaleSet vmss = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(euapRegion)
@@ -1585,17 +1676,27 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
             .withCapacity(1)    // 1 instances
+            .withExistingStorageAccount(storageAccount)
             .create();
 
         Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.UNIFORM);
 
         // create vmss with flexible orchestration type
         final String vmssName2 = generateRandomResourceName("vmss", 10);
+
+        storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess()
+            .create();
+
         VirtualMachineScaleSet vmss2 = this.computeManager.virtualMachineScaleSets()
             .define(vmssName2)
             .withRegion(euapRegion)
             .withExistingResourceGroup(rgName)
             .withFlexibleOrchestrationMode()
+            .withExistingStorageAccount(storageAccount)
             .create();
 
         Assertions.assertNotNull(vmss2);
@@ -1823,6 +1924,13 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withSubnet("subnet1", "10.0.0.0/28")
             .create();
 
+        StorageAccount storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .disableSharedKeyAccess()
+            .create();
+
         VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(region)
@@ -1838,6 +1946,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
             .withVirtualMachinePublicIp()
+            .withExistingStorageAccount(storageAccount)
             .create();
 
         Assertions.assertNotNull(vmss.proximityPlacementGroup());
