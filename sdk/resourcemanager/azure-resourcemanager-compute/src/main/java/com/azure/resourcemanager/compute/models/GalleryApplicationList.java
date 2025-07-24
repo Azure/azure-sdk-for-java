@@ -20,13 +20,12 @@ import java.util.List;
 @Fluent
 public final class GalleryApplicationList implements JsonSerializable<GalleryApplicationList> {
     /*
-     * A list of Gallery Applications.
+     * The GalleryApplication items on this page
      */
     private List<GalleryApplicationInner> value;
 
     /*
-     * The uri to fetch the next page of Application Definitions in the Application Gallery. Call ListNext() with this
-     * to fetch the next page of gallery Application Definitions.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -37,7 +36,7 @@ public final class GalleryApplicationList implements JsonSerializable<GalleryApp
     }
 
     /**
-     * Get the value property: A list of Gallery Applications.
+     * Get the value property: The GalleryApplication items on this page.
      * 
      * @return the value value.
      */
@@ -46,7 +45,7 @@ public final class GalleryApplicationList implements JsonSerializable<GalleryApp
     }
 
     /**
-     * Set the value property: A list of Gallery Applications.
+     * Set the value property: The GalleryApplication items on this page.
      * 
      * @param value the value value to set.
      * @return the GalleryApplicationList object itself.
@@ -57,8 +56,7 @@ public final class GalleryApplicationList implements JsonSerializable<GalleryApp
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of Application Definitions in the Application Gallery.
-     * Call ListNext() with this to fetch the next page of gallery Application Definitions.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
@@ -67,8 +65,7 @@ public final class GalleryApplicationList implements JsonSerializable<GalleryApp
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of Application Definitions in the Application Gallery.
-     * Call ListNext() with this to fetch the next page of gallery Application Definitions.
+     * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
      * @return the GalleryApplicationList object itself.
