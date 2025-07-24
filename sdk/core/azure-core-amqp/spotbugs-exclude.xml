@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+                xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
     <Bug pattern="CT_CONSTRUCTOR_THROW" />
     <Or>
@@ -10,7 +10,6 @@
       <Class name="com.azure.core.amqp.implementation.ConnectionOptions" />
       <Class name="com.azure.core.amqp.implementation.ConnectionStringProperties" />
       <Class name="com.azure.core.amqp.implementation.ReactorConnection" />
-      <Class name="com.azure.core.amqp.implementation.ReactorConnection" />
       <Class name="com.azure.core.amqp.implementation.ReactorReceiver" />
       <Class name="com.azure.core.amqp.implementation.ReactorSender" />
       <Class name="com.azure.core.amqp.implementation.ReactorSession" />
@@ -18,9 +17,7 @@
       <Class name="com.azure.core.amqp.implementation.TimeoutTracker" />
       <Class name="com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler" />
     </Or>
-    <Method name="&lt;init&gt;" />
   </Match>
-
   <Match>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT" />
     <Or>
@@ -28,33 +25,8 @@
       <Class name="com.azure.core.amqp.implementation.WindowedSubscriber$WindowWork" />
     </Or>
   </Match>
-
-  <Match>
-    <Bug pattern="MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR" />
-    <Or>
-      <Class name="com.azure.core.amqp.implementation.ReactorSender" />
-      <Class name="com.azure.core.amqp.implementation.RequestResponseChannel" />
-    </Or>
-    <Method name="&lt;init&gt;" />
-  </Match>
-
   <Match>
     <Bug pattern="SE_BAD_FIELD" />
-    <Class name="com.azure.core.amqp.implementation.handler.ReceiverUnsettledDeliveries$DispositionWork" />
-  </Match>
-
-  <Match>
-    <Bug pattern="SE_NO_SERIALVERSIONID" />
-    <Class name="com.azure.core.amqp.implementation.handler.ReceiverUnsettledDeliveries$DispositionWork" />
-  </Match>
-
-  <Match>
-    <Bug pattern="SE_BAD_FIELD" />
-    <Class name="com.azure.core.amqp.implementation.ReactorSessionCache$Entry" />
-  </Match>
-
-  <Match>
-    <Bug pattern="SE_NO_SERIALVERSIONID" />
     <Class name="com.azure.core.amqp.implementation.ReactorSessionCache$Entry" />
   </Match>
 </FindBugsFilter>
