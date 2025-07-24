@@ -11,7 +11,7 @@ import com.azure.security.confidentialledger.ConfidentialLedgerClientBuilder;
 /**
  * Sample for listing ledger entries with collectionId and tags filters.
  */
-public class ListLedgerEntriesWithCollectionIdAndTagsSample {
+public class ListLedgerEntriesWithCollectionIdAndTagSample {
     public static void main(String[] args) {
         ConfidentialLedgerClient confidentialLedgerClient =
             new ConfidentialLedgerClientBuilder()
