@@ -1725,8 +1725,11 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .create();
         Assertions.assertTrue(uniformVMSS.isEphemeralOSDisk());
 
-        // somehow newly created vmss with ephemeral OS disk has outdated VMs and there's a delay before vmss detects that
-        ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+        // see https://github.com/Azure/azure-rest-api-specs/issues/22552#issuecomment-1435332078
+        // There was an extension added by policy after the VMSS was created.
+        // No manual upgrade was performed on the first VM, so the VM showed an outdated model.
+        // New scale outs after the extension was added had the latest model, which is expected behaviour.
+        ResourceManagerUtils.sleep(Duration.ofMinutes(2));
 
         // update VMs to latest model, create baseline
         uniformVMSS.virtualMachines()
