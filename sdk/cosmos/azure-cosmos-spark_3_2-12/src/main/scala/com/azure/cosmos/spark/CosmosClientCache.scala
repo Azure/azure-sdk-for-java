@@ -10,6 +10,7 @@ import com.azure.core.util.TracingOptions
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry
 import com.azure.cosmos.implementation.{Configs, CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMetricCategory, CosmosMetricTagName, CosmosMicrometerMetricsOptions}
+import com.azure.cosmos.spark.CosmosConstants.Names.getFabricAccountDataResolverFQDN
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -168,18 +169,21 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       case None =>
         val cosmosAsyncClient = createCosmosAsyncClient(cosmosClientConfiguration, cosmosClientStateHandle)
         var sparkCatalogClient: CosmosCatalogClient = CosmosCatalogCosmosSDKClient(cosmosAsyncClient)
-        // When using AAD auth, cosmos catalog will change to use management sdk instead of cosmos sdk
-        cosmosClientConfiguration.authConfig match {
+        if (!cosmosClientConfiguration.accountDataResolverServiceName.contains(getFabricAccountDataResolverFQDN) &&
+          cosmosClientConfiguration.resourceGroupName.isDefined && cosmosClientConfiguration.subscriptionId.isDefined
+          && cosmosClientConfiguration.tenantId.isDefined) {
+          // When using AAD auth, cosmos catalog will change to use management sdk instead of cosmos sdk
+          cosmosClientConfiguration.authConfig match {
             case aadAuthConfig: CosmosServicePrincipalAuthConfig =>
-                sparkCatalogClient =
-                    CosmosCatalogManagementSDKClient(
-                        cosmosClientConfiguration.resourceGroupName.get,
-                        cosmosClientConfiguration.databaseAccountName,
-                        createCosmosManagementClient(
-                            cosmosClientConfiguration.subscriptionId.get,
-                            new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
-                            aadAuthConfig),
-                        cosmosAsyncClient)
+              sparkCatalogClient =
+                CosmosCatalogManagementSDKClient(
+                  cosmosClientConfiguration.resourceGroupName.get,
+                  cosmosClientConfiguration.databaseAccountName,
+                  createCosmosManagementClient(
+                    cosmosClientConfiguration.subscriptionId.get,
+                    new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
+                    aadAuthConfig),
+                  cosmosAsyncClient)
             case managedIdentityAuth: CosmosManagedIdentityAuthConfig =>
               sparkCatalogClient =
                 CosmosCatalogManagementSDKClient(
@@ -201,6 +205,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                     accessTokenProviderAuth),
                   cosmosAsyncClient)
             case _ =>
+          }
         }
 
         val epochNowInMs = Instant.now.toEpochMilli
@@ -822,7 +827,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   private[this] def createCosmosManagementClient(subscriptionId: String,
                                                  azureEnvironment: AzureEnvironment,
                                                  authConfig: CosmosAccessTokenAuthConfig): CosmosManager = {
-    val azureProfile = new AzureProfile(authConfig.tenantId, subscriptionId, azureEnvironment)
+    val tenantId = authConfig.tenantId.getOrElse(
+      throw new IllegalArgumentException("Tenant ID must be provided for CosmosAccessTokenAuthConfig")
+    )
+    val azureProfile = new AzureProfile(tenantId, subscriptionId, azureEnvironment)
 
     CosmosManager.authenticate(createTokenCredential(authConfig), azureProfile)
   }

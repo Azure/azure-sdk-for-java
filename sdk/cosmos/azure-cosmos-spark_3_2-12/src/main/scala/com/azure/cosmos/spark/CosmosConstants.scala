@@ -14,7 +14,7 @@ private[cosmos] object CosmosConstants {
     CoreUtils.getProperties(propertiesFileName).get("version")
   val currentName: String =
     CoreUtils.getProperties(propertiesFileName).get("name")
-  val userAgentSuffix = s"SparkConnector/$currentName/$currentVersion"
+  val userAgentSuffix = s"SparkConnector|$currentName|$currentVersion"
   val initialMaxRetryIntervalForTransientFailuresInMs = 100
   val maxRetryIntervalForTransientFailuresInMs = 5000
   val maxRetryCountForTransientFailures = 100
@@ -31,7 +31,14 @@ private[cosmos] object CosmosConstants {
   object Names {
     val ItemsDataSourceShortName = "cosmos.oltp"
     val ChangeFeedDataSourceShortName = "cosmos.oltp.changeFeed"
+    private val shading_prefix = "azure_cosmos_spark."
+    // Shading the sources causes this string to be different at runtime hence why getter is needed
+    private val fabricAccountDataResolverFQDN = "com.azure.cosmos.spark.fabric.FabricAccountDataResolver"
+    def getFabricAccountDataResolverFQDN: String = {
+      fabricAccountDataResolverFQDN.replace(shading_prefix, "")
+    }
   }
+
 
   object MetricNames {
     val BytesWritten = "bytesWritten"

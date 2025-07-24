@@ -12,4 +12,8 @@ To learn more about Microsoft Entra ID (AAD) authentication using the Azure Cosm
 |:----------------------------------------------|:--------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `spark.cosmos.auth.type`                      | `MasterKey`                           | Set this value to `AccessToken` to enable AAD / Microsoft Entra ID authentication via access tokens from your custom `AccountDataResolver` implementation. |
 | `spark.cosmos.accountDataResolverServiceName` | None                                  | Set this value to `com.azure.cosmos.spark.fabric.FabricAccountDataResolver` to use this implementation of the `AccountDataResolver`                        |
-| `spark.cosmos.auth.fabric.audience`           | `https://cosmos.azure.com/.default`   | Set this value to change the audience used to obtain the Entra Id token.                                                                                   |
+| `spark.cosmos.auth.aad.audience`              | `https://cosmos.azure.com/.default`   | Set this value to change the audience used to obtain the Entra Id token.                                                                                   |
+
+### Current Limitations
+
+There is no support for the [catalog api](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-spark_3_2-12/docs/catalog-api.md) operations using this implementation of the `AccountDataResolver` with a CosmosDB Fabric Native Account.

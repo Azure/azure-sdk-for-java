@@ -13,6 +13,7 @@ import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
 import com.azure.cosmos.spark.CosmosAuthType.CosmosAuthType
 import com.azure.cosmos.spark.CosmosConfig.{getClientBuilderInterceptor, getClientInterceptor, getRetryCommitInterceptor}
+import com.azure.cosmos.spark.CosmosConstants.Names.getFabricAccountDataResolverFQDN
 import com.azure.cosmos.spark.CosmosPatchOperationTypes.CosmosPatchOperationTypes
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNullOrEmpty, requireNotNullOrEmpty}
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemWriteStrategy, values}
@@ -522,6 +523,7 @@ private case class CosmosAccountConfig(endpoint: String,
                                        azureEnvironmentEndpoints: java.util.Map[String, String],
                                        clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
                                        clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
+                                       accountDataResolverServiceName: Option[String],
                                       )
 
 private object CosmosAccountConfig extends BasicLoggingTrait {
@@ -692,6 +694,11 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     parseFromStringFunction = clientInterceptorFQDN => clientInterceptorFQDN,
     helpMessage = "CosmosAsyncClient interceptors (comma separated) - FQDNs of the service implementing the 'CosmosClientInterceptor' trait.")
 
+  private val AccountDataResolverServiceName = CosmosConfigEntry[String](key = CosmosConfigNames.AccountDataResolverServiceName,
+    mandatory = false,
+    parseFromStringFunction = accountDataResolverFQDN => accountDataResolverFQDN,
+    helpMessage = "Cosmos DB Account Data Resolver Service Name. This is the name of the service implementing the 'AccountDataResolver' trait.")
+
   private[spark] def parseProactiveConnectionInitConfigs(config: String): java.util.List[CosmosContainerIdentity] = {
     val result = new java.util.ArrayList[CosmosContainerIdentity]
     try {
@@ -761,6 +768,7 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     } else {
       CosmosConfigEntry.parse(cfg, AzureEnvironmentTypeEnum)
     }
+    val accountDataResolverServiceName = CosmosConfigEntry.parse(cfg, AccountDataResolverServiceName)
 
     // parsing above already validated these assertions
     assert(endpointOpt.isDefined, s"Parameter '${CosmosConfigNames.AccountEndpoint}' (Uri) is missing.")
@@ -771,9 +779,17 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
         case _: CosmosServicePrincipalAuthConfig =>
         case _: CosmosManagedIdentityAuthConfig =>
         case _: CosmosAccessTokenAuthConfig =>
+          logInfo(s"${accountDataResolverServiceName.get}")
+          logInfo(s"${getFabricAccountDataResolverFQDN}")
+          if (!accountDataResolverServiceName.contains(getFabricAccountDataResolverFQDN)) {
             assert(subscriptionIdOpt.isDefined, s"Parameter '${CosmosConfigNames.SubscriptionId}' is missing.")
             assert(resourceGroupNameOpt.isDefined, s"Parameter '${CosmosConfigNames.ResourceGroupName}' is missing.")
             assert(tenantIdOpt.isDefined, s"Parameter '${CosmosConfigNames.TenantId}' is missing.")
+          } else {
+            logInfo("To use the catalog api and the fabric account data resolver, " +
+              "the subscriptionId, resourceGroupName and tenantId are required." +
+              "Note: The catalog api is not supported with a CosmosDB Fabric Native account.")
+          }
         case  _ =>
     }
 
@@ -845,7 +861,8 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
       resourceGroupNameOpt,
       azureEnvironmentOpt.get,
       if (clientBuilderInterceptorsList.nonEmpty) { Some(clientBuilderInterceptorsList.toList) } else { None },
-      if (clientInterceptorsList.nonEmpty) { Some(clientInterceptorsList.toList) } else { None })
+      if (clientInterceptorsList.nonEmpty) { Some(clientInterceptorsList.toList) } else { None },
+      accountDataResolverServiceName)
   }
 }
 
@@ -872,10 +889,10 @@ private case class CosmosManagedIdentityAuthConfig( tenantId: String,
                                                      clientId: Option[String],
                                                      resourceId: Option[String]) extends CosmosAuthConfig
 
-private case class CosmosAccessTokenAuthConfig(tenantId: String, tokenProvider: List[String] => CosmosAccessToken)
+private case class CosmosAccessTokenAuthConfig(tenantId: Option[String], tokenProvider: List[String] => CosmosAccessToken)
   extends CosmosAuthConfig
 
-private object CosmosAuthConfig {
+private object CosmosAuthConfig extends BasicLoggingTrait {
     private val DefaultAuthType = CosmosAuthType.MasterKey
 
     private val CosmosKey = CosmosConfigEntry[String](key = CosmosConfigNames.AccountKey,
@@ -970,7 +987,6 @@ private object CosmosAuthConfig {
                 clientSecret,
                 clientCert)
         } else if (authType.get == CosmosAuthType.AccessToken) {
-          assert(tenantId.isDefined, s"Parameter '${CosmosConfigNames.TenantId}' is missing.")
           val accountDataResolverServiceName : Option[String] = CaseInsensitiveMap(cfg).get(CosmosConfigNames.AccountDataResolverServiceName)
           val accountDataResolver = CosmosConfig.getAccountDataResolver(accountDataResolverServiceName)
           if (accountDataResolver.isEmpty) {
@@ -987,7 +1003,7 @@ private object CosmosAuthConfig {
                 "returns an access token provider in the 'getAccessTokenProvider' method.")
           }
 
-          CosmosAccessTokenAuthConfig(tenantId.get, accessTokenProvider.get)
+          CosmosAccessTokenAuthConfig(tenantId, accessTokenProvider.get)
         } else {
           throw new IllegalArgumentException(s"Unknown auth type '${authType.get}'.")
         }

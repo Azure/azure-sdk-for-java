@@ -5,6 +5,7 @@ package com.azure.cosmos.spark.fabric
 import com.azure.cosmos.spark.AccountDataResolver
 import com.azure.cosmos.spark.CosmosAccessToken
 import com.azure.cosmos.spark.CosmosConfigNames.AccountDataResolverServiceName
+import com.azure.cosmos.spark.CosmosConstants.Names.getFabricAccountDataResolverFQDN
 import com.fasterxml.jackson.databind.ObjectMapper
 
 import java.time.{Instant, OffsetDateTime, ZoneOffset}
@@ -23,7 +24,7 @@ class FabricAccountDataResolver extends AccountDataResolver with BasicLoggingTra
 
   private def isEnabled(configs: ConfigParameters): Boolean = {
     configs.accountDataResolverServiceName.isDefined && configs.accountDataResolverServiceName.get
-      .equalsIgnoreCase(FabricAccountDataResolver.FABRIC_ACCOUNT_DATA_RESOLVER)
+      .equalsIgnoreCase(getFabricAccountDataResolverFQDN)
   }
 
   override def getAccessTokenProvider(configs: Map[String, String]): Option[List[String] => CosmosAccessToken] = {
@@ -60,7 +61,7 @@ class FabricAccountDataResolver extends AccountDataResolver with BasicLoggingTra
 }
 
 private object FabricConfigNames {
-  val Audience = "spark.cosmos.auth.fabric.audience"
+  val Audience = "spark.cosmos.auth.aad.audience"
 }
 
 private case class ConfigParameters(audience: Option[String], accountDataResolverServiceName: Option[String])
@@ -80,6 +81,5 @@ private object FabricAccountDataResolver {
   private val tokenProviders : TrieMap[ConfigParameters, Option[List[String] => CosmosAccessToken]] =
     new TrieMap[ConfigParameters, Option[List[String] => CosmosAccessToken]]()
   private final val AUDIENCE = "https://cosmos.azure.com/.default"
-  private final val FABRIC_ACCOUNT_DATA_RESOLVER = "com.azure.cosmos.spark.fabric.FabricAccountDataResolver"
   private final val objectMapper = new ObjectMapper()
 }

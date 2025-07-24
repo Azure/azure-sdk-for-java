@@ -64,7 +64,8 @@ class CosmosClientCacheITest
           clientBuilderInterceptors = None,
           clientInterceptors = None,
           sampledDiagnosticsLoggerConfig = None,
-          azureMonitorConfig = None
+          azureMonitorConfig = None,
+          accountDataResolverServiceName = None
         )
       ),
       (
@@ -91,7 +92,8 @@ class CosmosClientCacheITest
           clientBuilderInterceptors = None,
           clientInterceptors = None,
           sampledDiagnosticsLoggerConfig = None,
-          azureMonitorConfig = None
+          azureMonitorConfig = None,
+          accountDataResolverServiceName = None
         )
       ),
       (
@@ -118,7 +120,8 @@ class CosmosClientCacheITest
           clientBuilderInterceptors = None,
           clientInterceptors = None,
           sampledDiagnosticsLoggerConfig = None,
-          azureMonitorConfig = None
+          azureMonitorConfig = None,
+          accountDataResolverServiceName = None
         )
       ),
       (
@@ -145,7 +148,8 @@ class CosmosClientCacheITest
           clientBuilderInterceptors = None,
           clientInterceptors = None,
           sampledDiagnosticsLoggerConfig = None,
-          azureMonitorConfig = None
+          azureMonitorConfig = None,
+          accountDataResolverServiceName = None
         )
       )
     )
@@ -179,7 +183,8 @@ class CosmosClientCacheITest
         clientBuilderInterceptors = None,
         clientInterceptors = None,
         sampledDiagnosticsLoggerConfig = None,
-        azureMonitorConfig = None
+        azureMonitorConfig = None,
+        accountDataResolverServiceName = None
       )
 
       logInfo(s"TestCase: {$testCaseName}")

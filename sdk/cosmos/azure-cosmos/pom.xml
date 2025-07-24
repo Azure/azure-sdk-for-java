@@ -136,6 +136,12 @@ Licensed under the MIT License.
       <artifactId>micrometer-core</artifactId>
       <version>1.9.17</version> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
     </dependency>
+      <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-identity</artifactId>
+          <version>1.16.2</version>
+          <scope>compile</scope>
+      </dependency>
   </dependencies>
 
   <build>
