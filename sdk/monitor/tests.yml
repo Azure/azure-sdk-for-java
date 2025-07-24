@@ -11,3 +11,6 @@ extends:
       - name: azure-monitor-query
         groupId: com.azure
         safeName: azuremonitorquery
+      - name: azure-monitor-query-logs
+        groupId: com.azure
+        safeName: azuremonitorquerylogs
