@@ -519,7 +519,7 @@ public class SwaggerMethodParserTests {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         RequestContext context = RequestContext.builder()
-            .addRequestCallback(request -> request
+            .addRequestMutator(request -> request
                 // may already be set if request is created from a client
                 .setUri("https://foo.host.com")
                 .setBody(BinaryData.fromString("{\"id\":\"123" + "\"}"))
