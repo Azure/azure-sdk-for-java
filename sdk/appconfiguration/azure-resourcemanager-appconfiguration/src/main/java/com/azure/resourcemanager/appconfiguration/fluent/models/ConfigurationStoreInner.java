@@ -311,6 +311,38 @@ public final class ConfigurationStoreInner extends Resource {
     }
 
     /**
+     * Get the defaultKeyValueRevisionRetentionPeriodInSeconds property: The duration in seconds to retain new key value
+     * revisions. Defaults to 604800 (7 days) for Free SKU stores and 2592000 (30 days) for Standard SKU stores and
+     * Premium SKU stores.
+     * 
+     * @return the defaultKeyValueRevisionRetentionPeriodInSeconds value.
+     */
+    public Long defaultKeyValueRevisionRetentionPeriodInSeconds() {
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().defaultKeyValueRevisionRetentionPeriodInSeconds();
+    }
+
+    /**
+     * Set the defaultKeyValueRevisionRetentionPeriodInSeconds property: The duration in seconds to retain new key value
+     * revisions. Defaults to 604800 (7 days) for Free SKU stores and 2592000 (30 days) for Standard SKU stores and
+     * Premium SKU stores.
+     * 
+     * @param defaultKeyValueRevisionRetentionPeriodInSeconds the defaultKeyValueRevisionRetentionPeriodInSeconds value
+     * to set.
+     * @return the ConfigurationStoreInner object itself.
+     */
+    public ConfigurationStoreInner
+        withDefaultKeyValueRevisionRetentionPeriodInSeconds(Long defaultKeyValueRevisionRetentionPeriodInSeconds) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationStoreProperties();
+        }
+        this.innerProperties()
+            .withDefaultKeyValueRevisionRetentionPeriodInSeconds(defaultKeyValueRevisionRetentionPeriodInSeconds);
+        return this;
+    }
+
+    /**
      * Get the enablePurgeProtection property: Property specifying whether protection against purge is enabled for this
      * configuration store.
      * 

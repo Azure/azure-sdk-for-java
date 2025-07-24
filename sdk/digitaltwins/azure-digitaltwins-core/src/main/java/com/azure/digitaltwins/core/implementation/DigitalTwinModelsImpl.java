@@ -71,7 +71,7 @@ public final class DigitalTwinModelsImpl {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureDigitalTwinsAPI")
+    @ServiceInterface(name = "AzureDigitalTwinsAPIDigitalTwinModels")
     public interface DigitalTwinModelsService {
         @Post("/models")
         @ExpectedResponses({ 201 })
@@ -253,8 +253,8 @@ public final class DigitalTwinModelsImpl {
      * * 404 Not Found
      * * ModelNotFound - The model was not found.
      * 
-     * @param dependenciesFor The set of the models which will have their dependencies retrieved. If omitted, all models
-     * are retrieved.
+     * @param dependenciesFor If specified, only return the set of the specified models along with their dependencies.
+     * If omitted, all models are retrieved.
      * @param includeModelDefinition When true the model definition will be returned as part of the result.
      * @param digitalTwinModelsListOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -303,8 +303,8 @@ public final class DigitalTwinModelsImpl {
      * * 404 Not Found
      * * ModelNotFound - The model was not found.
      * 
-     * @param dependenciesFor The set of the models which will have their dependencies retrieved. If omitted, all models
-     * are retrieved.
+     * @param dependenciesFor If specified, only return the set of the specified models along with their dependencies.
+     * If omitted, all models are retrieved.
      * @param includeModelDefinition When true the model definition will be returned as part of the result.
      * @param digitalTwinModelsListOptions Parameter group.
      * @param context The context to associate with this operation.

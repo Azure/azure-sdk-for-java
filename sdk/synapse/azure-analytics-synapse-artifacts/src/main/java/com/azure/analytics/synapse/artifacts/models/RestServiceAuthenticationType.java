@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class RestServiceAuthenticationType extends ExpandableStringEnum<Re
     /**
      * Static value Anonymous for RestServiceAuthenticationType.
      */
+    @Generated
     public static final RestServiceAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /**
      * Static value Basic for RestServiceAuthenticationType.
      */
+    @Generated
     public static final RestServiceAuthenticationType BASIC = fromString("Basic");
 
     /**
      * Static value AadServicePrincipal for RestServiceAuthenticationType.
      */
+    @Generated
     public static final RestServiceAuthenticationType AAD_SERVICE_PRINCIPAL = fromString("AadServicePrincipal");
 
     /**
      * Static value ManagedServiceIdentity for RestServiceAuthenticationType.
      */
+    @Generated
     public static final RestServiceAuthenticationType MANAGED_SERVICE_IDENTITY = fromString("ManagedServiceIdentity");
 
     /**
      * Static value OAuth2ClientCredential for RestServiceAuthenticationType.
      */
+    @Generated
     public static final RestServiceAuthenticationType OAUTH2CLIENT_CREDENTIAL = fromString("OAuth2ClientCredential");
 
     /**
@@ -41,6 +47,7 @@ public final class RestServiceAuthenticationType extends ExpandableStringEnum<Re
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RestServiceAuthenticationType() {
     }
@@ -51,6 +58,7 @@ public final class RestServiceAuthenticationType extends ExpandableStringEnum<Re
      * @param name a name to look for.
      * @return the corresponding RestServiceAuthenticationType.
      */
+    @Generated
     public static RestServiceAuthenticationType fromString(String name) {
         return fromString(name, RestServiceAuthenticationType.class);
     }
@@ -60,6 +68,7 @@ public final class RestServiceAuthenticationType extends ExpandableStringEnum<Re
      * 
      * @return known RestServiceAuthenticationType values.
      */
+    @Generated
     public static Collection<RestServiceAuthenticationType> values() {
         return values(RestServiceAuthenticationType.class);
     }

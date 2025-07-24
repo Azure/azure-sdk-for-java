@@ -94,7 +94,7 @@ public final class PathsImpl {
      * perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureDataLakeStorage")
+    @ServiceInterface(name = "AzureDataLakeStorageRestAPIPaths")
     public interface PathsService {
 
         @Put("/{filesystem}/{path}")

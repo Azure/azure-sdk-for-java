@@ -5,6 +5,7 @@
 package com.azure.storage.queue.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -18,26 +19,31 @@ public final class MessageIdsUpdateHeaders {
     /*
      * The x-ms-version property.
      */
+    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-time-next-visible property.
      */
+    @Generated
     private DateTimeRfc1123 xMsTimeNextVisible;
 
     /*
      * The x-ms-request-id property.
      */
+    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-popreceipt property.
      */
+    @Generated
     private String xMsPopreceipt;
 
     /*
      * The Date property.
      */
+    @Generated
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -57,12 +63,16 @@ public final class MessageIdsUpdateHeaders {
         String xMsTimeNextVisible = rawHeaders.getValue(X_MS_TIME_NEXT_VISIBLE);
         if (xMsTimeNextVisible != null) {
             this.xMsTimeNextVisible = new DateTimeRfc1123(xMsTimeNextVisible);
+        } else {
+            this.xMsTimeNextVisible = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsPopreceipt = rawHeaders.getValue(X_MS_POPRECEIPT);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
     }
 
@@ -71,6 +81,7 @@ public final class MessageIdsUpdateHeaders {
      * 
      * @return the xMsVersion value.
      */
+    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -81,6 +92,7 @@ public final class MessageIdsUpdateHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the MessageIdsUpdateHeaders object itself.
      */
+    @Generated
     public MessageIdsUpdateHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -91,6 +103,7 @@ public final class MessageIdsUpdateHeaders {
      * 
      * @return the xMsTimeNextVisible value.
      */
+    @Generated
     public OffsetDateTime getXMsTimeNextVisible() {
         if (this.xMsTimeNextVisible == null) {
             return null;
@@ -104,6 +117,7 @@ public final class MessageIdsUpdateHeaders {
      * @param xMsTimeNextVisible the xMsTimeNextVisible value to set.
      * @return the MessageIdsUpdateHeaders object itself.
      */
+    @Generated
     public MessageIdsUpdateHeaders setXMsTimeNextVisible(OffsetDateTime xMsTimeNextVisible) {
         if (xMsTimeNextVisible == null) {
             this.xMsTimeNextVisible = null;
@@ -118,6 +132,7 @@ public final class MessageIdsUpdateHeaders {
      * 
      * @return the xMsRequestId value.
      */
+    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -128,6 +143,7 @@ public final class MessageIdsUpdateHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the MessageIdsUpdateHeaders object itself.
      */
+    @Generated
     public MessageIdsUpdateHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -138,6 +154,7 @@ public final class MessageIdsUpdateHeaders {
      * 
      * @return the xMsPopreceipt value.
      */
+    @Generated
     public String getXMsPopreceipt() {
         return this.xMsPopreceipt;
     }
@@ -148,6 +165,7 @@ public final class MessageIdsUpdateHeaders {
      * @param xMsPopreceipt the xMsPopreceipt value to set.
      * @return the MessageIdsUpdateHeaders object itself.
      */
+    @Generated
     public MessageIdsUpdateHeaders setXMsPopreceipt(String xMsPopreceipt) {
         this.xMsPopreceipt = xMsPopreceipt;
         return this;
@@ -158,6 +176,7 @@ public final class MessageIdsUpdateHeaders {
      * 
      * @return the date value.
      */
+    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -171,6 +190,7 @@ public final class MessageIdsUpdateHeaders {
      * @param date the date value to set.
      * @return the MessageIdsUpdateHeaders object itself.
      */
+    @Generated
     public MessageIdsUpdateHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;

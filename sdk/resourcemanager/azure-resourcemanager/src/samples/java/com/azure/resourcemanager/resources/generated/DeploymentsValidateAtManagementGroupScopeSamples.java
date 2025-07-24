@@ -16,7 +16,8 @@ import java.util.Map;
  */
 public final class DeploymentsValidateAtManagementGroupScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/
      * PostDeploymentValidateOnManagementGroup.json
      */
     /**
@@ -27,7 +28,7 @@ public final class DeploymentsValidateAtManagementGroupScopeSamples {
     public static void validatesATemplateAtManagementGroupScope(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .serviceClient()
+            .deploymentClient()
             .getDeployments()
             .validateAtManagementGroupScope("my-management-group-id", "my-deployment",
                 new ScopedDeployment().withLocation("eastus")

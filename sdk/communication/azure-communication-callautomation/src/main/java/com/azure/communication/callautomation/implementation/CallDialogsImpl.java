@@ -58,7 +58,7 @@ public final class CallDialogsImpl {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureCommunicationCa")
+    @ServiceInterface(name = "AzureCommunicationCallAutomationServiceCallDialogs")
     public interface CallDialogsService {
         @Put("/calling/callConnections/{callConnectionId}/dialogs/{dialogId}")
         @ExpectedResponses({ 201 })
@@ -103,9 +103,8 @@ public final class CallDialogsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DialogStateResponse>> startDialogWithResponseAsync(String callConnectionId, String dialogId,
         StartDialogRequestInternal startDialogRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.startDialog(this.client.getEndpoint(), callConnectionId,
-            dialogId, this.client.getApiVersion(), startDialogRequest, accept, context));
+        return FluxUtil.withContext(
+            context -> startDialogWithResponseAsync(callConnectionId, dialogId, startDialogRequest, context));
     }
 
     /**
@@ -224,9 +223,8 @@ public final class CallDialogsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopDialogWithResponseAsync(String callConnectionId, String dialogId,
         String operationCallbackUri) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.stopDialog(this.client.getEndpoint(), callConnectionId, dialogId,
-            operationCallbackUri, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+            context -> stopDialogWithResponseAsync(callConnectionId, dialogId, operationCallbackUri, context));
     }
 
     /**
@@ -334,9 +332,8 @@ public final class CallDialogsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateDialogWithResponseAsync(String callConnectionId, String dialogId,
         UpdateDialogRequest updateDialogRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateDialog(this.client.getEndpoint(), callConnectionId,
-            dialogId, this.client.getApiVersion(), updateDialogRequest, accept, context));
+        return FluxUtil.withContext(
+            context -> updateDialogWithResponseAsync(callConnectionId, dialogId, updateDialogRequest, context));
     }
 
     /**

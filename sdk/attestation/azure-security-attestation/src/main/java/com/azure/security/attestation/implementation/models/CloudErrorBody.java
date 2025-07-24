@@ -5,6 +5,7 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class CloudErrorBody implements JsonSerializable<CloudErrorBody> {
     /*
      * An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
      */
+    @Generated
     private String code;
 
     /*
      * A message describing the error, intended to be suitable for displaying in a user interface.
      */
+    @Generated
     private String message;
 
     /**
      * Creates an instance of CloudErrorBody class.
      */
+    @Generated
     public CloudErrorBody() {
     }
 
@@ -38,6 +42,7 @@ public final class CloudErrorBody implements JsonSerializable<CloudErrorBody> {
      * 
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -49,6 +54,7 @@ public final class CloudErrorBody implements JsonSerializable<CloudErrorBody> {
      * @param code the code value to set.
      * @return the CloudErrorBody object itself.
      */
+    @Generated
     public CloudErrorBody setCode(String code) {
         this.code = code;
         return this;
@@ -60,6 +66,7 @@ public final class CloudErrorBody implements JsonSerializable<CloudErrorBody> {
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -71,6 +78,7 @@ public final class CloudErrorBody implements JsonSerializable<CloudErrorBody> {
      * @param message the message value to set.
      * @return the CloudErrorBody object itself.
      */
+    @Generated
     public CloudErrorBody setMessage(String message) {
         this.message = message;
         return this;
@@ -87,6 +95,7 @@ public final class CloudErrorBody implements JsonSerializable<CloudErrorBody> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -103,6 +112,7 @@ public final class CloudErrorBody implements JsonSerializable<CloudErrorBody> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the CloudErrorBody.
      */
+    @Generated
     public static CloudErrorBody fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CloudErrorBody deserializedCloudErrorBody = new CloudErrorBody();

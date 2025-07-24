@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,18 +21,20 @@ public class DialogUpdateBase implements JsonSerializable<DialogUpdateBase> {
     /*
      * Determines the type of the dialog.
      */
-    private DialogInputType kind;
+    @Generated
+    private DialogInputType kind = DialogInputType.fromString("DialogUpdateBase");
 
     /*
      * Dialog context.
      */
+    @Generated
     private Map<String, Object> context;
 
     /**
      * Creates an instance of DialogUpdateBase class.
      */
+    @Generated
     public DialogUpdateBase() {
-        this.kind = DialogInputType.fromString("DialogUpdateBase");
     }
 
     /**
@@ -39,6 +42,7 @@ public class DialogUpdateBase implements JsonSerializable<DialogUpdateBase> {
      * 
      * @return the kind value.
      */
+    @Generated
     public DialogInputType getKind() {
         return this.kind;
     }
@@ -48,6 +52,7 @@ public class DialogUpdateBase implements JsonSerializable<DialogUpdateBase> {
      * 
      * @return the context value.
      */
+    @Generated
     public Map<String, Object> getContext() {
         return this.context;
     }
@@ -58,6 +63,7 @@ public class DialogUpdateBase implements JsonSerializable<DialogUpdateBase> {
      * @param context the context value to set.
      * @return the DialogUpdateBase object itself.
      */
+    @Generated
     public DialogUpdateBase setContext(Map<String, Object> context) {
         this.context = context;
         return this;
@@ -66,6 +72,7 @@ public class DialogUpdateBase implements JsonSerializable<DialogUpdateBase> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -82,6 +89,7 @@ public class DialogUpdateBase implements JsonSerializable<DialogUpdateBase> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DialogUpdateBase.
      */
+    @Generated
     public static DialogUpdateBase fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -107,6 +115,7 @@ public class DialogUpdateBase implements JsonSerializable<DialogUpdateBase> {
         });
     }
 
+    @Generated
     static DialogUpdateBase fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DialogUpdateBase deserializedDialogUpdateBase = new DialogUpdateBase();

@@ -66,6 +66,15 @@ informatica:
   service: informaticadatamanagement
 keyvault:
   suffix: generated
+kubernetesconfiguration/Microsoft.KubernetesConfiguration/extensionTypes:
+  service: kubernetesconfiguration
+  suffix: extensiontypes
+kubernetesconfiguration/Microsoft.KubernetesConfiguration/extensions:
+  service: kubernetesconfiguration
+  suffix: extensions
+kubernetesconfiguration/Microsoft.KubernetesConfiguration/fluxConfigurations:
+  service: kubernetesconfiguration
+  suffix: fluxconfigurations
 liftrastronomer:
   service: astro
 liftrqumulo:
@@ -107,6 +116,18 @@ redis:
   suffix: generated
 resources:
   suffix: generated
+resources/Microsoft.Resources/bicep:
+  service: resources
+  suffix: bicep
+resources/Microsoft.Resources/deploymentScripts:
+  service: resources
+  suffix: deploymentscripts
+resources/Microsoft.Resources/deploymentStacks:
+  service: resources
+  suffix: deploymentstacks
+resources/Microsoft.Resources/templateSpecs:
+  service: resources
+  suffix: templatespecs
 riskiq:
   service: defendereasm
 service-map:

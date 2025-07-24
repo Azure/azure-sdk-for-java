@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class DatasetCompressionLevel extends ExpandableStringEnum<DatasetC
     /**
      * Static value Optimal for DatasetCompressionLevel.
      */
+    @Generated
     public static final DatasetCompressionLevel OPTIMAL = fromString("Optimal");
 
     /**
      * Static value Fastest for DatasetCompressionLevel.
      */
+    @Generated
     public static final DatasetCompressionLevel FASTEST = fromString("Fastest");
 
     /**
@@ -26,6 +29,7 @@ public final class DatasetCompressionLevel extends ExpandableStringEnum<DatasetC
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DatasetCompressionLevel() {
     }
@@ -36,6 +40,7 @@ public final class DatasetCompressionLevel extends ExpandableStringEnum<DatasetC
      * @param name a name to look for.
      * @return the corresponding DatasetCompressionLevel.
      */
+    @Generated
     public static DatasetCompressionLevel fromString(String name) {
         return fromString(name, DatasetCompressionLevel.class);
     }
@@ -45,6 +50,7 @@ public final class DatasetCompressionLevel extends ExpandableStringEnum<DatasetC
      * 
      * @return known DatasetCompressionLevel values.
      */
+    @Generated
     public static Collection<DatasetCompressionLevel> values() {
         return values(DatasetCompressionLevel.class);
     }

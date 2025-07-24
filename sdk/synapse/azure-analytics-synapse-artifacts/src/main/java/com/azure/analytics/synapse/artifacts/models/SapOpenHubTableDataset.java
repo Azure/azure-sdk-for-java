@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,29 +22,34 @@ public class SapOpenHubTableDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "SapOpenHubTable";
 
     /*
      * The name of the Open Hub Destination with destination type as Database Table. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object openHubDestinationName;
 
     /*
      * Whether to exclude the records of the last request. The default value is true. Type: boolean (or Expression with
      * resultType boolean).
      */
+    @Generated
     private Object excludeLastRequest;
 
     /*
      * The ID of request for delta loading. Once it is set, only data with requestId larger than the value of this
      * property will be retrieved. The default value is 0. Type: integer (or Expression with resultType integer ).
      */
+    @Generated
     private Object baseRequestId;
 
     /**
      * Creates an instance of SapOpenHubTableDataset class.
      */
+    @Generated
     public SapOpenHubTableDataset() {
     }
 
@@ -52,6 +58,7 @@ public class SapOpenHubTableDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -63,6 +70,7 @@ public class SapOpenHubTableDataset extends Dataset {
      * 
      * @return the openHubDestinationName value.
      */
+    @Generated
     public Object getOpenHubDestinationName() {
         return this.openHubDestinationName;
     }
@@ -74,6 +82,7 @@ public class SapOpenHubTableDataset extends Dataset {
      * @param openHubDestinationName the openHubDestinationName value to set.
      * @return the SapOpenHubTableDataset object itself.
      */
+    @Generated
     public SapOpenHubTableDataset setOpenHubDestinationName(Object openHubDestinationName) {
         this.openHubDestinationName = openHubDestinationName;
         return this;
@@ -85,6 +94,7 @@ public class SapOpenHubTableDataset extends Dataset {
      * 
      * @return the excludeLastRequest value.
      */
+    @Generated
     public Object getExcludeLastRequest() {
         return this.excludeLastRequest;
     }
@@ -96,6 +106,7 @@ public class SapOpenHubTableDataset extends Dataset {
      * @param excludeLastRequest the excludeLastRequest value to set.
      * @return the SapOpenHubTableDataset object itself.
      */
+    @Generated
     public SapOpenHubTableDataset setExcludeLastRequest(Object excludeLastRequest) {
         this.excludeLastRequest = excludeLastRequest;
         return this;
@@ -108,6 +119,7 @@ public class SapOpenHubTableDataset extends Dataset {
      * 
      * @return the baseRequestId value.
      */
+    @Generated
     public Object getBaseRequestId() {
         return this.baseRequestId;
     }
@@ -120,6 +132,7 @@ public class SapOpenHubTableDataset extends Dataset {
      * @param baseRequestId the baseRequestId value to set.
      * @return the SapOpenHubTableDataset object itself.
      */
+    @Generated
     public SapOpenHubTableDataset setBaseRequestId(Object baseRequestId) {
         this.baseRequestId = baseRequestId;
         return this;
@@ -128,6 +141,7 @@ public class SapOpenHubTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOpenHubTableDataset setDescription(String description) {
         super.setDescription(description);
@@ -137,6 +151,7 @@ public class SapOpenHubTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOpenHubTableDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -146,6 +161,7 @@ public class SapOpenHubTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOpenHubTableDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -155,6 +171,7 @@ public class SapOpenHubTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOpenHubTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -164,6 +181,7 @@ public class SapOpenHubTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOpenHubTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -173,6 +191,7 @@ public class SapOpenHubTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOpenHubTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -182,6 +201,7 @@ public class SapOpenHubTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOpenHubTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -191,13 +211,18 @@ public class SapOpenHubTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -205,8 +230,12 @@ public class SapOpenHubTableDataset extends Dataset {
         if (openHubDestinationName != null || excludeLastRequest != null || baseRequestId != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("openHubDestinationName", this.openHubDestinationName);
-            jsonWriter.writeUntypedField("excludeLastRequest", this.excludeLastRequest);
-            jsonWriter.writeUntypedField("baseRequestId", this.baseRequestId);
+            if (this.excludeLastRequest != null) {
+                jsonWriter.writeUntypedField("excludeLastRequest", this.excludeLastRequest);
+            }
+            if (this.baseRequestId != null) {
+                jsonWriter.writeUntypedField("baseRequestId", this.baseRequestId);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -226,6 +255,7 @@ public class SapOpenHubTableDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SapOpenHubTableDataset.
      */
+    @Generated
     public static SapOpenHubTableDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SapOpenHubTableDataset deserializedSapOpenHubTableDataset = new SapOpenHubTableDataset();

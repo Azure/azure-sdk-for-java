@@ -14,6 +14,8 @@ import org.testng.annotations.BeforeMethod;
 
 import java.lang.reflect.Method;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public abstract class CosmosAsyncClientTest implements ITest {
 
     public static final String ROUTING_GATEWAY_EMULATOR_PORT = ":8081";
@@ -63,6 +65,18 @@ public abstract class CosmosAsyncClientTest implements ITest {
                     pk,
                     effectiveRequestOptions,
                     clazz);
+
+                assertThat(response.getDiagnostics()).isNotNull();
+                assertThat(response.getDiagnostics().getDiagnosticsContext()).isNotNull();
+                if (effectiveRequestOptions != null
+                    && effectiveRequestOptions.getReadConsistencyStrategy() != null) {
+
+                    assertThat(response.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
+                        .isEqualTo(effectiveRequestOptions.getReadConsistencyStrategy());
+                } else {
+                    assertThat(response.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
+                        .isEqualTo(ReadConsistencyStrategy.DEFAULT);
+                }
 
                 break;
             } catch (CosmosException cosmosError) {

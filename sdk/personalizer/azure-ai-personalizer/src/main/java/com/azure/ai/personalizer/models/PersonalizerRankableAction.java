@@ -4,6 +4,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class PersonalizerRankableAction implements JsonSerializable<Person
     /*
      * Id of the action.
      */
+    @Generated
     private String id;
 
     /*
      * List of dictionaries containing features.
      */
+    @Generated
     private List<BinaryData> features;
 
     /**
      * Creates an instance of PersonalizerRankableAction class.
      */
+    @Generated
     public PersonalizerRankableAction() {
     }
 
@@ -39,6 +43,7 @@ public final class PersonalizerRankableAction implements JsonSerializable<Person
      *
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -49,6 +54,7 @@ public final class PersonalizerRankableAction implements JsonSerializable<Person
      * @param id the id value to set.
      * @return the PersonalizerRankableAction object itself.
      */
+    @Generated
     public PersonalizerRankableAction setId(String id) {
         this.id = id;
         return this;
@@ -59,6 +65,7 @@ public final class PersonalizerRankableAction implements JsonSerializable<Person
      *
      * @return the features value.
      */
+    @Generated
     public List<BinaryData> getFeatures() {
         return this.features;
     }
@@ -69,6 +76,7 @@ public final class PersonalizerRankableAction implements JsonSerializable<Person
      * @param features the features value to set.
      * @return the PersonalizerRankableAction object itself.
      */
+    @Generated
     public PersonalizerRankableAction setFeatures(List<BinaryData> features) {
         this.features = features;
         return this;
@@ -77,6 +85,7 @@ public final class PersonalizerRankableAction implements JsonSerializable<Person
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -94,6 +103,7 @@ public final class PersonalizerRankableAction implements JsonSerializable<Person
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PersonalizerRankableAction.
      */
+    @Generated
     public static PersonalizerRankableAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerRankableAction deserializedPersonalizerRankableAction = new PersonalizerRankableAction();

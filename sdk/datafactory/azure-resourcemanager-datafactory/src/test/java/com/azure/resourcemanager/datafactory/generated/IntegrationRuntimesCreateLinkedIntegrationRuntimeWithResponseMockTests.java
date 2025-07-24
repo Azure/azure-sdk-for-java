@@ -21,7 +21,7 @@ public final class IntegrationRuntimesCreateLinkedIntegrationRuntimeWithResponse
     @Test
     public void testCreateLinkedIntegrationRuntimeWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"yknsdwcxyagid\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"nsnunvgqtvgxpe\",\"state\":\"Stopped\",\"\":{\"qrmibmnmxsp\":\"datadyvrdsvsjgt\",\"vzngpa\":\"datatirvzbmhmkoxs\",\"c\":\"dataymeb\"}}}";
+            = "{\"name\":\"yknsdwcxyagid\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"nsnunvgqtvgxpe\",\"state\":\"Stopped\",\"qrmibmnmxsp\":\"datadyvrdsvsjgt\",\"vzngpa\":\"datatirvzbmhmkoxs\",\"c\":\"dataymeb\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

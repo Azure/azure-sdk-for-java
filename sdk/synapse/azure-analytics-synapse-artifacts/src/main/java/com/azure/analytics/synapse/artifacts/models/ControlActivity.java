@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,11 +22,13 @@ public class ControlActivity extends Activity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "Container";
 
     /**
      * Creates an instance of ControlActivity class.
      */
+    @Generated
     public ControlActivity() {
     }
 
@@ -34,6 +37,7 @@ public class ControlActivity extends Activity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -42,6 +46,7 @@ public class ControlActivity extends Activity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ControlActivity setName(String name) {
         super.setName(name);
@@ -51,6 +56,7 @@ public class ControlActivity extends Activity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ControlActivity setDescription(String description) {
         super.setDescription(description);
@@ -60,6 +66,7 @@ public class ControlActivity extends Activity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ControlActivity setState(ActivityState state) {
         super.setState(state);
@@ -69,6 +76,7 @@ public class ControlActivity extends Activity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ControlActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -78,6 +86,7 @@ public class ControlActivity extends Activity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ControlActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -87,6 +96,7 @@ public class ControlActivity extends Activity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ControlActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -96,6 +106,7 @@ public class ControlActivity extends Activity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -125,6 +136,7 @@ public class ControlActivity extends Activity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ControlActivity.
      */
+    @Generated
     public static ControlActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -172,6 +184,7 @@ public class ControlActivity extends Activity {
         });
     }
 
+    @Generated
     static ControlActivity fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ControlActivity deserializedControlActivity = new ControlActivity();

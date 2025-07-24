@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
     /*
      * The Message interactive reply type
      */
+    @Generated
     private AcsInteractiveReplyKind replyKind;
 
     /*
      * The Message Sent when a customer clicks a button
      */
+    @Generated
     private AcsMessageInteractiveButtonReplyContent buttonReply;
 
     /*
      * The Message Sent when a customer selects an item from a list
      */
+    @Generated
     private AcsMessageInteractiveListReplyContent listReply;
 
     /**
      * Creates an instance of AcsMessageInteractiveContent class.
      */
+    @Generated
     public AcsMessageInteractiveContent() {
     }
 
@@ -42,6 +47,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
      * 
      * @return the replyKind value.
      */
+    @Generated
     public AcsInteractiveReplyKind getReplyKind() {
         return this.replyKind;
     }
@@ -52,6 +58,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
      * @param replyKind the replyKind value to set.
      * @return the AcsMessageInteractiveContent object itself.
      */
+    @Generated
     public AcsMessageInteractiveContent setReplyKind(AcsInteractiveReplyKind replyKind) {
         this.replyKind = replyKind;
         return this;
@@ -62,6 +69,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
      * 
      * @return the buttonReply value.
      */
+    @Generated
     public AcsMessageInteractiveButtonReplyContent getButtonReply() {
         return this.buttonReply;
     }
@@ -72,6 +80,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
      * @param buttonReply the buttonReply value to set.
      * @return the AcsMessageInteractiveContent object itself.
      */
+    @Generated
     public AcsMessageInteractiveContent setButtonReply(AcsMessageInteractiveButtonReplyContent buttonReply) {
         this.buttonReply = buttonReply;
         return this;
@@ -82,6 +91,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
      * 
      * @return the listReply value.
      */
+    @Generated
     public AcsMessageInteractiveListReplyContent getListReply() {
         return this.listReply;
     }
@@ -92,6 +102,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
      * @param listReply the listReply value to set.
      * @return the AcsMessageInteractiveContent object itself.
      */
+    @Generated
     public AcsMessageInteractiveContent setListReply(AcsMessageInteractiveListReplyContent listReply) {
         this.listReply = listReply;
         return this;
@@ -100,6 +111,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,6 +129,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcsMessageInteractiveContent.
      */
+    @Generated
     public static AcsMessageInteractiveContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsMessageInteractiveContent deserializedAcsMessageInteractiveContent = new AcsMessageInteractiveContent();

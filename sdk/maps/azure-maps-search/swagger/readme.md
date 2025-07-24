@@ -60,7 +60,7 @@ title: SearchClient
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Search/stable/2023-06-01/search.json
 namespace: com.azure.maps.search
 java: true
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.52'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 payload-flattening-threshold: 0
@@ -77,4 +77,23 @@ custom-types: MapsSearchAddress,Boundary,BoundaryResultTypeEnum,ResolutionEnum,G
 customization-class: src/main/java/SearchCustomization.java
 generic-response-type: true
 no-custom-headers: true
+```
+
+### Fix Boundary to generate as it did when using Autorest 4.1.29
+
+``` yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.Boundary
+    transform: >
+      delete $.properties;
+      $["x-ms-discriminator-value"] = "Boundary";
+      $.allOf = [
+        { 
+          "$ref": "../../../Common/stable/2023-06-01/common.json#/definitions/GeoJsonFeature"
+        },
+        {
+          "$ref": "#/definitions/BoundaryProperties"
+        }
+      ];
 ```

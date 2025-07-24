@@ -10,6 +10,11 @@
 
 #### Other Changes
 
+### 2.3.1 (2025-05-14)
+
+#### Bugs Fixed
+* Fixed hang issue in `CosmosPagedIterable#handle` by preventing race conditions in underlying subscription of `Flux<FeedResponse>`. - [PR 45290](https://github.com/Azure/azure-sdk-for-java/pull/45290)
+
 ### 2.3.0 (2025-04-23)
 
 #### Bugs Fixed
