@@ -154,8 +154,20 @@ public class UploadUtils {
         }
     }
 
+    public static Mono<FluxContentValidationWrapper> computeFileShareChecksum(Flux<ByteBuffer> data,
+        StorageChecksumAlgorithm storageChecksumAlgorithm, Long length, ClientLogger logger) {
+        storageChecksumAlgorithm = storageChecksumAlgorithm.resolveAuto();
+        if (storageChecksumAlgorithm == StorageChecksumAlgorithm.CRC64) {
+            return applyStructuredMessage(data, length, logger);
+        } else {
+            return Mono.just(new FluxContentValidationWrapper(data, new ContentValidationInfo(), length));
+        }
+    }
+
     public static Mono<FluxContentValidationWrapper> computeChecksum(Flux<ByteBuffer> data, boolean computeMd5,
         StorageChecksumAlgorithm storageChecksumAlgorithm, long length, ClientLogger logger) {
+        // todo isbr: resolve auto and md5 stuff here
+        // also see if logic can be shared with computeFileShareChecksum
         if (computeMd5) {
             return computeMd5(data, true, length, logger);
         }
@@ -164,28 +176,33 @@ public class UploadUtils {
             if (length < STATIC_MAXIMUM_ENCODED_DATA_LENGTH) {
                 return computeCRC64(data, length, logger);
             } else {
-                return applyStructuredMessage(data, length);
+                return applyStructuredMessage(data, length, logger);
             }
         }
         return Mono.just(new FluxContentValidationWrapper(data, new ContentValidationInfo(), length));
     }
 
-    public static Mono<FluxContentValidationWrapper> applyStructuredMessage(Flux<ByteBuffer> data, long length) {
-        StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder((int) length,
-            V1_DEFAULT_SEGMENT_CONTENT_LENGTH, StructuredMessageFlags.STORAGE_CRC64);
+    public static Mono<FluxContentValidationWrapper> applyStructuredMessage(Flux<ByteBuffer> data, long length,
+        ClientLogger logger) {
+        try {
+            StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder((int) length,
+                V1_DEFAULT_SEGMENT_CONTENT_LENGTH, StructuredMessageFlags.STORAGE_CRC64);
 
-        // Create BufferStagingArea with 4MB chunks
-        BufferStagingArea stagingArea
-            = new BufferStagingArea(STATIC_MAXIMUM_ENCODED_DATA_LENGTH, STATIC_MAXIMUM_ENCODED_DATA_LENGTH);
+            // Create BufferStagingArea with 4MB chunks
+            BufferStagingArea stagingArea
+                = new BufferStagingArea(STATIC_MAXIMUM_ENCODED_DATA_LENGTH, STATIC_MAXIMUM_ENCODED_DATA_LENGTH);
 
-        Flux<ByteBuffer> encodedBody = data.flatMapSequential(stagingArea::write, 1, 1)
-            .concatWith(Flux.defer(stagingArea::flush))
-            .flatMap(bufferAggregator -> bufferAggregator.asFlux().map(structuredMessageEncoder::encode));
+            Flux<ByteBuffer> encodedBody = data.flatMapSequential(stagingArea::write, 1, 1)
+                .concatWith(Flux.defer(stagingArea::flush))
+                .flatMap(bufferAggregator -> bufferAggregator.asFlux().map(structuredMessageEncoder::encode));
 
-        return Mono.just(new FluxContentValidationWrapper(encodedBody,
-            new ContentValidationInfo().setStructuredBodyType(STRUCTURED_BODY_TYPE_VALUE)
-                .setOriginalContentLength(length),
-            structuredMessageEncoder.getEncodedMessageLength()));
+            return Mono.just(new FluxContentValidationWrapper(encodedBody,
+                new ContentValidationInfo().setStructuredBodyType(STRUCTURED_BODY_TYPE_VALUE)
+                    .setOriginalContentLength(length),
+                structuredMessageEncoder.getEncodedMessageLength()));
+        } catch (Exception e) {
+            return monoError(logger, new RuntimeException(e));
+        }
     }
 
     public static Mono<FluxContentValidationWrapper> computeCRC64(Flux<ByteBuffer> data, long length,
