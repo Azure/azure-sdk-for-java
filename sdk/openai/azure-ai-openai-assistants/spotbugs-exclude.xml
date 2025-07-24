@@ -3,94 +3,6 @@
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.ai.openai.assistants.implementation.MultipartFormDataHelper" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.CreateMessageRequest" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.CreateVectorStoreFileBatchRequest" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.FileListResponse" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistant" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfRunStep" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadMessage" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadRun" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfVectorStore" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfVectorStoreFile" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.SubmitToolOutputsToRunRequest" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.UpdateMessageRequest" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.UpdateRunRequest" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.UpdateThreadRequest" />
-      <Class name="com.azure.ai.openai.assistants.models.Assistant" />
-      <Class name="com.azure.ai.openai.assistants.models.AssistantCreationOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.AssistantThread" />
-      <Class name="com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.CodeInterpreterToolResource" />
-      <Class name="com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.CreateCodeInterpreterToolResourceOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreIds" />
-      <Class name="com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptionsList" />
-      <Class name="com.azure.ai.openai.assistants.models.CreateRunOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.FileDetails" />
-      <Class name="com.azure.ai.openai.assistants.models.FileSearchToolResource" />
-      <Class name="com.azure.ai.openai.assistants.models.FunctionDefinition" />
-      <Class name="com.azure.ai.openai.assistants.models.MessageAttachment" />
-      <Class name="com.azure.ai.openai.assistants.models.MessageDelta" />
-      <Class name="com.azure.ai.openai.assistants.models.MessageDeltaTextContent" />
-      <Class name="com.azure.ai.openai.assistants.models.MessageTextDetails" />
-      <Class name="com.azure.ai.openai.assistants.models.PageableList" />
-      <Class name="com.azure.ai.openai.assistants.models.RunStep" />
-      <Class name="com.azure.ai.openai.assistants.models.RunStepCodeInterpreterToolCallDetails" />
-      <Class name="com.azure.ai.openai.assistants.models.RunStepDeltaCodeInterpreterDetailItemObject" />
-      <Class name="com.azure.ai.openai.assistants.models.RunStepDeltaFileSearchToolCall" />
-      <Class name="com.azure.ai.openai.assistants.models.RunStepDeltaToolCallObject" />
-      <Class name="com.azure.ai.openai.assistants.models.RunStepFileSearchToolCall" />
-      <Class name="com.azure.ai.openai.assistants.models.RunStepToolCallDetails" />
-      <Class name="com.azure.ai.openai.assistants.models.SubmitToolOutputsDetails" />
-      <Class name="com.azure.ai.openai.assistants.models.ThreadMessage" />
-      <Class name="com.azure.ai.openai.assistants.models.ThreadMessageOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.ThreadRun" />
-      <Class name="com.azure.ai.openai.assistants.models.UpdateAssistantOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.UpdateAssistantThreadOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.UpdateCodeInterpreterToolResourceOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.UpdateFileSearchToolResourceOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.VectorStore" />
-      <Class name="com.azure.ai.openai.assistants.models.VectorStoreOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.VectorStoreUpdateOptions" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.ai.openai.assistants.AssistantsClientBuilder" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.CreateMessageRequest" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.CreateVectorStoreFileBatchRequest" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.SubmitToolOutputsToRunRequest" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.UpdateMessageRequest" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.UpdateRunRequest" />
-      <Class name="com.azure.ai.openai.assistants.implementation.models.UpdateThreadRequest" />
-      <Class name="com.azure.ai.openai.assistants.models.AssistantCreationOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.CreateCodeInterpreterToolResourceOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreIds" />
-      <Class name="com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptionsList" />
-      <Class name="com.azure.ai.openai.assistants.models.CreateRunOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.FileDetails" />
-      <Class name="com.azure.ai.openai.assistants.models.FunctionDefinition" />
-      <Class name="com.azure.ai.openai.assistants.models.MessageAttachment" />
-      <Class name="com.azure.ai.openai.assistants.models.MessageTextDetails" />
-      <Class name="com.azure.ai.openai.assistants.models.ThreadMessage" />
-      <Class name="com.azure.ai.openai.assistants.models.ThreadMessageOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.UpdateAssistantOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.UpdateAssistantThreadOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.UpdateCodeInterpreterToolResourceOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.UpdateFileSearchToolResourceOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.VectorStoreOptions" />
-      <Class name="com.azure.ai.openai.assistants.models.VectorStoreUpdateOptions" />
-    </Or>
-  </Match>
-  <Match>
     <Bug pattern="SS_SHOULD_BE_STATIC" />
     <Or>
       <Class name="com.azure.ai.openai.assistants.implementation.models.FileListResponse" />
@@ -118,9 +30,5 @@
       <Class name="com.azure.ai.openai.assistants.models.VectorStoreFileBatch" />
       <Class name="com.azure.ai.openai.assistants.models.VectorStoreFileDeletionStatus" />
     </Or>
-  </Match>
-  <Match>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
-    <Class name="com.azure.ai.openai.assistants.AssistantsClientBuilder" />
   </Match>
 </FindBugsFilter>

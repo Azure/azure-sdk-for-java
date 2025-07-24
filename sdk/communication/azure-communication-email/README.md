@@ -220,11 +220,12 @@ Azure Communication Services support sending inline attachments.
 Adding an optional `contentId` parameter to an `EmailAttachment` will make the attachment an inline attachment.
 
 ```java readme-sample-sendEmailWithInlineAttachment
-BinaryData attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath());
+byte[] pngContent = Files.readAllBytes(new File("./inline-attachment.png").toPath());
+byte[] pngEncodedContent = Base64.getEncoder().encodeToString(pngContent).getBytes();
 EmailAttachment attachment = new EmailAttachment(
-    "inlineimage.jpg",
-    "image/jpeg",
-    attachmentContent
+    "inline-attachment.png",
+    "image/png",
+    BinaryData.fromBytes(pngEncodedContent)
 ).setContentId("inline_image");
 
 EmailMessage message = new EmailMessage()

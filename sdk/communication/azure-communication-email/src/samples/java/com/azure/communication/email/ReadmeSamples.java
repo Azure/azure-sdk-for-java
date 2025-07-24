@@ -12,7 +12,10 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.io.File;
+import java.nio.file.Files;
 
 public class ReadmeSamples {
 
@@ -141,15 +144,16 @@ public class ReadmeSamples {
         // END: readme-sample-sendEmailWithAttachment
     }
 
-    public void sendEmailWithInlineAttachment() {
+    public void sendEmailWithInlineAttachment() throws IOException {
         EmailClient emailClient = createEmailClientWithConnectionString();
 
         // BEGIN: readme-sample-sendEmailWithInlineAttachment
-        BinaryData attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath());
+        byte[] pngContent = Files.readAllBytes(new File("./inline-attachment.png").toPath());
+        byte[] pngEncodedContent = Base64.getEncoder().encodeToString(pngContent).getBytes();
         EmailAttachment attachment = new EmailAttachment(
-            "inlineimage.jpg",
-            "image/jpeg",
-            attachmentContent
+            "inline-attachment.png",
+            "image/png",
+            BinaryData.fromBytes(pngEncodedContent)
         ).setContentId("inline_image");
 
         EmailMessage message = new EmailMessage()
