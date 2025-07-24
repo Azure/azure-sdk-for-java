@@ -45,7 +45,7 @@ echo "CLUSTER_NAME: $CLUSTER_NAME"
 # Using cluster name for the cluster that was created with 16.4
 if [ $CLUSTER_NAME == "oltp-ci-spark35-2workers-ds3v2-16.4" ]; then
   echo "Importing files from $JARPATH/$JARFILE to tmp/libraries/$JARFILE"
-  databricks workspace import /tmp/libraries/$JARFILE --file $JARPATH/$JARFILE --format AUTO --overwrite
+  databricks workspace import /tmp/libraries/$JARFILE $JARPATH/$JARFILE --format AUTO --overwrite
   echo $?
   echo "Installing $JARFILE in $CLUSTER_ID"
   databricks libraries install --cluster-id $CLUSTER_ID --jar "//Workspace/tmp/libraries/$JARFILE"
