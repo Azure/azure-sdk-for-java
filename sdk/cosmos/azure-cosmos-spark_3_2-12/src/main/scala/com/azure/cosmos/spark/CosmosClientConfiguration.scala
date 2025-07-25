@@ -94,7 +94,7 @@ private[spark] object CosmosClientConfiguration {
       cosmosAccountConfig.clientBuilderInterceptors,
       cosmosAccountConfig.clientInterceptors,
       diagnosticsConfig.sampledDiagnosticsLoggerConfig,
-      diagnosticsConfig.azureMonitorConfig,
+      diagnosticsConfig.azureMonitorConfig
     )
   }
 

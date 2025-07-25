@@ -33,7 +33,6 @@ private[cosmos] object CosmosConstants {
     val ChangeFeedDataSourceShortName = "cosmos.oltp.changeFeed"
   }
 
-
   object MetricNames {
     val BytesWritten = "bytesWritten"
     val RecordsWritten = "recordsWritten"
