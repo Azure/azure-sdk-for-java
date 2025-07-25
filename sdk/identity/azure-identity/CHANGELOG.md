@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Renamed internal class `OSBrokerCredential` to `BrokerCredential` for consistency and clarity.
+
 ## 1.16.3 (2025-07-18)
 
 ### Features Added

@@ -15,7 +15,7 @@ public class DacOsBrokerCredentialTest {
             = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
         // Simulate broker unavailable by using a test double or by ensuring the environment does not support broker
-        OSBrokerCredential credential = new OSBrokerCredential("tenant");
+        BrokerCredential credential = new BrokerCredential("tenant");
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(e -> e instanceof CredentialUnavailableException
                 && e.getMessage().contains("azure-identity-broker dependency is not available")

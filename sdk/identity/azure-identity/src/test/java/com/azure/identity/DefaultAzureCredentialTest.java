@@ -322,9 +322,9 @@ public class DefaultAzureCredentialTest {
                     when(intelliJCredential.getToken(request)).thenReturn(
                         Mono.error(new CredentialUnavailableException("Cannot get token from IntelliJ Credential")));
                 });
-            MockedConstruction<OSBrokerCredential> osBrokerCredentialMock
-                = mockConstruction(OSBrokerCredential.class, (osBrokerCredential, context) -> {
-                    when(osBrokerCredential.getToken(request)).thenReturn(
+            MockedConstruction<BrokerCredential> brokerCredentialMock
+                = mockConstruction(BrokerCredential.class, (brokerCredential, context) -> {
+                    when(brokerCredential.getToken(request)).thenReturn(
                         Mono.error(new CredentialUnavailableException("Cannot get token from OS Broker credential")));
                 })) {
             // test
@@ -339,7 +339,7 @@ public class DefaultAzureCredentialTest {
             Assertions.assertNotNull(azureDeveloperCliCredentialMock);
             Assertions.assertNotNull(azurePowerShellCredentialMock);
             Assertions.assertNotNull(intelliJCredentialMock);
-            Assertions.assertNotNull(osBrokerCredentialMock);
+            Assertions.assertNotNull(brokerCredentialMock);
         }
     }
 
@@ -374,9 +374,9 @@ public class DefaultAzureCredentialTest {
                     when(AzureDeveloperCliCredential.getToken(request)).thenReturn(Mono.error(
                         new CredentialUnavailableException("Cannot get token from Azure Developer CLI credential")));
                 });
-            MockedConstruction<OSBrokerCredential> osBrokerCredentialMock
-                = mockConstruction(OSBrokerCredential.class, (osBrokerCredential, context) -> {
-                    when(osBrokerCredential.getToken(request)).thenReturn(
+            MockedConstruction<BrokerCredential> brokerCredentialMock
+                = mockConstruction(BrokerCredential.class, (brokerCredential, context) -> {
+                    when(brokerCredential.getToken(request)).thenReturn(
                         Mono.error(new CredentialUnavailableException("Cannot get token from OS Broker credential")));
                 })) {
 
@@ -392,7 +392,7 @@ public class DefaultAzureCredentialTest {
             Assertions.assertNotNull(powerShellCredentialMock);
             Assertions.assertNotNull(azureCliCredentialMock);
             Assertions.assertNotNull(azureDeveloperCliCredentialMock);
-            Assertions.assertNotNull(osBrokerCredentialMock);
+            Assertions.assertNotNull(brokerCredentialMock);
         }
     }
 
@@ -678,7 +678,7 @@ public class DefaultAzureCredentialTest {
         assertInstanceOf(AzureCliCredential.class, credentials.get(2));
         assertInstanceOf(AzurePowerShellCredential.class, credentials.get(3));
         assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(4));
-        assertInstanceOf(OSBrokerCredential.class, credentials.get(5));
+        assertInstanceOf(BrokerCredential.class, credentials.get(5));
     }
 
     @ParameterizedTest
@@ -794,7 +794,7 @@ public class DefaultAzureCredentialTest {
         assertInstanceOf(AzureCliCredential.class, credentials.get(5));
         assertInstanceOf(AzurePowerShellCredential.class, credentials.get(6));
         assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(7));
-        assertInstanceOf(OSBrokerCredential.class, credentials.get(8));
+        assertInstanceOf(BrokerCredential.class, credentials.get(8));
     }
 
     /**
