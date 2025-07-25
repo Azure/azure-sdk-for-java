@@ -20,13 +20,12 @@ import java.util.List;
 @Fluent
 public final class DiskRestorePointList implements JsonSerializable<DiskRestorePointList> {
     /*
-     * A list of disk restore points.
+     * The DiskRestorePoint items on this page
      */
     private List<DiskRestorePointInner> value;
 
     /*
-     * The uri to fetch the next page of disk restore points. Call ListNext() with this to fetch the next page of disk
-     * restore points.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -37,7 +36,7 @@ public final class DiskRestorePointList implements JsonSerializable<DiskRestoreP
     }
 
     /**
-     * Get the value property: A list of disk restore points.
+     * Get the value property: The DiskRestorePoint items on this page.
      * 
      * @return the value value.
      */
@@ -46,7 +45,7 @@ public final class DiskRestorePointList implements JsonSerializable<DiskRestoreP
     }
 
     /**
-     * Set the value property: A list of disk restore points.
+     * Set the value property: The DiskRestorePoint items on this page.
      * 
      * @param value the value value to set.
      * @return the DiskRestorePointList object itself.
@@ -57,8 +56,7 @@ public final class DiskRestorePointList implements JsonSerializable<DiskRestoreP
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of disk restore points. Call ListNext() with this to
-     * fetch the next page of disk restore points.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
@@ -67,8 +65,7 @@ public final class DiskRestorePointList implements JsonSerializable<DiskRestoreP
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of disk restore points. Call ListNext() with this to
-     * fetch the next page of disk restore points.
+     * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
      * @return the DiskRestorePointList object itself.

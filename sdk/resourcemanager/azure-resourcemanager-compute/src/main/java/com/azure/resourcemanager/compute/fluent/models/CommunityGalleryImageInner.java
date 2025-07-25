@@ -348,7 +348,7 @@ public final class CommunityGalleryImageInner extends PirCommunityGalleryResourc
     }
 
     /**
-     * Get the architecture property: CPU architecture supported by an OS disk.
+     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
      * 
      * @return the architecture value.
      */
@@ -357,7 +357,7 @@ public final class CommunityGalleryImageInner extends PirCommunityGalleryResourc
     }
 
     /**
-     * Set the architecture property: CPU architecture supported by an OS disk.
+     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
      * 
      * @param architecture the architecture value to set.
      * @return the CommunityGalleryImageInner object itself.

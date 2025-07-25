@@ -25,17 +25,17 @@ public final class GalleryInVMAccessControlProfileVersionUpdate extends UpdateRe
     private GalleryInVMAccessControlProfileVersionProperties innerProperties;
 
     /*
-     * The type of the resource.
+     * Resource type
      */
     private String type;
 
     /*
-     * The name of the resource.
+     * Resource name
      */
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * Resource Id
      */
     private String id;
 
@@ -55,7 +55,7 @@ public final class GalleryInVMAccessControlProfileVersionUpdate extends UpdateRe
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the type property: Resource type.
      * 
      * @return the type value.
      */
@@ -65,7 +65,7 @@ public final class GalleryInVMAccessControlProfileVersionUpdate extends UpdateRe
     }
 
     /**
-     * Get the name property: The name of the resource.
+     * Get the name property: Resource name.
      * 
      * @return the name value.
      */
@@ -75,7 +75,7 @@ public final class GalleryInVMAccessControlProfileVersionUpdate extends UpdateRe
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the id property: Resource Id.
      * 
      * @return the id value.
      */
@@ -272,7 +272,6 @@ public final class GalleryInVMAccessControlProfileVersionUpdate extends UpdateRe
      * @param jsonReader The JsonReader being read.
      * @return An instance of GalleryInVMAccessControlProfileVersionUpdate if the JsonReader was pointing to an instance
      * of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GalleryInVMAccessControlProfileVersionUpdate.
      */
     public static GalleryInVMAccessControlProfileVersionUpdate fromJson(JsonReader jsonReader) throws IOException {
