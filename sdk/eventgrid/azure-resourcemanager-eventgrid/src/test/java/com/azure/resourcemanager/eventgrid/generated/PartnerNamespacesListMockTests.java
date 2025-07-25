@@ -26,7 +26,7 @@ public final class PartnerNamespacesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"fsq\",\"hyqmrejparnpv\",\"rsz\",\"bwtdr\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"w\",\"name\":\"l\",\"type\":\"zlhhfix\"}],\"provisioningState\":\"Deleting\",\"partnerRegistrationFullyQualifiedId\":\"ulz\",\"minimumTlsVersionAllowed\":\"1.1\",\"endpoint\":\"pfywv\",\"publicNetworkAccess\":\"Enabled\",\"inboundIpRules\":[{\"ipMask\":\"fzxsoxinunjlzkd\",\"action\":\"Allow\"},{\"ipMask\":\"sxyt\",\"action\":\"Allow\"},{\"ipMask\":\"miwdwisvnme\",\"action\":\"Allow\"},{\"ipMask\":\"amcajyhftpzcrryk\",\"action\":\"Allow\"}],\"disableLocalAuth\":true,\"partnerTopicRoutingMode\":\"ChannelNameHeader\"},\"location\":\"hkigglclwalhvub\",\"tags\":{\"yctajqz\":\"phetxdqc\",\"xb\":\"vale\",\"yxsbfpz\":\"biwksde\"},\"id\":\"oikvntwcz\",\"name\":\"zwushlcxpblal\",\"type\":\"hezpfkissaidqzs\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"imtwuuhau\",\"gnkwm\",\"feu\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Updating\"},\"id\":\"yrkwfugiph\",\"name\":\"rkuumn\",\"type\":\"durhzzfopueoqus\"},{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"opwnib\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"zt\",\"name\":\"dqumqvfm\",\"type\":\"caddtgc\"},{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"vgwy\",\"rbelfnzz\",\"yizwbxgdebxla\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Updating\"},\"id\":\"mirhpfabenq\",\"name\":\"am\",\"type\":\"mgewayxf\"}],\"provisioningState\":\"Succeeded\",\"partnerRegistrationFullyQualifiedId\":\"pjs\",\"minimumTlsVersionAllowed\":\"1.2\",\"endpoint\":\"mhcucsqsnxf\",\"publicNetworkAccess\":\"Enabled\",\"inboundIpRules\":[{\"ipMask\":\"pdr\",\"action\":\"Allow\"},{\"ipMask\":\"bsuadulpodkaxp\",\"action\":\"Allow\"},{\"ipMask\":\"zh\",\"action\":\"Allow\"}],\"disableLocalAuth\":false,\"partnerTopicRoutingMode\":\"ChannelNameHeader\"},\"location\":\"eluqr\",\"tags\":{\"srkgz\":\"dhfztlra\",\"dbkuwpzqxlcwe\":\"yh\",\"qufqizj\":\"kfecjvxf\"},\"id\":\"ppwooaj\",\"name\":\"yyjmjjxiz\",\"type\":\"pxhn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,16 +36,16 @@ public final class PartnerNamespacesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PartnerNamespace> response
-            = manager.partnerNamespaces().list("wqhdgsjsa", 1711960730, com.azure.core.util.Context.NONE);
+            = manager.partnerNamespaces().list("walzyxwhoeamoeo", 847665522, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hkigglclwalhvub", response.iterator().next().location());
-        Assertions.assertEquals("phetxdqc", response.iterator().next().tags().get("yctajqz"));
-        Assertions.assertEquals("ulz", response.iterator().next().partnerRegistrationFullyQualifiedId());
-        Assertions.assertEquals(TlsVersion.ONE_ONE, response.iterator().next().minimumTlsVersionAllowed());
+        Assertions.assertEquals("eluqr", response.iterator().next().location());
+        Assertions.assertEquals("dhfztlra", response.iterator().next().tags().get("srkgz"));
+        Assertions.assertEquals("pjs", response.iterator().next().partnerRegistrationFullyQualifiedId());
+        Assertions.assertEquals(TlsVersion.ONE_TWO, response.iterator().next().minimumTlsVersionAllowed());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.iterator().next().publicNetworkAccess());
-        Assertions.assertEquals("fzxsoxinunjlzkd", response.iterator().next().inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals("pdr", response.iterator().next().inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, response.iterator().next().inboundIpRules().get(0).action());
-        Assertions.assertEquals(true, response.iterator().next().disableLocalAuth());
+        Assertions.assertFalse(response.iterator().next().disableLocalAuth());
         Assertions.assertEquals(PartnerTopicRoutingMode.CHANNEL_NAME_HEADER,
             response.iterator().next().partnerTopicRoutingMode());
     }
