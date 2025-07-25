@@ -18,6 +18,6 @@ public final class OrganizationsListByResourceGroupSamples {
      */
     public static void organizationsListByResourceGroupGeneratedByMaximumSetRule(
         com.azure.resourcemanager.arizeaiobservabilityeval.ArizeAIObservabilityEvalManager manager) {
-        manager.organizations().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
+        manager.organizations().listByResourceGroup("yashika-rg-arize", com.azure.core.util.Context.NONE);
     }
 }
