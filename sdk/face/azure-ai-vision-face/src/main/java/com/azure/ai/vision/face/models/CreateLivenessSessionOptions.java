@@ -5,12 +5,17 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Request of liveness with verify session creation.
+ * Request model for creating liveness session.
  */
 @Fluent
-public final class CreateLivenessWithVerifySessionContent {
+public final class CreateLivenessSessionOptions implements JsonSerializable<CreateLivenessSessionOptions> {
 
     /*
      * Type of liveness mode the client should follow.
@@ -39,26 +44,6 @@ public final class CreateLivenessWithVerifySessionContent {
     private LivenessModel livenessModelVersion;
 
     /*
-     * Whether or not return the verify image hash.
-     */
-    @Generated
-    private Boolean returnVerifyImageHash;
-
-    /*
-     * Threshold for confidence of the face verification. Please refer to the documentation for more details.
-     * https://learn.microsoft.com/legal/cognitive-services/face/characteristics-and-limitations?context=%2Fazure%2Fai-
-     * services%2Fcomputer-vision%2Fcontext%2Fcontext#recognition-confidence-score
-     */
-    @Generated
-    private Double verifyConfidenceThreshold;
-
-    /*
-     * The image stream for verify. Content-Disposition header field for this part must have filename.
-     */
-    @Generated
-    private final VerifyImageFileDetails verifyImage;
-
-    /*
      * Unique Guid per each end-user device. This is to provide rate limiting and anti-hammering. If
      * 'deviceCorrelationIdSetInClient' is true in this request, this 'deviceCorrelationId' must be null.
      */
@@ -72,16 +57,13 @@ public final class CreateLivenessWithVerifySessionContent {
     private Integer authTokenTimeToLiveInSeconds;
 
     /**
-     * Creates an instance of CreateLivenessWithVerifySessionContent class.
+     * Creates an instance of CreateLivenessSessionOptions class.
      *
      * @param livenessOperationMode the livenessOperationMode value to set.
-     * @param verifyImage the verifyImage value to set.
      */
     @Generated
-    public CreateLivenessWithVerifySessionContent(LivenessOperationMode livenessOperationMode,
-        VerifyImageFileDetails verifyImage) {
+    public CreateLivenessSessionOptions(LivenessOperationMode livenessOperationMode) {
         this.livenessOperationMode = livenessOperationMode;
-        this.verifyImage = verifyImage;
     }
 
     /**
@@ -112,11 +94,10 @@ public final class CreateLivenessWithVerifySessionContent {
      * body.
      *
      * @param deviceCorrelationIdSetInClient the deviceCorrelationIdSetInClient value to set.
-     * @return the CreateLivenessWithVerifySessionContent object itself.
+     * @return the CreateLivenessSessionOptions object itself.
      */
     @Generated
-    public CreateLivenessWithVerifySessionContent
-        setDeviceCorrelationIdSetInClient(Boolean deviceCorrelationIdSetInClient) {
+    public CreateLivenessSessionOptions setDeviceCorrelationIdSetInClient(Boolean deviceCorrelationIdSetInClient) {
         this.deviceCorrelationIdSetInClient = deviceCorrelationIdSetInClient;
         return this;
     }
@@ -135,10 +116,10 @@ public final class CreateLivenessWithVerifySessionContent {
      * Set the enableSessionImage property: Whether or not store the session image.
      *
      * @param enableSessionImage the enableSessionImage value to set.
-     * @return the CreateLivenessWithVerifySessionContent object itself.
+     * @return the CreateLivenessSessionOptions object itself.
      */
     @Generated
-    public CreateLivenessWithVerifySessionContent setEnableSessionImage(Boolean enableSessionImage) {
+    public CreateLivenessSessionOptions setEnableSessionImage(Boolean enableSessionImage) {
         this.enableSessionImage = enableSessionImage;
         return this;
     }
@@ -159,71 +140,12 @@ public final class CreateLivenessWithVerifySessionContent {
      * parameter, and if this is not specified, then the latest supported model version will be chosen.
      *
      * @param livenessModelVersion the livenessModelVersion value to set.
-     * @return the CreateLivenessWithVerifySessionContent object itself.
+     * @return the CreateLivenessSessionOptions object itself.
      */
     @Generated
-    public CreateLivenessWithVerifySessionContent setLivenessModelVersion(LivenessModel livenessModelVersion) {
+    public CreateLivenessSessionOptions setLivenessModelVersion(LivenessModel livenessModelVersion) {
         this.livenessModelVersion = livenessModelVersion;
         return this;
-    }
-
-    /**
-     * Get the returnVerifyImageHash property: Whether or not return the verify image hash.
-     *
-     * @return the returnVerifyImageHash value.
-     */
-    @Generated
-    public Boolean isReturnVerifyImageHash() {
-        return this.returnVerifyImageHash;
-    }
-
-    /**
-     * Set the returnVerifyImageHash property: Whether or not return the verify image hash.
-     *
-     * @param returnVerifyImageHash the returnVerifyImageHash value to set.
-     * @return the CreateLivenessWithVerifySessionContent object itself.
-     */
-    @Generated
-    public CreateLivenessWithVerifySessionContent setReturnVerifyImageHash(Boolean returnVerifyImageHash) {
-        this.returnVerifyImageHash = returnVerifyImageHash;
-        return this;
-    }
-
-    /**
-     * Get the verifyConfidenceThreshold property: Threshold for confidence of the face verification. Please refer to
-     * the documentation for more details.
-     * https://learn.microsoft.com/legal/cognitive-services/face/characteristics-and-limitations?context=%2Fazure%2Fai-services%2Fcomputer-vision%2Fcontext%2Fcontext#recognition-confidence-score.
-     *
-     * @return the verifyConfidenceThreshold value.
-     */
-    @Generated
-    public Double getVerifyConfidenceThreshold() {
-        return this.verifyConfidenceThreshold;
-    }
-
-    /**
-     * Set the verifyConfidenceThreshold property: Threshold for confidence of the face verification. Please refer to
-     * the documentation for more details.
-     * https://learn.microsoft.com/legal/cognitive-services/face/characteristics-and-limitations?context=%2Fazure%2Fai-services%2Fcomputer-vision%2Fcontext%2Fcontext#recognition-confidence-score.
-     *
-     * @param verifyConfidenceThreshold the verifyConfidenceThreshold value to set.
-     * @return the CreateLivenessWithVerifySessionContent object itself.
-     */
-    @Generated
-    public CreateLivenessWithVerifySessionContent setVerifyConfidenceThreshold(Double verifyConfidenceThreshold) {
-        this.verifyConfidenceThreshold = verifyConfidenceThreshold;
-        return this;
-    }
-
-    /**
-     * Get the verifyImage property: The image stream for verify. Content-Disposition header field for this part must
-     * have filename.
-     *
-     * @return the verifyImage value.
-     */
-    @Generated
-    public VerifyImageFileDetails getVerifyImage() {
-        return this.verifyImage;
     }
 
     /**
@@ -244,10 +166,10 @@ public final class CreateLivenessWithVerifySessionContent {
      * null.
      *
      * @param deviceCorrelationId the deviceCorrelationId value to set.
-     * @return the CreateLivenessWithVerifySessionContent object itself.
+     * @return the CreateLivenessSessionOptions object itself.
      */
     @Generated
-    public CreateLivenessWithVerifySessionContent setDeviceCorrelationId(String deviceCorrelationId) {
+    public CreateLivenessSessionOptions setDeviceCorrelationId(String deviceCorrelationId) {
         this.deviceCorrelationId = deviceCorrelationId;
         return this;
     }
@@ -268,12 +190,77 @@ public final class CreateLivenessWithVerifySessionContent {
      * Default value is 600.
      *
      * @param authTokenTimeToLiveInSeconds the authTokenTimeToLiveInSeconds value to set.
-     * @return the CreateLivenessWithVerifySessionContent object itself.
+     * @return the CreateLivenessSessionOptions object itself.
      */
     @Generated
-    public CreateLivenessWithVerifySessionContent
-        setAuthTokenTimeToLiveInSeconds(Integer authTokenTimeToLiveInSeconds) {
+    public CreateLivenessSessionOptions setAuthTokenTimeToLiveInSeconds(Integer authTokenTimeToLiveInSeconds) {
         this.authTokenTimeToLiveInSeconds = authTokenTimeToLiveInSeconds;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("livenessOperationMode",
+            this.livenessOperationMode == null ? null : this.livenessOperationMode.toString());
+        jsonWriter.writeBooleanField("deviceCorrelationIdSetInClient", this.deviceCorrelationIdSetInClient);
+        jsonWriter.writeBooleanField("enableSessionImage", this.enableSessionImage);
+        jsonWriter.writeStringField("livenessModelVersion",
+            this.livenessModelVersion == null ? null : this.livenessModelVersion.toString());
+        jsonWriter.writeStringField("deviceCorrelationId", this.deviceCorrelationId);
+        jsonWriter.writeNumberField("authTokenTimeToLiveInSeconds", this.authTokenTimeToLiveInSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateLivenessSessionOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateLivenessSessionOptions if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateLivenessSessionOptions.
+     */
+    @Generated
+    public static CreateLivenessSessionOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LivenessOperationMode livenessOperationMode = null;
+            Boolean deviceCorrelationIdSetInClient = null;
+            Boolean enableSessionImage = null;
+            LivenessModel livenessModelVersion = null;
+            String deviceCorrelationId = null;
+            Integer authTokenTimeToLiveInSeconds = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("livenessOperationMode".equals(fieldName)) {
+                    livenessOperationMode = LivenessOperationMode.fromString(reader.getString());
+                } else if ("deviceCorrelationIdSetInClient".equals(fieldName)) {
+                    deviceCorrelationIdSetInClient = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableSessionImage".equals(fieldName)) {
+                    enableSessionImage = reader.getNullable(JsonReader::getBoolean);
+                } else if ("livenessModelVersion".equals(fieldName)) {
+                    livenessModelVersion = LivenessModel.fromString(reader.getString());
+                } else if ("deviceCorrelationId".equals(fieldName)) {
+                    deviceCorrelationId = reader.getString();
+                } else if ("authTokenTimeToLiveInSeconds".equals(fieldName)) {
+                    authTokenTimeToLiveInSeconds = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            CreateLivenessSessionOptions deserializedCreateLivenessSessionOptions
+                = new CreateLivenessSessionOptions(livenessOperationMode);
+            deserializedCreateLivenessSessionOptions.deviceCorrelationIdSetInClient = deviceCorrelationIdSetInClient;
+            deserializedCreateLivenessSessionOptions.enableSessionImage = enableSessionImage;
+            deserializedCreateLivenessSessionOptions.livenessModelVersion = livenessModelVersion;
+            deserializedCreateLivenessSessionOptions.deviceCorrelationId = deviceCorrelationId;
+            deserializedCreateLivenessSessionOptions.authTokenTimeToLiveInSeconds = authTokenTimeToLiveInSeconds;
+            return deserializedCreateLivenessSessionOptions;
+        });
     }
 }
