@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.dashboard.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -20,16 +20,26 @@ import java.util.Map;
  * The grafana resource type.
  */
 @Fluent
-public final class ManagedGrafanaInner extends Resource {
+public final class ManagedGrafanaInner extends ProxyResource {
+    /*
+     * Properties specific to the grafana resource.
+     */
+    private ManagedGrafanaProperties properties;
+
     /*
      * The Sku of the grafana resource.
      */
     private ResourceSku sku;
 
     /*
-     * Properties specific to the grafana resource.
+     * Resource tags.
      */
-    private ManagedGrafanaProperties properties;
+    private Map<String, String> tags;
+
+    /*
+     * The geo-location where the resource lives
+     */
+    private String location;
 
     /*
      * The managed service identities assigned to this resource.
@@ -63,6 +73,26 @@ public final class ManagedGrafanaInner extends Resource {
     }
 
     /**
+     * Get the properties property: Properties specific to the grafana resource.
+     * 
+     * @return the properties value.
+     */
+    public ManagedGrafanaProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Properties specific to the grafana resource.
+     * 
+     * @param properties the properties value to set.
+     * @return the ManagedGrafanaInner object itself.
+     */
+    public ManagedGrafanaInner withProperties(ManagedGrafanaProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * Get the sku property: The Sku of the grafana resource.
      * 
      * @return the sku value.
@@ -83,22 +113,42 @@ public final class ManagedGrafanaInner extends Resource {
     }
 
     /**
-     * Get the properties property: Properties specific to the grafana resource.
+     * Get the tags property: Resource tags.
      * 
-     * @return the properties value.
+     * @return the tags value.
      */
-    public ManagedGrafanaProperties properties() {
-        return this.properties;
+    public Map<String, String> tags() {
+        return this.tags;
     }
 
     /**
-     * Set the properties property: Properties specific to the grafana resource.
+     * Set the tags property: Resource tags.
      * 
-     * @param properties the properties value to set.
+     * @param tags the tags value to set.
      * @return the ManagedGrafanaInner object itself.
      */
-    public ManagedGrafanaInner withProperties(ManagedGrafanaProperties properties) {
-        this.properties = properties;
+    public ManagedGrafanaInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the location property: The geo-location where the resource lives.
+     * 
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: The geo-location where the resource lives.
+     * 
+     * @param location the location value to set.
+     * @return the ManagedGrafanaInner object itself.
+     */
+    public ManagedGrafanaInner withLocation(String location) {
+        this.location = location;
         return this;
     }
 
@@ -162,34 +212,16 @@ public final class ManagedGrafanaInner extends Resource {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ManagedGrafanaInner withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ManagedGrafanaInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sku() != null) {
-            sku().validate();
-        }
         if (properties() != null) {
             properties().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
         }
         if (identity() != null) {
             identity().validate();
@@ -202,10 +234,10 @@ public final class ManagedGrafanaInner extends Resource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("location", location());
-        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
@@ -232,15 +264,15 @@ public final class ManagedGrafanaInner extends Resource {
                     deserializedManagedGrafanaInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedManagedGrafanaInner.type = reader.getString();
-                } else if ("location".equals(fieldName)) {
-                    deserializedManagedGrafanaInner.withLocation(reader.getString());
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedManagedGrafanaInner.withTags(tags);
-                } else if ("sku".equals(fieldName)) {
-                    deserializedManagedGrafanaInner.sku = ResourceSku.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedManagedGrafanaInner.properties = ManagedGrafanaProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedManagedGrafanaInner.sku = ResourceSku.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedManagedGrafanaInner.tags = tags;
+                } else if ("location".equals(fieldName)) {
+                    deserializedManagedGrafanaInner.location = reader.getString();
                 } else if ("identity".equals(fieldName)) {
                     deserializedManagedGrafanaInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

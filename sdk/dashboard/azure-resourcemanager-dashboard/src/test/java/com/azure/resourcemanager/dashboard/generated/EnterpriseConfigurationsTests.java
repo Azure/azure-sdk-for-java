@@ -13,18 +13,18 @@ public final class EnterpriseConfigurationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnterpriseConfigurations model
-            = BinaryData.fromString("{\"marketplacePlanId\":\"xkrxdqmi\",\"marketplaceAutoRenew\":\"Disabled\"}")
+            = BinaryData.fromString("{\"marketplacePlanId\":\"dtopbob\",\"marketplaceAutoRenew\":\"Disabled\"}")
                 .toObject(EnterpriseConfigurations.class);
-        Assertions.assertEquals("xkrxdqmi", model.marketplacePlanId());
+        Assertions.assertEquals("dtopbob", model.marketplacePlanId());
         Assertions.assertEquals(MarketplaceAutoRenew.DISABLED, model.marketplaceAutoRenew());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnterpriseConfigurations model = new EnterpriseConfigurations().withMarketplacePlanId("xkrxdqmi")
+        EnterpriseConfigurations model = new EnterpriseConfigurations().withMarketplacePlanId("dtopbob")
             .withMarketplaceAutoRenew(MarketplaceAutoRenew.DISABLED);
         model = BinaryData.fromObject(model).toObject(EnterpriseConfigurations.class);
-        Assertions.assertEquals("xkrxdqmi", model.marketplacePlanId());
+        Assertions.assertEquals("dtopbob", model.marketplacePlanId());
         Assertions.assertEquals(MarketplaceAutoRenew.DISABLED, model.marketplaceAutoRenew());
     }
 }

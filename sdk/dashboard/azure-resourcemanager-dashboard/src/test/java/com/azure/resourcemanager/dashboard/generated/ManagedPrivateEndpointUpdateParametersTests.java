@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedPrivateEndpointUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedPrivateEndpointUpdateParameters model = BinaryData.fromString(
-            "{\"tags\":{\"senhwlrs\":\"rmjmwvvjektc\",\"qylihkaetckt\":\"frzpwvlqdqgb\",\"ctq\":\"fcivfsnkym\",\"ebrjcxe\":\"jf\"}}")
-            .toObject(ManagedPrivateEndpointUpdateParameters.class);
-        Assertions.assertEquals("rmjmwvvjektc", model.tags().get("senhwlrs"));
+        ManagedPrivateEndpointUpdateParameters model
+            = BinaryData.fromString("{\"tags\":{\"jdeyeamdpha\":\"tgzfbishcbkh\",\"wkgshwa\":\"alpbuxwgipwhon\"}}")
+                .toObject(ManagedPrivateEndpointUpdateParameters.class);
+        Assertions.assertEquals("tgzfbishcbkh", model.tags().get("jdeyeamdpha"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedPrivateEndpointUpdateParameters model = new ManagedPrivateEndpointUpdateParameters().withTags(
-            mapOf("senhwlrs", "rmjmwvvjektc", "qylihkaetckt", "frzpwvlqdqgb", "ctq", "fcivfsnkym", "ebrjcxe", "jf"));
+        ManagedPrivateEndpointUpdateParameters model = new ManagedPrivateEndpointUpdateParameters()
+            .withTags(mapOf("jdeyeamdpha", "tgzfbishcbkh", "wkgshwa", "alpbuxwgipwhon"));
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpointUpdateParameters.class);
-        Assertions.assertEquals("rmjmwvvjektc", model.tags().get("senhwlrs"));
+        Assertions.assertEquals("tgzfbishcbkh", model.tags().get("jdeyeamdpha"));
     }
 
     // Use "Map.of" if available

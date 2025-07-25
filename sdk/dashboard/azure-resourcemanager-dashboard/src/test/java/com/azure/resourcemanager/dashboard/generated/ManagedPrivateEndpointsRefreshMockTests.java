@@ -27,7 +27,7 @@ public final class ManagedPrivateEndpointsRefreshMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.managedPrivateEndpoints().refresh("dgvraeaeneq", "zar", com.azure.core.util.Context.NONE);
+        manager.managedPrivateEndpoints().refresh("gxhuriplbp", "dxunkbebxmubyyn", com.azure.core.util.Context.NONE);
 
     }
 }

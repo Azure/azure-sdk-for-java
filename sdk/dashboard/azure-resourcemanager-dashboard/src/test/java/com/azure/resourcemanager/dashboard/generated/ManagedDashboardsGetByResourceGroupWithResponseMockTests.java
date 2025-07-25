@@ -21,7 +21,7 @@ public final class ManagedDashboardsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\"},\"location\":\"ruvw\",\"tags\":{\"pybsrfbjfdtw\":\"qfsubcgjbirx\",\"bexilzznfqqnv\":\"sotftpvj\",\"ujmkcjhwqy\":\"pmqtaru\",\"naenqpehindo\":\"jrybnwjewgdrjer\"},\"id\":\"gmifthnzd\",\"name\":\"dslgnayqigynduh\",\"type\":\"vhqlkthumaqo\"}";
+            = "{\"properties\":{\"provisioningState\":\"Creating\"},\"location\":\"mcqibycnojv\",\"tags\":{\"qsgzvahapj\":\"e\",\"zlmwlxkvugfhz\":\"zhpvgqzcjrvxd\",\"hnnpr\":\"vawjvzunlu\",\"ultskzbbtdz\":\"xipeilpjzuaejx\"},\"id\":\"mv\",\"name\":\"ekg\",\"type\":\"wozuhkf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class ManagedDashboardsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedDashboard response = manager.managedDashboards()
-            .getByResourceGroupWithResponse("wfbkrvrns", "shqjohxcrsbf", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("rknftguvriuhprwm", "yvxqtayriwwroy", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ruvw", response.location());
-        Assertions.assertEquals("qfsubcgjbirx", response.tags().get("pybsrfbjfdtw"));
+        Assertions.assertEquals("mcqibycnojv", response.location());
+        Assertions.assertEquals("e", response.tags().get("qsgzvahapj"));
     }
 }

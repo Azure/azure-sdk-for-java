@@ -71,8 +71,8 @@ public class DashboardManagerTests extends TestProxyTestBase {
             // @embedmeStart
             grafana = dashboardManager.grafanas()
                 .define(grafanaName)
-                .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
+                .withRegion(REGION)
                 .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
                 .create();
             // @embedmeEnd
