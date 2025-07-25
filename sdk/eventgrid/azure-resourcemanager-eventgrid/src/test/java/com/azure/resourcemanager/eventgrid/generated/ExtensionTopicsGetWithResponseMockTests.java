@@ -21,7 +21,7 @@ public final class ExtensionTopicsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"h\",\"systemTopic\":\"qkzjuqwqaj\"},\"id\":\"zxpixhyo\",\"name\":\"pnfdbgsosciene\",\"type\":\"fvbennmfkbpjnr\"}";
+            = "{\"properties\":{\"description\":\"pakbqyhlsor\",\"systemTopic\":\"b\"},\"id\":\"qagkncjmybn\",\"name\":\"evztnjawrhul\",\"type\":\"mmqmbwppx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class ExtensionTopicsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ExtensionTopic response
-            = manager.extensionTopics().getWithResponse("gfzdgjfcycrsvl", com.azure.core.util.Context.NONE).getValue();
+            = manager.extensionTopics().getWithResponse("oswgfqvj", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("h", response.description());
-        Assertions.assertEquals("qkzjuqwqaj", response.systemTopic());
+        Assertions.assertEquals("pakbqyhlsor", response.description());
+        Assertions.assertEquals("b", response.systemTopic());
     }
 }

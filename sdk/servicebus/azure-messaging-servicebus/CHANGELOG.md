@@ -1,14 +1,12 @@
 # Release History
 
-## 7.18.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 7.17.13 (2025-07-24)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.10.0` to version `2.10.2`.
 
 ## 7.17.12 (2025-06-19)
 

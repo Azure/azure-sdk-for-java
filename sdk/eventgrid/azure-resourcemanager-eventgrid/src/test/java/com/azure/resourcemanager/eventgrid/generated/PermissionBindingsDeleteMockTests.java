@@ -27,7 +27,7 @@ public final class PermissionBindingsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.permissionBindings().delete("or", "nikcedpk", "riwmmtmqrxrzqv", com.azure.core.util.Context.NONE);
+        manager.permissionBindings().delete("zstrktgvpatrg", "jktfinf", "oksmmculwk", com.azure.core.util.Context.NONE);
 
     }
 }

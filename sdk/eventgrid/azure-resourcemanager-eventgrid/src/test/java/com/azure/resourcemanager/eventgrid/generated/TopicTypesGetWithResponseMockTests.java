@@ -24,7 +24,7 @@ public final class TopicTypesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provider\":\"qpmnu\",\"displayName\":\"hr\",\"description\":\"x\",\"resourceRegionType\":\"RegionalResource\",\"provisioningState\":\"Failed\",\"supportedLocations\":[\"vwlvivjmxmlit\",\"dsjipdviscotyxb\"],\"sourceResourceFormat\":\"ifefndslv\",\"supportedScopesForSource\":[\"ManagementGroup\",\"ManagementGroup\"],\"areRegionalAndGlobalSourcesSupported\":false,\"additionalEnforcedPermissions\":[{\"permissionName\":\"ailwdqmqfyd\",\"isDataAction\":false},{\"permissionName\":\"fxlkd\",\"isDataAction\":true}]},\"id\":\"gnamkuuyiu\",\"name\":\"uafixlxicwgp\",\"type\":\"hdcfm\"}";
+            = "{\"properties\":{\"provider\":\"odqxxpqhm\",\"displayName\":\"ibtblmcvrjazno\",\"description\":\"ofqvpbqsdq\",\"resourceRegionType\":\"RegionalResource\",\"provisioningState\":\"Failed\",\"supportedLocations\":[\"bmitaftazgcxsvq\",\"cqufylam\",\"ow\"],\"sourceResourceFormat\":\"cjoyutehlkarvt\",\"supportedScopesForSource\":[\"ManagementGroup\",\"ManagementGroup\"],\"areRegionalAndGlobalSourcesSupported\":true,\"additionalEnforcedPermissions\":[{\"permissionName\":\"sgofunswhpce\",\"isDataAction\":false}]},\"id\":\"vmfnnbbxn\",\"name\":\"dfkkedeetxtpwcv\",\"type\":\"i\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,18 +34,18 @@ public final class TopicTypesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TopicTypeInfo response
-            = manager.topicTypes().getWithResponse("vucgji", com.azure.core.util.Context.NONE).getValue();
+            = manager.topicTypes().getWithResponse("ziizmeqmdu", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("qpmnu", response.provider());
-        Assertions.assertEquals("hr", response.displayName());
-        Assertions.assertEquals("x", response.description());
+        Assertions.assertEquals("odqxxpqhm", response.provider());
+        Assertions.assertEquals("ibtblmcvrjazno", response.displayName());
+        Assertions.assertEquals("ofqvpbqsdq", response.description());
         Assertions.assertEquals(ResourceRegionType.REGIONAL_RESOURCE, response.resourceRegionType());
         Assertions.assertEquals(TopicTypeProvisioningState.FAILED, response.provisioningState());
-        Assertions.assertEquals("vwlvivjmxmlit", response.supportedLocations().get(0));
-        Assertions.assertEquals("ifefndslv", response.sourceResourceFormat());
+        Assertions.assertEquals("bmitaftazgcxsvq", response.supportedLocations().get(0));
+        Assertions.assertEquals("cjoyutehlkarvt", response.sourceResourceFormat());
         Assertions.assertEquals(TopicTypeSourceScope.MANAGEMENT_GROUP, response.supportedScopesForSource().get(0));
-        Assertions.assertEquals(false, response.areRegionalAndGlobalSourcesSupported());
-        Assertions.assertEquals("ailwdqmqfyd", response.additionalEnforcedPermissions().get(0).permissionName());
-        Assertions.assertEquals(false, response.additionalEnforcedPermissions().get(0).isDataAction());
+        Assertions.assertTrue(response.areRegionalAndGlobalSourcesSupported());
+        Assertions.assertEquals("sgofunswhpce", response.additionalEnforcedPermissions().get(0).permissionName());
+        Assertions.assertFalse(response.additionalEnforcedPermissions().get(0).isDataAction());
     }
 }
