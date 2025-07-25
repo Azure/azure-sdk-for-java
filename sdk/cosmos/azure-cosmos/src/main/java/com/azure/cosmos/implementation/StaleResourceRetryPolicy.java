@@ -20,9 +20,9 @@ import java.util.concurrent.atomic.AtomicReference;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public class StaledResourceRetryPolicy extends DocumentClientRetryPolicy {
+public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
 
-    private final static Logger logger  = LoggerFactory.getLogger(StaledResourceRetryPolicy.class);
+    private final static Logger logger  = LoggerFactory.getLogger(StaleResourceRetryPolicy.class);
 
     private final RxCollectionCache clientCollectionCache;
     private final DocumentClientRetryPolicy nextPolicy;
@@ -36,7 +36,7 @@ public class StaledResourceRetryPolicy extends DocumentClientRetryPolicy {
 
     private volatile boolean retried = false;
 
-    public StaledResourceRetryPolicy(
+    public StaleResourceRetryPolicy(
         RxCollectionCache collectionCache,
         DocumentClientRetryPolicy nextPolicy,
         String resourceFullName,

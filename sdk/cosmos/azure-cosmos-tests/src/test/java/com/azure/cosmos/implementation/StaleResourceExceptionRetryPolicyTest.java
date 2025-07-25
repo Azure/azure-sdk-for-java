@@ -18,7 +18,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 
-public class StaledResourceExceptionRetryPolicyTest {
+public class StaleResourceExceptionRetryPolicyTest {
     @DataProvider(name = "exceptionProvider")
     public Object[][] exceptionProvider() {
         return new Object[][] {
@@ -44,7 +44,7 @@ public class StaledResourceExceptionRetryPolicyTest {
 
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
 
-        StaledResourceRetryPolicy staledResourceRetryPolicy = new StaledResourceRetryPolicy(
+        StaleResourceRetryPolicy staleResourceRetryPolicy = new StaleResourceRetryPolicy(
             rxCollectionCache,
             null,
             testCollectionLink,
@@ -56,10 +56,10 @@ public class StaledResourceExceptionRetryPolicyTest {
 
         CosmosException exception = BridgeInternal.createCosmosException(statusCode);
         BridgeInternal.setSubStatusCode(exception, subStatusCode);
-        ShouldRetryResult shouldRetryResult = staledResourceRetryPolicy.shouldRetry(exception).block();
+        ShouldRetryResult shouldRetryResult = staleResourceRetryPolicy.shouldRetry(exception).block();
         assertThat(shouldRetryResult.shouldRetry).isEqualTo(expectRetry);
 
-        shouldRetryResult = staledResourceRetryPolicy.shouldRetry(exception).block();
+        shouldRetryResult = staleResourceRetryPolicy.shouldRetry(exception).block();
         assertThat(shouldRetryResult.shouldRetry).isFalse();
     }
 
@@ -81,7 +81,7 @@ public class StaledResourceExceptionRetryPolicyTest {
         Map<String, String> customHeaders = new HashMap<>();
         customHeaders.put(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER, "staledExceptionTestRid");
 
-        StaledResourceRetryPolicy staledResourceRetryPolicy = new StaledResourceRetryPolicy(
+        StaleResourceRetryPolicy staleResourceRetryPolicy = new StaleResourceRetryPolicy(
             rxCollectionCache,
             null,
             testCollectionLink,
@@ -92,7 +92,7 @@ public class StaledResourceExceptionRetryPolicyTest {
         );
 
         InvalidPartitionException invalidPartitionException = new InvalidPartitionException();
-        ShouldRetryResult shouldRetryResult = staledResourceRetryPolicy.shouldRetry(invalidPartitionException).block();
+        ShouldRetryResult shouldRetryResult = staleResourceRetryPolicy.shouldRetry(invalidPartitionException).block();
         assertThat(shouldRetryResult.shouldRetry).isFalse();
     }
 
@@ -118,7 +118,7 @@ public class StaledResourceExceptionRetryPolicyTest {
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         doNothing().when(sessionContainer).clearTokenByResourceId(documentCollection.getResourceId());
 
-        StaledResourceRetryPolicy staledResourceRetryPolicy = new StaledResourceRetryPolicy(
+        StaleResourceRetryPolicy staleResourceRetryPolicy = new StaleResourceRetryPolicy(
             rxCollectionCache,
             null,
             testCollectionLink,
@@ -129,7 +129,7 @@ public class StaledResourceExceptionRetryPolicyTest {
         );
 
         InvalidPartitionException invalidPartitionException = new InvalidPartitionException();
-        ShouldRetryResult shouldRetryResult = staledResourceRetryPolicy.shouldRetry(invalidPartitionException).block();
+        ShouldRetryResult shouldRetryResult = staleResourceRetryPolicy.shouldRetry(invalidPartitionException).block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         verify(rxCollectionCache, Mockito.times(1)).refresh(Mockito.any(), Mockito.any(), Mockito.isNull());
         verify(sessionContainer, Mockito.times(1)).clearTokenByResourceId(documentCollection.getResourceId());

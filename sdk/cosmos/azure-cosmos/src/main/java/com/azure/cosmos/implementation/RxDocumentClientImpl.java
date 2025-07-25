@@ -1193,7 +1193,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         // Trying to put this logic as low as the query pipeline
         // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
-        StaledResourceRetryPolicy staledResourceRetryPolicy = new StaledResourceRetryPolicy(
+        StaleResourceRetryPolicy staleResourceRetryPolicy = new StaleResourceRetryPolicy(
             this.collectionCache,
             null,
             resourceLink,
@@ -1214,7 +1214,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     queryClient,
                                     correlationActivityId,
                                     isQueryCancelledOnTimeout),
-                                staledResourceRetryPolicy
+                    staleResourceRetryPolicy
                             ).flatMap(result -> {
                                 diagnosticsFactory.merge(state.getDiagnosticsContextSnapshot());
                                 return Mono.just(result);
@@ -3877,7 +3877,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             (ctx) -> diagnosticsFactory.merge(ctx)
         );
 
-        StaledResourceRetryPolicy staledResourceRetryPolicy = new StaledResourceRetryPolicy(
+        StaleResourceRetryPolicy staleResourceRetryPolicy = new StaleResourceRetryPolicy(
             this.collectionCache,
             null,
             collectionLink,
@@ -3889,7 +3889,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ObservableHelper
             .inlineIfPossibleAsObs(
                 () -> readMany(itemIdentityList, collectionLink, state, diagnosticsFactory, klass),
-                staledResourceRetryPolicy
+                staleResourceRetryPolicy
             )
             .map(feedList -> {
                 // aggregating the result to construct a FeedResponse and aggregate RUs.
@@ -4574,7 +4574,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             diagnosticsFactory::reset,
             diagnosticsFactory::merge);
 
-        StaledResourceRetryPolicy staledResourceRetryPolicy = new StaledResourceRetryPolicy(
+        StaleResourceRetryPolicy staleResourceRetryPolicy = new StaleResourceRetryPolicy(
             this.collectionCache,
             null,
             collectionLink,
@@ -4586,7 +4586,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ObservableHelper
             .fluxInlineIfPossibleAsObs(
                 () -> this.queryDocumentChangeFeedFromPagedFluxInternal(collectionLink, state, classOfT, diagnosticsFactory),
-                staledResourceRetryPolicy)
+                staleResourceRetryPolicy)
             .flatMap(result -> {
                 diagnosticsFactory.merge(state.getDiagnosticsContextSnapshot());
                 return Mono.just(result);
@@ -4719,7 +4719,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             // Trying to put this logic as low as the query pipeline
             // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
-            StaledResourceRetryPolicy staledResourceRetryPolicy = new StaledResourceRetryPolicy(
+            StaleResourceRetryPolicy staleResourceRetryPolicy = new StaleResourceRetryPolicy(
                 this.collectionCache,
                 null,
                 resourceLink,
@@ -4766,7 +4766,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             isQueryCancelledOnTimeout);
                     });
                 },
-                staledResourceRetryPolicy);
+                staleResourceRetryPolicy);
 
             if (orderedApplicableRegionsForSpeculation.size() < 2) {
                 return innerFlux;
@@ -5044,7 +5044,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
         if (!disableStaledResourceExceptionHandling) {
-            documentClientRetryPolicy = new StaledResourceRetryPolicy(
+            documentClientRetryPolicy = new StaleResourceRetryPolicy(
                 this.collectionCache,
                 documentClientRetryPolicy,
                 collectionLink,
@@ -6455,7 +6455,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<List<FeedRange>> getFeedRanges(String collectionLink, boolean forceRefresh) {
-        StaledResourceRetryPolicy staledResourceRetryPolicy = new StaledResourceRetryPolicy(
+        StaleResourceRetryPolicy staleResourceRetryPolicy = new StaleResourceRetryPolicy(
             this.collectionCache,
             null,
             collectionLink,
@@ -6471,11 +6471,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             collectionLink,
             null);
 
-        staledResourceRetryPolicy.onBeforeSendRequest(request);
+        staleResourceRetryPolicy.onBeforeSendRequest(request);
 
         return ObservableHelper.inlineIfPossibleAsObs(
-            () -> getFeedRangesInternal(request, collectionLink, forceRefresh, staledResourceRetryPolicy),
-            staledResourceRetryPolicy);
+            () -> getFeedRangesInternal(request, collectionLink, forceRefresh, staleResourceRetryPolicy),
+            staleResourceRetryPolicy);
     }
 
     private Mono<List<FeedRange>> getFeedRangesInternal(
@@ -7839,7 +7839,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink, requestOptions);
         }
 
-        requestRetryPolicy = new StaledResourceRetryPolicy(
+        requestRetryPolicy = new StaleResourceRetryPolicy(
             this.collectionCache,
             requestRetryPolicy,
             collectionLink,
