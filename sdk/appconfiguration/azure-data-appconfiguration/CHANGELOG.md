@@ -4,11 +4,43 @@
 
 ### Features Added
 
-### Breaking Changes
+* `models.Snapshot` was added
 
-### Bugs Fixed
+* `models.OperationDetails` was added
 
-### Other Changes
+* `AzureAppConfigurationClient` was added
+
+* `models.KeyValueFields` was added
+
+* `implementation.OperationLocationPollingStrategy` was added
+
+* `AzureAppConfigurationServiceVersion` was added
+
+* `models.Label` was added
+
+* `models.Key` was added
+
+* `models.CompositionType` was added
+
+* `models.OperationState` was added
+
+* `implementation.AzureAppConfigurationClientImpl$AzureAppConfigurationClientService` was added
+
+* `models.KeyValue` was added
+
+* `AzureAppConfigurationAsyncClient` was added
+
+* `implementation.SyncOperationLocationPollingStrategy` was added
+
+* `AzureAppConfigurationClientBuilder` was added
+
+* `models.LabelFields` was added
+
+* `implementation.AzureAppConfigurationClientImpl` was added
+
+* `models.KeyValueFilter` was added
+
+* `models.SnapshotStatus` was added
 
 ## 1.8.1 (2025-06-19)
 
