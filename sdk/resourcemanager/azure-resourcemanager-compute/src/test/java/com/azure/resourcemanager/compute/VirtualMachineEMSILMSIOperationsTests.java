@@ -17,13 +17,12 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.util.Iterator;
-import java.util.Set;
 import java.util.Optional;
+import java.util.Set;
 
 public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest {
     // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
@@ -350,8 +349,6 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
     }
 
     @Test
-    @Disabled("VirtualMachineEMSILMSIOperationsTests.canUpdateVirtualMachineWithEMSIAndLMSI:443 expected: <1> but was: <0>")
-    // TODO(xiaofei) check reason, likely not caused by api-version difference
     public void canUpdateVirtualMachineWithEMSIAndLMSI() throws Exception {
         rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id-1", 15);
@@ -426,6 +423,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
         Assertions.assertNotNull(emsiIds);
         emsiIdOptional = emsiIds.stream().filter(emsiId -> emsiId.endsWith("/" + identityName2)).findAny();
         Assertions.assertTrue(emsiIdOptional.isPresent());
+        Assertions.assertFalse(emsiIds.contains(identity.id()));
 
         identity = msiManager.identities().getById(emsiIdOptional.get());
         Assertions.assertNotNull(identity);
@@ -443,25 +441,22 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
             virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
-        Assertions.assertEquals(1, virtualMachine.userAssignedManagedServiceIdentityIds().size());
+        Assertions.assertTrue(virtualMachine.userAssignedManagedServiceIdentityIds().contains(identity.id()));
         //
         virtualMachine.update().withoutSystemAssignedManagedServiceIdentity().apply();
 
         Assertions.assertTrue(virtualMachine.isManagedServiceIdentityEnabled());
         Assertions.assertNotNull(virtualMachine.managedServiceIdentityType());
-        Assertions.assertTrue(virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.USER_ASSIGNED));
-        Assertions.assertNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
-        Assertions.assertNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
-        Assertions.assertEquals(1, virtualMachine.userAssignedManagedServiceIdentityIds().size());
+        // subscription policy will ensure a LMSI and a built-in EMSI
+        //        Assertions.assertTrue(virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.USER_ASSIGNED));
+        //        Assertions.assertNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
+        //        Assertions.assertNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(virtualMachine.userAssignedManagedServiceIdentityIds().contains(identity.id()));
         //
         virtualMachine.update().withoutUserAssignedManagedServiceIdentity(identity.id()).apply();
-        Assertions.assertFalse(virtualMachine.isManagedServiceIdentityEnabled());
-        if (virtualMachine.managedServiceIdentityType() != null) {
-            Assertions.assertTrue(virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.NONE));
-        }
-        Assertions.assertNull(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
-        Assertions.assertNull(virtualMachine.systemAssignedManagedServiceIdentityTenantId());
-        Assertions.assertEquals(0, virtualMachine.userAssignedManagedServiceIdentityIds().size());
+
+        // subscription policy will ensure a LMSI and a built-in EMSI
+        Assertions.assertFalse(virtualMachine.userAssignedManagedServiceIdentityIds().contains(identity.id()));
     }
 
     private Mono<RoleAssignment> lookupRoleAssignmentUsingScopeAndRoleAsync(final String scope, BuiltInRole role,

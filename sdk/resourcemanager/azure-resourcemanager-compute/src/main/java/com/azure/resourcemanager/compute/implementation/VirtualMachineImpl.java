@@ -2150,7 +2150,7 @@ class VirtualMachineImpl
                     return this;
                 });
         } else {
-            return Mono.just(this);
+            return refreshAsync();
         }
     }
 
