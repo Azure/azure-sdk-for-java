@@ -1,14 +1,58 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0 (2025-07-21)
 
-### Features Added
+- Azure Resource Manager StorageMover client library for Java. This package contains Microsoft Azure SDK for StorageMover Management SDK. The Azure Storage Mover REST API. Package api-version 2024-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.UploadLimit` was removed
 
-### Other Changes
+#### `models.JobRunList` was removed
+
+#### `models.AgentList` was removed
+
+#### `models.JobDefinitionList` was removed
+
+#### `models.StorageMoverList` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.EndpointList` was removed
+
+#### `models.ProjectList` was removed
+
+#### `models.JobRunError` was modified
+
+* `withTarget(java.lang.String)` was removed
+* `withCode(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
+
+#### `models.JobRun` was modified
+
+* `java.lang.Object jobDefinitionProperties()` -> `com.azure.core.util.BinaryData jobDefinitionProperties()`
+* `java.lang.Object sourceProperties()` -> `com.azure.core.util.BinaryData sourceProperties()`
+* `java.lang.Object targetProperties()` -> `com.azure.core.util.BinaryData targetProperties()`
+
+#### `models.Agent` was modified
+
+* `localIpAddress()` was removed
+
+#### `models.AgentPropertiesErrorDetails` was modified
+
+* `withCode(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
+
+### Features Added
+
+#### `models.Minute` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Agent` was modified
+
+* `localIPAddress()` was added
 
 ## 1.3.0 (2024-12-23)
 
