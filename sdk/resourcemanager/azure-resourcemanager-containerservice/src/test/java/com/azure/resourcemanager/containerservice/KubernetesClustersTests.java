@@ -3,9 +3,6 @@
 
 package com.azure.resourcemanager.containerservice;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
