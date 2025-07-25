@@ -56,10 +56,6 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
     @Test
     public void canCRUDKubernetesCluster() {
-        // enable preview feature of ACR Teleport for AKS
-        Context context = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
-            new HttpHeaders().set("EnableACRTeleport", "true"));
-
         String aksName = generateRandomResourceName("aks", 15);
         String dnsPrefix = generateRandomResourceName("dns", 10);
         String agentPoolName = generateRandomResourceName("ap0", 10);
@@ -76,7 +72,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         // create
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
             .define(aksName)
-            .withRegion(Region.US_WEST2)
+            .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
             .withRootUsername("testaks")
@@ -100,10 +96,10 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withDnsPrefix("mp1" + dnsPrefix)
             .withTag("tag1", "value1")
             .withAgentPoolResourceGroup(agentPoolResourceGroupName)
-            .create(context);
+            .create();
 
         Assertions.assertNotNull(kubernetesCluster.id());
-        Assertions.assertEquals(Region.US_WEST2, kubernetesCluster.region());
+        Assertions.assertEquals(Region.US_WEST3, kubernetesCluster.region());
         Assertions.assertEquals("testaks", kubernetesCluster.linuxRootUsername());
         Assertions.assertEquals(2, kubernetesCluster.agentPools().size());
         Assertions.assertEquals(agentPoolResourceGroupName, kubernetesCluster.agentPoolResourceGroup());
@@ -162,7 +158,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withTag("tag2", "value2")
             .withTag("tag3", "value3")
             .withoutTag("tag1")
-            .apply(context);
+            .apply();
 
         Assertions.assertEquals(3, kubernetesCluster.agentPools().size());
 
