@@ -352,6 +352,12 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         final KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS_GEN2;
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
 
+        Creatable<StorageAccount> storageAccountCreatable = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess();
+
         VirtualMachine virtualMachine = computeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
@@ -365,7 +371,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
             .withNewDataDisk(1)
             .withNewDataDisk(1, 2, CachingTypes.READ_WRITE)
             .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
-            .withNewStorageAccount(generateRandomResourceName("stg", 17))
+            .withNewStorageAccount(storageAccountCreatable)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withTrustedLaunch()
             .withSecureBoot()

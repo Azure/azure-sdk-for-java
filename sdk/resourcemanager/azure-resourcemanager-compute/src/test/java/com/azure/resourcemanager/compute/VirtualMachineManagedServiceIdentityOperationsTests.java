@@ -186,7 +186,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
         Creatable<StorageAccount> storageAccountCreatable = this.storageManager.storageAccounts()
             .define(generateRandomResourceName("stg", 17))
             .withRegion(region)
-            .withNewResourceGroup(rgName)
+            .withExistingResourceGroup(rgName)
             .disableSharedKeyAccess();
 
         VirtualMachine virtualMachine = computeManager.virtualMachines()
