@@ -30,7 +30,7 @@ private[spark] case class CosmosClientConfiguration (
                                                       clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
                                                       clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
                                                       sampledDiagnosticsLoggerConfig: Option[SampledDiagnosticsLoggerConfig],
-                                                      azureMonitorConfig: Option[AzureMonitorConfig]
+                                                      azureMonitorConfig: Option[AzureMonitorConfig],
                                                     ) {
   private[spark] def getRoleInstanceName(machineId: Option[String]): String = {
     CosmosClientConfiguration.getRoleInstanceName(sparkEnvironmentInfo, machineId)
@@ -65,6 +65,7 @@ private[spark] object CosmosClientConfiguration {
     if (runtimeInfo.isDefined) {
       applicationName = s"$applicationName|${runtimeInfo.get}"
     }
+    applicationName = applicationName.replace("@", " ")
 
     val customApplicationNameSuffix = cosmosAccountConfig.applicationName
     if (customApplicationNameSuffix.isDefined){
