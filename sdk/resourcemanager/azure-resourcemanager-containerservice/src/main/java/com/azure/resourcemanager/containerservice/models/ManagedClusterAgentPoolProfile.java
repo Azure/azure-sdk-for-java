@@ -20,7 +20,8 @@ import java.util.Map;
 @Fluent
 public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
     /*
-     * Windows agent pool names must be 6 characters or less.
+     * Unique name of the agent pool profile in the context of the subscription and resource group. Windows agent pool
+     * names must be 6 characters or less.
      */
     private String name;
 
@@ -35,8 +36,9 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     private String nodeImageVersion;
 
     /*
-     * If orchestratorVersion is a fully specified version <major.minor.patch>, this field will be exactly equal to it.
-     * If orchestratorVersion is <major.minor>, this field will contain the full <major.minor.patch> version being used.
+     * The version of Kubernetes the Agent Pool is running. If orchestratorVersion is a fully specified version
+     * <major.minor.patch>, this field will be exactly equal to it. If orchestratorVersion is <major.minor>, this field
+     * will contain the full <major.minor.patch> version being used.
      */
     private String currentOrchestratorVersion;
 
@@ -54,7 +56,8 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     }
 
     /**
-     * Get the name property: Windows agent pool names must be 6 characters or less.
+     * Get the name property: Unique name of the agent pool profile in the context of the subscription and resource
+     * group. Windows agent pool names must be 6 characters or less.
      * 
      * @return the name value.
      */
@@ -63,7 +66,8 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     }
 
     /**
-     * Set the name property: Windows agent pool names must be 6 characters or less.
+     * Set the name property: Unique name of the agent pool profile in the context of the subscription and resource
+     * group. Windows agent pool names must be 6 characters or less.
      * 
      * @param name the name value to set.
      * @return the ManagedClusterAgentPoolProfile object itself.
@@ -94,9 +98,10 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     }
 
     /**
-     * Get the currentOrchestratorVersion property: If orchestratorVersion is a fully specified version
-     * &lt;major.minor.patch&gt;, this field will be exactly equal to it. If orchestratorVersion is &lt;major.minor&gt;,
-     * this field will contain the full &lt;major.minor.patch&gt; version being used.
+     * Get the currentOrchestratorVersion property: The version of Kubernetes the Agent Pool is running. If
+     * orchestratorVersion is a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal to
+     * it. If orchestratorVersion is &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
+     * version being used.
      * 
      * @return the currentOrchestratorVersion value.
      */
