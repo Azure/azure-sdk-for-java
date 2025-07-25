@@ -31,4 +31,5 @@ module com.azure.spring.data.cosmos {
     opens com.azure.spring.data.cosmos.config to spring.core;
     opens com.azure.spring.data.cosmos.core.mapping to spring.core;
     opens com.azure.spring.data.cosmos.repository.support to spring.beans;
+    opens com.azure.spring.data.cosmos.core.query to spring.core;
 }
