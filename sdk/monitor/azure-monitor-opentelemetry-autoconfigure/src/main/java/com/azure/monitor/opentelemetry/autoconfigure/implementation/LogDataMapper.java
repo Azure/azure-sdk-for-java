@@ -95,9 +95,12 @@ public class LogDataMapper {
         }
 
         Attributes attributes = log.getAttributes();
-        String customEventName = attributes.get(AttributeKey.stringKey(CUSTOM_EVENT_NAME));
-        if (customEventName != null) {
-            return createEventTelemetryItem(log, attributes, customEventName, sampleRate);
+        String eventName = attributes.get(AttributeKey.stringKey(CUSTOM_EVENT_NAME));
+        if (eventName == null) {
+            eventName = log.getEventName();
+        }
+        if (eventName != null) {
+            return createEventTelemetryItem(log, attributes, eventName, sampleRate);
         }
 
         return createMessageTelemetryItem(log, attributes, sampleRate);

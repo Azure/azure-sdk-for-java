@@ -31,7 +31,7 @@
       <dependency>
         <groupId>io.opentelemetry</groupId>
         <artifactId>opentelemetry-bom</artifactId>
-        <version>1.49.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-bom;external_dependency} -->
+        <version>1.52.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-bom;external_dependency} -->
         <type>pom</type>
         <scope>runtime</scope>
       </dependency>
