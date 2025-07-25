@@ -8,8 +8,9 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Specifies the mode that ProxyAgent will execute on. Warning: this property has been deprecated, please specify 'mode'
- * under particular hostendpoint setting.
+ * Specifies the mode that ProxyAgent will execute on if the feature is enabled. ProxyAgent will start to audit or
+ * monitor but not enforce access control over requests to host endpoints in Audit mode, while in Enforce mode it will
+ * enforce access control. The default value is Enforce mode.
  */
 public final class Mode extends ExpandableStringEnum<Mode> {
     /**

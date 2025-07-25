@@ -12,11 +12,14 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.DataResidencyBoundary;
 import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
+import com.azure.resourcemanager.eventgrid.models.ExtendedLocation;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
+import com.azure.resourcemanager.eventgrid.models.ResourceKind;
+import com.azure.resourcemanager.eventgrid.models.ResourceSku;
 import com.azure.resourcemanager.eventgrid.models.TlsVersion;
 import com.azure.resourcemanager.eventgrid.models.TopicProvisioningState;
 import java.io.IOException;
@@ -34,9 +37,24 @@ public final class TopicInner extends Resource {
     private TopicProperties innerProperties;
 
     /*
+     * The Sku pricing tier for the topic.
+     */
+    private ResourceSku sku;
+
+    /*
      * Identity information for the resource.
      */
     private IdentityInfo identity;
+
+    /*
+     * Kind of the resource.
+     */
+    private ResourceKind kind;
+
+    /*
+     * Extended location of the resource.
+     */
+    private ExtendedLocation extendedLocation;
 
     /*
      * The system metadata relating to the Event Grid resource.
@@ -74,6 +92,26 @@ public final class TopicInner extends Resource {
     }
 
     /**
+     * Get the sku property: The Sku pricing tier for the topic.
+     * 
+     * @return the sku value.
+     */
+    public ResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The Sku pricing tier for the topic.
+     * 
+     * @param sku the sku value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withSku(ResourceSku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
      * Get the identity property: Identity information for the resource.
      * 
      * @return the identity value.
@@ -90,6 +128,46 @@ public final class TopicInner extends Resource {
      */
     public TopicInner withIdentity(IdentityInfo identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the kind property: Kind of the resource.
+     * 
+     * @return the kind value.
+     */
+    public ResourceKind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Kind of the resource.
+     * 
+     * @param kind the kind value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withKind(ResourceKind kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the extendedLocation property: Extended location of the resource.
+     * 
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: Extended location of the resource.
+     * 
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
         return this;
     }
 
@@ -344,8 +422,8 @@ public final class TopicInner extends Resource {
 
     /**
      * Get the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the topic.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the topic.
      * 
      * @return the disableLocalAuth value.
      */
@@ -355,8 +433,8 @@ public final class TopicInner extends Resource {
 
     /**
      * Set the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the topic.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the topic.
      * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the TopicInner object itself.
@@ -401,8 +479,14 @@ public final class TopicInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (sku() != null) {
+            sku().validate();
+        }
         if (identity() != null) {
             identity().validate();
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
         }
     }
 
@@ -415,7 +499,10 @@ public final class TopicInner extends Resource {
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         return jsonWriter.writeEndObject();
     }
 
@@ -448,8 +535,14 @@ public final class TopicInner extends Resource {
                     deserializedTopicInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedTopicInner.innerProperties = TopicProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedTopicInner.sku = ResourceSku.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedTopicInner.identity = IdentityInfo.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedTopicInner.kind = ResourceKind.fromString(reader.getString());
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedTopicInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedTopicInner.systemData = SystemData.fromJson(reader);
                 } else {

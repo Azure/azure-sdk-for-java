@@ -14,20 +14,20 @@ public final class PartnerConfigurationUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerConfigurationUpdateParameters model = BinaryData.fromString(
-            "{\"tags\":{\"y\":\"e\",\"imsidxasicddyvvj\":\"uxakjsqzhzbezk\"},\"properties\":{\"defaultMaximumExpirationTimeInDays\":171157625}}")
+            "{\"tags\":{\"ajlyjtlvofqzhv\":\"gogtqxepnylbf\",\"fmo\":\"cib\",\"dwxf\":\"uxrkjp\"},\"properties\":{\"defaultMaximumExpirationTimeInDays\":299953829}}")
             .toObject(PartnerConfigurationUpdateParameters.class);
-        Assertions.assertEquals("e", model.tags().get("y"));
-        Assertions.assertEquals(171157625, model.defaultMaximumExpirationTimeInDays());
+        Assertions.assertEquals("gogtqxepnylbf", model.tags().get("ajlyjtlvofqzhv"));
+        Assertions.assertEquals(299953829, model.defaultMaximumExpirationTimeInDays());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerConfigurationUpdateParameters model
-            = new PartnerConfigurationUpdateParameters().withTags(mapOf("y", "e", "imsidxasicddyvvj", "uxakjsqzhzbezk"))
-                .withDefaultMaximumExpirationTimeInDays(171157625);
+        PartnerConfigurationUpdateParameters model = new PartnerConfigurationUpdateParameters()
+            .withTags(mapOf("ajlyjtlvofqzhv", "gogtqxepnylbf", "fmo", "cib", "dwxf", "uxrkjp"))
+            .withDefaultMaximumExpirationTimeInDays(299953829);
         model = BinaryData.fromObject(model).toObject(PartnerConfigurationUpdateParameters.class);
-        Assertions.assertEquals("e", model.tags().get("y"));
-        Assertions.assertEquals(171157625, model.defaultMaximumExpirationTimeInDays());
+        Assertions.assertEquals("gogtqxepnylbf", model.tags().get("ajlyjtlvofqzhv"));
+        Assertions.assertEquals(299953829, model.defaultMaximumExpirationTimeInDays());
     }
 
     // Use "Map.of" if available

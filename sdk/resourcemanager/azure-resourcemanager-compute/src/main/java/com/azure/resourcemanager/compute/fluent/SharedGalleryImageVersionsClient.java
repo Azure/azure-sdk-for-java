@@ -21,7 +21,7 @@ public interface SharedGalleryImageVersionsClient {
     /**
      * List shared gallery image versions by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -38,7 +38,7 @@ public interface SharedGalleryImageVersionsClient {
     /**
      * List shared gallery image versions by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -54,7 +54,7 @@ public interface SharedGalleryImageVersionsClient {
     /**
      * List shared gallery image versions by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -71,7 +71,7 @@ public interface SharedGalleryImageVersionsClient {
     /**
      * List shared gallery image versions by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -90,7 +90,7 @@ public interface SharedGalleryImageVersionsClient {
     /**
      * Get a shared gallery image version by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -110,7 +110,7 @@ public interface SharedGalleryImageVersionsClient {
     /**
      * Get a shared gallery image version by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -129,7 +129,7 @@ public interface SharedGalleryImageVersionsClient {
     /**
      * Get a shared gallery image version by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -149,7 +149,7 @@ public interface SharedGalleryImageVersionsClient {
     /**
      * Get a shared gallery image version by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.

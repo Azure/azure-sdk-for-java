@@ -8,8 +8,6 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The current state of the gallery or gallery artifact.
- * 
  * The provisioning state, which only appears in the response.
  */
 public final class GalleryProvisioningState extends ExpandableStringEnum<GalleryProvisioningState> {

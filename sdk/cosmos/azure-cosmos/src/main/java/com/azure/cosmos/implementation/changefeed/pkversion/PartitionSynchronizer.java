@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
  */
 public interface PartitionSynchronizer {
     /**
-     * Creates missing leases.
+     * Creates missing leases during startup.
      *
      * @return a deferred computation of this operation.
      */

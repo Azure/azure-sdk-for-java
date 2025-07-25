@@ -16,7 +16,6 @@ ADD ./eng /stress-sb/eng
 ARG SKIP_CHECKS="-Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests -Dcodesnippet.skip -Dspotless.skip -Denforcer.skip"
 
 RUN --mount=type=cache,target=/root/.m2 \
- mvn -f /stress-sb/eng/code-quality-reports/pom.xml clean install ${SKIP_CHECKS} && \
  mvn -f /stress-sb/sdk/tools/pom.xml clean install  ${SKIP_CHECKS} && \
  mvn -f /stress-sb/sdk/core/azure-core/pom.xml clean install ${SKIP_CHECKS} && \
  mvn -f /stress-sb/sdk/serialization/azure-xml/pom.xml clean install ${SKIP_CHECKS} && \

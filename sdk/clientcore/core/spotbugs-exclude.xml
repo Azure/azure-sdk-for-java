@@ -24,6 +24,7 @@
       <Class name="io.clientcore.core.implementation.http.rest.LengthValidatingInputStream" />
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImpl" />
       <Class name="io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder" />
+      <Class name="io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation" />
       <Class name="io.clientcore.core.implementation.utils.AuthenticateChallengeParser" />
       <Class name="io.clientcore.core.implementation.utils.PercentEscaper" />
       <Class name="io.clientcore.core.implementation.utils.Providers" />

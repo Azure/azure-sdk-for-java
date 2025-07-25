@@ -27,7 +27,7 @@ public final class TopicSpacesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.topicSpaces().delete("xrfomcke", "vmyifopxf", "jt", com.azure.core.util.Context.NONE);
+        manager.topicSpaces().delete("ustihtgrafjajvky", "mmjczvog", "derjennmk", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -10,9 +10,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsClient;
-import com.azure.resourcemanager.netapp.fluent.models.QuotaItemInner;
+import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner;
 import com.azure.resourcemanager.netapp.models.NetAppResourceQuotaLimits;
-import com.azure.resourcemanager.netapp.models.QuotaItem;
+import com.azure.resourcemanager.netapp.models.SubscriptionQuotaItem;
 
 public final class NetAppResourceQuotaLimitsImpl implements NetAppResourceQuotaLimits {
     private static final ClientLogger LOGGER = new ClientLogger(NetAppResourceQuotaLimitsImpl.class);
@@ -27,30 +27,31 @@ public final class NetAppResourceQuotaLimitsImpl implements NetAppResourceQuotaL
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<QuotaItem> list(String location) {
-        PagedIterable<QuotaItemInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaItemImpl(inner1, this.manager()));
+    public PagedIterable<SubscriptionQuotaItem> list(String location) {
+        PagedIterable<SubscriptionQuotaItemInner> inner = this.serviceClient().list(location);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SubscriptionQuotaItemImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<QuotaItem> list(String location, Context context) {
-        PagedIterable<QuotaItemInner> inner = this.serviceClient().list(location, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaItemImpl(inner1, this.manager()));
+    public PagedIterable<SubscriptionQuotaItem> list(String location, Context context) {
+        PagedIterable<SubscriptionQuotaItemInner> inner = this.serviceClient().list(location, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SubscriptionQuotaItemImpl(inner1, this.manager()));
     }
 
-    public Response<QuotaItem> getWithResponse(String location, String quotaLimitName, Context context) {
-        Response<QuotaItemInner> inner = this.serviceClient().getWithResponse(location, quotaLimitName, context);
+    public Response<SubscriptionQuotaItem> getWithResponse(String location, String quotaLimitName, Context context) {
+        Response<SubscriptionQuotaItemInner> inner
+            = this.serviceClient().getWithResponse(location, quotaLimitName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new QuotaItemImpl(inner.getValue(), this.manager()));
+                new SubscriptionQuotaItemImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public QuotaItem get(String location, String quotaLimitName) {
-        QuotaItemInner inner = this.serviceClient().get(location, quotaLimitName);
+    public SubscriptionQuotaItem get(String location, String quotaLimitName) {
+        SubscriptionQuotaItemInner inner = this.serviceClient().get(location, quotaLimitName);
         if (inner != null) {
-            return new QuotaItemImpl(inner, this.manager());
+            return new SubscriptionQuotaItemImpl(inner, this.manager());
         } else {
             return null;
         }

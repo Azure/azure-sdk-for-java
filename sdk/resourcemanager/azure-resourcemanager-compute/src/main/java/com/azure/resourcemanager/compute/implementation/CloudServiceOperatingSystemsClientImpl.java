@@ -62,7 +62,7 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ComputeManagementCli")
+    @ServiceInterface(name = "ComputeManagementClientCloudServiceOperatingSystems")
     public interface CloudServiceOperatingSystemsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/cloudServiceOsVersions/{osVersionName}")

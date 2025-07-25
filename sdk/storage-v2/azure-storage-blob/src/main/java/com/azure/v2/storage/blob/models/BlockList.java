@@ -46,9 +46,6 @@ public final class BlockList implements XmlSerializable<BlockList> {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public List<Block> getCommittedBlocks() {
-        if (this.committedBlocks == null) {
-            this.committedBlocks = new ArrayList<>();
-        }
         return this.committedBlocks;
     }
 
@@ -71,9 +68,6 @@ public final class BlockList implements XmlSerializable<BlockList> {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     public List<Block> getUncommittedBlocks() {
-        if (this.uncommittedBlocks == null) {
-            this.uncommittedBlocks = new ArrayList<>();
-        }
         return this.uncommittedBlocks;
     }
 
