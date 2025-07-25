@@ -20,12 +20,14 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = { ContainerServiceManagementClientImpl.class })
 public final class ContainerServiceManagementClientBuilder {
     /*
-     * The ID of the target subscription. The value must be an UUID.
+     * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
+     * the URI for every service call.
      */
     private String subscriptionId;
 
     /**
-     * Sets The ID of the target subscription. The value must be an UUID.
+     * Sets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+     * part of the URI for every service call.
      * 
      * @param subscriptionId the subscriptionId value.
      * @return the ContainerServiceManagementClientBuilder.

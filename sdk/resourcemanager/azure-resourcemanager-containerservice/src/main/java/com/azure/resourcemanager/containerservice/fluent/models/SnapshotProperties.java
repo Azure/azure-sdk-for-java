@@ -41,7 +41,7 @@ public final class SnapshotProperties implements JsonSerializable<SnapshotProper
     private String nodeImageVersion;
 
     /*
-     * The operating system type. The default is Linux.
+     * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      */
     private OSType osType;
 
@@ -128,7 +128,7 @@ public final class SnapshotProperties implements JsonSerializable<SnapshotProper
     }
 
     /**
-     * Get the osType property: The operating system type. The default is Linux.
+     * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      * 
      * @return the osType value.
      */

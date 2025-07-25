@@ -32,13 +32,15 @@ import java.time.Duration;
 public final class ContainerServiceManagementClientImpl extends AzureServiceClient
     implements ContainerServiceManagementClient {
     /**
-     * The ID of the target subscription. The value must be an UUID.
+     * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
+     * the URI for every service call.
      */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription. The value must be an UUID.
-     *
+     * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+     * part of the URI for every service call.
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
@@ -52,25 +54,11 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
-    }
-
-    /**
-     * Api Version.
-     */
-    private final String apiVersion;
-
-    /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    public String getApiVersion() {
-        return this.apiVersion;
     }
 
     /**
@@ -80,7 +68,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -94,7 +82,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
@@ -108,7 +96,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
@@ -122,7 +110,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Gets the OpenShiftManagedClustersClient object to access its operations.
-     *
+     * 
      * @return the OpenShiftManagedClustersClient object.
      */
     public OpenShiftManagedClustersClient getOpenShiftManagedClusters() {
@@ -136,7 +124,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Gets the ContainerServicesClient object to access its operations.
-     *
+     * 
      * @return the ContainerServicesClient object.
      */
     public ContainerServicesClient getContainerServices() {
@@ -150,7 +138,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
@@ -164,7 +152,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Gets the ManagedClustersClient object to access its operations.
-     *
+     * 
      * @return the ManagedClustersClient object.
      */
     public ManagedClustersClient getManagedClusters() {
@@ -178,7 +166,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Gets the MaintenanceConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the MaintenanceConfigurationsClient object.
      */
     public MaintenanceConfigurationsClient getMaintenanceConfigurations() {
@@ -192,7 +180,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Gets the AgentPoolsClient object to access its operations.
-     *
+     * 
      * @return the AgentPoolsClient object.
      */
     public AgentPoolsClient getAgentPools() {
@@ -206,7 +194,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsClient object.
      */
     public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
@@ -220,7 +208,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkResourcesClient object.
      */
     public PrivateLinkResourcesClient getPrivateLinkResources() {
@@ -234,7 +222,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Gets the ResolvePrivateLinkServiceIdsClient object to access its operations.
-     *
+     * 
      * @return the ResolvePrivateLinkServiceIdsClient object.
      */
     public ResolvePrivateLinkServiceIdsClient getResolvePrivateLinkServiceIds() {
@@ -248,7 +236,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Gets the SnapshotsClient object to access its operations.
-     *
+     * 
      * @return the SnapshotsClient object.
      */
     public SnapshotsClient getSnapshots() {
@@ -262,7 +250,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Gets the TrustedAccessRoleBindingsClient object to access its operations.
-     *
+     * 
      * @return the TrustedAccessRoleBindingsClient object.
      */
     public TrustedAccessRoleBindingsClient getTrustedAccessRoleBindings() {
@@ -276,7 +264,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Gets the TrustedAccessRolesClient object to access its operations.
-     *
+     * 
      * @return the TrustedAccessRolesClient object.
      */
     public TrustedAccessRolesClient getTrustedAccessRoles() {
@@ -290,7 +278,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Gets the MachinesClient object to access its operations.
-     *
+     * 
      * @return the MachinesClient object.
      */
     public MachinesClient getMachines() {
@@ -299,12 +287,13 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Initializes an instance of ContainerServiceManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
+     * @param subscriptionId Subscription credentials which uniquely identify Microsoft Azure subscription. The
+     * subscription ID forms part of the URI for every service call.
      * @param endpoint server parameter.
      */
     ContainerServiceManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -315,7 +304,6 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2025-05-01";
         this.openShiftManagedClusters = new OpenShiftManagedClustersClientImpl(this);
         this.containerServices = new ContainerServicesClientImpl(this);
         this.operations = new OperationsClientImpl(this);

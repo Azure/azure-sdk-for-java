@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The operating system type. The default is Linux.
+ * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
  */
 public final class OSType extends ExpandableStringEnum<OSType> {
     /**

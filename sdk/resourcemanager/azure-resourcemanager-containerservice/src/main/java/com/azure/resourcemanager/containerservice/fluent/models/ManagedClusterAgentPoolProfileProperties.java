@@ -124,7 +124,7 @@ public class ManagedClusterAgentPoolProfileProperties
     private Integer maxPods;
 
     /*
-     * The operating system type. The default is Linux.
+     * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      */
     private OSType osType;
 
@@ -651,7 +651,7 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Get the osType property: The operating system type. The default is Linux.
+     * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      * 
      * @return the osType value.
      */
@@ -660,7 +660,7 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Set the osType property: The operating system type. The default is Linux.
+     * Set the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      * 
      * @param osType the osType value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
