@@ -594,7 +594,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
             .define(aksName)
-            .withRegion(Region.US_WEST2)
+            .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName)
             .withVersion("1.30.3")
             .withRootUsername("testaks")
