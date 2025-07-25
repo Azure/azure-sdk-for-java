@@ -22,6 +22,21 @@ public final class ConnectToTargetSqlMITaskInput implements JsonSerializable<Con
      */
     private SqlConnectionInfo targetConnectionInfo;
 
+    /*
+     * Flag for whether to collect logins from target SQL MI server.
+     */
+    private Boolean collectLogins;
+
+    /*
+     * Flag for whether to collect agent jobs from target SQL MI server.
+     */
+    private Boolean collectAgentJobs;
+
+    /*
+     * Flag for whether to validate SSIS catalog is reachable on the target SQL MI server.
+     */
+    private Boolean validateSsisCatalogOnly;
+
     /**
      * Creates an instance of ConnectToTargetSqlMITaskInput class.
      */
@@ -49,6 +64,68 @@ public final class ConnectToTargetSqlMITaskInput implements JsonSerializable<Con
     }
 
     /**
+     * Get the collectLogins property: Flag for whether to collect logins from target SQL MI server.
+     * 
+     * @return the collectLogins value.
+     */
+    public Boolean collectLogins() {
+        return this.collectLogins;
+    }
+
+    /**
+     * Set the collectLogins property: Flag for whether to collect logins from target SQL MI server.
+     * 
+     * @param collectLogins the collectLogins value to set.
+     * @return the ConnectToTargetSqlMITaskInput object itself.
+     */
+    public ConnectToTargetSqlMITaskInput withCollectLogins(Boolean collectLogins) {
+        this.collectLogins = collectLogins;
+        return this;
+    }
+
+    /**
+     * Get the collectAgentJobs property: Flag for whether to collect agent jobs from target SQL MI server.
+     * 
+     * @return the collectAgentJobs value.
+     */
+    public Boolean collectAgentJobs() {
+        return this.collectAgentJobs;
+    }
+
+    /**
+     * Set the collectAgentJobs property: Flag for whether to collect agent jobs from target SQL MI server.
+     * 
+     * @param collectAgentJobs the collectAgentJobs value to set.
+     * @return the ConnectToTargetSqlMITaskInput object itself.
+     */
+    public ConnectToTargetSqlMITaskInput withCollectAgentJobs(Boolean collectAgentJobs) {
+        this.collectAgentJobs = collectAgentJobs;
+        return this;
+    }
+
+    /**
+     * Get the validateSsisCatalogOnly property: Flag for whether to validate SSIS catalog is reachable on the target
+     * SQL MI server.
+     * 
+     * @return the validateSsisCatalogOnly value.
+     */
+    public Boolean validateSsisCatalogOnly() {
+        return this.validateSsisCatalogOnly;
+    }
+
+    /**
+     * Set the validateSsisCatalogOnly property: Flag for whether to validate SSIS catalog is reachable on the target
+     * SQL MI server.
+     * 
+     * @param validateSsisCatalogOnly the validateSsisCatalogOnly value to set.
+     * @return the ConnectToTargetSqlMITaskInput object itself.
+     */
+    public ConnectToTargetSqlMITaskInput withValidateSsisCatalogOnly(Boolean validateSsisCatalogOnly) {
+        this.validateSsisCatalogOnly = validateSsisCatalogOnly;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -72,6 +149,9 @@ public final class ConnectToTargetSqlMITaskInput implements JsonSerializable<Con
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("targetConnectionInfo", this.targetConnectionInfo);
+        jsonWriter.writeBooleanField("collectLogins", this.collectLogins);
+        jsonWriter.writeBooleanField("collectAgentJobs", this.collectAgentJobs);
+        jsonWriter.writeBooleanField("validateSsisCatalogOnly", this.validateSsisCatalogOnly);
         return jsonWriter.writeEndObject();
     }
 
@@ -94,6 +174,15 @@ public final class ConnectToTargetSqlMITaskInput implements JsonSerializable<Con
 
                 if ("targetConnectionInfo".equals(fieldName)) {
                     deserializedConnectToTargetSqlMITaskInput.targetConnectionInfo = SqlConnectionInfo.fromJson(reader);
+                } else if ("collectLogins".equals(fieldName)) {
+                    deserializedConnectToTargetSqlMITaskInput.collectLogins
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("collectAgentJobs".equals(fieldName)) {
+                    deserializedConnectToTargetSqlMITaskInput.collectAgentJobs
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("validateSsisCatalogOnly".equals(fieldName)) {
+                    deserializedConnectToTargetSqlMITaskInput.validateSsisCatalogOnly
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

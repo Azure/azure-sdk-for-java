@@ -9,8 +9,10 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datamigration.fluent.models.CommandPropertiesInner;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Properties for task that validates migration input for SQL to Azure SQL Database Managed Instance sync scenario.
@@ -20,7 +22,7 @@ public final class ValidateMigrationInputSqlServerSqlMISyncTaskProperties extend
     /*
      * Task type.
      */
-    private String taskType = "ValidateMigrationInput.SqlServer.AzureSqlDbMI.Sync.LRS";
+    private TaskType taskType = TaskType.VALIDATE_MIGRATION_INPUT_SQL_SERVER_AZURE_SQL_DB_MI_SYNC_LRS;
 
     /*
      * Task input
@@ -44,7 +46,7 @@ public final class ValidateMigrationInputSqlServerSqlMISyncTaskProperties extend
      * @return the taskType value.
      */
     @Override
-    public String taskType() {
+    public TaskType taskType() {
         return this.taskType;
     }
 
@@ -79,6 +81,15 @@ public final class ValidateMigrationInputSqlServerSqlMISyncTaskProperties extend
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ValidateMigrationInputSqlServerSqlMISyncTaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -102,7 +113,8 @@ public final class ValidateMigrationInputSqlServerSqlMISyncTaskProperties extend
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("taskType", this.taskType);
+        jsonWriter.writeMapField("clientData", clientData(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("taskType", this.taskType == null ? null : this.taskType.toString());
         jsonWriter.writeJsonField("input", this.input);
         return jsonWriter.writeEndObject();
     }
@@ -131,10 +143,15 @@ public final class ValidateMigrationInputSqlServerSqlMISyncTaskProperties extend
                     deserializedValidateMigrationInputSqlServerSqlMISyncTaskProperties
                         .withState(TaskState.fromString(reader.getString()));
                 } else if ("commands".equals(fieldName)) {
-                    List<CommandProperties> commands = reader.readArray(reader1 -> CommandProperties.fromJson(reader1));
+                    List<CommandPropertiesInner> commands
+                        = reader.readArray(reader1 -> CommandPropertiesInner.fromJson(reader1));
                     deserializedValidateMigrationInputSqlServerSqlMISyncTaskProperties.withCommands(commands);
+                } else if ("clientData".equals(fieldName)) {
+                    Map<String, String> clientData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedValidateMigrationInputSqlServerSqlMISyncTaskProperties.withClientData(clientData);
                 } else if ("taskType".equals(fieldName)) {
-                    deserializedValidateMigrationInputSqlServerSqlMISyncTaskProperties.taskType = reader.getString();
+                    deserializedValidateMigrationInputSqlServerSqlMISyncTaskProperties.taskType
+                        = TaskType.fromString(reader.getString());
                 } else if ("input".equals(fieldName)) {
                     deserializedValidateMigrationInputSqlServerSqlMISyncTaskProperties.input
                         = ValidateMigrationInputSqlServerSqlMISyncTaskInput.fromJson(reader);

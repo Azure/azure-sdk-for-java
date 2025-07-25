@@ -9,8 +9,10 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datamigration.fluent.models.CommandPropertiesInner;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Properties for the task that validates connection to Azure Database for MySQL and target server requirements.
@@ -20,7 +22,7 @@ public final class ConnectToTargetAzureDbForMySqlTaskProperties extends ProjectT
     /*
      * Task type.
      */
-    private String taskType = "ConnectToTarget.AzureDbForMySql";
+    private TaskType taskType = TaskType.CONNECT_TO_TARGET_AZURE_DB_FOR_MY_SQL;
 
     /*
      * Task input
@@ -44,7 +46,7 @@ public final class ConnectToTargetAzureDbForMySqlTaskProperties extends ProjectT
      * @return the taskType value.
      */
     @Override
-    public String taskType() {
+    public TaskType taskType() {
         return this.taskType;
     }
 
@@ -78,6 +80,15 @@ public final class ConnectToTargetAzureDbForMySqlTaskProperties extends ProjectT
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ConnectToTargetAzureDbForMySqlTaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -101,7 +112,8 @@ public final class ConnectToTargetAzureDbForMySqlTaskProperties extends ProjectT
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("taskType", this.taskType);
+        jsonWriter.writeMapField("clientData", clientData(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("taskType", this.taskType == null ? null : this.taskType.toString());
         jsonWriter.writeJsonField("input", this.input);
         return jsonWriter.writeEndObject();
     }
@@ -129,10 +141,15 @@ public final class ConnectToTargetAzureDbForMySqlTaskProperties extends ProjectT
                     deserializedConnectToTargetAzureDbForMySqlTaskProperties
                         .withState(TaskState.fromString(reader.getString()));
                 } else if ("commands".equals(fieldName)) {
-                    List<CommandProperties> commands = reader.readArray(reader1 -> CommandProperties.fromJson(reader1));
+                    List<CommandPropertiesInner> commands
+                        = reader.readArray(reader1 -> CommandPropertiesInner.fromJson(reader1));
                     deserializedConnectToTargetAzureDbForMySqlTaskProperties.withCommands(commands);
+                } else if ("clientData".equals(fieldName)) {
+                    Map<String, String> clientData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedConnectToTargetAzureDbForMySqlTaskProperties.withClientData(clientData);
                 } else if ("taskType".equals(fieldName)) {
-                    deserializedConnectToTargetAzureDbForMySqlTaskProperties.taskType = reader.getString();
+                    deserializedConnectToTargetAzureDbForMySqlTaskProperties.taskType
+                        = TaskType.fromString(reader.getString());
                 } else if ("input".equals(fieldName)) {
                     deserializedConnectToTargetAzureDbForMySqlTaskProperties.input
                         = ConnectToTargetAzureDbForMySqlTaskInput.fromJson(reader);

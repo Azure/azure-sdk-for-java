@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Describes an available DMS SKU.
+ * Describes an available DMS (classic) SKU.
  */
 @Immutable
 public final class ResourceSkuInner implements JsonSerializable<ResourceSkuInner> {
@@ -32,7 +32,7 @@ public final class ResourceSkuInner implements JsonSerializable<ResourceSkuInner
     private String name;
 
     /*
-     * Specifies the tier of DMS in a scale set.
+     * Specifies the tier of DMS (classic) in a scale set.
      */
     private String tier;
 
@@ -106,7 +106,7 @@ public final class ResourceSkuInner implements JsonSerializable<ResourceSkuInner
     }
 
     /**
-     * Get the tier property: Specifies the tier of DMS in a scale set.
+     * Get the tier property: Specifies the tier of DMS (classic) in a scale set.
      * 
      * @return the tier value.
      */
