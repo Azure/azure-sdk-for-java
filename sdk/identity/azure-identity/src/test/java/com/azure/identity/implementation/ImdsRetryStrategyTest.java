@@ -51,16 +51,18 @@ public class ImdsRetryStrategyTest {
     }
 
     private static Stream<Arguments> shouldRetryInDifferentScenarios() {
-        return Stream.of(
-            Arguments.of(null, 400, false, "Imds Retry Strategy should not retry on 400 status response"),
+        return Stream.of(Arguments.of(null, 400, false, "Imds Retry Strategy should not retry on 400 status response"),
             Arguments.of(null, 410, true, "Imds Retry Strategy should retry on 410 status response"),
             Arguments.of(null, 429, true, "Imds Retry Strategy should retry on 429 status response"),
             Arguments.of(null, 500, true, "Imds Retry Strategy should retry on 500 status reponse"),
             Arguments.of(null, 599, true, "Imds Retry Strategy should retry on 599 status response"),
             Arguments.of(null, 404, true, "Imds Retry Strategy should retry on 404 status response"),
-            Arguments.of("A socket operation was attempted to an unreachable", 403, true, "Imds Retry Strategy should retry on 403 with unreachable message"),
-            Arguments.of("Access denied", 403, false, "Imds Retry Strategy should not retry on 403 with Access Denied message"),
-            Arguments.of(null, 403, false, "Imds Retry Strategy should not retry on 403 with no ResponseMessage header"));
+            Arguments.of("A socket operation was attempted to an unreachable", 403, true,
+                "Imds Retry Strategy should retry on 403 with unreachable message"),
+            Arguments.of("Access denied", 403, false,
+                "Imds Retry Strategy should not retry on 403 with Access Denied message"),
+            Arguments.of(null, 403, false,
+                "Imds Retry Strategy should not retry on 403 with no ResponseMessage header"));
     }
 
     @Test
