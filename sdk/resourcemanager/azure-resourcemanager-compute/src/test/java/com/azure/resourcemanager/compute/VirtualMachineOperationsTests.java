@@ -323,13 +323,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     @Test
     public void canRefreshAfterDeallocation() {
         // Create
-        StorageAccount storageAccount = this.storageManager.storageAccounts()
-            .define(generateRandomResourceName("stg", 17))
-            .withRegion(region)
-            .withNewResourceGroup(rgName)
-            .disableSharedKeyAccess()
-            .create();
-
         VirtualMachine vm = computeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
@@ -345,7 +338,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
-            .withExistingStorageAccount(storageAccount)
             .create();
 
         vm.powerOff();
@@ -1159,13 +1151,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     @Test
     public void canForceDeleteVirtualMachine() {
         // Create
-        StorageAccount storageAccount = this.storageManager.storageAccounts()
-            .define(generateRandomResourceName("stg", 17))
-            .withRegion("eastus2euap")
-            .withNewResourceGroup(rgName)
-            .disableSharedKeyAccess()
-            .create();
-
         computeManager.virtualMachines()
             .define(vmName)
             .withRegion("eastus2euap")
@@ -1176,7 +1161,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2016_DATACENTER)
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
-            .withExistingStorageAccount(storageAccount)
             .create();
         // Get
         VirtualMachine virtualMachine = computeManager.virtualMachines().getByResourceGroup(rgName, vmName);
