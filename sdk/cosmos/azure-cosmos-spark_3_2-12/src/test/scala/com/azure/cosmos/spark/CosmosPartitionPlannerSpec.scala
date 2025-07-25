@@ -37,8 +37,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       clientBuilderInterceptors = None,
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
-      azureMonitorConfig = None,
-      accountDataResolverServiceName = None
+      azureMonitorConfig = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -114,8 +113,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       clientBuilderInterceptors = None,
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
-      azureMonitorConfig = None,
-      accountDataResolverServiceName = None
+      azureMonitorConfig = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -191,8 +189,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       clientBuilderInterceptors = None,
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
-      azureMonitorConfig = None,
-      accountDataResolverServiceName = None
+      azureMonitorConfig = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -268,8 +265,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       clientBuilderInterceptors = None,
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
-      azureMonitorConfig = None,
-      accountDataResolverServiceName = None
+      azureMonitorConfig = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -343,8 +339,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       clientBuilderInterceptors = None,
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
-      azureMonitorConfig = None,
-      accountDataResolverServiceName = None
+      azureMonitorConfig = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -434,8 +429,7 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       clientBuilderInterceptors = None,
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
-      azureMonitorConfig = None,
-      accountDataResolverServiceName = None
+      azureMonitorConfig = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)

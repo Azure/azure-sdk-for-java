@@ -31,12 +31,6 @@ private[cosmos] object CosmosConstants {
   object Names {
     val ItemsDataSourceShortName = "cosmos.oltp"
     val ChangeFeedDataSourceShortName = "cosmos.oltp.changeFeed"
-    private val shading_prefix = "azure_cosmos_spark."
-    // Shading the sources causes this string to be different at runtime hence why getter is needed
-    private val fabricAccountDataResolverFQDN = "com.azure.cosmos.spark.fabric.FabricAccountDataResolver"
-    def getFabricAccountDataResolverFQDN: String = {
-      fabricAccountDataResolverFQDN.replace(shading_prefix, "")
-    }
   }
 
 

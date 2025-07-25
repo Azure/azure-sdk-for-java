@@ -31,7 +31,6 @@ private[spark] case class CosmosClientConfiguration (
                                                       clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
                                                       sampledDiagnosticsLoggerConfig: Option[SampledDiagnosticsLoggerConfig],
                                                       azureMonitorConfig: Option[AzureMonitorConfig],
-                                                      accountDataResolverServiceName: Option[String]
                                                     ) {
   private[spark] def getRoleInstanceName(machineId: Option[String]): String = {
     CosmosClientConfiguration.getRoleInstanceName(sparkEnvironmentInfo, machineId)
@@ -96,7 +95,6 @@ private[spark] object CosmosClientConfiguration {
       cosmosAccountConfig.clientInterceptors,
       diagnosticsConfig.sampledDiagnosticsLoggerConfig,
       diagnosticsConfig.azureMonitorConfig,
-      cosmosAccountConfig.accountDataResolverServiceName
     )
   }
 

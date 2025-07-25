@@ -10,7 +10,6 @@ import com.azure.core.util.TracingOptions
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry
 import com.azure.cosmos.implementation.{Configs, CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMetricCategory, CosmosMetricTagName, CosmosMicrometerMetricsOptions}
-import com.azure.cosmos.spark.CosmosConstants.Names.getFabricAccountDataResolverFQDN
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -169,8 +168,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       case None =>
         val cosmosAsyncClient = createCosmosAsyncClient(cosmosClientConfiguration, cosmosClientStateHandle)
         var sparkCatalogClient: CosmosCatalogClient = CosmosCatalogCosmosSDKClient(cosmosAsyncClient)
-        if (!cosmosClientConfiguration.accountDataResolverServiceName.contains(getFabricAccountDataResolverFQDN) &&
-          cosmosClientConfiguration.resourceGroupName.isDefined && cosmosClientConfiguration.subscriptionId.isDefined
+        if (cosmosClientConfiguration.resourceGroupName.isDefined && cosmosClientConfiguration.subscriptionId.isDefined
           && cosmosClientConfiguration.tenantId.isDefined) {
           // When using AAD auth, cosmos catalog will change to use management sdk instead of cosmos sdk
           cosmosClientConfiguration.authConfig match {
@@ -206,6 +204,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                   cosmosAsyncClient)
             case _ =>
           }
+        } else {
+          logWarning("To create Databases, Containers and other resources in Cosmos DB using Microsoft Entra ID, " +
+            "you need to provide resourceGroupName, subscriptionId and tenantId in the configuration. " +
+            "Otherwise, the Cosmos Catalog will not be able to create resources.")
         }
 
         val epochNowInMs = Instant.now.toEpochMilli
