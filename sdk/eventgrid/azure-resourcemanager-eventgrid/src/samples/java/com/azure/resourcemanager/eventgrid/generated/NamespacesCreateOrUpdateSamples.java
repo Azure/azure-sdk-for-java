@@ -15,8 +15,8 @@ import java.util.Map;
 public final class NamespacesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/Namespaces_CreateOrUpdate
-     * .json
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/
+     * Namespaces_CreateOrUpdate.json
      */
     /**
      * Sample code: Namespaces_CreateOrUpdate.

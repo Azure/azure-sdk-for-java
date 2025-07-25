@@ -28,7 +28,7 @@ public final class NamespaceTopicEventSubscriptionsDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.namespaceTopicEventSubscriptions()
-            .delete("ikcdrdaasax", "obsmf", "wiyjvzuko", "r", com.azure.core.util.Context.NONE);
+            .delete("c", "uzfwo", "wakukzkdtzxs", "ednlwglihezo", com.azure.core.util.Context.NONE);
 
     }
 }

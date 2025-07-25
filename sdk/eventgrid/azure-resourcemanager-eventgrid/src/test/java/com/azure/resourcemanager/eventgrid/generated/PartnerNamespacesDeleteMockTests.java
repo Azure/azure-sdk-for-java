@@ -27,7 +27,7 @@ public final class PartnerNamespacesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.partnerNamespaces().delete("zkqxsalu", "yigfcvcew", com.azure.core.util.Context.NONE);
+        manager.partnerNamespaces().delete("vt", "o", com.azure.core.util.Context.NONE);
 
     }
 }
