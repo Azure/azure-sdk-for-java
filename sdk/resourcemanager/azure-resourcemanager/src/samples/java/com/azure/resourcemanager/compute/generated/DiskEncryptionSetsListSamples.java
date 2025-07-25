@@ -9,11 +9,11 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DiskEncryptionSetsListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2025-01-02/examples/
      * diskEncryptionSetExamples/DiskEncryptionSet_ListBySubscription.json
      */
     /**
-     * Sample code: List all disk encryption sets in a subscription.
+     * Sample code: list all disk encryption sets in a subscription.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

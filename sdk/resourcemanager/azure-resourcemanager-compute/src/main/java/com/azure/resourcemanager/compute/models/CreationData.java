@@ -72,6 +72,11 @@ public final class CreationData implements JsonSerializable<CreationData> {
     private String securityDataUri;
 
     /*
+     * If createOption is ImportSecure, this is the URI of a blob to be imported into VM metadata for Confidential VM.
+     */
+    private String securityMetadataUri;
+
+    /*
      * Set this flag to true to get a boost on the performance target of the disk deployed, see here on the respective
      * performance target. This flag can only be set on disk creation time and cannot be disabled after enabled.
      */
@@ -86,6 +91,12 @@ public final class CreationData implements JsonSerializable<CreationData> {
      * If this field is set on a snapshot and createOption is CopyStart, the snapshot will be copied at a quicker speed.
      */
     private ProvisionedBandwidthCopyOption provisionedBandwidthCopySpeed;
+
+    /*
+     * For snapshots created from Premium SSD v2 or Ultra disk, this property determines the time in minutes the
+     * snapshot is retained for instant access to enable faster restore.
+     */
+    private Long instantAccessDurationMinutes;
 
     /**
      * Creates an instance of CreationData class.
@@ -300,6 +311,28 @@ public final class CreationData implements JsonSerializable<CreationData> {
     }
 
     /**
+     * Get the securityMetadataUri property: If createOption is ImportSecure, this is the URI of a blob to be imported
+     * into VM metadata for Confidential VM.
+     * 
+     * @return the securityMetadataUri value.
+     */
+    public String securityMetadataUri() {
+        return this.securityMetadataUri;
+    }
+
+    /**
+     * Set the securityMetadataUri property: If createOption is ImportSecure, this is the URI of a blob to be imported
+     * into VM metadata for Confidential VM.
+     * 
+     * @param securityMetadataUri the securityMetadataUri value to set.
+     * @return the CreationData object itself.
+     */
+    public CreationData withSecurityMetadataUri(String securityMetadataUri) {
+        this.securityMetadataUri = securityMetadataUri;
+        return this;
+    }
+
+    /**
      * Get the performancePlus property: Set this flag to true to get a boost on the performance target of the disk
      * deployed, see here on the respective performance target. This flag can only be set on disk creation time and
      * cannot be disabled after enabled.
@@ -369,6 +402,28 @@ public final class CreationData implements JsonSerializable<CreationData> {
     }
 
     /**
+     * Get the instantAccessDurationMinutes property: For snapshots created from Premium SSD v2 or Ultra disk, this
+     * property determines the time in minutes the snapshot is retained for instant access to enable faster restore.
+     * 
+     * @return the instantAccessDurationMinutes value.
+     */
+    public Long instantAccessDurationMinutes() {
+        return this.instantAccessDurationMinutes;
+    }
+
+    /**
+     * Set the instantAccessDurationMinutes property: For snapshots created from Premium SSD v2 or Ultra disk, this
+     * property determines the time in minutes the snapshot is retained for instant access to enable faster restore.
+     * 
+     * @param instantAccessDurationMinutes the instantAccessDurationMinutes value to set.
+     * @return the CreationData object itself.
+     */
+    public CreationData withInstantAccessDurationMinutes(Long instantAccessDurationMinutes) {
+        this.instantAccessDurationMinutes = instantAccessDurationMinutes;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -403,10 +458,12 @@ public final class CreationData implements JsonSerializable<CreationData> {
         jsonWriter.writeNumberField("uploadSizeBytes", this.uploadSizeBytes);
         jsonWriter.writeNumberField("logicalSectorSize", this.logicalSectorSize);
         jsonWriter.writeStringField("securityDataUri", this.securityDataUri);
+        jsonWriter.writeStringField("securityMetadataUri", this.securityMetadataUri);
         jsonWriter.writeBooleanField("performancePlus", this.performancePlus);
         jsonWriter.writeStringField("elasticSanResourceId", this.elasticSanResourceId);
         jsonWriter.writeStringField("provisionedBandwidthCopySpeed",
             this.provisionedBandwidthCopySpeed == null ? null : this.provisionedBandwidthCopySpeed.toString());
+        jsonWriter.writeNumberField("instantAccessDurationMinutes", this.instantAccessDurationMinutes);
         return jsonWriter.writeEndObject();
     }
 
@@ -446,6 +503,8 @@ public final class CreationData implements JsonSerializable<CreationData> {
                     deserializedCreationData.logicalSectorSize = reader.getNullable(JsonReader::getInt);
                 } else if ("securityDataUri".equals(fieldName)) {
                     deserializedCreationData.securityDataUri = reader.getString();
+                } else if ("securityMetadataUri".equals(fieldName)) {
+                    deserializedCreationData.securityMetadataUri = reader.getString();
                 } else if ("performancePlus".equals(fieldName)) {
                     deserializedCreationData.performancePlus = reader.getNullable(JsonReader::getBoolean);
                 } else if ("elasticSanResourceId".equals(fieldName)) {
@@ -453,6 +512,8 @@ public final class CreationData implements JsonSerializable<CreationData> {
                 } else if ("provisionedBandwidthCopySpeed".equals(fieldName)) {
                     deserializedCreationData.provisionedBandwidthCopySpeed
                         = ProvisionedBandwidthCopyOption.fromString(reader.getString());
+                } else if ("instantAccessDurationMinutes".equals(fieldName)) {
+                    deserializedCreationData.instantAccessDurationMinutes = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }

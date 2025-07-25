@@ -17,47 +17,58 @@ public final class PartnerTopicInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerTopicInfo model = BinaryData.fromString(
-            "{\"azureSubscriptionId\":\"kknryrtihf\",\"resourceGroupName\":\"ijbpzvgnwzsymgl\",\"name\":\"fcyzkohdbihanufh\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"tfwvukxgaudc\":{\"description\":\"git\",\"displayName\":\"qhabifpikxwcz\",\"documentationUrl\":\"scnpqxuhivy\",\"dataSchemaUrl\":\"iwbybrkxvdumjg\"}}},\"source\":\"nhsjcnyej\"}")
+            "{\"azureSubscriptionId\":\"qtrgqjbpfzfsinzg\",\"resourceGroupName\":\"cjrwzoxxjtfellu\",\"name\":\"zitonpeqfpjkjl\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"xzxtheo\":{\"description\":\"pfxxy\",\"displayName\":\"ninmayhuyb\",\"documentationUrl\":\"podepoo\",\"dataSchemaUrl\":\"nuvamiheogna\"},\"kufubljo\":{\"description\":\"si\",\"displayName\":\"evcciqihnhun\",\"documentationUrl\":\"wjzrnfygxgisp\",\"dataSchemaUrl\":\"vtz\"},\"clxxwrljdo\":{\"description\":\"qeof\",\"displayName\":\"e\",\"documentationUrl\":\"hqjbasvmsmj\",\"dataSchemaUrl\":\"lngsntnbybkzgcwr\"},\"qpjwnzlljfm\":{\"description\":\"kcqvkocrc\",\"displayName\":\"kwt\",\"documentationUrl\":\"xbnjbiksq\",\"dataSchemaUrl\":\"lssai\"}}},\"source\":\"eebvmgxsab\"}")
             .toObject(PartnerTopicInfo.class);
-        Assertions.assertEquals("kknryrtihf", model.azureSubscriptionId());
-        Assertions.assertEquals("ijbpzvgnwzsymgl", model.resourceGroupName());
-        Assertions.assertEquals("fcyzkohdbihanufh", model.name());
+        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.azureSubscriptionId());
+        Assertions.assertEquals("cjrwzoxxjtfellu", model.resourceGroupName());
+        Assertions.assertEquals("zitonpeqfpjkjl", model.name());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
-        Assertions.assertEquals("git", model.eventTypeInfo().inlineEventTypes().get("tfwvukxgaudc").description());
-        Assertions.assertEquals("qhabifpikxwcz",
-            model.eventTypeInfo().inlineEventTypes().get("tfwvukxgaudc").displayName());
-        Assertions.assertEquals("scnpqxuhivy",
-            model.eventTypeInfo().inlineEventTypes().get("tfwvukxgaudc").documentationUrl());
-        Assertions.assertEquals("iwbybrkxvdumjg",
-            model.eventTypeInfo().inlineEventTypes().get("tfwvukxgaudc").dataSchemaUrl());
-        Assertions.assertEquals("nhsjcnyej", model.source());
+        Assertions.assertEquals("pfxxy", model.eventTypeInfo().inlineEventTypes().get("xzxtheo").description());
+        Assertions.assertEquals("ninmayhuyb", model.eventTypeInfo().inlineEventTypes().get("xzxtheo").displayName());
+        Assertions.assertEquals("podepoo", model.eventTypeInfo().inlineEventTypes().get("xzxtheo").documentationUrl());
+        Assertions.assertEquals("nuvamiheogna",
+            model.eventTypeInfo().inlineEventTypes().get("xzxtheo").dataSchemaUrl());
+        Assertions.assertEquals("eebvmgxsab", model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerTopicInfo model = new PartnerTopicInfo().withAzureSubscriptionId("kknryrtihf")
-            .withResourceGroupName("ijbpzvgnwzsymgl")
-            .withName("fcyzkohdbihanufh")
+        PartnerTopicInfo model = new PartnerTopicInfo().withAzureSubscriptionId("qtrgqjbpfzfsinzg")
+            .withResourceGroupName("cjrwzoxxjtfellu")
+            .withName("zitonpeqfpjkjl")
             .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                .withInlineEventTypes(mapOf("tfwvukxgaudc",
-                    new InlineEventProperties().withDescription("git")
-                        .withDisplayName("qhabifpikxwcz")
-                        .withDocumentationUrl("scnpqxuhivy")
-                        .withDataSchemaUrl("iwbybrkxvdumjg"))))
-            .withSource("nhsjcnyej");
+                .withInlineEventTypes(mapOf("xzxtheo",
+                    new InlineEventProperties().withDescription("pfxxy")
+                        .withDisplayName("ninmayhuyb")
+                        .withDocumentationUrl("podepoo")
+                        .withDataSchemaUrl("nuvamiheogna"),
+                    "kufubljo",
+                    new InlineEventProperties().withDescription("si")
+                        .withDisplayName("evcciqihnhun")
+                        .withDocumentationUrl("wjzrnfygxgisp")
+                        .withDataSchemaUrl("vtz"),
+                    "clxxwrljdo",
+                    new InlineEventProperties().withDescription("qeof")
+                        .withDisplayName("e")
+                        .withDocumentationUrl("hqjbasvmsmj")
+                        .withDataSchemaUrl("lngsntnbybkzgcwr"),
+                    "qpjwnzlljfm",
+                    new InlineEventProperties().withDescription("kcqvkocrc")
+                        .withDisplayName("kwt")
+                        .withDocumentationUrl("xbnjbiksq")
+                        .withDataSchemaUrl("lssai"))))
+            .withSource("eebvmgxsab");
         model = BinaryData.fromObject(model).toObject(PartnerTopicInfo.class);
-        Assertions.assertEquals("kknryrtihf", model.azureSubscriptionId());
-        Assertions.assertEquals("ijbpzvgnwzsymgl", model.resourceGroupName());
-        Assertions.assertEquals("fcyzkohdbihanufh", model.name());
+        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.azureSubscriptionId());
+        Assertions.assertEquals("cjrwzoxxjtfellu", model.resourceGroupName());
+        Assertions.assertEquals("zitonpeqfpjkjl", model.name());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
-        Assertions.assertEquals("git", model.eventTypeInfo().inlineEventTypes().get("tfwvukxgaudc").description());
-        Assertions.assertEquals("qhabifpikxwcz",
-            model.eventTypeInfo().inlineEventTypes().get("tfwvukxgaudc").displayName());
-        Assertions.assertEquals("scnpqxuhivy",
-            model.eventTypeInfo().inlineEventTypes().get("tfwvukxgaudc").documentationUrl());
-        Assertions.assertEquals("iwbybrkxvdumjg",
-            model.eventTypeInfo().inlineEventTypes().get("tfwvukxgaudc").dataSchemaUrl());
-        Assertions.assertEquals("nhsjcnyej", model.source());
+        Assertions.assertEquals("pfxxy", model.eventTypeInfo().inlineEventTypes().get("xzxtheo").description());
+        Assertions.assertEquals("ninmayhuyb", model.eventTypeInfo().inlineEventTypes().get("xzxtheo").displayName());
+        Assertions.assertEquals("podepoo", model.eventTypeInfo().inlineEventTypes().get("xzxtheo").documentationUrl());
+        Assertions.assertEquals("nuvamiheogna",
+            model.eventTypeInfo().inlineEventTypes().get("xzxtheo").dataSchemaUrl());
+        Assertions.assertEquals("eebvmgxsab", model.source());
     }
 
     // Use "Map.of" if available

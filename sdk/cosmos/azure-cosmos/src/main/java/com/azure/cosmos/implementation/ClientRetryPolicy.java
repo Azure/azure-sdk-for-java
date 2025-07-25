@@ -559,7 +559,12 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         if (cosmosException instanceof ServiceUnavailableException) {
             ServiceUnavailableException serviceUnavailableException = (ServiceUnavailableException) cosmosException;
             return serviceUnavailableException.getSubStatusCode() == HttpConstants.SubStatusCodes.SERVER_GENERATED_503
-                || serviceUnavailableException.getSubStatusCode() == HttpConstants.SubStatusCodes.SERVER_GENERATED_410;
+                || serviceUnavailableException.getSubStatusCode() == HttpConstants.SubStatusCodes.SERVER_GENERATED_410
+                || serviceUnavailableException.getSubStatusCode() == HttpConstants.SubStatusCodes.LEASE_NOT_FOUND;
+        }
+
+        if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.SERVICE_UNAVAILABLE && cosmosException.getSubStatusCode() == HttpConstants.SubStatusCodes.LEASE_NOT_FOUND) {
+            return true;
         }
 
         return false;

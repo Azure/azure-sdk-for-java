@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,7 +14,6 @@ public final class TranscriptionTransportTypeInternal extends ExpandableStringEn
     /**
      * Static value websocket for TranscriptionTransportTypeInternal.
      */
-    @Generated
     public static final TranscriptionTransportTypeInternal WEBSOCKET = fromString("websocket");
 
     /**
@@ -23,7 +21,6 @@ public final class TranscriptionTransportTypeInternal extends ExpandableStringEn
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public TranscriptionTransportTypeInternal() {
     }
@@ -34,7 +31,6 @@ public final class TranscriptionTransportTypeInternal extends ExpandableStringEn
      * @param name a name to look for.
      * @return the corresponding TranscriptionTransportTypeInternal.
      */
-    @Generated
     public static TranscriptionTransportTypeInternal fromString(String name) {
         return fromString(name, TranscriptionTransportTypeInternal.class);
     }
@@ -44,7 +40,6 @@ public final class TranscriptionTransportTypeInternal extends ExpandableStringEn
      * 
      * @return known TranscriptionTransportTypeInternal values.
      */
-    @Generated
     public static Collection<TranscriptionTransportTypeInternal> values() {
         return values(TranscriptionTransportTypeInternal.class);
     }

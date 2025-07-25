@@ -1,5 +1,23 @@
 # Release History
 
+## 1.0.0-beta.60 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.59 (2025-07-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Added a direct dependency on org.apache.commons:commons-lang3
+
 ## 1.0.0-beta.58 (2025-06-26)
 
 ### Other Changes

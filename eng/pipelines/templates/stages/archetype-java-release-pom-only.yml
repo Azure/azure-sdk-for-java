@@ -157,7 +157,7 @@ stages:
                 parameters:
                   ArtifactID: ${{artifact.name}}
                   GroupID: ${{artifact.groupId}}
-                - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+              - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
                 parameters:
                   ArtifactName: packages-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
                   ArtifactPath: $(Pipeline.Workspace)/packages-signed

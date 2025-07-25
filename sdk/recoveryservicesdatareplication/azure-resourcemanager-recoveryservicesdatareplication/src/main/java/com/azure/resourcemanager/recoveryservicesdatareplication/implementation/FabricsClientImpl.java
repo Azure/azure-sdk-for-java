@@ -1301,8 +1301,8 @@ public final class FabricsClientImpl implements FabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricModel list operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the list of fabrics in the given subscription and resource group along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FabricModelInner>> listNextSinglePageAsync(String nextLink) {
@@ -1327,7 +1327,7 @@ public final class FabricsClientImpl implements FabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricModel list operation along with {@link PagedResponse}.
+     * @return the list of fabrics in the given subscription and resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricModelInner> listNextSinglePage(String nextLink) {
@@ -1355,7 +1355,7 @@ public final class FabricsClientImpl implements FabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricModel list operation along with {@link PagedResponse}.
+     * @return the list of fabrics in the given subscription and resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricModelInner> listNextSinglePage(String nextLink, Context context) {
@@ -1382,8 +1382,8 @@ public final class FabricsClientImpl implements FabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricModel list operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the list of fabrics in the given subscription along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FabricModelInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1410,7 +1410,7 @@ public final class FabricsClientImpl implements FabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricModel list operation along with {@link PagedResponse}.
+     * @return the list of fabrics in the given subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricModelInner> listBySubscriptionNextSinglePage(String nextLink) {
@@ -1438,7 +1438,7 @@ public final class FabricsClientImpl implements FabricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricModel list operation along with {@link PagedResponse}.
+     * @return the list of fabrics in the given subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricModelInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {

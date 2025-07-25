@@ -10,7 +10,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 public final class ClientsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/Clients_Get.json
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Clients_Get.json
      */
     /**
      * Sample code: Clients_Get.

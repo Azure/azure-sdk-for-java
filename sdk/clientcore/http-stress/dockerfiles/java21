@@ -10,7 +10,6 @@ RUN mkdir /stress
 WORKDIR /stress
 
 ADD ./.vscode /stress/.vscode
-ADD ./sdk/tools /stress/sdk/tools
 ADD ./eng /stress/eng
 ADD ./common /stress/common
 ADD ./sdk/parents /stress/sdk/parents
@@ -21,10 +20,8 @@ ARG MAVEN_ARGS="-B -V -U -Dhttp.keepAlive=true -Djdk.virtualThreadScheduler.para
 
 # Build dependencies and stress tests
 RUN --mount=type=cache,target=/root/.m2 \
-mvn -f /stress/eng/code-quality-reports/pom.xml clean install ${SKIP_CHECKS} && \
 mvn -f /stress/common/perf-test-core/pom.xml clean install ${SKIP_CHECKS} && \
 mvn -f /stress/sdk/parents/azure-perf-test-parent/pom.xml clean install ${SKIP_CHECKS} && \
-mvn -f /stress/sdk/tools/pom.xml clean install ${SKIP_CHECKS} && \
 mvn -f /stress/sdk/parents/clientcore-parent/pom.xml clean install ${SKIP_CHECKS} && \
 mvn -f /stress/sdk/clientcore/core/pom.xml clean install ${SKIP_CHECKS} && \
 mvn -f /stress/sdk/clientcore/http-okhttp3/pom.xml clean install ${SKIP_CHECKS} && \

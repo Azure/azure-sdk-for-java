@@ -7,8 +7,8 @@ package com.azure.resourcemanager.healthbot.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.healthbot.HealthbotManager;
 import com.azure.resourcemanager.healthbot.models.OperationDetail;
@@ -22,23 +22,23 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"ionpimexg\",\"isDataAction\":false,\"display\":{\"provider\":\"po\",\"resource\":\"maajrmvdjwzrlo\",\"operation\":\"clwhijcoejctbz\",\"description\":\"s\"},\"origin\":\"y\",\"properties\":\"datakbfkg\"}]}";
+            = "{\"value\":[{\"name\":\"u\",\"isDataAction\":true,\"display\":{\"provider\":\"khbzhfepgzg\",\"resource\":\"xzlocxscp\",\"operation\":\"erhhbcsglumm\",\"description\":\"tjaodxobnb\"},\"origin\":\"k\",\"properties\":\"dataxo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HealthbotManager manager = HealthbotManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<OperationDetail> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ionpimexg", response.iterator().next().name());
-        Assertions.assertEquals(false, response.iterator().next().isDataAction());
-        Assertions.assertEquals("po", response.iterator().next().display().provider());
-        Assertions.assertEquals("maajrmvdjwzrlo", response.iterator().next().display().resource());
-        Assertions.assertEquals("clwhijcoejctbz", response.iterator().next().display().operation());
-        Assertions.assertEquals("s", response.iterator().next().display().description());
-        Assertions.assertEquals("y", response.iterator().next().origin());
+        Assertions.assertEquals("u", response.iterator().next().name());
+        Assertions.assertTrue(response.iterator().next().isDataAction());
+        Assertions.assertEquals("khbzhfepgzg", response.iterator().next().display().provider());
+        Assertions.assertEquals("xzlocxscp", response.iterator().next().display().resource());
+        Assertions.assertEquals("erhhbcsglumm", response.iterator().next().display().operation());
+        Assertions.assertEquals("tjaodxobnb", response.iterator().next().display().description());
+        Assertions.assertEquals("k", response.iterator().next().origin());
     }
 }

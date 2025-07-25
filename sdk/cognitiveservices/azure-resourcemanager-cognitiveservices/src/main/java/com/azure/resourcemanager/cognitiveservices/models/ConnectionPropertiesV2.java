@@ -37,7 +37,7 @@ public class ConnectionPropertiesV2 implements JsonSerializable<ConnectionProper
     private String createdByWorkspaceArmId;
 
     /*
-     * The error property.
+     * Provides the error message if the connection fails
      */
     private String error;
 
@@ -62,12 +62,12 @@ public class ConnectionPropertiesV2 implements JsonSerializable<ConnectionProper
     private Map<String, String> metadata;
 
     /*
-     * The peRequirement property.
+     * Specifies how private endpoints are used with this connection: 'Required', 'NotRequired', or 'NotApplicable'.
      */
     private ManagedPERequirement peRequirement;
 
     /*
-     * The peStatus property.
+     * Specifies the status of private endpoints for this connection: 'Inactive', 'Active', or 'NotApplicable'.
      */
     private ManagedPEStatus peStatus;
 
@@ -77,7 +77,7 @@ public class ConnectionPropertiesV2 implements JsonSerializable<ConnectionProper
     private List<String> sharedUserList;
 
     /*
-     * The target property.
+     * The connection URL to be used.
      */
     private String target;
 
@@ -142,7 +142,7 @@ public class ConnectionPropertiesV2 implements JsonSerializable<ConnectionProper
     }
 
     /**
-     * Get the error property: The error property.
+     * Get the error property: Provides the error message if the connection fails.
      * 
      * @return the error value.
      */
@@ -151,7 +151,7 @@ public class ConnectionPropertiesV2 implements JsonSerializable<ConnectionProper
     }
 
     /**
-     * Set the error property: The error property.
+     * Set the error property: Provides the error message if the connection fails.
      * 
      * @param error the error value to set.
      * @return the ConnectionPropertiesV2 object itself.
@@ -242,7 +242,8 @@ public class ConnectionPropertiesV2 implements JsonSerializable<ConnectionProper
     }
 
     /**
-     * Get the peRequirement property: The peRequirement property.
+     * Get the peRequirement property: Specifies how private endpoints are used with this connection: 'Required',
+     * 'NotRequired', or 'NotApplicable'.
      * 
      * @return the peRequirement value.
      */
@@ -251,7 +252,8 @@ public class ConnectionPropertiesV2 implements JsonSerializable<ConnectionProper
     }
 
     /**
-     * Set the peRequirement property: The peRequirement property.
+     * Set the peRequirement property: Specifies how private endpoints are used with this connection: 'Required',
+     * 'NotRequired', or 'NotApplicable'.
      * 
      * @param peRequirement the peRequirement value to set.
      * @return the ConnectionPropertiesV2 object itself.
@@ -262,7 +264,8 @@ public class ConnectionPropertiesV2 implements JsonSerializable<ConnectionProper
     }
 
     /**
-     * Get the peStatus property: The peStatus property.
+     * Get the peStatus property: Specifies the status of private endpoints for this connection: 'Inactive', 'Active',
+     * or 'NotApplicable'.
      * 
      * @return the peStatus value.
      */
@@ -271,7 +274,8 @@ public class ConnectionPropertiesV2 implements JsonSerializable<ConnectionProper
     }
 
     /**
-     * Set the peStatus property: The peStatus property.
+     * Set the peStatus property: Specifies the status of private endpoints for this connection: 'Inactive', 'Active',
+     * or 'NotApplicable'.
      * 
      * @param peStatus the peStatus value to set.
      * @return the ConnectionPropertiesV2 object itself.
@@ -302,7 +306,7 @@ public class ConnectionPropertiesV2 implements JsonSerializable<ConnectionProper
     }
 
     /**
-     * Get the target property: The target property.
+     * Get the target property: The connection URL to be used.
      * 
      * @return the target value.
      */
@@ -311,7 +315,7 @@ public class ConnectionPropertiesV2 implements JsonSerializable<ConnectionProper
     }
 
     /**
-     * Set the target property: The target property.
+     * Set the target property: The connection URL to be used.
      * 
      * @param target the target value to set.
      * @return the ConnectionPropertiesV2 object itself.

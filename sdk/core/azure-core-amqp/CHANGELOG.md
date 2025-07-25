@@ -1,5 +1,27 @@
 # Release History
 
+## 2.11.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.10.2 (2025-07-14)
+
+### Features Added
+
+- Added functionality to resume proxy handshake on a new connection if the challenge response closes the existing connection. ([45698](https://github.com/Azure/azure-sdk-for-java/pull/45698)) ([69](https://github.com/Azure/qpid-proton-j-extensions/pull/69))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `qpid-proton-j-extensions` from `1.2.5` to `1.2.6`.
+
 ## 2.10.1 (2025-06-26)
 
 ### Other Changes
