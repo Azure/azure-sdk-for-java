@@ -616,6 +616,13 @@
       ]
     },
     {
+      "filename": "sdk/face/**",
+      "words": [
+        "Fcomputer",
+        "Fcontext"
+      ]
+    },
+    {
       "filename": "**/pom.xml",
       "patterns": [
         {
