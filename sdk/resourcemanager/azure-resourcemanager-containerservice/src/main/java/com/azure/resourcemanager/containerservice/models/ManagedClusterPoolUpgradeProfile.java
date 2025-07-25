@@ -29,7 +29,7 @@ public final class ManagedClusterPoolUpgradeProfile implements JsonSerializable<
     private String name;
 
     /*
-     * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     * The operating system type. The default is Linux.
      */
     private OSType osType;
 
@@ -85,7 +85,7 @@ public final class ManagedClusterPoolUpgradeProfile implements JsonSerializable<
     }
 
     /**
-     * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     * Get the osType property: The operating system type. The default is Linux.
      * 
      * @return the osType value.
      */
@@ -94,7 +94,7 @@ public final class ManagedClusterPoolUpgradeProfile implements JsonSerializable<
     }
 
     /**
-     * Set the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     * Set the osType property: The operating system type. The default is Linux.
      * 
      * @param osType the osType value to set.
      * @return the ManagedClusterPoolUpgradeProfile object itself.

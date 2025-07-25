@@ -68,7 +68,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
      * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerServiceMana")
+    @ServiceInterface(name = "ContainerServiceManagementClientTrustedAccessRoleBindings")
     public interface TrustedAccessRoleBindingsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/trustedAccessRoleBindings")
@@ -148,11 +148,10 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, resourceName, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
             .<PagedResponse<TrustedAccessRoleBindingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -188,12 +187,11 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-                resourceName, accept, context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -297,11 +295,11 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
             return Mono.error(
                 new IllegalArgumentException("Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, resourceName, trustedAccessRoleBindingName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, trustedAccessRoleBindingName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -339,11 +337,10 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
             return Mono.error(
                 new IllegalArgumentException("Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            resourceName, trustedAccessRoleBindingName, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, resourceName, trustedAccessRoleBindingName, accept, context);
     }
 
     /**
@@ -441,10 +438,9 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
         } else {
             trustedAccessRoleBinding.validate();
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, resourceName, trustedAccessRoleBindingName,
                 trustedAccessRoleBinding, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -493,11 +489,11 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
         } else {
             trustedAccessRoleBinding.validate();
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, resourceName, trustedAccessRoleBindingName, trustedAccessRoleBinding, accept, context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, trustedAccessRoleBindingName,
+            trustedAccessRoleBinding, accept, context);
     }
 
     /**
@@ -704,12 +700,11 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
             return Mono.error(
                 new IllegalArgumentException("Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    resourceGroupName, resourceName, trustedAccessRoleBindingName, accept, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, trustedAccessRoleBindingName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -747,11 +742,10 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
             return Mono.error(
                 new IllegalArgumentException("Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            resourceName, trustedAccessRoleBindingName, accept, context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, resourceName, trustedAccessRoleBindingName, accept, context);
     }
 
     /**

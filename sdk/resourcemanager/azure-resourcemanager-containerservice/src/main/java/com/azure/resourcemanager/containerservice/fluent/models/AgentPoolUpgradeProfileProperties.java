@@ -26,7 +26,7 @@ public final class AgentPoolUpgradeProfileProperties implements JsonSerializable
     private String kubernetesVersion;
 
     /*
-     * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     * The operating system type. The default is Linux.
      */
     private OSType osType;
 
@@ -67,7 +67,7 @@ public final class AgentPoolUpgradeProfileProperties implements JsonSerializable
     }
 
     /**
-     * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     * Get the osType property: The operating system type. The default is Linux.
      * 
      * @return the osType value.
      */
@@ -76,7 +76,7 @@ public final class AgentPoolUpgradeProfileProperties implements JsonSerializable
     }
 
     /**
-     * Set the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     * Set the osType property: The operating system type. The default is Linux.
      * 
      * @param osType the osType value to set.
      * @return the AgentPoolUpgradeProfileProperties object itself.

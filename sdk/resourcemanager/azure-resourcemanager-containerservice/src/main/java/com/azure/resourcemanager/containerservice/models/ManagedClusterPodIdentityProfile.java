@@ -13,10 +13,9 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The pod identity profile of the Managed Cluster.
- * 
- * See [use AAD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on pod
- * identity integration.
+ * The pod identity profile of the Managed Cluster. See [use AAD pod
+ * identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on pod identity
+ * integration.
  */
 @Fluent
 public final class ManagedClusterPodIdentityProfile implements JsonSerializable<ManagedClusterPodIdentityProfile> {
@@ -26,8 +25,9 @@ public final class ManagedClusterPodIdentityProfile implements JsonSerializable<
     private Boolean enabled;
 
     /*
-     * Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and the risks of
-     * IP spoofing. See [using Kubenet network plugin with AAD Pod
+     * Whether pod identity is allowed to run on clusters with Kubenet networking. Running in Kubenet is disabled by
+     * default due to the security related nature of AAD Pod Identity and the risks of IP spoofing. See [using Kubenet
+     * network plugin with AAD Pod
      * Identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-
      * active-directory-pod-managed-identities) for more information.
      */
@@ -70,8 +70,9 @@ public final class ManagedClusterPodIdentityProfile implements JsonSerializable<
     }
 
     /**
-     * Get the allowNetworkPluginKubenet property: Running in Kubenet is disabled by default due to the security related
-     * nature of AAD Pod Identity and the risks of IP spoofing. See [using Kubenet network plugin with AAD Pod
+     * Get the allowNetworkPluginKubenet property: Whether pod identity is allowed to run on clusters with Kubenet
+     * networking. Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and
+     * the risks of IP spoofing. See [using Kubenet network plugin with AAD Pod
      * Identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities)
      * for more information.
      * 
@@ -82,8 +83,9 @@ public final class ManagedClusterPodIdentityProfile implements JsonSerializable<
     }
 
     /**
-     * Set the allowNetworkPluginKubenet property: Running in Kubenet is disabled by default due to the security related
-     * nature of AAD Pod Identity and the risks of IP spoofing. See [using Kubenet network plugin with AAD Pod
+     * Set the allowNetworkPluginKubenet property: Whether pod identity is allowed to run on clusters with Kubenet
+     * networking. Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and
+     * the risks of IP spoofing. See [using Kubenet network plugin with AAD Pod
      * Identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities)
      * for more information.
      * 

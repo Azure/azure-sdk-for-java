@@ -140,9 +140,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the vmSize property: VM size availability varies by region. If a node contains insufficient compute resources
-     * (memory, cpu, etc) pods might fail to run correctly. For more details on restricted VM sizes, see:
-     * https://docs.microsoft.com/azure/aks/quotas-skus-regions.
+     * Get the vmSize property: The size of the agent pool VMs. VM size availability varies by region. If a node
+     * contains insufficient compute resources (memory, cpu, etc) pods might fail to run correctly. For more details on
+     * restricted VM sizes, see: https://docs.microsoft.com/azure/aks/quotas-skus-regions.
      * 
      * @return the vmSize value.
      */
@@ -151,9 +151,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the vmSize property: VM size availability varies by region. If a node contains insufficient compute resources
-     * (memory, cpu, etc) pods might fail to run correctly. For more details on restricted VM sizes, see:
-     * https://docs.microsoft.com/azure/aks/quotas-skus-regions.
+     * Set the vmSize property: The size of the agent pool VMs. VM size availability varies by region. If a node
+     * contains insufficient compute resources (memory, cpu, etc) pods might fail to run correctly. For more details on
+     * restricted VM sizes, see: https://docs.microsoft.com/azure/aks/quotas-skus-regions.
      * 
      * @param vmSize the vmSize value to set.
      * @return the AgentPoolInner object itself.
@@ -192,9 +192,10 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the osDiskType property: The default is 'Ephemeral' if the VM supports it and has a cache disk larger than
-     * the requested OSDiskSizeGB. Otherwise, defaults to 'Managed'. May not be changed after creation. For more
-     * information see [Ephemeral OS](https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os).
+     * Get the osDiskType property: The OS disk type to be used for machines in the agent pool. The default is
+     * 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise,
+     * defaults to 'Managed'. May not be changed after creation. For more information see [Ephemeral
+     * OS](https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os).
      * 
      * @return the osDiskType value.
      */
@@ -203,9 +204,10 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the osDiskType property: The default is 'Ephemeral' if the VM supports it and has a cache disk larger than
-     * the requested OSDiskSizeGB. Otherwise, defaults to 'Managed'. May not be changed after creation. For more
-     * information see [Ephemeral OS](https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os).
+     * Set the osDiskType property: The OS disk type to be used for machines in the agent pool. The default is
+     * 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise,
+     * defaults to 'Managed'. May not be changed after creation. For more information see [Ephemeral
+     * OS](https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os).
      * 
      * @param osDiskType the osDiskType value to set.
      * @return the AgentPoolInner object itself.
@@ -267,9 +269,10 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the messageOfTheDay property: A base64-encoded string which will be written to /etc/motd after decoding. This
-     * allows customization of the message of the day for Linux nodes. It must not be specified for Windows nodes. It
-     * must be a static string (i.e., will be printed raw and not be executed as a script).
+     * Get the messageOfTheDay property: Message of the day for Linux nodes, base64-encoded. A base64-encoded string
+     * which will be written to /etc/motd after decoding. This allows customization of the message of the day for Linux
+     * nodes. It must not be specified for Windows nodes. It must be a static string (i.e., will be printed raw and not
+     * be executed as a script).
      * 
      * @return the messageOfTheDay value.
      */
@@ -278,9 +281,10 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the messageOfTheDay property: A base64-encoded string which will be written to /etc/motd after decoding. This
-     * allows customization of the message of the day for Linux nodes. It must not be specified for Windows nodes. It
-     * must be a static string (i.e., will be printed raw and not be executed as a script).
+     * Set the messageOfTheDay property: Message of the day for Linux nodes, base64-encoded. A base64-encoded string
+     * which will be written to /etc/motd after decoding. This allows customization of the message of the day for Linux
+     * nodes. It must not be specified for Windows nodes. It must be a static string (i.e., will be printed raw and not
+     * be executed as a script).
      * 
      * @param messageOfTheDay the messageOfTheDay value to set.
      * @return the AgentPoolInner object itself.
@@ -294,9 +298,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the vnetSubnetId property: If this is not specified, a VNET and subnet will be generated and used. If no
-     * podSubnetID is specified, this applies to nodes and pods, otherwise it applies to just nodes. This is of the
-     * form:
+     * Get the vnetSubnetId property: The ID of the subnet which agent pool nodes and optionally pods will join on
+     * startup. If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified,
+     * this applies to nodes and pods, otherwise it applies to just nodes. This is of the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
      * 
      * @return the vnetSubnetId value.
@@ -306,9 +310,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the vnetSubnetId property: If this is not specified, a VNET and subnet will be generated and used. If no
-     * podSubnetID is specified, this applies to nodes and pods, otherwise it applies to just nodes. This is of the
-     * form:
+     * Set the vnetSubnetId property: The ID of the subnet which agent pool nodes and optionally pods will join on
+     * startup. If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified,
+     * this applies to nodes and pods, otherwise it applies to just nodes. This is of the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
      * 
      * @param vnetSubnetId the vnetSubnetId value to set.
@@ -323,8 +327,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the podSubnetId property: If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID
-     * for more details). This is of the form:
+     * Get the podSubnetId property: The ID of the subnet which pods will join when launched. If omitted, pod IPs are
+     * statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
      * 
      * @return the podSubnetId value.
@@ -334,8 +338,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the podSubnetId property: If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID
-     * for more details). This is of the form:
+     * Set the podSubnetId property: The ID of the subnet which pods will join when launched. If omitted, pod IPs are
+     * statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
      * 
      * @param podSubnetId the podSubnetId value to set.
@@ -350,8 +354,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the podIpAllocationMode property: The IP allocation mode for pods in the agent pool. Must be used with
-     * podSubnetId. The default is 'DynamicIndividual'.
+     * Get the podIpAllocationMode property: Pod IP Allocation Mode. The IP allocation mode for pods in the agent pool.
+     * Must be used with podSubnetId. The default is 'DynamicIndividual'.
      * 
      * @return the podIpAllocationMode value.
      */
@@ -360,8 +364,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the podIpAllocationMode property: The IP allocation mode for pods in the agent pool. Must be used with
-     * podSubnetId. The default is 'DynamicIndividual'.
+     * Set the podIpAllocationMode property: Pod IP Allocation Mode. The IP allocation mode for pods in the agent pool.
+     * Must be used with podSubnetId. The default is 'DynamicIndividual'.
      * 
      * @param podIpAllocationMode the podIpAllocationMode value to set.
      * @return the AgentPoolInner object itself.
@@ -398,7 +402,7 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     * Get the osType property: The operating system type. The default is Linux.
      * 
      * @return the osType value.
      */
@@ -407,7 +411,7 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     * Set the osType property: The operating system type. The default is Linux.
      * 
      * @param osType the osType value to set.
      * @return the AgentPoolInner object itself.
@@ -517,8 +521,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the scaleDownMode property: This also effects the cluster autoscaler behavior. If not specified, it defaults
-     * to Delete.
+     * Get the scaleDownMode property: The scale down mode to use when scaling the Agent Pool. This also effects the
+     * cluster autoscaler behavior. If not specified, it defaults to Delete.
      * 
      * @return the scaleDownMode value.
      */
@@ -527,8 +531,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the scaleDownMode property: This also effects the cluster autoscaler behavior. If not specified, it defaults
-     * to Delete.
+     * Set the scaleDownMode property: The scale down mode to use when scaling the Agent Pool. This also effects the
+     * cluster autoscaler behavior. If not specified, it defaults to Delete.
      * 
      * @param scaleDownMode the scaleDownMode value to set.
      * @return the AgentPoolInner object itself.
@@ -565,8 +569,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the mode property: A cluster must have at least one 'System' Agent Pool at all times. For additional
-     * information on agent pool restrictions and best practices, see:
+     * Get the mode property: The mode of an agent pool. A cluster must have at least one 'System' Agent Pool at all
+     * times. For additional information on agent pool restrictions and best practices, see:
      * https://docs.microsoft.com/azure/aks/use-system-pools.
      * 
      * @return the mode value.
@@ -576,8 +580,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the mode property: A cluster must have at least one 'System' Agent Pool at all times. For additional
-     * information on agent pool restrictions and best practices, see:
+     * Set the mode property: The mode of an agent pool. A cluster must have at least one 'System' Agent Pool at all
+     * times. For additional information on agent pool restrictions and best practices, see:
      * https://docs.microsoft.com/azure/aks/use-system-pools.
      * 
      * @param mode the mode value to set.
@@ -592,14 +596,14 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the orchestratorVersion property: Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and
-     * &lt;major.minor&gt; (e.g. 1.20) are supported. When &lt;major.minor&gt; is specified, the latest supported GA
-     * patch version is chosen automatically. Updating the cluster with the same &lt;major.minor&gt; once it has been
-     * created (e.g. 1.14.x -&gt; 1.14) will not trigger an upgrade, even if a newer patch version is available. As a
-     * best practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool
-     * version must have the same major version as the control plane. The node pool minor version must be within two
-     * minor versions of the control plane version. The node pool version cannot be greater than the control plane
-     * version. For more information see [upgrading a node
+     * Get the orchestratorVersion property: The version of Kubernetes specified by the user. Both patch version
+     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
+     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
+     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
+     * upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in an
+     * AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control
+     * plane. The node pool minor version must be within two minor versions of the control plane version. The node pool
+     * version cannot be greater than the control plane version. For more information see [upgrading a node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      * 
      * @return the orchestratorVersion value.
@@ -609,14 +613,14 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the orchestratorVersion property: Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and
-     * &lt;major.minor&gt; (e.g. 1.20) are supported. When &lt;major.minor&gt; is specified, the latest supported GA
-     * patch version is chosen automatically. Updating the cluster with the same &lt;major.minor&gt; once it has been
-     * created (e.g. 1.14.x -&gt; 1.14) will not trigger an upgrade, even if a newer patch version is available. As a
-     * best practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool
-     * version must have the same major version as the control plane. The node pool minor version must be within two
-     * minor versions of the control plane version. The node pool version cannot be greater than the control plane
-     * version. For more information see [upgrading a node
+     * Set the orchestratorVersion property: The version of Kubernetes specified by the user. Both patch version
+     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
+     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
+     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
+     * upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in an
+     * AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control
+     * plane. The node pool minor version must be within two minor versions of the control plane version. The node pool
+     * version cannot be greater than the control plane version. For more information see [upgrading a node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      * 
      * @param orchestratorVersion the orchestratorVersion value to set.
@@ -631,9 +635,10 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the currentOrchestratorVersion property: If orchestratorVersion is a fully specified version
-     * &lt;major.minor.patch&gt;, this field will be exactly equal to it. If orchestratorVersion is &lt;major.minor&gt;,
-     * this field will contain the full &lt;major.minor.patch&gt; version being used.
+     * Get the currentOrchestratorVersion property: The version of Kubernetes the Agent Pool is running. If
+     * orchestratorVersion is a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal to
+     * it. If orchestratorVersion is &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
+     * version being used.
      * 
      * @return the currentOrchestratorVersion value.
      */
@@ -683,9 +688,10 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the powerState property: When an Agent Pool is first created it is initially Running. The Agent Pool can be
-     * stopped by setting this field to Stopped. A stopped Agent Pool stops all of its VMs and does not accrue billing
-     * charges. An Agent Pool can only be stopped if it is Running and provisioning state is Succeeded.
+     * Get the powerState property: Whether the Agent Pool is running or stopped. When an Agent Pool is first created it
+     * is initially Running. The Agent Pool can be stopped by setting this field to Stopped. A stopped Agent Pool stops
+     * all of its VMs and does not accrue billing charges. An Agent Pool can only be stopped if it is Running and
+     * provisioning state is Succeeded.
      * 
      * @return the powerState value.
      */
@@ -694,9 +700,10 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the powerState property: When an Agent Pool is first created it is initially Running. The Agent Pool can be
-     * stopped by setting this field to Stopped. A stopped Agent Pool stops all of its VMs and does not accrue billing
-     * charges. An Agent Pool can only be stopped if it is Running and provisioning state is Succeeded.
+     * Set the powerState property: Whether the Agent Pool is running or stopped. When an Agent Pool is first created it
+     * is initially Running. The Agent Pool can be stopped by setting this field to Stopped. A stopped Agent Pool stops
+     * all of its VMs and does not accrue billing charges. An Agent Pool can only be stopped if it is Running and
+     * provisioning state is Succeeded.
      * 
      * @param powerState the powerState value to set.
      * @return the AgentPoolInner object itself.
@@ -735,9 +742,10 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the enableNodePublicIp property: Some scenarios may require nodes in a node pool to receive their own
-     * dedicated public IP addresses. A common scenario is for gaming workloads, where a console needs to make a direct
-     * connection to a cloud virtual machine to minimize hops. For more information see [assigning a public IP per
+     * Get the enableNodePublicIp property: Whether each node is allocated its own public IP. Some scenarios may require
+     * nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is for gaming
+     * workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. For
+     * more information see [assigning a public IP per
      * node](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools).
      * The default is false.
      * 
@@ -748,9 +756,10 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the enableNodePublicIp property: Some scenarios may require nodes in a node pool to receive their own
-     * dedicated public IP addresses. A common scenario is for gaming workloads, where a console needs to make a direct
-     * connection to a cloud virtual machine to minimize hops. For more information see [assigning a public IP per
+     * Set the enableNodePublicIp property: Whether each node is allocated its own public IP. Some scenarios may require
+     * nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is for gaming
+     * workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. For
+     * more information see [assigning a public IP per
      * node](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools).
      * The default is false.
      * 
@@ -766,7 +775,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the nodePublicIpPrefixId property: This is of the form:
+     * Get the nodePublicIpPrefixId property: The public IP prefix ID which VM nodes should use IPs from. This is of the
+     * form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}.
      * 
      * @return the nodePublicIpPrefixId value.
@@ -776,7 +786,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the nodePublicIpPrefixId property: This is of the form:
+     * Set the nodePublicIpPrefixId property: The public IP prefix ID which VM nodes should use IPs from. This is of the
+     * form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}.
      * 
      * @param nodePublicIpPrefixId the nodePublicIpPrefixId value to set.
@@ -816,8 +827,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the scaleSetEvictionPolicy property: This cannot be specified unless the scaleSetPriority is 'Spot'. If not
-     * specified, the default is 'Delete'.
+     * Get the scaleSetEvictionPolicy property: The Virtual Machine Scale Set eviction policy to use. This cannot be
+     * specified unless the scaleSetPriority is 'Spot'. If not specified, the default is 'Delete'.
      * 
      * @return the scaleSetEvictionPolicy value.
      */
@@ -826,8 +837,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the scaleSetEvictionPolicy property: This cannot be specified unless the scaleSetPriority is 'Spot'. If not
-     * specified, the default is 'Delete'.
+     * Set the scaleSetEvictionPolicy property: The Virtual Machine Scale Set eviction policy to use. This cannot be
+     * specified unless the scaleSetPriority is 'Spot'. If not specified, the default is 'Delete'.
      * 
      * @param scaleSetEvictionPolicy the scaleSetEvictionPolicy value to set.
      * @return the AgentPoolInner object itself.
@@ -841,8 +852,10 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the spotMaxPrice property: Possible values are any decimal value greater than zero or -1 which indicates the
-     * willingness to pay any on-demand price. For more details on spot pricing, see [spot VMs
+     * Get the spotMaxPrice property: The max price (in US Dollars) you are willing to pay for spot instances. Possible
+     * values are any decimal value greater than zero or -1 which indicates default price to be up-to on-demand.
+     * Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any
+     * on-demand price. For more details on spot pricing, see [spot VMs
      * pricing](https://docs.microsoft.com/azure/virtual-machines/spot-vms#pricing).
      * 
      * @return the spotMaxPrice value.
@@ -852,8 +865,10 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the spotMaxPrice property: Possible values are any decimal value greater than zero or -1 which indicates the
-     * willingness to pay any on-demand price. For more details on spot pricing, see [spot VMs
+     * Set the spotMaxPrice property: The max price (in US Dollars) you are willing to pay for spot instances. Possible
+     * values are any decimal value greater than zero or -1 which indicates default price to be up-to on-demand.
+     * Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any
+     * on-demand price. For more details on spot pricing, see [spot VMs
      * pricing](https://docs.microsoft.com/azure/virtual-machines/spot-vms#pricing).
      * 
      * @param spotMaxPrice the spotMaxPrice value to set.
@@ -1008,8 +1023,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the enableEncryptionAtHost property: This is only supported on certain VM sizes and in certain Azure regions.
-     * For more information, see: https://docs.microsoft.com/azure/aks/enable-host-encryption.
+     * Get the enableEncryptionAtHost property: Whether to enable host based OS and data drive encryption. This is only
+     * supported on certain VM sizes and in certain Azure regions. For more information, see:
+     * https://docs.microsoft.com/azure/aks/enable-host-encryption.
      * 
      * @return the enableEncryptionAtHost value.
      */
@@ -1018,8 +1034,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the enableEncryptionAtHost property: This is only supported on certain VM sizes and in certain Azure regions.
-     * For more information, see: https://docs.microsoft.com/azure/aks/enable-host-encryption.
+     * Set the enableEncryptionAtHost property: Whether to enable host based OS and data drive encryption. This is only
+     * supported on certain VM sizes and in certain Azure regions. For more information, see:
+     * https://docs.microsoft.com/azure/aks/enable-host-encryption.
      * 
      * @param enableEncryptionAtHost the enableEncryptionAtHost value to set.
      * @return the AgentPoolInner object itself.
@@ -1056,7 +1073,7 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the enableFips property: See [Add a FIPS-enabled node
+     * Get the enableFips property: Whether to use a FIPS-enabled OS. See [Add a FIPS-enabled node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more
      * details.
      * 
@@ -1067,7 +1084,7 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the enableFips property: See [Add a FIPS-enabled node
+     * Set the enableFips property: Whether to use a FIPS-enabled OS. See [Add a FIPS-enabled node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more
      * details.
      * 
@@ -1158,7 +1175,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the hostGroupId property: This is of the form:
+     * Get the hostGroupId property: The fully qualified resource ID of the Dedicated Host Group to provision virtual
+     * machines from, used only in creation scenario and not allowed to changed once set. This is of the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}.
      * For more information see [Azure dedicated
      * hosts](https://docs.microsoft.com/azure/virtual-machines/dedicated-hosts).
@@ -1170,7 +1188,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the hostGroupId property: This is of the form:
+     * Set the hostGroupId property: The fully qualified resource ID of the Dedicated Host Group to provision virtual
+     * machines from, used only in creation scenario and not allowed to changed once set. This is of the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}.
      * For more information see [Azure dedicated
      * hosts](https://docs.microsoft.com/azure/virtual-machines/dedicated-hosts).

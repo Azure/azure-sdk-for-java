@@ -106,7 +106,7 @@ public final class AgentPoolUpgradeProfileInner implements JsonSerializable<Agen
     }
 
     /**
-     * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     * Get the osType property: The operating system type. The default is Linux.
      * 
      * @return the osType value.
      */
@@ -115,7 +115,7 @@ public final class AgentPoolUpgradeProfileInner implements JsonSerializable<Agen
     }
 
     /**
-     * Set the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     * Set the osType property: The operating system type. The default is Linux.
      * 
      * @param osType the osType value to set.
      * @return the AgentPoolUpgradeProfileInner object itself.

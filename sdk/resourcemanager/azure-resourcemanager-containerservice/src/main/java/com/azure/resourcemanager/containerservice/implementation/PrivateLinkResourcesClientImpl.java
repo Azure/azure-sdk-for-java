@@ -55,7 +55,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerServiceMana")
+    @ServiceInterface(name = "ContainerServiceManagementClientPrivateLinkResources")
     public interface PrivateLinkResourcesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/privateLinkResources")
@@ -97,11 +97,10 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, resourceName, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -136,11 +135,10 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            resourceName, accept, context);
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, resourceName, accept, context);
     }
 
     /**

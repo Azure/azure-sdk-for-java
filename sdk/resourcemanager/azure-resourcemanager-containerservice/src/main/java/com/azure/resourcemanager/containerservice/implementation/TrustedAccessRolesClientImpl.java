@@ -60,7 +60,7 @@ public final class TrustedAccessRolesClientImpl implements TrustedAccessRolesCli
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerServiceMana")
+    @ServiceInterface(name = "ContainerServiceManagementClientTrustedAccessRoles")
     public interface TrustedAccessRolesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/trustedAccessRoles")
@@ -101,11 +101,10 @@ public final class TrustedAccessRolesClientImpl implements TrustedAccessRolesCli
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                location, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, accept, context))
             .<PagedResponse<TrustedAccessRoleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -134,11 +133,11 @@ public final class TrustedAccessRolesClientImpl implements TrustedAccessRolesCli
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location, accept, context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), location,
+                accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

@@ -8,9 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The network mode Azure CNI is configured with.
- * 
- * This cannot be specified if networkPlugin is anything other than 'azure'.
+ * The network mode Azure CNI is configured with. This cannot be specified if networkPlugin is anything other than
+ * 'azure'.
  */
 public final class NetworkMode extends ExpandableStringEnum<NetworkMode> {
     /**
