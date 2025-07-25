@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -12,10 +13,15 @@ import com.azure.resourcemanager.providerhub.fluent.models.ProviderRegistrationI
 import java.io.IOException;
 
 /**
- * The DefaultRolloutSpecificationProviderRegistration model.
+ * The provider registration.
  */
 @Fluent
 public final class DefaultRolloutSpecificationProviderRegistration extends ProviderRegistrationInner {
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
     /*
      * The type of the resource.
      */
@@ -35,6 +41,16 @@ public final class DefaultRolloutSpecificationProviderRegistration extends Provi
      * Creates an instance of DefaultRolloutSpecificationProviderRegistration class.
      */
     public DefaultRolloutSpecificationProviderRegistration() {
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -77,6 +93,15 @@ public final class DefaultRolloutSpecificationProviderRegistration extends Provi
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DefaultRolloutSpecificationProviderRegistration withKind(ProviderRegistrationKind kind) {
+        super.withKind(kind);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -95,6 +120,7 @@ public final class DefaultRolloutSpecificationProviderRegistration extends Provi
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", properties());
+        jsonWriter.writeStringField("kind", kind() == null ? null : kind().toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -124,6 +150,12 @@ public final class DefaultRolloutSpecificationProviderRegistration extends Provi
                 } else if ("properties".equals(fieldName)) {
                     deserializedDefaultRolloutSpecificationProviderRegistration
                         .withProperties(ProviderRegistrationProperties.fromJson(reader));
+                } else if ("kind".equals(fieldName)) {
+                    deserializedDefaultRolloutSpecificationProviderRegistration
+                        .withKind(ProviderRegistrationKind.fromString(reader.getString()));
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDefaultRolloutSpecificationProviderRegistration.systemData
+                        = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

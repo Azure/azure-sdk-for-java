@@ -4,9 +4,14 @@
 
 package com.azure.resourcemanager.providerhub.generated;
 
-import com.azure.resourcemanager.providerhub.fluent.models.OperationsDefinitionInner;
-import com.azure.resourcemanager.providerhub.models.OperationsDefinitionDisplay;
-import com.azure.resourcemanager.providerhub.models.OperationsPutContent;
+import com.azure.resourcemanager.providerhub.fluent.models.OperationsPutContentInner;
+import com.azure.resourcemanager.providerhub.models.LocalizedOperationDefinition;
+import com.azure.resourcemanager.providerhub.models.LocalizedOperationDefinitionDisplay;
+import com.azure.resourcemanager.providerhub.models.LocalizedOperationDisplayDefinitionDefault;
+import com.azure.resourcemanager.providerhub.models.LocalizedOperationDisplayDefinitionEn;
+import com.azure.resourcemanager.providerhub.models.OperationActionType;
+import com.azure.resourcemanager.providerhub.models.OperationOrigins;
+import com.azure.resourcemanager.providerhub.models.OperationsPutContentProperties;
 import java.util.Arrays;
 
 /**
@@ -14,7 +19,7 @@ import java.util.Arrays;
  */
 public final class OperationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/
+     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/
      * Operations_CreateOrUpdate.json
      */
     /**
@@ -24,13 +29,31 @@ public final class OperationsCreateOrUpdateSamples {
      */
     public static void operationsCreateOrUpdate(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
         manager.operations()
-            .createOrUpdateWithResponse("Microsoft.Contoso",
-                new OperationsPutContent().withContents(
-                    Arrays.asList(new OperationsDefinitionInner().withName("Microsoft.Contoso/Employees/Read")
-                        .withDisplay(new OperationsDefinitionDisplay().withProvider("Microsoft.Contoso")
-                            .withResource("Employees")
-                            .withOperation("Gets/List employee resources")
-                            .withDescription("Read employees")))),
+            .createOrUpdateWithResponse("Microsoft.Contoso", new OperationsPutContentInner().withProperties(
+                new OperationsPutContentProperties().withContents(Arrays.asList(new LocalizedOperationDefinition()
+                    .withName("RP.69C09791/register/action")
+                    .withIsDataAction(true)
+                    .withDisplay(new LocalizedOperationDefinitionDisplay().withDefaultProperty(
+                        new LocalizedOperationDisplayDefinitionDefault().withProvider("RP.69C09791")
+                            .withResource("Register")
+                            .withOperation("Registers the RP.69C09791 Resource Provider")
+                            .withDescription(
+                                "Registers the subscription for the RP.69C09791 resource provider and enables the creation of RP.69C09791.")))
+                    .withActionType(OperationActionType.INTERNAL),
+                    new LocalizedOperationDefinition().withName("RP.69C09791/unregister/action")
+                        .withIsDataAction(false)
+                        .withOrigin(OperationOrigins.SYSTEM)
+                        .withDisplay(new LocalizedOperationDefinitionDisplay()
+                            .withDefaultProperty(new LocalizedOperationDisplayDefinitionDefault()
+                                .withProvider("RP.69C09791")
+                                .withResource("Unregister")
+                                .withOperation("Unregisters the RP.69C09791 Resource Provider")
+                                .withDescription(
+                                    "Unregisters the subscription for the RP.69C09791 resource provider and enables the creation of RP.69C09791."))
+                            .withEn(new LocalizedOperationDisplayDefinitionEn().withProvider("RP.69C09791")
+                                .withResource("2e1803d4-417f-492c-b305-148da38b211e")
+                                .withOperation("d31623d6-8765-42fb-aca2-5a58303e52dd")
+                                .withDescription("ece249f5-b5b9-492d-ac68-b4e1be1677bc")))))),
                 com.azure.core.util.Context.NONE);
     }
 }

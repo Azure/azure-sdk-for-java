@@ -4,6 +4,8 @@
 
 package com.azure.resourcemanager.providerhub.implementation;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.providerhub.fluent.models.CustomRolloutInner;
 import com.azure.resourcemanager.providerhub.models.CustomRollout;
@@ -30,6 +32,10 @@ public final class CustomRolloutImpl implements CustomRollout, CustomRollout.Def
         return this.innerModel().properties();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public CustomRolloutInner innerModel() {
         return this.innerObject;
     }
@@ -50,16 +56,14 @@ public final class CustomRolloutImpl implements CustomRollout, CustomRollout.Def
     public CustomRollout create() {
         this.innerObject = serviceManager.serviceClient()
             .getCustomRollouts()
-            .createOrUpdateWithResponse(providerNamespace, rolloutName, this.innerModel(), Context.NONE)
-            .getValue();
+            .createOrUpdate(providerNamespace, rolloutName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CustomRollout create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getCustomRollouts()
-            .createOrUpdateWithResponse(providerNamespace, rolloutName, this.innerModel(), context)
-            .getValue();
+            .createOrUpdate(providerNamespace, rolloutName, this.innerModel(), context);
         return this;
     }
 
@@ -76,16 +80,14 @@ public final class CustomRolloutImpl implements CustomRollout, CustomRollout.Def
     public CustomRollout apply() {
         this.innerObject = serviceManager.serviceClient()
             .getCustomRollouts()
-            .createOrUpdateWithResponse(providerNamespace, rolloutName, this.innerModel(), Context.NONE)
-            .getValue();
+            .createOrUpdate(providerNamespace, rolloutName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CustomRollout apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getCustomRollouts()
-            .createOrUpdateWithResponse(providerNamespace, rolloutName, this.innerModel(), context)
-            .getValue();
+            .createOrUpdate(providerNamespace, rolloutName, this.innerModel(), context);
         return this;
     }
 
@@ -111,6 +113,14 @@ public final class CustomRolloutImpl implements CustomRollout, CustomRollout.Def
             .getWithResponse(providerNamespace, rolloutName, context)
             .getValue();
         return this;
+    }
+
+    public Response<Void> stopWithResponse(Context context) {
+        return serviceManager.customRollouts().stopWithResponse(providerNamespace, rolloutName, context);
+    }
+
+    public void stop() {
+        serviceManager.customRollouts().stop(providerNamespace, rolloutName);
     }
 
     public CustomRolloutImpl withProperties(CustomRolloutProperties properties) {

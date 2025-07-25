@@ -10,7 +10,7 @@ package com.azure.resourcemanager.providerhub.generated;
 public final class SkusDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/Skus_Delete.json
+     * specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/Skus_Delete.json
      */
     /**
      * Sample code: Skus_Delete.

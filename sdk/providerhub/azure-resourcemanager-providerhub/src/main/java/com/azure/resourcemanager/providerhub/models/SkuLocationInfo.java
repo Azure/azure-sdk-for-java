@@ -19,27 +19,27 @@ import java.util.List;
 @Fluent
 public final class SkuLocationInfo implements JsonSerializable<SkuLocationInfo> {
     /*
-     * The location property.
+     * The location.
      */
     private String location;
 
     /*
-     * The zones property.
+     * The zones.
      */
     private List<String> zones;
 
     /*
-     * The zoneDetails property.
+     * The zone details.
      */
     private List<SkuZoneDetail> zoneDetails;
 
     /*
-     * The extendedLocations property.
+     * The extended locations.
      */
     private List<String> extendedLocations;
 
     /*
-     * The type property.
+     * The type.
      */
     private ExtendedLocationType type;
 
@@ -50,7 +50,7 @@ public final class SkuLocationInfo implements JsonSerializable<SkuLocationInfo> 
     }
 
     /**
-     * Get the location property: The location property.
+     * Get the location property: The location.
      * 
      * @return the location value.
      */
@@ -59,7 +59,7 @@ public final class SkuLocationInfo implements JsonSerializable<SkuLocationInfo> 
     }
 
     /**
-     * Set the location property: The location property.
+     * Set the location property: The location.
      * 
      * @param location the location value to set.
      * @return the SkuLocationInfo object itself.
@@ -70,7 +70,7 @@ public final class SkuLocationInfo implements JsonSerializable<SkuLocationInfo> 
     }
 
     /**
-     * Get the zones property: The zones property.
+     * Get the zones property: The zones.
      * 
      * @return the zones value.
      */
@@ -79,7 +79,7 @@ public final class SkuLocationInfo implements JsonSerializable<SkuLocationInfo> 
     }
 
     /**
-     * Set the zones property: The zones property.
+     * Set the zones property: The zones.
      * 
      * @param zones the zones value to set.
      * @return the SkuLocationInfo object itself.
@@ -90,7 +90,7 @@ public final class SkuLocationInfo implements JsonSerializable<SkuLocationInfo> 
     }
 
     /**
-     * Get the zoneDetails property: The zoneDetails property.
+     * Get the zoneDetails property: The zone details.
      * 
      * @return the zoneDetails value.
      */
@@ -99,7 +99,7 @@ public final class SkuLocationInfo implements JsonSerializable<SkuLocationInfo> 
     }
 
     /**
-     * Set the zoneDetails property: The zoneDetails property.
+     * Set the zoneDetails property: The zone details.
      * 
      * @param zoneDetails the zoneDetails value to set.
      * @return the SkuLocationInfo object itself.
@@ -110,7 +110,7 @@ public final class SkuLocationInfo implements JsonSerializable<SkuLocationInfo> 
     }
 
     /**
-     * Get the extendedLocations property: The extendedLocations property.
+     * Get the extendedLocations property: The extended locations.
      * 
      * @return the extendedLocations value.
      */
@@ -119,7 +119,7 @@ public final class SkuLocationInfo implements JsonSerializable<SkuLocationInfo> 
     }
 
     /**
-     * Set the extendedLocations property: The extendedLocations property.
+     * Set the extendedLocations property: The extended locations.
      * 
      * @param extendedLocations the extendedLocations value to set.
      * @return the SkuLocationInfo object itself.
@@ -130,7 +130,7 @@ public final class SkuLocationInfo implements JsonSerializable<SkuLocationInfo> 
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: The type.
      * 
      * @return the type value.
      */
@@ -139,7 +139,7 @@ public final class SkuLocationInfo implements JsonSerializable<SkuLocationInfo> 
     }
 
     /**
-     * Set the type property: The type property.
+     * Set the type property: The type.
      * 
      * @param type the type value to set.
      * @return the SkuLocationInfo object itself.

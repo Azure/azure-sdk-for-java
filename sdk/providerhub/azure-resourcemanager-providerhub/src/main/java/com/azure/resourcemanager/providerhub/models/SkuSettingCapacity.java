@@ -11,7 +11,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The SkuSettingCapacity model.
+ * The capacity.
  */
 @Fluent
 public final class SkuSettingCapacity extends SkuCapacity {

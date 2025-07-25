@@ -21,19 +21,24 @@ import java.util.Map;
 @Fluent
 public class DefaultRolloutStatus extends RolloutStatusBase {
     /*
-     * The nextTrafficRegion property.
+     * The next traffic region.
      */
     private TrafficRegionCategory nextTrafficRegion;
 
     /*
-     * The nextTrafficRegionScheduledTime property.
+     * The next traffic region scheduled time.
      */
     private OffsetDateTime nextTrafficRegionScheduledTime;
 
     /*
-     * The subscriptionReregistrationResult property.
+     * The subscription reregistration result.
      */
     private SubscriptionReregistrationResult subscriptionReregistrationResult;
+
+    /*
+     * The manifest checkin status.
+     */
+    private DefaultRolloutStatusManifestCheckinStatus manifestCheckinStatus;
 
     /**
      * Creates an instance of DefaultRolloutStatus class.
@@ -42,7 +47,7 @@ public class DefaultRolloutStatus extends RolloutStatusBase {
     }
 
     /**
-     * Get the nextTrafficRegion property: The nextTrafficRegion property.
+     * Get the nextTrafficRegion property: The next traffic region.
      * 
      * @return the nextTrafficRegion value.
      */
@@ -51,7 +56,7 @@ public class DefaultRolloutStatus extends RolloutStatusBase {
     }
 
     /**
-     * Set the nextTrafficRegion property: The nextTrafficRegion property.
+     * Set the nextTrafficRegion property: The next traffic region.
      * 
      * @param nextTrafficRegion the nextTrafficRegion value to set.
      * @return the DefaultRolloutStatus object itself.
@@ -62,7 +67,7 @@ public class DefaultRolloutStatus extends RolloutStatusBase {
     }
 
     /**
-     * Get the nextTrafficRegionScheduledTime property: The nextTrafficRegionScheduledTime property.
+     * Get the nextTrafficRegionScheduledTime property: The next traffic region scheduled time.
      * 
      * @return the nextTrafficRegionScheduledTime value.
      */
@@ -71,7 +76,7 @@ public class DefaultRolloutStatus extends RolloutStatusBase {
     }
 
     /**
-     * Set the nextTrafficRegionScheduledTime property: The nextTrafficRegionScheduledTime property.
+     * Set the nextTrafficRegionScheduledTime property: The next traffic region scheduled time.
      * 
      * @param nextTrafficRegionScheduledTime the nextTrafficRegionScheduledTime value to set.
      * @return the DefaultRolloutStatus object itself.
@@ -82,7 +87,7 @@ public class DefaultRolloutStatus extends RolloutStatusBase {
     }
 
     /**
-     * Get the subscriptionReregistrationResult property: The subscriptionReregistrationResult property.
+     * Get the subscriptionReregistrationResult property: The subscription reregistration result.
      * 
      * @return the subscriptionReregistrationResult value.
      */
@@ -91,7 +96,7 @@ public class DefaultRolloutStatus extends RolloutStatusBase {
     }
 
     /**
-     * Set the subscriptionReregistrationResult property: The subscriptionReregistrationResult property.
+     * Set the subscriptionReregistrationResult property: The subscription reregistration result.
      * 
      * @param subscriptionReregistrationResult the subscriptionReregistrationResult value to set.
      * @return the DefaultRolloutStatus object itself.
@@ -99,6 +104,27 @@ public class DefaultRolloutStatus extends RolloutStatusBase {
     public DefaultRolloutStatus
         withSubscriptionReregistrationResult(SubscriptionReregistrationResult subscriptionReregistrationResult) {
         this.subscriptionReregistrationResult = subscriptionReregistrationResult;
+        return this;
+    }
+
+    /**
+     * Get the manifestCheckinStatus property: The manifest checkin status.
+     * 
+     * @return the manifestCheckinStatus value.
+     */
+    public DefaultRolloutStatusManifestCheckinStatus manifestCheckinStatus() {
+        return this.manifestCheckinStatus;
+    }
+
+    /**
+     * Set the manifestCheckinStatus property: The manifest checkin status.
+     * 
+     * @param manifestCheckinStatus the manifestCheckinStatus value to set.
+     * @return the DefaultRolloutStatus object itself.
+     */
+    public DefaultRolloutStatus
+        withManifestCheckinStatus(DefaultRolloutStatusManifestCheckinStatus manifestCheckinStatus) {
+        this.manifestCheckinStatus = manifestCheckinStatus;
         return this;
     }
 
@@ -127,6 +153,9 @@ public class DefaultRolloutStatus extends RolloutStatusBase {
      */
     @Override
     public void validate() {
+        if (manifestCheckinStatus() != null) {
+            manifestCheckinStatus().validate();
+        }
         if (failedOrSkippedRegions() != null) {
             failedOrSkippedRegions().values().forEach(e -> {
                 if (e != null) {
@@ -154,6 +183,7 @@ public class DefaultRolloutStatus extends RolloutStatusBase {
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.nextTrafficRegionScheduledTime));
         jsonWriter.writeStringField("subscriptionReregistrationResult",
             this.subscriptionReregistrationResult == null ? null : this.subscriptionReregistrationResult.toString());
+        jsonWriter.writeJsonField("manifestCheckinStatus", this.manifestCheckinStatus);
         return jsonWriter.writeEndObject();
     }
 
@@ -188,6 +218,9 @@ public class DefaultRolloutStatus extends RolloutStatusBase {
                 } else if ("subscriptionReregistrationResult".equals(fieldName)) {
                     deserializedDefaultRolloutStatus.subscriptionReregistrationResult
                         = SubscriptionReregistrationResult.fromString(reader.getString());
+                } else if ("manifestCheckinStatus".equals(fieldName)) {
+                    deserializedDefaultRolloutStatus.manifestCheckinStatus
+                        = DefaultRolloutStatusManifestCheckinStatus.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

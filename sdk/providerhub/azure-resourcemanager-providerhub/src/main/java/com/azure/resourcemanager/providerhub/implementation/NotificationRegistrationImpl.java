@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.providerhub.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.providerhub.fluent.models.NotificationRegistrationInner;
 import com.azure.resourcemanager.providerhub.models.NotificationRegistration;
@@ -29,6 +30,10 @@ public final class NotificationRegistrationImpl
 
     public NotificationRegistrationProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public NotificationRegistrationInner innerModel() {

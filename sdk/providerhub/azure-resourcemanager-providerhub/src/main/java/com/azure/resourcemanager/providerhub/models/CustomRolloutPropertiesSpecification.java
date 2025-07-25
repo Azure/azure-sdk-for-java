@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -14,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The CustomRolloutPropertiesSpecification model.
+ * The specification.
  */
 @Fluent
 public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpecification {
@@ -28,8 +27,46 @@ public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpe
      * {@inheritDoc}
      */
     @Override
+    public CustomRolloutPropertiesSpecification
+        withAutoProvisionConfig(CustomRolloutSpecificationAutoProvisionConfig autoProvisionConfig) {
+        super.withAutoProvisionConfig(autoProvisionConfig);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public CustomRolloutPropertiesSpecification withCanary(CustomRolloutSpecificationCanary canary) {
         super.withCanary(canary);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CustomRolloutPropertiesSpecification withReleaseScopes(List<String> releaseScopes) {
+        super.withReleaseScopes(releaseScopes);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CustomRolloutPropertiesSpecification
+        withRefreshSubscriptionRegistration(Boolean refreshSubscriptionRegistration) {
+        super.withRefreshSubscriptionRegistration(refreshSubscriptionRegistration);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CustomRolloutPropertiesSpecification withSkipReleaseScopeValidation(Boolean skipReleaseScopeValidation) {
+        super.withSkipReleaseScopeValidation(skipReleaseScopeValidation);
         return this;
     }
 
@@ -60,11 +97,10 @@ public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpe
      */
     @Override
     public void validate() {
-        if (canary() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property canary in model CustomRolloutPropertiesSpecification"));
-        } else {
+        if (autoProvisionConfig() != null) {
+            autoProvisionConfig().validate();
+        }
+        if (canary() != null) {
             canary().validate();
         }
         if (providerRegistration() != null) {
@@ -75,15 +111,17 @@ public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpe
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(CustomRolloutPropertiesSpecification.class);
-
     /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("autoProvisionConfig", autoProvisionConfig());
         jsonWriter.writeJsonField("canary", canary());
+        jsonWriter.writeArrayField("releaseScopes", releaseScopes(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("refreshSubscriptionRegistration", refreshSubscriptionRegistration());
+        jsonWriter.writeBooleanField("skipReleaseScopeValidation", skipReleaseScopeValidation());
         jsonWriter.writeJsonField("providerRegistration", providerRegistration());
         jsonWriter.writeArrayField("resourceTypeRegistrations", resourceTypeRegistrations(),
             (writer, element) -> writer.writeJson(element));
@@ -96,7 +134,6 @@ public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpe
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomRolloutPropertiesSpecification if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomRolloutPropertiesSpecification.
      */
     public static CustomRolloutPropertiesSpecification fromJson(JsonReader jsonReader) throws IOException {
@@ -107,9 +144,21 @@ public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpe
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("canary".equals(fieldName)) {
+                if ("autoProvisionConfig".equals(fieldName)) {
+                    deserializedCustomRolloutPropertiesSpecification
+                        .withAutoProvisionConfig(CustomRolloutSpecificationAutoProvisionConfig.fromJson(reader));
+                } else if ("canary".equals(fieldName)) {
                     deserializedCustomRolloutPropertiesSpecification
                         .withCanary(CustomRolloutSpecificationCanary.fromJson(reader));
+                } else if ("releaseScopes".equals(fieldName)) {
+                    List<String> releaseScopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCustomRolloutPropertiesSpecification.withReleaseScopes(releaseScopes);
+                } else if ("refreshSubscriptionRegistration".equals(fieldName)) {
+                    deserializedCustomRolloutPropertiesSpecification
+                        .withRefreshSubscriptionRegistration(reader.getNullable(JsonReader::getBoolean));
+                } else if ("skipReleaseScopeValidation".equals(fieldName)) {
+                    deserializedCustomRolloutPropertiesSpecification
+                        .withSkipReleaseScopeValidation(reader.getNullable(JsonReader::getBoolean));
                 } else if ("providerRegistration".equals(fieldName)) {
                     deserializedCustomRolloutPropertiesSpecification
                         .withProviderRegistration(CustomRolloutSpecificationProviderRegistration.fromJson(reader));

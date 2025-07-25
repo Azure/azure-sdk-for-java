@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-providerhub</artifactId>
-  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-providerhub;current} -->
+  <version>1.2.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-providerhub;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for ProviderHub Management</name>
-  <description>This package contains Microsoft Azure SDK for ProviderHub Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Microsoft ProviderHub. Package tag package-2020-11-20.</description>
+  <description>This package contains Microsoft Azure SDK for ProviderHub Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Provider Hub. Package tag package-2024-09-01.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -45,7 +45,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
-    <spotless.skip>false</spotless.skip>
   </properties>
   <dependencies>
     <dependency>

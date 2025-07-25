@@ -20,7 +20,7 @@ import java.util.List;
 public final class SkuResourceArrayResponseWithContinuation
     implements JsonSerializable<SkuResourceArrayResponseWithContinuation> {
     /*
-     * The value property.
+     * The sku resources.
      */
     private List<SkuResourceInner> value;
 
@@ -36,7 +36,7 @@ public final class SkuResourceArrayResponseWithContinuation
     }
 
     /**
-     * Get the value property: The value property.
+     * Get the value property: The sku resources.
      * 
      * @return the value value.
      */
@@ -45,7 +45,7 @@ public final class SkuResourceArrayResponseWithContinuation
     }
 
     /**
-     * Set the value property: The value property.
+     * Set the value property: The sku resources.
      * 
      * @param value the value value to set.
      * @return the SkuResourceArrayResponseWithContinuation object itself.

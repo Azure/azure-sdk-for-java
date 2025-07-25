@@ -20,17 +20,17 @@ import java.time.Duration;
 @Fluent
 public final class ThrottlingMetric implements JsonSerializable<ThrottlingMetric> {
     /*
-     * The type property.
+     * The throttling metric type
      */
     private ThrottlingMetricType type;
 
     /*
-     * The limit property.
+     * The limit.
      */
     private long limit;
 
     /*
-     * The interval property.
+     * The interval.
      */
     private Duration interval;
 
@@ -41,7 +41,7 @@ public final class ThrottlingMetric implements JsonSerializable<ThrottlingMetric
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: The throttling metric type.
      * 
      * @return the type value.
      */
@@ -50,7 +50,7 @@ public final class ThrottlingMetric implements JsonSerializable<ThrottlingMetric
     }
 
     /**
-     * Set the type property: The type property.
+     * Set the type property: The throttling metric type.
      * 
      * @param type the type value to set.
      * @return the ThrottlingMetric object itself.
@@ -61,7 +61,7 @@ public final class ThrottlingMetric implements JsonSerializable<ThrottlingMetric
     }
 
     /**
-     * Get the limit property: The limit property.
+     * Get the limit property: The limit.
      * 
      * @return the limit value.
      */
@@ -70,7 +70,7 @@ public final class ThrottlingMetric implements JsonSerializable<ThrottlingMetric
     }
 
     /**
-     * Set the limit property: The limit property.
+     * Set the limit property: The limit.
      * 
      * @param limit the limit value to set.
      * @return the ThrottlingMetric object itself.
@@ -81,7 +81,7 @@ public final class ThrottlingMetric implements JsonSerializable<ThrottlingMetric
     }
 
     /**
-     * Get the interval property: The interval property.
+     * Get the interval property: The interval.
      * 
      * @return the interval value.
      */
@@ -90,7 +90,7 @@ public final class ThrottlingMetric implements JsonSerializable<ThrottlingMetric
     }
 
     /**
-     * Set the interval property: The interval property.
+     * Set the interval property: The interval.
      * 
      * @param interval the interval value to set.
      * @return the ThrottlingMetric object itself.
