@@ -31,467 +31,137 @@ import reactor.core.publisher.Mono;
  */
 public interface VirtualMachineScaleSetVMsClient {
     /**
-     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
+     * Gets a list of all virtual machines in a VM scale sets.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The name of the VirtualMachineScaleSet.
+     * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code,
+     * 'PowerState') eq true', 'properties/latestModelApplied eq true', 'properties/latestModelApplied eq false'.
+     * @param select The list parameters. Allowed values are 'instanceView', 'instanceView/statuses'.
+     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return a list of all virtual machines in a VM scale sets as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId, VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<VirtualMachineScaleSetVMInner> listAsync(String resourceGroupName, String virtualMachineScaleSetName,
+        String filter, String select, String expand);
 
     /**
-     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
+     * Gets a list of all virtual machines in a VM scale sets.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The name of the VirtualMachineScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return a list of all virtual machines in a VM scale sets as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginReimageAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId, VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<VirtualMachineScaleSetVMInner> listAsync(String resourceGroupName, String virtualMachineScaleSetName);
 
     /**
-     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
+     * Gets a list of all virtual machines in a VM scale sets.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The name of the VirtualMachineScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return a list of all virtual machines in a VM scale sets as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginReimageAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VirtualMachineScaleSetVMInner> list(String resourceGroupName, String virtualMachineScaleSetName);
 
     /**
-     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
+     * Gets a list of all virtual machines in a VM scale sets.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String vmScaleSetName, String instanceId);
-
-    /**
-     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The name of the VirtualMachineScaleSet.
+     * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code,
+     * 'PowerState') eq true', 'properties/latestModelApplied eq true', 'properties/latestModelApplied eq false'.
+     * @param select The list parameters. Allowed values are 'instanceView', 'instanceView/statuses'.
+     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return a list of all virtual machines in a VM scale sets as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String vmScaleSetName, String instanceId,
-        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput, Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VirtualMachineScaleSetVMInner> list(String resourceGroupName, String virtualMachineScaleSetName,
+        String filter, String select, String expand, Context context);
 
     /**
-     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
+     * Gets a virtual machine from a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the instance view of
+     * the virtual machine. 'UserData' will retrieve the UserData of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return a virtual machine from a VM scale set along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> reimageAsync(String resourceGroupName, String vmScaleSetName, String instanceId,
-        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput);
+    Mono<Response<VirtualMachineScaleSetVMInner>> getWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, InstanceViewTypes expand);
 
     /**
-     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
+     * Gets a virtual machine from a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> reimageAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
-
-    /**
-     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a virtual machine from a VM scale set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reimage(String resourceGroupName, String vmScaleSetName, String instanceId);
+    Mono<VirtualMachineScaleSetVMInner> getAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
 
     /**
-     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
+     * Gets a virtual machine from a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the instance view of
+     * the virtual machine. 'UserData' will retrieve the UserData of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a virtual machine from a VM scale set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reimage(String resourceGroupName, String vmScaleSetName, String instanceId,
-        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput, Context context);
+    Response<VirtualMachineScaleSetVMInner> getWithResponse(String resourceGroupName, String vmScaleSetName,
+        String instanceId, InstanceViewTypes expand, Context context);
 
     /**
-     * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
-     * only supported for managed disks.
+     * Gets a virtual machine from a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return a virtual machine from a VM scale set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> reimageAllWithResponseAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId);
-
-    /**
-     * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
-     * only supported for managed disks.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginReimageAllAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId);
-
-    /**
-     * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
-     * only supported for managed disks.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReimageAll(String resourceGroupName, String vmScaleSetName,
-        String instanceId);
-
-    /**
-     * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
-     * only supported for managed disks.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReimageAll(String resourceGroupName, String vmScaleSetName,
-        String instanceId, Context context);
-
-    /**
-     * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
-     * only supported for managed disks.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> reimageAllAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
-
-    /**
-     * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
-     * only supported for managed disks.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void reimageAll(String resourceGroupName, String vmScaleSetName, String instanceId);
-
-    /**
-     * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
-     * only supported for managed disks.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void reimageAll(String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
-
-    /**
-     * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> approveRollingUpgradeWithResponseAsync(String resourceGroupName,
-        String vmScaleSetName, String instanceId);
-
-    /**
-     * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginApproveRollingUpgradeAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId);
-
-    /**
-     * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginApproveRollingUpgrade(String resourceGroupName, String vmScaleSetName,
-        String instanceId);
-
-    /**
-     * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginApproveRollingUpgrade(String resourceGroupName, String vmScaleSetName,
-        String instanceId, Context context);
-
-    /**
-     * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> approveRollingUpgradeAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
-
-    /**
-     * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void approveRollingUpgrade(String resourceGroupName, String vmScaleSetName, String instanceId);
-
-    /**
-     * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void approveRollingUpgrade(String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
-
-    /**
-     * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
-     * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId);
-
-    /**
-     * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
-     * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId);
-
-    /**
-     * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
-     * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmScaleSetName,
-        String instanceId);
-
-    /**
-     * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
-     * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmScaleSetName,
-        String instanceId, Context context);
-
-    /**
-     * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
-     * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deallocateAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
-
-    /**
-     * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
-     * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deallocate(String resourceGroupName, String vmScaleSetName, String instanceId);
-
-    /**
-     * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
-     * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deallocate(String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
+    VirtualMachineScaleSetVMInner get(String resourceGroupName, String vmScaleSetName, String instanceId);
 
     /**
      * Updates a virtual machine of a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
      * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
@@ -511,8 +181,8 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Updates a virtual machine of a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
      * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
@@ -532,8 +202,8 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Updates a virtual machine of a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -548,8 +218,8 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Updates a virtual machine of a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -564,8 +234,8 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Updates a virtual machine of a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
      * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
@@ -586,8 +256,8 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Updates a virtual machine of a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
      * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
@@ -606,8 +276,8 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Updates a virtual machine of a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -622,8 +292,8 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Updates a virtual machine of a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -638,8 +308,8 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Updates a virtual machine of a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
      * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
@@ -659,7 +329,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Deletes a virtual machine from a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param forceDeletion Optional parameter to force delete a virtual machine from a VM scale set. (Feature in
@@ -676,7 +346,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Deletes a virtual machine from a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param forceDeletion Optional parameter to force delete a virtual machine from a VM scale set. (Feature in
@@ -693,7 +363,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Deletes a virtual machine from a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -708,7 +378,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Deletes a virtual machine from a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -722,7 +392,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Deletes a virtual machine from a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param forceDeletion Optional parameter to force delete a virtual machine from a VM scale set. (Feature in
@@ -740,7 +410,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Deletes a virtual machine from a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param forceDeletion Optional parameter to force delete a virtual machine from a VM scale set. (Feature in
@@ -756,7 +426,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Deletes a virtual machine from a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -770,7 +440,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Deletes a virtual machine from a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -783,7 +453,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Deletes a virtual machine from a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param forceDeletion Optional parameter to force delete a virtual machine from a VM scale set. (Feature in
@@ -798,75 +468,342 @@ public interface VirtualMachineScaleSetVMsClient {
         Context context);
 
     /**
-     * Gets a virtual machine from a VM scale set.
+     * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the instance view of
-     * the virtual machine. 'UserData' will retrieve the UserData of the virtual machine. 'resiliencyView' will retrieve
-     * the instance view of the Virtual machine (if applicable) and include 'resilientVMDeletionStatus' as part of it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine from a VM scale set along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualMachineScaleSetVMInner>> getWithResponseAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId, InstanceViewTypes expand);
-
-    /**
-     * Gets a virtual machine from a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine from a VM scale set on successful completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineScaleSetVMInner> getAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+    Mono<Response<Flux<ByteBuffer>>> approveRollingUpgradeWithResponseAsync(String resourceGroupName,
+        String vmScaleSetName, String instanceId);
 
     /**
-     * Gets a virtual machine from a VM scale set.
+     * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the instance view of
-     * the virtual machine. 'UserData' will retrieve the UserData of the virtual machine. 'resiliencyView' will retrieve
-     * the instance view of the Virtual machine (if applicable) and include 'resilientVMDeletionStatus' as part of it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginApproveRollingUpgradeAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
+
+    /**
+     * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginApproveRollingUpgrade(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
+
+    /**
+     * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine from a VM scale set along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineScaleSetVMInner> getWithResponse(String resourceGroupName, String vmScaleSetName,
-        String instanceId, InstanceViewTypes expand, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginApproveRollingUpgrade(String resourceGroupName, String vmScaleSetName,
+        String instanceId, Context context);
 
     /**
-     * Gets a virtual machine from a VM scale set.
+     * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine from a VM scale set.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineScaleSetVMInner get(String resourceGroupName, String vmScaleSetName, String instanceId);
+    Mono<Void> approveRollingUpgradeAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+
+    /**
+     * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void approveRollingUpgrade(String resourceGroupName, String vmScaleSetName, String instanceId);
+
+    /**
+     * Approve upgrade on deferred rolling upgrade for OS disk on a VM scale set instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void approveRollingUpgrade(String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
+
+    /**
+     * Attach and detach data disks to/from a virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param parameters Parameters supplied to the attach and detach data disks operation on a Virtual Machine Scale
+     * Sets VM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies the storage settings for the virtual machine disks along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> attachDetachDataDisksWithResponseAsync(String resourceGroupName,
+        String vmScaleSetName, String instanceId, AttachDetachDataDisksRequest parameters);
+
+    /**
+     * Attach and detach data disks to/from a virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param parameters Parameters supplied to the attach and detach data disks operation on a Virtual Machine Scale
+     * Sets VM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of specifies the storage settings for the virtual machine disks.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<StorageProfile>, StorageProfile> beginAttachDetachDataDisksAsync(String resourceGroupName,
+        String vmScaleSetName, String instanceId, AttachDetachDataDisksRequest parameters);
+
+    /**
+     * Attach and detach data disks to/from a virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param parameters Parameters supplied to the attach and detach data disks operation on a Virtual Machine Scale
+     * Sets VM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of specifies the storage settings for the virtual machine disks.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<StorageProfile>, StorageProfile> beginAttachDetachDataDisks(String resourceGroupName,
+        String vmScaleSetName, String instanceId, AttachDetachDataDisksRequest parameters);
+
+    /**
+     * Attach and detach data disks to/from a virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param parameters Parameters supplied to the attach and detach data disks operation on a Virtual Machine Scale
+     * Sets VM.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of specifies the storage settings for the virtual machine disks.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<StorageProfile>, StorageProfile> beginAttachDetachDataDisks(String resourceGroupName,
+        String vmScaleSetName, String instanceId, AttachDetachDataDisksRequest parameters, Context context);
+
+    /**
+     * Attach and detach data disks to/from a virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param parameters Parameters supplied to the attach and detach data disks operation on a Virtual Machine Scale
+     * Sets VM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies the storage settings for the virtual machine disks on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<StorageProfile> attachDetachDataDisksAsync(String resourceGroupName, String vmScaleSetName, String instanceId,
+        AttachDetachDataDisksRequest parameters);
+
+    /**
+     * Attach and detach data disks to/from a virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param parameters Parameters supplied to the attach and detach data disks operation on a Virtual Machine Scale
+     * Sets VM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies the storage settings for the virtual machine disks.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StorageProfile attachDetachDataDisks(String resourceGroupName, String vmScaleSetName, String instanceId,
+        AttachDetachDataDisksRequest parameters);
+
+    /**
+     * Attach and detach data disks to/from a virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param parameters Parameters supplied to the attach and detach data disks operation on a Virtual Machine Scale
+     * Sets VM.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies the storage settings for the virtual machine disks.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StorageProfile attachDetachDataDisks(String resourceGroupName, String vmScaleSetName, String instanceId,
+        AttachDetachDataDisksRequest parameters, Context context);
+
+    /**
+     * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
+     * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
+
+    /**
+     * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
+     * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
+
+    /**
+     * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
+     * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
+
+    /**
+     * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
+     * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmScaleSetName,
+        String instanceId, Context context);
+
+    /**
+     * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
+     * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deallocateAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+
+    /**
+     * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
+     * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deallocate(String resourceGroupName, String vmScaleSetName, String instanceId);
+
+    /**
+     * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute
+     * resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deallocate(String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
     /**
      * Gets the status of a virtual machine from a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -882,7 +819,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Gets the status of a virtual machine from a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -897,7 +834,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Gets the status of a virtual machine from a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
@@ -913,7 +850,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Gets the status of a virtual machine from a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -926,74 +863,112 @@ public interface VirtualMachineScaleSetVMsClient {
         String instanceId);
 
     /**
-     * Gets a list of all virtual machines in a VM scale sets.
+     * Performs maintenance on a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineScaleSetName The name of the VM scale set.
-     * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code,
-     * 'PowerState') eq true', 'properties/latestModelApplied eq true', 'properties/latestModelApplied eq false'.
-     * @param select The list parameters. Allowed values are 'instanceView', 'instanceView/statuses'.
-     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtual machines in a VM scale sets as paginated response with {@link PagedFlux}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<VirtualMachineScaleSetVMInner> listAsync(String resourceGroupName, String virtualMachineScaleSetName,
-        String filter, String select, String expand);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> performMaintenanceWithResponseAsync(String resourceGroupName,
+        String vmScaleSetName, String instanceId);
 
     /**
-     * Gets a list of all virtual machines in a VM scale sets.
+     * Performs maintenance on a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineScaleSetName The name of the VM scale set.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtual machines in a VM scale sets as paginated response with {@link PagedFlux}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<VirtualMachineScaleSetVMInner> listAsync(String resourceGroupName, String virtualMachineScaleSetName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginPerformMaintenanceAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
 
     /**
-     * Gets a list of all virtual machines in a VM scale sets.
+     * Performs maintenance on a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineScaleSetName The name of the VM scale set.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtual machines in a VM scale sets as paginated response with {@link PagedIterable}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualMachineScaleSetVMInner> list(String resourceGroupName, String virtualMachineScaleSetName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
 
     /**
-     * Gets a list of all virtual machines in a VM scale sets.
+     * Performs maintenance on a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineScaleSetName The name of the VM scale set.
-     * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code,
-     * 'PowerState') eq true', 'properties/latestModelApplied eq true', 'properties/latestModelApplied eq false'.
-     * @param select The list parameters. Allowed values are 'instanceView', 'instanceView/statuses'.
-     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtual machines in a VM scale sets as paginated response with {@link PagedIterable}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualMachineScaleSetVMInner> list(String resourceGroupName, String virtualMachineScaleSetName,
-        String filter, String select, String expand, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(String resourceGroupName, String vmScaleSetName,
+        String instanceId, Context context);
+
+    /**
+     * Performs maintenance on a virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> performMaintenanceAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+
+    /**
+     * Performs maintenance on a virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void performMaintenance(String resourceGroupName, String vmScaleSetName, String instanceId);
+
+    /**
+     * Performs maintenance on a virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void performMaintenance(String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
-     * charged for the resources. Instead, use deallocate to release resources and avoid charges. Additionally, this
-     * operation is not allowed on a virtual machine that is being deallocated or already has been deallocated.
+     * charged for the resources. Instead, use deallocate to release resources and avoid charges.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -1009,10 +984,9 @@ public interface VirtualMachineScaleSetVMsClient {
 
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
-     * charged for the resources. Instead, use deallocate to release resources and avoid charges. Additionally, this
-     * operation is not allowed on a virtual machine that is being deallocated or already has been deallocated.
+     * charged for the resources. Instead, use deallocate to release resources and avoid charges.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -1028,10 +1002,9 @@ public interface VirtualMachineScaleSetVMsClient {
 
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
-     * charged for the resources. Instead, use deallocate to release resources and avoid charges. Additionally, this
-     * operation is not allowed on a virtual machine that is being deallocated or already has been deallocated.
+     * charged for the resources. Instead, use deallocate to release resources and avoid charges.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1045,10 +1018,9 @@ public interface VirtualMachineScaleSetVMsClient {
 
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
-     * charged for the resources. Instead, use deallocate to release resources and avoid charges. Additionally, this
-     * operation is not allowed on a virtual machine that is being deallocated or already has been deallocated.
+     * charged for the resources. Instead, use deallocate to release resources and avoid charges.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1062,10 +1034,9 @@ public interface VirtualMachineScaleSetVMsClient {
 
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
-     * charged for the resources. Instead, use deallocate to release resources and avoid charges. Additionally, this
-     * operation is not allowed on a virtual machine that is being deallocated or already has been deallocated.
+     * charged for the resources. Instead, use deallocate to release resources and avoid charges.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -1082,10 +1053,9 @@ public interface VirtualMachineScaleSetVMsClient {
 
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
-     * charged for the resources. Instead, use deallocate to release resources and avoid charges. Additionally, this
-     * operation is not allowed on a virtual machine that is being deallocated or already has been deallocated.
+     * charged for the resources. Instead, use deallocate to release resources and avoid charges.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -1100,10 +1070,9 @@ public interface VirtualMachineScaleSetVMsClient {
 
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
-     * charged for the resources. Instead, use deallocate to release resources and avoid charges. Additionally, this
-     * operation is not allowed on a virtual machine that is being deallocated or already has been deallocated.
+     * charged for the resources. Instead, use deallocate to release resources and avoid charges.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1116,10 +1085,9 @@ public interface VirtualMachineScaleSetVMsClient {
 
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
-     * charged for the resources. Instead, use deallocate to release resources and avoid charges. Additionally, this
-     * operation is not allowed on a virtual machine that is being deallocated or already has been deallocated.
+     * charged for the resources. Instead, use deallocate to release resources and avoid charges.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1131,10 +1099,9 @@ public interface VirtualMachineScaleSetVMsClient {
 
     /**
      * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
-     * charged for the resources. Instead, use deallocate to release resources and avoid charges. Additionally, this
-     * operation is not allowed on a virtual machine that is being deallocated or already has been deallocated.
+     * charged for the resources. Instead, use deallocate to release resources and avoid charges.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
@@ -1149,211 +1116,9 @@ public interface VirtualMachineScaleSetVMsClient {
         Context context);
 
     /**
-     * Restarts a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId);
-
-    /**
-     * Restarts a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId);
-
-    /**
-     * Restarts a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String vmScaleSetName, String instanceId);
-
-    /**
-     * Restarts a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String vmScaleSetName, String instanceId,
-        Context context);
-
-    /**
-     * Restarts a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> restartAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
-
-    /**
-     * Restarts a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void restart(String resourceGroupName, String vmScaleSetName, String instanceId);
-
-    /**
-     * Restarts a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void restart(String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
-
-    /**
-     * Starts a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId);
-
-    /**
-     * Starts a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId);
-
-    /**
-     * Starts a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String vmScaleSetName, String instanceId);
-
-    /**
-     * Starts a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String vmScaleSetName, String instanceId,
-        Context context);
-
-    /**
-     * Starts a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> startAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
-
-    /**
-     * Starts a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void start(String resourceGroupName, String vmScaleSetName, String instanceId);
-
-    /**
-     * Starts a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void start(String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
-
-    /**
      * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1368,7 +1133,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1383,7 +1148,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1398,7 +1163,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1414,7 +1179,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1428,7 +1193,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1441,7 +1206,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back on.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1453,9 +1218,356 @@ public interface VirtualMachineScaleSetVMsClient {
     void redeploy(String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
     /**
+     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput);
+
+    /**
+     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginReimageAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput);
+
+    /**
+     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginReimageAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
+
+    /**
+     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String vmScaleSetName, String instanceId);
+
+    /**
+     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String vmScaleSetName, String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput, Context context);
+
+    /**
+     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> reimageAsync(String resourceGroupName, String vmScaleSetName, String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput);
+
+    /**
+     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> reimageAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+
+    /**
+     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void reimage(String resourceGroupName, String vmScaleSetName, String instanceId);
+
+    /**
+     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void reimage(String resourceGroupName, String vmScaleSetName, String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput, Context context);
+
+    /**
+     * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
+     * only supported for managed disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> reimageAllWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
+
+    /**
+     * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
+     * only supported for managed disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginReimageAllAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
+
+    /**
+     * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
+     * only supported for managed disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginReimageAll(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
+
+    /**
+     * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
+     * only supported for managed disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginReimageAll(String resourceGroupName, String vmScaleSetName,
+        String instanceId, Context context);
+
+    /**
+     * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
+     * only supported for managed disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> reimageAllAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+
+    /**
+     * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
+     * only supported for managed disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void reimageAll(String resourceGroupName, String vmScaleSetName, String instanceId);
+
+    /**
+     * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
+     * only supported for managed disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void reimageAll(String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
+
+    /**
+     * Restarts a virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
+
+    /**
+     * Restarts a virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
+
+    /**
+     * Restarts a virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String vmScaleSetName, String instanceId);
+
+    /**
+     * Restarts a virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String vmScaleSetName, String instanceId,
+        Context context);
+
+    /**
+     * Restarts a virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> restartAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+
+    /**
+     * Restarts a virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void restart(String resourceGroupName, String vmScaleSetName, String instanceId);
+
+    /**
+     * Restarts a virtual machine in a VM scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void restart(String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
+
+    /**
      * The operation to retrieve SAS URIs of boot diagnostic logs for a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param sasUriExpirationTimeInMinutes Expiration duration in minutes for the SAS URIs with a value between 1 to
@@ -1474,7 +1586,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * The operation to retrieve SAS URIs of boot diagnostic logs for a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1489,7 +1601,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * The operation to retrieve SAS URIs of boot diagnostic logs for a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param sasUriExpirationTimeInMinutes Expiration duration in minutes for the SAS URIs with a value between 1 to
@@ -1508,7 +1620,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * The operation to retrieve SAS URIs of boot diagnostic logs for a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1521,56 +1633,60 @@ public interface VirtualMachineScaleSetVMsClient {
         String instanceId);
 
     /**
-     * Performs maintenance on a virtual machine in a VM scale set.
+     * Run command on a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
+     * @param parameters Parameters supplied to the Run command operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> performMaintenanceWithResponseAsync(String resourceGroupName,
-        String vmScaleSetName, String instanceId);
+    Mono<Response<Flux<ByteBuffer>>> runCommandWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, RunCommandInput parameters);
 
     /**
-     * Performs maintenance on a virtual machine in a VM scale set.
+     * Run command on a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
+     * @param parameters Parameters supplied to the Run command operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginPerformMaintenanceAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId);
+    PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommandAsync(String resourceGroupName,
+        String vmScaleSetName, String instanceId, RunCommandInput parameters);
 
     /**
-     * Performs maintenance on a virtual machine in a VM scale set.
+     * Run command on a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
+     * @param parameters Parameters supplied to the Run command operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(String resourceGroupName, String vmScaleSetName,
-        String instanceId);
+    SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(String resourceGroupName,
+        String vmScaleSetName, String instanceId, RunCommandInput parameters);
 
     /**
-     * Performs maintenance on a virtual machine in a VM scale set.
+     * Run command on a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
+     * @param parameters Parameters supplied to the Run command operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -1578,54 +1694,62 @@ public interface VirtualMachineScaleSetVMsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(String resourceGroupName, String vmScaleSetName,
-        String instanceId, Context context);
+    SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(String resourceGroupName,
+        String vmScaleSetName, String instanceId, RunCommandInput parameters, Context context);
 
     /**
-     * Performs maintenance on a virtual machine in a VM scale set.
+     * Run command on a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
+     * @param parameters Parameters supplied to the Run command operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> performMaintenanceAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+    Mono<RunCommandResultInner> runCommandAsync(String resourceGroupName, String vmScaleSetName, String instanceId,
+        RunCommandInput parameters);
 
     /**
-     * Performs maintenance on a virtual machine in a VM scale set.
+     * Run command on a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
+     * @param parameters Parameters supplied to the Run command operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void performMaintenance(String resourceGroupName, String vmScaleSetName, String instanceId);
+    RunCommandResultInner runCommand(String resourceGroupName, String vmScaleSetName, String instanceId,
+        RunCommandInput parameters);
 
     /**
-     * Performs maintenance on a virtual machine in a VM scale set.
+     * Run command on a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
+     * @param parameters Parameters supplied to the Run command operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void performMaintenance(String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
+    RunCommandResultInner runCommand(String resourceGroupName, String vmScaleSetName, String instanceId,
+        RunCommandInput parameters, Context context);
 
     /**
      * The operation to simulate the eviction of spot virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1640,7 +1764,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * The operation to simulate the eviction of spot virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1654,7 +1778,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * The operation to simulate the eviction of spot virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1670,7 +1794,7 @@ public interface VirtualMachineScaleSetVMsClient {
     /**
      * The operation to simulate the eviction of spot virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1681,238 +1805,103 @@ public interface VirtualMachineScaleSetVMsClient {
     void simulateEviction(String resourceGroupName, String vmScaleSetName, String instanceId);
 
     /**
-     * Attach and detach data disks to/from a virtual machine in a VM scale set.
+     * Starts a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param parameters Parameters supplied to the attach and detach data disks operation on a Virtual Machine Scale
-     * Sets VM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies the storage settings for the virtual machine disks along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> attachDetachDataDisksWithResponseAsync(String resourceGroupName,
-        String vmScaleSetName, String instanceId, AttachDetachDataDisksRequest parameters);
+    Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
 
     /**
-     * Attach and detach data disks to/from a virtual machine in a VM scale set.
+     * Starts a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param parameters Parameters supplied to the attach and detach data disks operation on a Virtual Machine Scale
-     * Sets VM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of specifies the storage settings for the virtual machine disks.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<StorageProfile>, StorageProfile> beginAttachDetachDataDisksAsync(String resourceGroupName,
-        String vmScaleSetName, String instanceId, AttachDetachDataDisksRequest parameters);
-
-    /**
-     * Attach and detach data disks to/from a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param parameters Parameters supplied to the attach and detach data disks operation on a Virtual Machine Scale
-     * Sets VM.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies the storage settings for the virtual machine disks.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StorageProfile>, StorageProfile> beginAttachDetachDataDisks(String resourceGroupName,
-        String vmScaleSetName, String instanceId, AttachDetachDataDisksRequest parameters);
-
-    /**
-     * Attach and detach data disks to/from a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param parameters Parameters supplied to the attach and detach data disks operation on a Virtual Machine Scale
-     * Sets VM.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies the storage settings for the virtual machine disks.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StorageProfile>, StorageProfile> beginAttachDetachDataDisks(String resourceGroupName,
-        String vmScaleSetName, String instanceId, AttachDetachDataDisksRequest parameters, Context context);
-
-    /**
-     * Attach and detach data disks to/from a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param parameters Parameters supplied to the attach and detach data disks operation on a Virtual Machine Scale
-     * Sets VM.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies the storage settings for the virtual machine disks on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StorageProfile> attachDetachDataDisksAsync(String resourceGroupName, String vmScaleSetName, String instanceId,
-        AttachDetachDataDisksRequest parameters);
-
-    /**
-     * Attach and detach data disks to/from a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param parameters Parameters supplied to the attach and detach data disks operation on a Virtual Machine Scale
-     * Sets VM.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies the storage settings for the virtual machine disks.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageProfile attachDetachDataDisks(String resourceGroupName, String vmScaleSetName, String instanceId,
-        AttachDetachDataDisksRequest parameters);
-
-    /**
-     * Attach and detach data disks to/from a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param parameters Parameters supplied to the attach and detach data disks operation on a Virtual Machine Scale
-     * Sets VM.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies the storage settings for the virtual machine disks.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageProfile attachDetachDataDisks(String resourceGroupName, String vmScaleSetName, String instanceId,
-        AttachDetachDataDisksRequest parameters, Context context);
-
-    /**
-     * Run command on a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param parameters Parameters supplied to the Run command operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> runCommandWithResponseAsync(String resourceGroupName, String vmScaleSetName,
-        String instanceId, RunCommandInput parameters);
-
-    /**
-     * Run command on a virtual machine in a VM scale set.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param parameters Parameters supplied to the Run command operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommandAsync(String resourceGroupName,
-        String vmScaleSetName, String instanceId, RunCommandInput parameters);
+    PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
 
     /**
-     * Run command on a virtual machine in a VM scale set.
+     * Starts a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param parameters Parameters supplied to the Run command operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(String resourceGroupName,
-        String vmScaleSetName, String instanceId, RunCommandInput parameters);
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String vmScaleSetName, String instanceId);
 
     /**
-     * Run command on a virtual machine in a VM scale set.
+     * Starts a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param parameters Parameters supplied to the Run command operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(String resourceGroupName,
-        String vmScaleSetName, String instanceId, RunCommandInput parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String vmScaleSetName, String instanceId,
+        Context context);
 
     /**
-     * Run command on a virtual machine in a VM scale set.
+     * Starts a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param parameters Parameters supplied to the Run command operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RunCommandResultInner> runCommandAsync(String resourceGroupName, String vmScaleSetName, String instanceId,
-        RunCommandInput parameters);
+    Mono<Void> startAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
 
     /**
-     * Run command on a virtual machine in a VM scale set.
+     * Starts a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param parameters Parameters supplied to the Run command operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RunCommandResultInner runCommand(String resourceGroupName, String vmScaleSetName, String instanceId,
-        RunCommandInput parameters);
+    void start(String resourceGroupName, String vmScaleSetName, String instanceId);
 
     /**
-     * Run command on a virtual machine in a VM scale set.
+     * Starts a virtual machine in a VM scale set.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param parameters Parameters supplied to the Run command operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RunCommandResultInner runCommand(String resourceGroupName, String vmScaleSetName, String instanceId,
-        RunCommandInput parameters, Context context);
+    void start(String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 }

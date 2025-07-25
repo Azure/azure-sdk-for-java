@@ -16,6 +16,7 @@ import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -92,6 +93,13 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         //
         LoadBalancer vmssInternalLoadBalancer = createInternalLoadBalancer(region, resourceGroup, vmssNetwork, "1");
 
+        StorageAccount storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess()
+            .create();
+
         VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(region)
@@ -105,6 +113,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
             .withSsh(sshPublicKey())
             .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
             .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
+            .withExistingStorageAccount(storageAccount)
             .create();
 
         Assertions.assertNotNull(virtualMachineScaleSet);
@@ -302,6 +311,13 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         //
         LoadBalancer vmssInternalLoadBalancer = createInternalLoadBalancer(region, resourceGroup, vmssNetwork, "1");
 
+        StorageAccount storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess()
+            .create();
+
         VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(region)
@@ -316,6 +332,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
             .withSystemAssignedManagedServiceIdentity()
             .withSystemAssignedIdentityBasedAccessTo(network.id(), BuiltInRole.CONTRIBUTOR)
             .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
+            .withExistingStorageAccount(storageAccount)
             .create();
 
         Assertions.assertNotNull(virtualMachineScaleSet);
@@ -403,6 +420,13 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         //
         LoadBalancer vmssInternalLoadBalancer = createInternalLoadBalancer(region, resourceGroup, vmssNetwork, "1");
 
+        StorageAccount storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .disableSharedKeyAccess()
+            .create();
+
         VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(region)
@@ -414,6 +438,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
+            .withExistingStorageAccount(storageAccount)
             .create();
 
         // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the

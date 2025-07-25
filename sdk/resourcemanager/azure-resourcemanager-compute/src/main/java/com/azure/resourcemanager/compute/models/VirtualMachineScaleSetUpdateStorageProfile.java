@@ -34,9 +34,11 @@ public final class VirtualMachineScaleSetUpdateStorageProfile
     private List<VirtualMachineScaleSetDataDisk> dataDisks;
 
     /*
-     * The diskControllerType property.
+     * Specifies the disk controller type configured for the virtual machines in the scale set. **Note:** You need to
+     * deallocate the virtual machines in the scale set before updating its disk controller type based on the upgrade
+     * mode configured for the scale set. Minimum api-version: 2022-08-01
      */
-    private String diskControllerType;
+    private DiskControllerTypes diskControllerType;
 
     /**
      * Creates an instance of VirtualMachineScaleSetUpdateStorageProfile class.
@@ -105,21 +107,25 @@ public final class VirtualMachineScaleSetUpdateStorageProfile
     }
 
     /**
-     * Get the diskControllerType property: The diskControllerType property.
+     * Get the diskControllerType property: Specifies the disk controller type configured for the virtual machines in
+     * the scale set. **Note:** You need to deallocate the virtual machines in the scale set before updating its disk
+     * controller type based on the upgrade mode configured for the scale set. Minimum api-version: 2022-08-01.
      * 
      * @return the diskControllerType value.
      */
-    public String diskControllerType() {
+    public DiskControllerTypes diskControllerType() {
         return this.diskControllerType;
     }
 
     /**
-     * Set the diskControllerType property: The diskControllerType property.
+     * Set the diskControllerType property: Specifies the disk controller type configured for the virtual machines in
+     * the scale set. **Note:** You need to deallocate the virtual machines in the scale set before updating its disk
+     * controller type based on the upgrade mode configured for the scale set. Minimum api-version: 2022-08-01.
      * 
      * @param diskControllerType the diskControllerType value to set.
      * @return the VirtualMachineScaleSetUpdateStorageProfile object itself.
      */
-    public VirtualMachineScaleSetUpdateStorageProfile withDiskControllerType(String diskControllerType) {
+    public VirtualMachineScaleSetUpdateStorageProfile withDiskControllerType(DiskControllerTypes diskControllerType) {
         this.diskControllerType = diskControllerType;
         return this;
     }
@@ -150,7 +156,8 @@ public final class VirtualMachineScaleSetUpdateStorageProfile
         jsonWriter.writeJsonField("imageReference", this.imageReference);
         jsonWriter.writeJsonField("osDisk", this.osDisk);
         jsonWriter.writeArrayField("dataDisks", this.dataDisks, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("diskControllerType", this.diskControllerType);
+        jsonWriter.writeStringField("diskControllerType",
+            this.diskControllerType == null ? null : this.diskControllerType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -181,7 +188,8 @@ public final class VirtualMachineScaleSetUpdateStorageProfile
                         = reader.readArray(reader1 -> VirtualMachineScaleSetDataDisk.fromJson(reader1));
                     deserializedVirtualMachineScaleSetUpdateStorageProfile.dataDisks = dataDisks;
                 } else if ("diskControllerType".equals(fieldName)) {
-                    deserializedVirtualMachineScaleSetUpdateStorageProfile.diskControllerType = reader.getString();
+                    deserializedVirtualMachineScaleSetUpdateStorageProfile.diskControllerType
+                        = DiskControllerTypes.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

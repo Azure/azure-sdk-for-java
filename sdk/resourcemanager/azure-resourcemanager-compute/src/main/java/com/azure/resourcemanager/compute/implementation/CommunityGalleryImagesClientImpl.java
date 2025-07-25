@@ -60,26 +60,26 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ComputeManagementCli")
+    @ServiceInterface(name = "ComputeManagementClientCommunityGalleryImages")
     public interface CommunityGalleryImagesService {
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/communityGalleries/{publicGalleryName}/images/{galleryImageName}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<CommunityGalleryImageInner>> get(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion, @PathParam("publicGalleryName") String publicGalleryName,
-            @PathParam("galleryImageName") String galleryImageName, @HeaderParam("Accept") String accept,
-            Context context);
-
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/communityGalleries/{publicGalleryName}/images")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<CommunityGalleryImageList>> list(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion, @PathParam("publicGalleryName") String publicGalleryName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("publicGalleryName") String publicGalleryName,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/communityGalleries/{publicGalleryName}/images/{galleryImageName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<CommunityGalleryImageInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("publicGalleryName") String publicGalleryName,
+            @PathParam("galleryImageName") String galleryImageName, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -91,9 +91,153 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
     }
 
     /**
+     * List community gallery images inside a gallery.
+     * 
+     * @param location The name of Azure region.
+     * @param publicGalleryName The public name of the community gallery.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Community Gallery Images operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<CommunityGalleryImageInner>> listSinglePageAsync(String location,
+        String publicGalleryName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (publicGalleryName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter publicGalleryName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-03-03";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                location, publicGalleryName, accept, context))
+            .<PagedResponse<CommunityGalleryImageInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List community gallery images inside a gallery.
+     * 
+     * @param location The name of Azure region.
+     * @param publicGalleryName The public name of the community gallery.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Community Gallery Images operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<CommunityGalleryImageInner>> listSinglePageAsync(String location,
+        String publicGalleryName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (publicGalleryName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter publicGalleryName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-03-03";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location, publicGalleryName,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * List community gallery images inside a gallery.
+     * 
+     * @param location The name of Azure region.
+     * @param publicGalleryName The public name of the community gallery.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Community Gallery Images operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<CommunityGalleryImageInner> listAsync(String location, String publicGalleryName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(location, publicGalleryName),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * List community gallery images inside a gallery.
+     * 
+     * @param location The name of Azure region.
+     * @param publicGalleryName The public name of the community gallery.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Community Gallery Images operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<CommunityGalleryImageInner> listAsync(String location, String publicGalleryName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(location, publicGalleryName, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * List community gallery images inside a gallery.
+     * 
+     * @param location The name of Azure region.
+     * @param publicGalleryName The public name of the community gallery.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Community Gallery Images operation response as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CommunityGalleryImageInner> list(String location, String publicGalleryName) {
+        return new PagedIterable<>(listAsync(location, publicGalleryName));
+    }
+
+    /**
+     * List community gallery images inside a gallery.
+     * 
+     * @param location The name of Azure region.
+     * @param publicGalleryName The public name of the community gallery.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Community Gallery Images operation response as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CommunityGalleryImageInner> list(String location, String publicGalleryName, Context context) {
+        return new PagedIterable<>(listAsync(location, publicGalleryName, context));
+    }
+
+    /**
      * Get a community gallery image.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param publicGalleryName The public name of the community gallery.
      * @param galleryImageName The name of the community gallery image definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -126,15 +270,15 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
-                apiVersion, publicGalleryName, galleryImageName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                location, publicGalleryName, galleryImageName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a community gallery image.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param publicGalleryName The public name of the community gallery.
      * @param galleryImageName The name of the community gallery image definition.
      * @param context The context to associate with this operation.
@@ -168,14 +312,14 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
         final String apiVersion = "2024-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location, apiVersion,
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
             publicGalleryName, galleryImageName, accept, context);
     }
 
     /**
      * Get a community gallery image.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param publicGalleryName The public name of the community gallery.
      * @param galleryImageName The name of the community gallery image definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -193,7 +337,7 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
     /**
      * Get a community gallery image.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param publicGalleryName The public name of the community gallery.
      * @param galleryImageName The name of the community gallery image definition.
      * @param context The context to associate with this operation.
@@ -211,7 +355,7 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
     /**
      * Get a community gallery image.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param publicGalleryName The public name of the community gallery.
      * @param galleryImageName The name of the community gallery image definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,150 +366,6 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunityGalleryImageInner get(String location, String publicGalleryName, String galleryImageName) {
         return getWithResponse(location, publicGalleryName, galleryImageName, Context.NONE).getValue();
-    }
-
-    /**
-     * List community gallery images inside a gallery.
-     * 
-     * @param location Resource location.
-     * @param publicGalleryName The public name of the community gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Community Gallery Images operation response along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommunityGalleryImageInner>> listSinglePageAsync(String location,
-        String publicGalleryName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (publicGalleryName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter publicGalleryName is required and cannot be null."));
-        }
-        final String apiVersion = "2024-03-03";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
-                apiVersion, publicGalleryName, accept, context))
-            .<PagedResponse<CommunityGalleryImageInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * List community gallery images inside a gallery.
-     * 
-     * @param location Resource location.
-     * @param publicGalleryName The public name of the community gallery.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Community Gallery Images operation response along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommunityGalleryImageInner>> listSinglePageAsync(String location,
-        String publicGalleryName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (publicGalleryName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter publicGalleryName is required and cannot be null."));
-        }
-        final String apiVersion = "2024-03-03";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), location, apiVersion, publicGalleryName,
-                accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List community gallery images inside a gallery.
-     * 
-     * @param location Resource location.
-     * @param publicGalleryName The public name of the community gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Community Gallery Images operation response as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CommunityGalleryImageInner> listAsync(String location, String publicGalleryName) {
-        return new PagedFlux<>(() -> listSinglePageAsync(location, publicGalleryName),
-            nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * List community gallery images inside a gallery.
-     * 
-     * @param location Resource location.
-     * @param publicGalleryName The public name of the community gallery.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Community Gallery Images operation response as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CommunityGalleryImageInner> listAsync(String location, String publicGalleryName,
-        Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(location, publicGalleryName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * List community gallery images inside a gallery.
-     * 
-     * @param location Resource location.
-     * @param publicGalleryName The public name of the community gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Community Gallery Images operation response as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CommunityGalleryImageInner> list(String location, String publicGalleryName) {
-        return new PagedIterable<>(listAsync(location, publicGalleryName));
-    }
-
-    /**
-     * List community gallery images inside a gallery.
-     * 
-     * @param location Resource location.
-     * @param publicGalleryName The public name of the community gallery.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Community Gallery Images operation response as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CommunityGalleryImageInner> list(String location, String publicGalleryName, Context context) {
-        return new PagedIterable<>(listAsync(location, publicGalleryName, context));
     }
 
     /**
