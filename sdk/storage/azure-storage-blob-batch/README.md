@@ -111,7 +111,7 @@ blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach
 
 This is because the batch operation is not executed until the response is consumed.
 
-So executing this code`blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE)`
+So executing this code `blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE)`
 does not send any requests to the service until you iterate over the response.
 
 ### Bulk Setting AccessTier
