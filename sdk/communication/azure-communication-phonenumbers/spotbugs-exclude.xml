@@ -3,44 +3,7 @@
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.communication.phonenumbers.implementation.models.CommunicationError" />
-      <Class name="com.azure.communication.phonenumbers.implementation.models.OfferingsResponse" />
-      <Class name="com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest" />
-      <Class name="com.azure.communication.phonenumbers.implementation.models.OperatorInformationResult" />
-      <Class name="com.azure.communication.phonenumbers.implementation.models.PhoneNumberAreaCodes" />
-      <Class name="com.azure.communication.phonenumbers.implementation.models.PhoneNumberCountries" />
-      <Class name="com.azure.communication.phonenumbers.implementation.models.PhoneNumberLocalities" />
-      <Class name="com.azure.communication.phonenumbers.implementation.models.PurchasedPhoneNumbers" />
-      <Class name="com.azure.communication.phonenumbers.models.OperatorInformationResult" />
-      <Class name="com.azure.communication.phonenumbers.models.PhoneNumberError" />
-      <Class name="com.azure.communication.phonenumbers.models.PhoneNumberSearchResult" />
-      <Class name="com.azure.communication.phonenumbers.siprouting.implementation.models.CommunicationError" />
-      <Class name="com.azure.communication.phonenumbers.siprouting.implementation.models.SipConfiguration" />
-      <Class name="com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunkRoute" />
-      <Class name="com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.communication.phonenumbers.PhoneNumbersClientBuilder" />
-      <Class name="com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImplBuilder" />
-      <Class name="com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest" />
-      <Class name="com.azure.communication.phonenumbers.implementation.models.PurchasedPhoneNumbers" />
-      <Class name="com.azure.communication.phonenumbers.models.PhoneNumberError" />
-      <Class name="com.azure.communication.phonenumbers.siprouting.SipRoutingClientBuilder" />
-      <Class name="com.azure.communication.phonenumbers.siprouting.implementation.SipRoutingAdminClientImplBuilder" />
-      <Class name="com.azure.communication.phonenumbers.siprouting.implementation.models.SipConfiguration" />
-      <Class name="com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunkRoute" />
-      <Class name="com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute" />
-    </Or>
-  </Match>
-  <Match>
     <Bug pattern="EI_EXPOSE_STATIC_REP2" />
-    <Or>
-      <Class name="com.azure.communication.phonenumbers.implementation.accesshelpers.PhoneNumbersReservationAccessHelper" />
-    </Or>
+    <Class name="com.azure.communication.phonenumbers.implementation.accesshelpers.PhoneNumbersReservationAccessHelper" />
   </Match>
 </FindBugsFilter>

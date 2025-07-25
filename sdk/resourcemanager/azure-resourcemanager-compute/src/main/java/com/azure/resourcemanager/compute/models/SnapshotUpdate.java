@@ -338,6 +338,16 @@ public final class SnapshotUpdate implements JsonSerializable<SnapshotUpdate> {
     }
 
     /**
+     * Get the snapshotAccessState property: The state of snapshot which determines the access availability of the
+     * snapshot.
+     * 
+     * @return the snapshotAccessState value.
+     */
+    public SnapshotAccessState snapshotAccessState() {
+        return this.innerProperties() == null ? null : this.innerProperties().snapshotAccessState();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

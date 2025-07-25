@@ -9,7 +9,8 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class TopicEventSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/
      * TopicEventSubscriptions_Delete.json
      */
     /**
@@ -19,6 +20,6 @@ public final class TopicEventSubscriptionsDeleteSamples {
      */
     public static void topicEventSubscriptionsDelete(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
         manager.topicEventSubscriptions()
-            .delete("examplerg", "exampleTopic", "examplesubscription", com.azure.core.util.Context.NONE);
+            .delete("examplerg", "exampleTopic1", "examplesubscription1", com.azure.core.util.Context.NONE);
     }
 }

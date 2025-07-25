@@ -14,6 +14,8 @@ import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
+import com.azure.resourcemanager.msi.models.Identity;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -97,14 +99,20 @@ public class VirtualMachineUpdateTests extends ComputeManagementTest {
         Assertions.assertEquals("value1", vm.tags().get("key1"));
 
         // modify msi
-        vm.update()
+        String identityName1 = generateRandomResourceName("msi-id", 15);
+        Creatable<Identity> identityToCreate = msiManager.identities()
+            .define(identityName1)
+            .withRegion(Region.US_WEST3)
+            .withExistingResourceGroup(rgName);
+        vmUpdate = vm.update()
             .withSystemAssignedManagedServiceIdentity()
             .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
-            .apply();
+            .withNewUserAssignedManagedServiceIdentity(identityToCreate);
         Assertions.assertTrue(this.isVirtualMachineModifiedDuringUpdate(vm));
+        vmUpdate.apply();
 
         // verify msi
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, vm.managedServiceIdentityType());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, vm.managedServiceIdentityType());
         Assertions.assertNotNull(vm.systemAssignedManagedServiceIdentityPrincipalId());
     }
 

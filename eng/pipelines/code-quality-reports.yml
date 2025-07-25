@@ -40,6 +40,7 @@ extends:
                         - '**/*.xml'
                         - '!sdk/**/test-recordings'
                         - '!sdk/**/session-records'
+                        - 'sdk/tools/linting-extensions'
 
               - task: UsePythonVersion@0
                 displayName: 'Use Python $(PythonVersion)'
@@ -87,8 +88,6 @@ extends:
                     -LintingPipelineVariable "LintingGoals"
                   pwsh: true
                 displayName: 'Generate Linting Commands'
-
-              - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
               - task: Maven@4
                 displayName: 'Build and Run Linting'

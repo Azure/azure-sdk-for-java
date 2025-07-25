@@ -950,8 +950,8 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricAgentModel list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the list of fabric agents in the given fabric along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FabricAgentModelInner>> listNextSinglePageAsync(String nextLink) {
@@ -976,7 +976,7 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricAgentModel list operation along with {@link PagedResponse}.
+     * @return the list of fabric agents in the given fabric along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricAgentModelInner> listNextSinglePage(String nextLink) {
@@ -1004,7 +1004,7 @@ public final class FabricAgentsClientImpl implements FabricAgentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FabricAgentModel list operation along with {@link PagedResponse}.
+     * @return the list of fabric agents in the given fabric along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricAgentModelInner> listNextSinglePage(String nextLink, Context context) {

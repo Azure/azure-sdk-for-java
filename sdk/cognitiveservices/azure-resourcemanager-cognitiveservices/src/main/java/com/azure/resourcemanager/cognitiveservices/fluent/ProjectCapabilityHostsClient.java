@@ -119,7 +119,7 @@ public interface ProjectCapabilityHostsClient {
      * @param accountName The name of Cognitive Services account.
      * @param projectName The name of Cognitive Services account's project.
      * @param capabilityHostname The name of the capability host associated with the Cognitive Services Resource.
-     * @param body CapabilityHost definition.
+     * @param capabilityHost CapabilityHost definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -127,7 +127,7 @@ public interface ProjectCapabilityHostsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CapabilityHostInner>, CapabilityHostInner> beginCreateOrUpdate(String resourceGroupName,
-        String accountName, String projectName, String capabilityHostname, CapabilityHostInner body);
+        String accountName, String projectName, String capabilityHostname, CapabilityHostInner capabilityHost);
 
     /**
      * Create or update project capabilityHost.
@@ -136,7 +136,7 @@ public interface ProjectCapabilityHostsClient {
      * @param accountName The name of Cognitive Services account.
      * @param projectName The name of Cognitive Services account's project.
      * @param capabilityHostname The name of the capability host associated with the Cognitive Services Resource.
-     * @param body CapabilityHost definition.
+     * @param capabilityHost CapabilityHost definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -145,7 +145,8 @@ public interface ProjectCapabilityHostsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CapabilityHostInner>, CapabilityHostInner> beginCreateOrUpdate(String resourceGroupName,
-        String accountName, String projectName, String capabilityHostname, CapabilityHostInner body, Context context);
+        String accountName, String projectName, String capabilityHostname, CapabilityHostInner capabilityHost,
+        Context context);
 
     /**
      * Create or update project capabilityHost.
@@ -154,7 +155,7 @@ public interface ProjectCapabilityHostsClient {
      * @param accountName The name of Cognitive Services account.
      * @param projectName The name of Cognitive Services account's project.
      * @param capabilityHostname The name of the capability host associated with the Cognitive Services Resource.
-     * @param body CapabilityHost definition.
+     * @param capabilityHost CapabilityHost definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -162,7 +163,7 @@ public interface ProjectCapabilityHostsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CapabilityHostInner createOrUpdate(String resourceGroupName, String accountName, String projectName,
-        String capabilityHostname, CapabilityHostInner body);
+        String capabilityHostname, CapabilityHostInner capabilityHost);
 
     /**
      * Create or update project capabilityHost.
@@ -171,7 +172,7 @@ public interface ProjectCapabilityHostsClient {
      * @param accountName The name of Cognitive Services account.
      * @param projectName The name of Cognitive Services account's project.
      * @param capabilityHostname The name of the capability host associated with the Cognitive Services Resource.
-     * @param body CapabilityHost definition.
+     * @param capabilityHost CapabilityHost definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -180,5 +181,5 @@ public interface ProjectCapabilityHostsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CapabilityHostInner createOrUpdate(String resourceGroupName, String accountName, String projectName,
-        String capabilityHostname, CapabilityHostInner body, Context context);
+        String capabilityHostname, CapabilityHostInner capabilityHost, Context context);
 }

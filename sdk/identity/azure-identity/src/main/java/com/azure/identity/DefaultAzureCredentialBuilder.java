@@ -338,6 +338,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         credentials.add(new AzureCliCredential(tenantId, identityClientOptions.clone()));
         credentials.add(new AzurePowerShellCredential(tenantId, identityClientOptions.clone()));
         credentials.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
+        credentials.add(new OSBrokerCredential(tenantId));
     }
 
     private WorkloadIdentityCredential getWorkloadIdentityCredential() {

@@ -304,7 +304,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
                 .block();
 
             CosmosDiagnostics cosmosDiagnostics =
-                this.performDocumentOperation(container, operationType, createdItem);
+                this.performDocumentOperation(container, operationType, createdItem, false);
 
 
             if (isNonWriteDocumentOperation(operationType)) {
