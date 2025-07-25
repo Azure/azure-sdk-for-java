@@ -77,6 +77,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineEncryption;
 import com.azure.resourcemanager.compute.models.VirtualMachineEvictionPolicyTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
 import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
+import com.azure.resourcemanager.compute.models.VirtualMachineIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.compute.models.VirtualMachineInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachinePriorityTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
@@ -2135,8 +2136,8 @@ class VirtualMachineImpl
 
         VirtualMachineUpdateInner updateParameter = new VirtualMachineUpdateInner();
         this.copyInnerToUpdateParameter(updateParameter);
-        this.virtualMachineMsiHandler.handleExternalIdentities(updateParameter);
-
+        Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities
+            = this.virtualMachineMsiHandler.handleExternalIdentities(updateParameter);
         final boolean vmModified = this.isVirtualMachineModifiedDuringUpdate(updateParameter);
         if (vmModified) {
             return this.manager()
@@ -2150,7 +2151,12 @@ class VirtualMachineImpl
                     return this;
                 });
         } else {
-            return refreshAsync();
+            // If userAssignedIdentities property is not changed, it would be set to null via virtualMachineMsiHandler.handleExternalIdentities.
+            // In this case, set it back if vm is not updated.
+            if (this.innerModel().identity() != null) {
+                this.innerModel().identity().withUserAssignedIdentities(userAssignedIdentities);
+            }
+            return Mono.just(this);
         }
     }
 

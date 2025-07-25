@@ -16,6 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -142,10 +143,9 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
         }
     }
 
-    void handleExternalIdentities(VirtualMachineUpdateInner vmUpdate) {
-        if (this.handleRemoveAllExternalIdentitiesCase(vmUpdate)) {
-            return;
-        } else {
+    Map<String, VirtualMachineIdentityUserAssignedIdentities>
+        handleExternalIdentities(VirtualMachineUpdateInner vmUpdate) {
+        if (!this.handleRemoveAllExternalIdentitiesCase(vmUpdate)) {
             // At this point one of the following condition is met:
             //
             // 1. User don't want touch the 'VM.Identity.userAssignedIdentities' property
@@ -164,15 +164,20 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
             if (!this.userAssignedIdentities.isEmpty()) {
                 // At this point its guaranteed that 'currentIdentity' is not null so vmUpdate.identity() is.
                 vmUpdate.identity().withUserAssignedIdentities(this.userAssignedIdentities);
+                return this.userAssignedIdentities;
             } else {
                 // User don't want to touch 'VM.Identity.userAssignedIdentities' property
                 if (currentIdentity != null) {
                     // and currently there is identity exists or user want to manipulate some other properties of
                     // identity, set identities to null so that it won't send over wire.
+                    Map<String, VirtualMachineIdentityUserAssignedIdentities> emsis
+                        = currentIdentity.userAssignedIdentities();
                     currentIdentity.withUserAssignedIdentities(null);
+                    return emsis;
                 }
             }
         }
+        return new HashMap<>();
     }
 
     /** Clear VirtualMachineMsiHandler post-run specific internal state. */
