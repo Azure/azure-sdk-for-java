@@ -64,17 +64,29 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ComputeManagementCli")
+    @ServiceInterface(name = "ComputeManagementClientRestorePoints")
     public interface RestorePointsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<RestorePointInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("restorePointCollectionName") String restorePointCollectionName,
+            @PathParam("restorePointName") String restorePointName,
+            @QueryParam("$expand") RestorePointExpandOptions expand, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("restorePointCollectionName") String restorePointCollectionName,
-            @PathParam("restorePointName") String restorePointName, @QueryParam("api-version") String apiVersion,
+            @PathParam("restorePointName") String restorePointName,
             @BodyParam("application/json") RestorePointInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -83,29 +95,163 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("restorePointCollectionName") String restorePointCollectionName,
-            @PathParam("restorePointName") String restorePointName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("restorePointName") String restorePointName, @HeaderParam("Accept") String accept,
+            Context context);
+    }
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{restorePointName}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<RestorePointInner>> get(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("restorePointCollectionName") String restorePointCollectionName,
-            @PathParam("restorePointName") String restorePointName,
-            @QueryParam("$expand") RestorePointExpandOptions expand, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+    /**
+     * The operation to get the restore point.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves information about the
+     * run-time state of a restore point.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore Point details along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RestorePointInner>> getWithResponseAsync(String resourceGroupName,
+        String restorePointCollectionName, String restorePointName, RestorePointExpandOptions expand) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (restorePointCollectionName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter restorePointCollectionName is required and cannot be null."));
+        }
+        if (restorePointName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter restorePointName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, restorePointCollectionName, restorePointName, expand, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * The operation to get the restore point.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves information about the
+     * run-time state of a restore point.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore Point details along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<RestorePointInner>> getWithResponseAsync(String resourceGroupName,
+        String restorePointCollectionName, String restorePointName, RestorePointExpandOptions expand, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (restorePointCollectionName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter restorePointCollectionName is required and cannot be null."));
+        }
+        if (restorePointName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter restorePointName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-11-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            restorePointCollectionName, restorePointName, expand, accept, context);
+    }
+
+    /**
+     * The operation to get the restore point.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore Point details on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RestorePointInner> getAsync(String resourceGroupName, String restorePointCollectionName,
+        String restorePointName) {
+        final RestorePointExpandOptions expand = null;
+        return getWithResponseAsync(resourceGroupName, restorePointCollectionName, restorePointName, expand)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * The operation to get the restore point.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves information about the
+     * run-time state of a restore point.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore Point details along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RestorePointInner> getWithResponse(String resourceGroupName, String restorePointCollectionName,
+        String restorePointName, RestorePointExpandOptions expand, Context context) {
+        return getWithResponseAsync(resourceGroupName, restorePointCollectionName, restorePointName, expand, context)
+            .block();
+    }
+
+    /**
+     * The operation to get the restore point.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore Point details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RestorePointInner get(String resourceGroupName, String restorePointCollectionName, String restorePointName) {
+        final RestorePointExpandOptions expand = null;
+        return getWithResponse(resourceGroupName, restorePointCollectionName, restorePointName, expand, Context.NONE)
+            .getValue();
     }
 
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @param parameters Parameters supplied to the Create restore point operation.
@@ -146,15 +292,15 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    restorePointCollectionName, restorePointName, apiVersion, parameters, accept, context))
+                context -> service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, restorePointCollectionName, restorePointName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @param parameters Parameters supplied to the Create restore point operation.
@@ -195,14 +341,14 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
         final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            restorePointCollectionName, restorePointName, apiVersion, parameters, accept, context);
+        return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            restorePointCollectionName, restorePointName, parameters, accept, context);
     }
 
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @param parameters Parameters supplied to the Create restore point operation.
@@ -223,7 +369,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @param parameters Parameters supplied to the Create restore point operation.
@@ -246,7 +392,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @param parameters Parameters supplied to the Create restore point operation.
@@ -265,7 +411,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @param parameters Parameters supplied to the Create restore point operation.
@@ -286,7 +432,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @param parameters Parameters supplied to the Create restore point operation.
@@ -305,7 +451,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @param parameters Parameters supplied to the Create restore point operation.
@@ -326,7 +472,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @param parameters Parameters supplied to the Create restore point operation.
@@ -344,7 +490,7 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     /**
      * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @param parameters Parameters supplied to the Create restore point operation.
@@ -364,8 +510,8 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     /**
      * The operation to delete the restore point.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the Restore Point Collection.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -398,16 +544,17 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
         final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, restorePointCollectionName, restorePointName, apiVersion, accept, context))
+            .withContext(
+                context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, restorePointCollectionName, restorePointName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to delete the restore point.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the Restore Point Collection.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -441,15 +588,15 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
         final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            restorePointCollectionName, restorePointName, apiVersion, accept, context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            restorePointCollectionName, restorePointName, accept, context);
     }
 
     /**
      * The operation to delete the restore point.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the Restore Point Collection.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -468,8 +615,8 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     /**
      * The operation to delete the restore point.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the Restore Point Collection.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -490,8 +637,8 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     /**
      * The operation to delete the restore point.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the Restore Point Collection.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -507,8 +654,8 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     /**
      * The operation to delete the restore point.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the Restore Point Collection.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -526,8 +673,8 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     /**
      * The operation to delete the restore point.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the Restore Point Collection.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -544,8 +691,8 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     /**
      * The operation to delete the restore point.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the Restore Point Collection.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -563,8 +710,8 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     /**
      * The operation to delete the restore point.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the Restore Point Collection.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -578,8 +725,8 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     /**
      * The operation to delete the restore point.
      * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the Restore Point Collection.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -590,151 +737,5 @@ public final class RestorePointsClientImpl implements RestorePointsClient {
     public void delete(String resourceGroupName, String restorePointCollectionName, String restorePointName,
         Context context) {
         deleteAsync(resourceGroupName, restorePointCollectionName, restorePointName, context).block();
-    }
-
-    /**
-     * The operation to get the restore point.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
-     * @param restorePointName The name of the restore point.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves information about the
-     * run-time state of a restore point.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore Point details along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RestorePointInner>> getWithResponseAsync(String resourceGroupName,
-        String restorePointCollectionName, String restorePointName, RestorePointExpandOptions expand) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (restorePointCollectionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter restorePointCollectionName is required and cannot be null."));
-        }
-        if (restorePointName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter restorePointName is required and cannot be null."));
-        }
-        final String apiVersion = "2024-11-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, restorePointCollectionName, restorePointName, expand, apiVersion, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * The operation to get the restore point.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
-     * @param restorePointName The name of the restore point.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves information about the
-     * run-time state of a restore point.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore Point details along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RestorePointInner>> getWithResponseAsync(String resourceGroupName,
-        String restorePointCollectionName, String restorePointName, RestorePointExpandOptions expand, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (restorePointCollectionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter restorePointCollectionName is required and cannot be null."));
-        }
-        if (restorePointName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter restorePointName is required and cannot be null."));
-        }
-        final String apiVersion = "2024-11-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            restorePointCollectionName, restorePointName, expand, apiVersion, accept, context);
-    }
-
-    /**
-     * The operation to get the restore point.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
-     * @param restorePointName The name of the restore point.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore Point details on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RestorePointInner> getAsync(String resourceGroupName, String restorePointCollectionName,
-        String restorePointName) {
-        final RestorePointExpandOptions expand = null;
-        return getWithResponseAsync(resourceGroupName, restorePointCollectionName, restorePointName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * The operation to get the restore point.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
-     * @param restorePointName The name of the restore point.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves information about the
-     * run-time state of a restore point.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore Point details along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RestorePointInner> getWithResponse(String resourceGroupName, String restorePointCollectionName,
-        String restorePointName, RestorePointExpandOptions expand, Context context) {
-        return getWithResponseAsync(resourceGroupName, restorePointCollectionName, restorePointName, expand, context)
-            .block();
-    }
-
-    /**
-     * The operation to get the restore point.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
-     * @param restorePointName The name of the restore point.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore Point details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RestorePointInner get(String resourceGroupName, String restorePointCollectionName, String restorePointName) {
-        final RestorePointExpandOptions expand = null;
-        return getWithResponse(resourceGroupName, restorePointCollectionName, restorePointName, expand, Context.NONE)
-            .getValue();
     }
 }

@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-servicebus</artifactId>
-  <version>7.18.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+  <version>7.17.13</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
   <name>Microsoft Azure client library for Service Bus</name>
   <description>This package contains the Microsoft Azure Service Bus client library</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -69,7 +69,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>2.10.2</version> <!-- {x-version-update;unreleased_com.azure:azure-core-amqp;dependency} -->
+      <version>2.10.2</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

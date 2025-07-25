@@ -26,24 +26,9 @@
   <suppress files="com.azure.identity.implementation.SynchronizedAccessor.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.identity.implementation.SynchronousAccessor.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.identity.implementation.WindowsCredentialAccessor.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/Jedis/java/com/azure/jedis/AzureJedisClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/Jedis/java/com/azure/jedis/AzureJedisClientBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.identity.DeviceCodeCredentialBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.identity.implementation.HttpPipelineAdapter.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.identity.implementation.IdentityClientBase.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/Jedis/java/com/azure/jedis/sample/AuthenticateWithTokenCache.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/Jedis/java/com/azure/jedis/sample/AzureJedisWrapperSample.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/Jedis/java/com/azure/jedis/sample/HandleReauthentication.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/Jedis/java/com/azure/jedis/sample/HelloWorld.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/Lettuce/java/com/azure/lettuce/sample/AuthenticateWithTokenCache.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/Lettuce/java/com/azure/lettuce/sample/HandleReauthentication.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/Lettuce/java/com/azure/lettuce/sample/HelloWorld.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/Lettuce/java/com/azure/lettuce/sample/withcredentialprovider/AuthenticateWithTokenCache.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/Lettuce/java/com/azure/lettuce/sample/withcredentialprovider/HandleReauthentication.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/Lettuce/java/com/azure/lettuce/sample/withcredentialprovider/HelloWorld.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/Redisson/java/com/azure/redisson/sample/AuthenticateWithTokenCache.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/Redisson/java/com/azure/redisson/sample/HandleReauthentication.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/Redisson/java/com/azure/redisson/sample/HelloWorld.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.identity.implementation.IdentityClientBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
   <suppress files="com.azure.identity.AzureCliCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="com.azure.identity.AzureDeveloperCliCredential.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
@@ -63,5 +48,4 @@
   <suppress files="com.azure.identity.implementation.VisualStudioCacheAccessor.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="com.azure.identity.implementation.IdentityClientBase.java" checks="io.clientcore.linting.extensions.checkstyle.checks.UseCaughtExceptionCauseCheck" />
   <suppress files="com.azure.identity.implementation.WindowsCredentialAccessor.java" checks="io.clientcore.linting.extensions.checkstyle.checks.UseCaughtExceptionCauseCheck" />
-  <suppress files="sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/Jedis/java/com/azure/jedis/ApiManager.java" checks="io.clientcore.linting.extensions.checkstyle.checks.UseCaughtExceptionCauseCheck" />
 </suppressions>

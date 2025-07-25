@@ -48,6 +48,12 @@ public final class ChannelProvisioningState extends ExpandableStringEnum<Channel
         = fromString("IdleDueToMirroredPartnerTopicDeletion");
 
     /**
+     * Static value IdleDueToMirroredPartnerDestinationDeletion for ChannelProvisioningState.
+     */
+    public static final ChannelProvisioningState IDLE_DUE_TO_MIRRORED_PARTNER_DESTINATION_DELETION
+        = fromString("IdleDueToMirroredPartnerDestinationDeletion");
+
+    /**
      * Creates a new instance of ChannelProvisioningState value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

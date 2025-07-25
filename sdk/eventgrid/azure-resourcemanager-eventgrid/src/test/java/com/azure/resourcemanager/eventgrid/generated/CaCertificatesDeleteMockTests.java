@@ -27,7 +27,7 @@ public final class CaCertificatesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.caCertificates().delete("nuhiig", "yl", "ui", com.azure.core.util.Context.NONE);
+        manager.caCertificates().delete("lpolwzrghsrle", "nkfscjfn", "jwvuag", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -22,7 +22,7 @@ public final class TopicSpacesListByNamespaceMockTests {
     @Test
     public void testListByNamespace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"lufbortb\",\"topicTemplates\":[\"k\"],\"provisioningState\":\"Creating\"},\"id\":\"svbxxyjisskob\",\"name\":\"ocl\",\"type\":\"l\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"ihqbtod\",\"topicTemplates\":[\"xbvkvwzdmvdd\",\"wcrugyozzz\",\"wnjdvvlrh\"],\"provisioningState\":\"Deleting\"},\"id\":\"kvx\",\"name\":\"ndqzbvbpsuv\",\"type\":\"hxtozfgdk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,9 @@ public final class TopicSpacesListByNamespaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TopicSpace> response = manager.topicSpaces()
-            .listByNamespace("dyzoutxfptofhg", "uywezygvadg", "aqwvkgjpytpmpvdn", 1304500188,
-                com.azure.core.util.Context.NONE);
+            .listByNamespace("aeuwqdwxhhlbmyph", "xnrp", "hewokyqsfkxf", 1422383624, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lufbortb", response.iterator().next().description());
-        Assertions.assertEquals("k", response.iterator().next().topicTemplates().get(0));
+        Assertions.assertEquals("ihqbtod", response.iterator().next().description());
+        Assertions.assertEquals("xbvkvwzdmvdd", response.iterator().next().topicTemplates().get(0));
     }
 }
