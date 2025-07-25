@@ -26,7 +26,7 @@ public final class UsersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"it\",\"role\":\"dbOwner\"}]},\"id\":\"jawgqwg\",\"name\":\"hniskxfbkpyc\",\"type\":\"klwndnhjdauwhv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"vszjfauvjfdxxi\",\"role\":\"root\"},{\"db\":\"tvtc\",\"role\":\"root\"}]},\"id\":\"tdo\",\"name\":\"mcbxvwvxysl\",\"type\":\"bhsfxob\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,15 +36,15 @@ public final class UsersCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         User response = manager.users()
-            .define("bnbbeldawkz")
-            .withExistingMongoCluster("vxpvgomz", "fmisg")
+            .define("oellwp")
+            .withExistingMongoCluster("rmgucnap", "t")
             .withProperties(new UserProperties().withIdentityProvider(new IdentityProvider())
-                .withRoles(Arrays.asList(new DatabaseRole().withDb("qhakauhashsf").withRole(UserRole.DATABASE_OWNER),
-                    new DatabaseRole().withDb("osow").withRole(UserRole.DATABASE_OWNER),
-                    new DatabaseRole().withDb("cugicjoox").withRole(UserRole.DATABASE_OWNER))))
+                .withRoles(Arrays.asList(new DatabaseRole().withDb("qbuaceopzfqr").withRole(UserRole.ROOT),
+                    new DatabaseRole().withDb("uaopppcqeq").withRole(UserRole.ROOT),
+                    new DatabaseRole().withDb("lzdahzxctobgbkdm").withRole(UserRole.ROOT))))
             .create();
 
-        Assertions.assertEquals("it", response.properties().roles().get(0).db());
-        Assertions.assertEquals(UserRole.DATABASE_OWNER, response.properties().roles().get(0).role());
+        Assertions.assertEquals("vszjfauvjfdxxi", response.properties().roles().get(0).db());
+        Assertions.assertEquals(UserRole.ROOT, response.properties().roles().get(0).role());
     }
 }
