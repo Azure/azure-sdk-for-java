@@ -865,7 +865,7 @@ private case class CosmosManagedIdentityAuthConfig( tenantId: String,
 private case class CosmosAccessTokenAuthConfig(tenantId: Option[String], tokenProvider: List[String] => CosmosAccessToken)
   extends CosmosAuthConfig
 
-private object CosmosAuthConfig extends BasicLoggingTrait {
+private object CosmosAuthConfig {
     private val DefaultAuthType = CosmosAuthType.MasterKey
 
     private val CosmosKey = CosmosConfigEntry[String](key = CosmosConfigNames.AccountKey,

@@ -71,7 +71,7 @@
     <dependency>
       <groupId>com.azure.cosmos.spark</groupId>
       <artifactId>azure-cosmos-spark_3-5_2-12</artifactId>
-      <version>4.38.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
+      <version>4.37.2</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -88,9 +88,8 @@
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
         <includes>
-          <include>META-INF/project.properties</include>
-          <include>META-INF/services/org.apache.spark.sql.sources.DataSourceRegister</include>
-          <include>azure-cosmos-spark.properties</include>
+          <include>META-INF/services/com.azure.cosmos.spark.AccountDataResolver</include>
+          <include>azure-cosmos-spark-fabric-account-data-resolver.properties</include>
         </includes>
       </resource>
     </resources>
@@ -157,7 +156,7 @@
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.15.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.15.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
-                <include>com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12:[4.38.0-beta.1]</include> <!-- {x-include-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
+                <include>com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12:[4.37.2]</include> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
                 <include>com.microsoft.azure.synapse:synapseutils_2.12:[1.5.4]</include> <!-- {x-include-update;cosmos_com.microsoft.azure.synapse:synapseutils_2.12;external_dependency} -->
               </includes>
             </bannedDependencies>
@@ -312,10 +311,6 @@
                         <exclude>com.azure.cosmos.implementation.SparkBridgeInternal</exclude>
                         <exclude>com.azure.cosmos.models.CosmosParameterizedQuery</exclude>
                       </excludes>
-                    </relocation>
-                    <relocation>
-                      <pattern>scala.compat.java8</pattern>
-                      <shadedPattern>${shadingPrefix}.scala.compat.java8</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>scala.concurrent.java8</pattern>
