@@ -945,6 +945,18 @@
           "old" : "parameter com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateStorageProfile com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateStorageProfile::withDiskControllerType(===java.lang.String===)",
           "new" : "parameter com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateStorageProfile com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateStorageProfile::withDiskControllerType(===com.azure.resourcemanager.compute.models.DiskControllerTypes===)",
           "justification" : "Swagger fix. It should be an extensible enum instead of plain string."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.compute.models.Expand",
+          "justification": "Swagger fix. For SDK and client tool needs, and to keep it consistent with virtualMachineImages_List $expand parameter, we need to keep it a string type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.compute.models.VirtualMachineImagesWithPropertiesListResult",
+          "justification": "Swagger fix. Return type in actual REST API is not pageable list, it is an array of object, consistent with virtualMachineImages_List."
         }
       ]
     }

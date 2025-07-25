@@ -2172,9 +2172,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         // required to be run on "Azure SDK Test Resources" subscription
 
         // ref https://learn.microsoft.com/azure/virtual-machines/how-to-enable-write-accelerator
-        // 8 CPU likely to be the smallest VM that supports write accelerator on disks.
-        // only 1 disk is allowed to have write accelerator for M8
-        final String vmSize = "Standard_M8-2ms";
+        // 16 CPU likely to be the smallest VM that supports write accelerator on disks.
+        final String vmSize = "Standard_M16bs_v3";
         final int diskSize = 127;
 
         Network network = this.networkManager.networks()
@@ -2195,7 +2194,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withSubnet("default")
             .withPrimaryPrivateIPAddressDynamic()
             .withoutPrimaryPublicIPAddress()
-            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS_GEN2)
             .withRootUsername("tirekicker")
             .withSsh(sshPublicKey())
             // data disk
@@ -2247,7 +2246,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withSubnet("default")
             .withPrimaryPrivateIPAddressDynamic()
             .withoutPrimaryPublicIPAddress()
-            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS_GEN2)
             .withRootUsername("tirekicker")
             .withSsh(sshPublicKey())
             // data disk
