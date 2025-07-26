@@ -2846,7 +2846,7 @@ public class CosmosAsyncContainer {
      */
     public void enableServerThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
         if (groupConfig.getPriorityLevel() == null && groupConfig.getThroughputBucket() == null) {
-            throw new IllegalArgumentException("Config 'priorityLevel' and 'throughputBucket' can not both are null.");
+            throw new IllegalArgumentException("Config 'priorityLevel' and 'throughputBucket' can not be null for both.");
         }
 
         ServerThroughputControlGroup serverThroughputControlGroup =

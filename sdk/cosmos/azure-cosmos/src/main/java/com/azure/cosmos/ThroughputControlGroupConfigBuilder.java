@@ -198,8 +198,9 @@ public class ThroughputControlGroupConfigBuilder {
         if (this.targetThroughput == null
             && this.targetThroughputThreshold == null
             && this.priorityLevel == null
-            && this.throughputBucket == null) { // TODO: any exclusiveness between this two?
-            throw new IllegalArgumentException("All targetThroughput, targetThroughputThreshold, priorityLevel and throughput bucket cannot be null or empty.");
+            && this.throughputBucket == null) {
+            throw new IllegalArgumentException(
+                "All targetThroughput, targetThroughputThreshold, priorityLevel and throughput bucket cannot be null or empty.");
         }
 
         if (this.targetThroughput == null && this.targetThroughputThreshold == null) {
