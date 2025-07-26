@@ -58,8 +58,6 @@ parameters:
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    BuildParallelization: '1'
-    TestParallelization: '1'
     ServiceDirectory: tools
     Artifacts:
       - name: azure-sdk-archetype
