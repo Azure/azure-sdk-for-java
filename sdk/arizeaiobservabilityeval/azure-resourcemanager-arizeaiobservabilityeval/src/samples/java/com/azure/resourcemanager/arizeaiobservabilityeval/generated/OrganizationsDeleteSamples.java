@@ -18,6 +18,6 @@ public final class OrganizationsDeleteSamples {
      */
     public static void organizationsDeleteGeneratedByMaximumSetRule(
         com.azure.resourcemanager.arizeaiobservabilityeval.ArizeAIObservabilityEvalManager manager) {
-        manager.organizations().delete("rgopenapi", "test-organization-1", com.azure.core.util.Context.NONE);
+        manager.organizations().delete("yashika-rg-arize", "test-org-1", com.azure.core.util.Context.NONE);
     }
 }
