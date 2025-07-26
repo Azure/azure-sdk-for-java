@@ -3,7 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.sdk.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
@@ -1028,6 +1028,18 @@ public class CosmosContainer {
      */
     public void enableGlobalThroughputControlGroup(ThroughputControlGroupConfig groupConfig, GlobalThroughputControlConfig globalControlConfig) {
         this.asyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
+    }
+
+    /***
+     * Enable the server throughput bucket control group.
+     * <p>
+     * For more information about throughput bucket please visit
+     * <a href="https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/throughput-buckets?tabs=dotnet">Throughput buckets in Azure Cosmos DB</a>
+     *
+     * @param groupConfig the throughput control group config, see {@link ThroughputControlGroupConfig}.
+     */
+    public void enableServerThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
+        this.asyncContainer.enableServerThroughputControlGroup(groupConfig);
     }
 
     /**

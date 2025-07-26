@@ -13,6 +13,7 @@ public final class ThroughputControlGroupConfig {
     private final Integer targetThroughput;
     private final Double targetThroughputThreshold;
     private final PriorityLevel priorityLevel;
+    private final Integer throughputBucket;
     private final boolean isDefault;
     private final boolean continueOnInitError;
 
@@ -21,12 +22,14 @@ public final class ThroughputControlGroupConfig {
             Integer targetThroughput,
             Double targetThroughputThreshold,
             PriorityLevel priorityLevel,
+            Integer throughputBucket,
             boolean isDefault,
             boolean continueOnInitError) {
        this.groupName = groupName;
        this.targetThroughput = targetThroughput;
        this.targetThroughputThreshold = targetThroughputThreshold;
        this.priorityLevel = priorityLevel;
+       this.throughputBucket = throughputBucket;
        this.isDefault = isDefault;
        this.continueOnInitError = continueOnInitError;
     }
@@ -75,6 +78,19 @@ public final class ThroughputControlGroupConfig {
      * @return the priority level of the throughput control group.
      */
     public PriorityLevel getPriorityLevel() { return this.priorityLevel; }
+
+
+    /***
+     * Get the throughput bucket.
+     * <p>
+     * For more information about throughput bucket please visit
+     * <a href="https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/throughput-buckets?tabs=dotnet">Throughput buckets in Azure Cosmos DB</a>
+     *
+     * @return the throughput bucket of the throughput control group.
+     */
+    public Integer getThroughputBucket() {
+        return this.throughputBucket;
+    }
 
     /**
      * Get whether this throughput control group will be used by default.
