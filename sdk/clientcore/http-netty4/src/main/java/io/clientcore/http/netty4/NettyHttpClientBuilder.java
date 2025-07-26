@@ -7,8 +7,10 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.http.netty4.implementation.ChannelInitializationProxyHandler;
+import io.clientcore.http.netty4.implementation.Netty4ConnectionPool;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
@@ -134,6 +136,13 @@ public class NettyHttpClientBuilder {
     private Duration responseTimeout;
     private Duration writeTimeout;
     private HttpProtocolVersion maximumHttpVersion = HttpProtocolVersion.HTTP_2;
+
+    // --- Connection Pool Configuration ---
+    private int connectionPoolSize = 1000;
+    private Duration connectionIdleTimeout = Duration.ofSeconds(60);
+    private Duration maxConnectionLifetime;
+    private Duration pendingAcquireTimeout = Duration.ofSeconds(60); // Default wait time for a connection
+    private int maxPendingAcquires = 10_000; // Default pending queue size
 
     /**
      * Creates a new instance of {@link NettyHttpClientBuilder}.
@@ -282,6 +291,86 @@ public class NettyHttpClientBuilder {
     }
 
     /**
+     * Sets the maximum number of connections allowed per remote address in the connection pool.
+     * <p>
+     * If not set, a default value of 1000 is used.
+     * <p>
+     * <strong>A value of {@code 0} or less will disable connection pooling, and hence each request will
+     * get a newly created connection.</strong>
+     *
+     * @param connectionPoolSize The maximum number of connections.
+     * @return The updated builder.
+     */
+    public NettyHttpClientBuilder connectionPoolSize(int connectionPoolSize) {
+        this.connectionPoolSize = connectionPoolSize;
+        return this;
+    }
+
+    /**
+     * Sets the maximum time a connection can remain idle in the pool before it is closed and removed.
+     * <p>
+     * If not set, a default value of 60 seconds is used.
+     * <p>
+     * A {@link Duration} of zero or less will make the connections never expire. <strong>Note:</strong> While this is
+     * provided as an option, it is <strong>not recommended for most use cases</strong>, as it can lead to
+     * request failures if network intermediaries (like load balancers or firewalls) silently drop idle
+     * connections.
+     *
+     * @param connectionIdleTimeout The idle timeout duration.
+     * @return The updated builder.
+     */
+    public NettyHttpClientBuilder connectionIdleTimeout(Duration connectionIdleTimeout) {
+        this.connectionIdleTimeout = connectionIdleTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the maximum time a connection is allowed to exist.
+     * <p>
+     * By default, connections have no lifetime limit and can be used indefinitely.
+     * <p>
+     * After this time is met or exceeded, the connection will be closed upon release. A {@link Duration} of zero or
+     * less, or a null value, will also result in connections having no lifetime limit.
+     *
+     * @param maxConnectionLifetime The maximum connection lifetime.
+     * @return The updated builder.
+     */
+    public NettyHttpClientBuilder maxConnectionLifetime(Duration maxConnectionLifetime) {
+        this.maxConnectionLifetime = maxConnectionLifetime;
+        return this;
+    }
+
+    /**
+     * Sets the maximum time to wait for a connection from the pool.
+     * <p>
+     * If not set, a default value of 60 seconds is used.
+     * @param pendingAcquireTimeout The timeout for pending acquires.
+     * @return The updated builder.
+     */
+    public NettyHttpClientBuilder pendingAcquireTimeout(Duration pendingAcquireTimeout) {
+        this.pendingAcquireTimeout = pendingAcquireTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the maximum number of requests that can be queued waiting for a connection.
+     * <p>
+     * This limit is applied on a per-route (per-host) basis.
+     * If not set, a default value of 10_000 is used.
+     *
+     * @param maxPendingAcquires The maximum number of pending acquires.
+     * @return The updated builder.
+     */
+    public NettyHttpClientBuilder maxPendingAcquires(int maxPendingAcquires) {
+        if (maxPendingAcquires <= 0) {
+            throw LOGGER.throwableAtError()
+                .log("maxPendingAcquires must be greater than 0", IllegalArgumentException::new);
+        }
+        this.maxPendingAcquires = maxPendingAcquires;
+        return this;
+    }
+
+    /**
      * Builds the NettyHttpClient.
      *
      * @return A configured NettyHttpClient instance.
@@ -293,18 +382,33 @@ public class NettyHttpClientBuilder {
             = getChannelClass(this.channelClass, group.getClass(), IS_EPOLL_AVAILABLE, IS_KQUEUE_AVAILABLE);
 
         // Leave breadcrumbs about the NettyHttpClient configuration, in case troubleshooting is needed.
-        LOGGER.atVerbose()
+        LoggingEvent loggingEvent = LOGGER.atVerbose()
             .addKeyValue("customEventLoopGroup", eventLoopGroup != null)
             .addKeyValue("eventLoopGroupClass", group.getClass())
             .addKeyValue("customChannelClass", this.channelClass != null)
-            .addKeyValue("channelClass", channelClass)
-            .log("NettyHttpClient was built with these configurations.");
+            .addKeyValue("channelClass", channelClass);
+
+        if (connectionPoolSize > 0) {
+            loggingEvent.addKeyValue("connectionPoolSize", this.connectionPoolSize)
+                .addKeyValue("connectionIdleTimeout", this.connectionIdleTimeout)
+                .addKeyValue("maxConnectionLifetime", this.maxConnectionLifetime)
+                .addKeyValue("pendingAcquireTimeout", this.pendingAcquireTimeout)
+                .addKeyValue("maxPendingAcquires", this.maxPendingAcquires);
+        }
+
+        loggingEvent.log("NettyHttpClient was built with these configurations.");
 
         Bootstrap bootstrap = new Bootstrap().group(group)
             .channel(channelClass)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) getTimeoutMillis(connectTimeout, 10_000));
         // Disable auto-read as we want to control when and how data is read from the channel.
         bootstrap.option(ChannelOption.AUTO_READ, false);
+        // Enable TCP keep-alive to proactively detect and clean up stale connections in the pool. This helps evict
+        // connections that have been silently dropped by network intermediaries.
+        bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
+        // Allow the channel to remain open for writing even after the server has closed its sending side.
+        // This helps detect half-closures with a ChannelInputShutdownEvent in the PoolConnectionHealthHandler.
+        bootstrap.option(ChannelOption.ALLOW_HALF_CLOSURE, true);
 
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -312,9 +416,17 @@ public class NettyHttpClientBuilder {
         ProxyOptions buildProxyOptions
             = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
-        return new NettyHttpClient(bootstrap, sslContextModifier, maximumHttpVersion,
-            new ChannelInitializationProxyHandler(buildProxyOptions), getTimeoutMillis(readTimeout),
-            getTimeoutMillis(responseTimeout), getTimeoutMillis(writeTimeout));
+        Netty4ConnectionPool connectionPool = null;
+        if (connectionPoolSize > 0) {
+            connectionPool
+                = new Netty4ConnectionPool(bootstrap, new ChannelInitializationProxyHandler(buildProxyOptions),
+                    sslContextModifier, connectionPoolSize, connectionIdleTimeout, maxConnectionLifetime,
+                    pendingAcquireTimeout, maxPendingAcquires, maximumHttpVersion);
+        }
+
+        return new NettyHttpClient(bootstrap, group, connectionPool, buildProxyOptions,
+            new ChannelInitializationProxyHandler(buildProxyOptions), sslContextModifier, maximumHttpVersion,
+            getTimeoutMillis(readTimeout), getTimeoutMillis(responseTimeout), getTimeoutMillis(writeTimeout));
     }
 
     static long getTimeoutMillis(Duration duration) {
