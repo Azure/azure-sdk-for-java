@@ -262,31 +262,18 @@ public class GoneAndRetryWithRetryPolicyTest {
     }
 
     /**
-     * Retry with InvalidPartitionException
+     * Should not retry with InvalidPartitionException
      */
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
-    public void shouldRetryWithInvalidPartitionException() {
+    public void shouldNotRetryWithInvalidPartitionException() {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
             mockDiagnosticsClientContext(),
             OperationType.Read,
             ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
-        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
-                .shouldRetry(new InvalidPartitionException());
-        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
-        assertThat(shouldRetryResult.shouldRetry).isTrue();
-        assertThat(request.requestContext.quorumSelectedLSN).isEqualTo(-1);
-        assertThat(request.requestContext.resolvedPartitionKeyRange).isNull();
-        assertThat(request.requestContext.globalCommittedSelectedLSN).isEqualTo(-1);
-        assertThat(shouldRetryResult.policyArg.getValue0()).isFalse();
-
-        goneAndRetryWithRetryPolicy.shouldRetry(new InvalidPartitionException()).block();
-        // It will retry max till 3 attempts
-        shouldRetryResult = goneAndRetryWithRetryPolicy.shouldRetry(new InvalidPartitionException()).block();
-        assertThat(shouldRetryResult.shouldRetry).isFalse();
-        CosmosException clientException = (CosmosException) shouldRetryResult.exception;
-        assertThat(clientException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
-
+        ShouldRetryResult singleShouldRetry = goneAndRetryWithRetryPolicy
+                .shouldRetry(new InvalidPartitionException()).block();
+        assertThat(singleShouldRetry.shouldRetry).isFalse();
     }
 
     /**

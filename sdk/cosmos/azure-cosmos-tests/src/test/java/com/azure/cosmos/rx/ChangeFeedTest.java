@@ -117,7 +117,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         changeFeedOption.setMaxItemCount(3);
 
         List<FeedResponse<Document>> changeFeedResultList = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class, null)
             .collectList().block();
 
         int count = 0;
@@ -152,7 +152,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange);
         changeFeedOption.setMaxItemCount(3);
         List<FeedResponse<Document>> changeFeedResultList = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class, null)
             .collectList().block();
 
         int count = 0;
@@ -189,7 +189,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             CosmosChangeFeedRequestOptions.createForProcessingFromNow(feedRange);
 
         List<FeedResponse<Document>> changeFeedResultsList = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class, null)
             .collectList()
             .block();
 
@@ -212,7 +212,7 @@ public class ChangeFeedTest extends TestSuiteBase {
                 CosmosChangeFeedRequestOptions.createForProcessingFromNow(feedRange);
 
         List<FeedResponse<Document>> changeFeedResultsList = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class, null)
             .collectList()
             .block();
 
@@ -243,7 +243,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         }
 
         List<FeedResponse<Document>> changeFeedResultsList = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class, null)
             .collectList()
             .block();
 
@@ -268,7 +268,7 @@ public class ChangeFeedTest extends TestSuiteBase {
                 .createForProcessingFromContinuation(continuationToken);
 
         List<FeedResponse<Document>> changeFeedResultsListAfterDeletes = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOptionForContinuationAfterDeletes, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOptionForContinuationAfterDeletes, Document.class, null)
             .collectList()
             .block();
 
@@ -295,7 +295,7 @@ public class ChangeFeedTest extends TestSuiteBase {
                 .createForProcessingFromContinuation(continuationToken);
 
         List<FeedResponse<Document>> changeFeedResultsListAfterUpdates = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOptionForContinuationAfterUpdates, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOptionForContinuationAfterUpdates, Document.class, null)
             .collectList()
             .block();
 
@@ -363,8 +363,15 @@ public class ChangeFeedTest extends TestSuiteBase {
                 true)
             .block();
 
-        List<FeedResponse<Document>> changeFeedResultList = client.queryDocumentChangeFeed(createdCollection,
-                changeFeedOption, Document.class).collectList().block();
+        List<FeedResponse<Document>> changeFeedResultList =
+            client
+                .queryDocumentChangeFeed(
+                    createdCollection,
+                    changeFeedOption,
+                    Document.class,
+                    null)
+                .collectList()
+                .block();
 
         int count = 0;
         for(int i = 0; i < changeFeedResultList.size(); i++) {
@@ -387,7 +394,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         changeFeedOption.setMaxItemCount(3);
 
         List<FeedResponse<Document>> changeFeedResultsList = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class, null)
             .collectList()
             .block();
 
@@ -420,7 +427,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         changeFeedOption = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(changeFeedContinuation);
 
         FeedResponse<Document> changeFeedResults2 = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class, null)
             .blockFirst();
 
         assertThat(changeFeedResults2.getResults())
@@ -458,7 +465,7 @@ public class ChangeFeedTest extends TestSuiteBase {
                 CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange);
 
             List<FeedResponse<Document>> changeFeedResultListForEPK = client
-                .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+                .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class, null)
                 .collectList()
                 .block();
 

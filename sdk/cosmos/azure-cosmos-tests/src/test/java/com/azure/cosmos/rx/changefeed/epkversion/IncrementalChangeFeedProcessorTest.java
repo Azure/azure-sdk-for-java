@@ -1964,6 +1964,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             waitToReceiveDocuments(receivedDocuments, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
 
             // stop the change feed processor and trigger split
+            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
             safeStopChangeFeedProcessor(changeFeedProcessor);
 
             triggerAndWaitForPartitionSplit(createdFeedCollectionForSplit, FEED_COLLECTION_THROUGHPUT_FOR_SPLIT, CHANGE_FEED_PROCESSOR_TIMEOUT);

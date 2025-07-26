@@ -81,7 +81,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -1165,21 +1164,8 @@ public class CosmosAsyncContainer {
 
             final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
             return clientWrapper
-                .getCollectionCache()
-                .resolveByNameAsync(
-                    null,
-                    this.getLinkWithoutTrailingSlash(),
-                    null)
-                .flatMapMany(
-                    collection -> {
-                        if (collection == null) {
-                            throw new IllegalStateException("Collection cannot be null");
-                        }
-
-                        return clientWrapper
-                            .queryDocumentChangeFeedFromPagedFlux(collection, state, classType)
-                            .map(response -> prepareFeedResponse(response, true));
-                    });
+                .queryDocumentChangeFeedFromPagedFlux(this.getLinkWithoutTrailingSlash(), state, classType)
+                .map(response -> prepareFeedResponse(response, true));
         });
 
         return pagedFluxOptionsFluxFunction;

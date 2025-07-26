@@ -51,7 +51,7 @@ public class PartitionProcessorHelperTests {
             ImplementationBridgeHelpers
                 .CosmosChangeFeedRequestOptionsHelper
                 .getCosmosChangeFeedRequestOptionsAccessor()
-                .getHeader(cosmosChangeFeedRequestOptions);
+                .getHeaders(cosmosChangeFeedRequestOptions);
 
         assertThat(customOptions).isNotNull();
         assertThat(customOptions.get(HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION)).isEqualTo(
@@ -94,7 +94,7 @@ public class PartitionProcessorHelperTests {
             ImplementationBridgeHelpers
                 .CosmosChangeFeedRequestOptionsHelper
                 .getCosmosChangeFeedRequestOptionsAccessor()
-                .getHeader(cosmosChangeFeedRequestOptions);
+                .getHeaders(cosmosChangeFeedRequestOptions);
 
         assertThat(customOptions).isNotNull();
         assertThat(customOptions.get(HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION)).isEqualTo(
