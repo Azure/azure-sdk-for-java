@@ -107,13 +107,6 @@ blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach
         response.getRequest().getUrl(), response.getStatusCode()));
 ```
 
-**YOU _MUST_** enumerate or iterate over the PagedIterable<Response<Void>> returned by the batch operation; no requests are sent to the service until you do so.
-
-This is because the batch operation is not executed until the response is consumed.
-
-So executing this code`blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE)`
-does not send any requests to the service until you iterate over the response.
-
 ### Bulk Setting AccessTier
 
 ```java readme-sample-bulkSettingAccessTier
