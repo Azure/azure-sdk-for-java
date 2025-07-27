@@ -1183,7 +1183,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
         DataLakeFileAppendOptions finalAppendOptions = appendOptions;
         Context finalContext = context;
-        return UploadUtils.computeChecksum(data, appendOptions.getStorageChecksumAlgorithm(), length, LOGGER)
+        return UploadUtils.computeChecksum(data, appendOptions.getStorageChecksumAlgorithm(), length, appendOptions.getContentMd5(), LOGGER)
             .flatMap(fluxContentValidationWrapper -> {
                 UploadUtils.ContentValidationInfo contentValidationInfo
                     = fluxContentValidationWrapper.getContentValidationInfo();

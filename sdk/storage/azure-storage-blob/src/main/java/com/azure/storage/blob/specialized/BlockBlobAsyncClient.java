@@ -431,7 +431,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         data = UploadUtils.extractByteBuffer(data, options.getLength(),
             (long) BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, options.getDataStream());
 
-        return UploadUtils.computeChecksum(data, storageChecksumAlgorithm, options.getLength(), LOGGER)
+        return UploadUtils
+            .computeChecksum(data, storageChecksumAlgorithm, options.getLength(), options.getContentMd5(), LOGGER)
             .flatMap(fluxContentValidationWrapper -> {
                 UploadUtils.ContentValidationInfo contentValidationInfo
                     = fluxContentValidationWrapper.getContentValidationInfo();
@@ -772,7 +773,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         Flux<ByteBuffer> data = binaryData != null ? binaryData.toFluxByteBuffer() : options.getDataFlux();
         Objects.requireNonNull(data);
 
-        return UploadUtils.computeChecksum(data, storageChecksumAlgorithm, options.getLength(), LOGGER)
+        return UploadUtils
+            .computeChecksum(data, storageChecksumAlgorithm, options.getLength(), options.getContentMd5(), LOGGER)
             .flatMap(fluxContentValidationWrapper -> {
                 UploadUtils.ContentValidationInfo contentValidationInfo
                     = fluxContentValidationWrapper.getContentValidationInfo();
@@ -782,8 +784,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                     .stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName, options.getBase64BlockId(),
                         fluxContentValidationWrapper.getDataLength(), fluxContentValidationWrapper.getData(),
                         contentValidationInfo.getMD5checksum(), contentValidationInfo.getCRC64checksum(), null,
-                        options.getLeaseId(), null, contentValidationInfo.getStructuredBodyType(), options.getLength(),
-                        getCustomerProvidedKey(), encryptionScope, context);
+                        options.getLeaseId(), null, contentValidationInfo.getStructuredBodyType(),
+                        contentValidationInfo.getOriginalContentLength(), getCustomerProvidedKey(), encryptionScope,
+                        context);
             });
     }
 

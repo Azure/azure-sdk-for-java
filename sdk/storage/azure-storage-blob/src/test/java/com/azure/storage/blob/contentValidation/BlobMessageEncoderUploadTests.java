@@ -52,9 +52,8 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
     public void uploadBinaryDataFullStructMess() {
         byte[] data = getRandomByteArray(Constants.MB * 5);
 
-        BlobParallelUploadOptions options
-            = new BlobParallelUploadOptions(BinaryData.fromBytes(data))
-                .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
+        BlobParallelUploadOptions options = new BlobParallelUploadOptions(BinaryData.fromBytes(data))
+            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO);
 
         Response<BlockBlobItem> response = bc.uploadWithResponse(options, null, Context.NONE);
 
@@ -71,12 +70,11 @@ public class BlobMessageEncoderUploadTests extends BlobTestBase {
     public void uploadBinaryDataChunkedStructMess() {
         byte[] data = getRandomByteArray(Constants.MB * 10);
 
-        BlobParallelUploadOptions options
-            = new BlobParallelUploadOptions(BinaryData.fromBytes(data))
-                .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
-                .setParallelTransferOptions(
-                    new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 2)
-                        .setBlockSizeLong((long) Constants.MB * 2));
+        BlobParallelUploadOptions options = new BlobParallelUploadOptions(BinaryData.fromBytes(data))
+            .setStorageChecksumAlgorithm(StorageChecksumAlgorithm.AUTO)
+            .setParallelTransferOptions(
+                new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) Constants.MB * 2)
+                    .setBlockSizeLong((long) Constants.MB * 2));
 
         assertDoesNotThrow(() -> bc.uploadWithResponse(options, null, Context.NONE));
 

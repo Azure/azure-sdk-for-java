@@ -165,15 +165,14 @@ public class UploadUtils {
     }
 
     public static Mono<FluxContentValidationWrapper> computeChecksum(Flux<ByteBuffer> data,
-        StorageChecksumAlgorithm storageChecksumAlgorithm, long length, ClientLogger logger) {
+        StorageChecksumAlgorithm storageChecksumAlgorithm, long length, byte[] providedMD5, ClientLogger logger) {
         // todo isbr: see if logic can be shared with computeFileShareChecksum
-        if (storageChecksumAlgorithm == null || storageChecksumAlgorithm == StorageChecksumAlgorithm.NONE) {
-            return Mono.just(new FluxContentValidationWrapper(data, new ContentValidationInfo(), length));
-        }
-        if (storageChecksumAlgorithm == StorageChecksumAlgorithm.MD5) {
+        if (providedMD5 != null) {
+            return Mono.just(new FluxContentValidationWrapper(data,
+                new ContentValidationInfo().setMD5checksum(providedMD5), length));
+        } else if (storageChecksumAlgorithm == StorageChecksumAlgorithm.MD5) {
             return computeMd5(data, true, length, logger);
-        }
-       if (storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
+        } else if (storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
             if (length < STATIC_MAXIMUM_ENCODED_DATA_LENGTH) {
                 return computeCRC64(data, length, logger);
             } else {
