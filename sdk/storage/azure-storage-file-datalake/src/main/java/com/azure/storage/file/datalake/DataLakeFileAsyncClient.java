@@ -601,18 +601,15 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             final ParallelTransferOptions validatedParallelTransferOptions
                 = ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
             long fileOffset = 0;
-            final StorageChecksumAlgorithm storageChecksumAlgorithm = options.getStorageChecksumAlgorithm() == null
-                ? StorageChecksumAlgorithm.NONE
-                : options.getStorageChecksumAlgorithm();
 
             Function<Flux<ByteBuffer>, Mono<Response<PathInfo>>> uploadInChunksFunction
                 = (stream) -> uploadInChunks(stream, fileOffset, validatedParallelTransferOptions, options.getHeaders(),
-                    validatedUploadRequestConditions, storageChecksumAlgorithm);
+                    validatedUploadRequestConditions, options.getStorageChecksumAlgorithm());
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<PathInfo>>> uploadFullMethod
                 = (stream, length) -> uploadWithResponse(stream, fileOffset, length, options.getHeaders(),
                     validatedUploadRequestConditions, validatedParallelTransferOptions.getProgressListener(),
-                    storageChecksumAlgorithm);
+                    options.getStorageChecksumAlgorithm());
 
             BinaryData binaryData = options.getData();
 

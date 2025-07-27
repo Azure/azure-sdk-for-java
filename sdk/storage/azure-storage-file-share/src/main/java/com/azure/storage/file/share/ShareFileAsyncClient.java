@@ -2142,13 +2142,10 @@ public class ShareFileAsyncClient {
             final ParallelTransferOptions validatedParallelTransferOptions
                 = ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
             long validatedOffset = options.getOffset() == null ? 0 : options.getOffset();
-            final StorageChecksumAlgorithm storageChecksumAlgorithm = options.getStorageChecksumAlgorithm() == null
-                ? StorageChecksumAlgorithm.NONE
-                : options.getStorageChecksumAlgorithm();
 
             Function<Flux<ByteBuffer>, Mono<Response<ShareFileUploadInfo>>> uploadInChunks
                 = (stream) -> uploadInChunks(stream, validatedOffset, validatedParallelTransferOptions,
-                    validatedRequestConditions, storageChecksumAlgorithm, context);
+                    validatedRequestConditions, options.getStorageChecksumAlgorithm(), context);
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<ShareFileUploadInfo>>> uploadFull = (stream, length) -> {
                 ProgressListener progressListener = validatedParallelTransferOptions.getProgressListener();
@@ -2161,7 +2158,7 @@ public class ShareFileAsyncClient {
                 return uploadRangeWithResponse(
                     new ShareFileUploadRangeOptions(stream, length).setOffset(options.getOffset())
                         .setRequestConditions(validatedRequestConditions)
-                        .setStorageChecksumAlgorithm(storageChecksumAlgorithm),
+                        .setStorageChecksumAlgorithm(options.getStorageChecksumAlgorithm()),
                     uploadContext);
             };
 
@@ -2314,6 +2311,9 @@ public class ShareFileAsyncClient {
         long rangeOffset = (options.getOffset() == null) ? 0L : options.getOffset();
         ShareFileRange range = new ShareFileRange(rangeOffset, rangeOffset + options.getLength() - 1);
         context = context == null ? Context.NONE : context;
+        StorageChecksumAlgorithm storageChecksumAlgorithm = options.getStorageChecksumAlgorithm() == null
+            ? StorageChecksumAlgorithm.NONE
+            : options.getStorageChecksumAlgorithm();
 
         Flux<ByteBuffer> data = options.getDataFlux() == null
             ? Utility.convertStreamToByteBuffer(options.getDataStream(), options.getLength(),
@@ -2321,8 +2321,7 @@ public class ShareFileAsyncClient {
             : options.getDataFlux();
 
         Context finalContext = context;
-        return UploadUtils
-            .computeFileShareChecksum(data, options.getStorageChecksumAlgorithm(), options.getLength(), LOGGER)
+        return UploadUtils.computeFileShareChecksum(data, storageChecksumAlgorithm, options.getLength(), LOGGER)
             .flatMap(fluxContentValidationWrapper -> {
                 UploadUtils.ContentValidationInfo contentValidationInfo
                     = fluxContentValidationWrapper.getContentValidationInfo();
