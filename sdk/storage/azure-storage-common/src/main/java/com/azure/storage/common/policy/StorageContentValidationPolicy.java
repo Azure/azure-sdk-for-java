@@ -26,7 +26,7 @@ import static com.azure.storage.common.implementation.Constants.HeaderConstants.
 import static com.azure.storage.common.implementation.Constants.USE_CRC64_CHECKSUM_HEADER_CONTEXT;
 import static com.azure.storage.common.implementation.Constants.USE_STRUCTURED_MESSAGE_CONTEXT;
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STATIC_MAXIMUM_ENCODED_DATA_LENGTH;
-import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STRUCTUED_BODY_TYPE;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE;
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_DEFAULT_SEGMENT_CONTENT_LENGTH;
 
 /**
@@ -111,7 +111,7 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
         context.getHttpRequest()
             .setHeader(HttpHeaderName.CONTENT_LENGTH, structuredMessageEncoder.getEncodedMessageLength());
         // x-ms-structured-body
-        context.getHttpRequest().setHeader(STRUCTURED_BODY_TYPE_HEADER_NAME, STRUCTUED_BODY_TYPE);
+        context.getHttpRequest().setHeader(STRUCTURED_BODY_TYPE_HEADER_NAME, STRUCTURED_BODY_TYPE_VALUE);
         // x-ms-structured-content-length
         context.getHttpRequest()
             .setHeader(STRUCTURED_CONTENT_LENGTH_HEADER_NAME, String.valueOf(unencodedContentLength));

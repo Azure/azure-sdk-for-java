@@ -2177,13 +2177,7 @@ public class ShareFileAsyncClient {
         }
         if (storageChecksumAlgorithm != null
             && storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
-            String contentValidationContextValue;
-            if (length <= STATIC_MAXIMUM_ENCODED_DATA_LENGTH) {
-                contentValidationContextValue = USE_CRC64_CHECKSUM_HEADER_CONTEXT;
-            } else {
-                contentValidationContextValue = USE_STRUCTURED_MESSAGE_CONTEXT;
-            }
-            uploadContext = uploadContext.addData(CONTENT_VALIDATION_BEHAVIOR_KEY, contentValidationContextValue);
+            uploadContext = uploadContext.addData(CONTENT_VALIDATION_BEHAVIOR_KEY, USE_STRUCTURED_MESSAGE_CONTEXT);
         }
         return uploadRangeWithResponse(
             new ShareFileUploadRangeOptions(data, length).setOffset(offset).setRequestConditions(requestConditions),

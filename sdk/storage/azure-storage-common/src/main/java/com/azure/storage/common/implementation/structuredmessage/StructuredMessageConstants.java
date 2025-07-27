@@ -40,5 +40,5 @@ public final class StructuredMessageConstants {
     /**
      * The header name for the CRC64 checksum.
      */
-    public static final String STRUCTUED_BODY_TYPE = "XSM/1.0; properties=crc64";
+    public static final String STRUCTURED_BODY_TYPE_VALUE = "XSM/1.0; properties=crc64";
 }
