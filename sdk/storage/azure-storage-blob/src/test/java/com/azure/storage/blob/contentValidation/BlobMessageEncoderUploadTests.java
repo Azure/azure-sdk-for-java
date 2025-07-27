@@ -30,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+@LiveOnly
 public class BlobMessageEncoderUploadTests extends BlobTestBase {
     private BlobClient bc;
 

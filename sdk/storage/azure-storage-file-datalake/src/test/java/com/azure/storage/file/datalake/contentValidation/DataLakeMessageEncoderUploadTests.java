@@ -22,6 +22,7 @@ import java.nio.ByteBuffer;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+@LiveOnly
 public class DataLakeMessageEncoderUploadTests extends DataLakeTestBase {
     private DataLakeFileClient fc;
 

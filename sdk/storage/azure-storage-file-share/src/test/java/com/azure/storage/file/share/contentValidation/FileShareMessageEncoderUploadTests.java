@@ -26,6 +26,7 @@ import static com.azure.storage.common.implementation.structuredmessage.Structur
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@LiveOnly
 public class FileShareMessageEncoderUploadTests extends FileShareTestBase {
     private ShareFileClient fc;
 
