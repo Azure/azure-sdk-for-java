@@ -1180,10 +1180,14 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         context = context == null ? Context.NONE : context;
         Long leaseDuration
             = appendOptions.getLeaseDuration() != null ? Long.valueOf(appendOptions.getLeaseDuration()) : null;
+        StorageChecksumAlgorithm storageChecksumAlgorithm = appendOptions.getStorageChecksumAlgorithm() == null
+            ? StorageChecksumAlgorithm.NONE
+            : appendOptions.getStorageChecksumAlgorithm();
 
         DataLakeFileAppendOptions finalAppendOptions = appendOptions;
         Context finalContext = context;
-        return UploadUtils.computeChecksum(data, appendOptions.getStorageChecksumAlgorithm(), length, appendOptions.getContentMd5(), LOGGER)
+        return UploadUtils
+            .computeChecksum(data, storageChecksumAlgorithm, length, appendOptions.getContentMd5(), LOGGER)
             .flatMap(fluxContentValidationWrapper -> {
                 UploadUtils.ContentValidationInfo contentValidationInfo
                     = fluxContentValidationWrapper.getContentValidationInfo();
