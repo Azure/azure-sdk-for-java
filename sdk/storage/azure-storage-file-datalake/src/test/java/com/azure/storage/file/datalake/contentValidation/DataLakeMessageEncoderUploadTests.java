@@ -8,6 +8,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.DataLakeTestBase;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
@@ -22,6 +23,7 @@ import java.nio.ByteBuffer;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+@LiveOnly
 public class DataLakeMessageEncoderUploadTests extends DataLakeTestBase {
     private DataLakeFileClient fc;
 

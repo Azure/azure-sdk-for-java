@@ -8,6 +8,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.file.share.FileShareTestBase;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareFileClient;
@@ -26,6 +27,7 @@ import static com.azure.storage.common.implementation.structuredmessage.Structur
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@LiveOnly
 public class FileShareMessageEncoderUploadTests extends FileShareTestBase {
     private ShareFileClient fc;
 
