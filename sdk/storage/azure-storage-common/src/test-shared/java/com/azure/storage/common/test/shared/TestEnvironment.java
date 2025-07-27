@@ -97,19 +97,19 @@ public final class TestEnvironment {
         String name = "azstoragesdkaccount";
         String key = "astorageaccountkey";
         String connectionString = "DefaultEndpointsProtocol=" + SCHEME + ";AccountName=teststorage;"
-            + "AccountKey=atestaccountkey;EndpointSuffix=preprod.core.windows.net";
+            + "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net";
         if (testMode != TestMode.PLAYBACK) {
             name = Configuration.getGlobalConfiguration().get(prefix + "ACCOUNT_NAME");
             key = Configuration.getGlobalConfiguration().get(prefix + "ACCOUNT_KEY");
             connectionString =  Configuration.getGlobalConfiguration().get(prefix + "CONNECTION_STRING");
             if (connectionString == null || connectionString.trim().isEmpty()) {
                 connectionString = String.format("DefaultEndpointsProtocol=" + SCHEME + ";AccountName=%s;"
-                    + "AccountKey=%s;EndpointSuffix=preprod.core.windows.net", name, key);
+                    + "AccountKey=%s;EndpointSuffix=core.windows.net", name, key);
             }
         }
-        String blobEndpoint = String.format(SCHEME + "://%s.blob.preprod.core.windows.net", name);
+        String blobEndpoint = String.format(SCHEME + "://%s.blob.core.windows.net", name);
         String blobEndpointSecondary = String.format(SCHEME + "://%s-secondary.blob.core.windows.net", name);
-        String dataLakeEndpoint = String.format(SCHEME + "://%s.dfs.preprod.core.windows.net", name);
+        String dataLakeEndpoint = String.format(SCHEME + "://%s.dfs.core.windows.net", name);
         String queueEndpoint = String.format(SCHEME + "://%s.queue.core.windows.net", name);
         String fileEndpoint = String.format(SCHEME + "://%s.file.core.windows.net", name);
 
