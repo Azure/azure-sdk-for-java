@@ -14,24 +14,24 @@ public interface ResourceSkus {
     /**
      * Get supported SKUs
      * 
-     * The skus action returns the list of SKUs that DMS supports.
+     * The skus action returns the list of SKUs that DMS (classic) supports.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the DMS List SKUs operation response as paginated response with {@link PagedIterable}.
+     * @return the DMS (classic) List SKUs operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ResourceSku> list();
 
     /**
      * Get supported SKUs
      * 
-     * The skus action returns the list of SKUs that DMS supports.
+     * The skus action returns the list of SKUs that DMS (classic) supports.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the DMS List SKUs operation response as paginated response with {@link PagedIterable}.
+     * @return the DMS (classic) List SKUs operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ResourceSku> list(Context context);
 }

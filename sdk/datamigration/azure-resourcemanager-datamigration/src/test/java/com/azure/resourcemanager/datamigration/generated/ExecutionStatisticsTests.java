@@ -7,21 +7,51 @@ package com.azure.resourcemanager.datamigration.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datamigration.models.ExecutionStatistics;
 import com.azure.resourcemanager.datamigration.models.WaitStatistics;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 
 public final class ExecutionStatisticsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecutionStatistics model = BinaryData.fromString(
-            "{\"executionCount\":3484334770603775387,\"cpuTimeMs\":25.938547,\"elapsedTimeMs\":70.32886,\"waitStats\":{\"vzflbq\":{\"waitType\":\"hoxgsgbpf\",\"waitTimeMs\":58.59819,\"waitCount\":2174616740952150366}},\"hasErrors\":true,\"sqlErrors\":[\"lgafcqusrdve\"]}")
+            "{\"executionCount\":3263435569978639708,\"cpuTimeMs\":6.274575,\"elapsedTimeMs\":18.448538,\"waitStats\":{\"zrrryv\":{\"waitType\":\"xhzzyse\",\"waitTimeMs\":68.80923,\"waitCount\":7083343999732591324},\"tjvv\":{\"waitType\":\"mipskdyzatv\",\"waitTimeMs\":64.13453,\"waitCount\":6597179287635090097}},\"hasErrors\":false,\"sqlErrors\":[\"gsyeipqdsmjtg\",\"qgdgkkile\",\"lkcsmknhwtbbae\",\"orvvmqfloygbdgw\"]}")
             .toObject(ExecutionStatistics.class);
+        Assertions.assertEquals(3263435569978639708L, model.executionCount());
+        Assertions.assertEquals(6.274575F, model.cpuTimeMs());
+        Assertions.assertEquals(18.448538F, model.elapsedTimeMs());
+        Assertions.assertEquals("xhzzyse", model.waitStats().get("zrrryv").waitType());
+        Assertions.assertEquals(68.80923F, model.waitStats().get("zrrryv").waitTimeMs());
+        Assertions.assertEquals(7083343999732591324L, model.waitStats().get("zrrryv").waitCount());
+        Assertions.assertFalse(model.hasErrors());
+        Assertions.assertEquals("gsyeipqdsmjtg", model.sqlErrors().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecutionStatistics model = new ExecutionStatistics().withWaitStats(mapOf("vzflbq", new WaitStatistics()));
+        ExecutionStatistics model = new ExecutionStatistics().withExecutionCount(3263435569978639708L)
+            .withCpuTimeMs(6.274575F)
+            .withElapsedTimeMs(18.448538F)
+            .withWaitStats(mapOf("zrrryv",
+                new WaitStatistics().withWaitType("xhzzyse")
+                    .withWaitTimeMs(68.80923F)
+                    .withWaitCount(7083343999732591324L),
+                "tjvv",
+                new WaitStatistics().withWaitType("mipskdyzatv")
+                    .withWaitTimeMs(64.13453F)
+                    .withWaitCount(6597179287635090097L)))
+            .withHasErrors(false)
+            .withSqlErrors(Arrays.asList("gsyeipqdsmjtg", "qgdgkkile", "lkcsmknhwtbbae", "orvvmqfloygbdgw"));
         model = BinaryData.fromObject(model).toObject(ExecutionStatistics.class);
+        Assertions.assertEquals(3263435569978639708L, model.executionCount());
+        Assertions.assertEquals(6.274575F, model.cpuTimeMs());
+        Assertions.assertEquals(18.448538F, model.elapsedTimeMs());
+        Assertions.assertEquals("xhzzyse", model.waitStats().get("zrrryv").waitType());
+        Assertions.assertEquals(68.80923F, model.waitStats().get("zrrryv").waitTimeMs());
+        Assertions.assertEquals(7083343999732591324L, model.waitStats().get("zrrryv").waitCount());
+        Assertions.assertFalse(model.hasErrors());
+        Assertions.assertEquals("gsyeipqdsmjtg", model.sqlErrors().get(0));
     }
 
     // Use "Map.of" if available

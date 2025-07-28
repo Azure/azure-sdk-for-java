@@ -15,8 +15,8 @@
 ###########
 
 # Catch all
-/**                                                  @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles
-/sdk/                                                @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles
+/**                                                  @Azure/azure-java-sdk
+/sdk/                                                @Azure/azure-java-sdk
 
 # BOM
 
@@ -320,6 +320,12 @@
 
 # ServiceLabel: %Compute - VMSS
 # ServiceOwners:                                     @Drewm3 @avirishuv
+
+# PRLabel: %Confidential Ledger
+/sdk/confidentialledger/                             @amruthashree18 @musabbir
+
+# ServiceLabel: %Confidential Ledger
+# ServiceOwners:                                     @amruthashree18 @musabbir
 
 # ServiceLabel: %Connected Kubernetes
 # ServiceOwners:                                     @akashkeshari

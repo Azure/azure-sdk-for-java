@@ -12,21 +12,21 @@ public final class MigrationValidationOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrationValidationOptions model = BinaryData.fromString(
-            "{\"enableSchemaValidation\":false,\"enableDataIntegrityValidation\":false,\"enableQueryAnalysisValidation\":true}")
+            "{\"enableSchemaValidation\":false,\"enableDataIntegrityValidation\":true,\"enableQueryAnalysisValidation\":false}")
             .toObject(MigrationValidationOptions.class);
-        Assertions.assertEquals(false, model.enableSchemaValidation());
-        Assertions.assertEquals(false, model.enableDataIntegrityValidation());
-        Assertions.assertEquals(true, model.enableQueryAnalysisValidation());
+        Assertions.assertFalse(model.enableSchemaValidation());
+        Assertions.assertTrue(model.enableDataIntegrityValidation());
+        Assertions.assertFalse(model.enableQueryAnalysisValidation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MigrationValidationOptions model = new MigrationValidationOptions().withEnableSchemaValidation(false)
-            .withEnableDataIntegrityValidation(false)
-            .withEnableQueryAnalysisValidation(true);
+            .withEnableDataIntegrityValidation(true)
+            .withEnableQueryAnalysisValidation(false);
         model = BinaryData.fromObject(model).toObject(MigrationValidationOptions.class);
-        Assertions.assertEquals(false, model.enableSchemaValidation());
-        Assertions.assertEquals(false, model.enableDataIntegrityValidation());
-        Assertions.assertEquals(true, model.enableQueryAnalysisValidation());
+        Assertions.assertFalse(model.enableSchemaValidation());
+        Assertions.assertTrue(model.enableDataIntegrityValidation());
+        Assertions.assertFalse(model.enableQueryAnalysisValidation());
     }
 }
