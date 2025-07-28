@@ -64,8 +64,8 @@ function SparseCheckout([Array]$paths, [Hashtable]$repository)
 
         # Set non-cone mode otherwise path filters will not work in git >= 2.37.0
         # See https://github.blog/2022-06-27-highlights-from-git-2-37/#tidbits
-        Write-Host "git sparse-checkout set --no-cone '/*' '!/*/' '/eng' '/sdk/tools/linting-extensions'"
-        git sparse-checkout set --no-cone '/*' '!/*/' '/eng' '/sdk/tools/linting-extensions'
+        Write-Host "git sparse-checkout set --no-cone '/*' '!/*/' '/eng'"
+        git sparse-checkout set --no-cone '/*' '!/*/' '/eng'
     }
 
     # Prevent wildcard expansion in Invoke-Expression (e.g. for checkout path '/*')

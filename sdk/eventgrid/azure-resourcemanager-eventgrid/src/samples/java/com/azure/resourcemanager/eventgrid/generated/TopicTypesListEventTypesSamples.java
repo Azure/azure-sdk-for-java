@@ -10,8 +10,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 public final class TopicTypesListEventTypesSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/TopicTypes_ListEventTypes
-     * .json
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/
+     * TopicTypes_ListEventTypes.json
      */
     /**
      * Sample code: TopicTypes_ListEventTypes.

@@ -26,7 +26,7 @@ public final class VirtualMachineScaleSetVMListResult implements JsonSerializabl
 
     /*
      * The uri to fetch the next page of Virtual Machine Scale Set VMs. Call ListNext() with this to fetch the next page
-     * of VMSS VMs
+     * of VMSS VMs.
      */
     private String nextLink;
 

@@ -11,7 +11,7 @@ public final class ConnectToTargetAzureDbForPostgreSqlSyncTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectToTargetAzureDbForPostgreSqlSyncTaskOutput model = BinaryData.fromString(
-            "{\"id\":\"hkfpbs\",\"targetServerVersion\":\"ofd\",\"databases\":[\"us\",\"ttouwaboekqvkel\",\"smv\"],\"targetServerBrandVersion\":\"wyjsflhhcaalnjix\",\"validationErrors\":[{\"message\":\"awjoyaqcslyjp\",\"actionableMessage\":\"idzyexznelixhnr\",\"filePath\":\"folhbnxknal\",\"lineNumber\":\"lp\",\"hResult\":809589965,\"stackTrace\":\"tpnapnyiropuhpig\"},{\"message\":\"gylgqgitxmedjvcs\",\"actionableMessage\":\"n\",\"filePath\":\"wncwzzhxgktrmg\",\"lineNumber\":\"napkteoellw\",\"hResult\":1750481006,\"stackTrace\":\"ygpfqb\"}]}")
+            "{\"id\":\"lnsrmffe\",\"targetServerVersion\":\"xcktpiymerteeamm\",\"databases\":[\"ekkkzd\",\"rtkgdojbmxvavref\",\"eesvecu\",\"jpxtxsuwprtuj\"],\"targetServerBrandVersion\":\"awddjibab\",\"validationErrors\":[{\"message\":\"itvtzeexavo\",\"actionableMessage\":\"fglecdmdqbwp\",\"filePath\":\"q\",\"lineNumber\":\"sfj\",\"hResult\":266464644,\"stackTrace\":\"lhhxudbxvodhtnsi\"},{\"message\":\"dhzmmesckdlp\",\"actionableMessage\":\"zrcxfailcfxwmdbo\",\"filePath\":\"fgsftufqob\",\"lineNumber\":\"lnacgcc\",\"hResult\":810818653,\"stackTrace\":\"xkizvy\"},{\"message\":\"rzvul\",\"actionableMessage\":\"aaeranokqgukk\",\"filePath\":\"nvbroylaxx\",\"lineNumber\":\"cdisd\",\"hResult\":499643337,\"stackTrace\":\"b\"},{\"message\":\"vgjrwhr\",\"actionableMessage\":\"ycy\",\"filePath\":\"c\",\"lineNumber\":\"gc\",\"hResult\":822408153,\"stackTrace\":\"nwm\"}]}")
             .toObject(ConnectToTargetAzureDbForPostgreSqlSyncTaskOutput.class);
     }
 

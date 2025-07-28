@@ -17,6 +17,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
@@ -199,6 +200,12 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         final String storageAccountName = generateRandomResourceName("stg", 17);
         final String uname = "juser";
 
+        Creatable<StorageAccount> storageAccountCreatable = this.storageManager.storageAccounts()
+            .define(storageAccountName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess();
+
         VirtualMachine nativeVm = computeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
@@ -216,7 +223,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
             .attach()
             .withNewUnmanagedDataDisk(100)
             .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-            .withNewStorageAccount(storageAccountName)
+            .withNewStorageAccount(storageAccountCreatable)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 
@@ -326,6 +333,12 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         final KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
 
+        Creatable<StorageAccount> storageAccountCreatable = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 17))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess();
+
         VirtualMachine virtualMachine = computeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
@@ -346,7 +359,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
             .withCaching(CachingTypes.READ_ONLY)
             .attach()
             .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-            .withNewStorageAccount(generateRandomResourceName("stg", 17))
+            .withNewStorageAccount(storageAccountCreatable)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
         //
