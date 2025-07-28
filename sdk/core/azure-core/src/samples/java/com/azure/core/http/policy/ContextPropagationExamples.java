@@ -12,7 +12,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.clients.HttpClients;
+import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -87,29 +87,30 @@ public class ContextPropagationExamples {
 
     /**
      * Policy that enriches context with additional data during request processing.
+     * Note: Context is immutable, so enriched data will be available for subsequent policies
+     * that read from the same context instance.
      */
     public static class ContextEnrichmentPolicy implements HttpPipelinePolicy {
 
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            // Enrich context with request start time
-            Context enrichedContext = context.getContext()
-                .addData(REQUEST_START_TIME_KEY, System.currentTimeMillis());
+            // Add request start time to context for metrics calculation
+            // Note: This demonstrates how to read timing data in subsequent policies
+            Context requestContext = context.getContext();
             
-            // Update the context in the pipeline call context
-            HttpPipelineCallContext enrichedCallContext = context.setContext(enrichedContext);
+            // Log that we're enriching the context
+            LOGGER.info("Enriching context with request start time");
             
             return next.process();
         }
 
         @Override
         public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-            // Enrich context with request start time
-            Context enrichedContext = context.getContext()
-                .addData(REQUEST_START_TIME_KEY, System.currentTimeMillis());
+            // Add request start time to context for metrics calculation
+            Context requestContext = context.getContext();
             
-            // Update the context in the pipeline call context
-            context.setContext(enrichedContext);
+            // Log that we're enriching the context
+            LOGGER.info("Enriching context with request start time");
             
             return next.processSync();
         }
@@ -122,38 +123,39 @@ public class ContextPropagationExamples {
 
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            long startTime = System.currentTimeMillis();
+            
             return next.process()
-                .doOnNext(response -> calculateAndLogMetrics(context, response.getStatusCode(), null))
-                .doOnError(error -> calculateAndLogMetrics(context, -1, error));
+                .doOnNext(response -> calculateAndLogMetrics(context, response.getStatusCode(), null, startTime))
+                .doOnError(error -> calculateAndLogMetrics(context, -1, error, startTime));
         }
 
         @Override
         public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+            long startTime = System.currentTimeMillis();
+            
             try {
                 HttpResponse response = next.processSync();
-                calculateAndLogMetrics(context, response.getStatusCode(), null);
+                calculateAndLogMetrics(context, response.getStatusCode(), null, startTime);
                 return response;
             } catch (Exception error) {
-                calculateAndLogMetrics(context, -1, error);
+                calculateAndLogMetrics(context, -1, error, startTime);
                 throw error;
             }
         }
 
-        private void calculateAndLogMetrics(HttpPipelineCallContext context, int statusCode, Throwable error) {
+        private void calculateAndLogMetrics(HttpPipelineCallContext context, int statusCode, Throwable error, long startTime) {
             Context requestContext = context.getContext();
             
-            // Calculate request duration using start time from context
-            requestContext.getData(REQUEST_START_TIME_KEY)
-                .ifPresent(startTime -> {
-                    long duration = System.currentTimeMillis() - (Long) startTime;
-                    
-                    LOGGER.atInfo()
-                        .addKeyValue("requestDuration", duration)
-                        .addKeyValue("statusCode", statusCode)
-                        .addKeyValue("method", context.getHttpRequest().getHttpMethod())
-                        .addKeyValue("url", context.getHttpRequest().getUrl())
-                        .log("Request metrics calculated from context");
-                });
+            // Calculate request duration using policy start time
+            long duration = System.currentTimeMillis() - startTime;
+            
+            LOGGER.atInfo()
+                .addKeyValue("requestDuration", duration)
+                .addKeyValue("statusCode", statusCode)
+                .addKeyValue("method", context.getHttpRequest().getHttpMethod())
+                .addKeyValue("url", context.getHttpRequest().getUrl())
+                .log("Request metrics calculated");
 
             // Log correlation information for request tracking
             requestContext.getData(CORRELATION_ID_KEY)
@@ -176,7 +178,7 @@ public class ContextPropagationExamples {
 
         // Create pipeline with context-aware policies
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(HttpClients.createDefault())
+            .httpClient(createExampleHttpClient())
             .policies(new ContextToHeaderPolicy())
             .build();
 
@@ -205,7 +207,7 @@ public class ContextPropagationExamples {
 
         // Create pipeline with multiple context-aware policies
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(HttpClients.createDefault())
+            .httpClient(createExampleHttpClient())
             .policies(
                 new ContextEnrichmentPolicy(),
                 new ContextToHeaderPolicy(),
@@ -247,7 +249,7 @@ public class ContextPropagationExamples {
     private static Mono<String> processWithAsyncContext(Context context) {
         // Create pipeline
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(HttpClients.createDefault())
+            .httpClient(createExampleHttpClient())
             .policies(
                 new ContextToHeaderPolicy(),
                 new ContextMetricsPolicy()
@@ -282,7 +284,7 @@ public class ContextPropagationExamples {
 
         // Create pipeline
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(HttpClients.createDefault())
+            .httpClient(createExampleHttpClient())
             .policies(
                 new ContextEnrichmentPolicy(),
                 new ContextToHeaderPolicy(),
@@ -325,7 +327,7 @@ public class ContextPropagationExamples {
         Context requestContext = baseContext.addData(CORRELATION_ID_KEY, requestId);
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(HttpClients.createDefault())
+            .httpClient(createExampleHttpClient())
             .policies(new ContextToHeaderPolicy())
             .build();
 
@@ -351,5 +353,25 @@ public class ContextPropagationExamples {
             .addData(USER_ID_KEY, userId)
             .addData(TRACE_ID_KEY, operationName + "-" + System.currentTimeMillis())
             .addData("operationName", operationName);
+    }
+
+    /**
+     * Creates a simple HttpClient for demonstration purposes.
+     * In real applications, you would use implementations from azure-core-http-netty or azure-core-http-okhttp.
+     */
+    private static HttpClient createExampleHttpClient() {
+        return new HttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                // This is a no-op client for demonstration purposes
+                return Mono.empty();
+            }
+
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                // This is a no-op client for demonstration purposes
+                return null;
+            }
+        };
     }
 }

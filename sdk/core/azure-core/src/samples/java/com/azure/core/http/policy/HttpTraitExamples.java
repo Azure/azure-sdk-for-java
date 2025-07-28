@@ -7,14 +7,22 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.clients.HttpClients;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
+import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Context;
 import com.azure.core.util.HttpClientOptions;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -104,7 +112,7 @@ public class HttpTraitExamples {
             if (httpClient != null) {
                 builder.httpClient(httpClient);
             } else {
-                builder.httpClient(HttpClients.createDefault());
+                builder.httpClient(createExampleHttpClient());
             }
             
             // Add custom policies
@@ -127,6 +135,26 @@ public class HttpTraitExamples {
             
             return builder.policies(allPolicies.toArray(new HttpPipelinePolicy[0])).build();
         }
+    }
+
+    /**
+     * Creates a simple HttpClient for demonstration purposes.
+     * In real applications, you would use implementations from azure-core-http-netty or azure-core-http-okhttp.
+     */
+    private static HttpClient createExampleHttpClient() {
+        return new HttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                // This is a no-op client for demonstration purposes
+                return Mono.empty();
+            }
+
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                // This is a no-op client for demonstration purposes
+                return null;
+            }
+        };
     }
 
     /**
@@ -169,7 +197,8 @@ public class HttpTraitExamples {
             .addPolicy(new CustomPolicyExamples.ObservabilityLoggingPolicy("example-service"))
             .addPolicy(new CustomPolicyExamples.MetricsCollectionPolicy("example-service"))
             .addPolicy(new CustomPolicyExamples.ContextAwarePolicy())
-            .retryOptions(new RetryOptions(new ExponentialBackoff(3, Duration.ofSeconds(1), Duration.ofMinutes(1))))
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(3)
+                .setBaseDelay(Duration.ofSeconds(1)).setMaxDelay(Duration.ofMinutes(1))))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
             .build();
     }
@@ -197,7 +226,7 @@ public class HttpTraitExamples {
      */
     public static ExampleServiceClient createClientWithCustomPipeline() {
         HttpPipeline customPipeline = new HttpPipelineBuilder()
-            .httpClient(HttpClients.createDefault())
+            .httpClient(createExampleHttpClient())
             .policies(
                 new CustomPolicyExamples.ObservabilityLoggingPolicy("custom-pipeline"),
                 new CustomPolicyExamples.MetricsCollectionPolicy("custom-pipeline"),
@@ -216,13 +245,13 @@ public class HttpTraitExamples {
      * Example 5: Creating a client with a custom HttpClient.
      */
     public static ExampleServiceClient createClientWithCustomHttpClient() {
-        HttpClient customHttpClient = HttpClients.createDefault();
+        HttpClient customHttpClient = createExampleHttpClient();
 
         return new ExampleServiceClientBuilder()
             .endpoint("https://example.service.azure.com")
             .httpClient(customHttpClient)
             .addPolicy(new CustomPolicyExamples.ObservabilityLoggingPolicy("example-service"))
-            .retryOptions(new RetryOptions(new FixedDelay(3, Duration.ofSeconds(2))))
+            .retryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(2))))
             .build();
     }
 
@@ -238,7 +267,8 @@ public class HttpTraitExamples {
             .addPolicy(new CustomPolicyExamples.ContextAwarePolicy())
             .addPolicy(new CustomPolicyExamples.RetryAwarePolicy())
             // Configure retry behavior
-            .retryOptions(new RetryOptions(new ExponentialBackoff(5, Duration.ofSeconds(1), Duration.ofMinutes(2))))
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(5)
+                .setBaseDelay(Duration.ofSeconds(1)).setMaxDelay(Duration.ofMinutes(2))))
             // Configure detailed logging for troubleshooting
             .httpLogOptions(new HttpLogOptions()
                 .setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))

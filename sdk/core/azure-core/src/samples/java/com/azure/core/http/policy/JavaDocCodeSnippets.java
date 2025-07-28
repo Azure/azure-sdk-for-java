@@ -11,6 +11,14 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Context;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -267,5 +275,58 @@ public class JavaDocCodeSnippets {
         // BEGIN: com.azure.core.http.policy.UserAgentPolicy.constructor
         UserAgentPolicy userAgentPolicy = new UserAgentPolicy("MyApp/1.0");
         // END: com.azure.core.http.policy.UserAgentPolicy.constructor
+    }
+
+    /**
+     * Code snippets for creating custom HTTP pipeline policies.
+     */
+    public void createCustomPolicy() {
+        // BEGIN: com.azure.core.http.policy.custom.simple
+        HttpPipelinePolicy customPolicy = new HttpPipelinePolicy() {
+            @Override
+            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                // Add custom logic here
+                return next.process();
+            }
+
+            @Override
+            public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+                // Add custom logic here
+                return next.processSync();
+            }
+        };
+        // END: com.azure.core.http.policy.custom.simple
+    }
+
+    /**
+     * Code snippets for using custom policies with HttpTrait.
+     */
+    public void addCustomPolicyToClient() {
+        // BEGIN: com.azure.core.http.policy.custom.httptrait
+        HttpPipelinePolicy observabilityPolicy = new CustomPolicyExamples.ObservabilityLoggingPolicy("my-service");
+        
+        // Note: This is a conceptual example - actual Azure SDK clients implement HttpTrait
+        // ExampleServiceClient client = new ExampleServiceClientBuilder()
+        //     .endpoint("https://example.service.azure.com")
+        //     .addPolicy(observabilityPolicy)
+        //     .build();
+        // END: com.azure.core.http.policy.custom.httptrait
+    }
+
+    /**
+     * Code snippets for context propagation.
+     */
+    public void contextPropagation() {
+        // BEGIN: com.azure.core.util.context.basic
+        // Create context with custom data
+        Context context = Context.NONE
+            .addData("correlationId", "12345")
+            .addData("userId", "user123");
+
+        // Use context with HTTP pipeline
+        HttpRequest request = null; // Initialize your request
+        HttpPipeline pipeline = null; // Initialize your pipeline
+        Mono<HttpResponse> response = pipeline.send(request, context);
+        // END: com.azure.core.util.context.basic
     }
 }

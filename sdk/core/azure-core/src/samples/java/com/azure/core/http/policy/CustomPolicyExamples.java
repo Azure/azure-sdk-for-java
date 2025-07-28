@@ -11,7 +11,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.clients.HttpClients;
+import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -255,10 +255,11 @@ public class CustomPolicyExamples {
 
     /**
      * Example demonstrating how to create an HTTP pipeline with custom policies.
+     * Note: In real scenarios, you would use an actual HttpClient implementation.
      */
     public static HttpPipeline createCustomPipeline() {
         return new HttpPipelineBuilder()
-            .httpClient(HttpClients.createDefault())
+            .httpClient(createExampleHttpClient())
             .policies(
                 new ObservabilityLoggingPolicy("example-service"),
                 new MetricsCollectionPolicy("example-service"),
@@ -266,6 +267,26 @@ public class CustomPolicyExamples {
                 new RetryAwarePolicy()
             )
             .build();
+    }
+
+    /**
+     * Creates a simple HttpClient for demonstration purposes.
+     * In real applications, you would use implementations from azure-core-http-netty or azure-core-http-okhttp.
+     */
+    private static HttpClient createExampleHttpClient() {
+        return new HttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                // This is a no-op client for demonstration purposes
+                return Mono.empty();
+            }
+
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                // This is a no-op client for demonstration purposes
+                return null;
+            }
+        };
     }
 
     /**
