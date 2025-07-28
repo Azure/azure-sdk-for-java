@@ -4,7 +4,7 @@
 
 package com.azure.ai.agents.persistent.implementation;
 
-import com.azure.ai.agents.persistent.AgentsServiceVersion;
+import com.azure.ai.agents.persistent.PersistentAgentsServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -22,6 +22,10 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -32,13 +36,15 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in Runs.
+ * Initializes a new instance of the Runs type.
  */
 public final class RunsImpl {
     /**
@@ -47,35 +53,110 @@ public final class RunsImpl {
     private final RunsService service;
 
     /**
-     * The service client containing this operation class.
+     * Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
      */
-    private final PersistentAgentsAdministrationClientImpl client;
+    private final String endpoint;
 
     /**
-     * Initializes an instance of RunsImpl.
+     * Gets Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
      * 
-     * @param client the instance of the service client containing this operation class.
+     * @return the endpoint value.
      */
-    RunsImpl(PersistentAgentsAdministrationClientImpl client) {
-        this.service = RestProxy.create(RunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
+    public String getEndpoint() {
+        return this.endpoint;
     }
+
+    /**
+     * Service version.
+     */
+    private final PersistentAgentsServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public AgentsServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
+    public PersistentAgentsServiceVersion getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /**
-     * The interface defining all the services for PersistentAgentsAdministrationClientRuns to be used by the proxy
-     * service to perform REST calls.
+     * The HTTP pipeline to send requests through.
+     */
+    private final HttpPipeline httpPipeline;
+
+    /**
+     * Gets The HTTP pipeline to send requests through.
+     * 
+     * @return the httpPipeline value.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.httpPipeline;
+    }
+
+    /**
+     * The serializer to serialize an object into a string.
+     */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     * 
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /**
+     * Initializes an instance of Runs client.
+     * 
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public RunsImpl(String endpoint, PersistentAgentsServiceVersion serviceVersion) {
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of Runs client.
+     * 
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public RunsImpl(HttpPipeline httpPipeline, String endpoint, PersistentAgentsServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of Runs client.
+     * 
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint Project endpoint in the form of:
+     * https://&lt;aiservices-id&gt;.services.ai.azure.com/api/projects/&lt;project-name&gt;.
+     * @param serviceVersion Service version.
+     */
+    public RunsImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        PersistentAgentsServiceVersion serviceVersion) {
+        this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.endpoint = endpoint;
+        this.serviceVersion = serviceVersion;
+        this.service = RestProxy.create(RunsService.class, this.httpPipeline, this.getSerializerAdapter());
+    }
+
+    /**
+     * The interface defining all the services for Runs to be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "PersistentAgentsAdmi")
+    @ServiceInterface(name = "Runs")
     public interface RunsService {
         @Post("/threads/{threadId}/runs")
         @ExpectedResponses({ 200 })
@@ -212,6 +293,50 @@ public final class RunsImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("threadId") String threadId,
             @PathParam("runId") String runId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
+
+        @Get("/threads/{threadId}/runs/{runId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listRunSteps(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("runId") String runId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/threads/{threadId}/runs/{runId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listRunStepsSync(@HostParam("endpoint") String endpoint,
+            @PathParam("threadId") String threadId, @PathParam("runId") String runId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/threads/{threadId}/runs/{runId}/steps/{stepId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getRunStep(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("threadId") String threadId,
+            @PathParam("runId") String runId, @PathParam("stepId") String stepId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/threads/{threadId}/runs/{runId}/steps/{stepId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getRunStepSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("threadId") String threadId,
+            @PathParam("runId") String runId, @PathParam("stepId") String stepId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -391,8 +516,8 @@ public final class RunsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createRun(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return FluxUtil
+            .withContext(context -> service.createRun(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 threadId, contentType, accept, createRunRequest, requestOptions, context));
     }
 
@@ -572,8 +697,8 @@ public final class RunsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createRunSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), threadId,
-            contentType, accept, createRunRequest, requestOptions, Context.NONE);
+        return service.createRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId, contentType,
+            accept, createRunRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -704,8 +829,8 @@ public final class RunsImpl {
     private Mono<PagedResponse<BinaryData>> listRunsSinglePageAsync(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listRuns(this.client.getEndpoint(), threadId,
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .withContext(context -> service.listRuns(this.getEndpoint(), threadId,
+                this.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -964,8 +1089,8 @@ public final class RunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listRunsSinglePage(String threadId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listRunsSync(this.client.getEndpoint(), threadId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listRunsSync(this.getEndpoint(), threadId,
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
@@ -1210,8 +1335,8 @@ public final class RunsImpl {
     public Mono<Response<BinaryData>> getRunWithResponseAsync(String threadId, String runId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getRun(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), threadId, runId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getRun(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            threadId, runId, accept, requestOptions, context));
     }
 
     /**
@@ -1324,8 +1449,8 @@ public final class RunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRunWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getRunSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), threadId,
-            runId, accept, requestOptions, Context.NONE);
+        return service.getRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId, runId, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1454,8 +1579,8 @@ public final class RunsImpl {
         BinaryData updateRunRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.updateRun(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return FluxUtil
+            .withContext(context -> service.updateRun(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 threadId, runId, contentType, accept, updateRunRequest, requestOptions, context));
     }
 
@@ -1584,8 +1709,8 @@ public final class RunsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateRunSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), threadId,
-            runId, contentType, accept, updateRunRequest, requestOptions, Context.NONE);
+        return service.updateRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId, runId,
+            contentType, accept, updateRunRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -1718,9 +1843,9 @@ public final class RunsImpl {
         BinaryData submitToolOutputsToRunRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.submitToolOutputsToRun(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), threadId, runId, contentType, accept,
-            submitToolOutputsToRunRequest, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.submitToolOutputsToRun(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                threadId, runId, contentType, accept, submitToolOutputsToRunRequest, requestOptions, context));
     }
 
     /**
@@ -1852,9 +1977,8 @@ public final class RunsImpl {
         BinaryData submitToolOutputsToRunRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.submitToolOutputsToRunSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), threadId, runId, contentType, accept,
-            submitToolOutputsToRunRequest, requestOptions, Context.NONE);
+        return service.submitToolOutputsToRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId,
+            runId, contentType, accept, submitToolOutputsToRunRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -1969,8 +2093,8 @@ public final class RunsImpl {
     public Mono<Response<BinaryData>> cancelRunWithResponseAsync(String threadId, String runId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.cancelRun(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), threadId, runId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.cancelRun(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), threadId, runId, accept, requestOptions, context));
     }
 
     /**
@@ -2083,8 +2207,445 @@ public final class RunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cancelRunWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.cancelRunSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), threadId,
-            runId, accept, requestOptions, Context.NONE);
+        return service.cancelRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId, runId, accept,
+            requestOptions, Context.NONE);
+    }
+
+    /**
+     * Gets a list of run steps from a thread run.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
+     * response.
+     * Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the
+     * file search result content. In the form of "," separated string.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     type: String(message_creation/tool_calls) (Required)
+     *     assistant_id: String (Required)
+     *     thread_id: String (Required)
+     *     run_id: String (Required)
+     *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
+     *     step_details (Required): {
+     *         type: String(message_creation/tool_calls) (Required)
+     *     }
+     *     last_error (Required): {
+     *         code: String(server_error/rate_limit_exceeded) (Required)
+     *         message: String (Required)
+     *     }
+     *     created_at: long (Required)
+     *     expired_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     usage (Optional): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of run steps from a thread run along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listRunStepsSinglePageAsync(String threadId, String runId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listRunSteps(this.getEndpoint(), threadId, runId,
+                this.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "data"), null, null));
+    }
+
+    /**
+     * Gets a list of run steps from a thread run.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
+     * response.
+     * Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the
+     * file search result content. In the form of "," separated string.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     type: String(message_creation/tool_calls) (Required)
+     *     assistant_id: String (Required)
+     *     thread_id: String (Required)
+     *     run_id: String (Required)
+     *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
+     *     step_details (Required): {
+     *         type: String(message_creation/tool_calls) (Required)
+     *     }
+     *     last_error (Required): {
+     *         code: String(server_error/rate_limit_exceeded) (Required)
+     *         message: String (Required)
+     *     }
+     *     created_at: long (Required)
+     *     expired_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     usage (Optional): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of run steps from a thread run as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listRunStepsAsync(String threadId, String runId, RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listRunStepsSinglePageAsync(threadId, runId, requestOptions));
+    }
+
+    /**
+     * Gets a list of run steps from a thread run.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
+     * response.
+     * Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the
+     * file search result content. In the form of "," separated string.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     type: String(message_creation/tool_calls) (Required)
+     *     assistant_id: String (Required)
+     *     thread_id: String (Required)
+     *     run_id: String (Required)
+     *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
+     *     step_details (Required): {
+     *         type: String(message_creation/tool_calls) (Required)
+     *     }
+     *     last_error (Required): {
+     *         code: String(server_error/rate_limit_exceeded) (Required)
+     *         message: String (Required)
+     *     }
+     *     created_at: long (Required)
+     *     expired_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     usage (Optional): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of run steps from a thread run along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listRunStepsSinglePage(String threadId, String runId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listRunStepsSync(this.getEndpoint(), threadId, runId,
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "data"), null, null);
+    }
+
+    /**
+     * Gets a list of run steps from a thread run.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
+     * response.
+     * Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the
+     * file search result content. In the form of "," separated string.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     type: String(message_creation/tool_calls) (Required)
+     *     assistant_id: String (Required)
+     *     thread_id: String (Required)
+     *     run_id: String (Required)
+     *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
+     *     step_details (Required): {
+     *         type: String(message_creation/tool_calls) (Required)
+     *     }
+     *     last_error (Required): {
+     *         code: String(server_error/rate_limit_exceeded) (Required)
+     *         message: String (Required)
+     *     }
+     *     created_at: long (Required)
+     *     expired_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     usage (Optional): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of run steps from a thread run as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listRunSteps(String threadId, String runId, RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listRunStepsSinglePage(threadId, runId, requestOptions));
+    }
+
+    /**
+     * Retrieves a single run step from a thread run.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
+     * response.
+     * Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the
+     * file search result content. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     type: String(message_creation/tool_calls) (Required)
+     *     assistant_id: String (Required)
+     *     thread_id: String (Required)
+     *     run_id: String (Required)
+     *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
+     *     step_details (Required): {
+     *         type: String(message_creation/tool_calls) (Required)
+     *     }
+     *     last_error (Required): {
+     *         code: String(server_error/rate_limit_exceeded) (Required)
+     *         message: String (Required)
+     *     }
+     *     created_at: long (Required)
+     *     expired_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     usage (Optional): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @param stepId Identifier of the run step.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return detailed information about a single step of an agent thread run along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getRunStepWithResponseAsync(String threadId, String runId, String stepId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getRunStep(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), threadId, runId, stepId, accept, requestOptions, context));
+    }
+
+    /**
+     * Retrieves a single run step from a thread run.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>include[]</td><td>List&lt;String&gt;</td><td>No</td><td>A list of additional fields to include in the
+     * response.
+     * Currently the only supported value is `step_details.tool_calls[*].file_search.results[*].content` to fetch the
+     * file search result content. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     type: String(message_creation/tool_calls) (Required)
+     *     assistant_id: String (Required)
+     *     thread_id: String (Required)
+     *     run_id: String (Required)
+     *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
+     *     step_details (Required): {
+     *         type: String(message_creation/tool_calls) (Required)
+     *     }
+     *     last_error (Required): {
+     *         code: String(server_error/rate_limit_exceeded) (Required)
+     *         message: String (Required)
+     *     }
+     *     created_at: long (Required)
+     *     expired_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     usage (Optional): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param threadId Identifier of the thread.
+     * @param runId Identifier of the run.
+     * @param stepId Identifier of the run step.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return detailed information about a single step of an agent thread run along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getRunStepWithResponse(String threadId, String runId, String stepId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getRunStepSync(this.getEndpoint(), this.getServiceVersion().getVersion(), threadId, runId,
+            stepId, accept, requestOptions, Context.NONE);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

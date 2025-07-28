@@ -27,6 +27,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -301,11 +302,6 @@ public class DefaultAzureCredentialTest {
                 when(identityClient.authenticateWithManagedIdentityMsalClient(request)).thenReturn(
                     Mono.error(new CredentialUnavailableException("Cannot get token from managed identity")));
             });
-            MockedConstruction<SharedTokenCacheCredential> sharedTokenCacheCredentialMock
-                = mockConstruction(SharedTokenCacheCredential.class, (sharedTokenCacheCredential, context) -> {
-                    when(sharedTokenCacheCredential.getToken(request)).thenReturn(
-                        Mono.error(new CredentialUnavailableException("Cannot get token from shared token cache")));
-                });
             MockedConstruction<AzureDeveloperCliCredential> azureDeveloperCliCredentialMock
                 = mockConstruction(AzureDeveloperCliCredential.class, (AzureDeveloperCliCredential, context) -> {
                     when(AzureDeveloperCliCredential.getToken(request)).thenReturn(Mono.error(
@@ -325,8 +321,12 @@ public class DefaultAzureCredentialTest {
                 = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
                     when(intelliJCredential.getToken(request)).thenReturn(
                         Mono.error(new CredentialUnavailableException("Cannot get token from IntelliJ Credential")));
+                });
+            MockedConstruction<OSBrokerCredential> osBrokerCredentialMock
+                = mockConstruction(OSBrokerCredential.class, (osBrokerCredential, context) -> {
+                    when(osBrokerCredential.getToken(request)).thenReturn(
+                        Mono.error(new CredentialUnavailableException("Cannot get token from OS Broker credential")));
                 })) {
-
             // test
             DefaultAzureCredential credential
                 = new DefaultAzureCredentialBuilder().configuration(configuration).build();
@@ -335,11 +335,11 @@ public class DefaultAzureCredentialTest {
                     && t.getMessage().startsWith("EnvironmentCredential authentication unavailable. "))
                 .verify();
             Assertions.assertNotNull(identityClientMock);
-            Assertions.assertNotNull(sharedTokenCacheCredentialMock);
             Assertions.assertNotNull(azureCliCredentialMock);
             Assertions.assertNotNull(azureDeveloperCliCredentialMock);
             Assertions.assertNotNull(azurePowerShellCredentialMock);
             Assertions.assertNotNull(intelliJCredentialMock);
+            Assertions.assertNotNull(osBrokerCredentialMock);
         }
     }
 
@@ -373,7 +373,13 @@ public class DefaultAzureCredentialTest {
                 = mockConstruction(AzureDeveloperCliCredential.class, (AzureDeveloperCliCredential, context) -> {
                     when(AzureDeveloperCliCredential.getToken(request)).thenReturn(Mono.error(
                         new CredentialUnavailableException("Cannot get token from Azure Developer CLI credential")));
+                });
+            MockedConstruction<OSBrokerCredential> osBrokerCredentialMock
+                = mockConstruction(OSBrokerCredential.class, (osBrokerCredential, context) -> {
+                    when(osBrokerCredential.getToken(request)).thenReturn(
+                        Mono.error(new CredentialUnavailableException("Cannot get token from OS Broker credential")));
                 })) {
+
             // test
             DefaultAzureCredential credential
                 = new DefaultAzureCredentialBuilder().configuration(configuration).build();
@@ -386,8 +392,8 @@ public class DefaultAzureCredentialTest {
             Assertions.assertNotNull(powerShellCredentialMock);
             Assertions.assertNotNull(azureCliCredentialMock);
             Assertions.assertNotNull(azureDeveloperCliCredentialMock);
+            Assertions.assertNotNull(osBrokerCredentialMock);
         }
-
     }
 
     @Test
@@ -663,15 +669,91 @@ public class DefaultAzureCredentialTest {
 
         List<TokenCredential> credentials = extractCredentials(credential);
 
-        // Only developer credentials should be present (5)
-        assertEquals(5, credentials.size());
+        // Only developer credentials should be present (4)
+        assertEquals(6, credentials.size());
 
         // Verify developer credentials in order
-        assertInstanceOf(SharedTokenCacheCredential.class, credentials.get(0));
-        assertInstanceOf(IntelliJCredential.class, credentials.get(1));
+        assertInstanceOf(IntelliJCredential.class, credentials.get(0));
+        assertInstanceOf(VisualStudioCodeCredential.class, credentials.get(1));
         assertInstanceOf(AzureCliCredential.class, credentials.get(2));
         assertInstanceOf(AzurePowerShellCredential.class, credentials.get(3));
         assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(4));
+        assertInstanceOf(OSBrokerCredential.class, credentials.get(5));
+    }
+
+    @ParameterizedTest
+    @ValueSource(
+        strings = {
+            "AzureCliCredential",
+            "azureclicredential",
+            "AZURECLICREDENTIAL",
+            "IntelliJCredential",
+            "intellijcredential",
+            "AzurePowerShellCredential",
+            "azurepowershellcredential",
+            "AzureDeveloperCliCredential",
+            "azuredeveloperclicredential",
+            "EnvironmentCredential",
+            "environmentcredential",
+            "WorkloadIdentityCredential",
+            "workloadidentitycredential",
+            "ManagedIdentityCredential",
+            "managedidentitycredential",
+            "VisualStudioCodeCredential",
+            "visualstudiocodecredential" })
+    public void testTargetedCredentialSelection(String credentialValue) {
+        // Setup config with targeted credential value (case-insensitive)
+        TestConfigurationSource configSource
+            = new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", credentialValue);
+        Configuration configuration = TestUtils.createTestConfiguration(configSource);
+
+        // Build the credential with the test configuration
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
+        List<TokenCredential> credentials = extractCredentials(credential);
+
+        // Should contain exactly one credential
+        assertEquals(1, credentials.size());
+
+        // Assert that the only credential matches expected type
+        Class<? extends TokenCredential> expectedType;
+        switch (credentialValue.toLowerCase(Locale.ROOT)) {
+            case "azureclicredential":
+                expectedType = AzureCliCredential.class;
+                break;
+
+            case "intellijcredential":
+                expectedType = IntelliJCredential.class;
+                break;
+
+            case "azurepowershellcredential":
+                expectedType = AzurePowerShellCredential.class;
+                break;
+
+            case "azuredeveloperclicredential":
+                expectedType = AzureDeveloperCliCredential.class;
+                break;
+
+            case "environmentcredential":
+                expectedType = EnvironmentCredential.class;
+                break;
+
+            case "workloadidentitycredential":
+                expectedType = WorkloadIdentityCredential.class;
+                break;
+
+            case "managedidentitycredential":
+                expectedType = ManagedIdentityCredential.class;
+                break;
+
+            case "visualstudiocodecredential":
+                expectedType = VisualStudioCodeCredential.class;
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unsupported test value: " + credentialValue);
+        }
+
+        assertInstanceOf(expectedType, credentials.get(0));
     }
 
     @ParameterizedTest
@@ -702,16 +784,17 @@ public class DefaultAzureCredentialTest {
         // Extract credentials to check their types and order
         List<TokenCredential> credentials = extractCredentials(credential);
 
-        // Verify the complete chain with all 8 credentials
-        assertEquals(8, credentials.size());
+        // Verify the complete chain with all 9 credentials
+        assertEquals(9, credentials.size());
         assertInstanceOf(EnvironmentCredential.class, credentials.get(0));
         assertInstanceOf(WorkloadIdentityCredential.class, credentials.get(1));
         assertInstanceOf(ManagedIdentityCredential.class, credentials.get(2));
-        assertInstanceOf(SharedTokenCacheCredential.class, credentials.get(3));
-        assertInstanceOf(IntelliJCredential.class, credentials.get(4));
+        assertInstanceOf(IntelliJCredential.class, credentials.get(3));
+        assertInstanceOf(VisualStudioCodeCredential.class, credentials.get(4));
         assertInstanceOf(AzureCliCredential.class, credentials.get(5));
         assertInstanceOf(AzurePowerShellCredential.class, credentials.get(6));
         assertInstanceOf(AzureDeveloperCliCredential.class, credentials.get(7));
+        assertInstanceOf(OSBrokerCredential.class, credentials.get(8));
     }
 
     /**

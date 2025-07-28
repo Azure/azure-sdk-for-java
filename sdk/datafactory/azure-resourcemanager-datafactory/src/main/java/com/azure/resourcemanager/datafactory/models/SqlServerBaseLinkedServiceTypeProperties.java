@@ -599,25 +599,63 @@ public class SqlServerBaseLinkedServiceTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("server", this.server);
-        jsonWriter.writeUntypedField("database", this.database);
-        jsonWriter.writeUntypedField("encrypt", this.encrypt);
-        jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
-        jsonWriter.writeUntypedField("hostNameInCertificate", this.hostnameInCertificate);
-        jsonWriter.writeUntypedField("applicationIntent", this.applicationIntent);
-        jsonWriter.writeUntypedField("connectTimeout", this.connectTimeout);
-        jsonWriter.writeUntypedField("connectRetryCount", this.connectRetryCount);
-        jsonWriter.writeUntypedField("connectRetryInterval", this.connectRetryInterval);
-        jsonWriter.writeUntypedField("loadBalanceTimeout", this.loadBalanceTimeout);
-        jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
-        jsonWriter.writeUntypedField("integratedSecurity", this.integratedSecurity);
-        jsonWriter.writeUntypedField("failoverPartner", this.failoverPartner);
-        jsonWriter.writeUntypedField("maxPoolSize", this.maxPoolSize);
-        jsonWriter.writeUntypedField("minPoolSize", this.minPoolSize);
-        jsonWriter.writeUntypedField("multipleActiveResultSets", this.multipleActiveResultSets);
-        jsonWriter.writeUntypedField("multiSubnetFailover", this.multiSubnetFailover);
-        jsonWriter.writeUntypedField("packetSize", this.packetSize);
-        jsonWriter.writeUntypedField("pooling", this.pooling);
+        if (this.server != null) {
+            jsonWriter.writeUntypedField("server", this.server);
+        }
+        if (this.database != null) {
+            jsonWriter.writeUntypedField("database", this.database);
+        }
+        if (this.encrypt != null) {
+            jsonWriter.writeUntypedField("encrypt", this.encrypt);
+        }
+        if (this.trustServerCertificate != null) {
+            jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
+        }
+        if (this.hostnameInCertificate != null) {
+            jsonWriter.writeUntypedField("hostNameInCertificate", this.hostnameInCertificate);
+        }
+        if (this.applicationIntent != null) {
+            jsonWriter.writeUntypedField("applicationIntent", this.applicationIntent);
+        }
+        if (this.connectTimeout != null) {
+            jsonWriter.writeUntypedField("connectTimeout", this.connectTimeout);
+        }
+        if (this.connectRetryCount != null) {
+            jsonWriter.writeUntypedField("connectRetryCount", this.connectRetryCount);
+        }
+        if (this.connectRetryInterval != null) {
+            jsonWriter.writeUntypedField("connectRetryInterval", this.connectRetryInterval);
+        }
+        if (this.loadBalanceTimeout != null) {
+            jsonWriter.writeUntypedField("loadBalanceTimeout", this.loadBalanceTimeout);
+        }
+        if (this.commandTimeout != null) {
+            jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+        }
+        if (this.integratedSecurity != null) {
+            jsonWriter.writeUntypedField("integratedSecurity", this.integratedSecurity);
+        }
+        if (this.failoverPartner != null) {
+            jsonWriter.writeUntypedField("failoverPartner", this.failoverPartner);
+        }
+        if (this.maxPoolSize != null) {
+            jsonWriter.writeUntypedField("maxPoolSize", this.maxPoolSize);
+        }
+        if (this.minPoolSize != null) {
+            jsonWriter.writeUntypedField("minPoolSize", this.minPoolSize);
+        }
+        if (this.multipleActiveResultSets != null) {
+            jsonWriter.writeUntypedField("multipleActiveResultSets", this.multipleActiveResultSets);
+        }
+        if (this.multiSubnetFailover != null) {
+            jsonWriter.writeUntypedField("multiSubnetFailover", this.multiSubnetFailover);
+        }
+        if (this.packetSize != null) {
+            jsonWriter.writeUntypedField("packetSize", this.packetSize);
+        }
+        if (this.pooling != null) {
+            jsonWriter.writeUntypedField("pooling", this.pooling);
+        }
         return jsonWriter.writeEndObject();
     }
 

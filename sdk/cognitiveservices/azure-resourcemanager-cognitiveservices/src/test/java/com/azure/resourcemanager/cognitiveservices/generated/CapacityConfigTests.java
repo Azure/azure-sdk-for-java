@@ -13,27 +13,27 @@ public final class CapacityConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapacityConfig model = BinaryData.fromString(
-            "{\"minimum\":18555434,\"maximum\":480744947,\"step\":1333512274,\"default\":826548714,\"allowedValues\":[1771770705,307935551,1373205517,1850668583]}")
+            "{\"minimum\":1684029730,\"maximum\":627657952,\"step\":2048114314,\"default\":1163936229,\"allowedValues\":[1873718862,122504841,855671205]}")
             .toObject(CapacityConfig.class);
-        Assertions.assertEquals(18555434, model.minimum());
-        Assertions.assertEquals(480744947, model.maximum());
-        Assertions.assertEquals(1333512274, model.step());
-        Assertions.assertEquals(826548714, model.defaultProperty());
-        Assertions.assertEquals(1771770705, model.allowedValues().get(0));
+        Assertions.assertEquals(1684029730, model.minimum());
+        Assertions.assertEquals(627657952, model.maximum());
+        Assertions.assertEquals(2048114314, model.step());
+        Assertions.assertEquals(1163936229, model.defaultProperty());
+        Assertions.assertEquals(1873718862, model.allowedValues().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CapacityConfig model = new CapacityConfig().withMinimum(18555434)
-            .withMaximum(480744947)
-            .withStep(1333512274)
-            .withDefaultProperty(826548714)
-            .withAllowedValues(Arrays.asList(1771770705, 307935551, 1373205517, 1850668583));
+        CapacityConfig model = new CapacityConfig().withMinimum(1684029730)
+            .withMaximum(627657952)
+            .withStep(2048114314)
+            .withDefaultProperty(1163936229)
+            .withAllowedValues(Arrays.asList(1873718862, 122504841, 855671205));
         model = BinaryData.fromObject(model).toObject(CapacityConfig.class);
-        Assertions.assertEquals(18555434, model.minimum());
-        Assertions.assertEquals(480744947, model.maximum());
-        Assertions.assertEquals(1333512274, model.step());
-        Assertions.assertEquals(826548714, model.defaultProperty());
-        Assertions.assertEquals(1771770705, model.allowedValues().get(0));
+        Assertions.assertEquals(1684029730, model.minimum());
+        Assertions.assertEquals(627657952, model.maximum());
+        Assertions.assertEquals(2048114314, model.step());
+        Assertions.assertEquals(1163936229, model.defaultProperty());
+        Assertions.assertEquals(1873718862, model.allowedValues().get(0));
     }
 }

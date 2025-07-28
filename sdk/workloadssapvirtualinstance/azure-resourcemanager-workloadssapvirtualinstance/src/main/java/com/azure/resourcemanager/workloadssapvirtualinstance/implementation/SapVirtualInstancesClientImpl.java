@@ -84,7 +84,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
      * by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "WorkloadsSapVirtualI")
+    @ServiceInterface(name = "WorkloadsSapVirtualInstanceMgmtClientSapVirtualInstances")
     public interface SapVirtualInstancesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}")
@@ -2461,8 +2461,8 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SAPVirtualInstance list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapVirtualInstanceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2489,7 +2489,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SAPVirtualInstance list operation along with {@link PagedResponse}.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapVirtualInstanceInner> listByResourceGroupNextSinglePage(String nextLink) {
@@ -2517,7 +2517,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SAPVirtualInstance list operation along with {@link PagedResponse}.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapVirtualInstanceInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
@@ -2544,8 +2544,8 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SAPVirtualInstance list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapVirtualInstanceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2572,7 +2572,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SAPVirtualInstance list operation along with {@link PagedResponse}.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapVirtualInstanceInner> listBySubscriptionNextSinglePage(String nextLink) {
@@ -2600,7 +2600,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SAPVirtualInstance list operation along with {@link PagedResponse}.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapVirtualInstanceInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {

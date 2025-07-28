@@ -33,7 +33,8 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     private NetworkPolicy networkPolicy;
 
     /*
-     * This cannot be specified if networkPlugin is anything other than 'azure'.
+     * The network mode Azure CNI is configured with. This cannot be specified if networkPlugin is anything other than
+     * 'azure'.
      */
     private NetworkMode networkMode;
 
@@ -65,14 +66,15 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     private String dnsServiceIp;
 
     /*
-     * This can only be set at cluster creation time and cannot be changed later. For more information see [egress
-     * outbound type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
+     * The outbound (egress) routing method. This can only be set at cluster creation time and cannot be changed later.
+     * For more information see [egress outbound type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
      */
     private OutboundType outboundType;
 
     /*
-     * The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus)
-     * for more information about the differences between load balancer SKUs.
+     * The load balancer sku for the managed cluster. The default is 'standard'. See [Azure Load Balancer
+     * SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for more information about the differences between
+     * load balancer SKUs.
      */
     private LoadBalancerSku loadBalancerSku;
 
@@ -87,20 +89,28 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     private ManagedClusterNatGatewayProfile natGatewayProfile;
 
     /*
-     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected
-     * for dual-stack networking.
+     * The profile for Static Egress Gateway addon. For more details about Static Egress Gateway, see
+     * https://aka.ms/aks/static-egress-gateway.
+     */
+    private ManagedClusterStaticEgressGatewayProfile staticEgressGatewayProfile;
+
+    /*
+     * The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR is expected for single-stack networking.
+     * Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack networking.
      */
     private List<String> podCidrs;
 
     /*
-     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected
-     * for dual-stack networking. They must not overlap with any Subnet IP ranges.
+     * The CIDR notation IP ranges from which to assign service cluster IPs. One IPv4 CIDR is expected for single-stack
+     * networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack networking. They must not
+     * overlap with any Subnet IP ranges.
      */
     private List<String> serviceCidrs;
 
     /*
-     * IP families are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is
-     * IPv4. For dual-stack, the expected values are IPv4 and IPv6.
+     * The IP families used to specify IP versions available to the cluster. IP families are used to determine
+     * single-stack or dual-stack clusters. For single-stack, the expected value is IPv4. For dual-stack, the expected
+     * values are IPv4 and IPv6.
      */
     private List<IpFamily> ipFamilies;
 
@@ -171,7 +181,8 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Get the networkMode property: This cannot be specified if networkPlugin is anything other than 'azure'.
+     * Get the networkMode property: The network mode Azure CNI is configured with. This cannot be specified if
+     * networkPlugin is anything other than 'azure'.
      * 
      * @return the networkMode value.
      */
@@ -180,7 +191,8 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Set the networkMode property: This cannot be specified if networkPlugin is anything other than 'azure'.
+     * Set the networkMode property: The network mode Azure CNI is configured with. This cannot be specified if
+     * networkPlugin is anything other than 'azure'.
      * 
      * @param networkMode the networkMode value to set.
      * @return the ContainerServiceNetworkProfile object itself.
@@ -297,8 +309,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Get the outboundType property: This can only be set at cluster creation time and cannot be changed later. For
-     * more information see [egress outbound type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
+     * Get the outboundType property: The outbound (egress) routing method. This can only be set at cluster creation
+     * time and cannot be changed later. For more information see [egress outbound
+     * type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
      * 
      * @return the outboundType value.
      */
@@ -307,8 +320,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Set the outboundType property: This can only be set at cluster creation time and cannot be changed later. For
-     * more information see [egress outbound type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
+     * Set the outboundType property: The outbound (egress) routing method. This can only be set at cluster creation
+     * time and cannot be changed later. For more information see [egress outbound
+     * type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
      * 
      * @param outboundType the outboundType value to set.
      * @return the ContainerServiceNetworkProfile object itself.
@@ -319,9 +333,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Get the loadBalancerSku property: The default is 'standard'. See [Azure Load Balancer
-     * SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for more information about the differences between
-     * load balancer SKUs.
+     * Get the loadBalancerSku property: The load balancer sku for the managed cluster. The default is 'standard'. See
+     * [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for more information about the
+     * differences between load balancer SKUs.
      * 
      * @return the loadBalancerSku value.
      */
@@ -330,9 +344,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Set the loadBalancerSku property: The default is 'standard'. See [Azure Load Balancer
-     * SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for more information about the differences between
-     * load balancer SKUs.
+     * Set the loadBalancerSku property: The load balancer sku for the managed cluster. The default is 'standard'. See
+     * [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for more information about the
+     * differences between load balancer SKUs.
      * 
      * @param loadBalancerSku the loadBalancerSku value to set.
      * @return the ContainerServiceNetworkProfile object itself.
@@ -384,8 +398,32 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Get the podCidrs property: One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP
-     * family (IPv4/IPv6), is expected for dual-stack networking.
+     * Get the staticEgressGatewayProfile property: The profile for Static Egress Gateway addon. For more details about
+     * Static Egress Gateway, see https://aka.ms/aks/static-egress-gateway.
+     * 
+     * @return the staticEgressGatewayProfile value.
+     */
+    public ManagedClusterStaticEgressGatewayProfile staticEgressGatewayProfile() {
+        return this.staticEgressGatewayProfile;
+    }
+
+    /**
+     * Set the staticEgressGatewayProfile property: The profile for Static Egress Gateway addon. For more details about
+     * Static Egress Gateway, see https://aka.ms/aks/static-egress-gateway.
+     * 
+     * @param staticEgressGatewayProfile the staticEgressGatewayProfile value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile
+        withStaticEgressGatewayProfile(ManagedClusterStaticEgressGatewayProfile staticEgressGatewayProfile) {
+        this.staticEgressGatewayProfile = staticEgressGatewayProfile;
+        return this;
+    }
+
+    /**
+     * Get the podCidrs property: The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR is expected
+     * for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
+     * networking.
      * 
      * @return the podCidrs value.
      */
@@ -394,8 +432,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Set the podCidrs property: One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP
-     * family (IPv4/IPv6), is expected for dual-stack networking.
+     * Set the podCidrs property: The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR is expected
+     * for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
+     * networking.
      * 
      * @param podCidrs the podCidrs value to set.
      * @return the ContainerServiceNetworkProfile object itself.
@@ -406,8 +445,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Get the serviceCidrs property: One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP
-     * family (IPv4/IPv6), is expected for dual-stack networking. They must not overlap with any Subnet IP ranges.
+     * Get the serviceCidrs property: The CIDR notation IP ranges from which to assign service cluster IPs. One IPv4
+     * CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for
+     * dual-stack networking. They must not overlap with any Subnet IP ranges.
      * 
      * @return the serviceCidrs value.
      */
@@ -416,8 +456,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Set the serviceCidrs property: One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one for each IP
-     * family (IPv4/IPv6), is expected for dual-stack networking. They must not overlap with any Subnet IP ranges.
+     * Set the serviceCidrs property: The CIDR notation IP ranges from which to assign service cluster IPs. One IPv4
+     * CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for
+     * dual-stack networking. They must not overlap with any Subnet IP ranges.
      * 
      * @param serviceCidrs the serviceCidrs value to set.
      * @return the ContainerServiceNetworkProfile object itself.
@@ -428,8 +469,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Get the ipFamilies property: IP families are used to determine single-stack or dual-stack clusters. For
-     * single-stack, the expected value is IPv4. For dual-stack, the expected values are IPv4 and IPv6.
+     * Get the ipFamilies property: The IP families used to specify IP versions available to the cluster. IP families
+     * are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is IPv4. For
+     * dual-stack, the expected values are IPv4 and IPv6.
      * 
      * @return the ipFamilies value.
      */
@@ -438,8 +480,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Set the ipFamilies property: IP families are used to determine single-stack or dual-stack clusters. For
-     * single-stack, the expected value is IPv4. For dual-stack, the expected values are IPv4 and IPv6.
+     * Set the ipFamilies property: The IP families used to specify IP versions available to the cluster. IP families
+     * are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is IPv4. For
+     * dual-stack, the expected values are IPv4 and IPv6.
      * 
      * @param ipFamilies the ipFamilies value to set.
      * @return the ContainerServiceNetworkProfile object itself.
@@ -463,6 +506,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
         }
         if (natGatewayProfile() != null) {
             natGatewayProfile().validate();
+        }
+        if (staticEgressGatewayProfile() != null) {
+            staticEgressGatewayProfile().validate();
         }
     }
 
@@ -488,6 +534,7 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
             this.loadBalancerSku == null ? null : this.loadBalancerSku.toString());
         jsonWriter.writeJsonField("loadBalancerProfile", this.loadBalancerProfile);
         jsonWriter.writeJsonField("natGatewayProfile", this.natGatewayProfile);
+        jsonWriter.writeJsonField("staticEgressGatewayProfile", this.staticEgressGatewayProfile);
         jsonWriter.writeArrayField("podCidrs", this.podCidrs, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("serviceCidrs", this.serviceCidrs, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("ipFamilies", this.ipFamilies,
@@ -545,6 +592,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
                 } else if ("natGatewayProfile".equals(fieldName)) {
                     deserializedContainerServiceNetworkProfile.natGatewayProfile
                         = ManagedClusterNatGatewayProfile.fromJson(reader);
+                } else if ("staticEgressGatewayProfile".equals(fieldName)) {
+                    deserializedContainerServiceNetworkProfile.staticEgressGatewayProfile
+                        = ManagedClusterStaticEgressGatewayProfile.fromJson(reader);
                 } else if ("podCidrs".equals(fieldName)) {
                     List<String> podCidrs = reader.readArray(reader1 -> reader1.getString());
                     deserializedContainerServiceNetworkProfile.podCidrs = podCidrs;

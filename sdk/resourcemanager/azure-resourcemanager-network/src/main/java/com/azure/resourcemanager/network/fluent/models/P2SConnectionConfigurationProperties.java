@@ -135,6 +135,19 @@ public final class P2SConnectionConfigurationProperties
     }
 
     /**
+     * Set the configurationPolicyGroupAssociations property: List of Configuration Policy Groups that this
+     * P2SConnectionConfiguration is attached to.
+     * 
+     * @param configurationPolicyGroupAssociations the configurationPolicyGroupAssociations value to set.
+     * @return the P2SConnectionConfigurationProperties object itself.
+     */
+    public P2SConnectionConfigurationProperties
+        withConfigurationPolicyGroupAssociations(List<SubResource> configurationPolicyGroupAssociations) {
+        this.configurationPolicyGroupAssociations = configurationPolicyGroupAssociations;
+        return this;
+    }
+
+    /**
      * Get the previousConfigurationPolicyGroupAssociations property: List of previous Configuration Policy Groups that
      * this P2SConnectionConfiguration was attached to.
      * 
@@ -179,6 +192,8 @@ public final class P2SConnectionConfigurationProperties
         jsonWriter.writeJsonField("vpnClientAddressPool", this.vpnClientAddressPool);
         jsonWriter.writeJsonField("routingConfiguration", this.routingConfiguration);
         jsonWriter.writeBooleanField("enableInternetSecurity", this.enableInternetSecurity);
+        jsonWriter.writeArrayField("configurationPolicyGroupAssociations", this.configurationPolicyGroupAssociations,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 

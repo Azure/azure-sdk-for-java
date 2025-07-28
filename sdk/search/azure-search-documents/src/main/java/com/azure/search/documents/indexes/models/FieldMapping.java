@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
     /*
      * The name of the field in the data source.
      */
+    @Generated
     private final String sourceFieldName;
 
     /*
      * The name of the target field in the index. Same as the source field name by default.
      */
+    @Generated
     private String targetFieldName;
 
     /*
      * A function to apply to each source field value before indexing.
      */
+    @Generated
     private FieldMappingFunction mappingFunction;
 
     /**
@@ -38,6 +42,7 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
      * 
      * @param sourceFieldName the sourceFieldName value to set.
      */
+    @Generated
     public FieldMapping(String sourceFieldName) {
         this.sourceFieldName = sourceFieldName;
     }
@@ -47,6 +52,7 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
      * 
      * @return the sourceFieldName value.
      */
+    @Generated
     public String getSourceFieldName() {
         return this.sourceFieldName;
     }
@@ -57,6 +63,7 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
      * 
      * @return the targetFieldName value.
      */
+    @Generated
     public String getTargetFieldName() {
         return this.targetFieldName;
     }
@@ -68,6 +75,7 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
      * @param targetFieldName the targetFieldName value to set.
      * @return the FieldMapping object itself.
      */
+    @Generated
     public FieldMapping setTargetFieldName(String targetFieldName) {
         this.targetFieldName = targetFieldName;
         return this;
@@ -78,6 +86,7 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
      * 
      * @return the mappingFunction value.
      */
+    @Generated
     public FieldMappingFunction getMappingFunction() {
         return this.mappingFunction;
     }
@@ -88,6 +97,7 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
      * @param mappingFunction the mappingFunction value to set.
      * @return the FieldMapping object itself.
      */
+    @Generated
     public FieldMapping setMappingFunction(FieldMappingFunction mappingFunction) {
         this.mappingFunction = mappingFunction;
         return this;
@@ -96,6 +106,7 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -114,6 +125,7 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FieldMapping.
      */
+    @Generated
     public static FieldMapping fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean sourceFieldNameFound = false;

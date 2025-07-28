@@ -30,12 +30,15 @@ This document explains samples and how to use them.
   * List Load Tests
   * List Test Runs
   * List Load Test files
+  * List Test Profiles
+  * List Test Profile Runs
 
 ### Long Running Operations Samples
 
 * [LongRunningOperations.java][sample_longRunning] and [LongRunningOperationsAsync.java][sample_longRunningAsync] - Contains samples for following scenarios:
   * Upload and validate Load Test file
   * Start and monitor Test Run
+  * Start and monitor Test Profile Run
 
 ## Troubleshooting
 

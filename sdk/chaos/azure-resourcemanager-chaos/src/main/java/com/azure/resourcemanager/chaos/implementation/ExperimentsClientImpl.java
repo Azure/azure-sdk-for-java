@@ -76,7 +76,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ChaosManagementClien")
+    @ServiceInterface(name = "ChaosManagementClientExperiments")
     public interface ExperimentsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}")
@@ -2278,8 +2278,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment resources and a link for pagination along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of Experiment resources in a resource group along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExperimentInner>> listNextSinglePageAsync(String nextLink) {
@@ -2304,8 +2304,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment resources and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of Experiment resources in a resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentInner> listNextSinglePage(String nextLink) {
@@ -2333,8 +2332,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment resources and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of Experiment resources in a resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentInner> listNextSinglePage(String nextLink, Context context) {
@@ -2360,8 +2358,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment resources and a link for pagination along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of Experiment resources in a subscription along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExperimentInner>> listAllNextSinglePageAsync(String nextLink) {
@@ -2387,8 +2385,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment resources and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of Experiment resources in a subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentInner> listAllNextSinglePage(String nextLink) {
@@ -2416,8 +2413,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment resources and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of Experiment resources in a subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentInner> listAllNextSinglePage(String nextLink, Context context) {
@@ -2444,8 +2440,8 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment executions and a link for pagination along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of executions of an Experiment resource along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExperimentExecutionInner>> listAllExecutionsNextSinglePageAsync(String nextLink) {
@@ -2471,8 +2467,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment executions and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of executions of an Experiment resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentExecutionInner> listAllExecutionsNextSinglePage(String nextLink) {
@@ -2500,8 +2495,7 @@ public final class ExperimentsClientImpl implements ExperimentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Experiment executions and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of executions of an Experiment resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExperimentExecutionInner> listAllExecutionsNextSinglePage(String nextLink, Context context) {

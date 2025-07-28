@@ -9,8 +9,10 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datamigration.fluent.models.CommandPropertiesInner;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Properties for task that migrates SQL Server databases to Azure SQL Database Managed Instance.
@@ -20,7 +22,7 @@ public final class MigrateSqlServerSqlMITaskProperties extends ProjectTaskProper
     /*
      * Task type.
      */
-    private String taskType = "Migrate.SqlServer.AzureSqlDbMI";
+    private TaskType taskType = TaskType.MIGRATE_SQL_SERVER_AZURE_SQL_DB_MI;
 
     /*
      * Task input
@@ -31,6 +33,26 @@ public final class MigrateSqlServerSqlMITaskProperties extends ProjectTaskProper
      * Task output. This is ignored if submitted.
      */
     private List<MigrateSqlServerSqlMITaskOutput> output;
+
+    /*
+     * task id
+     */
+    private String taskId;
+
+    /*
+     * DateTime in UTC when the task was created
+     */
+    private String createdOn;
+
+    /*
+     * parent task id
+     */
+    private String parentTaskId;
+
+    /*
+     * whether the task can be cloned or not
+     */
+    private Boolean isCloneable;
 
     /**
      * Creates an instance of MigrateSqlServerSqlMITaskProperties class.
@@ -44,7 +66,7 @@ public final class MigrateSqlServerSqlMITaskProperties extends ProjectTaskProper
      * @return the taskType value.
      */
     @Override
-    public String taskType() {
+    public TaskType taskType() {
         return this.taskType;
     }
 
@@ -78,6 +100,95 @@ public final class MigrateSqlServerSqlMITaskProperties extends ProjectTaskProper
     }
 
     /**
+     * Get the taskId property: task id.
+     * 
+     * @return the taskId value.
+     */
+    public String taskId() {
+        return this.taskId;
+    }
+
+    /**
+     * Set the taskId property: task id.
+     * 
+     * @param taskId the taskId value to set.
+     * @return the MigrateSqlServerSqlMITaskProperties object itself.
+     */
+    public MigrateSqlServerSqlMITaskProperties withTaskId(String taskId) {
+        this.taskId = taskId;
+        return this;
+    }
+
+    /**
+     * Get the createdOn property: DateTime in UTC when the task was created.
+     * 
+     * @return the createdOn value.
+     */
+    public String createdOn() {
+        return this.createdOn;
+    }
+
+    /**
+     * Set the createdOn property: DateTime in UTC when the task was created.
+     * 
+     * @param createdOn the createdOn value to set.
+     * @return the MigrateSqlServerSqlMITaskProperties object itself.
+     */
+    public MigrateSqlServerSqlMITaskProperties withCreatedOn(String createdOn) {
+        this.createdOn = createdOn;
+        return this;
+    }
+
+    /**
+     * Get the parentTaskId property: parent task id.
+     * 
+     * @return the parentTaskId value.
+     */
+    public String parentTaskId() {
+        return this.parentTaskId;
+    }
+
+    /**
+     * Set the parentTaskId property: parent task id.
+     * 
+     * @param parentTaskId the parentTaskId value to set.
+     * @return the MigrateSqlServerSqlMITaskProperties object itself.
+     */
+    public MigrateSqlServerSqlMITaskProperties withParentTaskId(String parentTaskId) {
+        this.parentTaskId = parentTaskId;
+        return this;
+    }
+
+    /**
+     * Get the isCloneable property: whether the task can be cloned or not.
+     * 
+     * @return the isCloneable value.
+     */
+    public Boolean isCloneable() {
+        return this.isCloneable;
+    }
+
+    /**
+     * Set the isCloneable property: whether the task can be cloned or not.
+     * 
+     * @param isCloneable the isCloneable value to set.
+     * @return the MigrateSqlServerSqlMITaskProperties object itself.
+     */
+    public MigrateSqlServerSqlMITaskProperties withIsCloneable(Boolean isCloneable) {
+        this.isCloneable = isCloneable;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MigrateSqlServerSqlMITaskProperties withClientData(Map<String, String> clientData) {
+        super.withClientData(clientData);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -101,8 +212,13 @@ public final class MigrateSqlServerSqlMITaskProperties extends ProjectTaskProper
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("taskType", this.taskType);
+        jsonWriter.writeMapField("clientData", clientData(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("taskType", this.taskType == null ? null : this.taskType.toString());
         jsonWriter.writeJsonField("input", this.input);
+        jsonWriter.writeStringField("taskId", this.taskId);
+        jsonWriter.writeStringField("createdOn", this.createdOn);
+        jsonWriter.writeStringField("parentTaskId", this.parentTaskId);
+        jsonWriter.writeBooleanField("isCloneable", this.isCloneable);
         return jsonWriter.writeEndObject();
     }
 
@@ -128,10 +244,14 @@ public final class MigrateSqlServerSqlMITaskProperties extends ProjectTaskProper
                 } else if ("state".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlMITaskProperties.withState(TaskState.fromString(reader.getString()));
                 } else if ("commands".equals(fieldName)) {
-                    List<CommandProperties> commands = reader.readArray(reader1 -> CommandProperties.fromJson(reader1));
+                    List<CommandPropertiesInner> commands
+                        = reader.readArray(reader1 -> CommandPropertiesInner.fromJson(reader1));
                     deserializedMigrateSqlServerSqlMITaskProperties.withCommands(commands);
+                } else if ("clientData".equals(fieldName)) {
+                    Map<String, String> clientData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMigrateSqlServerSqlMITaskProperties.withClientData(clientData);
                 } else if ("taskType".equals(fieldName)) {
-                    deserializedMigrateSqlServerSqlMITaskProperties.taskType = reader.getString();
+                    deserializedMigrateSqlServerSqlMITaskProperties.taskType = TaskType.fromString(reader.getString());
                 } else if ("input".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlMITaskProperties.input
                         = MigrateSqlServerSqlMITaskInput.fromJson(reader);
@@ -139,6 +259,15 @@ public final class MigrateSqlServerSqlMITaskProperties extends ProjectTaskProper
                     List<MigrateSqlServerSqlMITaskOutput> output
                         = reader.readArray(reader1 -> MigrateSqlServerSqlMITaskOutput.fromJson(reader1));
                     deserializedMigrateSqlServerSqlMITaskProperties.output = output;
+                } else if ("taskId".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskProperties.taskId = reader.getString();
+                } else if ("createdOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskProperties.createdOn = reader.getString();
+                } else if ("parentTaskId".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskProperties.parentTaskId = reader.getString();
+                } else if ("isCloneable".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskProperties.isCloneable
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

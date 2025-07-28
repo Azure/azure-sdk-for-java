@@ -38,7 +38,7 @@ For your convenience, we have provided a multi-service package that includes som
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.50.0</version>
+  <version>2.53.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -75,12 +75,12 @@ The services available via `azure-resourcemanager` are listed as below:
 
 In the case where you are interested in certain service above or the service not included in the multi-service package, you can choose to use the single-service package for each service. Those packages follow the same naming patterns and design principals. For example, the package for Media Services has the following artifact information.
 
-[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-mediaservices;dependency})
+[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-resourcegraph;dependency})
 ```xml
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
-  <artifactId>azure-resourcemanager-mediaservices</artifactId>
-  <version>2.3.0</version>
+  <artifactId>azure-resourcemanager-resourcegraph</artifactId>
+  <version>1.1.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resourcegraph;dependency} -->
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -100,7 +100,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.15.4</version>
+  <version>1.16.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -112,7 +112,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
-  <version>1.15.11</version>
+  <version>1.15.13</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -300,7 +300,7 @@ For example, here is sample maven dependency for Compute package.
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute</artifactId>
-  <version>2.50.0</version>
+  <version>2.53.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

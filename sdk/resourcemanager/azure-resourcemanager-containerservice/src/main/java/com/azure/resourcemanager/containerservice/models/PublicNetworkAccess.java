@@ -8,9 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * PublicNetworkAccess of the managedCluster
- * 
- * Allow or deny public network access for AKS.
+ * PublicNetworkAccess of the managedCluster. Allow or deny public network access for AKS.
  */
 public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetworkAccess> {
     /**

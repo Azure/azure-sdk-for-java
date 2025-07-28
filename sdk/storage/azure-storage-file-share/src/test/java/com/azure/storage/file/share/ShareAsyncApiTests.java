@@ -6,8 +6,10 @@ package com.azure.storage.file.share;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
@@ -45,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static com.azure.storage.common.implementation.StorageImplUtils.INVALID_VERSION_HEADER_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -315,6 +318,17 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(client.exists())
             .assertNext(exists -> assertNotEquals(Boolean.TRUE, exists))
             .verifyComplete();
+    }
+
+    @Test
+    public void deleteIfExistsSnapshotNotFound() {
+        String snapshot = "2025-02-04T10:17:47.0000000Z";
+        ShareAsyncClient snapshotClient = shareBuilderHelper(shareName).snapshot(snapshot).buildAsyncClient();
+
+        StepVerifier.create(snapshotClient.deleteIfExistsWithResponse(null)).assertNext(response -> {
+            assertFalse(response.getValue());
+            FileShareTestHelper.assertResponseStatusCode(response, 404);
+        }).verifyComplete();
     }
 
     @Test
@@ -992,8 +1006,10 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
+    public void audienceErrorBearerChallengeRetry() {
         ShareAsyncClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder()).shareName(shareName)
             .shareTokenIntent(ShareTokenIntent.BACKUP)
             .audience(ShareAudience.createShareServiceAccountAudience("badaudience"))
@@ -1004,10 +1020,8 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             + "188441444-3053964)S:NO_ACCESS_CONTROL";
 
         StepVerifier.create(primaryShareAsyncClient.create().then(aadShareClient.createPermission(permission)))
-            .verifyErrorSatisfies(r -> {
-                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
-                assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
-            });
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
     }
 
     @Test
@@ -1179,5 +1193,21 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             assertNotNull(r.getNextAllowedProvisionedIopsDowngradeTime());
             assertNotNull(r.getNextAllowedProvisionedBandwidthDowngradeTime());
         }).verifyComplete();
+    }
+
+    @Test
+    public void invalidServiceVersion() {
+        ShareServiceAsyncClient serviceAsyncClient
+            = instrument(new ShareServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint())
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .addPolicy(new InvalidServiceVersionPipelinePolicy())).buildAsyncClient();
+
+        ShareAsyncClient shareAsyncClient = serviceAsyncClient.getShareAsyncClient(generateShareName());
+
+        StepVerifier.create(shareAsyncClient.createIfNotExists()).verifyErrorSatisfies(ex -> {
+            ShareStorageException exception = assertInstanceOf(ShareStorageException.class, ex);
+            assertEquals(400, exception.getStatusCode());
+            assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
+        });
     }
 }

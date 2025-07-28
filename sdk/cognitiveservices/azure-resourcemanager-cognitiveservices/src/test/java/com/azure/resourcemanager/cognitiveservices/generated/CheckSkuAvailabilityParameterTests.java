@@ -14,22 +14,22 @@ public final class CheckSkuAvailabilityParameterTests {
     public void testDeserialize() throws Exception {
         CheckSkuAvailabilityParameter model = BinaryData
             .fromString(
-                "{\"skus\":[\"notyfjfcnjbkcn\",\"dhbt\",\"kphywpnvjto\"],\"kind\":\"nermcl\",\"type\":\"plpho\"}")
+                "{\"skus\":[\"cuh\",\"wtctyqi\",\"lbbovplw\",\"bhvgy\"],\"kind\":\"gu\",\"type\":\"svmkfssxquk\"}")
             .toObject(CheckSkuAvailabilityParameter.class);
-        Assertions.assertEquals("notyfjfcnjbkcn", model.skus().get(0));
-        Assertions.assertEquals("nermcl", model.kind());
-        Assertions.assertEquals("plpho", model.type());
+        Assertions.assertEquals("cuh", model.skus().get(0));
+        Assertions.assertEquals("gu", model.kind());
+        Assertions.assertEquals("svmkfssxquk", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CheckSkuAvailabilityParameter model
-            = new CheckSkuAvailabilityParameter().withSkus(Arrays.asList("notyfjfcnjbkcn", "dhbt", "kphywpnvjto"))
-                .withKind("nermcl")
-                .withType("plpho");
+            = new CheckSkuAvailabilityParameter().withSkus(Arrays.asList("cuh", "wtctyqi", "lbbovplw", "bhvgy"))
+                .withKind("gu")
+                .withType("svmkfssxquk");
         model = BinaryData.fromObject(model).toObject(CheckSkuAvailabilityParameter.class);
-        Assertions.assertEquals("notyfjfcnjbkcn", model.skus().get(0));
-        Assertions.assertEquals("nermcl", model.kind());
-        Assertions.assertEquals("plpho", model.type());
+        Assertions.assertEquals("cuh", model.skus().get(0));
+        Assertions.assertEquals("gu", model.kind());
+        Assertions.assertEquals("svmkfssxquk", model.type());
     }
 }

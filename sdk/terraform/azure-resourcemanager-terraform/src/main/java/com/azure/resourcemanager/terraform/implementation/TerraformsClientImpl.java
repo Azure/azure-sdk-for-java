@@ -44,25 +44,25 @@ public final class TerraformsClientImpl implements TerraformsClient {
     /**
      * The service client containing this operation class.
      */
-    private final AzureTerraformClientImpl client;
+    private final AzureTerraformManagementClientImpl client;
 
     /**
      * Initializes an instance of TerraformsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    TerraformsClientImpl(AzureTerraformClientImpl client) {
+    TerraformsClientImpl(AzureTerraformManagementClientImpl client) {
         this.service
             = RestProxy.create(TerraformsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureTerraformClientTerraforms to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for AzureTerraformManagementClientTerraforms to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AzureTerraformClient")
+    @ServiceInterface(name = "AzureTerraformManagementClientTerraforms")
     public interface TerraformsService {
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.AzureTerraform/exportTerraform")
         @ExpectedResponses({ 202 })

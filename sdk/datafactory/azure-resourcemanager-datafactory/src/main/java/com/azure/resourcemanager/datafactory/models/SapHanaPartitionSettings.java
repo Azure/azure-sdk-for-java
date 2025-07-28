@@ -64,7 +64,9 @@ public final class SapHanaPartitionSettings implements JsonSerializable<SapHanaP
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
+        if (this.partitionColumnName != null) {
+            jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
+        }
         return jsonWriter.writeEndObject();
     }
 

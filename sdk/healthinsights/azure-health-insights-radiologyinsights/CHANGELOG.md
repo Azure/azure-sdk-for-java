@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,30 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.1 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
+## 1.1.0 (2025-06-02)
+
+### Features Added
+
+- Class `QualityMeasureInference` added
+- Class `GuidanceInference` added
+- Class `ScoringAndAssessmentInference` added
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.11`.
+- Upgraded `azure-core` from `1.53.0` to version `1.55.3`.
 
 ## 1.0.0 (2024-10-09)
 

@@ -10,9 +10,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class AgentListThreadSample {
 
     public static void main(String[] args) {
-        PersistentAgentsAdministrationClientBuilder clientBuilder = new PersistentAgentsAdministrationClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        PersistentAgentsClientBuilder clientBuilder = new PersistentAgentsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build());
-        ThreadsClient threadsClient = clientBuilder.buildThreadsClient();
+        PersistentAgentsClient agentsClient = clientBuilder.buildClient();
+        ThreadsClient threadsClient = agentsClient.getThreadsClient();
 
         PagedIterable<PersistentAgentThread> threads = threadsClient.listThreads();
         for (PersistentAgentThread thread : threads) {

@@ -32,7 +32,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.10</version> <!-- {x-version-update;io.clientcore:core;current} -->
+      <version>1.0.0-beta.12</version> <!-- {x-version-update;io.clientcore:core;current} -->
     </dependency>
     <dependency>
       <groupId>io.clientcore</groupId>

@@ -24,7 +24,7 @@ public final class NetworkRuleSetTests {
         Assertions.assertEquals("uuvmkjozkrwfnd", model.ipRules().get(0).value());
         Assertions.assertEquals("jpslwejd", model.virtualNetworkRules().get(0).id());
         Assertions.assertEquals("wryoqpsoacc", model.virtualNetworkRules().get(0).state());
-        Assertions.assertEquals(true, model.virtualNetworkRules().get(0).ignoreMissingVnetServiceEndpoint());
+        Assertions.assertTrue(model.virtualNetworkRules().get(0).ignoreMissingVnetServiceEndpoint());
     }
 
     @org.junit.jupiter.api.Test
@@ -43,6 +43,6 @@ public final class NetworkRuleSetTests {
         Assertions.assertEquals("uuvmkjozkrwfnd", model.ipRules().get(0).value());
         Assertions.assertEquals("jpslwejd", model.virtualNetworkRules().get(0).id());
         Assertions.assertEquals("wryoqpsoacc", model.virtualNetworkRules().get(0).state());
-        Assertions.assertEquals(true, model.virtualNetworkRules().get(0).ignoreMissingVnetServiceEndpoint());
+        Assertions.assertTrue(model.virtualNetworkRules().get(0).ignoreMissingVnetServiceEndpoint());
     }
 }

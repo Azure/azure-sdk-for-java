@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class RouteInstructionsType extends ExpandableStringEnum<RouteInstr
     /**
      * Returns raw instruction data without human-readable messages.
      */
+    @Generated
     public static final RouteInstructionsType CODED = fromString("coded");
 
     /**
      * Returns raw instructions data with human-readable messages in plain text.
      */
+    @Generated
     public static final RouteInstructionsType TEXT = fromString("text");
 
     /**
@@ -34,6 +37,7 @@ public final class RouteInstructionsType extends ExpandableStringEnum<RouteInstr
      * towards &lt;signpostText&gt;Den Haag&lt;/signpostText&gt;
      * ```.
      */
+    @Generated
     public static final RouteInstructionsType TAGGED = fromString("tagged");
 
     /**
@@ -41,6 +45,7 @@ public final class RouteInstructionsType extends ExpandableStringEnum<RouteInstr
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RouteInstructionsType() {
     }
@@ -51,6 +56,7 @@ public final class RouteInstructionsType extends ExpandableStringEnum<RouteInstr
      * @param name a name to look for.
      * @return the corresponding RouteInstructionsType.
      */
+    @Generated
     public static RouteInstructionsType fromString(String name) {
         return fromString(name, RouteInstructionsType.class);
     }
@@ -60,6 +66,7 @@ public final class RouteInstructionsType extends ExpandableStringEnum<RouteInstr
      * 
      * @return known RouteInstructionsType values.
      */
+    @Generated
     public static Collection<RouteInstructionsType> values() {
         return values(RouteInstructionsType.class);
     }

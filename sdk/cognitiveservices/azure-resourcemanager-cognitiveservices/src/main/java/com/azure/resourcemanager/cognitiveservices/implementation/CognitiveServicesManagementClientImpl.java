@@ -15,14 +15,19 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.cognitiveservices.fluent.AccountCapabilityHostsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.AccountConnectionsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.AccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CognitiveServicesManagementClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentPlansClient;
@@ -38,6 +43,9 @@ import com.azure.resourcemanager.cognitiveservices.fluent.NetworkSecurityPerimet
 import com.azure.resourcemanager.cognitiveservices.fluent.OperationsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.PrivateLinkResourcesClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.ProjectCapabilityHostsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.ProjectConnectionsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.ProjectsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiBlocklistItemsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiBlocklistsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiContentFiltersClient;
@@ -438,6 +446,76 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
     }
 
     /**
+     * The ProjectsClient object to access its operations.
+     */
+    private final ProjectsClient projects;
+
+    /**
+     * Gets the ProjectsClient object to access its operations.
+     * 
+     * @return the ProjectsClient object.
+     */
+    public ProjectsClient getProjects() {
+        return this.projects;
+    }
+
+    /**
+     * The AccountConnectionsClient object to access its operations.
+     */
+    private final AccountConnectionsClient accountConnections;
+
+    /**
+     * Gets the AccountConnectionsClient object to access its operations.
+     * 
+     * @return the AccountConnectionsClient object.
+     */
+    public AccountConnectionsClient getAccountConnections() {
+        return this.accountConnections;
+    }
+
+    /**
+     * The ProjectConnectionsClient object to access its operations.
+     */
+    private final ProjectConnectionsClient projectConnections;
+
+    /**
+     * Gets the ProjectConnectionsClient object to access its operations.
+     * 
+     * @return the ProjectConnectionsClient object.
+     */
+    public ProjectConnectionsClient getProjectConnections() {
+        return this.projectConnections;
+    }
+
+    /**
+     * The AccountCapabilityHostsClient object to access its operations.
+     */
+    private final AccountCapabilityHostsClient accountCapabilityHosts;
+
+    /**
+     * Gets the AccountCapabilityHostsClient object to access its operations.
+     * 
+     * @return the AccountCapabilityHostsClient object.
+     */
+    public AccountCapabilityHostsClient getAccountCapabilityHosts() {
+        return this.accountCapabilityHosts;
+    }
+
+    /**
+     * The ProjectCapabilityHostsClient object to access its operations.
+     */
+    private final ProjectCapabilityHostsClient projectCapabilityHosts;
+
+    /**
+     * Gets the ProjectCapabilityHostsClient object to access its operations.
+     * 
+     * @return the ProjectCapabilityHostsClient object.
+     */
+    public ProjectCapabilityHostsClient getProjectCapabilityHosts() {
+        return this.projectCapabilityHosts;
+    }
+
+    /**
      * Initializes an instance of CognitiveServicesManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -454,7 +532,7 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-10-01";
+        this.apiVersion = "2025-06-01";
         this.accounts = new AccountsClientImpl(this);
         this.deletedAccounts = new DeletedAccountsClientImpl(this);
         this.resourceSkus = new ResourceSkusClientImpl(this);
@@ -476,6 +554,11 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.raiContentFilters = new RaiContentFiltersClientImpl(this);
         this.networkSecurityPerimeterConfigurations = new NetworkSecurityPerimeterConfigurationsClientImpl(this);
         this.defenderForAISettings = new DefenderForAISettingsClientImpl(this);
+        this.projects = new ProjectsClientImpl(this);
+        this.accountConnections = new AccountConnectionsClientImpl(this);
+        this.projectConnections = new ProjectConnectionsClientImpl(this);
+        this.accountCapabilityHosts = new AccountCapabilityHostsClientImpl(this);
+        this.projectCapabilityHosts = new ProjectCapabilityHostsClientImpl(this);
     }
 
     /**
@@ -513,6 +596,23 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

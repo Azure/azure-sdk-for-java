@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class DocumentKeyValuePair implements JsonSerializable<DocumentKeyV
     /*
      * Field label of the key-value pair.
      */
+    @Generated
     private final DocumentKeyValueElement key;
 
     /*
      * Field value of the key-value pair.
      */
+    @Generated
     private DocumentKeyValueElement value;
 
     /*
      * Confidence of correctly extracting the key-value pair.
      */
+    @Generated
     private final float confidence;
 
     /**
@@ -39,6 +43,7 @@ public final class DocumentKeyValuePair implements JsonSerializable<DocumentKeyV
      * @param key the key value to set.
      * @param confidence the confidence value to set.
      */
+    @Generated
     public DocumentKeyValuePair(DocumentKeyValueElement key, float confidence) {
         this.key = key;
         this.confidence = confidence;
@@ -49,6 +54,7 @@ public final class DocumentKeyValuePair implements JsonSerializable<DocumentKeyV
      * 
      * @return the key value.
      */
+    @Generated
     public DocumentKeyValueElement getKey() {
         return this.key;
     }
@@ -58,6 +64,7 @@ public final class DocumentKeyValuePair implements JsonSerializable<DocumentKeyV
      * 
      * @return the value value.
      */
+    @Generated
     public DocumentKeyValueElement getValue() {
         return this.value;
     }
@@ -68,6 +75,7 @@ public final class DocumentKeyValuePair implements JsonSerializable<DocumentKeyV
      * @param value the value value to set.
      * @return the DocumentKeyValuePair object itself.
      */
+    @Generated
     public DocumentKeyValuePair setValue(DocumentKeyValueElement value) {
         this.value = value;
         return this;
@@ -78,6 +86,7 @@ public final class DocumentKeyValuePair implements JsonSerializable<DocumentKeyV
      * 
      * @return the confidence value.
      */
+    @Generated
     public float getConfidence() {
         return this.confidence;
     }
@@ -85,6 +94,7 @@ public final class DocumentKeyValuePair implements JsonSerializable<DocumentKeyV
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -103,6 +113,7 @@ public final class DocumentKeyValuePair implements JsonSerializable<DocumentKeyV
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentKeyValuePair.
      */
+    @Generated
     public static DocumentKeyValuePair fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean keyFound = false;

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -35,6 +36,11 @@ public final class GalleryImageInner extends Resource {
     private GalleryImageProperties innerProperties;
 
     /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
      * The type of the resource.
      */
     private String type;
@@ -62,6 +68,15 @@ public final class GalleryImageInner extends Resource {
      */
     private GalleryImageProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -433,7 +448,7 @@ public final class GalleryImageInner extends Resource {
     }
 
     /**
-     * Get the architecture property: CPU architecture supported by an OS disk.
+     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
      * 
      * @return the architecture value.
      */
@@ -442,7 +457,7 @@ public final class GalleryImageInner extends Resource {
     }
 
     /**
-     * Set the architecture property: CPU architecture supported by an OS disk.
+     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
      * 
      * @param architecture the architecture value to set.
      * @return the GalleryImageInner object itself.
@@ -530,6 +545,8 @@ public final class GalleryImageInner extends Resource {
                     deserializedGalleryImageInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedGalleryImageInner.innerProperties = GalleryImageProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedGalleryImageInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

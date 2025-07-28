@@ -16,6 +16,7 @@
     "**/checkstyle-suppressions.xml",
     "**/spotbugs-exclude.xml",
     "**/sdk/**/target/**",
+    "**/sdk/**/target/**",
     "**/session-records/**",
     "**/sdk/**/**/assets.json",
     "**/sdk/**/*-matrix.json",
@@ -139,6 +140,7 @@
     "sdk/mixedreality/azure-mixedreality-authentication/**",
     "sdk/maps/azure-maps-search/**",
     "sdk/monitor/azure-monitor-query/**",
+    "sdk/monitor/azure-monitor-query-logs/**",
     "sdk/monitor/azure-monitor-opentelemetry-exporter/**",
     "sdk/monitor/azure-monitor-opentelemetry-autoconfigure/**",
     "sdk/monitor/test-resources.json",
@@ -279,6 +281,7 @@
     "endtoend",
     "entra",
     "Entra",
+    "ESRP",
     "Esto",
     "etag",
     "euap",
@@ -298,6 +301,7 @@
     "hdfs",
     "hdinsight",
     "healthdataaiservices",
+    "HKLM",
     "hudha",
     "hvac",
     "hybridkubernetes",
@@ -362,6 +366,7 @@
     "Onco",
     "onenote",
     "openai",
+    "ossrh",
     "passthrough",
     "Pnative",
     "premf",
@@ -417,6 +422,7 @@
     "vmware",
     "vnet",
     "VNET",
+    "vnext",
     "westcentralus",
     "westus",
     "WINDOWSVMIMAGE",
@@ -477,7 +483,9 @@
         "TGIANT",
         "tiktoken",
         "AITOKENS",
-        "Matryoshka"
+        "Matryoshka",
+        "OMINI",
+        "resyncing"
       ]
     },
     {
@@ -578,7 +586,23 @@
       "words": [
         "pericholecystic",
         "craniocaudally",
-        "angiomyolipomas"
+        "angiomyolipomas",
+        "acrad",
+        "mednax",
+        "birads",
+        "frax",
+        "ascvd",
+        "tyrer",
+        "cusick",
+        "agatston",
+        "kellgren",
+        "tonnis",
+	"CEUS",
+	"HNPCC",
+	"hilar",
+	"Fleischner",
+	"CTCHWO",
+	"USTHY"
       ]
     },
     {
@@ -921,7 +945,8 @@
         "Dokuka",
         "Netifi",
         "Zaugg",
-        "lrgrwrks"
+        "lrgrwrks",
+        "Brotli"
       ]
     },
     {
@@ -1117,6 +1142,7 @@
         "rabbitmq",
         "reactivex",
         "remoting",
+        "rocketmq",
         "rocksdb",
         "rsocket",
         "rxtx",
@@ -1159,6 +1185,7 @@
         "yasson",
         "yugabytedb",
         "zaxxer",
+        "zjsonpatch",
         "LINUXVMIMAGE",
         "LINUXPOOL",
         "OSVmImage"
@@ -1384,6 +1411,75 @@
       "filename": "sdk/ai/azure-ai-agents-persistent/**",
       "words": [
         "AISEARCH"
+      ]
+    },
+    {
+      "filename": "sdk/keyvault-v2/*",
+      "words": [
+        "azsdkengsys",
+        "baos",
+        "centralus",
+        "ekus",
+        "FIPS",
+        "IMDS",
+        "inprogress",
+        "mhsm",
+        "myaccount",
+        "myalias",
+        "mydomain",
+        "myissuer",
+        "northcentralus",
+        "OAEP",
+        "RLSIGN",
+        "RSAES",
+        "RSNULL",
+        "SECG",
+        "SECP",
+        "southcentralus",
+        "uksouth",
+        "upns",
+        "vcolin" // TODO: Remove after all TODOs are removed from the codebase
+      ]
+    },
+    {
+      "filename": "sdk/storage-v2/azure-storage-blob/**",
+      "words": [
+        "clientime",
+        "ctxt",
+        "etags",
+        "HTBB",
+        "IPMISMATCH",
+        "myaccountname",
+        "myblob",
+        "myblobmetadata",
+        "myblobsforlisting",
+        "myblockblob",
+        "mycontainer",
+        "mycontainermetadata",
+        "mycontainersforlisting",
+        "myimage",
+        "myjavacontainerbasic",
+        "myjavacontainerbufferedupload",
+        "myjavacontainerbuffereduploadlength",
+        "myjavacontainerparallelupload",
+        "RAGRS",
+        "saoid",
+        "IPMISMATCH"
+      ]
+    },
+    {
+      "filename": "sdk/onlineexperimentation/**",
+      "words": [
+        "momo",
+        "RESOURCEID"
+
+      ]
+    },
+    {
+      "filename": "sdk/tools/linting-extensions/**",
+      "words": [
+        "elist",
+        "slist"
       ]
     }
   ],

@@ -373,19 +373,23 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertEquals(ByteBuffer.wrap(outputStream.toByteArray()), DATA.getDefaultData());
     }
 
-    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
     public void stageBlockFromUrlSourceErrorAndStatusCode() {
         BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-    
+
         String blockID = getBlockID();
-    
-        BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.stageBlockFromUrl(blockID, blockBlobClient.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)));
-    
-        assertTrue(e.getStatusCode() == 409);
-        assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
-        assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
-    }*/
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.stageBlockFromUrl(blockID,
+            blockBlobClient.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)));
+
+        assertTrue(e.getStatusCode() == 401);
+        assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
+        assertTrue(e.getServiceMessage()
+            .contains(
+                "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
+
+    }
 
     @Test
     public void stageBlockFromUrlMin() {
@@ -1306,42 +1310,6 @@ public class BlockBlobApiTests extends BlobTestBase {
         return Stream.of(Arguments.of(11110, 0), Arguments.of(2 * Constants.MB + 11, 2));
     }
 
-    /*
-    def "Upload NRF progress"() {
-        setup:
-        def data = getRandomData(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 1)
-        def numBlocks = data.remaining() / BlockBlobURL.MAX_STAGE_BLOCK_BYTES
-        long prevCount = 0
-        def mockReceiver = Mock(IProgressReceiver)
-    
-    
-        when:
-        TransferManager.uploadFromNonReplayableFlowable(Flowable.just(data), bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, 10,
-            new TransferManagerUploadToBlockBlobOptions(mockReceiver, null, null, null, 20)).blockingGet()
-        data.position(0)
-    
-        then:
-        // We should receive exactly one notification of the completed progress.
-        1 * mockReceiver.reportProgress(data.remaining()) */
-
-    /*
-    We should receive at least one notification reporting an intermediary value per block, but possibly more
-    notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
-    will be the total size as above. Finally, we assert that the number reported monotonically increases.
-     */
-    /*(numBlocks - 1.._) * mockReceiver.reportProgress(!data.remaining()) >> { long bytesTransferred ->
-        if (!(bytesTransferred > prevCount)) {
-            throw new IllegalArgumentException("Reported progress should monotonically increase")
-        } else {
-            prevCount = bytesTransferred
-        }
-    }
-    
-    // We should receive no notifications that report more progress than the size of the file.
-    0 * mockReceiver.reportProgress({ it > data.remaining() })
-    notThrown(IllegalArgumentException)
-    }*/
-
     @LiveOnly
     @Test
     public void bufferedUploadOverwrite() throws IOException {
@@ -1449,17 +1417,20 @@ public class BlockBlobApiTests extends BlobTestBase {
         TestUtils.assertArraysEqual(DATA.getDefaultBytes(), os.toByteArray());
     }
 
-    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
     public void uploadFromUrlSourceErrorAndStatusCode() {
         BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-    
-        BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.uploadFromUrl(blockBlobClient.getBlobUrl()));
-    
-        assertTrue(e.getStatusCode() == 409);
-        assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
-        assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
-    }*/
+
+        BlobStorageException e
+            = assertThrows(BlobStorageException.class, () -> destBlob.uploadFromUrl(blockBlobClient.getBlobUrl()));
+
+        assertTrue(e.getStatusCode() == 401);
+        assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
+        assertTrue(e.getServiceMessage()
+            .contains(
+                "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
+    }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
@@ -1581,7 +1552,7 @@ public class BlockBlobApiTests extends BlobTestBase {
     private static Stream<Arguments> uploadFromUrlSourceRequestConditionsSupplier() {
         return Stream.of(
             Arguments.of(new BlobRequestConditions().setIfMatch("dummy"), BlobErrorCode.SOURCE_CONDITION_NOT_MET),
-            Arguments.of(new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusSeconds(20)),
+            Arguments.of(new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusDays(10)),
                 BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE),
             Arguments.of(new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1)),
                 BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE));

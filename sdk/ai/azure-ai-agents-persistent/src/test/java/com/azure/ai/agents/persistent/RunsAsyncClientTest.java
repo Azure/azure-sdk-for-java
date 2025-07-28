@@ -25,8 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RunsAsyncClientTest extends ClientTestBase {
 
-    private PersistentAgentsAdministrationClientBuilder clientBuilder;
-    private PersistentAgentsAdministrationAsyncClient agentsAsyncClient;
+    private PersistentAgentsClientBuilder clientBuilder;
+    private PersistentAgentsAdministrationAsyncClient administrationAsyncClient;
     private ThreadsAsyncClient threadsAsyncClient;
     private RunsAsyncClient runsAsyncClient;
     private PersistentAgent agent;
@@ -34,14 +34,15 @@ public class RunsAsyncClientTest extends ClientTestBase {
 
     private void createTestAgent(HttpClient httpClient) {
         clientBuilder = getClientBuilder(httpClient);
-        agentsAsyncClient = clientBuilder.buildAsyncClient();
-        threadsAsyncClient = clientBuilder.buildThreadsAsyncClient();
-        runsAsyncClient = clientBuilder.buildRunsAsyncClient();
+        PersistentAgentsAsyncClient agentsAsyncClient = clientBuilder.buildAsyncClient();
+        administrationAsyncClient = agentsAsyncClient.getPersistentAgentsAdministrationAsyncClient();
+        threadsAsyncClient = agentsAsyncClient.getThreadsAsyncClient();
+        runsAsyncClient = agentsAsyncClient.getRunsAsyncClient();
 
         CreateAgentOptions options
             = new CreateAgentOptions("gpt-4o-mini").setName("TestAgent").setInstructions("You are a helpful agent");
 
-        StepVerifier.create(agentsAsyncClient.createAgent(options)).assertNext(createdAgent -> {
+        StepVerifier.create(administrationAsyncClient.createAgent(options)).assertNext(createdAgent -> {
             assertNotNull(createdAgent, "Persistent agent should not be null");
             agent = createdAgent;
         }).verifyComplete();
@@ -55,19 +56,10 @@ public class RunsAsyncClientTest extends ClientTestBase {
     private Mono<ThreadRun> createRunAndWaitForCompletion() {
         CreateRunOptions createRunOptions = new CreateRunOptions(thread.getId(), agent.getId());
 
-        return runsAsyncClient.createRun(createRunOptions).flatMap(run -> waitForRunCompletionAsync(run));
-    }
+        Mono<ThreadRun> completedRun = runsAsyncClient.createRun(createRunOptions)
+            .flatMap(run -> waitForRunCompletionAsync(run, runsAsyncClient));
 
-    private Mono<ThreadRun> waitForRunCompletionAsync(ThreadRun run) {
-        // Poll run status until it completes or fails
-        return Mono.defer(() -> runsAsyncClient.getRun(thread.getId(), run.getId())).flatMap(updatedRun -> {
-            String status = updatedRun.getStatus().toString();
-            if ("completed".equals(status) || "failed".equals(status) || "cancelled".equals(status)) {
-                return Mono.just(updatedRun);
-            } else {
-                return Mono.delay(Duration.ofSeconds(2)).then(waitForRunCompletionAsync(updatedRun));
-            }
-        });
+        return completedRun;
     }
 
     @Disabled
@@ -190,8 +182,8 @@ public class RunsAsyncClientTest extends ClientTestBase {
         if (thread != null && threadsAsyncClient != null) {
             threadsAsyncClient.deleteThread(thread.getId()).block(Duration.ofSeconds(30));
         }
-        if (agent != null && agentsAsyncClient != null) {
-            agentsAsyncClient.deleteAgent(agent.getId()).block(Duration.ofSeconds(30));
+        if (agent != null && administrationAsyncClient != null) {
+            administrationAsyncClient.deleteAgent(agent.getId()).block(Duration.ofSeconds(30));
         }
     }
 }

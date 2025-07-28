@@ -10,7 +10,6 @@
 
   <modules>
     <module>common/perf-test-core</module>
-    <module>eng/code-quality-reports</module>
     <module>sdk/advisor</module>
     <module>sdk/agrifood</module>
     <module>sdk/ai</module>
@@ -20,6 +19,7 @@
     <module>sdk/apimanagement</module>
     <module>sdk/appcomplianceautomation</module>
     <module>sdk/appconfiguration</module>
+    <module>sdk/appconfiguration-v2</module>
     <module>sdk/appcontainers</module>
     <module>sdk/applicationinsights</module>
     <module>sdk/arizeaiobservabilityeval</module>
@@ -42,6 +42,7 @@
     <module>sdk/changeanalysis</module>
     <module>sdk/chaos</module>
     <module>sdk/clientcore</module>
+    <module>sdk/cloudhealth</module>
     <module>sdk/cognitiveservices</module>
     <module>sdk/commerce</module>
     <module>sdk/communication</module>
@@ -129,6 +130,7 @@
     <module>sdk/iothub</module>
     <module>sdk/iotoperations</module>
     <module>sdk/keyvault</module>
+    <module>sdk/keyvault-v2</module>
     <module>sdk/kubernetesconfiguration</module>
     <module>sdk/kusto</module>
     <module>sdk/labservices</module>
@@ -177,6 +179,8 @@
     <module>sdk/peering</module>
     <module>sdk/personalizer</module>
     <module>sdk/pineconevectordb</module>
+    <module>sdk/planetarycomputer</module>
+    <module>sdk/playwright</module>
     <module>sdk/playwrighttesting</module>
     <module>sdk/policyinsights</module>
     <module>sdk/portalservices</module>
@@ -204,6 +208,7 @@
     <module>sdk/resourcehealth</module>
     <module>sdk/resourcemanager</module>
     <module>sdk/resourcemover</module>
+    <module>sdk/resources</module>
     <module>sdk/schemaregistry</module>
     <module>sdk/scvmm</module>
     <module>sdk/search</module>
@@ -227,8 +232,10 @@
     <module>sdk/sqlvirtualmachine</module>
     <module>sdk/standbypool</module>
     <module>sdk/storage</module>
+    <module>sdk/storage-v2</module>
     <module>sdk/storageactions</module>
     <module>sdk/storagecache</module>
+    <module>sdk/storagediscovery</module>
     <module>sdk/storagemover</module>
     <module>sdk/storagepool</module>
     <module>sdk/streamanalytics</module>

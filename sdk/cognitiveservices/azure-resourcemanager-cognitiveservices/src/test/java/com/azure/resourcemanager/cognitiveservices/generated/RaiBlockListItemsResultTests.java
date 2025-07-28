@@ -17,31 +17,27 @@ public final class RaiBlockListItemsResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlockListItemsResult model = BinaryData.fromString(
-            "{\"nextLink\":\"lmywwtkgkxnyed\",\"value\":[{\"etag\":\"udtjuewbc\",\"tags\":{\"bvpa\":\"uuwhcjyxcc\",\"px\":\"akkud\"},\"properties\":{\"pattern\":\"plmag\",\"isRegex\":true},\"id\":\"yohpfkyrkdbdgiog\",\"name\":\"jkmnwq\",\"type\":\"nobaiyhddviacegf\"},{\"etag\":\"tfpmvmemfnczdw\",\"tags\":{\"db\":\"alxlllchp\"},\"properties\":{\"pattern\":\"wrd\",\"isRegex\":true},\"id\":\"ukuv\",\"name\":\"jcswsmys\",\"type\":\"uluqypfc\"},{\"etag\":\"rchpqbmfpjbabwid\",\"tags\":{\"qddrihpfhoqcaae\":\"sspuunnoxyhkx\",\"djvlpj\":\"dao\",\"msgeivsiykzk\":\"xkzb\",\"xonbzoggculapz\":\"ncj\"},\"properties\":{\"pattern\":\"pgogtqxepny\",\"isRegex\":false},\"id\":\"uajlyj\",\"name\":\"lvofqzhvfcibyfmo\",\"type\":\"uxrkjp\"}]}")
+            "{\"nextLink\":\"mrqemvvhmx\",\"value\":[{\"etag\":\"utacoe\",\"tags\":{\"guaadraufactkahz\":\"ewzcjznmwcp\",\"jjziuxxpsh\":\"v\"},\"properties\":{\"pattern\":\"kulfg\",\"isRegex\":false},\"id\":\"ubkwdle\",\"name\":\"rds\",\"type\":\"tujbazpju\"},{\"etag\":\"inyflnorwmduvwp\",\"tags\":{\"isze\":\"xwmygdxpgpqc\",\"rxgibbd\":\"nnbj\"},\"properties\":{\"pattern\":\"onfo\",\"isRegex\":false},\"id\":\"orsukokwbqp\",\"name\":\"hlvnuuepzlr\",\"type\":\"hw\"}]}")
             .toObject(RaiBlockListItemsResult.class);
-        Assertions.assertEquals("lmywwtkgkxnyed", model.nextLink());
-        Assertions.assertEquals("uuwhcjyxcc", model.value().get(0).tags().get("bvpa"));
-        Assertions.assertEquals("plmag", model.value().get(0).properties().pattern());
-        Assertions.assertEquals(true, model.value().get(0).properties().isRegex());
+        Assertions.assertEquals("mrqemvvhmx", model.nextLink());
+        Assertions.assertEquals("ewzcjznmwcp", model.value().get(0).tags().get("guaadraufactkahz"));
+        Assertions.assertEquals("kulfg", model.value().get(0).properties().pattern());
+        Assertions.assertFalse(model.value().get(0).properties().isRegex());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiBlockListItemsResult model = new RaiBlockListItemsResult().withNextLink("lmywwtkgkxnyed")
+        RaiBlockListItemsResult model = new RaiBlockListItemsResult().withNextLink("mrqemvvhmx")
             .withValue(Arrays.asList(
-                new RaiBlocklistItemInner().withTags(mapOf("bvpa", "uuwhcjyxcc", "px", "akkud"))
-                    .withProperties(new RaiBlocklistItemProperties().withPattern("plmag").withIsRegex(true)),
-                new RaiBlocklistItemInner().withTags(mapOf("db", "alxlllchp"))
-                    .withProperties(new RaiBlocklistItemProperties().withPattern("wrd").withIsRegex(true)),
-                new RaiBlocklistItemInner()
-                    .withTags(mapOf("qddrihpfhoqcaae", "sspuunnoxyhkx", "djvlpj", "dao", "msgeivsiykzk", "xkzb",
-                        "xonbzoggculapz", "ncj"))
-                    .withProperties(new RaiBlocklistItemProperties().withPattern("pgogtqxepny").withIsRegex(false))));
+                new RaiBlocklistItemInner().withTags(mapOf("guaadraufactkahz", "ewzcjznmwcp", "jjziuxxpsh", "v"))
+                    .withProperties(new RaiBlocklistItemProperties().withPattern("kulfg").withIsRegex(false)),
+                new RaiBlocklistItemInner().withTags(mapOf("isze", "xwmygdxpgpqc", "rxgibbd", "nnbj"))
+                    .withProperties(new RaiBlocklistItemProperties().withPattern("onfo").withIsRegex(false))));
         model = BinaryData.fromObject(model).toObject(RaiBlockListItemsResult.class);
-        Assertions.assertEquals("lmywwtkgkxnyed", model.nextLink());
-        Assertions.assertEquals("uuwhcjyxcc", model.value().get(0).tags().get("bvpa"));
-        Assertions.assertEquals("plmag", model.value().get(0).properties().pattern());
-        Assertions.assertEquals(true, model.value().get(0).properties().isRegex());
+        Assertions.assertEquals("mrqemvvhmx", model.nextLink());
+        Assertions.assertEquals("ewzcjznmwcp", model.value().get(0).tags().get("guaadraufactkahz"));
+        Assertions.assertEquals("kulfg", model.value().get(0).properties().pattern());
+        Assertions.assertFalse(model.value().get(0).properties().isRegex());
     }
 
     // Use "Map.of" if available

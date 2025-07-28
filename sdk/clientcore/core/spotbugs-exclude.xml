@@ -15,19 +15,17 @@
     <Or>
       <Class name="io.clientcore.core.credentials.NamedKeyCredential" />
       <Class name="io.clientcore.core.credentials.oauth.OAuthTokenRequestContext" />
-      <Class name="io.clientcore.core.credentials.KeyCredential" />
       <Class name="io.clientcore.core.http.models.HttpRange" />
-      <Class name="io.clientcore.core.http.models.HttpRequest" />
       <Class name="io.clientcore.core.http.pipeline.HttpPipelineBuilder" />
-      <Class name="io.clientcore.core.http.pipeline.HttpRetryPolicy" />
-      <Class name="io.clientcore.core.http.pipeline.KeyCredentialPolicy" />
       <Class name="io.clientcore.core.http.pipeline.OAuthBearerTokenAuthenticationPolicy" />
       <Class name="io.clientcore.core.implementation.GenericParameterizedType" />
-      <Class name="io.clientcore.core.implementation.ReflectionUtilsMethodHandle" />
+      <Class name="io.clientcore.core.implementation.ReflectionSerializable" />
       <Class name="io.clientcore.core.implementation.http.HttpPipelineCallState" />
+      <Class name="io.clientcore.core.implementation.http.rest.LengthValidatingInputStream" />
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImpl" />
+      <Class name="io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder" />
+      <Class name="io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation" />
       <Class name="io.clientcore.core.implementation.utils.AuthenticateChallengeParser" />
-      <Class name="io.clientcore.core.implementation.utils.InternalContext" />
       <Class name="io.clientcore.core.implementation.utils.PercentEscaper" />
       <Class name="io.clientcore.core.implementation.utils.Providers" />
       <Class name="io.clientcore.core.implementation.utils.SliceInputStream" />
@@ -45,9 +43,9 @@
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.serialization.xml.XmlSerializer" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
-      <Class name="io.clientcore.core.utils.AuthenticateChallenge" />
       <Class name="io.clientcore.core.utils.CoreUtils" />
       <Class name="io.clientcore.core.utils.DateTimeRfc1123" />
+      <Class name="io.clientcore.core.utils.GeneratedCodeUtils" />
       <Class name="io.clientcore.core.utils.SharedExecutorService" />
       <Class name="io.clientcore.core.utils.Union" />
     </Or>
@@ -111,7 +109,7 @@
     <Bug pattern="DM_DEFAULT_ENCODING" />
     <Or>
       <Class name="io.clientcore.core.http.client.SimpleBasicAuthHttpProxyServer" />
-      <Class name="io.clientcore.core.implementation.http.client.JdkHttpClientIT" />
+      <Class name="io.clientcore.core.implementation.http.client.JdkHttpClientLocalTestServer" />
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImplTests" />
       <Class name="io.clientcore.core.implementation.serializer.AdditionalPropertiesSerializerTests" />
       <Class name="io.clientcore.core.implementation.serializer.BinaryDataSerializationTests" />
@@ -125,11 +123,11 @@
       <Class name="io.clientcore.core.models.binarydata.BinaryDataJavaDocCodeSnippet" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataTest" />
       <Class name="io.clientcore.core.serialization.json.JsonReader" />
+      <Class name="io.clientcore.core.serialization.json.JsonSerializerTests" />
       <Class name="io.clientcore.core.serialization.json.JsonWriter" />
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
-      <Class name="io.clientcore.core.utils.serializers.JsonSerializerTests" />
     </Or>
   </Match>
   <Match>
@@ -208,6 +206,7 @@
   <Match>
     <Bug pattern="MS_PKGPROTECT" />
     <Or>
+      <Class name="io.clientcore.core.implementation.http.client.JdkHttpClientLocalTestServer" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.json.ReaderBasedJsonParser" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.json.WriterBasedJsonGenerator" />
     </Or>
@@ -292,7 +291,6 @@
       <Class name="io.clientcore.core.serialization.xml.XmlSerializer" />
       <Class name="io.clientcore.core.utils.Base64Uri" />
       <Class name="io.clientcore.core.utils.CoreUtils" />
-      <Class name="io.clientcore.core.utils.serializers.MockSerializer" />
     </Or>
   </Match>
   <Match>
@@ -331,6 +329,7 @@
     <Or>
       <Class name="io.clientcore.core.http.models.HttpResponseException" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.util.RequestPayload" />
+      <Class name="io.clientcore.core.shared.LocalTestServer$CoreTestHttpServlet" />
     </Or>
   </Match>
   <Match>
@@ -338,6 +337,7 @@
     <Or>
       <Class name="io.clientcore.core.models.MockFile" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.util.UriCanonicalizer$BoundedHashMap" />
+      <Class name="io.clientcore.core.shared.LocalTestServer$CoreTestHttpServlet" />
     </Or>
   </Match>
   <Match>
@@ -372,7 +372,6 @@
       <Class name="io.clientcore.core.instrumentation.TelemetryForLibraryDevelopersJavaDocCodeSnippets" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataJavaDocCodeSnippet" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
-      <Class name="io.clientcore.core.shared.LocalTestServer" />
     </Or>
   </Match>
   <Match>
@@ -403,9 +402,9 @@
       <Class name="io.clientcore.core.http.models.PagedIterableTests" />
       <Class name="io.clientcore.core.implementation.http.client.InputStreamTimeoutResponseSubscriber" />
       <Class name="io.clientcore.core.models.binarydata.BinaryDataTest$BinaryDataAsProperty" />
+      <Class name="io.clientcore.core.serialization.json.JsonSerializerTests$DateTimeWrapper" />
       <Class name="io.clientcore.core.serialization.xml.DefaultXmlWriterContractTests" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.in.ReaderConfig$EncodingContext" />
-      <Class name="io.clientcore.core.utils.serializers.JsonSerializerTests$DateTimeWrapper" />
     </Or>
   </Match>
   <Match>

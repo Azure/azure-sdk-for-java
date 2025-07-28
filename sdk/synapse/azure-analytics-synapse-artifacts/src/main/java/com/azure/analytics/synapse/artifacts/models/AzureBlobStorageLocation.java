@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,16 +21,19 @@ public final class AzureBlobStorageLocation extends DatasetLocation {
     /*
      * Type of dataset storage location.
      */
+    @Generated
     private String type = "AzureBlobStorageLocation";
 
     /*
      * Specify the container of azure blob. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object container;
 
     /**
      * Creates an instance of AzureBlobStorageLocation class.
      */
+    @Generated
     public AzureBlobStorageLocation() {
     }
 
@@ -38,6 +42,7 @@ public final class AzureBlobStorageLocation extends DatasetLocation {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -49,6 +54,7 @@ public final class AzureBlobStorageLocation extends DatasetLocation {
      * 
      * @return the container value.
      */
+    @Generated
     public Object getContainer() {
         return this.container;
     }
@@ -60,6 +66,7 @@ public final class AzureBlobStorageLocation extends DatasetLocation {
      * @param container the container value to set.
      * @return the AzureBlobStorageLocation object itself.
      */
+    @Generated
     public AzureBlobStorageLocation setContainer(Object container) {
         this.container = container;
         return this;
@@ -68,6 +75,7 @@ public final class AzureBlobStorageLocation extends DatasetLocation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobStorageLocation setFolderPath(Object folderPath) {
         super.setFolderPath(folderPath);
@@ -77,6 +85,7 @@ public final class AzureBlobStorageLocation extends DatasetLocation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureBlobStorageLocation setFileName(Object fileName) {
         super.setFileName(fileName);
@@ -86,13 +95,20 @@ public final class AzureBlobStorageLocation extends DatasetLocation {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("folderPath", getFolderPath());
-        jsonWriter.writeUntypedField("fileName", getFileName());
+        if (getFolderPath() != null) {
+            jsonWriter.writeUntypedField("folderPath", getFolderPath());
+        }
+        if (getFileName() != null) {
+            jsonWriter.writeUntypedField("fileName", getFileName());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("container", this.container);
+        if (this.container != null) {
+            jsonWriter.writeUntypedField("container", this.container);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -109,6 +125,7 @@ public final class AzureBlobStorageLocation extends DatasetLocation {
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureBlobStorageLocation.
      */
+    @Generated
     public static AzureBlobStorageLocation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureBlobStorageLocation deserializedAzureBlobStorageLocation = new AzureBlobStorageLocation();

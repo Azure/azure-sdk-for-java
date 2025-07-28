@@ -6,9 +6,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.uuid.EthernetAddress;
-import com.azure.cosmos.implementation.uuid.Generators;
-import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -89,8 +86,7 @@ public class Utils {
 
     private static final ObjectMapper durationEnabledObjectMapper = createAndInitializeDurationObjectMapper();
     private static ObjectMapper simpleObjectMapper = simpleObjectMapperDisallowingDuplicatedProperties;
-    private static final TimeBasedGenerator TIME_BASED_GENERATOR =
-            Generators.timeBasedGenerator(EthernetAddress.constructMulticastAddress());
+
     private static final Pattern SPACE_PATTERN = Pattern.compile("\\s");
 
     private static AtomicReference<ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor> itemSerializerAccessor =
@@ -395,7 +391,7 @@ public class Utils {
 
     public static boolean isWriteOperation(OperationType operationType) {
         return operationType == OperationType.Create || operationType == OperationType.Upsert || operationType == OperationType.Delete || operationType == OperationType.Replace
-                || operationType == OperationType.ExecuteJavaScript || operationType == OperationType.Batch;
+                || operationType == OperationType.ExecuteJavaScript || operationType == OperationType.Batch || operationType == OperationType.Patch;
     }
 
     private static String addTrailingSlash(String path) {
@@ -486,10 +482,6 @@ public class Utils {
     public static String nowAsRFC1123() {
         ZonedDateTime now = ZonedDateTime.now(GMT_ZONE_ID);
         return Utils.RFC_1123_DATE_TIME.format(now);
-    }
-
-    public static UUID randomUUID() {
-        return TIME_BASED_GENERATOR.generate();
     }
 
     public static String instantAsUTCRFC1123(Instant instant){

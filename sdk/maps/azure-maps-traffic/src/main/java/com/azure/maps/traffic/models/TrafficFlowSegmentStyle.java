@@ -4,6 +4,7 @@
 
 package com.azure.maps.traffic.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class TrafficFlowSegmentStyle extends ExpandableStringEnum<TrafficF
     /**
      * Static value absolute for TrafficFlowSegmentStyle.
      */
+    @Generated
     public static final TrafficFlowSegmentStyle ABSOLUTE = fromString("absolute");
 
     /**
      * Static value relative for TrafficFlowSegmentStyle.
      */
+    @Generated
     public static final TrafficFlowSegmentStyle RELATIVE = fromString("relative");
 
     /**
      * Static value relative-delay for TrafficFlowSegmentStyle.
      */
+    @Generated
     public static final TrafficFlowSegmentStyle RELATIVE_DELAY = fromString("relative-delay");
 
     /**
@@ -31,6 +35,7 @@ public final class TrafficFlowSegmentStyle extends ExpandableStringEnum<TrafficF
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TrafficFlowSegmentStyle() {
     }
@@ -41,6 +46,7 @@ public final class TrafficFlowSegmentStyle extends ExpandableStringEnum<TrafficF
      * @param name a name to look for.
      * @return the corresponding TrafficFlowSegmentStyle.
      */
+    @Generated
     public static TrafficFlowSegmentStyle fromString(String name) {
         return fromString(name, TrafficFlowSegmentStyle.class);
     }
@@ -50,6 +56,7 @@ public final class TrafficFlowSegmentStyle extends ExpandableStringEnum<TrafficF
      * 
      * @return known TrafficFlowSegmentStyle values.
      */
+    @Generated
     public static Collection<TrafficFlowSegmentStyle> values() {
         return values(TrafficFlowSegmentStyle.class);
     }

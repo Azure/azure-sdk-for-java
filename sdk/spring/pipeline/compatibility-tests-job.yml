@@ -24,18 +24,29 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           Paths:
+            - '**/*.xml'
+            - 'common/perf-test-core'
+            - 'sdk/appconfiguration/azure-data-appconfiguration'
+            - 'sdk/appcontainers/azure-resourcemanager-appcontainers'
+            - 'sdk/core'
+            - 'sdk/cosmos/azure-cosmos'
+            - 'sdk/boms/spring-cloud-azure-dependencies'
+            - 'sdk/eventgrid/azure-messaging-eventgrid'
+            - 'sdk/eventhubs'
+            - 'sdk/identity'
+            - 'sdk/jdbc'
+            - 'sdk/keyvault'
+            - 'sdk/monitor'
             - 'sdk/spring'
             - 'sdk/parents/azure-client-sdk-parent'
-            - 'sdk/boms/spring-cloud-azure-dependencies'
             - 'sdk/parents/azure-client-sdk-parent'
-            - 'sdk/jdbc'
-            - 'sdk/servicebus'
-            - 'sdk/eventhubs'
-            - 'common/perf-test-core'
-            - 'sdk/monitor/azure-monitor-opentelemetry-autoconfigure'
             - 'sdk/parents/azure-perf-test-parent'
             - 'sdk/parents/azure-sdk-parent'
-            - 'eng/code-quality-reports'
+            - 'sdk/resourcemanager'
+            - 'sdk/serialization'
+            - 'sdk/servicebus'
+            - 'sdk/storage'
+            - 'sdk/tools'
       - task: Maven@4
         displayName: 'Install Unreleased Dependencies'
         inputs:
@@ -68,9 +79,9 @@ jobs:
       - task: Maven@4
         displayName: 'Run tests'
         inputs:
-          options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}} -Dcompiler.failondeprecatedstatus=-'
+          options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}} -Dcompiler.failondeprecatedstatus=- --fail-at-end'
           mavenPomFile: sdk/spring/pom.xml
-          mavenOptions: '$(MemoryOptions)'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'

@@ -11,6 +11,7 @@
 - [ListByResourceGroup](#fabriccapacities_listbyresourcegroup)
 - [ListSkus](#fabriccapacities_listskus)
 - [ListSkusForCapacity](#fabriccapacities_listskusforcapacity)
+- [ListUsages](#fabriccapacities_listusages)
 - [Resume](#fabriccapacities_resume)
 - [Suspend](#fabriccapacities_suspend)
 - [Update](#fabriccapacities_update)
@@ -28,7 +29,7 @@ import com.azure.resourcemanager.fabric.models.CheckNameAvailabilityRequest;
  */
 public final class FabricCapacitiesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_CheckNameAvailability.json
+     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_CheckNameAvailability.json
      */
     /**
      * Sample code: Check name availability of a capacity.
@@ -58,7 +59,7 @@ import java.util.Arrays;
  */
 public final class FabricCapacitiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_CreateOrUpdate.json
+     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a capacity.
@@ -86,7 +87,7 @@ public final class FabricCapacitiesCreateOrUpdateSamples {
  */
 public final class FabricCapacitiesDeleteSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_Delete.json
+     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_Delete.json
      */
     /**
      * Sample code: Delete a capacity.
@@ -107,7 +108,7 @@ public final class FabricCapacitiesDeleteSamples {
  */
 public final class FabricCapacitiesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_Get.json
+     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_Get.json
      */
     /**
      * Sample code: Get a capacity.
@@ -129,7 +130,7 @@ public final class FabricCapacitiesGetByResourceGroupSamples {
  */
 public final class FabricCapacitiesListSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_ListBySubscription.json
+     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_ListBySubscription.json
      */
     /**
      * Sample code: List capacities by subscription.
@@ -150,7 +151,7 @@ public final class FabricCapacitiesListSamples {
  */
 public final class FabricCapacitiesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_ListByResourceGroup.json
+     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_ListByResourceGroup.json
      */
     /**
      * Sample code: List capacities by resource group.
@@ -171,7 +172,7 @@ public final class FabricCapacitiesListByResourceGroupSamples {
  */
 public final class FabricCapacitiesListSkusSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_ListSkus.json
+     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_ListSkus.json
      */
     /**
      * Sample code: List eligible SKUs for a new capacity.
@@ -192,7 +193,7 @@ public final class FabricCapacitiesListSkusSamples {
  */
 public final class FabricCapacitiesListSkusForCapacitySamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_ListSkusForCapacity.json
+     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_ListSkusForCapacity.json
      */
     /**
      * Sample code: List eligible SKUs for an existing capacity.
@@ -205,6 +206,27 @@ public final class FabricCapacitiesListSkusForCapacitySamples {
 }
 ```
 
+### FabricCapacities_ListUsages
+
+```java
+/**
+ * Samples for FabricCapacities ListUsages.
+ */
+public final class FabricCapacitiesListUsagesSamples {
+    /*
+     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_ListUsagesBySubscription.json
+     */
+    /**
+     * Sample code: List quota usages for a subscription.
+     * 
+     * @param manager Entry point to FabricManager.
+     */
+    public static void listQuotaUsagesForASubscription(com.azure.resourcemanager.fabric.FabricManager manager) {
+        manager.fabricCapacities().listUsages("centraluseuap", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### FabricCapacities_Resume
 
 ```java
@@ -213,7 +235,7 @@ public final class FabricCapacitiesListSkusForCapacitySamples {
  */
 public final class FabricCapacitiesResumeSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_Resume.json
+     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_Resume.json
      */
     /**
      * Sample code: Resume capacity.
@@ -234,7 +256,7 @@ public final class FabricCapacitiesResumeSamples {
  */
 public final class FabricCapacitiesSuspendSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_Suspend.json
+     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_Suspend.json
      */
     /**
      * Sample code: Suspend capacity.
@@ -264,7 +286,7 @@ import java.util.Map;
  */
 public final class FabricCapacitiesUpdateSamples {
     /*
-     * x-ms-original-file: 2023-11-01/FabricCapacities_Update.json
+     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_Update.json
      */
     /**
      * Sample code: Update capacity properties.
@@ -305,7 +327,7 @@ public final class FabricCapacitiesUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2023-11-01/Operations_List.json
+     * x-ms-original-file: 2025-01-15-preview/Operations_List.json
      */
     /**
      * Sample code: List operations.

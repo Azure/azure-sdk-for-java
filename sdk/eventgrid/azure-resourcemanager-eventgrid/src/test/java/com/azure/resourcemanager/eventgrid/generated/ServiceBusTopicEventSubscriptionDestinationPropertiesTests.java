@@ -14,21 +14,22 @@ public final class ServiceBusTopicEventSubscriptionDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceBusTopicEventSubscriptionDestinationProperties model = BinaryData.fromString(
-            "{\"resourceId\":\"thuqolyahluq\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"sutrjbhxykfhyqe\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"qqug\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"ftbcvexreuquow\"}]}")
+            "{\"resourceId\":\"dhsoymhpv\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"ttehdp\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"ujstk\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"vdshxcdedsuen\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"nxcgjtfrnquk\"}]}")
             .toObject(ServiceBusTopicEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("thuqolyahluq", model.resourceId());
-        Assertions.assertEquals("sutrjbhxykfhyqe", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("dhsoymhpv", model.resourceId());
+        Assertions.assertEquals("ttehdp", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceBusTopicEventSubscriptionDestinationProperties model
-            = new ServiceBusTopicEventSubscriptionDestinationProperties().withResourceId("thuqolyahluq")
-                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("sutrjbhxykfhyqe"),
-                    new DeliveryAttributeMapping().withName("qqug"),
-                    new DeliveryAttributeMapping().withName("ftbcvexreuquow")));
+            = new ServiceBusTopicEventSubscriptionDestinationProperties().withResourceId("dhsoymhpv")
+                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("ttehdp"),
+                    new DeliveryAttributeMapping().withName("ujstk"),
+                    new DeliveryAttributeMapping().withName("vdshxcdedsuen"),
+                    new DeliveryAttributeMapping().withName("nxcgjtfrnquk")));
         model = BinaryData.fromObject(model).toObject(ServiceBusTopicEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("thuqolyahluq", model.resourceId());
-        Assertions.assertEquals("sutrjbhxykfhyqe", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("dhsoymhpv", model.resourceId());
+        Assertions.assertEquals("ttehdp", model.deliveryAttributeMappings().get(0).name());
     }
 }

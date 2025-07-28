@@ -64,7 +64,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ChaosManagementClien")
+    @ServiceInterface(name = "ChaosManagementClientCapabilities")
     public interface CapabilitiesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}/capabilities/{capabilityName}")
@@ -937,8 +937,8 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Capability resources and a link for pagination along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of Capability resources that extend a Target resource along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CapabilityInner>> listNextSinglePageAsync(String nextLink) {
@@ -963,8 +963,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Capability resources and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of Capability resources that extend a Target resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CapabilityInner> listNextSinglePage(String nextLink) {
@@ -992,8 +991,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Capability resources and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of Capability resources that extend a Target resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CapabilityInner> listNextSinglePage(String nextLink, Context context) {

@@ -64,7 +64,9 @@ public final class SharePointOnlineListDatasetTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("listName", this.listName);
+        if (this.listName != null) {
+            jsonWriter.writeUntypedField("listName", this.listName);
+        }
         return jsonWriter.writeEndObject();
     }
 

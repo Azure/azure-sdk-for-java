@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,22 +22,26 @@ public final class Sku implements JsonSerializable<Sku> {
     /*
      * The service tier
      */
+    @Generated
     private String tier;
 
     /*
      * The SKU name
      */
+    @Generated
     private String name;
 
     /*
      * If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible
      * for the resource this may be omitted.
      */
+    @Generated
     private Integer capacity;
 
     /**
      * Creates an instance of Sku class.
      */
+    @Generated
     public Sku() {
     }
 
@@ -45,6 +50,7 @@ public final class Sku implements JsonSerializable<Sku> {
      * 
      * @return the tier value.
      */
+    @Generated
     public String getTier() {
         return this.tier;
     }
@@ -55,6 +61,7 @@ public final class Sku implements JsonSerializable<Sku> {
      * @param tier the tier value to set.
      * @return the Sku object itself.
      */
+    @Generated
     public Sku setTier(String tier) {
         this.tier = tier;
         return this;
@@ -65,6 +72,7 @@ public final class Sku implements JsonSerializable<Sku> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -75,6 +83,7 @@ public final class Sku implements JsonSerializable<Sku> {
      * @param name the name value to set.
      * @return the Sku object itself.
      */
+    @Generated
     public Sku setName(String name) {
         this.name = name;
         return this;
@@ -86,6 +95,7 @@ public final class Sku implements JsonSerializable<Sku> {
      * 
      * @return the capacity value.
      */
+    @Generated
     public Integer getCapacity() {
         return this.capacity;
     }
@@ -97,6 +107,7 @@ public final class Sku implements JsonSerializable<Sku> {
      * @param capacity the capacity value to set.
      * @return the Sku object itself.
      */
+    @Generated
     public Sku setCapacity(Integer capacity) {
         this.capacity = capacity;
         return this;
@@ -105,6 +116,7 @@ public final class Sku implements JsonSerializable<Sku> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -122,6 +134,7 @@ public final class Sku implements JsonSerializable<Sku> {
      * JSON null.
      * @throws IOException If an error occurs while reading the Sku.
      */
+    @Generated
     public static Sku fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Sku deserializedSku = new Sku();

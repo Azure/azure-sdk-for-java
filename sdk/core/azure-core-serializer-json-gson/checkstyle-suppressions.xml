@@ -5,13 +5,11 @@
 <suppressions>
   <suppress files="com.azure.core.serializer.json.gson.implementation.CustomGsonReader.java" checks="FallThroughCheck" />
   <suppress files="com.azure.core.serializer.json.gson.implementation.CustomGsonReader.java" checks="InnerAssignmentCheck" />
-  <suppress files="com.azure.core.serializer.json.gson.implementation.CustomGsonReader.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.core.serializer.json.gson.GsonJsonProvider.java" checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.core.serializer.json.gson.GsonJsonSerializerBuilder.java" checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.core.serializer.json.gson.models.GsonJsonArray.java" checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.core.serializer.json.gson.models.GsonJsonObject.java" checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.core.serializer.json.gson.implementation.CustomGsonReader.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
-  <suppress files="com.azure.core.serializer.json.gson.implementation.CustomGsonReader.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.core.serializer.json.gson.implementation.JsonSerializableTypeAdapter.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.core.serializer.json.gson.models.GsonJsonElementUtils.java" checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" />
+  <suppress files="com.azure.core.serializer.json.gson.GsonJsonProvider.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.core.serializer.json.gson.GsonJsonSerializerBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.core.serializer.json.gson.models.GsonJsonArray.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.core.serializer.json.gson.models.GsonJsonObject.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.core.serializer.json.gson.implementation.CustomGsonReader.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.core.serializer.json.gson.implementation.JsonSerializableTypeAdapter.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.core.serializer.json.gson.models.GsonJsonElementUtils.java" checks="io.clientcore.linting.extensions.checkstyle.checks.UseCaughtExceptionCauseCheck" />
 </suppressions>

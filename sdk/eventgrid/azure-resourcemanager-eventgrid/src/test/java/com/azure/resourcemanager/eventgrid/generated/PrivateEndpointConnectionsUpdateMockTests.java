@@ -28,7 +28,7 @@ public final class PrivateEndpointConnectionsUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"cgytoxuw\"},\"groupIds\":[\"nzqsaqmebgszpl\",\"sdekpdzz\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"gvo\",\"actionsRequired\":\"ejidbdqzsq\"},\"provisioningState\":\"Succeeded\"},\"id\":\"cwztlvvws\",\"name\":\"mrkkyjtr\",\"type\":\"pwpwfkcauxuva\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"rzndasdnidmjqmvy\"},\"groupIds\":[\"iqlarhqtwvcaze\",\"d\",\"dzffzjwztsmpchg\",\"ryelgfyatigfg\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"knczgorywnvojtvm\",\"actionsRequired\":\"vdlhqvbkar\"},\"provisioningState\":\"Succeeded\"},\"id\":\"hssrlvkpkp\",\"name\":\"ocm\",\"type\":\"ccebxxopyicyvspe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,23 +38,23 @@ public final class PrivateEndpointConnectionsUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .update("tzc", PrivateEndpointConnectionsParentType.PARTNER_NAMESPACES, "bqgdird", "mmtzjgc",
+            .update("hyhnimxtns", PrivateEndpointConnectionsParentType.TOPICS, "isnomwnwnghoj", "vkeyymicj",
                 new PrivateEndpointConnectionInner()
-                    .withPrivateEndpoint(new PrivateEndpoint().withId("tbwjjirmuydgftt"))
-                    .withGroupIds(Arrays.asList("fgeoagfuoftnx", "dwxmda"))
+                    .withPrivateEndpoint(new PrivateEndpoint().withId("sfpcrtnuguefxxij"))
+                    .withGroupIds(Arrays.asList("dveywetkrhlol", "cnw", "pfgsvbbvaqdljnp"))
                     .withPrivateLinkServiceConnectionState(
-                        new ConnectionState().withStatus(PersistedConnectionStatus.APPROVED)
-                            .withDescription("mgsevmdmzenlr")
-                            .withActionsRequired("gfc"))
+                        new ConnectionState().withStatus(PersistedConnectionStatus.REJECTED)
+                            .withDescription("rdetawevxehuekdx")
+                            .withActionsRequired("zvdov"))
                     .withProvisioningState(ResourceProvisioningState.SUCCEEDED),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cgytoxuw", response.privateEndpoint().id());
-        Assertions.assertEquals("nzqsaqmebgszpl", response.groupIds().get(0));
+        Assertions.assertEquals("rzndasdnidmjqmvy", response.privateEndpoint().id());
+        Assertions.assertEquals("iqlarhqtwvcaze", response.groupIds().get(0));
         Assertions.assertEquals(PersistedConnectionStatus.DISCONNECTED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("gvo", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("ejidbdqzsq", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("knczgorywnvojtvm", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("vdlhqvbkar", response.privateLinkServiceConnectionState().actionsRequired());
         Assertions.assertEquals(ResourceProvisioningState.SUCCEEDED, response.provisioningState());
     }
 }

@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 /**
  * The MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel model.
  */
-@Immutable
+@Fluent
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel
     extends MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput {
     /*
@@ -52,6 +52,26 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationL
      * Target server name
      */
     private String targetServer;
+
+    /*
+     * Source server type.
+     */
+    private ScenarioSource sourceServerType;
+
+    /*
+     * Target server type.
+     */
+    private ScenarioTarget targetServerType;
+
+    /*
+     * Migration status
+     */
+    private ReplicateMigrationState state;
+
+    /*
+     * Number of databases to include
+     */
+    private Float databaseCount;
 
     /**
      * Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel class.
@@ -124,6 +144,53 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationL
     }
 
     /**
+     * Get the sourceServerType property: Source server type.
+     * 
+     * @return the sourceServerType value.
+     */
+    public ScenarioSource sourceServerType() {
+        return this.sourceServerType;
+    }
+
+    /**
+     * Get the targetServerType property: Target server type.
+     * 
+     * @return the targetServerType value.
+     */
+    public ScenarioTarget targetServerType() {
+        return this.targetServerType;
+    }
+
+    /**
+     * Get the state property: Migration status.
+     * 
+     * @return the state value.
+     */
+    public ReplicateMigrationState state() {
+        return this.state;
+    }
+
+    /**
+     * Get the databaseCount property: Number of databases to include.
+     * 
+     * @return the databaseCount value.
+     */
+    public Float databaseCount() {
+        return this.databaseCount;
+    }
+
+    /**
+     * Set the databaseCount property: Number of databases to include.
+     * 
+     * @param databaseCount the databaseCount value to set.
+     * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel object itself.
+     */
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel withDatabaseCount(Float databaseCount) {
+        this.databaseCount = databaseCount;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -139,6 +206,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationL
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("resultType", this.resultType);
+        jsonWriter.writeNumberField("databaseCount", this.databaseCount);
         return jsonWriter.writeEndObject();
     }
 
@@ -184,6 +252,18 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationL
                 } else if ("targetServer".equals(fieldName)) {
                     deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel.targetServer
                         = reader.getString();
+                } else if ("sourceServerType".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel.sourceServerType
+                        = ScenarioSource.fromString(reader.getString());
+                } else if ("targetServerType".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel.targetServerType
+                        = ScenarioTarget.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel.state
+                        = ReplicateMigrationState.fromString(reader.getString());
+                } else if ("databaseCount".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel.databaseCount
+                        = reader.getNullable(JsonReader::getFloat);
                 } else {
                     reader.skipChildren();
                 }

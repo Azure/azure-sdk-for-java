@@ -8,10 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The upgrade channel for auto upgrade. The default is 'none'.
- * 
- * For more information see [setting the AKS cluster auto-upgrade
- * channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel).
+ * The upgrade channel for auto upgrade. The default is 'none'. For more information see [setting the AKS cluster
+ * auto-upgrade channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel).
  */
 public final class UpgradeChannel extends ExpandableStringEnum<UpgradeChannel> {
     /**

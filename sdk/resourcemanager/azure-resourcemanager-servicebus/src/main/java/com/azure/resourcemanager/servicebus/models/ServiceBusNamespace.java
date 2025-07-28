@@ -78,6 +78,15 @@ public interface ServiceBusNamespace extends GroupableResource<ServiceBusManager
     NamespaceAuthorizationRules authorizationRules();
 
     /**
+     * Checks whether local auth is disabled.
+     *
+     * @return whether local auth is disabled
+     */
+    default boolean localAuthDisabled() {
+        throw new UnsupportedOperationException("[localAuthDisabled] is not supported in " + getClass());
+    }
+
+    /**
      * The entirety of the Service Bus namespace definition.
      */
     interface Definition extends ServiceBusNamespace.DefinitionStages.Blank,
@@ -172,13 +181,28 @@ public interface ServiceBusNamespace extends GroupableResource<ServiceBusManager
         }
 
         /**
+         * The stage of Service Bus namespace definition allowing to disable local auth.
+         */
+        interface WithLocalAuth {
+            /**
+             * Disables SAS authentication for the Service Bus namespace.
+             *
+             * @return next stage of the Service Bus namespace definition
+             */
+            default WithCreate disableLocalAuth() {
+                throw new UnsupportedOperationException("[disableLocalAuth] is not supported in " + getClass());
+            }
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
         interface WithCreate extends Creatable<ServiceBusNamespace>, Resource.DefinitionWithTags<WithCreate>,
             ServiceBusNamespace.DefinitionStages.WithSku, ServiceBusNamespace.DefinitionStages.WithQueue,
-            ServiceBusNamespace.DefinitionStages.WithTopic, ServiceBusNamespace.DefinitionStages.WithAuthorizationRule {
+            ServiceBusNamespace.DefinitionStages.WithTopic, ServiceBusNamespace.DefinitionStages.WithAuthorizationRule,
+            ServiceBusNamespace.DefinitionStages.WithLocalAuth {
         }
     }
 
@@ -187,7 +211,8 @@ public interface ServiceBusNamespace extends GroupableResource<ServiceBusManager
      */
     interface Update extends Appliable<ServiceBusNamespace>, Resource.UpdateWithTags<Update>,
         ServiceBusNamespace.UpdateStages.WithSku, ServiceBusNamespace.UpdateStages.WithQueue,
-        ServiceBusNamespace.UpdateStages.WithTopic, ServiceBusNamespace.UpdateStages.WithAuthorizationRule {
+        ServiceBusNamespace.UpdateStages.WithTopic, ServiceBusNamespace.UpdateStages.WithAuthorizationRule,
+        ServiceBusNamespace.UpdateStages.WithLocalAuth {
     }
 
     /**
@@ -287,6 +312,20 @@ public interface ServiceBusNamespace extends GroupableResource<ServiceBusManager
              * @return next stage of the Service Bus namespace update
              */
             Update withoutAuthorizationRule(String name);
+        }
+
+        /**
+         * The stage of Service Bus namespace update allowing to disable local auth.
+         */
+        interface WithLocalAuth {
+            /**
+             * Disables SAS authentication for the Service Bus namespace.
+             *
+             * @return next stage of the Service Bus namespace update
+             */
+            default Update disableLocalAuth() {
+                throw new UnsupportedOperationException("[disableLocalAuth] is not supported in " + getClass());
+            }
         }
     }
 

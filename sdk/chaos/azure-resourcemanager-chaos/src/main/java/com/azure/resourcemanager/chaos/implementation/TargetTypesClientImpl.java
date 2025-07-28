@@ -61,7 +61,7 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ChaosManagementClien")
+    @ServiceInterface(name = "ChaosManagementClientTargetTypes")
     public interface TargetTypesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{location}/targetTypes/{targetTypeName}")
@@ -386,8 +386,8 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Target Type resources and a link for pagination along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of Target Type resources for given location along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TargetTypeInner>> listNextSinglePageAsync(String nextLink) {
@@ -412,8 +412,7 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Target Type resources and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of Target Type resources for given location along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetTypeInner> listNextSinglePage(String nextLink) {
@@ -441,8 +440,7 @@ public final class TargetTypesClientImpl implements TargetTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Target Type resources and a link for pagination along with
-     * {@link PagedResponse}.
+     * @return a list of Target Type resources for given location along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetTypeInner> listNextSinglePage(String nextLink, Context context) {

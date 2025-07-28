@@ -4,6 +4,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -16,58 +17,72 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.AdvancedMessageReceived event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
+@Deprecated
 public final class AcsMessageReceivedEventData extends AcsMessageEventData {
 
     /*
      * The received message content
      */
+    @Generated
     private String content;
 
     /*
      * Message ID. Format is Guid as string.
      */
+    @Generated
     private String messageId;
 
     /*
      * The received message channel Kind
      */
+    @Generated
     private AcsMessageChannelKind channelKind;
 
     /*
      * WhatsApp Message Type
      */
+    @Generated
     private String messageType;
 
     /*
      * The received message media content
      */
+    @Generated
     private AcsMessageMediaContent mediaContent;
 
     /*
      * The received message reaction content
      */
+    @Generated
     private AcsMessageReactionContent reaction;
 
     /*
      * The received message context
      */
+    @Generated
     private AcsMessageContext context;
 
     /*
      * The received message button content
      */
+    @Generated
     private AcsMessageButtonContent button;
 
     /*
      * The received message interactive content
      */
+    @Generated
     private AcsMessageInteractiveContent interactiveContent;
 
     /**
      * Creates an instance of AcsMessageReceivedEventData class.
      */
+    @Generated
     public AcsMessageReceivedEventData() {
     }
 
@@ -76,6 +91,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      *
      * @return the content value.
      */
+    @Generated
     public String getContent() {
         return this.content;
     }
@@ -86,6 +102,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      * @param content the content value to set.
      * @return the AcsMessageReceivedEventData object itself.
      */
+    @Generated
     public AcsMessageReceivedEventData setContent(String content) {
         this.content = content;
         return this;
@@ -96,6 +113,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      *
      * @return the messageId value.
      */
+    @Generated
     public String getMessageId() {
         return this.messageId;
     }
@@ -106,6 +124,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      * @param messageId the messageId value to set.
      * @return the AcsMessageReceivedEventData object itself.
      */
+    @Generated
     public AcsMessageReceivedEventData setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
@@ -116,6 +135,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      *
      * @return the channelKind value.
      */
+    @Generated
     public AcsMessageChannelKind getChannelKind() {
         return this.channelKind;
     }
@@ -126,6 +146,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      * @param channelKind the channelKind value to set.
      * @return the AcsMessageReceivedEventData object itself.
      */
+    @Generated
     public AcsMessageReceivedEventData setChannelKind(AcsMessageChannelKind channelKind) {
         this.channelKind = channelKind;
         return this;
@@ -136,6 +157,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      *
      * @return the messageType value.
      */
+    @Generated
     public String getMessageType() {
         return this.messageType;
     }
@@ -146,6 +168,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      * @param messageType the messageType value to set.
      * @return the AcsMessageReceivedEventData object itself.
      */
+    @Generated
     public AcsMessageReceivedEventData setMessageType(String messageType) {
         this.messageType = messageType;
         return this;
@@ -156,6 +179,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      *
      * @return the mediaContent value.
      */
+    @Generated
     public AcsMessageMediaContent getMediaContent() {
         return this.mediaContent;
     }
@@ -166,6 +190,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      * @param mediaContent the mediaContent value to set.
      * @return the AcsMessageReceivedEventData object itself.
      */
+    @Generated
     public AcsMessageReceivedEventData setMediaContent(AcsMessageMediaContent mediaContent) {
         this.mediaContent = mediaContent;
         return this;
@@ -176,6 +201,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      *
      * @return the reaction value.
      */
+    @Generated
     public AcsMessageReactionContent getReaction() {
         return this.reaction;
     }
@@ -186,6 +212,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      * @param reaction the reaction value to set.
      * @return the AcsMessageReceivedEventData object itself.
      */
+    @Generated
     public AcsMessageReceivedEventData setReaction(AcsMessageReactionContent reaction) {
         this.reaction = reaction;
         return this;
@@ -196,6 +223,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      *
      * @return the context value.
      */
+    @Generated
     public AcsMessageContext getContext() {
         return this.context;
     }
@@ -206,6 +234,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      * @param context the context value to set.
      * @return the AcsMessageReceivedEventData object itself.
      */
+    @Generated
     public AcsMessageReceivedEventData setContext(AcsMessageContext context) {
         this.context = context;
         return this;
@@ -216,6 +245,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      *
      * @return the button value.
      */
+    @Generated
     public AcsMessageButtonContent getButton() {
         return this.button;
     }
@@ -226,6 +256,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      * @param button the button value to set.
      * @return the AcsMessageReceivedEventData object itself.
      */
+    @Generated
     public AcsMessageReceivedEventData setButton(AcsMessageButtonContent button) {
         this.button = button;
         return this;
@@ -236,6 +267,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      *
      * @return the interactiveContent value.
      */
+    @Generated
     public AcsMessageInteractiveContent getInteractiveContent() {
         return this.interactiveContent;
     }
@@ -246,6 +278,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      * @param interactiveContent the interactiveContent value to set.
      * @return the AcsMessageReceivedEventData object itself.
      */
+    @Generated
     public AcsMessageReceivedEventData setInteractiveContent(AcsMessageInteractiveContent interactiveContent) {
         this.interactiveContent = interactiveContent;
         return this;
@@ -254,6 +287,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AcsMessageReceivedEventData setFrom(String from) {
         super.setFrom(from);
@@ -263,6 +297,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AcsMessageReceivedEventData setTo(String to) {
         super.setTo(to);
@@ -272,6 +307,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AcsMessageReceivedEventData setReceivedTimestamp(OffsetDateTime receivedTimestamp) {
         super.setReceivedTimestamp(receivedTimestamp);
@@ -281,6 +317,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -312,6 +349,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsMessageReceivedEventData.
      */
+    @Generated
     public static AcsMessageReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsMessageReceivedEventData deserializedAcsMessageReceivedEventData = new AcsMessageReceivedEventData();

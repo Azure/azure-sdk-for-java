@@ -146,7 +146,7 @@ public final class EventGridReceiverClientImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "EventGridReceiverCli")
+    @ServiceInterface(name = "EventGridReceiverClient")
     public interface EventGridReceiverClientService {
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:receive")
         @ExpectedResponses({ 200 })

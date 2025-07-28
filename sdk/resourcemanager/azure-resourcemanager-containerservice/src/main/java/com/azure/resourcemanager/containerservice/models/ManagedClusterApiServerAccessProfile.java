@@ -19,19 +19,21 @@ import java.util.List;
 public final class ManagedClusterApiServerAccessProfile
     implements JsonSerializable<ManagedClusterApiServerAccessProfile> {
     /*
-     * IP ranges are specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with clusters that
-     * use Public IP Per Node, or clusters that are using a Basic Load Balancer. For more information see [API server
-     * authorized IP ranges](https://docs.microsoft.com/azure/aks/api-server-authorized-ip-ranges).
+     * The IP ranges authorized to access the Kubernetes API server. IP ranges are specified in CIDR format, e.g.
+     * 137.117.106.88/29. This feature is not compatible with clusters that use Public IP Per Node, or clusters that are
+     * using a Basic Load Balancer. For more information see [API server authorized IP
+     * ranges](https://docs.microsoft.com/azure/aks/api-server-authorized-ip-ranges).
      */
     private List<String> authorizedIpRanges;
 
     /*
-     * For more details, see [Creating a private AKS cluster](https://docs.microsoft.com/azure/aks/private-clusters).
+     * Whether to create the cluster as a private cluster or not. For more details, see [Creating a private AKS
+     * cluster](https://docs.microsoft.com/azure/aks/private-clusters).
      */
     private Boolean enablePrivateCluster;
 
     /*
-     * The default is System. For more details see [configure private DNS
+     * The private DNS zone mode for the cluster. The default is System. For more details see [configure private DNS
      * zone](https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone). Allowed values are
      * 'system' and 'none'.
      */
@@ -47,6 +49,18 @@ public final class ManagedClusterApiServerAccessProfile
      */
     private Boolean disableRunCommand;
 
+    /*
+     * Whether to enable apiserver vnet integration for the cluster or not. See aka.ms/AksVnetIntegration for more
+     * details.
+     */
+    private Boolean enableVnetIntegration;
+
+    /*
+     * The subnet to be used when apiserver vnet integration is enabled. It is required when creating a new cluster with
+     * BYO Vnet, or when updating an existing cluster to enable apiserver vnet integration.
+     */
+    private String subnetId;
+
     /**
      * Creates an instance of ManagedClusterApiServerAccessProfile class.
      */
@@ -54,9 +68,9 @@ public final class ManagedClusterApiServerAccessProfile
     }
 
     /**
-     * Get the authorizedIpRanges property: IP ranges are specified in CIDR format, e.g. 137.117.106.88/29. This feature
-     * is not compatible with clusters that use Public IP Per Node, or clusters that are using a Basic Load Balancer.
-     * For more information see [API server authorized IP
+     * Get the authorizedIpRanges property: The IP ranges authorized to access the Kubernetes API server. IP ranges are
+     * specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with clusters that use Public IP
+     * Per Node, or clusters that are using a Basic Load Balancer. For more information see [API server authorized IP
      * ranges](https://docs.microsoft.com/azure/aks/api-server-authorized-ip-ranges).
      * 
      * @return the authorizedIpRanges value.
@@ -66,9 +80,9 @@ public final class ManagedClusterApiServerAccessProfile
     }
 
     /**
-     * Set the authorizedIpRanges property: IP ranges are specified in CIDR format, e.g. 137.117.106.88/29. This feature
-     * is not compatible with clusters that use Public IP Per Node, or clusters that are using a Basic Load Balancer.
-     * For more information see [API server authorized IP
+     * Set the authorizedIpRanges property: The IP ranges authorized to access the Kubernetes API server. IP ranges are
+     * specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with clusters that use Public IP
+     * Per Node, or clusters that are using a Basic Load Balancer. For more information see [API server authorized IP
      * ranges](https://docs.microsoft.com/azure/aks/api-server-authorized-ip-ranges).
      * 
      * @param authorizedIpRanges the authorizedIpRanges value to set.
@@ -80,8 +94,8 @@ public final class ManagedClusterApiServerAccessProfile
     }
 
     /**
-     * Get the enablePrivateCluster property: For more details, see [Creating a private AKS
-     * cluster](https://docs.microsoft.com/azure/aks/private-clusters).
+     * Get the enablePrivateCluster property: Whether to create the cluster as a private cluster or not. For more
+     * details, see [Creating a private AKS cluster](https://docs.microsoft.com/azure/aks/private-clusters).
      * 
      * @return the enablePrivateCluster value.
      */
@@ -90,8 +104,8 @@ public final class ManagedClusterApiServerAccessProfile
     }
 
     /**
-     * Set the enablePrivateCluster property: For more details, see [Creating a private AKS
-     * cluster](https://docs.microsoft.com/azure/aks/private-clusters).
+     * Set the enablePrivateCluster property: Whether to create the cluster as a private cluster or not. For more
+     * details, see [Creating a private AKS cluster](https://docs.microsoft.com/azure/aks/private-clusters).
      * 
      * @param enablePrivateCluster the enablePrivateCluster value to set.
      * @return the ManagedClusterApiServerAccessProfile object itself.
@@ -102,7 +116,8 @@ public final class ManagedClusterApiServerAccessProfile
     }
 
     /**
-     * Get the privateDnsZone property: The default is System. For more details see [configure private DNS
+     * Get the privateDnsZone property: The private DNS zone mode for the cluster. The default is System. For more
+     * details see [configure private DNS
      * zone](https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone). Allowed values are
      * 'system' and 'none'.
      * 
@@ -113,7 +128,8 @@ public final class ManagedClusterApiServerAccessProfile
     }
 
     /**
-     * Set the privateDnsZone property: The default is System. For more details see [configure private DNS
+     * Set the privateDnsZone property: The private DNS zone mode for the cluster. The default is System. For more
+     * details see [configure private DNS
      * zone](https://docs.microsoft.com/azure/aks/private-clusters#configure-private-dns-zone). Allowed values are
      * 'system' and 'none'.
      * 
@@ -169,6 +185,50 @@ public final class ManagedClusterApiServerAccessProfile
     }
 
     /**
+     * Get the enableVnetIntegration property: Whether to enable apiserver vnet integration for the cluster or not. See
+     * aka.ms/AksVnetIntegration for more details.
+     * 
+     * @return the enableVnetIntegration value.
+     */
+    public Boolean enableVnetIntegration() {
+        return this.enableVnetIntegration;
+    }
+
+    /**
+     * Set the enableVnetIntegration property: Whether to enable apiserver vnet integration for the cluster or not. See
+     * aka.ms/AksVnetIntegration for more details.
+     * 
+     * @param enableVnetIntegration the enableVnetIntegration value to set.
+     * @return the ManagedClusterApiServerAccessProfile object itself.
+     */
+    public ManagedClusterApiServerAccessProfile withEnableVnetIntegration(Boolean enableVnetIntegration) {
+        this.enableVnetIntegration = enableVnetIntegration;
+        return this;
+    }
+
+    /**
+     * Get the subnetId property: The subnet to be used when apiserver vnet integration is enabled. It is required when
+     * creating a new cluster with BYO Vnet, or when updating an existing cluster to enable apiserver vnet integration.
+     * 
+     * @return the subnetId value.
+     */
+    public String subnetId() {
+        return this.subnetId;
+    }
+
+    /**
+     * Set the subnetId property: The subnet to be used when apiserver vnet integration is enabled. It is required when
+     * creating a new cluster with BYO Vnet, or when updating an existing cluster to enable apiserver vnet integration.
+     * 
+     * @param subnetId the subnetId value to set.
+     * @return the ManagedClusterApiServerAccessProfile object itself.
+     */
+    public ManagedClusterApiServerAccessProfile withSubnetId(String subnetId) {
+        this.subnetId = subnetId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -188,6 +248,8 @@ public final class ManagedClusterApiServerAccessProfile
         jsonWriter.writeStringField("privateDNSZone", this.privateDnsZone);
         jsonWriter.writeBooleanField("enablePrivateClusterPublicFQDN", this.enablePrivateClusterPublicFqdn);
         jsonWriter.writeBooleanField("disableRunCommand", this.disableRunCommand);
+        jsonWriter.writeBooleanField("enableVnetIntegration", this.enableVnetIntegration);
+        jsonWriter.writeStringField("subnetId", this.subnetId);
         return jsonWriter.writeEndObject();
     }
 
@@ -221,6 +283,11 @@ public final class ManagedClusterApiServerAccessProfile
                 } else if ("disableRunCommand".equals(fieldName)) {
                     deserializedManagedClusterApiServerAccessProfile.disableRunCommand
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableVnetIntegration".equals(fieldName)) {
+                    deserializedManagedClusterApiServerAccessProfile.enableVnetIntegration
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedManagedClusterApiServerAccessProfile.subnetId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

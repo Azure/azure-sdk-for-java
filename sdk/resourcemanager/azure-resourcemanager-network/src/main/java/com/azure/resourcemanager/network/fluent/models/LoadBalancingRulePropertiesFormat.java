@@ -90,6 +90,12 @@ public final class LoadBalancingRulePropertiesFormat implements JsonSerializable
     private Boolean disableOutboundSnat;
 
     /*
+     * Defines whether connections between 2 communicating endpoints can be tracked and associated to the same backend
+     * VM over its lifetime when using UDP protocol.
+     */
+    private Boolean enableConnectionTracking;
+
+    /*
      * The provisioning state of the load balancing rule resource.
      */
     private ProvisioningState provisioningState;
@@ -357,6 +363,28 @@ public final class LoadBalancingRulePropertiesFormat implements JsonSerializable
     }
 
     /**
+     * Get the enableConnectionTracking property: Defines whether connections between 2 communicating endpoints can be
+     * tracked and associated to the same backend VM over its lifetime when using UDP protocol.
+     * 
+     * @return the enableConnectionTracking value.
+     */
+    public Boolean enableConnectionTracking() {
+        return this.enableConnectionTracking;
+    }
+
+    /**
+     * Set the enableConnectionTracking property: Defines whether connections between 2 communicating endpoints can be
+     * tracked and associated to the same backend VM over its lifetime when using UDP protocol.
+     * 
+     * @param enableConnectionTracking the enableConnectionTracking value to set.
+     * @return the LoadBalancingRulePropertiesFormat object itself.
+     */
+    public LoadBalancingRulePropertiesFormat withEnableConnectionTracking(Boolean enableConnectionTracking) {
+        this.enableConnectionTracking = enableConnectionTracking;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the load balancing rule resource.
      * 
      * @return the provisioningState value.
@@ -400,6 +428,7 @@ public final class LoadBalancingRulePropertiesFormat implements JsonSerializable
         jsonWriter.writeBooleanField("enableFloatingIP", this.enableFloatingIp);
         jsonWriter.writeBooleanField("enableTcpReset", this.enableTcpReset);
         jsonWriter.writeBooleanField("disableOutboundSnat", this.disableOutboundSnat);
+        jsonWriter.writeBooleanField("enableConnectionTracking", this.enableConnectionTracking);
         return jsonWriter.writeEndObject();
     }
 
@@ -451,6 +480,9 @@ public final class LoadBalancingRulePropertiesFormat implements JsonSerializable
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("disableOutboundSnat".equals(fieldName)) {
                     deserializedLoadBalancingRulePropertiesFormat.disableOutboundSnat
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableConnectionTracking".equals(fieldName)) {
+                    deserializedLoadBalancingRulePropertiesFormat.enableConnectionTracking
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedLoadBalancingRulePropertiesFormat.provisioningState

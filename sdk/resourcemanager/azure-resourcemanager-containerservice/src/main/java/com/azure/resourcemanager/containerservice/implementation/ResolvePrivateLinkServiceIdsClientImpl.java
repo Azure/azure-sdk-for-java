@@ -56,7 +56,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
      * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerServiceMana")
+    @ServiceInterface(name = "ContainerServiceManagementClientResolvePrivateLinkServiceIds")
     public interface ResolvePrivateLinkServiceIdsService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/resolvePrivateLinkServiceId")
@@ -104,7 +104,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-02-01";
+        final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.post(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -148,7 +148,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-02-01";
+        final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.post(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,

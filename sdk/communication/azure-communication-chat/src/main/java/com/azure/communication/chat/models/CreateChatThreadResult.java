@@ -38,19 +38,19 @@ public final class CreateChatThreadResult implements JsonSerializable<CreateChat
     }
 
     /**
-     * Get the chatThread property: The chatThread property.
+     * Gets the chatThread property: The chatThread property.
      *
-     * @return the chatThread value.
+     * @return the chatThread.
      */
     public ChatThreadProperties getChatThread() {
         return this.chatThreadProperties;
     }
 
     /**
-     * Get the invalidParticipants property: The participants that failed to be added to the chat thread.
+     * Gets the invalidParticipants property: The participants that failed to be added to the chat thread.
      * The 'target' property of each ChatError will reference the failed participant.
      *
-     * @return the invalidParticipants value.
+     * @return the invalidParticipants.
      */
     public List<ChatError> getInvalidParticipants() {
         return this.invalidParticipants;

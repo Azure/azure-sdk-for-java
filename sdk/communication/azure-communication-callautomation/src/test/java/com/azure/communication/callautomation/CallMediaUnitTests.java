@@ -237,21 +237,28 @@ public class CallMediaUnitTests {
 
     @Test
     public void updateTranscriptionSpeechModelWithResponseTest() {
-        Response<Void> response
-            = callMedia.updateTranscriptionWithResponse("en-US", "customEndpoint", null, Context.NONE);
+        UpdateTranscriptionOptions options = new UpdateTranscriptionOptions();
+        options.setLocale("en-US");
+        options.setSpeechRecognitionModelEndpointId("customEndpoint");
+        Response<Void> response = callMedia.updateTranscriptionWithResponse(options, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
     @Test
     public void updateTranscriptionOperationContextWithResponseTest() {
-        Response<Void> response = callMedia.updateTranscriptionWithResponse("en-US", "customEndpoint",
-            "unittestoperationcontext", Context.NONE);
+        UpdateTranscriptionOptions options = new UpdateTranscriptionOptions();
+        options.setLocale("en-US");
+        options.setSpeechRecognitionModelEndpointId("customEndpoint");
+        options.setOperationContext("unittestoperationcontext");
+        Response<Void> response = callMedia.updateTranscriptionWithResponse(options, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
     @Test
     public void updateTranscriptionWithResponse() {
-        Response<Void> response = callMedia.updateTranscriptionWithResponse("en-US", null, null, Context.NONE);
+        UpdateTranscriptionOptions options = new UpdateTranscriptionOptions();
+        options.setLocale("en-US");
+        Response<Void> response = callMedia.updateTranscriptionWithResponse(options, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
@@ -269,15 +276,6 @@ public class CallMediaUnitTests {
         StopMediaStreamingOptions options = new StopMediaStreamingOptions();
         options.setOperationCallbackUrl("https://localhost");
         Response<Void> response = callMedia.stopMediaStreamingWithResponse(options, Context.NONE);
-        assertEquals(response.getStatusCode(), 202);
-    }
-
-    @Test
-    public void interruptAudioAndAnnounceWithResponseTest() {
-        InterruptAudioAndAnnounceOptions options
-            = new InterruptAudioAndAnnounceOptions(playTextSource, new CommunicationUserIdentifier("id"));
-        options.setOperationContext("operationContext");
-        Response<Void> response = callMedia.interruptAudioAndAnnounceWithResponse(options, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 }

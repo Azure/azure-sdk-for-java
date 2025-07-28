@@ -24,7 +24,7 @@ public final class PartnerRegistrationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"0adbab65-218c-421b-9644-8d284a77c803\"},\"location\":\"ttpfsmwgsgh\",\"tags\":{\"thxuarigrjdl\":\"umlddauqmllfe\"},\"id\":\"lkqhvkrbzkua\",\"name\":\"taxklpruu\",\"type\":\"hgltoizwxvs\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"80a1a863-33c0-47fa-bbe0-77609c768b00\"},\"location\":\"zo\",\"tags\":{\"oxfaxdtn\":\"mfmvsmc\"},\"id\":\"i\",\"name\":\"bsat\",\"type\":\"oiauesugmocpcj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,17 +34,16 @@ public final class PartnerRegistrationsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PartnerRegistration response = manager.partnerRegistrations()
-            .define("tncwmhjobzrfpr")
-            .withRegion("yftcvbzwgwhg")
-            .withExistingResourceGroup("pyfaofdfp")
-            .withTags(mapOf("uoorssatfybipufd", "o", "q", "xuqbdqnasttuxvz", "xmndztgsqjayqmar", "yopbtsixhgvb", "nh",
-                "neibpgbrhbjdq"))
-            .withPartnerRegistrationImmutableId(UUID.fromString("97bd28ba-280b-4340-9c20-863095acb4c5"))
+            .define("phmdzxplgtp")
+            .withRegion("zmgschnzrsbkkzov")
+            .withExistingResourceGroup("mbzayspzvrietv")
+            .withTags(mapOf("rimm", "mnfmfwsxafofuw", "nyrvaprtgelg", "vzwdehkkmvhzfov"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("841fbb2c-1661-46dd-bc10-71f292ce68d0"))
             .create();
 
-        Assertions.assertEquals("ttpfsmwgsgh", response.location());
-        Assertions.assertEquals("umlddauqmllfe", response.tags().get("thxuarigrjdl"));
-        Assertions.assertEquals(UUID.fromString("0adbab65-218c-421b-9644-8d284a77c803"),
+        Assertions.assertEquals("zo", response.location());
+        Assertions.assertEquals("mfmvsmc", response.tags().get("oxfaxdtn"));
+        Assertions.assertEquals(UUID.fromString("80a1a863-33c0-47fa-bbe0-77609c768b00"),
             response.partnerRegistrationImmutableId());
     }
 
