@@ -10,9 +10,9 @@ import com.azure.resourcemanager.datamigration.models.MigrateMySqlAzureDbForMySq
 public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrateMySqlAzureDbForMySqlSyncTaskOutput model = BinaryData
-            .fromString("{\"resultType\":\"MigrateMySqlAzureDbForMySqlSyncTaskOutput\",\"id\":\"iknsorgjh\"}")
-            .toObject(MigrateMySqlAzureDbForMySqlSyncTaskOutput.class);
+        MigrateMySqlAzureDbForMySqlSyncTaskOutput model
+            = BinaryData.fromString("{\"resultType\":\"MigrateMySqlAzureDbForMySqlSyncTaskOutput\",\"id\":\"bqigkx\"}")
+                .toObject(MigrateMySqlAzureDbForMySqlSyncTaskOutput.class);
     }
 
     @org.junit.jupiter.api.Test
