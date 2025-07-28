@@ -5,7 +5,8 @@
 package com.azure.resourcemanager.search.models;
 
 /**
- * The identity type.
+ * The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an identity created
+ * by the system and a set of user assigned identities. The type 'None' will remove all identities from the service.
  */
 public enum IdentityType {
     /**
@@ -16,7 +17,17 @@ public enum IdentityType {
     /**
      * Enum value SystemAssigned.
      */
-    SYSTEM_ASSIGNED("SystemAssigned");
+    SYSTEM_ASSIGNED("SystemAssigned"),
+
+    /**
+     * Enum value UserAssigned.
+     */
+    USER_ASSIGNED("UserAssigned"),
+
+    /**
+     * Enum value SystemAssigned, UserAssigned.
+     */
+    SYSTEM_ASSIGNED_USER_ASSIGNED("SystemAssigned, UserAssigned");
 
     /**
      * The actual serialized value for a IdentityType instance.
