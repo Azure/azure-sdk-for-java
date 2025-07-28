@@ -15,11 +15,11 @@ import com.azure.communication.callautomation.implementation.models.StartMediaSt
 import com.azure.communication.callautomation.implementation.models.StartTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.StopMediaStreamingRequest;
 import com.azure.communication.callautomation.implementation.models.StopTranscriptionRequestInternal;
+import com.azure.communication.callautomation.implementation.models.SummarizeCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.UnholdRequest;
 import com.azure.communication.callautomation.implementation.models.UpdateTranscriptionRequestInternal;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -103,16 +103,13 @@ public final class CallMediasImpl {
             @BodyParam("application/json") UpdateTranscriptionRequestInternal updateTranscriptionRequest,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Get("/calling/callConnections/{callConnectionId}:summarizeCall")
+        @Post("/calling/callConnections/{callConnectionId}:summarizeCall")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> summarizeCall(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId,
-            @QueryParam("summarizeCallRequest.operationContext") String summarizeCallRequestOperationContext,
-            @QueryParam("summarizeCallRequest.operationCallbackUri") String summarizeCallRequestOperationCallbackUri,
-            @QueryParam("summarizeCallRequest.summarizationOptions.enableEndCallSummary") Boolean summarizeCallRequestSummarizationOptionsEnableEndCallSummary,
-            @QueryParam("summarizeCallRequest.summarizationOptions.locale") String summarizeCallRequestSummarizationOptionsLocale,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SummarizeCallRequestInternal summarizeCallRequest,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/calling/callConnections/{callConnectionId}:cancelAllMediaOperations")
         @ExpectedResponses({ 202 })
@@ -604,16 +601,10 @@ public final class CallMediasImpl {
     }
 
     /**
-     * API to get a summary of the call so far.
+     * API to trigger a summary of the call so far.
      * 
      * @param callConnectionId The call connection id.
-     * @param summarizeCallRequestOperationContext The value to identify context of the operation.
-     * @param summarizeCallRequestOperationCallbackUri Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
-     * @param summarizeCallRequestSummarizationOptionsEnableEndCallSummary Indicating whether end call summary should be
-     * enabled.
-     * @param summarizeCallRequestSummarizationOptionsLocale Locale for summarization (e.g., en-US).
+     * @param summarizeCallRequest The SummarizeCall request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -621,26 +612,16 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> summarizeCallWithResponseAsync(String callConnectionId,
-        String summarizeCallRequestOperationContext, String summarizeCallRequestOperationCallbackUri,
-        Boolean summarizeCallRequestSummarizationOptionsEnableEndCallSummary,
-        String summarizeCallRequestSummarizationOptionsLocale) {
-        return FluxUtil.withContext(
-            context -> summarizeCallWithResponseAsync(callConnectionId, summarizeCallRequestOperationContext,
-                summarizeCallRequestOperationCallbackUri, summarizeCallRequestSummarizationOptionsEnableEndCallSummary,
-                summarizeCallRequestSummarizationOptionsLocale, context));
+        SummarizeCallRequestInternal summarizeCallRequest) {
+        return FluxUtil
+            .withContext(context -> summarizeCallWithResponseAsync(callConnectionId, summarizeCallRequest, context));
     }
 
     /**
-     * API to get a summary of the call so far.
+     * API to trigger a summary of the call so far.
      * 
      * @param callConnectionId The call connection id.
-     * @param summarizeCallRequestOperationContext The value to identify context of the operation.
-     * @param summarizeCallRequestOperationCallbackUri Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
-     * @param summarizeCallRequestSummarizationOptionsEnableEndCallSummary Indicating whether end call summary should be
-     * enabled.
-     * @param summarizeCallRequestSummarizationOptionsLocale Locale for summarization (e.g., en-US).
+     * @param summarizeCallRequest The SummarizeCall request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -649,52 +630,32 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> summarizeCallWithResponseAsync(String callConnectionId,
-        String summarizeCallRequestOperationContext, String summarizeCallRequestOperationCallbackUri,
-        Boolean summarizeCallRequestSummarizationOptionsEnableEndCallSummary,
-        String summarizeCallRequestSummarizationOptionsLocale, Context context) {
+        SummarizeCallRequestInternal summarizeCallRequest, Context context) {
         final String accept = "application/json";
-        return service.summarizeCall(this.client.getEndpoint(), callConnectionId, summarizeCallRequestOperationContext,
-            summarizeCallRequestOperationCallbackUri, summarizeCallRequestSummarizationOptionsEnableEndCallSummary,
-            summarizeCallRequestSummarizationOptionsLocale, this.client.getApiVersion(), accept, context);
+        return service.summarizeCall(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+            summarizeCallRequest, accept, context);
     }
 
     /**
-     * API to get a summary of the call so far.
+     * API to trigger a summary of the call so far.
      * 
      * @param callConnectionId The call connection id.
-     * @param summarizeCallRequestOperationContext The value to identify context of the operation.
-     * @param summarizeCallRequestOperationCallbackUri Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
-     * @param summarizeCallRequestSummarizationOptionsEnableEndCallSummary Indicating whether end call summary should be
-     * enabled.
-     * @param summarizeCallRequestSummarizationOptionsLocale Locale for summarization (e.g., en-US).
+     * @param summarizeCallRequest The SummarizeCall request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> summarizeCallAsync(String callConnectionId, String summarizeCallRequestOperationContext,
-        String summarizeCallRequestOperationCallbackUri,
-        Boolean summarizeCallRequestSummarizationOptionsEnableEndCallSummary,
-        String summarizeCallRequestSummarizationOptionsLocale) {
-        return summarizeCallWithResponseAsync(callConnectionId, summarizeCallRequestOperationContext,
-            summarizeCallRequestOperationCallbackUri, summarizeCallRequestSummarizationOptionsEnableEndCallSummary,
-            summarizeCallRequestSummarizationOptionsLocale).flatMap(ignored -> Mono.empty());
+    public Mono<Void> summarizeCallAsync(String callConnectionId, SummarizeCallRequestInternal summarizeCallRequest) {
+        return summarizeCallWithResponseAsync(callConnectionId, summarizeCallRequest).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * API to get a summary of the call so far.
+     * API to trigger a summary of the call so far.
      * 
      * @param callConnectionId The call connection id.
-     * @param summarizeCallRequestOperationContext The value to identify context of the operation.
-     * @param summarizeCallRequestOperationCallbackUri Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
-     * @param summarizeCallRequestSummarizationOptionsEnableEndCallSummary Indicating whether end call summary should be
-     * enabled.
-     * @param summarizeCallRequestSummarizationOptionsLocale Locale for summarization (e.g., en-US).
+     * @param summarizeCallRequest The SummarizeCall request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -702,26 +663,17 @@ public final class CallMediasImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> summarizeCallAsync(String callConnectionId, String summarizeCallRequestOperationContext,
-        String summarizeCallRequestOperationCallbackUri,
-        Boolean summarizeCallRequestSummarizationOptionsEnableEndCallSummary,
-        String summarizeCallRequestSummarizationOptionsLocale, Context context) {
-        return summarizeCallWithResponseAsync(callConnectionId, summarizeCallRequestOperationContext,
-            summarizeCallRequestOperationCallbackUri, summarizeCallRequestSummarizationOptionsEnableEndCallSummary,
-            summarizeCallRequestSummarizationOptionsLocale, context).flatMap(ignored -> Mono.empty());
+    public Mono<Void> summarizeCallAsync(String callConnectionId, SummarizeCallRequestInternal summarizeCallRequest,
+        Context context) {
+        return summarizeCallWithResponseAsync(callConnectionId, summarizeCallRequest, context)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * API to get a summary of the call so far.
+     * API to trigger a summary of the call so far.
      * 
      * @param callConnectionId The call connection id.
-     * @param summarizeCallRequestOperationContext The value to identify context of the operation.
-     * @param summarizeCallRequestOperationCallbackUri Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
-     * @param summarizeCallRequestSummarizationOptionsEnableEndCallSummary Indicating whether end call summary should be
-     * enabled.
-     * @param summarizeCallRequestSummarizationOptionsLocale Locale for summarization (e.g., en-US).
+     * @param summarizeCallRequest The SummarizeCall request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -730,37 +682,22 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> summarizeCallWithResponse(String callConnectionId,
-        String summarizeCallRequestOperationContext, String summarizeCallRequestOperationCallbackUri,
-        Boolean summarizeCallRequestSummarizationOptionsEnableEndCallSummary,
-        String summarizeCallRequestSummarizationOptionsLocale, Context context) {
-        return summarizeCallWithResponseAsync(callConnectionId, summarizeCallRequestOperationContext,
-            summarizeCallRequestOperationCallbackUri, summarizeCallRequestSummarizationOptionsEnableEndCallSummary,
-            summarizeCallRequestSummarizationOptionsLocale, context).block();
+        SummarizeCallRequestInternal summarizeCallRequest, Context context) {
+        return summarizeCallWithResponseAsync(callConnectionId, summarizeCallRequest, context).block();
     }
 
     /**
-     * API to get a summary of the call so far.
+     * API to trigger a summary of the call so far.
      * 
      * @param callConnectionId The call connection id.
-     * @param summarizeCallRequestOperationContext The value to identify context of the operation.
-     * @param summarizeCallRequestOperationCallbackUri Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
-     * @param summarizeCallRequestSummarizationOptionsEnableEndCallSummary Indicating whether end call summary should be
-     * enabled.
-     * @param summarizeCallRequestSummarizationOptionsLocale Locale for summarization (e.g., en-US).
+     * @param summarizeCallRequest The SummarizeCall request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void summarizeCall(String callConnectionId, String summarizeCallRequestOperationContext,
-        String summarizeCallRequestOperationCallbackUri,
-        Boolean summarizeCallRequestSummarizationOptionsEnableEndCallSummary,
-        String summarizeCallRequestSummarizationOptionsLocale) {
-        summarizeCallWithResponse(callConnectionId, summarizeCallRequestOperationContext,
-            summarizeCallRequestOperationCallbackUri, summarizeCallRequestSummarizationOptionsEnableEndCallSummary,
-            summarizeCallRequestSummarizationOptionsLocale, Context.NONE);
+    public void summarizeCall(String callConnectionId, SummarizeCallRequestInternal summarizeCallRequest) {
+        summarizeCallWithResponse(callConnectionId, summarizeCallRequest, Context.NONE);
     }
 
     /**

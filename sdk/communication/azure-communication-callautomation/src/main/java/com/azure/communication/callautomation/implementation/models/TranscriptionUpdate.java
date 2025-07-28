@@ -29,6 +29,12 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
     @Generated
     private TranscriptionStatusDetails transcriptionStatusDetails;
 
+    /*
+     * The message property.
+     */
+    @Generated
+    private String message;
+
     /**
      * Creates an instance of TranscriptionUpdate class.
      */
@@ -81,6 +87,28 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
     }
 
     /**
+     * Get the message property: The message property.
+     * 
+     * @return the message value.
+     */
+    @Generated
+    public String getMessage() {
+        return this.message;
+    }
+
+    /**
+     * Set the message property: The message property.
+     * 
+     * @param message the message value to set.
+     * @return the TranscriptionUpdate object itself.
+     */
+    @Generated
+    public TranscriptionUpdate setMessage(String message) {
+        this.message = message;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -91,6 +119,7 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
             this.transcriptionStatus == null ? null : this.transcriptionStatus.toString());
         jsonWriter.writeStringField("transcriptionStatusDetails",
             this.transcriptionStatusDetails == null ? null : this.transcriptionStatusDetails.toString());
+        jsonWriter.writeStringField("message", this.message);
         return jsonWriter.writeEndObject();
     }
 
@@ -116,6 +145,8 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
                 } else if ("transcriptionStatusDetails".equals(fieldName)) {
                     deserializedTranscriptionUpdate.transcriptionStatusDetails
                         = TranscriptionStatusDetails.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedTranscriptionUpdate.message = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

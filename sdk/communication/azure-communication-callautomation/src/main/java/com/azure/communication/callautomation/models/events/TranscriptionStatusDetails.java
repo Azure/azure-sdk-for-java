@@ -56,6 +56,16 @@ public final class TranscriptionStatusDetails extends ExpandableStringEnum<Trans
     public static final TranscriptionStatusDetails SUBSCRIPTION_STOPPED = fromString("subscriptionStopped");
 
     /**
+    * Static value callSummarySuccess for TranscriptionStatusDetails.
+    */
+    public static final TranscriptionStatusDetails CALL_SUMMARY_SUCCESS = fromString("callSummarySuccess");
+
+    /**
+     * Static value callSummaryFailure for TranscriptionStatusDetails.
+     */
+    public static final TranscriptionStatusDetails CALL_SUMMARY_FAILURE = fromString("callSummaryFailure");
+
+    /**
      * Static value unspecifiedError for TranscriptionStatusDetails.
      */
     public static final TranscriptionStatusDetails UNSPECIFIED_ERROR = fromString("unspecifiedError");

@@ -344,11 +344,12 @@ public final class CallMedia {
      * Summarize call details.
      *
      * @param options Options for the summarize call operation.
+     * @param context Context
      * @return Response for successful summarize call request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> summarizeCallWithResponse(SummarizeCallOptions options) {
-        return callMediaAsync.summarizeCallWithResponseInternal(options).block();
+    public Response<Void> summarizeCallWithResponse(SummarizeCallOptions options, Context context) {
+        return callMediaAsync.summarizeCallWithResponseInternal(options, context).block();
     }
 
     /**

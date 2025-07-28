@@ -43,6 +43,7 @@ import com.azure.communication.callautomation.models.events.RemoveParticipantSuc
 import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
 import com.azure.communication.callautomation.models.events.StartRecordingFailed;
+import com.azure.communication.callautomation.models.events.TranscriptionCallSummaryUpdate;
 import com.azure.communication.callautomation.models.events.TranscriptionFailed;
 import com.azure.communication.callautomation.models.events.TranscriptionResumed;
 import com.azure.communication.callautomation.models.events.TranscriptionStarted;
@@ -164,6 +165,8 @@ public final class CallAutomationEventParser {
                 ret = TranscriptionStopped.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionUpdated")) {
                 ret = TranscriptionUpdated.fromJson(jsonReader);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionCallSummaryUpdate")) {
+                ret = TranscriptionCallSummaryUpdate.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.AnswerFailed")) {
                 ret = AnswerFailed.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CreateCallFailed")) {

@@ -34,6 +34,7 @@ import com.azure.communication.callautomation.implementation.models.StartTranscr
 import com.azure.communication.callautomation.implementation.models.StopMediaStreamingRequest;
 import com.azure.communication.callautomation.implementation.models.StopTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.SummarizationOptionsInternal;
+import com.azure.communication.callautomation.implementation.models.SummarizeCallRequestInternal;
 // import com.azure.communication.callautomation.implementation.models.SummarizeCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
 import com.azure.communication.callautomation.implementation.models.UnholdRequest;
@@ -1014,28 +1015,24 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> summarizeCallWithResponse(SummarizeCallOptions options) {
-        return summarizeCallWithResponseInternal(options);
+        return withContext(context -> summarizeCallWithResponseInternal(options, context));
     }
 
-    Mono<Response<Void>> summarizeCallWithResponseInternal(SummarizeCallOptions options) {
+    Mono<Response<Void>> summarizeCallWithResponseInternal(SummarizeCallOptions options, Context context) {
         try {
-            // SummarizeCallRequestInternal request = new SummarizeCallRequestInternal();
-            // if (options != null) {
-            //     request.setOperationContext(options.getOperationContext());
-            //     request.setOperationCallbackUri(options.getOperationCallbackUrl());
-            //     if(options.getSummarizationOptions() != null){
-            //         SummarizationOptionsInternal summarizationOptionsInternal = new SummarizationOptionsInternal();
-            //         summarizationOptionsInternal.setEnableEndCallSummary(options.getSummarizationOptions().isEnableEndCallSummary());
-            //         summarizationOptionsInternal.setLocale(options.getSummarizationOptions().getLocale());
-            //     }
-            // }
-            return contentsInternal.summarizeCallWithResponseAsync(callConnectionId,
-                options.getOperationContext() != null ? options.getOperationContext() : null,
-                options.getOperationCallbackUrl() != null ? options.getOperationCallbackUrl() : null,
-                options.getSummarizationOptions().isEnableEndCallSummary(),
-                options.getSummarizationOptions().getLocale() != null
-                    ? options.getSummarizationOptions().getLocale()
-                    : null);
+            context = context == null ? Context.NONE : context;
+            SummarizeCallRequestInternal request = new SummarizeCallRequestInternal();
+            if (options != null) {
+                request.setOperationContext(options.getOperationContext());
+                request.setOperationCallbackUri(options.getOperationCallbackUrl());
+                if (options.getSummarizationOptions() != null) {
+                    SummarizationOptionsInternal summarizationOptionsInternal = new SummarizationOptionsInternal();
+                    summarizationOptionsInternal
+                        .setEnableEndCallSummary(options.getSummarizationOptions().isEnableEndCallSummary());
+                    summarizationOptionsInternal.setLocale(options.getSummarizationOptions().getLocale());
+                }
+            }
+            return contentsInternal.summarizeCallWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

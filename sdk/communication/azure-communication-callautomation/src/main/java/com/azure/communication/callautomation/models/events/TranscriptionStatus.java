@@ -37,6 +37,12 @@ public final class TranscriptionStatus extends ExpandableStringEnum<Transcriptio
     public static final TranscriptionStatus TRANSCRIPTION_STOPPED = fromString("transcriptionStopped");
 
     /**
+     * Static value callSummaryUpdate for TranscriptionStatus.
+     */
+
+    public static final TranscriptionStatus CALL_SUMMARY_UPDATE = fromString("callSummaryUpdate");
+
+    /**
      * Static value unspecifiedError for TranscriptionStatus.
      */
     public static final TranscriptionStatus UNSPECIFIED_ERROR = fromString("unspecifiedError");

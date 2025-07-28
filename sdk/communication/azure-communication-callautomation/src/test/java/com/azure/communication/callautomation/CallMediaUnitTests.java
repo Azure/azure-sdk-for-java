@@ -273,7 +273,7 @@ public class CallMediaUnitTests {
         summarizationOptions.setLocale("en-us");
         options.setSummarizationOptions(summarizationOptions);
 
-        Response<Void> response = callMedia.summarizeCallWithResponse(options);
+        Response<Void> response = callMedia.summarizeCallWithResponse(options, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
