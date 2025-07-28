@@ -12,7 +12,6 @@ import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
-import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
@@ -21,18 +20,19 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.TypeUtil;
+import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.CoreException;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.utils.ExpandableEnum;
 import io.clientcore.core.utils.UriBuilder;
-import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.serialization.SerializationFormat;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,12 +48,9 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -65,22 +62,15 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * {@link RestProxy}.
  */
 public class SwaggerMethodParser implements HttpResponseDecodeData {
-    // TODO (alzimmer): There are many optimizations available to SwaggerMethodParser with regards to runtime.
-    // The replacement locations and parameter ordering should remain consistent for the lifetime of an application,
-    // so these values can be determined once and used for optimizations.
-    // For example substitutions should be able to track which location in the raw value they replace without needing
-    // to search the raw value on each call.
-    private final String rawHost;
     private final String fullyQualifiedMethodName;
     private final ClientLogger logger;
     private final HttpMethod httpMethod;
-    private final String relativePath;
-    private final Map<String, List<String>> queryParams = new LinkedHashMap<>();
-    final List<RangeReplaceSubstitution> hostSubstitutions = new ArrayList<>();
-    private final List<RangeReplaceSubstitution> pathSubstitutions = new ArrayList<>();
-    private final List<QuerySubstitution> querySubstitutions = new ArrayList<>();
-    private final List<Substitution> formSubstitutions = new ArrayList<>();
-    private final List<HeaderSubstitution> headerSubstitutions = new ArrayList<>();
+    private final List<UrlSegment> hostTemplate;
+    private final List<UrlSegment> pathTemplate;
+    private final List<FormParameterSerializer> formParameterSerializers;
+    private final List<QueryParameterProcessor> queryParameterProcessors;
+    private final List<HeaderProcessor> headerProcessors;
+    private final String staticQueryParams;
     private final HttpHeaders requestHeaders = new HttpHeaders();
     private final Integer bodyContentMethodParameterIndex;
     private final String bodyContentType;
@@ -107,7 +97,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     SwaggerMethodParser(SwaggerInterfaceParser interfaceParser, Method swaggerMethod) {
-        this.rawHost = interfaceParser.getHost();
+        final String rawHost = interfaceParser.getHost();
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
         fullyQualifiedMethodName = swaggerInterface.getName() + "." + swaggerMethod.getName();
         logger = new ClientLogger(fullyQualifiedMethodName);
@@ -121,7 +111,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         HttpRequestInformation httpRequestInformation = swaggerMethod.getAnnotation(HttpRequestInformation.class);
 
         this.httpMethod = httpRequestInformation.method();
-        this.relativePath = httpRequestInformation.path();
+        final String relativePath = httpRequestInformation.path();
 
         returnType = swaggerMethod.getGenericReturnType();
 
@@ -154,6 +144,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         final String[] requestQueryParams = httpRequestInformation.queryParams();
 
         if (requestQueryParams != null) {
+            // Use a temporary UriBuilder to correctly format the static query part.
+            UriBuilder staticUriBuilder = new UriBuilder();
             for (final String queryParam : requestQueryParams) {
                 if (isNullOrEmpty(queryParam)) {
                     throw new IllegalStateException("Query parameters cannot be null or empty.");
@@ -176,23 +168,14 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 } else {
                     // No equals sign was found, so the entire string is considered the name of the query parameter.
                     paramName = UriEscapers.QUERY_ESCAPER.escape(queryParam);
-                    paramValue = null;
+                    paramValue = "";
                 }
 
-                List<String> currentValues = queryParams.get(paramName);
-
-                if (!isNullOrEmpty(paramValue)) {
-                    if (currentValues == null) {
-                        currentValues = new ArrayList<>();
-                    }
-
-                    currentValues.add(paramValue);
-
-                    queryParams.put(paramName, currentValues);
-                } else {
-                    queryParams.put(paramName, null);
-                }
+                staticUriBuilder.addQueryParameter(paramName, paramValue);
             }
+            this.staticQueryParams = staticUriBuilder.getQueryString();
+        } else {
+            this.staticQueryParams = null;
         }
 
         Class<?> returnValueWireType = httpRequestInformation.returnValueWireType();
@@ -225,32 +208,43 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         Type bodyJavaType = null;
         final Annotation[][] allParametersAnnotations = swaggerMethod.getParameterAnnotations();
 
+        List<RangeReplaceSubstitution> pathSubstitutions = new ArrayList<>();
+        List<RangeReplaceSubstitution> hostSubstitutions = new ArrayList<>();
+        List<Substitution> formSubstitutions = new ArrayList<>();
+        List<QueryParameterProcessor> queryProcessors = new ArrayList<>();
+        List<HeaderProcessor> headerProcessors = new ArrayList<>();
+
         for (int parameterIndex = 0; parameterIndex < allParametersAnnotations.length; ++parameterIndex) {
             final Annotation[] parameterAnnotations = swaggerMethod.getParameterAnnotations()[parameterIndex];
+            Type parameterType = swaggerMethod.getGenericParameterTypes()[parameterIndex];
 
             for (final Annotation annotation : parameterAnnotations) {
                 final Class<? extends Annotation> annotationType = annotation.annotationType();
 
                 if (annotationType.equals(HostParam.class)) {
                     final HostParam hostParamAnnotation = (HostParam) annotation;
-
                     hostSubstitutions.add(new RangeReplaceSubstitution(hostParamAnnotation.value(), parameterIndex,
                         !hostParamAnnotation.encoded(), rawHost));
                 } else if (annotationType.equals(PathParam.class)) {
                     final PathParam pathParamAnnotation = (PathParam) annotation;
-
                     pathSubstitutions.add(new RangeReplaceSubstitution(pathParamAnnotation.value(), parameterIndex,
                         !pathParamAnnotation.encoded(), relativePath));
                 } else if (annotationType.equals(QueryParam.class)) {
                     final QueryParam queryParamAnnotation = (QueryParam) annotation;
-
-                    querySubstitutions.add(new QuerySubstitution(queryParamAnnotation.value(), parameterIndex,
-                        !queryParamAnnotation.encoded(), queryParamAnnotation.multipleQueryParams()));
+                    if (queryParamAnnotation.multipleQueryParams()) {
+                        queryProcessors.add(new ListQueryParameterProcessor(queryParamAnnotation.value(), parameterIndex,
+                            !queryParamAnnotation.encoded()));
+                    } else {
+                        queryProcessors.add(new SingleQueryParameterProcessor(queryParamAnnotation.value(), parameterIndex,
+                            !queryParamAnnotation.encoded()));
+                    }
                 } else if (annotationType.equals(HeaderParam.class)) {
                     final HeaderParam headerParamAnnotation = (HeaderParam) annotation;
-
-                    headerSubstitutions
-                        .add(new HeaderSubstitution(headerParamAnnotation.value(), parameterIndex, false));
+                    if (TypeUtil.isTypeOrSubTypeOf(parameterType, Map.class)) {
+                        headerProcessors.add(new HeaderMapProcessor(headerParamAnnotation.value(), parameterIndex));
+                    } else {
+                        headerProcessors.add(new SimpleHeaderProcessor(headerParamAnnotation.value(), parameterIndex));
+                    }
                 } else if (annotationType.equals(BodyParam.class)) {
                     final BodyParam bodyParamAnnotation = (BodyParam) annotation;
                     bodyContentMethodParameterIndex = parameterIndex;
@@ -258,7 +252,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                     bodyJavaType = swaggerMethod.getGenericParameterTypes()[parameterIndex];
                 } else if (annotationType.equals(FormParam.class)) {
                     final FormParam formParamAnnotation = (FormParam) annotation;
-
                     formSubstitutions.add(
                         new Substitution(formParamAnnotation.value(), parameterIndex, !formParamAnnotation.encoded()));
 
@@ -267,6 +260,25 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 }
             }
         }
+
+        this.queryParameterProcessors = Collections.unmodifiableList(queryProcessors);
+        this.headerProcessors = Collections.unmodifiableList(headerProcessors);
+
+        final Map<String, Integer> hostPlaceholderArgs = new HashMap<>();
+        final Map<String, Boolean> hostPlaceholderEncodes = new HashMap<>();
+        for (RangeReplaceSubstitution sub : hostSubstitutions) {
+            hostPlaceholderArgs.put(sub.getUriParameterName(), sub.getMethodParameterIndex());
+            hostPlaceholderEncodes.put(sub.getUriParameterName(), sub.shouldEncode());
+        }
+        this.hostTemplate = parseUrlTemplate(rawHost, hostPlaceholderArgs, hostPlaceholderEncodes);
+
+        final Map<String, Integer> pathPlaceholderArgs = new HashMap<>();
+        final Map<String, Boolean> pathPlaceholderEncodes = new HashMap<>();
+        for (RangeReplaceSubstitution sub : pathSubstitutions) {
+            pathPlaceholderArgs.put(sub.getUriParameterName(), sub.getMethodParameterIndex());
+            pathPlaceholderEncodes.put(sub.getUriParameterName(), sub.shouldEncode());
+        }
+        this.pathTemplate = parseUrlTemplate(relativePath, pathPlaceholderArgs, pathPlaceholderEncodes);
 
         this.bodyContentMethodParameterIndex = bodyContentMethodParameterIndex;
         this.bodyContentType = bodyContentType;
@@ -292,6 +304,73 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(Response.class, returnType);
         Type unwrappedReturnType = unwrapReturnType(returnType);
         this.returnTypeDecodable = isReturnTypeDecodable(unwrappedReturnType);
+
+        if (!formSubstitutions.isEmpty()) {
+            List<FormParameterSerializer> serializers = new ArrayList<>();
+            for (Substitution substitution : formSubstitutions) {
+                serializers.add(new FormParameterSerializer(
+                    substitution.getUriParameterName(),
+                    substitution.getMethodParameterIndex(),
+                    substitution.shouldEncode()));
+            }
+            this.formParameterSerializers = Collections.unmodifiableList(serializers);
+        } else {
+            this.formParameterSerializers = null;
+        }
+    }
+
+    private static List<UrlSegment> parseUrlTemplate(String template, Map<String, Integer> placeholderArgs,
+        Map<String, Boolean> placeholderEncodes) {
+        if (isNullOrEmpty(template)) {
+            return Collections.emptyList();
+        }
+
+        List<UrlSegment> segments = new ArrayList<>();
+        int lastIndex = 0;
+        int openBraceIndex = template.indexOf('{');
+
+        while (openBraceIndex != -1) {
+            int closeBraceIndex = template.indexOf('}', openBraceIndex);
+            if (closeBraceIndex == -1) {
+                // Unmatched brace, treat the rest as a literal.
+                break;
+            }
+
+            // Add the literal part before the placeholder.
+            if (openBraceIndex > lastIndex) {
+                segments.add(new StaticSegment(template.substring(lastIndex, openBraceIndex)));
+            }
+
+            // Add the placeholder segment.
+            String placeholderName = template.substring(openBraceIndex + 1, closeBraceIndex);
+            if (placeholderArgs.containsKey(placeholderName)) {
+                int argIndex = placeholderArgs.get(placeholderName);
+                boolean shouldEncode = placeholderEncodes.get(placeholderName);
+                String fullPlaceholderText = template.substring(openBraceIndex, closeBraceIndex + 1);
+                segments.add(new PlaceholderSegment(argIndex, shouldEncode, fullPlaceholderText));
+            } else {
+                // Placeholder isn't found in args, treat it as a literal.
+                segments.add(new StaticSegment(template.substring(openBraceIndex, closeBraceIndex + 1)));
+            }
+
+            lastIndex = closeBraceIndex + 1;
+            openBraceIndex = template.indexOf('{', lastIndex);
+        }
+
+        // Add any remaining literal text after the last placeholder.
+        if (lastIndex < template.length()) {
+            segments.add(new StaticSegment(template.substring(lastIndex)));
+        }
+
+        return segments;
+    }
+
+    private String buildFromTemplate(List<UrlSegment> template, Object[] methodArguments, CompositeSerializer serializer) {
+        StringBuilder builder = new StringBuilder();
+        for (UrlSegment segment : template) {
+            segment.appendTo(builder, methodArguments, serializer);
+        }
+        return builder.toString();
     }
 
     /**
@@ -328,15 +407,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @param uriBuilder The {@link UriBuilder} that will have its scheme and host set.
      * @param serializer {@link CompositeSerializer} that is used to encode host substitutions.
      */
-    public void setSchemeAndHost(Object[] swaggerMethodArguments, UriBuilder uriBuilder,
-        CompositeSerializer serializer) {
-        setSchemeAndHost(rawHost, hostSubstitutions, swaggerMethodArguments, uriBuilder, serializer);
-    }
-
-    static void setSchemeAndHost(String rawHost, List<RangeReplaceSubstitution> hostSubstitutions,
-        Object[] swaggerMethodArguments, UriBuilder uriBuilder, CompositeSerializer serializer) {
-        final String substitutedHost
-            = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments, serializer);
+    public void setSchemeAndHost(Object[] swaggerMethodArguments, UriBuilder uriBuilder, CompositeSerializer serializer) {
+        final String substitutedHost = buildFromTemplate(hostTemplate, swaggerMethodArguments, serializer);
         int index = substitutedHost.indexOf("://");
 
         if (index == -1) {
@@ -363,7 +435,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return The path value with its placeholders replaced by the matching substitutions.
      */
     public String setPath(Object[] methodArguments, CompositeSerializer serializer) {
-        return applySubstitutions(relativePath, pathSubstitutions, methodArguments, serializer);
+        return buildFromTemplate(pathTemplate, methodArguments, serializer);
     }
 
     /**
@@ -374,44 +446,19 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @param uriBuilder The {@link UriBuilder} where the encoded query parameters will be set.
      * @param serializer {@link CompositeSerializer} that is used to encode the query parameters.
      */
-    @SuppressWarnings("unchecked")
     public void setEncodedQueryParameters(Object[] swaggerMethodArguments, UriBuilder uriBuilder,
         CompositeSerializer serializer) {
-        // First we add the constant query parameters.
-        for (Map.Entry<String, List<String>> entry : queryParams.entrySet()) {
-            if (entry.getValue() == null || entry.getValue().isEmpty()) {
-                uriBuilder.addQueryParameter(entry.getKey(), null);
-            } else {
-                for (String paramValue : entry.getValue()) {
-                    uriBuilder.addQueryParameter(entry.getKey(), paramValue);
-                }
-            }
+        // First, we add the constant query parameters.
+        if (!isNullOrEmpty(staticQueryParams)) {
+            uriBuilder.setQuery(staticQueryParams);
         }
 
         if (swaggerMethodArguments == null) {
             return;
         }
 
-        // Then we add query parameters passed as arguments to the request method. If any of them share a name with the
-        // constant query parameters, the constant query parameter will be overwritten.
-        for (QuerySubstitution substitution : querySubstitutions) {
-            final int parameterIndex = substitution.getMethodParameterIndex();
-
-            if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
-                final Object methodArgument = swaggerMethodArguments[substitution.getMethodParameterIndex()];
-
-                if (substitution.mergeParameters() && methodArgument instanceof List) {
-                    List<Object> methodArguments = (List<Object>) methodArgument;
-
-                    for (Object argument : methodArguments) {
-                        addSerializedQueryParameter(serializer, argument, substitution.shouldEncode(), uriBuilder,
-                            substitution.getUriParameterName());
-                    }
-                } else {
-                    addSerializedQueryParameter(serializer, methodArgument, substitution.shouldEncode(), uriBuilder,
-                        substitution.getUriParameterName());
-                }
-            }
+        for (QueryParameterProcessor processor : queryParameterProcessors) {
+            processor.process(swaggerMethodArguments, uriBuilder, serializer);
         }
     }
 
@@ -430,33 +477,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             return;
         }
 
-        for (HeaderSubstitution headerSubstitution : headerSubstitutions) {
-            final int parameterIndex = headerSubstitution.getMethodParameterIndex();
-
-            if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
-                final Object methodArgument = swaggerMethodArguments[headerSubstitution.getMethodParameterIndex()];
-
-                if (methodArgument instanceof Map) {
-                    @SuppressWarnings("unchecked")
-                    final Map<HttpHeaderName, ?> headerCollection = (Map<HttpHeaderName, ?>) methodArgument;
-                    final String headerCollectionPrefix = headerSubstitution.getUriParameterName();
-
-                    for (final Map.Entry<HttpHeaderName, ?> headerCollectionEntry : headerCollection.entrySet()) {
-                        final String headerName = headerCollectionPrefix + headerCollectionEntry.getKey();
-                        final String headerValue = serialize(serializer, headerCollectionEntry.getValue());
-
-                        if (headerValue != null) {
-                            headers.set(HttpHeaderName.fromString(headerName), headerValue);
-                        }
-                    }
-                } else {
-                    final String headerValue = serialize(serializer, methodArgument);
-
-                    if (headerValue != null) {
-                        headers.set(headerSubstitution.getHeaderName(), headerValue);
-                    }
-                }
-            }
+        for (HeaderProcessor processor : headerProcessors) {
+            processor.process(swaggerMethodArguments, headers, serializer);
         }
     }
 
@@ -533,25 +555,26 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return The object that will be used as the body of the HTTP request.
      */
     public Object setBody(Object[] swaggerMethodArguments, CompositeSerializer serializer) {
-        Object result = null;
+        if (this.formParameterSerializers != null) {
+            if (swaggerMethodArguments == null) {
+                return null;
+            }
+
+            return formParameterSerializers.stream()
+                .map(fps -> fps.serialize(swaggerMethodArguments, serializer))
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining("&"));
+        }
 
         if (bodyContentMethodParameterIndex != null
             && swaggerMethodArguments != null
             && 0 <= bodyContentMethodParameterIndex
             && bodyContentMethodParameterIndex < swaggerMethodArguments.length) {
 
-            result = swaggerMethodArguments[bodyContentMethodParameterIndex];
+            return swaggerMethodArguments[bodyContentMethodParameterIndex];
         }
 
-        if (!isNullOrEmpty(formSubstitutions) && swaggerMethodArguments != null) {
-            result = formSubstitutions.stream()
-                .map(substitution -> serializeFormData(serializer, substitution.getUriParameterName(),
-                    swaggerMethodArguments[substitution.getMethodParameterIndex()], substitution.shouldEncode()))
-                .filter(Objects::nonNull)
-                .collect(Collectors.joining("&"));
-        }
-
-        return result;
+        return null;
     }
 
     /**
@@ -639,25 +662,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
     }
 
-    private static String serializeFormData(CompositeSerializer serializer, String key, Object value,
-        boolean shouldEncode) {
-        if (value == null) {
-            return null;
-        }
-
-        String encodedKey = UriEscapers.FORM_ESCAPER.escape(key);
-
-        if (value instanceof List<?>) {
-            return ((List<?>) value).stream()
-                .map(element -> serializeAndEncodeFormValue(serializer, element, shouldEncode))
-                .filter(Objects::nonNull)
-                .map(formValue -> encodedKey + "=" + formValue)
-                .collect(Collectors.joining("&"));
-        } else {
-            return encodedKey + "=" + serializeAndEncodeFormValue(serializer, value, shouldEncode);
-        }
-    }
-
     private static String serializeAndEncodeFormValue(CompositeSerializer serializer, Object value,
         boolean shouldEncode) {
         if (value == null) {
@@ -667,61 +671,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         String serializedValue = serialize(serializer, value);
 
         return shouldEncode ? UriEscapers.FORM_ESCAPER.escape(serializedValue) : serializedValue;
-    }
-
-    private static String applySubstitutions(String originalValue, List<RangeReplaceSubstitution> substitutions,
-        Object[] methodArguments, CompositeSerializer serializer) {
-        if (methodArguments == null || isNullOrEmpty(substitutions)) {
-            return originalValue;
-        }
-
-        int originalSize = originalValue.length();
-        int substitutionSize = originalSize;
-        SortedMap<RangeReplaceSubstitution.Range, String> replacements = new TreeMap<>();
-
-        for (RangeReplaceSubstitution substitution : substitutions) {
-            final int substitutionParameterIndex = substitution.getMethodParameterIndex();
-
-            if (substitutionParameterIndex >= 0 && substitutionParameterIndex < methodArguments.length) {
-                final Object methodArgument = methodArguments[substitutionParameterIndex];
-
-                String substitutionValue = serialize(serializer, methodArgument);
-
-                if (substitutionValue != null && !substitutionValue.isEmpty() && substitution.shouldEncode()) {
-                    substitutionValue = UriEscapers.PATH_ESCAPER.escape(substitutionValue);
-                }
-                // if a parameter is null, we treat it as empty string. This is
-                // assuming no {...} will be allowed otherwise in a path template
-                if (substitutionValue == null) {
-                    substitutionValue = "";
-                }
-
-                for (RangeReplaceSubstitution.Range range : substitution.getRanges()) {
-                    substitutionSize += substitutionValue.length() - range.getSize();
-
-                    replacements.put(range, substitutionValue);
-                }
-            }
-        }
-
-        int last = 0;
-        StringBuilder builder = new StringBuilder(substitutionSize);
-
-        for (Map.Entry<RangeReplaceSubstitution.Range, String> replacement : replacements.entrySet()) {
-            if (last < replacement.getKey().getStart()) {
-                builder.append(originalValue, last, replacement.getKey().getStart());
-            }
-
-            builder.append(replacement.getValue());
-
-            last = replacement.getKey().getEnd();
-        }
-
-        if (last < originalSize) {
-            builder.append(originalValue, last, originalSize);
-        }
-
-        return builder.toString();
     }
 
     private Map<Integer, UnexpectedExceptionInformation> processUnexpectedResponseExceptionTypes() {
@@ -798,5 +747,244 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         return type;
+    }
+
+    /**
+     * An interface representing a segment of a URL template that can be appended to a StringBuilder.
+     */
+    private interface UrlSegment {
+        /**
+         * Appends the segment's value to the StringBuilder.
+         *
+         * @param builder The StringBuilder to append to.
+         * @param methodArguments The arguments passed to the Swagger method.
+         * @param serializer The serializer used for converting arguments to strings.
+         */
+        void appendTo(StringBuilder builder, Object[] methodArguments, CompositeSerializer serializer);
+    }
+
+    /**
+     * A UrlSegment that represents a static, literal part of the URL.
+     */
+    private static class StaticSegment implements UrlSegment {
+        private final String text;
+
+        StaticSegment(String text) {
+            this.text = text;
+        }
+
+        @Override
+        public void appendTo(StringBuilder builder, Object[] methodArguments, CompositeSerializer serializer) {
+            builder.append(text);
+        }
+    }
+
+    /**
+     * A UrlSegment that represents a dynamic placeholder that will be replaced with a method argument.
+     */
+    private static class PlaceholderSegment implements UrlSegment {
+        private final int argumentIndex;
+        private final boolean shouldEncode;
+        private final String placeholderText; // The original text
+
+        PlaceholderSegment(int argumentIndex, boolean shouldEncode, String placeholderText) {
+            this.argumentIndex = argumentIndex;
+            this.shouldEncode = shouldEncode;
+            this.placeholderText = placeholderText;
+        }
+
+        @Override
+        public void appendTo(StringBuilder builder, Object[] methodArguments, CompositeSerializer serializer) {
+            if (methodArguments == null || argumentIndex < 0 || argumentIndex >= methodArguments.length) {
+                builder.append(this.placeholderText);
+                return;
+            }
+
+            final Object methodArgument = methodArguments[argumentIndex];
+            String substitutionValue = serialize(serializer, methodArgument);
+
+            if (substitutionValue != null && !substitutionValue.isEmpty() && shouldEncode) {
+                substitutionValue = UriEscapers.PATH_ESCAPER.escape(substitutionValue);
+            }
+            // If a parameter is null, we treat it as empty string. This is
+            // assuming no {...} will be allowed otherwise in a path template
+            if (substitutionValue == null) {
+                substitutionValue = "";
+            }
+
+            builder.append(substitutionValue);
+        }
+    }
+
+    /**
+     * Handles the serialization of a single form parameter, including list expansion and null-value skipping.
+     */
+    private static class FormParameterSerializer {
+        private final String parameterName;
+        private final int argumentIndex;
+        private final boolean shouldEncode;
+
+        FormParameterSerializer(String parameterName, int argumentIndex, boolean shouldEncode) {
+            this.parameterName = parameterName;
+            this.argumentIndex = argumentIndex;
+            this.shouldEncode = shouldEncode;
+        }
+
+        /**
+         * Serializes the method argument into a URL-encoded form string.
+         *
+         * @param methodArguments The arguments passed to the Swagger method.
+         * @param serializer The serializer for converting values.
+         * @return The serialized form parameter string, or null if the argument is null.
+         */
+        String serialize(Object[] methodArguments, CompositeSerializer serializer) {
+            if (methodArguments == null || argumentIndex < 0 || argumentIndex >= methodArguments.length) {
+                return null;
+            }
+
+            final Object methodArgument = methodArguments[argumentIndex];
+            if (methodArgument == null) {
+                return null;
+            }
+
+            String encodedKey = UriEscapers.FORM_ESCAPER.escape(parameterName);
+
+            if (methodArgument instanceof List) {
+                List<?> valueAsList = (List<?>) methodArgument;
+                List<String> parts = new ArrayList<>();
+                for (Object element : valueAsList) {
+                    if (element != null) {
+                        String formValue = serializeAndEncodeFormValue(serializer, element, shouldEncode);
+                        parts.add(encodedKey + "=" + formValue);
+                    }
+                }
+
+                return parts.isEmpty() ? null : String.join("&", parts);
+            } else {
+                String formValue = serializeAndEncodeFormValue(serializer, methodArgument, shouldEncode);
+                return encodedKey + "=" + formValue;
+            }
+        }
+    }
+
+    /**
+     * An interface for processing a query parameter.
+     */
+    private interface QueryParameterProcessor {
+        void process(Object[] methodArguments, UriBuilder uriBuilder, CompositeSerializer serializer);
+    }
+
+    /**
+     * An interface for processing a header parameter.
+     */
+    private interface HeaderProcessor {
+        void process(Object[] methodArguments, HttpHeaders headers, CompositeSerializer serializer);
+    }
+
+    /**
+     * Processes a single, non-list query parameter.
+     */
+    private static class SingleQueryParameterProcessor implements QueryParameterProcessor {
+        private final String parameterName;
+        private final int argumentIndex;
+        private final boolean shouldEncode;
+
+        SingleQueryParameterProcessor(String parameterName, int argumentIndex, boolean shouldEncode) {
+            this.parameterName = parameterName;
+            this.argumentIndex = argumentIndex;
+            this.shouldEncode = shouldEncode;
+        }
+
+        @Override
+        public void process(Object[] methodArguments, UriBuilder uriBuilder, CompositeSerializer serializer) {
+            if (argumentIndex >= 0 && argumentIndex < methodArguments.length) {
+                addSerializedQueryParameter(serializer, methodArguments[argumentIndex], shouldEncode, uriBuilder, parameterName);
+            }
+        }
+    }
+
+    /**
+     * Processes a list-based query parameter.
+     */
+    private static class ListQueryParameterProcessor implements QueryParameterProcessor {
+        private final String parameterName;
+        private final int argumentIndex;
+        private final boolean shouldEncode;
+
+        ListQueryParameterProcessor(String parameterName, int argumentIndex, boolean shouldEncode) {
+            this.parameterName = parameterName;
+            this.argumentIndex = argumentIndex;
+            this.shouldEncode = shouldEncode;
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public void process(Object[] methodArguments, UriBuilder uriBuilder, CompositeSerializer serializer) {
+            if (argumentIndex >= 0 && argumentIndex < methodArguments.length) {
+                final Object methodArgument = methodArguments[argumentIndex];
+                if (methodArgument instanceof List) {
+                    for (Object element : (List<Object>) methodArgument) {
+                        addSerializedQueryParameter(serializer, element, shouldEncode, uriBuilder, parameterName);
+                    }
+                } else {
+                    addSerializedQueryParameter(serializer, methodArgument, shouldEncode, uriBuilder, parameterName);
+                }
+            }
+        }
+    }
+
+    /**
+     * Processes a single, non-map header.
+     */
+    private static class SimpleHeaderProcessor implements HeaderProcessor {
+        private final HttpHeaderName headerName;
+        private final int argumentIndex;
+
+        SimpleHeaderProcessor(String headerName, int argumentIndex) {
+            this.headerName = HttpHeaderName.fromString(headerName);
+            this.argumentIndex = argumentIndex;
+        }
+
+        @Override
+        public void process(Object[] methodArguments, HttpHeaders headers, CompositeSerializer serializer) {
+            if (argumentIndex >= 0 && argumentIndex < methodArguments.length) {
+                final String headerValue = serialize(serializer, methodArguments[argumentIndex]);
+                if (headerValue != null) {
+                    headers.set(headerName, headerValue);
+                }
+            }
+        }
+    }
+
+    /**
+     * Processes a map-based header collection.
+     */
+    private static class HeaderMapProcessor implements HeaderProcessor {
+        private final String headerCollectionPrefix;
+        private final int argumentIndex;
+
+        HeaderMapProcessor(String headerCollectionPrefix, int argumentIndex) {
+            this.headerCollectionPrefix = headerCollectionPrefix;
+            this.argumentIndex = argumentIndex;
+        }
+
+        @Override
+        public void process(Object[] methodArguments, HttpHeaders headers, CompositeSerializer serializer) {
+            if (argumentIndex >= 0 && argumentIndex < methodArguments.length) {
+                final Object methodArgument = methodArguments[argumentIndex];
+                if (methodArgument instanceof Map) {
+                    final Map<?, ?> headerCollection = (Map<?, ?>) methodArgument;
+
+                    for (final Map.Entry<?, ?> headerEntry : headerCollection.entrySet()) {
+                        final String headerName = headerCollectionPrefix + headerEntry.getKey();
+                        final String headerValue = serialize(serializer, headerEntry.getValue());
+
+                        if (headerValue != null) {
+                            headers.set(HttpHeaderName.fromString(headerName), headerValue);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

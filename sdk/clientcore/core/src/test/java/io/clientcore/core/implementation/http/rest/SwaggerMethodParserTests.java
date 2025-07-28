@@ -25,6 +25,11 @@ import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.utils.UriBuilder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -34,6 +39,7 @@ import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,10 +47,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import static io.clientcore.core.implementation.http.ContentType.APPLICATION_JSON;
 import static io.clientcore.core.implementation.http.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
@@ -220,8 +222,7 @@ public class SwaggerMethodParserTests {
     public void hostSubstitution(Method method, Object[] arguments, String expectedUri) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
         UriBuilder uriBuilder = new UriBuilder();
-        SwaggerMethodParser.setSchemeAndHost("https://{sub1}.host.com", swaggerMethodParser.hostSubstitutions,
-            arguments, uriBuilder, DEFAULT_SERIALIZER);
+        swaggerMethodParser.setSchemeAndHost(arguments, uriBuilder, DEFAULT_SERIALIZER);
 
         assertEquals(expectedUri, uriBuilder.toString());
     }
@@ -270,8 +271,7 @@ public class SwaggerMethodParserTests {
     public void schemeSubstitution(Method method, Object[] arguments, String expectedUri) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
         UriBuilder uriBuilder = new UriBuilder();
-        SwaggerMethodParser.setSchemeAndHost("{sub1}://raw.host.com", swaggerMethodParser.hostSubstitutions, arguments,
-            uriBuilder, DEFAULT_SERIALIZER);
+        swaggerMethodParser.setSchemeAndHost(arguments, uriBuilder, DEFAULT_SERIALIZER);
 
         assertEquals(expectedUri, uriBuilder.toString());
     }
@@ -322,6 +322,8 @@ public class SwaggerMethodParserTests {
         Method noSubstitutions = clazz.getDeclaredMethod("noSubstitutions", String.class);
         Method substitution = clazz.getDeclaredMethod("substitution", String.class);
         Method encodedSubstitution = clazz.getDeclaredMethod("encodedSubstitution", String.class);
+        Class<MultiPathSubstitutionMethods> multiClazz = MultiPathSubstitutionMethods.class;
+        Method multipleSubstitutions = multiClazz.getDeclaredMethod("multipleSubstitutions", String.class, int.class);
 
         return Stream.of(Arguments.of(noSubstitutions, toObjectArray("path"), "{sub1}"),
             Arguments.of(encodedSubstitution, toObjectArray("path"), "path"),
@@ -329,7 +331,9 @@ public class SwaggerMethodParserTests {
             Arguments.of(encodedSubstitution, toObjectArray((String) null), ""),
             Arguments.of(substitution, toObjectArray("path"), "path"),
             Arguments.of(substitution, toObjectArray("{sub1}"), "%7Bsub1%7D"),
-            Arguments.of(substitution, toObjectArray((String) null), ""));
+            Arguments.of(substitution, toObjectArray((String) null), ""),
+            Arguments.of(multipleSubstitutions, toObjectArray("123", 456), "/users/123/posts/456"),
+            Arguments.of(multipleSubstitutions, toObjectArray("123", null), "/users/123/posts/"));
     }
 
     @ServiceInterface(name = "QuerySubstitutionMethods", host = "https://raw.host.com")
@@ -340,6 +344,9 @@ public class SwaggerMethodParserTests {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void encodedSubstitutions(@QueryParam(value = "sub1", encoded = true) String sub1,
             @QueryParam(value = "sub2", encoded = true) boolean sub2);
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
+        void listQuery(@QueryParam(value = "subs", multipleQueryParams = true) List<String> subs);
 
     }
 
@@ -358,6 +365,7 @@ public class SwaggerMethodParserTests {
         Class<QuerySubstitutionMethods> clazz = QuerySubstitutionMethods.class;
         Method substitution = clazz.getDeclaredMethod("substitutions", String.class, boolean.class);
         Method encodedSubstitution = clazz.getDeclaredMethod("encodedSubstitutions", String.class, boolean.class);
+        Method listQuery = clazz.getDeclaredMethod("listQuery", List.class);
 
         return Stream.of(Arguments.of(substitution, null, "https://raw.host.com"),
             Arguments.of(substitution, toObjectArray("raw", true), "https://raw.host.com?sub1=raw&sub2=true"),
@@ -368,7 +376,10 @@ public class SwaggerMethodParserTests {
             Arguments.of(encodedSubstitution, toObjectArray("raw", true), "https://raw.host.com?sub1=raw&sub2=true"),
             Arguments.of(encodedSubstitution, toObjectArray(null, true), "https://raw.host.com?sub2=true"),
             Arguments.of(encodedSubstitution, toObjectArray("{sub1}", false),
-                "https://raw.host.com?sub1={sub1}&sub2=false"));
+                "https://raw.host.com?sub1={sub1}&sub2=false"),
+            Arguments.of(listQuery, toObjectArray(Arrays.asList("a", "b")), "https://raw.host.com?subs=a&subs=b"),
+            Arguments.of(listQuery, toObjectArray(new java.util.ArrayList<String>()), "https://raw.host.com"),
+            Arguments.of(listQuery, toObjectArray((Object) null), "https://raw.host.com"));
     }
 
     @ServiceInterface(name = "HeaderSubstitutionMethods", host = "https://raw.host.com")
@@ -477,6 +488,7 @@ public class SwaggerMethodParserTests {
         OffsetDateTime dob = OffsetDateTime.of(1980, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         List<String> favoriteColors = Arrays.asList("blue", "green");
         List<String> badFavoriteColors = Arrays.asList(null, "green");
+        List<String> emptyFavoriteColors = new ArrayList<>();
 
         return Stream.of(Arguments.of(jsonBody, null, APPLICATION_JSON, null),
             Arguments.of(jsonBody, toObjectArray("{name:John Doe,age:40,dob:01-01-1980}"), APPLICATION_JSON,
@@ -504,7 +516,9 @@ public class SwaggerMethodParserTests {
             Arguments.of(encodedFormKey, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED,
                 "x%3Ams%3Avalue=value"),
             Arguments.of(encodedFormKey2, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED,
-                "x%3Ams%3Avalue=value"));
+                "x%3Ams%3Avalue=value"),
+            Arguments.of(formBody, toObjectArray("John Doe", 40, null, emptyFavoriteColors),
+                APPLICATION_X_WWW_FORM_URLENCODED, "name=John+Doe&age=40"));
     }
 
     @ParameterizedTest
@@ -628,6 +642,32 @@ public class SwaggerMethodParserTests {
 
         assertEquals(expected, SwaggerMethodParser.isReturnTypeDecodable(unwrappedReturnType));
     }
+
+    @ServiceInterface(name = "StaticQueryParamMethods", host = "https://raw.host.com")
+    interface StaticQueryParamMethods {
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test",
+            queryParams = {"q1=v1", "q2", "q3=", "q4=hello world", "q5=ab&cd" })
+        void staticQuery();
+    }
+
+    @Test
+    public void staticQueryParametersAreHandled() throws NoSuchMethodException {
+        Method method = StaticQueryParamMethods.class.getDeclaredMethod("staticQuery");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
+        UriBuilder uriBuilder = UriBuilder.parse("https://raw.host.com/test");
+        String expectedUrl = "https://raw.host.com/test?q1=v1&q2=&q3=&q4=hello%20world&q5=ab%26cd";
+
+        swaggerMethodParser.setEncodedQueryParameters(null, uriBuilder, DEFAULT_SERIALIZER);
+
+        assertEquals(expectedUrl, uriBuilder.toString());
+    }
+
+    @ServiceInterface(name = "MultiPath", host = "https://raw.host.com")
+    interface MultiPathSubstitutionMethods {
+        @HttpRequestInformation(method = HttpMethod.GET, path = "/users/{userId}/posts/{postId}")
+        void multipleSubstitutions(@PathParam("userId") String userId, @PathParam("postId") int postId);
+    }
+
 
     private static Stream<Arguments> isReturnTypeDecodableSupplier() {
         return returnTypeSupplierForDecodable();
