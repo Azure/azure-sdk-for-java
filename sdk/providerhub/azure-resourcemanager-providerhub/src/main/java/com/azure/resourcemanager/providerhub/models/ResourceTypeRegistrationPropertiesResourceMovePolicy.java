@@ -11,7 +11,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ResourceTypeRegistrationPropertiesResourceMovePolicy model.
+ * The resource move policy.
  */
 @Fluent
 public final class ResourceTypeRegistrationPropertiesResourceMovePolicy extends ResourceMovePolicy {

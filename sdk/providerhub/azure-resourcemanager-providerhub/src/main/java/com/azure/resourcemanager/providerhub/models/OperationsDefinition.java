@@ -25,7 +25,7 @@ public interface OperationsDefinition {
     Boolean isDataAction();
 
     /**
-     * Gets the origin property: The origin property.
+     * Gets the origin property: The origin.
      * 
      * @return the origin value.
      */
@@ -39,7 +39,7 @@ public interface OperationsDefinition {
     OperationsDefinitionDisplay display();
 
     /**
-     * Gets the actionType property: The actionType property.
+     * Gets the actionType property: The action type.
      * 
      * @return the actionType value.
      */
