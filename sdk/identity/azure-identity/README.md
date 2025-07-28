@@ -87,6 +87,15 @@ As of v1.10.0, `DefaultAzureCredential` attempts to authenticate with all develo
 
 This allows for trying all of the developer credentials on your machine while having predictable deployed behavior.
 
+### Selecting Credential Modes with `AZURE_TOKEN_CREDENTIALS`
+
+The DefaultAzureCredential now supports selecting between `development` and `production` credential groups using the AZURE_TOKEN_CREDENTIALS environment variable. This helps address security concerns and ensures that authorization is granted only to the appropriate credentials based on the environment the user is working in, reducing the risk of unintentionally using development credentials in production or vice versa.
+
+#### Credential Group
+
+ - `prod` for `EnvironmentCredential`, `WorkloadIdentityCredential`, and `ManagedIdentityCredential`.
+  - `dev` for `SharedTokenCredential`, `IntelliJCredential`, `AzureCliCredential`, `AzurePowershellCredential`, and `AzureDeveloperCliCredential`.
+
 ## Examples
 
 You can find more examples of using various credentials in [Azure Identity Examples Wiki page](https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples).
