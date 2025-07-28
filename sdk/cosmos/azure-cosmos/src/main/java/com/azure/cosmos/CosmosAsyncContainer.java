@@ -1165,21 +1165,8 @@ public class CosmosAsyncContainer {
 
             final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
             return clientWrapper
-                .getCollectionCache()
-                .resolveByNameAsync(
-                    null,
-                    this.getLinkWithoutTrailingSlash(),
-                    null)
-                .flatMapMany(
-                    collection -> {
-                        if (collection == null) {
-                            throw new IllegalStateException("Collection cannot be null");
-                        }
-
-                        return clientWrapper
-                            .queryDocumentChangeFeedFromPagedFlux(collection, state, classType)
-                            .map(response -> prepareFeedResponse(response, true));
-                    });
+                .queryDocumentChangeFeedFromPagedFlux(this.getLinkWithoutTrailingSlash(), state, classType)
+                .map(response -> prepareFeedResponse(response, true));
         });
 
         return pagedFluxOptionsFluxFunction;

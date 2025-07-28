@@ -885,6 +885,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                         .times(1)
                         .build()
                 )
+                .hitLimit(1) // for read feed staled resource exception, need to also configure this to limit the total injection count
                 .duration(Duration.ofMinutes(5))
                 .build();
 
@@ -1380,31 +1381,46 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         String ruleId,
         boolean canRetryOnFaultInjectedError) throws JsonProcessingException {
 
-        List<ObjectNode> diagnosticsNode = new ArrayList<>();
-        if ((operationType == OperationType.Query || operationType == OperationType.ReadFeed) && canRetryOnFaultInjectedError) {
-            ObjectNode cosmosDiagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString());
-            for (JsonNode node : cosmosDiagnosticsNode.get("clientSideRequestStatistics")) {
-                diagnosticsNode.add((ObjectNode) node);
+        List<ObjectNode> clientSideRequestStatisticsNodes = new ArrayList<>();
+        assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+
+        for (CosmosDiagnostics diagnostics : cosmosDiagnostics.getDiagnosticsContext().getDiagnostics()) {
+            if (operationType == OperationType.Query && canRetryOnFaultInjectedError) {
+                ObjectNode cosmosDiagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(diagnostics.toString());
+                if (cosmosDiagnosticsNode.has("clientSideRequestStatistics")) { // query plan diagnostics will not have clientSideRequestStatistics
+                    for (JsonNode node : cosmosDiagnosticsNode.get("clientSideRequestStatistics")) {
+                        clientSideRequestStatisticsNodes.add((ObjectNode) node);
+                    }
+                }
+            } else {
+                clientSideRequestStatisticsNodes.add((ObjectNode) Utils.getSimpleObjectMapper().readTree(diagnostics.toString()));
             }
-        } else {
-            diagnosticsNode.add((ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString()));
         }
 
-        for (ObjectNode diagnosticNode : diagnosticsNode) {
+        List<JsonNode> responseStatisticsNodes = new ArrayList<>();
+        for (ObjectNode diagnosticNode : clientSideRequestStatisticsNodes) {
             JsonNode responseStatisticsList = diagnosticNode.get("responseStatisticsList");
             assertThat(responseStatisticsList.isArray()).isTrue();
 
-            if (canRetryOnFaultInjectedError) {
-                assertThat(responseStatisticsList.size()).isGreaterThanOrEqualTo(2);
-            } else {
-                assertThat(responseStatisticsList.size()).isOne();
+            for (JsonNode responseStatisticsNode : responseStatisticsList) {
+                responseStatisticsNodes.add(responseStatisticsNode);
             }
-            JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
-            assertThat(storeResult).isNotNull();
-            assertThat(storeResult.get("statusCode").asInt()).isEqualTo(statusCode);
-            assertThat(storeResult.get("subStatusCode").asInt()).isEqualTo(subStatusCode);
-            assertThat(storeResult.get("faultInjectionRuleId").asText()).isEqualTo(ruleId);
         }
+
+        if (canRetryOnFaultInjectedError) {
+            assertThat(responseStatisticsNodes.size()).isGreaterThanOrEqualTo(2);
+        } else {
+            assertThat(responseStatisticsNodes.size()).isOne();
+        }
+
+        assertThat(responseStatisticsNodes.stream().anyMatch(responseStatisticsNode -> {
+            JsonNode storeResultNode = responseStatisticsNode.get("storeResult");
+            assertThat(storeResultNode).isNotNull();
+
+            return (storeResultNode.get("statusCode").asInt() == statusCode)
+                && (storeResultNode.get("subStatusCode").asInt() == subStatusCode)
+                && (storeResultNode.has("faultInjectionRuleId") && storeResultNode.get("faultInjectionRuleId").asText().equals(ruleId));
+        })).isTrue();
     }
 
     private void validateNoFaultInjectionApplied(
