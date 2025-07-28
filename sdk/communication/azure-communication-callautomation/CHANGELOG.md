@@ -10,7 +10,7 @@
 - Added support for sentiments analysis in speech and choice recognition.
 
 
-## 1.5.0 (Unreleased)
+## 1.5.0 (2025-07-25)
 
 ### Features Added
 
@@ -18,6 +18,7 @@
 - Added TeamsAppSource for use when creating outbound OPS calls
 - Recording with the call connection ID is now supported. OPS calls can be recorded using the call connection ID.
 - Added StartRecordingFailed event to indicate when the start recording API is unable to initiate the recording.
+- Adds support for SIP headers prefixed with 'X-' and 'X-MS-Custom-' within the CustomCallingContext.
 
 ## 1.4.1 (2025-06-19)
 
