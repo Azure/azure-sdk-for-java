@@ -1,5 +1,5 @@
 @description('The tenant id to which the application and resources belong.')
-param tenantId string = '72f988bf-86f1-41af-91ab-2d7cd011db47'
+param tenantId string = '70a036f6-8e4d-4615-bad6-149c02e7720d'
 
 @description('The client id of the service principal used to run tests.')
 param testApplicationId string
