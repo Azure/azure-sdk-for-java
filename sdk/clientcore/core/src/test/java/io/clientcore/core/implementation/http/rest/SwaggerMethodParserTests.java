@@ -378,7 +378,7 @@ public class SwaggerMethodParserTests {
             Arguments.of(encodedSubstitution, toObjectArray("{sub1}", false),
                 "https://raw.host.com?sub1={sub1}&sub2=false"),
             Arguments.of(listQuery, toObjectArray(Arrays.asList("a", "b")), "https://raw.host.com?subs=a&subs=b"),
-            Arguments.of(listQuery, toObjectArray(new java.util.ArrayList<String>()), "https://raw.host.com"),
+            Arguments.of(listQuery, toObjectArray(new ArrayList<String>()), "https://raw.host.com"),
             Arguments.of(listQuery, toObjectArray((Object) null), "https://raw.host.com"));
     }
 
@@ -645,8 +645,10 @@ public class SwaggerMethodParserTests {
 
     @ServiceInterface(name = "StaticQueryParamMethods", host = "https://raw.host.com")
     interface StaticQueryParamMethods {
-        @HttpRequestInformation(method = HttpMethod.GET, path = "test",
-            queryParams = {"q1=v1", "q2", "q3=", "q4=hello world", "q5=ab&cd" })
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "test",
+            queryParams = { "q1=v1", "q2", "q3=", "q4=hello world", "q5=ab&cd" })
         void staticQuery();
     }
 
@@ -667,7 +669,6 @@ public class SwaggerMethodParserTests {
         @HttpRequestInformation(method = HttpMethod.GET, path = "/users/{userId}/posts/{postId}")
         void multipleSubstitutions(@PathParam("userId") String userId, @PathParam("postId") int postId);
     }
-
 
     private static Stream<Arguments> isReturnTypeDecodableSupplier() {
         return returnTypeSupplierForDecodable();

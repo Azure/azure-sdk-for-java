@@ -438,4 +438,8 @@
     <Bug pattern="XXE_XMLSTREAMREADER" />
     <Class name="io.clientcore.core.serialization.xml.XmlReader" />
   </Match>
+  <Match>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" />
+    <Class name="io.clientcore.core.implementation.http.rest.RestProxyImpl" />
+  </Match>
 </FindBugsFilter>
