@@ -12,7 +12,12 @@ public enum SipRoutingServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2023-03-01}.
      */
-    V2023_03_01("2023-03-01");
+    V2023_03_01("2023-03-01"),
+
+    /**
+    * Service version {@code 2024-11-15-preview}.
+    */
+    V2024_11_15_PREVIEW("2024-11-15-preview");
 
     private final String version;
 
@@ -34,6 +39,6 @@ public enum SipRoutingServiceVersion implements ServiceVersion {
      * @return the latest {@link SipRoutingServiceVersion}
      */
     public static SipRoutingServiceVersion getLatest() {
-        return V2023_03_01;
+        return V2024_11_15_PREVIEW;
     }
 }

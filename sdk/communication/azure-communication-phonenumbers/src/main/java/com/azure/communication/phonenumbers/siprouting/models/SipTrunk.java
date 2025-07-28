@@ -4,10 +4,10 @@
 
 package com.azure.communication.phonenumbers.siprouting.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 
 /** Represents a SIP trunk for routing calls. See RFC 4904. */
-@Immutable
+@Fluent
 public final class SipTrunk {
     /*
      * Gets or sets FQDN of the trunk.
@@ -18,6 +18,31 @@ public final class SipTrunk {
      */
     private final int sipSignalingPort;
 
+    /*
+     * Enabled flag
+     */
+    private Boolean enabled;
+
+    /*
+     * Represents health state of a SIP trunk for routing calls.
+     */
+    private TrunkHealth health;
+
+    /*
+     * When enabled, removes Azure Communication Services from the signaling path on call transfer and sets the SIP Refer-To header to the trunk's FQDN. By default false.
+     */
+    private Boolean directTransfer;
+
+    /*
+     * SIP Privacy header. Default value is id.
+     */
+    private PrivacyHeader privacyHeader;
+
+    /*
+     * IP address version used by the trunk. Default value is ipv4.
+     */
+    private IpAddressVersion ipAddressVersion;
+
     /**
      * Constructor with required properties.
      * @param fqdn the FQDN of the trunk.
@@ -26,6 +51,18 @@ public final class SipTrunk {
     public SipTrunk(String fqdn, int sipSignalingPort) {
         this.fqdn = fqdn;
         this.sipSignalingPort = sipSignalingPort;
+    }
+
+    /**
+     * Constructor with required properties.
+     * @param fqdn the FQDN of the trunk.
+     * @param sipSignalingPort the SIP signaling port of the trunk.
+     * @param enabled the flag setting the trunk as enabled or disabled.
+     */
+    public SipTrunk(String fqdn, int sipSignalingPort, boolean enabled) {
+        this.fqdn = fqdn;
+        this.sipSignalingPort = sipSignalingPort;
+        this.enabled = enabled;
     }
 
     /**
@@ -44,5 +81,107 @@ public final class SipTrunk {
      */
     public int getSipSignalingPort() {
         return this.sipSignalingPort;
+    }
+
+    /**
+     * Get the enabled property: Enabled flag.
+     * 
+     * @return the enabled value.
+     */
+    public Boolean isEnabled() {
+        return this.enabled;
+    }
+
+    /**
+     * Set the enabled property: Enabled flag.
+     * 
+     * @param enabled the enabled value to set.
+     * @return the SipTrunk object itself.
+     */
+    public SipTrunk setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+        return this;
+    }
+
+    /**
+     * Get the health property: Represents health state of a SIP trunk for routing calls.
+     * 
+     * @return the health value.
+     */
+    public TrunkHealth getHealth() {
+        return this.health;
+    }
+
+    /**
+     * Set the health property: health flag.
+     * 
+     * @param health health property to set.
+     * @return the SipTrunk object itself.
+     */
+    public SipTrunk setHealth(TrunkHealth health) {
+        this.health = health;
+        return this;
+    }
+
+    /**
+     * Get the privacyHeader property: SIP Privacy header. Default value is id.
+     * 
+     * @return the privacyHeader value.
+     */
+    public PrivacyHeader getPrivacyHeader() {
+        return this.privacyHeader;
+    }
+
+    /**
+     * Set the privacyHeader property: SIP Privacy header. Default value is id.
+     * 
+     * @param privacyHeader the privacyHeader value to set.
+     * @return the SipTrunk object itself.
+     */
+    public SipTrunk setPrivacyHeader(PrivacyHeader privacyHeader) {
+        this.privacyHeader = privacyHeader;
+        return this;
+    }
+
+    /**
+     * Get the ipAddressVersion property: IP address version used by the trunk. Default value is ipv4.
+     * 
+     * @return the ipAddressVersion value.
+     */
+    public IpAddressVersion getIpAddressVersion() {
+        return this.ipAddressVersion;
+    }
+
+    /**
+    * Set the ipAddressVersion property: IP address version used by the trunk. Default value is ipv4.
+    * 
+    * @param ipAddressVersion the ipAddressVersion value to set.
+    * @return the SipTrunk object itself.
+    */
+    public SipTrunk setIpAddressVersion(IpAddressVersion ipAddressVersion) {
+        this.ipAddressVersion = ipAddressVersion;
+        return this;
+    }
+
+    /**
+    * Get the directTransfer property: When enabled, removes Azure Communication Services from the signaling path on
+    * call transfer and sets the SIP Refer-To header to the trunk's FQDN. By default false.
+    * 
+    * @return the directTransfer value.
+    */
+    public Boolean isDirectTransfer() {
+        return this.directTransfer;
+    }
+
+    /**
+     * Set the directTransfer property: When enabled, removes Azure Communication Services from the signaling path on
+     * call transfer and sets the SIP Refer-To header to the trunk's FQDN. By default false.
+     * 
+     * @param directTransfer the directTransfer value to set.
+     * @return the SipTrunk object itself.
+     */
+    public SipTrunk setDirectTransfer(Boolean directTransfer) {
+        this.directTransfer = directTransfer;
+        return this;
     }
 }

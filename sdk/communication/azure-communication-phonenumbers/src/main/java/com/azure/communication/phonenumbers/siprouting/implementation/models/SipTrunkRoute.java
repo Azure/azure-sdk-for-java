@@ -44,6 +44,11 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
     @Generated
     private List<String> trunks;
 
+    /*
+     * Gets or sets caller ID override. This value will override caller ID of outgoing call specified at runtime.
+     */
+    private String callerIdOverride;
+
     /**
      * Creates an instance of SipTrunkRoute class.
      */
@@ -146,6 +151,28 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
     }
 
     /**
+     * Get the callerIdOverride property: Gets or sets caller ID override. This value will override caller ID of
+     * outgoing call specified at runtime.
+     * 
+     * @return the callerIdOverride value.
+     */
+    public String getCallerIdOverride() {
+        return this.callerIdOverride;
+    }
+
+    /**
+     * Set the callerIdOverride property: Gets or sets caller ID override. This value will override caller ID of
+     * outgoing call specified at runtime.
+     * 
+     * @param callerIdOverride the callerIdOverride value to set.
+     * @return the SipTrunkRoute object itself.
+     */
+    public SipTrunkRoute setCallerIdOverride(String callerIdOverride) {
+        this.callerIdOverride = callerIdOverride;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -156,6 +183,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
         jsonWriter.writeStringField("numberPattern", this.numberPattern);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("trunks", this.trunks, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("callerIdOverride", this.callerIdOverride);
         return jsonWriter.writeEndObject();
     }
 
@@ -185,6 +213,8 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
                 } else if ("trunks".equals(fieldName)) {
                     List<String> trunks = reader.readArray(reader1 -> reader1.getString());
                     deserializedSipTrunkRoute.trunks = trunks;
+                } else if ("callerIdOverride".equals(fieldName)) {
+                    deserializedSipTrunkRoute.callerIdOverride = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
