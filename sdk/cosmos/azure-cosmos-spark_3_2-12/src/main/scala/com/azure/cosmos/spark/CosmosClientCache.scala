@@ -157,6 +157,20 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
+  private def validateAadConfigs(cosmosClientConfiguration: CosmosClientConfiguration): Boolean = {
+    val shouldLog = !(cosmosClientConfiguration.resourceGroupName.isDefined &&
+      cosmosClientConfiguration.subscriptionId.isDefined &&
+      cosmosClientConfiguration.tenantId.isDefined)
+    if (shouldLog) {
+      logWarning(
+        "To create Databases, Containers and other resources in Cosmos DB using Microsoft Entra ID, " +
+          "you need to provide resourceGroupName, subscriptionId and tenantId in the configuration. " +
+          "Otherwise, the Cosmos Catalog will not be able to create resources."
+      )
+    }
+    shouldLog
+  }
+
   private[this] def syncCreate(cosmosClientConfiguration: CosmosClientConfiguration,
                                cosmosClientStateHandle: Option[CosmosClientMetadataCachesSnapshot],
                                ownerInfo: OwnerInfo)
@@ -168,11 +182,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       case None =>
         val cosmosAsyncClient = createCosmosAsyncClient(cosmosClientConfiguration, cosmosClientStateHandle)
         var sparkCatalogClient: CosmosCatalogClient = CosmosCatalogCosmosSDKClient(cosmosAsyncClient)
-        if (cosmosClientConfiguration.resourceGroupName.isDefined && cosmosClientConfiguration.subscriptionId.isDefined
-          && cosmosClientConfiguration.tenantId.isDefined) {
-          // When using AAD auth, cosmos catalog will change to use management sdk instead of cosmos sdk
-          cosmosClientConfiguration.authConfig match {
-            case aadAuthConfig: CosmosServicePrincipalAuthConfig =>
+        // When using AAD auth, cosmos catalog will change to use management sdk instead of cosmos sdk
+        cosmosClientConfiguration.authConfig match {
+          case aadAuthConfig: CosmosServicePrincipalAuthConfig =>
+            if (!validateAadConfigs(cosmosClientConfiguration)) {
               sparkCatalogClient =
                 CosmosCatalogManagementSDKClient(
                   cosmosClientConfiguration.resourceGroupName.get,
@@ -180,9 +193,13 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                   createCosmosManagementClient(
                     cosmosClientConfiguration.subscriptionId.get,
                     new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
-                    aadAuthConfig),
-                  cosmosAsyncClient)
-            case managedIdentityAuth: CosmosManagedIdentityAuthConfig =>
+                    aadAuthConfig
+                  ),
+                  cosmosAsyncClient
+                )
+            }
+          case managedIdentityAuth: CosmosManagedIdentityAuthConfig =>
+            if (!validateAadConfigs(cosmosClientConfiguration)) {
               sparkCatalogClient =
                 CosmosCatalogManagementSDKClient(
                   cosmosClientConfiguration.resourceGroupName.get,
@@ -190,9 +207,13 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                   createCosmosManagementClient(
                     cosmosClientConfiguration.subscriptionId.get,
                     new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
-                    managedIdentityAuth),
-                  cosmosAsyncClient)
-            case accessTokenProviderAuth: CosmosAccessTokenAuthConfig =>
+                    managedIdentityAuth
+                  ),
+                  cosmosAsyncClient
+                )
+            }
+          case accessTokenProviderAuth: CosmosAccessTokenAuthConfig =>
+            if (!validateAadConfigs(cosmosClientConfiguration)) {
               sparkCatalogClient =
                 CosmosCatalogManagementSDKClient(
                   cosmosClientConfiguration.resourceGroupName.get,
@@ -200,14 +221,12 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                   createCosmosManagementClient(
                     cosmosClientConfiguration.subscriptionId.get,
                     new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
-                    accessTokenProviderAuth),
-                  cosmosAsyncClient)
-            case _ =>
-          }
-        } else {
-          logWarning("To create Databases, Containers and other resources in Cosmos DB using Microsoft Entra ID, " +
-            "you need to provide resourceGroupName, subscriptionId and tenantId in the configuration. " +
-            "Otherwise, the Cosmos Catalog will not be able to create resources.")
+                    accessTokenProviderAuth
+                  ),
+                  cosmosAsyncClient
+                )
+            }
+          case _ =>
         }
 
         val epochNowInMs = Instant.now.toEpochMilli
