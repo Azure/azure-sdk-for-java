@@ -193,10 +193,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                   createCosmosManagementClient(
                     cosmosClientConfiguration.subscriptionId.get,
                     new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
-                    aadAuthConfig
-                  ),
-                  cosmosAsyncClient
-                )
+                    aadAuthConfig),
+                  cosmosAsyncClient)
             }
           case managedIdentityAuth: CosmosManagedIdentityAuthConfig =>
             if (!validateAadConfigs(cosmosClientConfiguration)) {
@@ -207,10 +205,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                   createCosmosManagementClient(
                     cosmosClientConfiguration.subscriptionId.get,
                     new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
-                    managedIdentityAuth
-                  ),
-                  cosmosAsyncClient
-                )
+                    managedIdentityAuth),
+                  cosmosAsyncClient)
             }
           case accessTokenProviderAuth: CosmosAccessTokenAuthConfig =>
             if (!validateAadConfigs(cosmosClientConfiguration)) {
@@ -221,10 +217,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                   createCosmosManagementClient(
                     cosmosClientConfiguration.subscriptionId.get,
                     new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
-                    accessTokenProviderAuth
-                  ),
-                  cosmosAsyncClient
-                )
+                    accessTokenProviderAuth),
+                  cosmosAsyncClient)
             }
           case _ =>
         }
