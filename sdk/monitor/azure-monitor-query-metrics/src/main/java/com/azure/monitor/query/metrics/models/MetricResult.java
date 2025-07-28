@@ -3,13 +3,10 @@
 
 package com.azure.monitor.query.metrics.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.models.ResponseError;
-
 import java.util.List;
 
-import com.azure.monitor.query.metrics.implementation.models.MetricUnit;
-import com.azure.monitor.query.metrics.implementation.models.TimeSeriesElement;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.models.ResponseError;
 
 /**
  * The metrics result of a query.

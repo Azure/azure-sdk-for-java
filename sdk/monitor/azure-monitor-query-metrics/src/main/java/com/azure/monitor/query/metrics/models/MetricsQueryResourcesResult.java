@@ -1,7 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.monitor.query.metrics.models;
 
 import java.util.List;
 
+/**
+ * The result of a metrics query. It contains the results of individual queries.
+ */
 public class MetricsQueryResourcesResult {
     private final List<MetricsQueryResult> metricsQueryResults;
 

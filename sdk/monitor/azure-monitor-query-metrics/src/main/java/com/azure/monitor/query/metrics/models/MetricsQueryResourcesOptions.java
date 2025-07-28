@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.monitor.query.metrics.models;
 
 import java.time.Duration;
@@ -5,6 +8,9 @@ import java.util.List;
 
 import com.azure.core.annotation.Fluent;
 
+/**
+ * The model class to configure the metrics query options.
+ */
 @Fluent
 public final class MetricsQueryResourcesOptions {
     private MetricsQueryTimeInterval timeInterval;

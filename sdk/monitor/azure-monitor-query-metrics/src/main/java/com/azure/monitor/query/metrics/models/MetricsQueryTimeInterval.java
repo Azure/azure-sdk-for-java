@@ -19,7 +19,8 @@ public final class MetricsQueryTimeInterval {
     /**
      * Time interval of all time.
      */
-    public static final MetricsQueryTimeInterval ALL = new MetricsQueryTimeInterval(OffsetDateTime.MIN, OffsetDateTime.MAX);
+    public static final MetricsQueryTimeInterval ALL
+        = new MetricsQueryTimeInterval(OffsetDateTime.MIN, OffsetDateTime.MAX);
 
     /**
      * Time interval of the last 5 minutes.

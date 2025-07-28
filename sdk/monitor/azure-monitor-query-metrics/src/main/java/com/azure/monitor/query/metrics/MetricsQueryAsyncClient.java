@@ -3,30 +3,37 @@
 
 package com.azure.monitor.query.metrics;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import static com.azure.core.util.FluxUtil.monoError;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsAsyncClient;
+import com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsUtils;
 import static com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsUtils.getSubscriptionFromResourceId;
 import static com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsUtils.mapToMetricsQueryResult;
-import com.azure.monitor.query.metrics.implementation.models.MetricResultsResponse;
-import com.azure.monitor.query.metrics.implementation.models.MetricResultsResponseValuesItem;
-import com.azure.monitor.query.metrics.implementation.models.ResourceIdList;
+import com.azure.monitor.query.metrics.implementation.generated.MonitorQueryMetricsAsyncClient;
+import com.azure.monitor.query.metrics.implementation.generated.models.MetricResultsResponse;
+import com.azure.monitor.query.metrics.implementation.generated.models.MetricResultsResponseValuesItem;
+import com.azure.monitor.query.metrics.implementation.generated.models.ResourceIdList;
 import com.azure.monitor.query.metrics.models.MetricsQueryResourcesOptions;
 import com.azure.monitor.query.metrics.models.MetricsQueryResourcesResult;
 import com.azure.monitor.query.metrics.models.MetricsQueryResult;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * This class provides an asynchronous client that contains all the query operations that use batch requests to retrieve
+ * metrics for multiple resources.
+ */
 public class MetricsQueryAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(MetricsQueryAsyncClient.class);
 
@@ -82,19 +89,27 @@ public class MetricsQueryAsyncClient {
             return monoError(LOGGER, new IllegalArgumentException("metricsNamespace cannot be empty"));
         }
 
-        String subscriptionId = getSubscriptionFromResourceId(resourceIds.get(0));
+        RequestOptions requestOptions = MonitorQueryMetricsUtils.mapToRequestOptions(options);
 
-        Mono<Response<BinaryData>> responseMono = this.serviceClient.queryResourcesWithResponse(subscriptionId, metricsNamespace, metricsNames, BinaryData.fromObject(resourceIdList), null);
+        String subscriptionId;
+        subscriptionId = getSubscriptionFromResourceId(resourceIds.get(0));
 
-        return responseMono.map(response -> {
-            MetricResultsResponse value = response.getValue().toObject(MetricResultsResponse.class);
-            List<MetricResultsResponseValuesItem> values = value.getValues();
-            List<MetricsQueryResult> metricsQueryResults
-                = values.stream().map(result -> mapToMetricsQueryResult(result)).collect(Collectors.toList());
-            MetricsQueryResourcesResult metricsQueryResourcesResult
-                = new MetricsQueryResourcesResult(metricsQueryResults);
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                metricsQueryResourcesResult);
+        Mono<Response<BinaryData>> responseMono;
+        responseMono = this.serviceClient.queryResourcesWithResponse(subscriptionId, metricsNamespace, metricsNames,
+            BinaryData.fromObject(resourceIdList), requestOptions);
+
+        return responseMono.map(new Function<Response<BinaryData>, Response<MetricsQueryResourcesResult>>() {
+            @Override
+            public Response<MetricsQueryResourcesResult> apply(Response<BinaryData> response) {
+                MetricResultsResponse valueResponse = response.getValue().toObject(MetricResultsResponse.class);
+                List<MetricResultsResponseValuesItem> values = valueResponse.getValues();
+                List<MetricsQueryResult> metricsQueryResults
+                    = values.stream().map(result -> mapToMetricsQueryResult(result)).collect(Collectors.toList());
+                MetricsQueryResourcesResult metricsQueryResourcesResult
+                    = new MetricsQueryResourcesResult(metricsQueryResults);
+                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    metricsQueryResourcesResult);
+            }
         });
     }
 }

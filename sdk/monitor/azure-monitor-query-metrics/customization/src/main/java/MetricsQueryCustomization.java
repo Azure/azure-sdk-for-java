@@ -1,21 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import org.slf4j.Logger;
+
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.description.JavadocDescription;
-import org.slf4j.Logger;
 
 public class MetricsQueryCustomization extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        libraryCustomization.getClass("com.azure.monitor.query.metrics.implementation", "MonitorQueryMetricsClientBuilder")
+        libraryCustomization.getClass("com.azure.monitor.query.metrics.implementation.generated", "MonitorQueryMetricsClientBuilder")
             .customizeAst(ast -> {
-                ast.addImport("com.azure.monitor.query.models.MetricsAudience");
+                ast.addImport("com.azure.monitor.query.metrics.models.MetricsQueryAudience");
 
                 ast.getClassByName("MonitorQueryMetricsClientBuilder").ifPresent(clazz -> {
                     clazz.addPrivateField("MetricsQueryAudience", "audience")

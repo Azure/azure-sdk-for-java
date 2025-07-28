@@ -1,9 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.monitor.query.metrics.models;
 
 import java.util.Collection;
 
 import com.azure.core.util.ExpandableStringEnum;
 
+/**
+ * The audience indicating the authorization scope of metrics query clients.
+ */
 public class MetricsQueryAudience extends ExpandableStringEnum<MetricsQueryAudience> {
     /**
      * Static value for Azure Public Cloud.

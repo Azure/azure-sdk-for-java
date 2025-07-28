@@ -3,12 +3,33 @@
 
 package com.azure.monitor.query.metrics;
 
-import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsClient;
+import com.azure.monitor.query.metrics.implementation.generated.MonitorQueryMetricsClient;
+import static com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsUtils.getSubscriptionFromResourceId;
+import static com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsUtils.mapToMetricsQueryResult;
+import static com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsUtils.mapToRequestOptions;
+import com.azure.monitor.query.metrics.implementation.generated.models.MetricResultsResponse;
+import com.azure.monitor.query.metrics.implementation.generated.models.MetricResultsResponseValuesItem;
+import com.azure.monitor.query.metrics.implementation.generated.models.ResourceIdList;
+import com.azure.monitor.query.metrics.models.MetricsQueryResourcesOptions;
+import com.azure.monitor.query.metrics.models.MetricsQueryResourcesResult;
+import com.azure.monitor.query.metrics.models.MetricsQueryResult;
 
+/**
+ * This class provides synchronous client that contains all the query operations that use batch requests to retrieve
+ * metrics for multiple resources.
+ */
 public class MetricsQueryClient {
     private static final ClientLogger LOGGER = new ClientLogger(MetricsQueryClient.class);
 
@@ -62,50 +83,13 @@ public class MetricsQueryClient {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("metricsNamespace cannot be empty"));
         }
 
-        String filter = null;
-        Duration granularity = null;
-        String aggregations = null;
-        String startTime = null;
-        Integer top = null;
-        String orderBy = null;
-        String endTime = null;
-        String rollupBy = null;
-        if (options != null) {
-            rollupBy = options.getRollupBy();
-            filter = options.getFilter();
-            granularity = options.getGranularity();
-
-            if (options.getAggregations() != null) {
-                aggregations = options.getAggregations()
-                    .stream()
-                    .map(AggregationType::toString)
-                    .collect(Collectors.joining(","));
-            }
-
-            if (options.getTimeInterval() != null) {
-                if (options.getTimeInterval().getDuration() != null) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "Duration is not a supported time interval for batch query. Use startTime and endTime instead."));
-                }
-                if (options.getTimeInterval().getStartTime() != null) {
-                    startTime = options.getTimeInterval().getStartTime().toString();
-                }
-                if (options.getTimeInterval().getEndTime() != null) {
-                    endTime = options.getTimeInterval().getEndTime().toString();
-                }
-            }
-
-            top = options.getTop();
-            orderBy = options.getOrderBy();
-        }
         String subscriptionId = getSubscriptionFromResourceId(resourceIds.get(0));
         ResourceIdList resourceIdList = new ResourceIdList();
         resourceIdList.setResourceids(resourceIds);
-        Response<MetricResultsResponse> response = this.serviceClient.getMetricsBatches()
-            .batchWithResponse(subscriptionId, metricsNamespace, metricsNames, resourceIdList, startTime, endTime,
-                granularity, aggregations, top, orderBy, filter, rollupBy, context);
-        MetricResultsResponse value = response.getValue();
-        List<MetricResultsResponseValuesItem> values = value.getValues();
+        Response<BinaryData> response = this.serviceClient.queryResourcesWithResponse(subscriptionId, metricsNamespace,
+            metricsNames, BinaryData.fromObject(resourceIdList), mapToRequestOptions(options));
+        MetricResultsResponse valueResponse = response.getValue().toObject(MetricResultsResponse.class);
+        List<MetricResultsResponseValuesItem> values = valueResponse.getValues();
         List<MetricsQueryResult> metricsQueryResults
             = values.stream().map(result -> mapToMetricsQueryResult(result)).collect(Collectors.toList());
         MetricsQueryResourcesResult metricsQueryResourcesResult = new MetricsQueryResourcesResult(metricsQueryResults);

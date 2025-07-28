@@ -113,7 +113,7 @@ public final class MonitorQueryMetricsClientImpl {
      * the region of the requested resources. For global resources, the region should be 'global'.
      * @param serviceVersion Service version.
      */
-    MonitorQueryMetricsClientImpl(String endpoint, MetricsQueryServiceVersion serviceVersion) {
+    public MonitorQueryMetricsClientImpl(String endpoint, MetricsQueryServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
@@ -127,7 +127,7 @@ public final class MonitorQueryMetricsClientImpl {
      * the region of the requested resources. For global resources, the region should be 'global'.
      * @param serviceVersion Service version.
      */
-    MonitorQueryMetricsClientImpl(HttpPipeline httpPipeline, String endpoint,
+    public MonitorQueryMetricsClientImpl(HttpPipeline httpPipeline, String endpoint,
         MetricsQueryServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
@@ -142,8 +142,8 @@ public final class MonitorQueryMetricsClientImpl {
      * the region of the requested resources. For global resources, the region should be 'global'.
      * @param serviceVersion Service version.
      */
-    MonitorQueryMetricsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        MetricsQueryServiceVersion serviceVersion) {
+    public MonitorQueryMetricsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        String endpoint, MetricsQueryServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

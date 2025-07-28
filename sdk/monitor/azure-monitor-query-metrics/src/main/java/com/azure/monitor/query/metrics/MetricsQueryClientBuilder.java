@@ -3,46 +3,29 @@
 
 package com.azure.monitor.query.metrics;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpPipelinePosition;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.builder.ClientBuilderUtil;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.monitor.query.metrics.models.MetricsQueryAudience;
-import com.azure.monitor.query.MetricsQueryClientBuilder;
-import com.azure.monitor.query.implementation.metricsbatch.AzureMonitorMetricBatchBuilder;
-import com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsClientBuilder;
-import com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsClientImpl;
-import com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsUtils;
+import com.azure.monitor.query.metrics.implementation.generated.MonitorQueryMetricsClientBuilder;
 
-public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQueryClientBuilder>, HttpTrait<MetricsQueryClientBuilder>,
+/**
+ * Fluent builder for creating instances of {@link MetricsQueryClient} and {@link MetricsQueryAsyncClient}.
+ */
+@ServiceClientBuilder(serviceClients = { MetricsQueryClient.class, MetricsQueryAsyncClient.class })
+public final class MetricsQueryClientBuilder
+    implements EndpointTrait<MetricsQueryClientBuilder>, HttpTrait<MetricsQueryClientBuilder>,
     ConfigurationTrait<MetricsQueryClientBuilder>, TokenCredentialTrait<MetricsQueryClientBuilder> {
 
     private final MonitorQueryMetricsClientBuilder innerBuilder = new MonitorQueryMetricsClientBuilder();
@@ -195,6 +178,6 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      * @return An asynchronous {@link MetricsQueryAsyncClient}.
      */
     public MetricsQueryAsyncClient buildAsyncClient() {
-        return new MetricsQueryAsyncClient(innerBuilder.buildClient());
+        return new MetricsQueryAsyncClient(innerBuilder.buildAsyncClient());
     }
 }

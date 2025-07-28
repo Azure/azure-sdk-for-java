@@ -40,8 +40,8 @@ public final class MetricsQueryResult {
      * @param resourceRegion the region of the resource been queried for metrics.
      * @param metrics the value of the collection.
      */
-    public MetricsQueryResult(Integer cost, MetricsQueryTimeInterval timeInterval, Duration granularity, String namespace,
-        String resourceRegion, List<MetricResult> metrics) {
+    public MetricsQueryResult(Integer cost, MetricsQueryTimeInterval timeInterval, Duration granularity,
+        String namespace, String resourceRegion, List<MetricResult> metrics) {
         this.cost = cost;
         this.timeInterval = timeInterval;
         this.granularity = granularity;
