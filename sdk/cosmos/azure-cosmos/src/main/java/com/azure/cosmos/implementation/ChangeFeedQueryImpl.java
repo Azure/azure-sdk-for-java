@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
@@ -51,6 +50,7 @@ class ChangeFeedQueryImpl<T> {
     private final ChangeFeedState changeFeedState;
     private final OperationContextAndListenerTuple operationContextAndListener;
     private final CosmosItemSerializer itemSerializer;
+    private final DiagnosticsClientContext diagnosticsClientContext;
 
     public ChangeFeedQueryImpl(
         RxDocumentClientImpl client,
@@ -58,7 +58,8 @@ class ChangeFeedQueryImpl<T> {
         Class<T> klass,
         String collectionLink,
         String collectionRid,
-        CosmosChangeFeedRequestOptions requestOptions) {
+        CosmosChangeFeedRequestOptions requestOptions,
+        DiagnosticsClientContext diagnosticsClientContext) {
 
         checkNotNull(client, "Argument 'client' must not be null.");
         checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
@@ -89,6 +90,7 @@ class ChangeFeedQueryImpl<T> {
                 .CosmosChangeFeedRequestOptionsHelper
                 .getCosmosChangeFeedRequestOptionsAccessor()
                 .getOperationContext(options);
+        this.diagnosticsClientContext = diagnosticsClientContext;
 
         FeedRangeInternal feedRange = (FeedRangeInternal)this.options.getFeedRange();
 
@@ -124,7 +126,8 @@ class ChangeFeedQueryImpl<T> {
             ImplementationBridgeHelpers
                 .CosmosChangeFeedRequestOptionsHelper
                 .getCosmosChangeFeedRequestOptionsAccessor()
-                .getOperationContext(this.options)
+                .getOperationContext(this.options),
+            this.diagnosticsClientContext
         );
     }
 
@@ -132,7 +135,7 @@ class ChangeFeedQueryImpl<T> {
         Map<String, String> headers = new HashMap<>();
 
         Map<String, String> customOptions =
-            ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor().getHeader(this.options);
+            ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor().getHeaders(this.options);
         if (customOptions != null) {
             headers.putAll(customOptions);
         }
