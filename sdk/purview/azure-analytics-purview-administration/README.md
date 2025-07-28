@@ -35,7 +35,16 @@ For more information about permissions, see [here][azure_purview_permissions].
 
 In order to interact with the Azure Purview service, your client must present an Azure Active Directory bearer token to the service.
 
-The simplest way of providing a bearer token is to use the `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
+After setup, you can choose which type of [credential][azure_identity_credential_type] from azure.identity to use.
+We recommend using [DefaultAzureCredential][wiki_identity], which now supports environment-based configuration through the [AZURE_TOKEN_CREDENTIALS][customize_defaultAzureCredential] environment variable.
+
+You should select a credential group by setting this variable to either of the following environments:
+
+dev: for development credentials such as `SharedTokenCredential`, `IntelliJCredential`, `AzureCliCredential`, `AzurePowershellCredential`, and `AzureDeveloperCliCredential`.
+
+prod: for production credentials such as `EnvironmentCredential`, `WorkloadIdentityCredential`, and `ManagedIdentityCredential`.
+
+You can find more ways to authenticate with [azure-identity][azure_identity].
 
 #### Create AccountsClient with Azure Active Directory Credential
 
@@ -52,8 +61,6 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Example
 
@@ -110,5 +117,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [create_azure_purview_account]: https://learn.microsoft.com/azure/purview/create-catalog-portal
 [azure_purview_permissions]: https://learn.microsoft.com/azure/purview/catalog-permissions
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
-
+[customize_defaultAzureCredential]: https://learn.microsoft.com/en-us/azure/developer/java/sdk/authentication/credential-chains#how-to-customize-defaultazurecredential
 

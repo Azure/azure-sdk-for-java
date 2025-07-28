@@ -36,7 +36,16 @@ For more information about creating the account see [here][create_azure_purview_
 ### Authenticate the client
 In order to interact with the Azure Purview service, your client must present an Azure Active Directory bearer token to the service.
 
-The simplest way of providing a bearer token is to use the `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
+After setup, you can choose which type of [credential][azure_identity_credential_type] from azure.identity to use.
+We recommend using [DefaultAzureCredential][wiki_identity], which now supports environment-based configuration through the [AZURE_TOKEN_CREDENTIALS][customize_defaultAzureCredential] environment variable.
+
+You should select a credential group by setting this variable to either of the following environments:
+
+dev: for development credentials such as `SharedTokenCredential`, `IntelliJCredential`, `AzureCliCredential`, `AzurePowershellCredential`, and `AzureDeveloperCliCredential`.
+
+prod: for production credentials such as `EnvironmentCredential`, `WorkloadIdentityCredential`, and `ManagedIdentityCredential`.
+
+You can find more ways to authenticate with [azure-identity][azure_identity].
 
 
 #### Create SystemScanRulesetsClient with Azure Active Directory Credential
@@ -54,8 +63,6 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Example
 ```java readme-sample-createSystemScanRulesetsClient
@@ -107,5 +114,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+[customize_defaultAzureCredential]: https://learn.microsoft.com/en-us/azure/developer/java/sdk/authentication/credential-chains#how-to-customize-defaultazurecredential
 
 
