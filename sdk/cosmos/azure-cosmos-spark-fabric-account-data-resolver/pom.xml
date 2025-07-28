@@ -63,6 +63,18 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest_2.12</artifactId>
+      <version>3.2.2</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest-flatspec_2.12</artifactId>
+      <version>3.2.3</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-flatspec_2.12;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>com.microsoft.azure.synapse</groupId>
       <artifactId>synapseutils_2.12</artifactId>
       <version>1.5.4</version> <!-- {x-version-update;cosmos_com.microsoft.azure.synapse:synapseutils_2.12;external_dependency} -->
