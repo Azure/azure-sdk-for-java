@@ -6,18 +6,24 @@ package com.azure.monitor.query.metrics;
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import static com.azure.core.util.FluxUtil.monoError;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsAsyncClient;
+import static com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsUtils.getSubscriptionFromResourceId;
+import static com.azure.monitor.query.metrics.implementation.MonitorQueryMetricsUtils.mapToMetricsQueryResult;
 import com.azure.monitor.query.metrics.implementation.models.MetricResultsResponse;
+import com.azure.monitor.query.metrics.implementation.models.MetricResultsResponseValuesItem;
 import com.azure.monitor.query.metrics.implementation.models.ResourceIdList;
 import com.azure.monitor.query.metrics.models.MetricsQueryResourcesOptions;
 import com.azure.monitor.query.metrics.models.MetricsQueryResourcesResult;
+import com.azure.monitor.query.metrics.models.MetricsQueryResult;
 
 import reactor.core.publisher.Mono;
 
@@ -65,6 +71,9 @@ public class MetricsQueryAsyncClient {
             return monoError(LOGGER, new IllegalArgumentException("resourceIds cannot be empty"));
         }
 
+        ResourceIdList resourceIdList = new ResourceIdList();
+        resourceIdList.setResourceids(resourceIds);
+
         if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(metricsNames, "metricsNames cannot be null"))) {
             return monoError(LOGGER, new IllegalArgumentException("metricsNames cannot be empty"));
         }
@@ -73,50 +82,12 @@ public class MetricsQueryAsyncClient {
             return monoError(LOGGER, new IllegalArgumentException("metricsNamespace cannot be empty"));
         }
 
-        String filter = null;
-        Duration granularity = null;
-        String aggregations = null;
-        String startTime = null;
-        Integer top = null;
-        String orderBy = null;
-        String endTime = null;
-        String rollupBy = null;
-        if (options != null) {
-            rollupBy = options.getRollupBy();
-            filter = options.getFilter();
-            granularity = options.getGranularity();
-
-            if (options.getAggregations() != null) {
-                aggregations = options.getAggregations()
-                    .stream()
-                    .map(AggregationType::toString)
-                    .collect(Collectors.joining(","));
-            }
-            if (options.getTimeInterval() != null) {
-                if (options.getTimeInterval().getDuration() != null) {
-                    return monoError(LOGGER, new IllegalArgumentException(
-                        "Duration is not a supported time interval for batch query. Use startTime and endTime instead."));
-                }
-                if (options.getTimeInterval().getStartTime() != null) {
-                    startTime = options.getTimeInterval().getStartTime().toString();
-                }
-                if (options.getTimeInterval().getEndTime() != null) {
-                    endTime = options.getTimeInterval().getEndTime().toString();
-                }
-            }
-
-            top = options.getTop();
-            orderBy = options.getOrderBy();
-        }
         String subscriptionId = getSubscriptionFromResourceId(resourceIds.get(0));
-        ResourceIdList resourceIdList = new ResourceIdList();
-        resourceIdList.setResourceids(resourceIds);
-        Mono<Response<MetricResultsResponse>> responseMono = this.serviceClient.getMetricsBatches()
-            .batchWithResponseAsync(subscriptionId, metricsNamespace, metricsNames, resourceIdList, startTime, endTime,
-                granularity, aggregations, top, orderBy, filter, rollupBy);
+
+        Mono<Response<BinaryData>> responseMono = this.serviceClient.queryResourcesWithResponse(subscriptionId, metricsNamespace, metricsNames, BinaryData.fromObject(resourceIdList), null);
 
         return responseMono.map(response -> {
-            MetricResultsResponse value = response.getValue();
+            MetricResultsResponse value = response.getValue().toObject(MetricResultsResponse.class);
             List<MetricResultsResponseValuesItem> values = value.getValues();
             List<MetricsQueryResult> metricsQueryResults
                 = values.stream().map(result -> mapToMetricsQueryResult(result)).collect(Collectors.toList());

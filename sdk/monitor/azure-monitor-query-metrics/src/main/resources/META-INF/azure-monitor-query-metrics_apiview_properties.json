@@ -14,8 +14,8 @@
     "com.azure.monitor.query.metrics.implementation.models.MetricResultsResponse": "MonitorQueryMetrics.MetricResultsResponse",
     "com.azure.monitor.query.metrics.implementation.models.MetricResultsResponseValuesItem": "MonitorQueryMetrics.MetricResultsResponseValuesItem",
     "com.azure.monitor.query.metrics.implementation.models.MetricUnit": "MonitorQueryMetrics.MetricUnit",
-    "com.azure.monitor.query.metrics.implementation.models.MetricValue": "MonitorQueryMetrics.MetricValue",
     "com.azure.monitor.query.metrics.implementation.models.ResourceIdList": "MonitorQueryMetrics.ResourceIdList",
-    "com.azure.monitor.query.metrics.implementation.models.TimeSeriesElement": "MonitorQueryMetrics.TimeSeriesElement"
+    "com.azure.monitor.query.metrics.implementation.models.TimeSeriesElement": "MonitorQueryMetrics.TimeSeriesElement",
+    "com.azure.monitor.query.metrics.models.models.MetricValue": "MonitorQueryMetrics.MetricValue"
   }
 }
