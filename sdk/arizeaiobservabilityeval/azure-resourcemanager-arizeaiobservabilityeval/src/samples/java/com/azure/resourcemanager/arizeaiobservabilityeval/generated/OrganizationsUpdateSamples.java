@@ -25,7 +25,7 @@ public final class OrganizationsUpdateSamples {
     public static void organizationsUpdateGeneratedByMaximumSetRule(
         com.azure.resourcemanager.arizeaiobservabilityeval.ArizeAIObservabilityEvalManager manager) {
         OrganizationResource resource = manager.organizations()
-            .getByResourceGroupWithResponse("rgopenapi", "test-organization-1", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("yashika-rg-arize", "test-org-1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withTags(mapOf())
