@@ -263,6 +263,21 @@ public class CallMediaUnitTests {
     }
 
     @Test
+    public void summarizeCallWithResponseTest() {
+        SummarizeCallOptions options = new SummarizeCallOptions();
+        options.setOperationContext("operationContext");
+        options.setOperationCallbackUrl("https://test");
+
+        SummarizationOptions summarizationOptions = new SummarizationOptions();
+        summarizationOptions.setEnableEndCallSummary(true);
+        summarizationOptions.setLocale("en-us");
+        options.setSummarizationOptions(summarizationOptions);
+
+        Response<Void> response = callMedia.summarizeCallWithResponse(options);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
     public void startMediaStremaingWithResponse() {
         StartMediaStreamingOptions options = new StartMediaStreamingOptions();
         options.setOperationCallbackUrl("https://localhost");

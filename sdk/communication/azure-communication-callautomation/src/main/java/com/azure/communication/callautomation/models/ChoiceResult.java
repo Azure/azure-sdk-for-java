@@ -89,7 +89,7 @@ public final class ChoiceResult extends RecognizeResult {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("label", this.label);
         jsonWriter.writeStringField("recognizedPhrase", this.recognizedPhrase);
-        jsonWriter.writeStringField("languageIdentified", this.recognizedPhrase);
+        jsonWriter.writeStringField("languageIdentified", this.languageIdentified);
 
         if (this.sentimentAnalysisResult != null) {
             jsonWriter.writeFieldName("sentimentAnalysisResult");
@@ -122,20 +122,8 @@ public final class ChoiceResult extends RecognizeResult {
                     result.recognizedPhrase = reader.getString();
                 } else if ("languageIdentified".equals(fieldName)) {
                     result.languageIdentified = reader.getString();
-                } else if ("sentimentAnalysis".equals(fieldName)) {
-                    result.sentimentAnalysisResult = reader.readObject(innerReader -> {
-                        SentimentAnalysisResult sentimentResult = new SentimentAnalysisResult();
-                        while (innerReader.nextToken() != JsonToken.END_OBJECT) {
-                            String sentimentField = innerReader.getFieldName();
-                            innerReader.nextToken();
-                            if ("sentiment".equals(sentimentField)) {
-                                sentimentResult.setSentiment(innerReader.getString());
-                            } else {
-                                innerReader.skipChildren();
-                            }
-                        }
-                        return sentimentResult;
-                    });
+                } else if ("sentimentAnalysisResult".equals(fieldName)) {
+                    result.sentimentAnalysisResult = SentimentAnalysisResult.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -20,6 +20,8 @@ import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
+import com.azure.communication.callautomation.models.SummarizationOptions;
+import com.azure.communication.callautomation.models.SummarizeCallOptions;
 import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.TextSource;
@@ -543,6 +545,22 @@ public class CallMediaAsyncUnitTests {
     public void updateTranscriptionWithResponse() {
         callMedia = getMockCallMedia(202);
         StepVerifier.create(callMedia.updateTranscription("en-US")).verifyComplete();
+    }
+
+    @Test
+    public void summarizeCallWithResponse() {
+        callMedia = getMockCallMedia(202);
+        SummarizeCallOptions options = new SummarizeCallOptions();
+        options.setOperationContext("operationContext");
+        options.setOperationCallbackUrl("https://test");
+
+        SummarizationOptions summarizationOptions = new SummarizationOptions();
+        summarizationOptions.setEnableEndCallSummary(true);
+        summarizationOptions.setLocale("en-us");
+        options.setSummarizationOptions(summarizationOptions);
+        StepVerifier.create(callMedia.summarizeCallWithResponse(options))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
     }
 
     @Test

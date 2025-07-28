@@ -34,6 +34,7 @@ import com.azure.communication.callautomation.implementation.models.StartTranscr
 import com.azure.communication.callautomation.implementation.models.StopMediaStreamingRequest;
 import com.azure.communication.callautomation.implementation.models.StopTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.SummarizationOptionsInternal;
+// import com.azure.communication.callautomation.implementation.models.SummarizeCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
 import com.azure.communication.callautomation.implementation.models.UnholdRequest;
 import com.azure.communication.callautomation.implementation.models.UpdateTranscriptionRequestInternal;
@@ -58,6 +59,7 @@ import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
 import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
+import com.azure.communication.callautomation.models.SummarizeCallOptions;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.UnholdOptions;
 import com.azure.communication.callautomation.models.UpdateTranscriptionOptions;
@@ -989,6 +991,51 @@ public final class CallMediaAsync {
             }
 
             return contentsInternal.updateTranscriptionWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+    * Summarize call details in the call.
+    *
+    * @return Response for successful operation.
+    */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> summarizeCall() {
+        return summarizeCallWithResponse(null).then();
+    }
+
+    /**
+     * Summarize call details in the call with options.
+     *
+     * @param options Options for the Summarize Call operation.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> summarizeCallWithResponse(SummarizeCallOptions options) {
+        return summarizeCallWithResponseInternal(options);
+    }
+
+    Mono<Response<Void>> summarizeCallWithResponseInternal(SummarizeCallOptions options) {
+        try {
+            // SummarizeCallRequestInternal request = new SummarizeCallRequestInternal();
+            // if (options != null) {
+            //     request.setOperationContext(options.getOperationContext());
+            //     request.setOperationCallbackUri(options.getOperationCallbackUrl());
+            //     if(options.getSummarizationOptions() != null){
+            //         SummarizationOptionsInternal summarizationOptionsInternal = new SummarizationOptionsInternal();
+            //         summarizationOptionsInternal.setEnableEndCallSummary(options.getSummarizationOptions().isEnableEndCallSummary());
+            //         summarizationOptionsInternal.setLocale(options.getSummarizationOptions().getLocale());
+            //     }
+            // }
+            return contentsInternal.summarizeCallWithResponseAsync(callConnectionId,
+                options.getOperationContext() != null ? options.getOperationContext() : null,
+                options.getOperationCallbackUrl() != null ? options.getOperationCallbackUrl() : null,
+                options.getSummarizationOptions().isEnableEndCallSummary(),
+                options.getSummarizationOptions().getLocale() != null
+                    ? options.getSummarizationOptions().getLocale()
+                    : null);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

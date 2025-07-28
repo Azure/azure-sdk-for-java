@@ -32,7 +32,7 @@ autorest README.md --java --v4
 tag: package-2025-08-15-preview
 use: '@autorest/java@4.1.52'
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/2a47ea317b8b33edb56636202510ec5e12368829/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/fd7a0f58ae1960dd0c50503a54210c5db2a8d092/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -241,6 +241,9 @@ directive:
 - rename-model:
     from: TeamsPhoneSourceDetails
     to: TeamsPhoneSourceDetailsInternal
+- rename-model:
+    from: SummarizeCallRequest
+    to: SummarizeCallRequestInternal
 
 
 # Remove models

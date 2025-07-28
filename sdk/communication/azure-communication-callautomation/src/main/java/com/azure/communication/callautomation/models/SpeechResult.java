@@ -22,6 +22,16 @@ public final class SpeechResult extends RecognizeResult {
      */
     private String speech;
 
+    /*
+     * The identified language for a spoken phrase.
+     */
+    private String languageIdentified;
+
+    /*
+     * Gets or sets the sentiment analysis result.
+     */
+    private SentimentAnalysisResult sentimentAnalysisResult;
+
     /**
      * Get the speech property: The recognized speech in string.
      *
@@ -31,10 +41,37 @@ public final class SpeechResult extends RecognizeResult {
         return this.speech;
     }
 
+    /**
+     * Get the languageIdentified property: The identified language for a spoken
+     * phrase.
+     * 
+     * @return the languageIdentified value.
+     */
+    public String getLanguageIdentified() {
+        return this.languageIdentified;
+    }
+
+    /**
+     * Get the sentimentAnalysisResult property: Gets or sets the sentiment analysis
+     * result.
+     * 
+     * @return the sentimentAnalysisResult value.
+     */
+    public SentimentAnalysisResult getSentimentAnalysisResult() {
+        return this.sentimentAnalysisResult;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("speech", this.speech);
+        jsonWriter.writeStringField("languageIdentified", this.languageIdentified);
+        if (this.sentimentAnalysisResult != null) {
+            jsonWriter.writeFieldName("sentimentAnalysisResult");
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("sentiment", sentimentAnalysisResult.getSentiment());
+            jsonWriter.writeEndObject();
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -54,6 +91,10 @@ public final class SpeechResult extends RecognizeResult {
                 reader.nextToken();
                 if ("speech".equals(fieldName)) {
                     result.speech = reader.getString();
+                } else if ("languageIdentified".equals(fieldName)) {
+                    result.languageIdentified = reader.getString();
+                } else if ("sentimentAnalysisResult".equals(fieldName)) {
+                    result.sentimentAnalysisResult = SentimentAnalysisResult.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

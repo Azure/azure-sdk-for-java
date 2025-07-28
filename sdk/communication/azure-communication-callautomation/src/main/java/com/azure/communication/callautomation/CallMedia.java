@@ -18,6 +18,7 @@ import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
 import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
+import com.azure.communication.callautomation.models.SummarizeCallOptions;
 import com.azure.communication.callautomation.models.UnholdOptions;
 import com.azure.communication.callautomation.models.UpdateTranscriptionOptions;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -329,6 +330,25 @@ public final class CallMedia {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateTranscriptionWithResponse(UpdateTranscriptionOptions options, Context context) {
         return callMediaAsync.updateTranscriptionWithResponseInternal(options, context).block();
+    }
+
+    /**
+     * Summarize call details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void summarizeCall() {
+        callMediaAsync.summarizeCall().block();
+    }
+
+    /**
+     * Summarize call details.
+     *
+     * @param options Options for the summarize call operation.
+     * @return Response for successful summarize call request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> summarizeCallWithResponse(SummarizeCallOptions options) {
+        return callMediaAsync.summarizeCallWithResponseInternal(options).block();
     }
 
     /**
