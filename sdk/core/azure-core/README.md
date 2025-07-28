@@ -99,6 +99,90 @@ deserialized result of the service call and to the details of the HTTP response 
 `HttpPipeline` is a construct that contains a list of `HttpPipelinePolicy` which are applied to a request
 sequentially to prepare it being sent by an `HttpClient`.
 
+#### Writing Custom HTTP Pipeline Policies
+
+You can write custom HTTP pipeline policies for observability, request modification, or other cross-cutting concerns. 
+Custom policies implement the `HttpPipelinePolicy` interface and can be added to service clients using the `HttpTrait` interface.
+
+<!-- embedme ./src/samples/java/com/azure/core/http/policy/CustomPolicyExamples.java#L18-L74 -->
+```java
+/**
+ * Example of a simple request/response logging policy for observability.
+ * This policy logs basic information about each HTTP request and response.
+ */
+public static class ObservabilityLoggingPolicy implements HttpPipelinePolicy {
+    private final String policyName;
+
+    public ObservabilityLoggingPolicy(String policyName) {
+        this.policyName = policyName;
+    }
+
+    @Override
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        HttpRequest request = context.getHttpRequest();
+        Instant startTime = Instant.now();
+        
+        LOGGER.atInfo()
+            .addKeyValue("policy", policyName)
+            .addKeyValue("method", request.getHttpMethod())
+            .addKeyValue("url", request.getUrl())
+            .log("Sending request");
+
+        return next.process()
+            .doOnNext(response -> {
+                Duration duration = Duration.between(startTime, Instant.now());
+                LOGGER.atInfo()
+                    .addKeyValue("policy", policyName)
+                    .addKeyValue("statusCode", response.getStatusCode())
+                    .addKeyValue("durationMs", duration.toMillis())
+                    .log("Received response");
+            })
+            .doOnError(error -> {
+                Duration duration = Duration.between(startTime, Instant.now());
+                LOGGER.atError()
+                    .addKeyValue("policy", policyName)
+                    .addKeyValue("durationMs", duration.toMillis())
+                    .addKeyValue("error", error.getMessage())
+                    .log("Request failed");
+            });
+    }
+
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        HttpRequest request = context.getHttpRequest();
+        Instant startTime = Instant.now();
+        
+        LOGGER.atInfo()
+            .addKeyValue("policy", policyName)
+            .addKeyValue("method", request.getHttpMethod())
+            .addKeyValue("url", request.getUrl())
+            .log("Sending request");
+
+        try {
+            HttpResponse response = next.processSync();
+            Duration duration = Duration.between(startTime, Instant.now());
+            LOGGER.atInfo()
+                .addKeyValue("policy", policyName)
+                .addKeyValue("statusCode", response.getStatusCode())
+                .addKeyValue("durationMs", duration.toMillis())
+                .log("Received response");
+            return response;
+        } catch (Exception error) {
+            Duration duration = Duration.between(startTime, Instant.now());
+            LOGGER.atError()
+                .addKeyValue("policy", policyName)
+                .addKeyValue("durationMs", duration.toMillis())
+                .addKeyValue("error", error.getMessage())
+                .log("Request failed");
+            throw error;
+        }
+    }
+}
+```
+
+For more examples of custom policies including metrics collection, context-aware policies, and retry-aware patterns, 
+see the [CustomPolicyExamples.java](./src/samples/java/com/azure/core/http/policy/CustomPolicyExamples.java) sample.
+
 ### Exception Hierarchy with `AzureException`
 
 `AzureException` is the root exception in the hierarchy used in Azure Core. Additional exceptions such as
@@ -134,6 +218,35 @@ you're expecting specific behavior for your client, such as using a proxy that w
 avoid this, it is recommended to always set the `HttpPipeline` or `HttpClient` in all clients if you're building if your 
 configurations aren't based on the environment running the application.
 
+##### Adding Custom Policies Using HttpTrait
+
+The `HttpTrait` interface provides the `addPolicy(HttpPipelinePolicy)` method to add custom policies to service clients:
+
+```java
+// Example: Adding a custom logging policy to a service client
+ExampleServiceClient client = new ExampleServiceClientBuilder()
+    .endpoint("https://example.service.azure.com")
+    .addPolicy(new ObservabilityLoggingPolicy("example-service"))
+    .build();
+```
+
+You can add multiple policies and configure other HTTP-related settings:
+
+```java
+// Example: Full configuration with multiple policies and options
+ExampleServiceClient client = new ExampleServiceClientBuilder()
+    .endpoint("https://example.service.azure.com")
+    .addPolicy(new ObservabilityLoggingPolicy("example-service"))
+    .addPolicy(new MetricsCollectionPolicy("example-service"))
+    .retryOptions(new RetryOptions(new ExponentialBackoff(3, Duration.ofSeconds(1), Duration.ofMinutes(1))))
+    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
+    .clientOptions(new HttpClientOptions().setConnectTimeout(Duration.ofSeconds(30)))
+    .build();
+```
+
+For more comprehensive examples of using `HttpTrait` to configure service clients with custom policies, 
+see the [HttpTraitExamples.java](./src/samples/java/com/azure/core/http/policy/HttpTraitExamples.java) sample.
+
 #### Credential Traits
 
 Azure Core provides different credentials for authenticating with Azure services. Each credential type has a
@@ -158,6 +271,64 @@ passing credentials to some client builders that support it, and more.
 #### EndpointTrait<T>
 
 `EndpointTrait<T>` allows for setting the service endpoint on service clients.
+
+### Context Propagation
+
+`Context` provides a way to pass arbitrary data through the HTTP pipeline. This is essential for observability, 
+correlation tracking, and passing custom metadata with requests. Context objects are immutable, and the pipeline 
+automatically propagates context through both synchronous and asynchronous operations.
+
+#### Basic Context Usage
+
+```java
+// Create context with correlation ID
+String correlationId = UUID.randomUUID().toString();
+Context context = Context.NONE.addData("correlationId", correlationId);
+
+// Send request with context
+HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("https://example.com/api"));
+Mono<HttpResponse> response = pipeline.send(request, context);
+```
+
+#### Context-Aware Policies
+
+Policies can read values from context and use them for various purposes:
+
+```java
+public class ContextToHeaderPolicy implements HttpPipelinePolicy {
+    @Override
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        // Read correlation ID from context and add as header
+        context.getContext().getData("correlationId")
+            .ifPresent(correlationId -> {
+                context.getHttpRequest().getHeaders()
+                    .set(HttpHeaderName.fromString("X-Correlation-ID"), correlationId.toString());
+            });
+        
+        return next.process();
+    }
+}
+```
+
+#### Async Context Propagation
+
+Context automatically flows through async operations:
+
+```java
+public Mono<String> processWithAsyncContext(Context context) {
+    return pipeline.send(request, context)
+        .flatMap(response -> {
+            // Context is available throughout the async chain
+            context.getData("correlationId")
+                .ifPresent(corrId -> LOGGER.info("Processing response for: {}", corrId));
+            
+            return processResponse(response);
+        });
+}
+```
+
+For comprehensive examples including concurrent operations, context enrichment, and advanced patterns, 
+see the [ContextPropagationExamples.java](./src/samples/java/com/azure/core/http/policy/ContextPropagationExamples.java) sample.
 
 ### Operation Timeouts
 
