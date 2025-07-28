@@ -14,15 +14,16 @@ public final class MigrateSqlServerSqlDbTaskOutputValidationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateSqlServerSqlDbTaskOutputValidationResult model = BinaryData.fromString(
-            "{\"resultType\":\"MigrationValidationOutput\",\"migrationId\":\"sgeivsiy\",\"summaryResults\":{\"yfm\":{\"id\":\"ncj\",\"migrationId\":\"onbzoggculapzwy\",\"sourceDatabaseName\":\"gogtqxepnylbf\",\"targetDatabaseName\":\"jlyjtlvofq\",\"startedOn\":\"2021-01-24T09:56:19Z\",\"endedOn\":\"2021-09-29T20:16:05Z\",\"status\":\"Completed\"},\"vuqeqvldspast\":{\"id\":\"uxrkjp\",\"migrationId\":\"w\",\"sourceDatabaseName\":\"zwiivwzjbhyzs\",\"targetDatabaseName\":\"rkambt\",\"startedOn\":\"2021-03-11T10:38:35Z\",\"endedOn\":\"2021-03-06T04:34:10Z\",\"status\":\"CompletedWithIssues\"}},\"status\":\"Initialized\",\"id\":\"dmflv\"}")
+            "{\"resultType\":\"MigrationValidationOutput\",\"id\":\"xhajlfnth\",\"migrationId\":\"lfpya\",\"summaryResults\":{\"mjnlexwhcb\":{\"id\":\"gvoavyunssxlgh\",\"migrationId\":\"egjlgvvpa\",\"sourceDatabaseName\":\"ksgbuxan\",\"targetDatabaseName\":\"ygdhgaqipirpiwr\",\"startedOn\":\"2021-06-02T13:21:22Z\",\"endedOn\":\"2021-06-05T11:42:14Z\",\"status\":\"CompletedWithIssues\"},\"crrpcjttbstvje\":{\"id\":\"ibkeph\",\"migrationId\":\"uerct\",\"sourceDatabaseName\":\"oyin\",\"targetDatabaseName\":\"pbrlcyrduczkgofx\",\"startedOn\":\"2021-04-30T22:30:31Z\",\"endedOn\":\"2021-05-31T02:04:39Z\",\"status\":\"InProgress\"},\"vensrpm\":{\"id\":\"nrmvvfkoxmlghk\",\"migrationId\":\"idvrmaz\",\"sourceDatabaseName\":\"dwwexymz\",\"targetDatabaseName\":\"azipbhpwvqsg\",\"startedOn\":\"2021-12-02T14:35:56Z\",\"endedOn\":\"2021-02-23T06:33:06Z\",\"status\":\"Stopped\"},\"iac\":{\"id\":\"yvpkpatlbijpzgsk\",\"migrationId\":\"fhfv\",\"sourceDatabaseName\":\"mknbnxwcdommpv\",\"targetDatabaseName\":\"awz\",\"startedOn\":\"2021-04-11T00:12:02Z\",\"endedOn\":\"2021-06-10T00:42:17Z\",\"status\":\"Failed\"}},\"status\":\"InProgress\"}")
             .toObject(MigrateSqlServerSqlDbTaskOutputValidationResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MigrateSqlServerSqlDbTaskOutputValidationResult model = new MigrateSqlServerSqlDbTaskOutputValidationResult()
-            .withSummaryResults(mapOf("yfm", new MigrationValidationDatabaseSummaryResult(), "vuqeqvldspast",
-                new MigrationValidationDatabaseSummaryResult()));
+            .withSummaryResults(mapOf("mjnlexwhcb", new MigrationValidationDatabaseSummaryResult(), "crrpcjttbstvje",
+                new MigrationValidationDatabaseSummaryResult(), "vensrpm",
+                new MigrationValidationDatabaseSummaryResult(), "iac", new MigrationValidationDatabaseSummaryResult()));
         model = BinaryData.fromObject(model).toObject(MigrateSqlServerSqlDbTaskOutputValidationResult.class);
     }
 

@@ -11,7 +11,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput model = BinaryData
-            .fromString("{\"resultType\":\"MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput\",\"id\":\"rfdwoyu\"}")
+            .fromString("{\"resultType\":\"MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput\",\"id\":\"opionszon\"}")
             .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput.class);
     }
 
