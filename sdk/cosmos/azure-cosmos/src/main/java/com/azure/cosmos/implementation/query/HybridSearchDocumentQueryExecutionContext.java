@@ -365,10 +365,6 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
                     componentScoresInternal.get(j).add(scoreTuple);
                 }
             }
-//            //Sort scores in descending order
-//            for (List<ScoreTuple> scoreTuples : componentScoresInternal) {
-//                scoreTuples.sort(Comparator.comparing(ScoreTuple::getScore, Comparator.reverseOrder()));
-//            }
             for (int i = 0; i < componentScoresInternal.size(); i++) {
                 final int componentIndex = i;
                 componentScoresInternal.get(i).sort((x,y) ->
