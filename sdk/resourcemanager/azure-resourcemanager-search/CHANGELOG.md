@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Updated `api-version` to `2025-05-01`.
+
 ## 2.53.0 (2025-07-25)
 
 ### Other Changes
