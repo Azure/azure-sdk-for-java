@@ -90,17 +90,11 @@ public class ServerThroughputContainerController implements IThroughputContainer
     }
 
     private Mono<ServerThroughputGroupController> createAndInitializeGroupController(ServerThroughputControlGroup group) {
-        if (group instanceof ServerThroughputControlGroup) {
-            // create throughput bucket group controller
-            ServerThroughputGroupController throughputBucketGroupController =
-                new ServerThroughputGroupController(group);
-            if (throughputBucketGroupController.isDefault()) {
-                this.defaultGroupController = throughputBucketGroupController;
-            }
-            return Mono.just(throughputBucketGroupController);
+        // create throughput bucket group controller
+        ServerThroughputGroupController throughputGroupController = new ServerThroughputGroupController(group);
+        if (throughputGroupController.isDefault()) {
+            this.defaultGroupController = throughputGroupController;
         }
-
-        return Mono.error(
-            new IllegalArgumentException("Server throughput control group type is not supported: " + group.getClass().getSimpleName()));
+        return Mono.just(throughputGroupController);
     }
 }

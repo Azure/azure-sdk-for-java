@@ -28,6 +28,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import org.slf4j.Logger;
@@ -948,7 +949,7 @@ public class CosmosContainer {
     }
 
     // TODO: should make partitionkey public in CosmosAsyncItem and fix the below call
-    
+
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
         return new CosmosPagedIterable<>(cosmosPagedFlux);
     }
@@ -1031,13 +1032,15 @@ public class CosmosContainer {
     }
 
     /***
-     * Enable the server throughput bucket control group.
-     * <p>
-     * For more information about throughput bucket please visit
-     * <a href="https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/throughput-buckets?tabs=dotnet">Throughput buckets in Azure Cosmos DB</a>
+     * Enable the server throughput control group.
+     * </br>
+     *
+     * <!-- src_embed com.azure.cosmos.throughputControl.serverControl -->
+     * <!-- end com.azure.cosmos.throughputControl.serverControl -->
      *
      * @param groupConfig the throughput control group config, see {@link ThroughputControlGroupConfig}.
      */
+    @Beta(value = Beta.SinceVersion.V4_74_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableServerThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
         this.asyncContainer.enableServerThroughputControlGroup(groupConfig);
     }

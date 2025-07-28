@@ -672,15 +672,76 @@ public class ThroughputControlTests extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
-    public void serverThroughputControl(OperationType operationType) {
+    public void serverThroughputControl_throughputBucket(OperationType operationType) {
         // TODO: currently there is no easy way to do e2e testing, so the testing here is to just verify that
-        // server throughput can be enabled on the container
+        // server throughput can be enabled on the container with throughput control
         this.ensureContainer();
 
         ThroughputControlGroupConfig serverThroughputControlGroup =
             new ThroughputControlGroupConfigBuilder()
                 .groupName("serverThroughputControl")
                 .throughputBucket(2)
+                .build();
+        container.enableServerThroughputControlGroup(serverThroughputControlGroup);
+
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        requestOptions.setContentResponseOnWriteEnabled(true);
+        requestOptions.setThroughputControlGroupName(serverThroughputControlGroup.getGroupName());
+
+        CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
+        TestItem createdItem = createItemResponse.getItem();
+        this.validateRequestNotThrottled(
+            createItemResponse.getDiagnostics().toString(),
+            BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+        performDocumentOperation(
+            this.container,
+            operationType,
+            createdItem,
+            serverThroughputControlGroup.getGroupName());
+    }
+
+    @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    public void serverThroughputControl_priorityLevel(OperationType operationType) {
+        // TODO: currently there is no easy way to do e2e testing, so the testing here is to just verify that
+        // server throughput can be enabled on the container with priority level
+        this.ensureContainer();
+
+        ThroughputControlGroupConfig serverThroughputControlGroup =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("serverThroughputControl")
+                .priorityLevel(PriorityLevel.LOW)
+                .build();
+        container.enableServerThroughputControlGroup(serverThroughputControlGroup);
+
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        requestOptions.setContentResponseOnWriteEnabled(true);
+        requestOptions.setThroughputControlGroupName(serverThroughputControlGroup.getGroupName());
+
+        CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
+        TestItem createdItem = createItemResponse.getItem();
+        this.validateRequestNotThrottled(
+            createItemResponse.getDiagnostics().toString(),
+            BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+        performDocumentOperation(
+            this.container,
+            operationType,
+            createdItem,
+            serverThroughputControlGroup.getGroupName());
+    }
+
+    @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    public void serverThroughputControl_priorityLevel_throughputBucket(OperationType operationType) {
+        // TODO: currently there is no easy way to do e2e testing, so the testing here is to just verify that
+        // server throughput can be enabled on the container with priority level and throughput bucket
+        this.ensureContainer();
+
+        ThroughputControlGroupConfig serverThroughputControlGroup =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("serverThroughputControl")
+                .priorityLevel(PriorityLevel.LOW)
+                .throughputBucket(3)
                 .build();
         container.enableServerThroughputControlGroup(serverThroughputControlGroup);
 

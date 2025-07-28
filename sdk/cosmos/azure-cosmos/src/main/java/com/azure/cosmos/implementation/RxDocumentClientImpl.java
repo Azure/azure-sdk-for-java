@@ -6363,7 +6363,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
     @Override
-    public synchronized void enableSDKThroughputControlGroup(SDKThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
+    public void enableSDKThroughputControlGroup(SDKThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
         checkNotNull(group, "Throughput control group can not be null");
 
         this.enableThroughputControlStore();
@@ -6371,14 +6371,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public synchronized void enableServerThroughputControlGroup(ServerThroughputControlGroup group) {
+    public void enableServerThroughputControlGroup(ServerThroughputControlGroup group) {
         checkNotNull(group, "Argument 'group' can not be null");
 
         this.enableThroughputControlStore();
         this.throughputControlStore.enableServerThroughputControlGroup(group);
     }
 
-    private void enableThroughputControlStore() {
+    private synchronized void enableThroughputControlStore() {
         if (this.throughputControlEnabled.compareAndSet(false, true)) {
             this.throughputControlStore =
                 new ThroughputControlStore(

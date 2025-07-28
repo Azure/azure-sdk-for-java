@@ -687,7 +687,6 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         Function<TestObject, PartitionKey> extractPartitionKeyFunc,
         boolean isReadMany) {
 
-
         try {
             if (operationType == OperationType.Query && isReadMany) {
                 CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();

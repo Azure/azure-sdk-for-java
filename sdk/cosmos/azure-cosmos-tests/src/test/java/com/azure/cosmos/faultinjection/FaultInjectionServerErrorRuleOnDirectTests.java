@@ -920,7 +920,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             shouldRetryCrossRegion = true;
         }
 
-        TestItem createdItem = TestItem.createNewItem();
+        TestObject createdItem = TestObject.create();
 
         String ruleId = "serverErrorRule-" + FaultInjectionServerErrorType.LEASE_NOT_FOUND + "-" + UUID.randomUUID();
         FaultInjectionRule serverErrorRule =

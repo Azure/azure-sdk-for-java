@@ -71,6 +71,7 @@ import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import org.slf4j.Logger;
@@ -2825,12 +2826,14 @@ public class CosmosAsyncContainer {
 
     /***
      * Enable the server throughput bucket control group.
-     * <p>
-     * For more information about throughput bucket please visit
-     * <a href="https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/throughput-buckets?tabs=dotnet">Throughput buckets in Azure Cosmos DB</a>
+     * </br>
+     *
+     * <!-- src_embed com.azure.cosmos.throughputControl.serverControl -->
+     * <!-- end com.azure.cosmos.throughputControl.serverControl -->
      *
      * @param groupConfig the throughput control group config, see {@link ThroughputControlGroupConfig}.
      */
+    @Beta(value = Beta.SinceVersion.V4_74_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableServerThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
         if (groupConfig.getPriorityLevel() == null && groupConfig.getThroughputBucket() == null) {
             throw new IllegalArgumentException("Config 'priorityLevel' and 'throughputBucket' can not be null for both.");

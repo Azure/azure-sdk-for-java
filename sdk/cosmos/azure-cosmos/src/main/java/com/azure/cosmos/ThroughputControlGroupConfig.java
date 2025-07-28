@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.models.PriorityLevel;
+import com.azure.cosmos.util.Beta;
 
 /**
  * Throughput control group configuration.
@@ -88,6 +89,7 @@ public final class ThroughputControlGroupConfig {
      *
      * @return the throughput bucket of the throughput control group.
      */
+    @Beta(value = Beta.SinceVersion.V4_74_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Integer getThroughputBucket() {
         return this.throughputBucket;
     }

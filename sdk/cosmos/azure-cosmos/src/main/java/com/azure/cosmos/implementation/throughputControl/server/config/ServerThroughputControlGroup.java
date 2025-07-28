@@ -28,7 +28,10 @@ public class ServerThroughputControlGroup {
 
         checkArgument(StringUtils.isNotEmpty(groupName), "Argument 'groupName' cannot be null or empty.");
         checkNotNull(targetContainer, "Argument 'targetContainer' can not be null");
-        checkArgument(throughputBucket != null && throughputBucket > 0, "Target throughput should be greater than 0");
+        checkArgument(throughputBucket != null && throughputBucket >= 0, "Target throughput should be no less than 0");
+        checkArgument(
+            priorityLevel != null || throughputBucket != null,
+            "At least one of 'priorityLevel' or 'throughputBucket' must be provided.");
 
         this.groupName = groupName;
         this.isDefault = isDefault;

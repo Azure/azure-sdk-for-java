@@ -167,8 +167,9 @@ public class ThroughputControlGroupConfigBuilder {
      * @param throughputBucket the throughput bucket id.
      * @return The {@link ThroughputControlGroupConfigBuilder}.
      */
+    @Beta(value = Beta.SinceVersion.V4_74_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroupConfigBuilder throughputBucket(int throughputBucket) {
-        checkArgument(throughputBucket > 0, "Throughput Bucket should be greater than 0");
+        checkArgument(throughputBucket >= 0, "Throughput bucket should be no smaller than 0");
         this.throughputBucket = throughputBucket;
         return this;
     }
