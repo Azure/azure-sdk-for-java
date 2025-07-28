@@ -63,6 +63,8 @@ public class ManagedIdentityCredentialTest {
         ManagedIdentityCredential cred = new ManagedIdentityCredential("clientId", null, null, options);
         StepVerifier.create(cred.getToken(new TokenRequestContext().addScopes("https://management.azure.com")))
             .expectErrorMatches(t -> {
+                System.err.println("is CHained: " + isChained);
+                System.err.println("Error class: " + t.getClass().toString());
                 if (isChained) {
                     return t instanceof CredentialUnavailableException;
                 } else {
