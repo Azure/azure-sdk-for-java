@@ -146,8 +146,8 @@ public class ProviderHubManagerTests extends TestProxyTestBase {
 
         ChainedTokenCredentialBuilder builder
             = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
-            .addLast(new AzureCliCredentialBuilder().build())
-            .addLast(new AzureDeveloperCliCredentialBuilder().build());
+                .addLast(new AzureCliCredentialBuilder().build())
+                .addLast(new AzureDeveloperCliCredentialBuilder().build());
 
         String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
         String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
