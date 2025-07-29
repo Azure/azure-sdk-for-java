@@ -5,6 +5,7 @@ package com.azure.communication.email;
 
 import com.azure.communication.email.models.*;
 import com.azure.core.http.HttpClient;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Timeout;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,6 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class EmailAsyncClientTests extends EmailTestBase {
 
     private EmailAsyncClient emailAsyncClient;
+
+    @BeforeEach
+    public void beforeEach() {
+        interceptorManager.removeSanitizers("AZSDK3493", "AZSDK3430");
+    }
 
     @Override
     protected void beforeTest() {
@@ -91,6 +97,23 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
         StepVerifier.create(emailAsyncClient.beginSend(message).last()).assertNext(response -> {
             assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
+        }).verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("getTestParameters")
+    public void beginSendFromExistingOperationId(HttpClient httpClient) {
+        emailAsyncClient = getEmailAsyncClient(httpClient);
+
+        EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
+            .setToRecipients(RECIPIENT_ADDRESS)
+            .setSubject("test subject")
+            .setBodyHtml("<h1>test message</h1>");
+
+        StepVerifier.create(emailAsyncClient.beginSend(message).last()).assertNext(response -> {
+            StepVerifier.create(emailAsyncClient.beginSend(response.getValue().getId()).last()).assertNext(res -> {
+                assertEquals(res.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
+            }).verifyComplete();
         }).verifyComplete();
     }
 }

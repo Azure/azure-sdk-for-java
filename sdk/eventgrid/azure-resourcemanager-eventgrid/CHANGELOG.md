@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,208 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0-beta.1 (2025-07-25)
+
+- Azure Resource Manager EventGrid client library for Java. This package contains Microsoft Azure SDK for EventGrid Management SDK. Azure EventGrid Management Client. Package tag package-2025-04-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.PartnerDestinationInfo` was added
+
+* `models.PartnerUpdateDestinationInfo` was added
+
+* `models.Sku` was added
+
+* `models.NetworkSecurityPerimeterConfigurationIssueSeverity` was added
+
+* `models.PartnerDestination$Definition` was added
+
+* `models.ResourceSku` was added
+
+* `models.ResourceKind` was added
+
+* `models.PartnerClientAuthentication` was added
+
+* `models.WebhookAuthenticationSettings` was added
+
+* `models.PartnerEndpointType` was added
+
+* `models.NetworkSecurityPerimeterConfigurationIssues` was added
+
+* `models.PartnerDestinationProvisioningState` was added
+
+* `models.CustomJwtAuthenticationManagedIdentityType` was added
+
+* `models.PartnerDestinations` was added
+
+* `models.PartnerDestination` was added
+
+* `models.EncodedIssuerCertificateInfo` was added
+
+* `models.CustomJwtAuthenticationSettings` was added
+
+* `models.NetworkSecurityPerimeterConfigurationProfile` was added
+
+* `models.NetworkSecurityPerimeterAssociationAccessMode` was added
+
+* `models.ResourceMoveChangeHistory` was added
+
+* `models.WebhookPartnerDestinationInfo` was added
+
+* `models.PartnerDestination$Update` was added
+
+* `models.NetworkSecurityPerimeterConfigurationList` was added
+
+* `models.CustomJwtAuthenticationManagedIdentity` was added
+
+* `models.CustomWebhookAuthenticationManagedIdentityType` was added
+
+* `models.PartnerEventSubscriptionDestination` was added
+
+* `models.ClientAuthenticationSettings` was added
+
+* `models.ResourceAssociation` was added
+
+* `models.PartnerDestinationUpdateParameters` was added
+
+* `models.NetworkSecurityPerimeterConfigProvisioningState` was added
+
+* `models.PartnerClientAuthenticationType` was added
+
+* `models.PartnerDestinationActivationState` was added
+
+* `models.AlternativeAuthenticationNameSource` was added
+
+* `models.WebhookUpdatePartnerDestinationInfo` was added
+
+* `models.CustomWebhookAuthenticationManagedIdentity` was added
+
+* `models.NetworkSecurityPerimeterConfigurationIssueType` was added
+
+* `models.NetworkSecurityPerimeterResourceType` was added
+
+* `models.FederatedIdentityCredentialInfo` was added
+
+* `models.NetworkSecurityPerimeterSubscription` was added
+
+* `models.NetworkSecurityPerimeterProfileAccessRule` was added
+
+* `models.NetworkSecurityPerimeterConfigurations` was added
+
+* `models.NetworkSecurityPerimeterInfo` was added
+
+* `models.AzureADPartnerClientAuthentication` was added
+
+* `models.IssuerCertificateInfo` was added
+
+* `models.PartnerDestination$UpdateStages` was added
+
+* `models.ExtendedLocation` was added
+
+* `models.PartnerDestination$DefinitionStages` was added
+
+* `models.NetworkSecurityPerimeterProfileAccessRuleDirection` was added
+
+* `models.NetworkSecurityPerimeterConfiguration` was added
+
+* `models.PartnerDestinationsListResult` was added
+
+#### `models.Subscription$Definition` was modified
+
+* `withTags(java.util.Map)` was added
+
+#### `models.Channel` was modified
+
+* `partnerDestinationInfo()` was added
+
+#### `models.UpdateTopicSpacesConfigurationInfo` was modified
+
+* `clientAuthentication()` was added
+* `withClientAuthentication(models.ClientAuthenticationSettings)` was added
+
+#### `models.TopicUpdateParameters` was modified
+
+* `sku()` was added
+* `withSku(models.ResourceSku)` was added
+
+#### `models.Domain$Update` was modified
+
+* `withSku(models.ResourceSku)` was added
+
+#### `models.Topic$Definition` was modified
+
+* `withKind(models.ResourceKind)` was added
+* `withSku(models.ResourceSku)` was added
+* `withExtendedLocation(models.ExtendedLocation)` was added
+
+#### `models.DomainUpdateParameters` was modified
+
+* `withSku(models.ResourceSku)` was added
+* `sku()` was added
+
+#### `models.Topic$Update` was modified
+
+* `withSku(models.ResourceSku)` was added
+
+#### `models.TopicSpacesConfiguration` was modified
+
+* `withClientAuthentication(models.ClientAuthenticationSettings)` was added
+* `clientAuthentication()` was added
+
+#### `models.Domain` was modified
+
+* `sku()` was added
+
+#### `models.Channel$Update` was modified
+
+* `withPartnerDestinationInfo(models.PartnerDestinationInfo)` was added
+
+#### `EventGridManager` was modified
+
+* `partnerDestinations()` was added
+* `networkSecurityPerimeterConfigurations()` was added
+
+#### `models.Subscription$Update` was modified
+
+* `withTags(java.util.Map)` was added
+
+#### `models.EventSubscriptionIdentity` was modified
+
+* `withFederatedIdentityCredentialInfo(models.FederatedIdentityCredentialInfo)` was added
+* `federatedIdentityCredentialInfo()` was added
+
+#### `models.Topic` was modified
+
+* `kind()` was added
+* `extendedLocation()` was added
+* `sku()` was added
+
+#### `models.Subscription` was modified
+
+* `tags()` was added
+
+#### `models.Channel$Definition` was modified
+
+* `withPartnerDestinationInfo(models.PartnerDestinationInfo)` was added
+
+#### `models.SubscriptionUpdateParameters` was modified
+
+* `tags()` was added
+* `withTags(java.util.Map)` was added
+
+#### `models.ChannelUpdateParameters` was modified
+
+* `partnerDestinationInfo()` was added
+* `withPartnerDestinationInfo(models.PartnerUpdateDestinationInfo)` was added
+
+#### `models.Domain$Definition` was modified
+
+* `withSku(models.ResourceSku)` was added
+
+#### `models.VerifiedPartner` was modified
+
+* `partnerDestinationDetails()` was added
 
 ## 1.2.0 (2025-03-24)
 

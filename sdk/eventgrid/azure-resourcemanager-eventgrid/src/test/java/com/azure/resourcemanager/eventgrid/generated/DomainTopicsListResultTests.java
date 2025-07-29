@@ -14,16 +14,16 @@ public final class DomainTopicsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DomainTopicsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\"},\"id\":\"l\",\"name\":\"ssl\",\"type\":\"lfmmdnbbglzpswi\"}],\"nextLink\":\"mcwyhzdxssadb\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\"},\"id\":\"r\",\"name\":\"tiagx\",\"type\":\"dszue\"},{\"properties\":{\"provisioningState\":\"Deleting\"},\"id\":\"kfzbeyvpnqicvi\",\"name\":\"v\",\"type\":\"jjxd\"},{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"kzclewyh\",\"name\":\"lw\",\"type\":\"aztz\"},{\"properties\":{\"provisioningState\":\"Updating\"},\"id\":\"ckw\",\"name\":\"fz\",\"type\":\"whxxbuyqax\"}],\"nextLink\":\"eqz\"}")
             .toObject(DomainTopicsListResult.class);
-        Assertions.assertEquals("mcwyhzdxssadb", model.nextLink());
+        Assertions.assertEquals("eqz", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DomainTopicsListResult model = new DomainTopicsListResult().withValue(Arrays.asList(new DomainTopicInner()))
-            .withNextLink("mcwyhzdxssadb");
+        DomainTopicsListResult model = new DomainTopicsListResult().withValue(Arrays.asList(new DomainTopicInner(),
+            new DomainTopicInner(), new DomainTopicInner(), new DomainTopicInner())).withNextLink("eqz");
         model = BinaryData.fromObject(model).toObject(DomainTopicsListResult.class);
-        Assertions.assertEquals("mcwyhzdxssadb", model.nextLink());
+        Assertions.assertEquals("eqz", model.nextLink());
     }
 }

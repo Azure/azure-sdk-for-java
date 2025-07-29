@@ -17,7 +17,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs-checkpointstore-jedis</artifactId>
-  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-jedis;current} -->
+  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-jedis;current} -->
 
 
   <name>Microsoft Azure client library for storing checkpoints in Azure Redis</name>
@@ -38,9 +38,7 @@
   </scm>
 
   <properties>
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
     <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>
@@ -59,7 +57,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.16.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

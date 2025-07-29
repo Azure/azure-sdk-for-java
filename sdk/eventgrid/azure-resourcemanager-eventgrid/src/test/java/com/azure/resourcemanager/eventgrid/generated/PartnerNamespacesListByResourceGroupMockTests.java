@@ -26,7 +26,7 @@ public final class PartnerNamespacesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"bfijzzcaoijol\",\"uauktwieopexelx\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"swyiljpibkgxyxy\",\"name\":\"ux\",\"type\":\"eddobmcnltm\"},{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"jsqy\",\"mmoxfablqgpwbmwh\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Canceled\"},\"id\":\"iwrycgnwplrrb\",\"name\":\"hctsbbibti\",\"type\":\"uhqvums\"}],\"provisioningState\":\"Failed\",\"partnerRegistrationFullyQualifiedId\":\"feq\",\"minimumTlsVersionAllowed\":\"1.0\",\"endpoint\":\"f\",\"publicNetworkAccess\":\"Disabled\",\"inboundIpRules\":[{\"ipMask\":\"yxmzrmtmvwituwey\",\"action\":\"Allow\"},{\"ipMask\":\"cybwfuppoxprcm\",\"action\":\"Allow\"},{\"ipMask\":\"jxdiikmoxrezsv\",\"action\":\"Allow\"},{\"ipMask\":\"xikjm\",\"action\":\"Allow\"}],\"disableLocalAuth\":false,\"partnerTopicRoutingMode\":\"SourceEventAttribute\"},\"location\":\"pcwybsz\",\"tags\":{\"wf\":\"npatpftsae\",\"exojfccy\":\"hxorpwaltzwu\"},\"id\":\"h\",\"name\":\"rh\",\"type\":\"hvazjpwexcdr\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"uqy\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Updating\"},\"id\":\"cwwmejjqh\",\"name\":\"dwvmqxiyookyfo\",\"type\":\"kbnzxbypfq\"},{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"wrgr\",\"kderf\",\"swqi\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"w\",\"name\":\"g\",\"type\":\"gicwnxhtfmcqbs\"}],\"provisioningState\":\"Failed\",\"partnerRegistrationFullyQualifiedId\":\"gchzpgfqumj\",\"minimumTlsVersionAllowed\":\"1.1\",\"endpoint\":\"zg\",\"publicNetworkAccess\":\"Disabled\",\"inboundIpRules\":[{\"ipMask\":\"nrceqavfdbdfmmx\",\"action\":\"Allow\"},{\"ipMask\":\"juopjyyqm\",\"action\":\"Allow\"},{\"ipMask\":\"vcwloqd\",\"action\":\"Allow\"}],\"disableLocalAuth\":true,\"partnerTopicRoutingMode\":\"SourceEventAttribute\"},\"location\":\"wzobu\",\"tags\":{\"tdtkwppthuz\":\"xga\",\"imrljdp\":\"pr\",\"mhk\":\"qfxy\"},\"id\":\"tbaewhte\",\"name\":\"loamfmxtllfltym\",\"type\":\"cn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,16 +36,16 @@ public final class PartnerNamespacesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PartnerNamespace> response = manager.partnerNamespaces()
-            .listByResourceGroup("aoq", "sgptotxjq", 523647498, com.azure.core.util.Context.NONE);
+            .listByResourceGroup("lslekcttgzkj", "yqpdwadeghztld", 1838673940, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pcwybsz", response.iterator().next().location());
-        Assertions.assertEquals("npatpftsae", response.iterator().next().tags().get("wf"));
-        Assertions.assertEquals("feq", response.iterator().next().partnerRegistrationFullyQualifiedId());
-        Assertions.assertEquals(TlsVersion.ONE_ZERO, response.iterator().next().minimumTlsVersionAllowed());
+        Assertions.assertEquals("wzobu", response.iterator().next().location());
+        Assertions.assertEquals("xga", response.iterator().next().tags().get("tdtkwppthuz"));
+        Assertions.assertEquals("gchzpgfqumj", response.iterator().next().partnerRegistrationFullyQualifiedId());
+        Assertions.assertEquals(TlsVersion.ONE_ONE, response.iterator().next().minimumTlsVersionAllowed());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.iterator().next().publicNetworkAccess());
-        Assertions.assertEquals("yxmzrmtmvwituwey", response.iterator().next().inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals("nrceqavfdbdfmmx", response.iterator().next().inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, response.iterator().next().inboundIpRules().get(0).action());
-        Assertions.assertEquals(false, response.iterator().next().disableLocalAuth());
+        Assertions.assertTrue(response.iterator().next().disableLocalAuth());
         Assertions.assertEquals(PartnerTopicRoutingMode.SOURCE_EVENT_ATTRIBUTE,
             response.iterator().next().partnerTopicRoutingMode());
     }

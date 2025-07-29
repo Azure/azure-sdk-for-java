@@ -8,9 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The artifact source.
- * 
- * The source where the artifacts are downloaded from.
+ * The artifact source. The source where the artifacts are downloaded from.
  */
 public final class ArtifactSource extends ExpandableStringEnum<ArtifactSource> {
     /**

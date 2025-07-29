@@ -26,7 +26,7 @@ public final class CloudServiceInner extends Resource {
     private CloudServiceProperties properties;
 
     /*
-     * The system meta data relating to this resource.
+     * Metadata pertaining to creation and last modification of the resource.
      */
     private SystemData systemData;
 
@@ -78,23 +78,12 @@ public final class CloudServiceInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system meta data relating to this resource.
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
-    }
-
-    /**
-     * Set the systemData property: The system meta data relating to this resource.
-     * 
-     * @param systemData the systemData value to set.
-     * @return the CloudServiceInner object itself.
-     */
-    public CloudServiceInner withSystemData(SystemData systemData) {
-        this.systemData = systemData;
-        return this;
     }
 
     /**
@@ -187,7 +176,6 @@ public final class CloudServiceInner extends Resource {
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.properties);
-        jsonWriter.writeJsonField("systemData", this.systemData);
         jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }

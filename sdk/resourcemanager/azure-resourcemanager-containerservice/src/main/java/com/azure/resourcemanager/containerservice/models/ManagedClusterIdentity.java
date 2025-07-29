@@ -28,7 +28,7 @@ public final class ManagedClusterIdentity implements JsonSerializable<ManagedClu
     private String tenantId;
 
     /*
-     * For more information see [use managed identities in
+     * The type of identity used for the managed cluster. For more information see [use managed identities in
      * AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
      */
     private ResourceIdentityType type;
@@ -40,7 +40,8 @@ public final class ManagedClusterIdentity implements JsonSerializable<ManagedClu
     private Map<String, DelegatedResource> delegatedResources;
 
     /*
-     * The keys must be ARM resource IDs in the form:
+     * The user identity associated with the managed cluster. This identity will be used in control plane. Only one user
+     * assigned identity is allowed. The keys must be ARM resource IDs in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
      * userAssignedIdentities/{identityName}'.
      */
@@ -72,8 +73,8 @@ public final class ManagedClusterIdentity implements JsonSerializable<ManagedClu
     }
 
     /**
-     * Get the type property: For more information see [use managed identities in
-     * AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
+     * Get the type property: The type of identity used for the managed cluster. For more information see [use managed
+     * identities in AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
      * 
      * @return the type value.
      */
@@ -82,8 +83,8 @@ public final class ManagedClusterIdentity implements JsonSerializable<ManagedClu
     }
 
     /**
-     * Set the type property: For more information see [use managed identities in
-     * AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
+     * Set the type property: The type of identity used for the managed cluster. For more information see [use managed
+     * identities in AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
      * 
      * @param type the type value to set.
      * @return the ManagedClusterIdentity object itself.
@@ -118,7 +119,9 @@ public final class ManagedClusterIdentity implements JsonSerializable<ManagedClu
     }
 
     /**
-     * Get the userAssignedIdentities property: The keys must be ARM resource IDs in the form:
+     * Get the userAssignedIdentities property: The user identity associated with the managed cluster. This identity
+     * will be used in control plane. Only one user assigned identity is allowed. The keys must be ARM resource IDs in
+     * the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      * 
      * @return the userAssignedIdentities value.
@@ -128,7 +131,9 @@ public final class ManagedClusterIdentity implements JsonSerializable<ManagedClu
     }
 
     /**
-     * Set the userAssignedIdentities property: The keys must be ARM resource IDs in the form:
+     * Set the userAssignedIdentities property: The user identity associated with the managed cluster. This identity
+     * will be used in control plane. Only one user assigned identity is allowed. The keys must be ARM resource IDs in
+     * the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.

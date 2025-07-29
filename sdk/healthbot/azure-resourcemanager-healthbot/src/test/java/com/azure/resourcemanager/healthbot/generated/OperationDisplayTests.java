@@ -12,24 +12,24 @@ public final class OperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationDisplay model = BinaryData.fromString(
-            "{\"provider\":\"kbasyypn\",\"resource\":\"hsgcbacphejkot\",\"operation\":\"qgoulznd\",\"description\":\"kwy\"}")
+            "{\"provider\":\"ouskcqvkocrc\",\"resource\":\"kwt\",\"operation\":\"xbnjbiksq\",\"description\":\"lssai\"}")
             .toObject(OperationDisplay.class);
-        Assertions.assertEquals("kbasyypn", model.provider());
-        Assertions.assertEquals("hsgcbacphejkot", model.resource());
-        Assertions.assertEquals("qgoulznd", model.operation());
-        Assertions.assertEquals("kwy", model.description());
+        Assertions.assertEquals("ouskcqvkocrc", model.provider());
+        Assertions.assertEquals("kwt", model.resource());
+        Assertions.assertEquals("xbnjbiksq", model.operation());
+        Assertions.assertEquals("lssai", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationDisplay model = new OperationDisplay().withProvider("kbasyypn")
-            .withResource("hsgcbacphejkot")
-            .withOperation("qgoulznd")
-            .withDescription("kwy");
+        OperationDisplay model = new OperationDisplay().withProvider("ouskcqvkocrc")
+            .withResource("kwt")
+            .withOperation("xbnjbiksq")
+            .withDescription("lssai");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
-        Assertions.assertEquals("kbasyypn", model.provider());
-        Assertions.assertEquals("hsgcbacphejkot", model.resource());
-        Assertions.assertEquals("qgoulznd", model.operation());
-        Assertions.assertEquals("kwy", model.description());
+        Assertions.assertEquals("ouskcqvkocrc", model.provider());
+        Assertions.assertEquals("kwt", model.resource());
+        Assertions.assertEquals("xbnjbiksq", model.operation());
+        Assertions.assertEquals("lssai", model.description());
     }
 }

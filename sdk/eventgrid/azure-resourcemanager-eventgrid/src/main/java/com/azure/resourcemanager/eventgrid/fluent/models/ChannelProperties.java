@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.ChannelProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.ChannelType;
+import com.azure.resourcemanager.eventgrid.models.PartnerDestinationInfo;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicInfo;
 import com.azure.resourcemanager.eventgrid.models.ReadinessState;
 import java.io.IOException;
@@ -33,6 +34,12 @@ public final class ChannelProperties implements JsonSerializable<ChannelProperti
      * topic resource corresponding to the channel.
      */
     private PartnerTopicInfo partnerTopicInfo;
+
+    /*
+     * This property should be populated when channelType is PartnerDestination and represents information about the
+     * partner destination resource corresponding to the channel.
+     */
+    private PartnerDestinationInfo partnerDestinationInfo;
 
     /*
      * Context or helpful message that can be used during the approval process by the subscriber.
@@ -100,6 +107,28 @@ public final class ChannelProperties implements JsonSerializable<ChannelProperti
      */
     public ChannelProperties withPartnerTopicInfo(PartnerTopicInfo partnerTopicInfo) {
         this.partnerTopicInfo = partnerTopicInfo;
+        return this;
+    }
+
+    /**
+     * Get the partnerDestinationInfo property: This property should be populated when channelType is PartnerDestination
+     * and represents information about the partner destination resource corresponding to the channel.
+     * 
+     * @return the partnerDestinationInfo value.
+     */
+    public PartnerDestinationInfo partnerDestinationInfo() {
+        return this.partnerDestinationInfo;
+    }
+
+    /**
+     * Set the partnerDestinationInfo property: This property should be populated when channelType is PartnerDestination
+     * and represents information about the partner destination resource corresponding to the channel.
+     * 
+     * @param partnerDestinationInfo the partnerDestinationInfo value to set.
+     * @return the ChannelProperties object itself.
+     */
+    public ChannelProperties withPartnerDestinationInfo(PartnerDestinationInfo partnerDestinationInfo) {
+        this.partnerDestinationInfo = partnerDestinationInfo;
         return this;
     }
 
@@ -198,6 +227,9 @@ public final class ChannelProperties implements JsonSerializable<ChannelProperti
         if (partnerTopicInfo() != null) {
             partnerTopicInfo().validate();
         }
+        if (partnerDestinationInfo() != null) {
+            partnerDestinationInfo().validate();
+        }
     }
 
     /**
@@ -208,6 +240,7 @@ public final class ChannelProperties implements JsonSerializable<ChannelProperti
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("channelType", this.channelType == null ? null : this.channelType.toString());
         jsonWriter.writeJsonField("partnerTopicInfo", this.partnerTopicInfo);
+        jsonWriter.writeJsonField("partnerDestinationInfo", this.partnerDestinationInfo);
         jsonWriter.writeStringField("messageForActivation", this.messageForActivation);
         jsonWriter.writeStringField("provisioningState",
             this.provisioningState == null ? null : this.provisioningState.toString());
@@ -239,6 +272,8 @@ public final class ChannelProperties implements JsonSerializable<ChannelProperti
                     deserializedChannelProperties.channelType = ChannelType.fromString(reader.getString());
                 } else if ("partnerTopicInfo".equals(fieldName)) {
                     deserializedChannelProperties.partnerTopicInfo = PartnerTopicInfo.fromJson(reader);
+                } else if ("partnerDestinationInfo".equals(fieldName)) {
+                    deserializedChannelProperties.partnerDestinationInfo = PartnerDestinationInfo.fromJson(reader);
                 } else if ("messageForActivation".equals(fieldName)) {
                     deserializedChannelProperties.messageForActivation = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {

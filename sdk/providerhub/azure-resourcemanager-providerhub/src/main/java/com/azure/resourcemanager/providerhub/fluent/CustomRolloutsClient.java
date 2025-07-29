@@ -8,7 +8,9 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.providerhub.fluent.models.CustomRolloutInner;
 
 /**
@@ -43,20 +45,30 @@ public interface CustomRolloutsClient {
     CustomRolloutInner get(String providerNamespace, String rolloutName);
 
     /**
-     * Creates or updates the rollout details.
+     * Deletes the custom rollout resource. Custom rollout must be in terminal state.
      * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param rolloutName The rollout name.
-     * @param properties The custom rollout properties supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rollout details along with {@link Response}.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomRolloutInner> createOrUpdateWithResponse(String providerNamespace, String rolloutName,
-        CustomRolloutInner properties, Context context);
+    Response<Void> deleteWithResponse(String providerNamespace, String rolloutName, Context context);
+
+    /**
+     * Deletes the custom rollout resource. Custom rollout must be in terminal state.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param rolloutName The rollout name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String providerNamespace, String rolloutName);
 
     /**
      * Creates or updates the rollout details.
@@ -67,10 +79,57 @@ public interface CustomRolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rollout details.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CustomRolloutInner>, CustomRolloutInner> beginCreateOrUpdate(String providerNamespace,
+        String rolloutName, CustomRolloutInner properties);
+
+    /**
+     * Creates or updates the rollout details.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param rolloutName The rollout name.
+     * @param properties The custom rollout properties supplied to the CreateOrUpdate operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CustomRolloutInner>, CustomRolloutInner> beginCreateOrUpdate(String providerNamespace,
+        String rolloutName, CustomRolloutInner properties, Context context);
+
+    /**
+     * Creates or updates the rollout details.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param rolloutName The rollout name.
+     * @param properties The custom rollout properties supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CustomRolloutInner createOrUpdate(String providerNamespace, String rolloutName, CustomRolloutInner properties);
+
+    /**
+     * Creates or updates the rollout details.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param rolloutName The rollout name.
+     * @param properties The custom rollout properties supplied to the CreateOrUpdate operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomRolloutInner createOrUpdate(String providerNamespace, String rolloutName, CustomRolloutInner properties,
+        Context context);
 
     /**
      * Gets the list of the custom rollouts for the given provider.
@@ -96,4 +155,30 @@ public interface CustomRolloutsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CustomRolloutInner> listByProviderRegistration(String providerNamespace, Context context);
+
+    /**
+     * Stops or cancels the custom rollout, if in progress.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param rolloutName The rollout name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> stopWithResponse(String providerNamespace, String rolloutName, Context context);
+
+    /**
+     * Stops or cancels the custom rollout, if in progress.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param rolloutName The rollout name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void stop(String providerNamespace, String rolloutName);
 }

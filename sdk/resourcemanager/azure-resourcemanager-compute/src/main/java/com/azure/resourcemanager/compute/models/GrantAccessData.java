@@ -18,7 +18,7 @@ import java.io.IOException;
 @Fluent
 public final class GrantAccessData implements JsonSerializable<GrantAccessData> {
     /*
-     * The access property.
+     * The Access Level, accepted values include None, Read, Write.
      */
     private AccessLevel access;
 
@@ -44,7 +44,7 @@ public final class GrantAccessData implements JsonSerializable<GrantAccessData> 
     }
 
     /**
-     * Get the access property: The access property.
+     * Get the access property: The Access Level, accepted values include None, Read, Write.
      * 
      * @return the access value.
      */
@@ -53,7 +53,7 @@ public final class GrantAccessData implements JsonSerializable<GrantAccessData> 
     }
 
     /**
-     * Set the access property: The access property.
+     * Set the access property: The Access Level, accepted values include None, Read, Write.
      * 
      * @param access the access value to set.
      * @return the GrantAccessData object itself.

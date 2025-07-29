@@ -20,7 +20,7 @@ import java.util.List;
 public final class NotificationRegistrationArrayResponseWithContinuation
     implements JsonSerializable<NotificationRegistrationArrayResponseWithContinuation> {
     /*
-     * The value property.
+     * The value.
      */
     private List<NotificationRegistrationInner> value;
 
@@ -36,7 +36,7 @@ public final class NotificationRegistrationArrayResponseWithContinuation
     }
 
     /**
-     * Get the value property: The value property.
+     * Get the value property: The value.
      * 
      * @return the value value.
      */
@@ -45,7 +45,7 @@ public final class NotificationRegistrationArrayResponseWithContinuation
     }
 
     /**
-     * Set the value property: The value property.
+     * Set the value property: The value.
      * 
      * @param value the value value to set.
      * @return the NotificationRegistrationArrayResponseWithContinuation object itself.

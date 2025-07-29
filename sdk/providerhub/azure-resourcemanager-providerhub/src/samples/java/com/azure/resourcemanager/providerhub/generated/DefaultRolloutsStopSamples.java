@@ -10,7 +10,7 @@ package com.azure.resourcemanager.providerhub.generated;
 public final class DefaultRolloutsStopSamples {
     /*
      * x-ms-original-file:
-     * specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/DefaultRollouts_Stop.
+     * specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/DefaultRollouts_Stop.
      * json
      */
     /**
