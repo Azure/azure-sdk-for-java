@@ -664,9 +664,7 @@ public class ShareClient {
             Response<Void> response = this.deleteWithResponse(options, timeout, context);
             return new SimpleResponse<>(response, true);
         } catch (ShareStorageException e) {
-            if (e.getStatusCode() == 404
-                && (e.getErrorCode().equals(ShareErrorCode.SHARE_NOT_FOUND)
-                    || e.getErrorCode().equals(ShareErrorCode.SHARE_SNAPSHOT_NOT_FOUND))) {
+            if (e.getStatusCode() == 404 && e.getErrorCode().equals(ShareErrorCode.SHARE_NOT_FOUND)) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), false);
             } else {

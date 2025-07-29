@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,13 +21,11 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
     /*
      * Settings for SMB protocol.
      */
-    @Generated
     private ShareSmbSettings smb;
 
     /**
      * Creates an instance of ShareProtocolSettings class.
      */
-    @Generated
     public ShareProtocolSettings() {
     }
 
@@ -36,7 +34,6 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
      * 
      * @return the smb value.
      */
-    @Generated
     public ShareSmbSettings getSmb() {
         return this.smb;
     }
@@ -47,22 +44,19 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
      * @param smb the smb value to set.
      * @return the ShareProtocolSettings object itself.
      */
-    @Generated
     public ShareProtocolSettings setSmb(ShareSmbSettings smb) {
         this.smb = smb;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "ProtocolSettings" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ProtocolSettings" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeXml(this.smb, "SMB");
         return xmlWriter.writeEndElement();
@@ -76,7 +70,6 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareProtocolSettings.
      */
-    @Generated
     public static ShareProtocolSettings fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -91,10 +84,8 @@ public final class ShareProtocolSettings implements XmlSerializable<ShareProtoco
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareProtocolSettings.
      */
-    @Generated
     public static ShareProtocolSettings fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "ProtocolSettings" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ProtocolSettings" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ShareProtocolSettings deserializedShareProtocolSettings = new ShareProtocolSettings();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
