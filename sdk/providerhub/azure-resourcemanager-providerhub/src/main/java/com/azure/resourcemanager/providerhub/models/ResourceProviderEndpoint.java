@@ -20,39 +20,49 @@ import java.util.List;
 @Fluent
 public final class ResourceProviderEndpoint implements JsonSerializable<ResourceProviderEndpoint> {
     /*
-     * The enabled property.
+     * Whether the endpoint is enabled.
      */
     private Boolean enabled;
 
     /*
-     * The apiVersions property.
+     * The api versions.
      */
     private List<String> apiVersions;
 
     /*
-     * The endpointUri property.
+     * The endpoint uri.
      */
     private String endpointUri;
 
     /*
-     * The locations property.
+     * The locations.
      */
     private List<String> locations;
 
     /*
-     * The requiredFeatures property.
+     * The required features.
      */
     private List<String> requiredFeatures;
 
     /*
-     * The featuresRule property.
+     * The feature rules.
      */
     private ResourceProviderEndpointFeaturesRule featuresRule;
 
     /*
-     * The timeout property.
+     * The timeout.
      */
     private Duration timeout;
+
+    /*
+     * The endpoint type.
+     */
+    private EndpointType endpointType;
+
+    /*
+     * The sku link.
+     */
+    private String skuLink;
 
     /**
      * Creates an instance of ResourceProviderEndpoint class.
@@ -61,7 +71,7 @@ public final class ResourceProviderEndpoint implements JsonSerializable<Resource
     }
 
     /**
-     * Get the enabled property: The enabled property.
+     * Get the enabled property: Whether the endpoint is enabled.
      * 
      * @return the enabled value.
      */
@@ -70,7 +80,7 @@ public final class ResourceProviderEndpoint implements JsonSerializable<Resource
     }
 
     /**
-     * Set the enabled property: The enabled property.
+     * Set the enabled property: Whether the endpoint is enabled.
      * 
      * @param enabled the enabled value to set.
      * @return the ResourceProviderEndpoint object itself.
@@ -81,7 +91,7 @@ public final class ResourceProviderEndpoint implements JsonSerializable<Resource
     }
 
     /**
-     * Get the apiVersions property: The apiVersions property.
+     * Get the apiVersions property: The api versions.
      * 
      * @return the apiVersions value.
      */
@@ -90,7 +100,7 @@ public final class ResourceProviderEndpoint implements JsonSerializable<Resource
     }
 
     /**
-     * Set the apiVersions property: The apiVersions property.
+     * Set the apiVersions property: The api versions.
      * 
      * @param apiVersions the apiVersions value to set.
      * @return the ResourceProviderEndpoint object itself.
@@ -101,7 +111,7 @@ public final class ResourceProviderEndpoint implements JsonSerializable<Resource
     }
 
     /**
-     * Get the endpointUri property: The endpointUri property.
+     * Get the endpointUri property: The endpoint uri.
      * 
      * @return the endpointUri value.
      */
@@ -110,7 +120,7 @@ public final class ResourceProviderEndpoint implements JsonSerializable<Resource
     }
 
     /**
-     * Set the endpointUri property: The endpointUri property.
+     * Set the endpointUri property: The endpoint uri.
      * 
      * @param endpointUri the endpointUri value to set.
      * @return the ResourceProviderEndpoint object itself.
@@ -121,7 +131,7 @@ public final class ResourceProviderEndpoint implements JsonSerializable<Resource
     }
 
     /**
-     * Get the locations property: The locations property.
+     * Get the locations property: The locations.
      * 
      * @return the locations value.
      */
@@ -130,7 +140,7 @@ public final class ResourceProviderEndpoint implements JsonSerializable<Resource
     }
 
     /**
-     * Set the locations property: The locations property.
+     * Set the locations property: The locations.
      * 
      * @param locations the locations value to set.
      * @return the ResourceProviderEndpoint object itself.
@@ -141,7 +151,7 @@ public final class ResourceProviderEndpoint implements JsonSerializable<Resource
     }
 
     /**
-     * Get the requiredFeatures property: The requiredFeatures property.
+     * Get the requiredFeatures property: The required features.
      * 
      * @return the requiredFeatures value.
      */
@@ -150,7 +160,7 @@ public final class ResourceProviderEndpoint implements JsonSerializable<Resource
     }
 
     /**
-     * Set the requiredFeatures property: The requiredFeatures property.
+     * Set the requiredFeatures property: The required features.
      * 
      * @param requiredFeatures the requiredFeatures value to set.
      * @return the ResourceProviderEndpoint object itself.
@@ -161,7 +171,7 @@ public final class ResourceProviderEndpoint implements JsonSerializable<Resource
     }
 
     /**
-     * Get the featuresRule property: The featuresRule property.
+     * Get the featuresRule property: The feature rules.
      * 
      * @return the featuresRule value.
      */
@@ -170,7 +180,7 @@ public final class ResourceProviderEndpoint implements JsonSerializable<Resource
     }
 
     /**
-     * Set the featuresRule property: The featuresRule property.
+     * Set the featuresRule property: The feature rules.
      * 
      * @param featuresRule the featuresRule value to set.
      * @return the ResourceProviderEndpoint object itself.
@@ -181,7 +191,7 @@ public final class ResourceProviderEndpoint implements JsonSerializable<Resource
     }
 
     /**
-     * Get the timeout property: The timeout property.
+     * Get the timeout property: The timeout.
      * 
      * @return the timeout value.
      */
@@ -190,13 +200,53 @@ public final class ResourceProviderEndpoint implements JsonSerializable<Resource
     }
 
     /**
-     * Set the timeout property: The timeout property.
+     * Set the timeout property: The timeout.
      * 
      * @param timeout the timeout value to set.
      * @return the ResourceProviderEndpoint object itself.
      */
     public ResourceProviderEndpoint withTimeout(Duration timeout) {
         this.timeout = timeout;
+        return this;
+    }
+
+    /**
+     * Get the endpointType property: The endpoint type.
+     * 
+     * @return the endpointType value.
+     */
+    public EndpointType endpointType() {
+        return this.endpointType;
+    }
+
+    /**
+     * Set the endpointType property: The endpoint type.
+     * 
+     * @param endpointType the endpointType value to set.
+     * @return the ResourceProviderEndpoint object itself.
+     */
+    public ResourceProviderEndpoint withEndpointType(EndpointType endpointType) {
+        this.endpointType = endpointType;
+        return this;
+    }
+
+    /**
+     * Get the skuLink property: The sku link.
+     * 
+     * @return the skuLink value.
+     */
+    public String skuLink() {
+        return this.skuLink;
+    }
+
+    /**
+     * Set the skuLink property: The sku link.
+     * 
+     * @param skuLink the skuLink value to set.
+     * @return the ResourceProviderEndpoint object itself.
+     */
+    public ResourceProviderEndpoint withSkuLink(String skuLink) {
+        this.skuLink = skuLink;
         return this;
     }
 
@@ -225,6 +275,8 @@ public final class ResourceProviderEndpoint implements JsonSerializable<Resource
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("featuresRule", this.featuresRule);
         jsonWriter.writeStringField("timeout", CoreUtils.durationToStringWithDays(this.timeout));
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeStringField("skuLink", this.skuLink);
         return jsonWriter.writeEndObject();
     }
 
@@ -262,6 +314,10 @@ public final class ResourceProviderEndpoint implements JsonSerializable<Resource
                 } else if ("timeout".equals(fieldName)) {
                     deserializedResourceProviderEndpoint.timeout
                         = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("endpointType".equals(fieldName)) {
+                    deserializedResourceProviderEndpoint.endpointType = EndpointType.fromString(reader.getString());
+                } else if ("skuLink".equals(fieldName)) {
+                    deserializedResourceProviderEndpoint.skuLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

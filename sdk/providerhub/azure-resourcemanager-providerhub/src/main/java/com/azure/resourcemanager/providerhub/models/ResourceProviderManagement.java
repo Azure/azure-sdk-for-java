@@ -18,44 +18,79 @@ import java.util.List;
 @Fluent
 public class ResourceProviderManagement implements JsonSerializable<ResourceProviderManagement> {
     /*
-     * The schemaOwners property.
+     * The schema owners.
      */
     private List<String> schemaOwners;
 
     /*
-     * The manifestOwners property.
+     * The manifest owners.
      */
     private List<String> manifestOwners;
 
     /*
-     * The incidentRoutingService property.
+     * The authorization owners.
+     */
+    private List<String> authorizationOwners;
+
+    /*
+     * The incident routing service.
      */
     private String incidentRoutingService;
 
     /*
-     * The incidentRoutingTeam property.
+     * The incident routing team.
      */
     private String incidentRoutingTeam;
 
     /*
-     * The incidentContactEmail property.
+     * The incident contact email.
      */
     private String incidentContactEmail;
 
     /*
-     * The serviceTreeInfos property.
+     * The service tree infos.
      */
     private List<ServiceTreeInfo> serviceTreeInfos;
 
     /*
-     * The resourceAccessPolicy property.
+     * The resource access policy.
      */
     private ResourceAccessPolicy resourceAccessPolicy;
 
     /*
-     * The resourceAccessRoles property.
+     * The resource access roles.
      */
-    private List<Object> resourceAccessRoles;
+    private List<ResourceAccessRole> resourceAccessRoles;
+
+    /*
+     * List of expedited rollout submitters.
+     */
+    private List<String> expeditedRolloutSubmitters;
+
+    /*
+     * Options for error response messages.
+     */
+    private ResourceProviderManagementErrorResponseMessageOptions errorResponseMessageOptions;
+
+    /*
+     * Metadata for expedited rollout.
+     */
+    private ResourceProviderManagementExpeditedRolloutMetadata expeditedRolloutMetadata;
+
+    /*
+     * List of manifest owners for canary.
+     */
+    private List<String> canaryManifestOwners;
+
+    /*
+     * The profit center code for the subscription.
+     */
+    private String pcCode;
+
+    /*
+     * The profit center program id for the subscription.
+     */
+    private String profitCenterProgramId;
 
     /**
      * Creates an instance of ResourceProviderManagement class.
@@ -64,7 +99,7 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
-     * Get the schemaOwners property: The schemaOwners property.
+     * Get the schemaOwners property: The schema owners.
      * 
      * @return the schemaOwners value.
      */
@@ -73,7 +108,7 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
-     * Set the schemaOwners property: The schemaOwners property.
+     * Set the schemaOwners property: The schema owners.
      * 
      * @param schemaOwners the schemaOwners value to set.
      * @return the ResourceProviderManagement object itself.
@@ -84,7 +119,7 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
-     * Get the manifestOwners property: The manifestOwners property.
+     * Get the manifestOwners property: The manifest owners.
      * 
      * @return the manifestOwners value.
      */
@@ -93,7 +128,7 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
-     * Set the manifestOwners property: The manifestOwners property.
+     * Set the manifestOwners property: The manifest owners.
      * 
      * @param manifestOwners the manifestOwners value to set.
      * @return the ResourceProviderManagement object itself.
@@ -104,7 +139,27 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
-     * Get the incidentRoutingService property: The incidentRoutingService property.
+     * Get the authorizationOwners property: The authorization owners.
+     * 
+     * @return the authorizationOwners value.
+     */
+    public List<String> authorizationOwners() {
+        return this.authorizationOwners;
+    }
+
+    /**
+     * Set the authorizationOwners property: The authorization owners.
+     * 
+     * @param authorizationOwners the authorizationOwners value to set.
+     * @return the ResourceProviderManagement object itself.
+     */
+    public ResourceProviderManagement withAuthorizationOwners(List<String> authorizationOwners) {
+        this.authorizationOwners = authorizationOwners;
+        return this;
+    }
+
+    /**
+     * Get the incidentRoutingService property: The incident routing service.
      * 
      * @return the incidentRoutingService value.
      */
@@ -113,7 +168,7 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
-     * Set the incidentRoutingService property: The incidentRoutingService property.
+     * Set the incidentRoutingService property: The incident routing service.
      * 
      * @param incidentRoutingService the incidentRoutingService value to set.
      * @return the ResourceProviderManagement object itself.
@@ -124,7 +179,7 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
-     * Get the incidentRoutingTeam property: The incidentRoutingTeam property.
+     * Get the incidentRoutingTeam property: The incident routing team.
      * 
      * @return the incidentRoutingTeam value.
      */
@@ -133,7 +188,7 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
-     * Set the incidentRoutingTeam property: The incidentRoutingTeam property.
+     * Set the incidentRoutingTeam property: The incident routing team.
      * 
      * @param incidentRoutingTeam the incidentRoutingTeam value to set.
      * @return the ResourceProviderManagement object itself.
@@ -144,7 +199,7 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
-     * Get the incidentContactEmail property: The incidentContactEmail property.
+     * Get the incidentContactEmail property: The incident contact email.
      * 
      * @return the incidentContactEmail value.
      */
@@ -153,7 +208,7 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
-     * Set the incidentContactEmail property: The incidentContactEmail property.
+     * Set the incidentContactEmail property: The incident contact email.
      * 
      * @param incidentContactEmail the incidentContactEmail value to set.
      * @return the ResourceProviderManagement object itself.
@@ -164,7 +219,7 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
-     * Get the serviceTreeInfos property: The serviceTreeInfos property.
+     * Get the serviceTreeInfos property: The service tree infos.
      * 
      * @return the serviceTreeInfos value.
      */
@@ -173,7 +228,7 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
-     * Set the serviceTreeInfos property: The serviceTreeInfos property.
+     * Set the serviceTreeInfos property: The service tree infos.
      * 
      * @param serviceTreeInfos the serviceTreeInfos value to set.
      * @return the ResourceProviderManagement object itself.
@@ -184,7 +239,7 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
-     * Get the resourceAccessPolicy property: The resourceAccessPolicy property.
+     * Get the resourceAccessPolicy property: The resource access policy.
      * 
      * @return the resourceAccessPolicy value.
      */
@@ -193,7 +248,7 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
-     * Set the resourceAccessPolicy property: The resourceAccessPolicy property.
+     * Set the resourceAccessPolicy property: The resource access policy.
      * 
      * @param resourceAccessPolicy the resourceAccessPolicy value to set.
      * @return the ResourceProviderManagement object itself.
@@ -204,22 +259,144 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
     }
 
     /**
-     * Get the resourceAccessRoles property: The resourceAccessRoles property.
+     * Get the resourceAccessRoles property: The resource access roles.
      * 
      * @return the resourceAccessRoles value.
      */
-    public List<Object> resourceAccessRoles() {
+    public List<ResourceAccessRole> resourceAccessRoles() {
         return this.resourceAccessRoles;
     }
 
     /**
-     * Set the resourceAccessRoles property: The resourceAccessRoles property.
+     * Set the resourceAccessRoles property: The resource access roles.
      * 
      * @param resourceAccessRoles the resourceAccessRoles value to set.
      * @return the ResourceProviderManagement object itself.
      */
-    public ResourceProviderManagement withResourceAccessRoles(List<Object> resourceAccessRoles) {
+    public ResourceProviderManagement withResourceAccessRoles(List<ResourceAccessRole> resourceAccessRoles) {
         this.resourceAccessRoles = resourceAccessRoles;
+        return this;
+    }
+
+    /**
+     * Get the expeditedRolloutSubmitters property: List of expedited rollout submitters.
+     * 
+     * @return the expeditedRolloutSubmitters value.
+     */
+    public List<String> expeditedRolloutSubmitters() {
+        return this.expeditedRolloutSubmitters;
+    }
+
+    /**
+     * Set the expeditedRolloutSubmitters property: List of expedited rollout submitters.
+     * 
+     * @param expeditedRolloutSubmitters the expeditedRolloutSubmitters value to set.
+     * @return the ResourceProviderManagement object itself.
+     */
+    public ResourceProviderManagement withExpeditedRolloutSubmitters(List<String> expeditedRolloutSubmitters) {
+        this.expeditedRolloutSubmitters = expeditedRolloutSubmitters;
+        return this;
+    }
+
+    /**
+     * Get the errorResponseMessageOptions property: Options for error response messages.
+     * 
+     * @return the errorResponseMessageOptions value.
+     */
+    public ResourceProviderManagementErrorResponseMessageOptions errorResponseMessageOptions() {
+        return this.errorResponseMessageOptions;
+    }
+
+    /**
+     * Set the errorResponseMessageOptions property: Options for error response messages.
+     * 
+     * @param errorResponseMessageOptions the errorResponseMessageOptions value to set.
+     * @return the ResourceProviderManagement object itself.
+     */
+    public ResourceProviderManagement withErrorResponseMessageOptions(
+        ResourceProviderManagementErrorResponseMessageOptions errorResponseMessageOptions) {
+        this.errorResponseMessageOptions = errorResponseMessageOptions;
+        return this;
+    }
+
+    /**
+     * Get the expeditedRolloutMetadata property: Metadata for expedited rollout.
+     * 
+     * @return the expeditedRolloutMetadata value.
+     */
+    public ResourceProviderManagementExpeditedRolloutMetadata expeditedRolloutMetadata() {
+        return this.expeditedRolloutMetadata;
+    }
+
+    /**
+     * Set the expeditedRolloutMetadata property: Metadata for expedited rollout.
+     * 
+     * @param expeditedRolloutMetadata the expeditedRolloutMetadata value to set.
+     * @return the ResourceProviderManagement object itself.
+     */
+    public ResourceProviderManagement
+        withExpeditedRolloutMetadata(ResourceProviderManagementExpeditedRolloutMetadata expeditedRolloutMetadata) {
+        this.expeditedRolloutMetadata = expeditedRolloutMetadata;
+        return this;
+    }
+
+    /**
+     * Get the canaryManifestOwners property: List of manifest owners for canary.
+     * 
+     * @return the canaryManifestOwners value.
+     */
+    public List<String> canaryManifestOwners() {
+        return this.canaryManifestOwners;
+    }
+
+    /**
+     * Set the canaryManifestOwners property: List of manifest owners for canary.
+     * 
+     * @param canaryManifestOwners the canaryManifestOwners value to set.
+     * @return the ResourceProviderManagement object itself.
+     */
+    public ResourceProviderManagement withCanaryManifestOwners(List<String> canaryManifestOwners) {
+        this.canaryManifestOwners = canaryManifestOwners;
+        return this;
+    }
+
+    /**
+     * Get the pcCode property: The profit center code for the subscription.
+     * 
+     * @return the pcCode value.
+     */
+    public String pcCode() {
+        return this.pcCode;
+    }
+
+    /**
+     * Set the pcCode property: The profit center code for the subscription.
+     * 
+     * @param pcCode the pcCode value to set.
+     * @return the ResourceProviderManagement object itself.
+     */
+    public ResourceProviderManagement withPcCode(String pcCode) {
+        this.pcCode = pcCode;
+        return this;
+    }
+
+    /**
+     * Get the profitCenterProgramId property: The profit center program id for the subscription.
+     * 
+     * @return the profitCenterProgramId value.
+     */
+    public String profitCenterProgramId() {
+        return this.profitCenterProgramId;
+    }
+
+    /**
+     * Set the profitCenterProgramId property: The profit center program id for the subscription.
+     * 
+     * @param profitCenterProgramId the profitCenterProgramId value to set.
+     * @return the ResourceProviderManagement object itself.
+     */
+    public ResourceProviderManagement withProfitCenterProgramId(String profitCenterProgramId) {
+        this.profitCenterProgramId = profitCenterProgramId;
         return this;
     }
 
@@ -232,6 +409,15 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
         if (serviceTreeInfos() != null) {
             serviceTreeInfos().forEach(e -> e.validate());
         }
+        if (resourceAccessRoles() != null) {
+            resourceAccessRoles().forEach(e -> e.validate());
+        }
+        if (errorResponseMessageOptions() != null) {
+            errorResponseMessageOptions().validate();
+        }
+        if (expeditedRolloutMetadata() != null) {
+            expeditedRolloutMetadata().validate();
+        }
     }
 
     /**
@@ -243,6 +429,8 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
         jsonWriter.writeArrayField("schemaOwners", this.schemaOwners, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("manifestOwners", this.manifestOwners,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("authorizationOwners", this.authorizationOwners,
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("incidentRoutingService", this.incidentRoutingService);
         jsonWriter.writeStringField("incidentRoutingTeam", this.incidentRoutingTeam);
         jsonWriter.writeStringField("incidentContactEmail", this.incidentContactEmail);
@@ -251,7 +439,15 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
         jsonWriter.writeStringField("resourceAccessPolicy",
             this.resourceAccessPolicy == null ? null : this.resourceAccessPolicy.toString());
         jsonWriter.writeArrayField("resourceAccessRoles", this.resourceAccessRoles,
-            (writer, element) -> writer.writeUntyped(element));
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("expeditedRolloutSubmitters", this.expeditedRolloutSubmitters,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("errorResponseMessageOptions", this.errorResponseMessageOptions);
+        jsonWriter.writeJsonField("expeditedRolloutMetadata", this.expeditedRolloutMetadata);
+        jsonWriter.writeArrayField("canaryManifestOwners", this.canaryManifestOwners,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("pcCode", this.pcCode);
+        jsonWriter.writeStringField("profitCenterProgramId", this.profitCenterProgramId);
         return jsonWriter.writeEndObject();
     }
 
@@ -276,6 +472,9 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
                 } else if ("manifestOwners".equals(fieldName)) {
                     List<String> manifestOwners = reader.readArray(reader1 -> reader1.getString());
                     deserializedResourceProviderManagement.manifestOwners = manifestOwners;
+                } else if ("authorizationOwners".equals(fieldName)) {
+                    List<String> authorizationOwners = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManagement.authorizationOwners = authorizationOwners;
                 } else if ("incidentRoutingService".equals(fieldName)) {
                     deserializedResourceProviderManagement.incidentRoutingService = reader.getString();
                 } else if ("incidentRoutingTeam".equals(fieldName)) {
@@ -290,8 +489,25 @@ public class ResourceProviderManagement implements JsonSerializable<ResourceProv
                     deserializedResourceProviderManagement.resourceAccessPolicy
                         = ResourceAccessPolicy.fromString(reader.getString());
                 } else if ("resourceAccessRoles".equals(fieldName)) {
-                    List<Object> resourceAccessRoles = reader.readArray(reader1 -> reader1.readUntyped());
+                    List<ResourceAccessRole> resourceAccessRoles
+                        = reader.readArray(reader1 -> ResourceAccessRole.fromJson(reader1));
                     deserializedResourceProviderManagement.resourceAccessRoles = resourceAccessRoles;
+                } else if ("expeditedRolloutSubmitters".equals(fieldName)) {
+                    List<String> expeditedRolloutSubmitters = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManagement.expeditedRolloutSubmitters = expeditedRolloutSubmitters;
+                } else if ("errorResponseMessageOptions".equals(fieldName)) {
+                    deserializedResourceProviderManagement.errorResponseMessageOptions
+                        = ResourceProviderManagementErrorResponseMessageOptions.fromJson(reader);
+                } else if ("expeditedRolloutMetadata".equals(fieldName)) {
+                    deserializedResourceProviderManagement.expeditedRolloutMetadata
+                        = ResourceProviderManagementExpeditedRolloutMetadata.fromJson(reader);
+                } else if ("canaryManifestOwners".equals(fieldName)) {
+                    List<String> canaryManifestOwners = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManagement.canaryManifestOwners = canaryManifestOwners;
+                } else if ("pcCode".equals(fieldName)) {
+                    deserializedResourceProviderManagement.pcCode = reader.getString();
+                } else if ("profitCenterProgramId".equals(fieldName)) {
+                    deserializedResourceProviderManagement.profitCenterProgramId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
